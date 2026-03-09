@@ -1,15 +1,12 @@
 <div class="min-h-screen bg-background text-foreground font-sans transition-colors duration-200">
   <!-- Header -->
-  <header class="sticky top-0 z-10 bg-background border-b border-border">
-    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+  <header class="sticky top-0 z-10 bg-background/80 backdrop-blur-sm border-b border-border">
+    <div class="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <span class="text-xl font-bold tracking-tight">⚡ Volt UI</span>
-        <span class="text-sm text-muted-foreground">Design Tokens</span>
+        <span class="text-lg font-bold tracking-tight">⚡ Volt UI</span>
+        <volt-badge variant="secondary">v0.0.1</volt-badge>
       </div>
-      <button
-        (click)="toggleDark()"
-        class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg bg-surface border border-border text-foreground hover:bg-muted transition-colors cursor-pointer"
-      >
+      <button volt-button variant="outline" size="sm" (click)="toggleDark()">
         @if (isDark()) {
           ☀️ Light
         } @else {
@@ -19,73 +16,242 @@
     </div>
   </header>
 
-  <main class="max-w-7xl mx-auto px-6 py-12 space-y-16">
-    <!-- ── Color Scales ── -->
-    @for (scale of colorScales; track scale.prefix) {
-      <section>
-        <h2 class="text-lg font-semibold mb-4">{{ scale.name }}</h2>
-        <div class="flex gap-2">
-          @for (step of colorSteps; track step) {
-            <div class="flex-1 space-y-1.5">
-              <div
-                class="h-12 rounded-md"
-                [style.background-color]="'var(--color-' + scale.prefix + '-' + step + ')'"
-              ></div>
-              <p class="text-[11px] text-muted-foreground text-center font-mono">{{ step }}</p>
-            </div>
-          }
-        </div>
-      </section>
-    }
-
-    <!-- ── Semantic Tokens ── -->
+  <main class="max-w-5xl mx-auto px-6 py-12 space-y-16">
+    <!-- ── Button ── -->
     <section>
-      <h2 class="text-lg font-semibold mb-4">Semantic Tokens</h2>
+      <h2 class="text-xl font-semibold mb-2">Button</h2>
       <p class="text-sm text-muted-foreground mb-6">
-        These tokens adapt to light and dark mode. Toggle the theme to see them change.
+        Actions and navigation triggers with multiple variants and sizes.
       </p>
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-        @for (token of semanticTokens; track token.name) {
-          <div class="space-y-1.5">
-            <div
-              class="h-16 rounded-md border border-border"
-              [style.background-color]="'var(' + token.var + ')'"
-            ></div>
-            <p class="text-xs text-muted-foreground font-mono">{{ token.name }}</p>
+
+      <div class="space-y-8">
+        <!-- Variants -->
+        <div>
+          <h3 class="text-sm font-medium text-muted-foreground mb-3">Variants</h3>
+          <div class="flex flex-wrap gap-3">
+            <button volt-button variant="solid">Solid</button>
+            <button volt-button variant="destructive">Destructive</button>
+            <button volt-button variant="outline">Outline</button>
+            <button volt-button variant="ghost">Ghost</button>
+            <button volt-button variant="link">Link</button>
           </div>
-        }
+        </div>
+
+        <volt-separator />
+
+        <!-- Sizes -->
+        <div>
+          <h3 class="text-sm font-medium text-muted-foreground mb-3">Sizes</h3>
+          <div class="flex flex-wrap items-center gap-3">
+            <button volt-button size="sm">Small</button>
+            <button volt-button size="md">Medium</button>
+            <button volt-button size="lg">Large</button>
+            <button volt-button size="icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M12 5v14" />
+                <path d="M5 12h14" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <volt-separator />
+
+        <!-- Disabled -->
+        <div>
+          <h3 class="text-sm font-medium text-muted-foreground mb-3">Disabled</h3>
+          <div class="flex flex-wrap gap-3">
+            <button volt-button variant="solid" disabled>Solid</button>
+            <button volt-button variant="outline" disabled>Outline</button>
+            <button volt-button variant="ghost" disabled>Ghost</button>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- ── Border Radius ── -->
+    <!-- ── Badge ── -->
     <section>
-      <h2 class="text-lg font-semibold mb-4">Border Radius</h2>
-      <div class="flex flex-wrap gap-8 items-end">
-        @for (r of radii; track r.name) {
-          <div class="space-y-2 text-center">
-            <div
-              class="w-16 h-16 bg-primary-500"
-              [style.border-radius]="'var(' + r.var + ')'"
-            ></div>
-            <p class="text-xs text-muted-foreground font-mono">{{ r.name }}</p>
-          </div>
-        }
+      <h2 class="text-xl font-semibold mb-2">Badge</h2>
+      <p class="text-sm text-muted-foreground mb-6">Small status indicators and labels.</p>
+
+      <div class="flex flex-wrap gap-3">
+        <volt-badge variant="solid">Solid</volt-badge>
+        <volt-badge variant="secondary">Secondary</volt-badge>
+        <volt-badge variant="outline">Outline</volt-badge>
+        <volt-badge variant="destructive">Destructive</volt-badge>
       </div>
     </section>
 
-    <!-- ── Shadows ── -->
+    <!-- ── Input & Textarea ── -->
     <section>
-      <h2 class="text-lg font-semibold mb-4">Shadows</h2>
-      <div class="flex flex-wrap gap-10 items-end">
-        @for (s of shadows; track s.name) {
-          <div class="space-y-2 text-center">
-            <div
-              class="w-28 h-16 bg-surface rounded-lg border border-border"
-              [style.box-shadow]="'var(' + s.var + ')'"
-            ></div>
-            <p class="text-xs text-muted-foreground font-mono">{{ s.name }}</p>
+      <h2 class="text-xl font-semibold mb-2">Input &amp; Textarea</h2>
+      <p class="text-sm text-muted-foreground mb-6">Form inputs with label support.</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Default input -->
+        <div class="space-y-2">
+          <label volt-label for="email">Email</label>
+          <input volt-input type="email" id="email" placeholder="you@example.com" />
+        </div>
+
+        <!-- Disabled input -->
+        <div class="space-y-2">
+          <label volt-label for="disabled-input">Disabled</label>
+          <input volt-input id="disabled-input" disabled placeholder="Can't touch this" />
+        </div>
+
+        <!-- Password -->
+        <div class="space-y-2">
+          <label volt-label for="password">Password</label>
+          <input volt-input type="password" id="password" placeholder="••••••••" />
+        </div>
+
+        <!-- File -->
+        <div class="space-y-2">
+          <label volt-label for="file">File</label>
+          <input volt-input type="file" id="file" />
+        </div>
+
+        <!-- Textarea -->
+        <div class="space-y-2 md:col-span-2">
+          <label volt-label for="message">Message</label>
+          <textarea
+            volt-textarea
+            id="message"
+            placeholder="Type your message here..."
+            rows="3"
+          ></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Card ── -->
+    <section>
+      <h2 class="text-xl font-semibold mb-2">Card</h2>
+      <p class="text-sm text-muted-foreground mb-6">Contained sections for related content.</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Simple card -->
+        <volt-card>
+          <volt-card-header>
+            <volt-card-title>Notifications</volt-card-title>
+            <volt-card-description>You have 3 unread messages.</volt-card-description>
+          </volt-card-header>
+          <volt-card-content>
+            <div class="space-y-3">
+              <div class="flex items-center gap-3">
+                <span class="h-2 w-2 rounded-full bg-primary"></span>
+                <span class="text-sm">New comment on your post</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="h-2 w-2 rounded-full bg-primary"></span>
+                <span class="text-sm">Someone mentioned you</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="h-2 w-2 rounded-full bg-destructive"></span>
+                <span class="text-sm">Build failed</span>
+              </div>
+            </div>
+          </volt-card-content>
+          <volt-card-footer>
+            <button volt-button variant="outline" size="sm" class="w-full">Mark all as read</button>
+          </volt-card-footer>
+        </volt-card>
+
+        <!-- Form card -->
+        <volt-card>
+          <volt-card-header>
+            <volt-card-title>Create project</volt-card-title>
+            <volt-card-description>Deploy your new project in one-click.</volt-card-description>
+          </volt-card-header>
+          <volt-card-content>
+            <div class="space-y-4">
+              <div class="space-y-2">
+                <label volt-label for="project-name">Name</label>
+                <input volt-input id="project-name" placeholder="My Awesome Project" />
+              </div>
+              <div class="space-y-2">
+                <label volt-label for="project-desc">Description</label>
+                <textarea
+                  volt-textarea
+                  id="project-desc"
+                  placeholder="What does it do?"
+                  rows="2"
+                ></textarea>
+              </div>
+            </div>
+          </volt-card-content>
+          <volt-card-footer>
+            <div class="flex gap-2 w-full">
+              <button volt-button variant="outline" size="sm" class="flex-1">Cancel</button>
+              <button volt-button size="sm" class="flex-1">Create</button>
+            </div>
+          </volt-card-footer>
+        </volt-card>
+
+        <!-- Stats card -->
+        <volt-card>
+          <volt-card-header>
+            <volt-card-title>Weekly Stats</volt-card-title>
+            <volt-card-description>Your activity this week.</volt-card-description>
+          </volt-card-header>
+          <volt-card-content>
+            <div class="space-y-4">
+              <div class="flex items-center justify-between">
+                <span class="text-sm text-muted-foreground">Commits</span>
+                <volt-badge variant="secondary">42</volt-badge>
+              </div>
+              <volt-separator />
+              <div class="flex items-center justify-between">
+                <span class="text-sm text-muted-foreground">PRs merged</span>
+                <volt-badge variant="solid">7</volt-badge>
+              </div>
+              <volt-separator />
+              <div class="flex items-center justify-between">
+                <span class="text-sm text-muted-foreground">Issues closed</span>
+                <volt-badge variant="outline">12</volt-badge>
+              </div>
+            </div>
+          </volt-card-content>
+        </volt-card>
+      </div>
+    </section>
+
+    <!-- ── Separator ── -->
+    <section>
+      <h2 class="text-xl font-semibold mb-2">Separator</h2>
+      <p class="text-sm text-muted-foreground mb-6">Visual dividers for grouping content.</p>
+
+      <div class="space-y-6">
+        <div>
+          <h3 class="text-sm font-medium text-muted-foreground mb-3">Horizontal</h3>
+          <div class="space-y-3">
+            <p class="text-sm">Above the separator</p>
+            <volt-separator />
+            <p class="text-sm">Below the separator</p>
           </div>
-        }
+        </div>
+
+        <div>
+          <h3 class="text-sm font-medium text-muted-foreground mb-3">Vertical</h3>
+          <div class="flex items-center gap-4 h-6">
+            <span class="text-sm">Left</span>
+            <volt-separator orientation="vertical" />
+            <span class="text-sm">Center</span>
+            <volt-separator orientation="vertical" />
+            <span class="text-sm">Right</span>
+          </div>
+        </div>
       </div>
     </section>
   </main>
