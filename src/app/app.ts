@@ -11,6 +11,7 @@ import {
   VoltCardFooter,
 } from 'volt';
 import { VoltSeparator } from 'volt';
+import { VoltCheckbox, VoltSwitch, VoltAvatar, VoltAvatarImage, VoltAvatarFallback } from 'volt';
 
 @Component({
   selector: 'app-root',
@@ -28,6 +29,11 @@ import { VoltSeparator } from 'volt';
     VoltCardContent,
     VoltCardFooter,
     VoltSeparator,
+    VoltCheckbox,
+    VoltSwitch,
+    VoltAvatar,
+    VoltAvatarImage,
+    VoltAvatarFallback,
   ],
   templateUrl: './app.html',
   styleUrl: './app.css',
