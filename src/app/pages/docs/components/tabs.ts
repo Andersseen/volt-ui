@@ -22,7 +22,7 @@ import { VoltButton, VoltInput, VoltLabel, VoltCard, VoltCardHeader, VoltCardTit
         <div class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
         
         <div class="relative z-10 w-full max-w-[400px]">
-          <volt-tabs ngpTabsValue="account">
+          <volt-tabs value="account">
             <volt-tabs-list class="grid w-full grid-cols-2">
               <button volt-tabs-trigger value="account">Account</button>
               <button volt-tabs-trigger value="password">Password</button>

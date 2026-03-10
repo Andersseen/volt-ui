@@ -5,10 +5,16 @@ import { NgpTabset } from 'ng-primitives/tabs';
   selector: 'volt-tabs',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [NgpTabset],
+  hostDirectives: [
+    {
+      directive: NgpTabset,
+      inputs: ['ngpTabsetValue: value', 'ngpTabsetOrientation: orientation', 'ngpTabsetActivateOnFocus: activateOnFocus'],
+      outputs: ['ngpTabsetValueChange: valueChange'],
+    },
+  ],
   template: `<ng-content></ng-content>`,
   host: {
-    class: 'w-full',
+    class: 'w-full block',
   },
 })
 export class VoltTabs {}
