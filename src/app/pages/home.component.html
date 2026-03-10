@@ -1,0 +1,109 @@
+<div class="min-h-screen bg-zinc-950 text-zinc-50 p-8 md:p-12 font-sans selection:bg-indigo-500/30">
+  <div class="container mx-auto max-w-6xl">
+    <header class="mb-12">
+      <h1 class="text-4xl font-extrabold tracking-tight lg:text-5xl text-white mb-2">Volt UI Showcase</h1>
+      <p class="text-zinc-400 text-lg max-w-2xl">
+        A premium collection of Angular components inspired by ShadCN and Hero UI, 
+        built with Tailwind 4 and ng-primitives.
+      </p>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <!-- Buttons Card -->
+      <volt-card>
+        <volt-card-header>
+          <volt-card-title>Buttons</volt-card-title>
+          <volt-card-description>Essential controls for user interactions.</volt-card-description>
+        </volt-card-header>
+        <volt-card-content>
+          <div class="flex flex-wrap gap-4">
+            <button volt-button variant="solid">Solid Button</button>
+            <button volt-button variant="outline">Outline</button>
+            <button volt-button variant="ghost">Ghost Mode</button>
+            <button volt-button variant="link">Link Style</button>
+          </div>
+        </volt-card-content>
+      </volt-card>
+
+      <!-- Inputs & Textarea -->
+      <volt-card>
+        <volt-card-header>
+          <volt-card-title>Inputs & Forms</volt-card-title>
+          <volt-card-description>Elements for data collection and feedback.</volt-card-description>
+        </volt-card-header>
+        <volt-card-content>
+          <div class="space-y-4">
+            <div class="space-y-1.5 flex flex-col">
+              <label volt-label for="email">Email address</label>
+              <input volt-input id="email" type="email" placeholder="name@example.com" />
+            </div>
+            <div class="space-y-1.5 flex flex-col">
+              <label volt-label for="message">Message</label>
+              <textarea volt-textarea id="message" placeholder="Type your message here..." rows="3"></textarea>
+            </div>
+          </div>
+        </volt-card-content>
+      </volt-card>
+
+      <!-- Data Display -->
+      <volt-card>
+        <volt-card-header>
+          <volt-card-title>Data Display</volt-card-title>
+          <volt-card-description>Avatars and status badges for visual hierarchy.</volt-card-description>
+        </volt-card-header>
+        <volt-card-content>
+          <div class="space-y-6">
+            <div class="flex items-center space-x-4">
+              <span volt-avatar>
+                <!-- Usually img element inside is volt-avatar-image -->
+                <img volt-avatar-image src="https://github.com/shadcn.png" alt="@shadcn" />
+                <span volt-avatar-fallback>CN</span>
+              </span>
+              <div class="flex flex-col space-y-1">
+                <span class="text-sm font-medium leading-none">Andrii Pap</span>
+                <span class="text-sm text-zinc-400">Software Engineer</span>
+              </div>
+            </div>
+
+            <volt-separator></volt-separator>
+
+            <div class="flex flex-wrap gap-2">
+              <volt-badge variant="solid">Default</volt-badge>
+              <volt-badge variant="secondary">Secondary</volt-badge>
+              <volt-badge variant="outline">Outline</volt-badge>
+              <volt-badge variant="destructive">Destructive</volt-badge>
+            </div>
+          </div>
+        </volt-card-content>
+      </volt-card>
+
+      <!-- Selection & Toggles -->
+      <volt-card>
+        <volt-card-header>
+          <volt-card-title>Toggles & Selection</volt-card-title>
+          <volt-card-description>Switches and checkboxes with smooth states.</volt-card-description>
+        </volt-card-header>
+        <volt-card-content>
+          <div class="space-y-6">
+            <div class="flex items-center space-x-3">
+              <button volt-switch id="airplane-mode"></button>
+              <label volt-label for="airplane-mode" class="cursor-pointer">Airplane Mode</label>
+            </div>
+
+            <div class="flex items-center space-x-3">
+              <button volt-checkbox id="terms"></button>
+              <label volt-label for="terms" class="text-sm font-medium leading-none cursor-pointer">
+                Accept terms and conditions
+              </label>
+            </div>
+          </div>
+        </volt-card-content>
+        <volt-card-footer>
+          <p class="text-sm text-zinc-500 w-full text-center">Toggle these to see the ng-primitives states in action.</p>
+        </volt-card-footer>
+      </volt-card>
+
+    </div>
+  </div>
+</div>
