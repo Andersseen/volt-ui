@@ -20,3 +20,10 @@ export * from './lib/tabs/tabs.component';
 export * from './lib/tabs/tabs-list.component';
 export * from './lib/tabs/tabs-trigger.component';
 export * from './lib/tabs/tabs-content.component';
+
+export * from './lib/select/select.component';
+export * from './lib/select/select-content.component';
+export * from './lib/select/select-item.component';
+export * from './lib/select/select-label.component';
+export * from './lib/select/select-separator.component';
+

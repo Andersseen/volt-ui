@@ -67,6 +67,11 @@ import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
               </a>
             </li>
             <li>
+              <a routerLink="select" routerLinkActive="font-medium text-foreground" class="block py-1 text-sm text-muted-foreground hover:text-foreground">
+                Select
+              </a>
+            </li>
+            <li>
               <a routerLink="separator" routerLinkActive="font-medium text-foreground" class="block py-1 text-sm text-muted-foreground hover:text-foreground">
                 Separator
               </a>

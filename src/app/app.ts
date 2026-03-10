@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { VoltButton, VoltBadge } from 'volt';
+import { ThemeSwitcherComponent } from './components/theme-switcher.component';
 
 @Component({
   selector: 'app-root',
@@ -9,6 +10,7 @@ import { VoltButton, VoltBadge } from 'volt';
     RouterModule,
     VoltButton,
     VoltBadge,
+    ThemeSwitcherComponent
   ],
   templateUrl: './app.html',
   styleUrl: './app.css',

@@ -21,6 +21,7 @@ export const routes: Routes = [
       { path: 'separator', loadComponent: () => import('./pages/docs/components/separator.component').then(m => m.SeparatorDemoComponent) },
       { path: 'accordion', loadComponent: () => import('./pages/docs/components/accordion.component').then(m => m.AccordionDemoComponent) },
       { path: 'tabs', loadComponent: () => import('./pages/docs/components/tabs.component').then(m => m.TabsDemoComponent) },
+      { path: 'select', loadComponent: () => import('./pages/docs/components/select.component').then(m => m.SelectDemoComponent) },
     ]
   }
 ];

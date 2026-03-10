@@ -1,69 +1,11 @@
 @import 'tailwindcss';
 
-/* ─── Dark mode: class-based strategy ─── */
 @variant dark (&:where(.dark, .dark *));
 
-/* ─── Static design tokens ─── */
 @theme {
-  --font-sans:
-    'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    sans-serif;
-
-  /* ── Primary (violet-blue, hue 265) ── */
-  --color-primary-50: oklch(0.97 0.01 265);
-  --color-primary-100: oklch(0.93 0.025 265);
-  --color-primary-200: oklch(0.88 0.06 265);
-  --color-primary-300: oklch(0.8 0.1 265);
-  --color-primary-400: oklch(0.7 0.16 265);
-  --color-primary-500: oklch(0.6 0.22 265);
-  --color-primary-600: oklch(0.52 0.22 265);
-  --color-primary-700: oklch(0.45 0.19 265);
-  --color-primary-800: oklch(0.37 0.15 265);
-  --color-primary-900: oklch(0.28 0.11 265);
-  --color-primary-950: oklch(0.2 0.07 265);
-
-  /* ── Neutral (cool gray, hue 265) ── */
-  --color-neutral-50: oklch(0.98 0.002 265);
-  --color-neutral-100: oklch(0.96 0.004 265);
-  --color-neutral-200: oklch(0.92 0.006 265);
-  --color-neutral-300: oklch(0.87 0.008 265);
-  --color-neutral-400: oklch(0.7 0.01 265);
-  --color-neutral-500: oklch(0.55 0.012 265);
-  --color-neutral-600: oklch(0.44 0.012 265);
-  --color-neutral-700: oklch(0.37 0.012 265);
-  --color-neutral-800: oklch(0.27 0.01 265);
-  --color-neutral-900: oklch(0.2 0.008 265);
-  --color-neutral-950: oklch(0.14 0.006 265);
-
-  /* ── Destructive (red, hue 25) ── */
-  --color-destructive-50: oklch(0.97 0.015 25);
-  --color-destructive-100: oklch(0.93 0.04 25);
-  --color-destructive-200: oklch(0.88 0.08 25);
-  --color-destructive-300: oklch(0.8 0.12 25);
-  --color-destructive-400: oklch(0.7 0.18 25);
-  --color-destructive-500: oklch(0.6 0.22 25);
-  --color-destructive-600: oklch(0.52 0.22 25);
-  --color-destructive-700: oklch(0.45 0.19 25);
-  --color-destructive-800: oklch(0.37 0.15 25);
-  --color-destructive-900: oklch(0.28 0.11 25);
-  --color-destructive-950: oklch(0.2 0.07 25);
-
-  /* ── Border radius ── */
-  --radius-sm: 0.25rem;
-  --radius: 0.375rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
-  --radius-full: 9999px;
-
-  /* ── Shadows ── */
-  --shadow-sm: 0 1px 2px 0 oklch(0 0 0 / 0.05);
-  --shadow: 0 1px 3px 0 oklch(0 0 0 / 0.1), 0 1px 2px -1px oklch(0 0 0 / 0.1);
-  --shadow-md: 0 4px 6px -1px oklch(0 0 0 / 0.1), 0 2px 4px -2px oklch(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px oklch(0 0 0 / 0.1), 0 4px 6px -4px oklch(0 0 0 / 0.1);
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-/* ─── Semantic tokens (dynamic — change with theme mode) ─── */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -74,13 +16,47 @@
   --color-border: var(--border);
   --color-ring: var(--ring);
   --color-input: var(--input);
+  
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
+  
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  
+  --color-error: var(--error);
+  --color-error-foreground: var(--error-foreground);
+  
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+
+  /* Dynamic radius based on user selection */
+  --radius-sm: calc(var(--radius) - 0.125rem);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 0.125rem);
+  --radius-xl: calc(var(--radius) + 0.25rem);
+  --radius-full: 9999px;
+  
+  --shadow-sm: var(--shadow-sm);
+  --shadow: var(--shadow);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+  --font-weight-normal: var(--font-weight-base);
+  --font-weight-medium: var(--font-weight-label);
+  --font-weight-semibold: var(--font-weight-heading);
+  --font-weight-bold: var(--font-weight-heading);
 }
 
-/* ── Light mode (default) ── */
+:root {
+  --radius: 0.5rem; /* default */
+}
+
+/* Base Light Mode variables */
 :root {
   --background: oklch(1 0 0);
   --foreground: oklch(0.14 0.006 265);
@@ -91,25 +67,373 @@
   --border: oklch(0.92 0.006 265);
   --ring: oklch(0.6 0.22 265);
   --input: oklch(0.92 0.006 265);
-  --primary: oklch(0.6 0.22 265);
+  
+  --primary: oklch(0.6 0.22 265); /* default indigo */
   --primary-foreground: oklch(1 0 0);
+  
   --destructive: oklch(0.6 0.22 25);
   --destructive-foreground: oklch(1 0 0);
+  
+  /* Status variables */
+  --success: oklch(0.65 0.15 150);
+  --success-foreground: oklch(1 0 0);
+  
+  --warning: oklch(0.75 0.18 55);
+  --warning-foreground: oklch(0.2 0.05 55);
+  
+  --error: oklch(0.6 0.22 25);
+  --error-foreground: oklch(1 0 0);
+  
+  --info: oklch(0.65 0.15 240);
+  --info-foreground: oklch(1 0 0);
 }
 
-/* ── Dark mode overrides ── */
+/* Base Dark Mode overrides */
 .dark {
-  --background: oklch(0.14 0.006 265);
+  --background: oklch(0.05 0.01 265);
   --foreground: oklch(0.98 0.002 265);
-  --surface: oklch(0.2 0.008 265);
+  --surface: oklch(0.1 0.01 265);
   --surface-foreground: oklch(0.98 0.002 265);
-  --muted: oklch(0.27 0.01 265);
-  --muted-foreground: oklch(0.7 0.01 265);
-  --border: oklch(0.27 0.01 265);
+  --muted: oklch(0.15 0.01 265);
+  --muted-foreground: oklch(0.65 0.01 265);
+  --border: oklch(0.15 0.01 265);
   --ring: oklch(0.7 0.16 265);
-  --input: oklch(0.27 0.01 265);
-  --primary: oklch(0.7 0.16 265);
+  --input: oklch(0.15 0.01 265);
+  
+  --primary: oklch(0.7 0.16 265); /* default indigo */
   --primary-foreground: oklch(1 0 0);
+  
   --destructive: oklch(0.7 0.18 25);
   --destructive-foreground: oklch(1 0 0);
+  
+  --success: oklch(0.55 0.1 150);
+  --success-foreground: oklch(1 0 0);
+  
+  --warning: oklch(0.6 0.15 55);
+  --warning-foreground: oklch(1 0 0);
+  
+  --error: oklch(0.7 0.18 25);
+  --error-foreground: oklch(1 0 0);
+  
+  --info: oklch(0.55 0.1 240);
+  --info-foreground: oklch(1 0 0);
+}
+
+
+/* ────────────────────────────────────────────────────────────
+   COLOR THEMES (System 1: data-color)
+   ──────────────────────────────────────────────────────────── */
+
+/* 1. Volt (Default) - Electric indigo */
+/* Uses the base variables above */
+
+/* 2. Ember - Warm, energetic, passionate */
+:root[data-color="ember"] {
+  --primary: oklch(0.62 0.22 32); /* orange-red */
+  --primary-foreground: oklch(0.98 0 0);
+  --secondary: oklch(0.65 0.18 55); /* amber */
+  --secondary-foreground: oklch(0.2 0.05 55);
+  --background: oklch(0.99 0.01 45); /* warm tint */
+  --foreground: oklch(0.2 0.05 45);
+  --surface: oklch(0.99 0.01 45);
+  --surface-foreground: oklch(0.2 0.05 45);
+  --muted: oklch(0.95 0.02 45);
+  --muted-foreground: oklch(0.55 0.05 45);
+  --border: oklch(0.9 0.03 45);
+  --input: oklch(0.9 0.03 45);
+  --ring: oklch(0.62 0.22 32);
+  --success: oklch(0.65 0.18 120);
+  --success-foreground: oklch(0.98 0 0);
+  --error: oklch(0.55 0.25 15);
+  --error-foreground: oklch(0.98 0 0);
+  --warning: oklch(0.7 0.18 55);
+  --warning-foreground: oklch(0.2 0.05 55);
+  --info: oklch(0.6 0.15 240);
+  --info-foreground: oklch(0.98 0 0);
+}
+.dark[data-color="ember"] {
+  --primary: oklch(0.62 0.22 32);
+  --primary-foreground: oklch(0.98 0 0);
+  --secondary: oklch(0.65 0.18 55);
+  --secondary-foreground: oklch(0.2 0.05 55);
+  --background: oklch(0.08 0.02 45);
+  --foreground: oklch(0.95 0.02 45);
+  --surface: oklch(0.12 0.02 45);
+  --surface-foreground: oklch(0.95 0.02 45);
+  --muted: oklch(0.18 0.03 45);
+  --muted-foreground: oklch(0.65 0.05 45);
+  --border: oklch(0.18 0.03 45);
+  --input: oklch(0.18 0.03 45);
+  --ring: oklch(0.62 0.22 32);
+  --success: oklch(0.55 0.15 120);
+  --success-foreground: oklch(0.98 0 0);
+  --error: oklch(0.65 0.25 15);
+  --error-foreground: oklch(0.98 0 0);
+  --warning: oklch(0.6 0.15 55);
+  --warning-foreground: oklch(0.98 0 0);
+  --info: oklch(0.5 0.12 240);
+  --info-foreground: oklch(0.98 0 0);
+}
+
+/* 3. Sage - Natural, calm, organic */
+:root[data-color="sage"] {
+  --primary: oklch(0.58 0.15 155); /* sage green */
+  --primary-foreground: oklch(0.98 0 0);
+  --secondary: oklch(0.6 0.12 185); /* teal */
+  --secondary-foreground: oklch(0.98 0 0);
+  --background: oklch(0.98 0.005 155);
+  --foreground: oklch(0.2 0.02 155);
+  --surface: oklch(0.98 0.005 155);
+  --surface-foreground: oklch(0.2 0.02 155);
+  --muted: oklch(0.93 0.01 155);
+  --muted-foreground: oklch(0.55 0.02 155);
+  --border: oklch(0.88 0.015 155);
+  --input: oklch(0.88 0.015 155);
+  --ring: oklch(0.58 0.15 155);
+  --success: oklch(0.45 0.12 145); /* deep forest */
+  --success-foreground: oklch(0.98 0 0);
+  --warning: oklch(0.75 0.15 85); /* golden */
+  --warning-foreground: oklch(0.2 0.05 85);
+  --error: oklch(0.6 0.2 25);
+  --error-foreground: oklch(0.98 0 0);
+  --info: oklch(0.6 0.12 220);
+  --info-foreground: oklch(0.98 0 0);
+}
+.dark[data-color="sage"] {
+  --primary: oklch(0.58 0.15 155);
+  --primary-foreground: oklch(0.98 0 0);
+  --secondary: oklch(0.6 0.12 185);
+  --secondary-foreground: oklch(0.98 0 0);
+  --background: oklch(0.08 0.01 155);
+  --foreground: oklch(0.95 0.01 155);
+  --surface: oklch(0.12 0.01 155);
+  --surface-foreground: oklch(0.95 0.01 155);
+  --muted: oklch(0.18 0.015 155);
+  --muted-foreground: oklch(0.6 0.02 155);
+  --border: oklch(0.18 0.015 155);
+  --input: oklch(0.18 0.015 155);
+  --ring: oklch(0.58 0.15 155);
+  --success: oklch(0.55 0.12 145);
+  --success-foreground: oklch(0.98 0 0);
+  --warning: oklch(0.7 0.15 85);
+  --warning-foreground: oklch(0.98 0 0);
+  --error: oklch(0.65 0.18 25);
+  --error-foreground: oklch(0.98 0 0);
+  --info: oklch(0.55 0.12 220);
+  --info-foreground: oklch(0.98 0 0);
+}
+
+/* 4. Dusk - Sophisticated, mysterious, rich */
+:root[data-color="dusk"] {
+  --primary: oklch(0.55 0.2 295); /* purple */
+  --primary-foreground: oklch(0.98 0 0);
+  --secondary: oklch(0.5 0.15 320); /* mauve */
+  --secondary-foreground: oklch(0.98 0 0);
+  --background: oklch(0.96 0.01 295); /* warm dark tint even in light mode */
+  --foreground: oklch(0.18 0.02 295);
+  --surface: oklch(0.96 0.01 295);
+  --surface-foreground: oklch(0.18 0.02 295);
+  --muted: oklch(0.9 0.02 295);
+  --muted-foreground: oklch(0.5 0.03 295);
+  --border: oklch(0.85 0.03 295);
+  --input: oklch(0.85 0.03 295);
+  --ring: oklch(0.55 0.2 295);
+  --success: oklch(0.6 0.15 150);
+  --success-foreground: oklch(0.98 0 0);
+  --warning: oklch(0.65 0.15 60);
+  --warning-foreground: oklch(0.98 0 0);
+  --error: oklch(0.55 0.2 15);
+  --error-foreground: oklch(0.98 0 0);
+  --info: oklch(0.55 0.15 285);
+  --info-foreground: oklch(0.98 0 0);
+}
+.dark[data-color="dusk"] {
+  --primary: oklch(0.65 0.2 295);
+  --primary-foreground: oklch(0.98 0 0);
+  --secondary: oklch(0.6 0.18 320);
+  --secondary-foreground: oklch(0.98 0 0);
+  --background: oklch(0.08 0.015 295);
+  --foreground: oklch(0.95 0.01 295);
+  --surface: oklch(0.12 0.02 295);
+  --surface-foreground: oklch(0.95 0.01 295);
+  --muted: oklch(0.18 0.03 295);
+  --muted-foreground: oklch(0.6 0.04 295);
+  --border: oklch(0.18 0.03 295);
+  --input: oklch(0.18 0.03 295);
+  --ring: oklch(0.65 0.2 295);
+  --success: oklch(0.55 0.15 150);
+  --success-foreground: oklch(0.98 0 0);
+  --warning: oklch(0.6 0.15 60);
+  --warning-foreground: oklch(0.98 0 0);
+  --error: oklch(0.6 0.2 15);
+  --error-foreground: oklch(0.98 0 0);
+  --info: oklch(0.6 0.15 285);
+  --info-foreground: oklch(0.98 0 0);
+}
+
+/* 5. Glacier - Cold, clean, precise */
+:root[data-color="glacier"] {
+  --primary: oklch(0.58 0.16 225); /* sky blue */
+  --primary-foreground: oklch(0.98 0 0);
+  --secondary: oklch(0.62 0.12 200); /* cyan */
+  --secondary-foreground: oklch(0.98 0 0);
+  --background: oklch(0.98 0.005 225); /* ice-blue tint */
+  --foreground: oklch(0.15 0.02 225);
+  --surface: oklch(0.98 0.005 225);
+  --surface-foreground: oklch(0.15 0.02 225);
+  --muted: oklch(0.94 0.01 225);
+  --muted-foreground: oklch(0.55 0.03 225);
+  --border: oklch(0.88 0.02 225);
+  --input: oklch(0.88 0.02 225);
+  --ring: oklch(0.58 0.16 225);
+  --success: oklch(0.6 0.12 165);
+  --success-foreground: oklch(0.98 0 0);
+  --warning: oklch(0.7 0.12 85);
+  --warning-foreground: oklch(0.15 0.05 85);
+  --error: oklch(0.55 0.18 350);
+  --error-foreground: oklch(0.98 0 0);
+  --info: oklch(0.6 0.14 245);
+  --info-foreground: oklch(0.98 0 0);
+}
+.dark[data-color="glacier"] {
+  --primary: oklch(0.65 0.16 225);
+  --primary-foreground: oklch(0.98 0 0);
+  --secondary: oklch(0.7 0.12 200);
+  --secondary-foreground: oklch(0.98 0 0);
+  --background: oklch(0.06 0.01 225);
+  --foreground: oklch(0.96 0.01 225);
+  --surface: oklch(0.1 0.015 225);
+  --surface-foreground: oklch(0.96 0.01 225);
+  --muted: oklch(0.16 0.02 225);
+  --muted-foreground: oklch(0.65 0.02 225);
+  --border: oklch(0.16 0.02 225);
+  --input: oklch(0.16 0.02 225);
+  --ring: oklch(0.65 0.16 225);
+  --success: oklch(0.55 0.12 165);
+  --success-foreground: oklch(0.98 0 0);
+  --warning: oklch(0.65 0.12 85);
+  --warning-foreground: oklch(0.98 0 0);
+  --error: oklch(0.6 0.18 350);
+  --error-foreground: oklch(0.98 0 0);
+  --info: oklch(0.65 0.14 245);
+  --info-foreground: oklch(0.98 0 0);
+}
+
+/* ────────────────────────────────────────────────────────────
+   STYLE THEMES (System 2: data-style)
+   ──────────────────────────────────────────────────────────── */
+
+/* 1. Sharp (Default) - Modern, tech, precise */
+:root, :root[data-style="sharp"] {
+  --radius: 0.375rem;
+  --border-width: 1px;
+  --border-style: solid;
+  --ring-width: 2px;
+  --ring-offset-width: 2px;
+  
+  --shadow-sm: 0 1px 2px 0 oklch(0 0 0 / 0.05);
+  --shadow: 0 1px 3px 0 oklch(0 0 0 / 0.1), 0 1px 2px -1px oklch(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px oklch(0 0 0 / 0.1), 0 2px 4px -2px oklch(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px oklch(0 0 0 / 0.1), 0 4px 6px -4px oklch(0 0 0 / 0.1);
+  
+  --spacing-component: 1;
+  --spacing-gap: 0.5rem;
+  
+  --font-weight-base: 400;
+  --font-weight-heading: 600;
+  --font-weight-label: 500;
+  --letter-spacing-base: normal;
+  --letter-spacing-heading: normal;
+}
+
+/* 2. Soft - Friendly, rounded, approachable */
+:root[data-style="soft"] {
+  --radius: 1rem;
+  --border-width: 1px;
+  --border-style: solid;
+  --ring-width: 2px;
+  --ring-offset-width: 3px;
+  
+  --shadow-sm: 0 2px 8px 0 oklch(0 0 0 / 0.04);
+  --shadow: 0 4px 16px 0 oklch(0 0 0 / 0.06), 0 2px 4px 0 oklch(0 0 0 / 0.04);
+  --shadow-md: 0 8px 24px 0 oklch(0 0 0 / 0.08), 0 4px 8px 0 oklch(0 0 0 / 0.04);
+  --shadow-lg: 0 16px 32px 0 oklch(0 0 0 / 0.1);
+  
+  --spacing-component: 1.25;
+  --spacing-gap: 0.75rem;
+  
+  --font-weight-base: 400;
+  --font-weight-heading: 600;
+  --font-weight-label: 500;
+  --letter-spacing-base: normal;
+  --letter-spacing-heading: normal;
+}
+
+/* 3. Brutal - Neo-brutalist, bold, unapologetic */
+:root[data-style="brutal"] {
+  --radius: 0;
+  --border-width: 2px;
+  --border-style: solid;
+  --ring-width: 2px;
+  --ring-offset-width: 2px;
+  
+  --shadow-sm: 2px 2px 0 var(--border);
+  --shadow: 4px 4px 0 var(--border);
+  --shadow-md: 6px 6px 0 var(--border);
+  --shadow-lg: 8px 8px 0 var(--border);
+  
+  --spacing-component: 0.875;
+  --spacing-gap: 0.375rem;
+  
+  --font-weight-base: 500;
+  --font-weight-heading: 800;
+  --font-weight-label: 700;
+  --letter-spacing-base: normal;
+  --letter-spacing-heading: -0.02em;
+}
+
+/* 4. Ghost - Minimal, editorial, airy */
+:root[data-style="ghost"] {
+  --radius: 0.25rem;
+  --border-width: 0px; 
+  --border-style: solid;
+  --ring-width: 1px;
+  --ring-offset-width: 1px;
+  
+  --shadow-sm: none;
+  --shadow: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+  
+  --spacing-component: 1.25;
+  --spacing-gap: 1rem;
+  
+  --font-weight-base: 300;
+  --font-weight-heading: 500;
+  --font-weight-label: 400;
+  --letter-spacing-base: 0.01em;
+  --letter-spacing-heading: normal;
+}
+
+/* 5. Retro - Y2K, nostalgic, playful */
+:root[data-style="retro"] {
+  --radius: 0.5rem;
+  --border-width: 2px;
+  --border-style: solid;
+  --ring-width: 3px;
+  --ring-offset-width: 2px;
+  
+  --shadow-sm: 0 2px 0 var(--border);
+  --shadow: 0 4px 0 var(--border);
+  --shadow-md: 0 6px 0 var(--border), 0 8px 0 oklch(0 0 0 / 0.1);
+  --shadow-lg: 0 8px 0 var(--border), 0 12px 0 oklch(0 0 0 / 0.15);
+  
+  --spacing-component: 1.125;
+  --spacing-gap: 0.5rem;
+  
+  --font-weight-base: 500;
+  --font-weight-heading: 700;
+  --font-weight-label: 600;
+  --letter-spacing-base: normal;
+  --letter-spacing-heading: 0.05em;
 }
