@@ -15,7 +15,7 @@
     "target": "ES2022",
     "module": "preserve",
     "paths": {
-      "volt": ["./dist/volt"]
+      "volt": ["./projects/volt/src/public-api"]
     }
   },
   "angularCompilerOptions": {
