@@ -8,7 +8,11 @@ import { NgpTabset } from 'ng-primitives/tabs';
   hostDirectives: [
     {
       directive: NgpTabset,
-      inputs: ['ngpTabsetValue: value', 'ngpTabsetOrientation: orientation', 'ngpTabsetActivateOnFocus: activateOnFocus'],
+      inputs: [
+        'ngpTabsetValue: value',
+        'ngpTabsetOrientation: orientation',
+        'ngpTabsetActivateOnFocus: activateOnFocus',
+      ],
       outputs: ['ngpTabsetValueChange: valueChange'],
     },
   ],

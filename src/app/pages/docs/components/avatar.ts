@@ -14,16 +14,24 @@ import { VoltAvatar, VoltAvatarImage, VoltAvatarFallback } from 'volt';
         </p>
       </div>
 
-      <div class="border rounded-xl border-border/50 p-6 md:p-10 flex flex-col items-center justify-center bg-background/50 relative overflow-hidden min-h-[300px]">
-        <div class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
-        
+      <div
+        class="border rounded-xl border-border/50 p-6 md:p-10 flex flex-col items-center justify-center bg-background/50 relative overflow-hidden min-h-[300px]"
+      >
+        <div
+          class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"
+        ></div>
+
         <div class="relative z-10 flex gap-4">
           <span volt-avatar>
             <img volt-avatar-image src="https://github.com/shadcn.png" alt="@shadcn" />
             <span volt-avatar-fallback>CN</span>
           </span>
           <span volt-avatar>
-            <img volt-avatar-image src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="@janedoe" />
+            <img
+              volt-avatar-image
+              src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+              alt="@janedoe"
+            />
             <span volt-avatar-fallback>JD</span>
           </span>
           <span volt-avatar>
@@ -32,6 +40,6 @@ import { VoltAvatar, VoltAvatarImage, VoltAvatarFallback } from 'volt';
         </div>
       </div>
     </div>
-  `
+  `,
 })
 export class AvatarDemo {}

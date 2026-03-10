@@ -27,7 +27,7 @@ import {
     VoltBadge,
     VoltInput,
     VoltTextarea,
-    VoltLabel,
+
     VoltCard,
     VoltCardHeader,
     VoltCardTitle,

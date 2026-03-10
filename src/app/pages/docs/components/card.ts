@@ -19,7 +19,7 @@ import { VoltButton } from 'volt';
     VoltCardDescription,
     VoltCardContent,
     VoltCardFooter,
-    VoltButton
+    VoltButton,
   ],
   template: `
     <div class="space-y-6">
@@ -30,9 +30,13 @@ import { VoltButton } from 'volt';
         </p>
       </div>
 
-      <div class="border rounded-xl border-border/50 p-6 md:p-10 flex items-center justify-center bg-background/50 relative overflow-hidden min-h-[400px]">
-        <div class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
-        
+      <div
+        class="border rounded-xl border-border/50 p-6 md:p-10 flex items-center justify-center bg-background/50 relative overflow-hidden min-h-[400px]"
+      >
+        <div
+          class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"
+        ></div>
+
         <div class="relative z-10 w-[350px]">
           <volt-card>
             <volt-card-header>
@@ -43,8 +47,16 @@ import { VoltButton } from 'volt';
               <form>
                 <div class="grid w-full items-center gap-4">
                   <div class="flex flex-col space-y-1.5">
-                    <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="name">Name</label>
-                    <input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" id="name" placeholder="Name of your project">
+                    <label
+                      class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      for="name"
+                      >Name</label
+                    >
+                    <input
+                      class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                      id="name"
+                      placeholder="Name of your project"
+                    />
                   </div>
                 </div>
               </form>
@@ -57,6 +69,6 @@ import { VoltButton } from 'volt';
         </div>
       </div>
     </div>
-  `
+  `,
 })
 export class CardDemo {}
