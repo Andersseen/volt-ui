@@ -1,39 +1,14 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
-import { VoltButton } from 'volt';
-import { VoltBadge } from 'volt';
-import { VoltInput, VoltTextarea, VoltLabel } from 'volt';
-import {
-  VoltCard,
-  VoltCardHeader,
-  VoltCardTitle,
-  VoltCardDescription,
-  VoltCardContent,
-  VoltCardFooter,
-} from 'volt';
-import { VoltSeparator } from 'volt';
-import { VoltCheckbox, VoltSwitch, VoltAvatar, VoltAvatarImage, VoltAvatarFallback } from 'volt';
+import { RouterModule } from '@angular/router';
+import { VoltButton, VoltBadge } from 'volt';
 
 @Component({
   selector: 'app-root',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    RouterModule,
     VoltButton,
     VoltBadge,
-    VoltInput,
-    VoltTextarea,
-    VoltLabel,
-    VoltCard,
-    VoltCardHeader,
-    VoltCardTitle,
-    VoltCardDescription,
-    VoltCardContent,
-    VoltCardFooter,
-    VoltSeparator,
-    VoltCheckbox,
-    VoltSwitch,
-    VoltAvatar,
-    VoltAvatarImage,
-    VoltAvatarFallback,
   ],
   templateUrl: './app.html',
   styleUrl: './app.css',
