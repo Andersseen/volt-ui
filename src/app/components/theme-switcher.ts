@@ -74,7 +74,7 @@ import { VoltSelect, VoltSelectContent, VoltSelectItem, VoltSelectLabel } from '
     </div>
   `
 })
-export class ThemeSwitcherComponent {
+export class ThemeSwitcher {
   color = signal('volt');
   style = signal('sharp');
   isDark = signal(false);

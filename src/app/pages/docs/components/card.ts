@@ -59,4 +59,4 @@ import { VoltButton } from 'volt';
     </div>
   `
 })
-export class CardDemoComponent {}
+export class CardDemo {}

@@ -37,4 +37,4 @@ import { VoltSeparator } from 'volt';
     </div>
   `
 })
-export class SeparatorDemoComponent {}
+export class SeparatorDemo {}

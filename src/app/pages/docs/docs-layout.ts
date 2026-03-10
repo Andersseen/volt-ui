@@ -87,4 +87,4 @@ import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
     </div>
   `
 })
-export class DocsLayoutComponent {}
+export class DocsLayout {}

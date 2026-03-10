@@ -38,4 +38,4 @@ import { VoltInput, VoltTextarea, VoltLabel } from 'volt';
     </div>
   `
 })
-export class InputDemoComponent {}
+export class InputDemo {}

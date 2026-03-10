@@ -34,4 +34,4 @@ import { VoltAvatar, VoltAvatarImage, VoltAvatarFallback } from 'volt';
     </div>
   `
 })
-export class AvatarDemoComponent {}
+export class AvatarDemo {}

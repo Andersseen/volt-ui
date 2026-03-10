@@ -1,17 +1,12 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { VoltButton, VoltBadge } from 'volt';
-import { ThemeSwitcherComponent } from './components/theme-switcher.component';
+import { VoltBadge } from 'volt';
+import { ThemeSwitcher } from './components/theme-switcher';
 
 @Component({
   selector: 'app-root',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    RouterModule,
-    VoltButton,
-    VoltBadge,
-    ThemeSwitcherComponent
-  ],
+  imports: [RouterModule, VoltBadge, ThemeSwitcher],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })

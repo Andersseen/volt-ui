@@ -88,4 +88,4 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
     </div>
   `
 })
-export class InstallationDocsComponent {}
+export class InstallationDocs {}

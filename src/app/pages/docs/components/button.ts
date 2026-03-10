@@ -42,4 +42,4 @@ import { VoltButton } from 'volt';
     </div>
   `
 })
-export class ButtonDemoComponent {}
+export class ButtonDemo {}

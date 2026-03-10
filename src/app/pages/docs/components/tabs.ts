@@ -77,4 +77,4 @@ import { VoltButton, VoltInput, VoltLabel, VoltCard, VoltCardHeader, VoltCardTit
     </div>
   `
 })
-export class TabsDemoComponent {}
+export class TabsDemo {}

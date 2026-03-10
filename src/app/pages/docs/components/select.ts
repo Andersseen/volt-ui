@@ -42,6 +42,6 @@ import { VoltSelect, VoltSelectContent, VoltSelectItem, VoltSelectLabel, VoltSel
     </div>
   `
 })
-export class SelectDemoComponent {
+export class SelectDemo {
   selectedFruit = '';
 }

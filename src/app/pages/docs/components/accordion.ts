@@ -45,4 +45,4 @@ import { VoltAccordion, VoltAccordionItem, VoltAccordionTrigger, VoltAccordionCo
     </div>
   `
 })
-export class AccordionDemoComponent {}
+export class AccordionDemo {}

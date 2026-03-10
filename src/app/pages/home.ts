@@ -41,6 +41,6 @@ import {
     VoltAvatarImage,
     VoltAvatarFallback,
   ],
-  templateUrl: './home.component.html',
+  templateUrl: './home.html',
 })
-export class HomeComponent {}
+export class Home {}

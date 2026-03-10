@@ -36,4 +36,4 @@ import { VoltCheckbox, VoltLabel } from 'volt';
     </div>
   `
 })
-export class CheckboxDemoComponent {}
+export class CheckboxDemo {}
