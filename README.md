@@ -57,3 +57,40 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+## Deploy to Cloudflare Pages
+
+This repository is configured to deploy to Cloudflare Pages using Wrangler.
+
+### Local deploy
+
+```bash
+pnpm run deploy:cf
+```
+
+Production deploy to the `master` branch target:
+
+```bash
+pnpm run deploy
+```
+
+### Required Cloudflare auth
+
+Wrangler needs these environment variables:
+
+- `CLOUDFLARE_API_TOKEN`
+- `CLOUDFLARE_ACCOUNT_ID`
+
+### GitHub Actions auto deploy
+
+When `master` is updated, GitHub Actions runs `.github/workflows/deploy-cloudflare-pages.yml` and deploys automatically.
+
+Configure these repository secrets in GitHub:
+
+- `CLOUDFLARE_API_TOKEN`
+- `CLOUDFLARE_ACCOUNT_ID`
+
+If your Cloudflare Pages project is not named `volt-ui`, update:
+
+- `wrangler.toml`
+- `package.json` scripts `deploy:cf` and `deploy:cf:master`

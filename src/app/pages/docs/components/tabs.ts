@@ -1,15 +1,17 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { VoltTabs, VoltTabsList, VoltTabsTrigger, VoltTabsContent } from 'volt';
 import {
   VoltButton,
-  VoltInput,
-  VoltLabel,
   VoltCard,
+  VoltCardContent,
+  VoltCardDescription,
+  VoltCardFooter,
   VoltCardHeader,
   VoltCardTitle,
-  VoltCardDescription,
-  VoltCardContent,
-  VoltCardFooter,
+  VoltInput,
+  VoltTabs,
+  VoltTabsContent,
+  VoltTabsList,
+  VoltTabsTrigger,
 } from 'volt';
 
 @Component({
@@ -22,7 +24,7 @@ import {
     VoltTabsContent,
     VoltButton,
     VoltInput,
-    VoltLabel,
+
     VoltCard,
     VoltCardHeader,
     VoltCardTitle,

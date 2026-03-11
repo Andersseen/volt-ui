@@ -25,7 +25,7 @@ import { NgpTooltip } from 'ng-primitives/tooltip';
     '[@tooltipEnter]':
       '{ value: "", params: { duration: animationDuration(), outDuration: animationOutDuration() } }',
     class:
-      'absolute top-0 left-0 z-50 overflow-hidden rounded-[var(--radius-sm)] bg-[var(--foreground)] px-[var(--spacing-component)] py-1.5 text-xs font-[var(--font-weight-label)] text-[var(--background)] shadow-[var(--shadow-md)] max-w-xs',
+      'pointer-events-none absolute top-0 left-0 z-50 max-w-xs select-none overflow-hidden rounded-[var(--radius-sm)] bg-[var(--foreground)] px-[var(--spacing-component)] py-1.5 text-xs leading-tight font-[var(--font-weight-label)] text-[var(--background)] shadow-[var(--shadow-md)] [&_*]:m-0 origin-[var(--ngp-tooltip-transform-origin)]',
   },
   template: `<ng-content />`,
 })
@@ -38,5 +38,4 @@ export class VoltTooltipContent {
 
   protected readonly animationDuration = signal(this.prefersReducedMotion() ? 0 : 120);
   protected readonly animationOutDuration = signal(this.prefersReducedMotion() ? 0 : 80);
-
 }

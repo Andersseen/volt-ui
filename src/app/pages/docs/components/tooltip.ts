@@ -1,19 +1,19 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { VoltTooltip, VoltTooltipContent } from 'volt';
 import { VoltButton } from 'volt';
-import { NgpTooltip } from 'ng-primitives/tooltip';
 
 @Component({
   selector: 'app-tooltip-demo',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [VoltTooltip, VoltTooltipContent, VoltButton, NgpTooltip],
+  imports: [VoltTooltip, VoltTooltipContent, VoltButton],
   template: `
     <div class="space-y-6">
       <div>
         <h1 class="text-3xl font-bold tracking-tight text-foreground">Tooltip</h1>
         <p class="text-base text-muted-foreground mt-2">
-          A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.
+          A popup that displays information related to an element when the element receives keyboard
+          focus or the mouse hovers over it.
         </p>
       </div>
 
@@ -21,21 +21,25 @@ import { NgpTooltip } from 'ng-primitives/tooltip';
 
       <div class="space-y-4">
         <h2 class="text-xl font-semibold tracking-tight text-foreground">Example</h2>
-        <div class="p-8 border border-border rounded-lg bg-card/30 flex items-center justify-center min-h-[300px]">
-          
-          <button volt-button variant="outline" [voltTooltip]="myTooltip" placement="top">
+        <div
+          class="p-8 border border-border rounded-lg bg-card/30 flex items-center justify-center min-h-[300px]"
+        >
+          <button
+            volt-button
+            variant="outline"
+            [voltTooltip]="myTooltip"
+            placement="top"
+            [offset]="8"
+          >
             Hover me
           </button>
-          
-          <ng-template #myTooltip>
-            <volt-tooltip-content>
-              <p>Add to library</p>
-            </volt-tooltip-content>
-          </ng-template>
 
+          <ng-template #myTooltip>
+            <volt-tooltip-content>Add to library</volt-tooltip-content>
+          </ng-template>
         </div>
       </div>
     </div>
-  `
+  `,
 })
 export class TooltipDemo {}
