@@ -1,0 +1,3 @@
+name = "volt-ui"
+compatibility_date = "2026-03-11"
+pages_build_output_dir = "./dist/volt-ui/browser"

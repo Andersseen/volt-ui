@@ -8,7 +8,8 @@ import { NgpTabList } from 'ng-primitives/tabs';
   hostDirectives: [NgpTabList],
   template: `<ng-content></ng-content>`,
   host: {
-    class: 'inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground',
+    class:
+      'inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground',
   },
 })
 export class VoltTabsList {}

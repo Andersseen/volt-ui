@@ -14,10 +14,14 @@ import { VoltButton } from 'volt';
         </p>
       </div>
 
-      <div class="border rounded-xl border-border/50 p-6 md:p-10 flex items-center justify-center bg-background/50 relative overflow-hidden">
+      <div
+        class="border rounded-xl border-border/50 p-6 md:p-10 flex items-center justify-center bg-background/50 relative overflow-hidden"
+      >
         <!-- subtle grid background -->
-        <div class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
-        
+        <div
+          class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"
+        ></div>
+
         <div class="relative z-10 flex flex-wrap gap-4 items-center">
           <button volt-button variant="solid">Solid Button</button>
 
@@ -35,11 +39,24 @@ import { VoltButton } from 'volt';
           <button volt-button size="md">Default (md)</button>
           <button volt-button size="lg">Large (lg)</button>
           <button volt-button size="icon" aria-label="Icon">
-             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right"><path d="m9 18 6-6-6-6"/></svg>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-chevron-right"
+            >
+              <path d="m9 18 6-6-6-6" />
+            </svg>
           </button>
         </div>
       </div>
     </div>
-  `
+  `,
 })
-export class ButtonDemoComponent {}
+export class ButtonDemo {}

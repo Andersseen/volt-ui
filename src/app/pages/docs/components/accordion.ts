@@ -14,10 +14,16 @@ import { VoltAccordion, VoltAccordionItem, VoltAccordionTrigger, VoltAccordionCo
         </p>
       </div>
 
-      <div class="border rounded-xl border-border/50 p-6 md:p-10 flex flex-col items-center justify-center bg-background/50 relative overflow-hidden min-h-[400px]">
-        <div class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
-        
-        <div class="relative z-10 w-full max-w-lg bg-background p-6 rounded-lg shadow-sm border border-border/50">
+      <div
+        class="border rounded-xl border-border/50 p-6 md:p-10 flex flex-col items-center justify-center bg-background/50 relative overflow-hidden min-h-[400px]"
+      >
+        <div
+          class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"
+        ></div>
+
+        <div
+          class="relative z-10 w-full max-w-lg bg-background p-6 rounded-lg shadow-sm border border-border/50"
+        >
           <volt-accordion>
             <volt-accordion-item value="item-1">
               <button volt-accordion-trigger>Is it accessible?</button>
@@ -25,14 +31,14 @@ import { VoltAccordion, VoltAccordionItem, VoltAccordionTrigger, VoltAccordionCo
                 Yes. It adheres to the WAI-ARIA design pattern, powered by ng-primitives.
               </volt-accordion-content>
             </volt-accordion-item>
-            
+
             <volt-accordion-item value="item-2">
               <button volt-accordion-trigger>Is it styled with Tailwind CSS?</button>
               <volt-accordion-content>
                 Yes. It comes with default styles that matches the other components' aesthetic.
               </volt-accordion-content>
             </volt-accordion-item>
-            
+
             <volt-accordion-item value="item-3">
               <button volt-accordion-trigger>Is it animated?</button>
               <volt-accordion-content>
@@ -43,6 +49,6 @@ import { VoltAccordion, VoltAccordionItem, VoltAccordionTrigger, VoltAccordionCo
         </div>
       </div>
     </div>
-  `
+  `,
 })
-export class AccordionDemoComponent {}
+export class AccordionDemo {}

@@ -4,7 +4,7 @@ import { VoltInput, VoltTextarea, VoltLabel } from 'volt';
 @Component({
   selector: 'app-input-demo',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [VoltInput, VoltTextarea, VoltLabel],
+  imports: [VoltInput, VoltTextarea],
   template: `
     <div class="space-y-6">
       <div>
@@ -14,10 +14,16 @@ import { VoltInput, VoltTextarea, VoltLabel } from 'volt';
         </p>
       </div>
 
-      <div class="border rounded-xl border-border/50 p-6 md:p-10 bg-background/50 relative overflow-hidden">
-        <div class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
-        
-        <div class="relative z-10 max-w-sm mx-auto space-y-8 bg-background p-6 rounded-lg shadow-sm border border-border/50">
+      <div
+        class="border rounded-xl border-border/50 p-6 md:p-10 bg-background/50 relative overflow-hidden"
+      >
+        <div
+          class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"
+        ></div>
+
+        <div
+          class="relative z-10 max-w-sm mx-auto space-y-8 bg-background p-6 rounded-lg shadow-sm border border-border/50"
+        >
           <div class="space-y-2">
             <label volt-label htmlFor="email">Email</label>
             <input volt-input type="email" id="email" placeholder="Email" />
@@ -31,11 +37,16 @@ import { VoltInput, VoltTextarea, VoltLabel } from 'volt';
 
           <div class="space-y-2">
             <label volt-label htmlFor="message">Message (Textarea)</label>
-            <textarea volt-textarea id="message" placeholder="Type your message here." rows="4"></textarea>
+            <textarea
+              volt-textarea
+              id="message"
+              placeholder="Type your message here."
+              [rows]="4"
+            ></textarea>
           </div>
         </div>
       </div>
     </div>
-  `
+  `,
 })
-export class InputDemoComponent {}
+export class InputDemo {}

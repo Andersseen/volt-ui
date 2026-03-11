@@ -10,7 +10,7 @@ import { NgpSelectDropdown } from 'ng-primitives/select';
     <div class="p-1 w-full flex flex-col">
       <ng-content></ng-content>
     </div>
-  `
+  `,
 })
 export class VoltSelectContent {
   @HostBinding('class') get hostClass() {

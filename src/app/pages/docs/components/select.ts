@@ -1,5 +1,11 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { VoltSelect, VoltSelectContent, VoltSelectItem, VoltSelectLabel, VoltSelectSeparator } from 'volt';
+import {
+  VoltSelect,
+  VoltSelectContent,
+  VoltSelectItem,
+  VoltSelectLabel,
+  VoltSelectSeparator,
+} from 'volt';
 
 @Component({
   selector: 'app-select-demo',
@@ -16,7 +22,9 @@ import { VoltSelect, VoltSelectContent, VoltSelectItem, VoltSelectLabel, VoltSel
 
       <div class="space-y-4">
         <h2 class="text-xl font-semibold tracking-tight">Preview</h2>
-        <div class="p-12 flex justify-center items-center rounded-xl border bg-card/30 backdrop-blur-sm shadow-sm ring-1 ring-border/50">
+        <div
+          class="p-12 flex justify-center items-center rounded-xl border bg-card/30 backdrop-blur-sm shadow-sm ring-1 ring-border/50"
+        >
           <div class="w-full max-w-xs">
             <volt-select [(value)]="selectedFruit" placeholder="Select a fruit">
               <volt-select-content>
@@ -26,9 +34,9 @@ import { VoltSelect, VoltSelectContent, VoltSelectItem, VoltSelectLabel, VoltSel
                 <volt-select-item value="blueberry">Blueberry</volt-select-item>
                 <volt-select-item value="grapes">Grapes</volt-select-item>
                 <volt-select-item value="pineapple">Pineapple</volt-select-item>
-                
+
                 <volt-select-separator></volt-select-separator>
-                
+
                 <volt-select-label>Vegetables</volt-select-label>
                 <volt-select-item value="carrot">Carrot</volt-select-item>
                 <volt-select-item value="broccoli">Broccoli</volt-select-item>
@@ -37,11 +45,13 @@ import { VoltSelect, VoltSelectContent, VoltSelectItem, VoltSelectLabel, VoltSel
             </volt-select>
           </div>
         </div>
-        <p class="text-sm text-muted-foreground text-center">Selected value: <span class="font-medium text-foreground">{{ selectedFruit }}</span></p>
+        <p class="text-sm text-muted-foreground text-center">
+          Selected value: <span class="font-medium text-foreground">{{ selectedFruit }}</span>
+        </p>
       </div>
     </div>
-  `
+  `,
 })
-export class SelectDemoComponent {
+export class SelectDemo {
   selectedFruit = '';
 }

@@ -1,29 +1,26 @@
-export * from './lib/button/button.component';
-export * from './lib/badge/badge.component';
-export * from './lib/input/input.component';
-export * from './lib/input/textarea.component';
-export * from './lib/input/label.component';
-export * from './lib/card/card.component';
-export * from './lib/checkbox/checkbox.component';
-export * from './lib/switch/switch.component';
-export * from './lib/avatar/avatar.component';
-export * from './lib/avatar/avatar-image.directive';
-export * from './lib/avatar/avatar-fallback.component';
-export * from './lib/separator/separator.component';
-
+export * from './lib/button';
+export * from './lib/badge';
+export * from './lib/input';
+export * from './lib/textarea';
+export * from './lib/card';
+export * from './lib/checkbox';
+export * from './lib/radio';
+export * from './lib/switch';
+export * from './lib/toggle';
+export * from './lib/form-field';
+export * from './lib/tooltip';
+export * from './lib/avatar';
+export * from './lib/separator';
 export * from './lib/accordion/accordion.component';
 export * from './lib/accordion/accordion-item.component';
 export * from './lib/accordion/accordion-trigger.component';
 export * from './lib/accordion/accordion-content.component';
-
 export * from './lib/tabs/tabs.component';
 export * from './lib/tabs/tabs-list.component';
 export * from './lib/tabs/tabs-trigger.component';
 export * from './lib/tabs/tabs-content.component';
-
 export * from './lib/select/select.component';
 export * from './lib/select/select-content.component';
 export * from './lib/select/select-item.component';
 export * from './lib/select/select-label.component';
 export * from './lib/select/select-separator.component';
-

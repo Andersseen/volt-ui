@@ -4,7 +4,7 @@ import { Component, ChangeDetectionStrategy, HostBinding } from '@angular/core';
   selector: 'volt-select-separator',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: ``
+  template: ``,
 })
 export class VoltSelectSeparator {
   @HostBinding('class') get hostClass() {

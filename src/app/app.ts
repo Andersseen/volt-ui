@@ -1,25 +1,14 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { VoltButton, VoltBadge } from 'volt';
-import { ThemeSwitcherComponent } from './components/theme-switcher.component';
+import { Header } from './components/header';
+import { Footer } from './components/footer';
 
 @Component({
   selector: 'app-root',
+  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    RouterModule,
-    VoltButton,
-    VoltBadge,
-    ThemeSwitcherComponent
-  ],
+  imports: [RouterModule, Header, Footer],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
-export class App {
-  protected readonly isDark = signal(false);
-
-  toggleDark(): void {
-    this.isDark.update((v) => !v);
-    document.documentElement.classList.toggle('dark');
-  }
-}
+export class App {}

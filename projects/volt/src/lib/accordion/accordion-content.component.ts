@@ -13,7 +13,8 @@ import { NgpAccordionContent } from 'ng-primitives/accordion';
   `,
   host: {
     // ng-primitives manages the visibility, here we provide the animation frames via Tailwind
-    class: 'overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down w-full block',
+    class:
+      'overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down w-full block',
   },
 })
 export class VoltAccordionContent {}

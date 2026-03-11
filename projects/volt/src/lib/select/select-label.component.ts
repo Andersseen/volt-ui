@@ -4,7 +4,7 @@ import { Component, ChangeDetectionStrategy, HostBinding } from '@angular/core';
   selector: 'volt-select-label',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<ng-content></ng-content>`
+  template: `<ng-content></ng-content>`,
 })
 export class VoltSelectLabel {
   @HostBinding('class') get hostClass() {

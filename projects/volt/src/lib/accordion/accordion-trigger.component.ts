@@ -30,10 +30,10 @@ import { NgpAccordionTrigger } from 'ng-primitives/accordion';
   },
 })
 export class VoltAccordionTrigger {
-  // Access ng-primitives accordion state roughly, although ng-primitives 
+  // Access ng-primitives accordion state roughly, although ng-primitives
   // often toggles data-state="open" on the trigger which we can target with CSS instead.
   // We'll provide a dummy method here and use CSS rotation for simplicity and reliability.
-  
+
   isOpen() {
     return false; // Typically overridden by data-state or via internal ng-primitives inject
   }
