@@ -5,7 +5,7 @@ import { VoltRadioGroup, VoltRadioItem, VoltLabel } from 'volt';
   selector: 'app-radio-demo',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [VoltRadioGroup, VoltRadioItem],
+  imports: [VoltRadioGroup, VoltRadioItem, VoltLabel],
   template: `
     <div class="space-y-6">
       <div>

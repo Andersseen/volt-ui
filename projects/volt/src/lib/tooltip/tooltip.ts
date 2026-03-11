@@ -1,15 +1,15 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { Directive, input } from '@angular/core';
 import { NgpTooltipTrigger } from 'ng-primitives/tooltip';
 import type { Placement } from '@floating-ui/dom';
 
-@Component({
-  selector: 'volt-tooltip',
+@Directive({
+  selector: '[voltTooltip]',
   standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   hostDirectives: [
     {
       directive: NgpTooltipTrigger,
       inputs: [
+        'ngpTooltipTrigger: voltTooltip',
         'ngpTooltipTriggerPlacement: placement',
         'ngpTooltipTriggerShowDelay: delay',
         'ngpTooltipTriggerHideDelay: closeDelay',
@@ -17,9 +17,9 @@ import type { Placement } from '@floating-ui/dom';
       ],
     },
   ],
-  template: `<ng-content />`,
 })
 export class VoltTooltip {
+  readonly tooltip = input<any>(undefined, { alias: 'voltTooltip' });
   readonly placement = input<Placement>('top');
   readonly delay = input<number>(300);
   readonly closeDelay = input<number>(100);
