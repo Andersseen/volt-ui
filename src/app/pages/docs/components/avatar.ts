@@ -22,21 +22,20 @@ import { VoltAvatar, VoltAvatarImage, VoltAvatarFallback } from 'volt';
         ></div>
 
         <div class="relative z-10 flex gap-4">
-          <span volt-avatar>
-            <img volt-avatar-image src="https://github.com/shadcn.png" alt="@shadcn" />
-            <span volt-avatar-fallback>CN</span>
-          </span>
-          <span volt-avatar>
-            <img
-              volt-avatar-image
+          <volt-avatar>
+            <volt-avatar-image src="https://github.com/shadcn.png" alt="@shadcn" />
+            <volt-avatar-fallback>CN</volt-avatar-fallback>
+          </volt-avatar>
+          <volt-avatar>
+            <volt-avatar-image
               src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
               alt="@janedoe"
             />
-            <span volt-avatar-fallback>JD</span>
-          </span>
-          <span volt-avatar>
-            <span volt-avatar-fallback>AP</span>
-          </span>
+            <volt-avatar-fallback>JD</volt-avatar-fallback>
+          </volt-avatar>
+          <volt-avatar>
+            <volt-avatar-fallback>AP</volt-avatar-fallback>
+          </volt-avatar>
         </div>
       </div>
     </div>

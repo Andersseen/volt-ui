@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { NgpAvatar } from 'ng-primitives/avatar';
 
 @Component({
-  selector: 'span[volt-avatar]',
+  selector: 'volt-avatar',
   changeDetection: ChangeDetectionStrategy.OnPush,
   hostDirectives: [NgpAvatar],
   host: {

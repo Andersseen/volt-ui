@@ -8,7 +8,6 @@ import {
   VoltCardHeader,
   VoltCardTitle,
   VoltInput,
-  VoltLabel,
   VoltTabs,
   VoltTabsContent,
   VoltTabsList,
@@ -25,7 +24,6 @@ import {
     VoltTabsContent,
     VoltButton,
     VoltInput,
-
     VoltCard,
     VoltCardHeader,
     VoltCardTitle,
@@ -76,7 +74,7 @@ import {
                   </div>
                 </volt-card-content>
                 <volt-card-footer>
-                  <button volt-button>Save changes</button>
+                  <volt-button>Save changes</volt-button>
                 </volt-card-footer>
               </volt-card>
             </volt-tabs-content>
@@ -101,7 +99,7 @@ import {
                   </div>
                 </volt-card-content>
                 <volt-card-footer>
-                  <button volt-button>Save password</button>
+                  <volt-button>Save password</volt-button>
                 </volt-card-footer>
               </volt-card>
             </volt-tabs-content>

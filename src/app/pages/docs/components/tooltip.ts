@@ -24,15 +24,9 @@ import { VoltButton } from 'volt';
         <div
           class="p-8 border border-border rounded-lg bg-card/30 flex items-center justify-center min-h-[300px]"
         >
-          <button
-            volt-button
-            variant="outline"
-            [voltTooltip]="myTooltip"
-            placement="top"
-            [offset]="8"
-          >
+          <volt-button variant="outline" [voltTooltip]="myTooltip" placement="top" [offset]="8">
             Hover me
-          </button>
+          </volt-button>
 
           <ng-template #myTooltip>
             <volt-tooltip-content>Add to library</volt-tooltip-content>

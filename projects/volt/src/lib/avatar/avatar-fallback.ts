@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { NgpAvatarFallback } from 'ng-primitives/avatar';
 
 @Component({
-  selector: 'span[volt-avatar-fallback]',
+  selector: 'volt-avatar-fallback',
   changeDetection: ChangeDetectionStrategy.OnPush,
   hostDirectives: [{ directive: NgpAvatarFallback, inputs: ['ngpAvatarFallbackDelay: delay'] }],
   host: {
