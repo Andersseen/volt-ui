@@ -1,10 +1,4 @@
-import {
-  Component,
-  ChangeDetectionStrategy,
-  HostBinding,
-  Input,
-  booleanAttribute,
-} from '@angular/core';
+import { booleanAttribute, ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { NgpSelectOption } from 'ng-primitives/select';
 
 @Component({
@@ -17,6 +11,10 @@ import { NgpSelectOption } from 'ng-primitives/select';
       inputs: ['ngpSelectOptionValue: value', 'ngpSelectOptionDisabled: disabled'],
     },
   ],
+  host: {
+    class:
+      'group relative flex w-full cursor-pointer select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-muted focus:text-muted-foreground aria-disabled:pointer-events-none aria-disabled:opacity-50 transition-colors',
+  },
   template: `
     <span class="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
       <svg
@@ -29,7 +27,7 @@ import { NgpSelectOption } from 'ng-primitives/select';
         stroke-width="2"
         stroke-linecap="round"
         stroke-linejoin="round"
-        class="h-4 w-4 hidden group-aria-selected:block"
+        class="h-4 w-4 hidden group-data-[selected]:block"
       >
         <path d="M20 6 9 17l-5-5" />
       </svg>
@@ -38,10 +36,6 @@ import { NgpSelectOption } from 'ng-primitives/select';
   `,
 })
 export class VoltSelectItem {
-  @Input() value: any;
-  @Input({ transform: booleanAttribute }) disabled = false;
-
-  @HostBinding('class') get hostClass() {
-    return 'group relative flex w-full cursor-pointer select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-muted focus:text-muted-foreground aria-disabled:pointer-events-none aria-disabled:opacity-50 transition-colors';
-  }
+  readonly value = input<any>(undefined);
+  readonly disabled = input(false, { transform: booleanAttribute });
 }

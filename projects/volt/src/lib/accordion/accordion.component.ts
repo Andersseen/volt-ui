@@ -1,14 +1,33 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { NgpAccordion } from 'ng-primitives/accordion';
+import type { NgpAccordionType } from 'ng-primitives/accordion';
 
 @Component({
   selector: 'volt-accordion',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [NgpAccordion],
+  hostDirectives: [
+    {
+      directive: NgpAccordion,
+      inputs: [
+        'ngpAccordionType: type',
+        'ngpAccordionCollapsible: collapsible',
+        'ngpAccordionValue: value',
+        'ngpAccordionDisabled: disabled',
+        'ngpAccordionOrientation: orientation',
+      ],
+      outputs: ['ngpAccordionValueChange: valueChange'],
+    },
+  ],
   template: `<ng-content></ng-content>`,
   host: {
-    class: 'w-full',
+    class: 'w-full block',
   },
 })
-export class VoltAccordion {}
+export class VoltAccordion {
+  readonly type = input<NgpAccordionType>('single');
+  readonly collapsible = input<boolean>(false);
+  readonly value = input<string | string[] | null>(null);
+  readonly disabled = input<boolean>(false);
+  readonly orientation = input<'horizontal' | 'vertical'>('vertical');
+}
