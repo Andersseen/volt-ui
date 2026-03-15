@@ -1,11 +1,17 @@
 import { ChangeDetectionStrategy, Component, input, inject } from '@angular/core';
-import { NgpRadioItem, NgpRadioIndicator, injectRadioItemState } from 'ng-primitives/radio';
+import {
+  NgpRadioItem,
+  NgpRadioIndicator,
+  injectRadioItemState,
+  provideRadioItemState,
+} from 'ng-primitives/radio';
 
 @Component({
   selector: 'volt-radio-item',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgpRadioItem, NgpRadioIndicator],
+  providers: [provideRadioItemState()],
   host: {
     class: 'flex items-center gap-[var(--spacing-gap)]',
   },

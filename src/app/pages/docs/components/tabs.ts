@@ -8,6 +8,7 @@ import {
   VoltCardHeader,
   VoltCardTitle,
   VoltInput,
+  VoltLabel,
   VoltTabs,
   VoltTabsContent,
   VoltTabsList,

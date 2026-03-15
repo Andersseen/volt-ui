@@ -1,9 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { VoltRadioGroup, VoltRadioItem } from 'volt';
 
 @Component({
   selector: 'app-radio-demo',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [VoltRadioGroup, VoltRadioItem],
   template: `
     <div class="space-y-6">
       <div>
@@ -21,20 +23,11 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
         <div
           class="p-8 border border-border rounded-lg bg-card/30 flex items-center justify-center min-h-[300px]"
         >
-          <div volt-radio-group orientation="vertical" value="default">
-            <div class="flex items-center space-x-2">
-              <button volt-radio-item value="default" id="r1"></button>
-              <label volt-label for="r1">Default</label>
-            </div>
-            <div class="flex items-center space-x-2">
-              <button volt-radio-item value="comfortable" id="r2"></button>
-              <label volt-label for="r2">Comfortable</label>
-            </div>
-            <div class="flex items-center space-x-2">
-              <button volt-radio-item value="compact" id="r3"></button>
-              <label volt-label for="r3">Compact</label>
-            </div>
-          </div>
+          <volt-radio-group orientation="vertical" value="default">
+            <volt-radio-item value="default">Default</volt-radio-item>
+            <volt-radio-item value="comfortable">Comfortable</volt-radio-item>
+            <volt-radio-item value="compact">Compact</volt-radio-item>
+          </volt-radio-group>
         </div>
       </div>
     </div>
