@@ -16,7 +16,7 @@ import { NgpRadioGroup } from 'ng-primitives/radio';
     '[attr.aria-orientation]': 'orientation()',
     '[class.flex-col]': 'orientation() === "vertical"',
     '[class.flex-row]': 'orientation() === "horizontal"',
-    class: 'grid gap-[var(--spacing-gap)] flex',
+    class: 'flex gap-2',
   },
   template: `<ng-content />`,
 })
