@@ -1,11 +1,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { VoltRadioGroup, VoltRadioItem, VoltLabel } from 'volt';
 
 @Component({
   selector: 'app-radio-demo',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [VoltRadioGroup, VoltRadioItem, VoltLabel],
   template: `
     <div class="space-y-6">
       <div>
