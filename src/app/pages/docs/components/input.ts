@@ -26,13 +26,13 @@ import { VoltInput, VoltTextarea, VoltLabel } from 'volt';
         >
           <div class="space-y-2">
             <label volt-label htmlFor="email">Email</label>
-            <input volt-input type="email" id="email" placeholder="Email" />
+            <volt-input type="email" id="email" placeholder="Email" />
             <p class="text-sm text-muted-foreground">Enter your email address.</p>
           </div>
 
           <div class="space-y-2">
             <label volt-label htmlFor="file">File</label>
-            <input volt-input type="file" id="file" />
+            <volt-input type="file" id="file" />
           </div>
 
           <div class="space-y-2">

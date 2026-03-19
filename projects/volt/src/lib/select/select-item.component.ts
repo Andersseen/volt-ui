@@ -36,6 +36,6 @@ import { NgpSelectOption } from 'ng-primitives/select';
   `,
 })
 export class VoltSelectItem {
-  readonly value = input<any>(undefined);
+  readonly value = input<unknown>(undefined);
   readonly disabled = input(false, { transform: booleanAttribute });
 }

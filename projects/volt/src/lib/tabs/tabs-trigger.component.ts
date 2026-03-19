@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { NgpTabButton, injectTabButtonState } from 'ng-primitives/tabs';
 
 @Component({
-  selector: 'button[volt-tabs-trigger]',
+  selector: 'volt-tabs-trigger',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   hostDirectives: [

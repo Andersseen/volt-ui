@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { NgpTabPanel, injectTabPanelState } from 'ng-primitives/tabs';
 
 @Component({

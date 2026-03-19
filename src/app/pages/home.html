@@ -116,7 +116,7 @@
             <div class="space-y-4">
               <div class="space-y-2">
                 <label volt-label for="team-name">Team Name</label>
-                <input volt-input id="team-name" defaultValue="Volt Engineers" />
+                <volt-input id="team-name" value="Volt Engineers" />
               </div>
 
               <div
@@ -128,11 +128,11 @@
                     Enable experimental dashboard features.
                   </p>
                 </div>
-                <button volt-switch [checked]="true" aria-label="Toggle preview features"></button>
+                <volt-switch [checked]="true" aria-label="Toggle preview features"></volt-switch>
               </div>
 
               <div class="flex items-center space-x-3">
-                <button volt-checkbox id="terms-accept"></button>
+                <volt-checkbox id="terms-accept"></volt-checkbox>
                 <label
                   for="terms-accept"
                   class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
@@ -194,7 +194,7 @@
             <div class="space-y-6">
               <!-- Task item 1 -->
               <div class="flex items-start space-x-4">
-                <button volt-checkbox [checked]="true" class="mt-1"></button>
+                <volt-checkbox [checked]="true" class="mt-1"></volt-checkbox>
                 <div class="space-y-1 flex-1">
                   <p class="text-sm font-medium leading-none line-through text-muted-foreground">
                     Release v0.0.1
@@ -215,7 +215,7 @@
 
               <!-- Task item 2 -->
               <div class="flex items-start space-x-4">
-                <button volt-checkbox class="mt-1"></button>
+                <volt-checkbox class="mt-1"></volt-checkbox>
                 <div class="space-y-1 flex-1">
                   <p class="text-sm font-medium leading-none">Implement Tabs component</p>
                   <p class="text-sm text-muted-foreground">
@@ -231,7 +231,7 @@
 
               <!-- Task item 3 -->
               <div class="flex items-start space-x-4">
-                <button volt-checkbox disabled class="mt-1"></button>
+                <volt-checkbox disabled class="mt-1"></volt-checkbox>
                 <div class="space-y-1 flex-1">
                   <p class="text-sm font-medium leading-none opacity-50">Write Documentation</p>
                   <p class="text-sm text-muted-foreground opacity-50">

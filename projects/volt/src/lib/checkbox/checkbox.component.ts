@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { NgpCheckbox } from 'ng-primitives/checkbox';
 
 @Component({
-  selector: 'button[volt-checkbox]',
+  selector: 'volt-checkbox',
   changeDetection: ChangeDetectionStrategy.OnPush,
   hostDirectives: [
     {
@@ -16,7 +16,6 @@ import { NgpCheckbox } from 'ng-primitives/checkbox';
     },
   ],
   host: {
-    type: 'button',
     class:
       'peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[checked=true]:bg-primary data-[checked=true]:text-primary-foreground',
   },

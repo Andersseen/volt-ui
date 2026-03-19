@@ -26,21 +26,21 @@ import { VoltAccordion, VoltAccordionItem, VoltAccordionTrigger, VoltAccordionCo
         >
           <volt-accordion>
             <volt-accordion-item value="item-1">
-              <button volt-accordion-trigger>Is it accessible?</button>
+              <volt-accordion-trigger>Is it accessible?</volt-accordion-trigger>
               <volt-accordion-content>
                 Yes. It adheres to the WAI-ARIA design pattern, powered by ng-primitives.
               </volt-accordion-content>
             </volt-accordion-item>
 
             <volt-accordion-item value="item-2">
-              <button volt-accordion-trigger>Is it styled with Tailwind CSS?</button>
+              <volt-accordion-trigger>Is it styled with Tailwind CSS?</volt-accordion-trigger>
               <volt-accordion-content>
                 Yes. It comes with default styles that matches the other components' aesthetic.
               </volt-accordion-content>
             </volt-accordion-item>
 
             <volt-accordion-item value="item-3">
-              <button volt-accordion-trigger>Is it animated?</button>
+              <volt-accordion-trigger>Is it animated?</volt-accordion-trigger>
               <volt-accordion-content>
                 Yes. It's animated by default, but you can disable it if you prefer.
               </volt-accordion-content>
