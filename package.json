@@ -7,9 +7,9 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "deploy": "pnpm run deploy:cf:master",
+    "deploy": "pnpm run deploy:cf:main",
     "deploy:cf": "pnpm run build && pnpm exec wrangler pages deploy dist/volt-ui/browser --project-name=volt-ui",
-    "deploy:cf:master": "pnpm run build && pnpm exec wrangler pages deploy dist/volt-ui/browser --project-name=volt-ui --branch=master"
+    "deploy:cf:main": "pnpm run build && pnpm exec wrangler pages deploy dist/volt-ui/browser --project-name=volt-ui --branch=main"
   },
   "private": true,
   "packageManager": "pnpm@10.30.1",
