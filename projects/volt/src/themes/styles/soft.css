@@ -5,7 +5,15 @@
   --ring-width: 2px;
   --ring-offset-width: 3px;
 
-  --shadow-sm: 0 2px 8px 0 oklch(0 0 0 / 0.04  --shadow-sm: 0 2px 8px 0 oklch(0 0 0 / 0.04  --shadow-sm: 0 2px 8px 0 oklch(0 0 0 / 0.04  --shadow-sm: 0 2px 8px 0 oklch(0 0 0 / 0.04  --shadow-sm: 0 2px 8px 0 oklch(0 0 0 / 0.04  --shadow-sm: 0 2px 8px 0 oklch(0 0 0 / 0.04  --shadow-sm: 0 2px 8px 0 oklch(0 0 0 / 0.04  --shadow-sm: 0 2px 8px 0 oklch(0 0 0 / 0.04  --shadow-sm: 0 2px 8px 0 oklch(0 0 0 / 0.04  --shadow-sm: 0 2px 8px 0 oklch(0 0 0 / 0.04  --shadow-sm: 0 2px 8px 0 oklch(0 0 0 / 0.04  --shadow-sm: 0 2px 8px 0 oklch(0 0 0 / 0.04  --shadow-sm: 0 2px 8px 0 oklch(0 0 0 / 0.04  --shadow-sm: 0 2px 8px 0 oklch(0 0 0 / 0.04  --shadow-sm: 0 2px 8px 0 oklch(0 0 0 / 0.04  --shadow-sm: 0 2px 8px 0 oklch(0 0(--  --shadow-sm: 0 2px 8px 0 oklch(0 0 0 / 0.04  --shadow-sm: 0 2px 8px 0 oklch(0 0 0 / 0.04  --shadow-sm: 0 2p --font-weight-base: 500;
-  --font-weight-heading: 800;
-  --font-weight-label: 700;
+  --shadow-sm: 0 2px 8px 0 oklch(0 0 0 / 0.04);
+  --shadow: 0 4px 16px 0 oklch(0 0 0 / 0.06), 0 2px 4px 0 oklch(0 0 0 / 0.04);
+  --shadow-md: 0 8px 24px 0 oklch(0 0 0 / 0.08), 0 4px 8px 0 oklch(0 0 0 / 0.04);
+  --shadow-lg: 0 16px 32px 0 oklch(0 0 0 / 0.1);
+
+  --spacing-component: 1.25;
+  --spacing-gap: 0.75rem;
+
+  --font-weight-base: 400;
+  --font-weight-heading: 600;
+  --font-weight-label: 500;
 }

@@ -4,7 +4,29 @@
   --secondary: oklch(0.65 0.18 55);
   --secondary-foreground: oklch(0.2 0.05 55);
   --background: oklch(0.99 0.01 45);
-  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  .22  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo  --fo oklch(0.2 0.05 55);
+  --foreground: oklch(0.2 0.05 45);
+  --surface: oklch(0.99 0.01 45);
+  --surface-foreground: oklch(0.2 0.05 45);
+  --muted: oklch(0.95 0.02 45);
+  --muted-foreground: oklch(0.55 0.05 45);
+  --border: oklch(0.9 0.03 45);
+  --input: oklch(0.9 0.03 45);
+  --ring: oklch(0.62 0.22 32);
+  --success: oklch(0.65 0.18 120);
+  --success-foreground: oklch(0.98 0 0);
+  --error: oklch(0.55 0.25 15);
+  --error-foreground: oklch(0.98 0 0);
+  --warning: oklch(0.7 0.18 55);
+  --warning-foreground: oklch(0.2 0.05 55);
+  --info: oklch(0.6 0.15 240);
+  --info-foreground: oklch(0.98 0 0);
+}
+
+.dark[data-color='ember'] {
+  --primary: oklch(0.62 0.22 32);
+  --primary-foreground: oklch(0.98 0 0);
+  --secondary: oklch(0.65 0.18 55);
+  --secondary-foreground: oklch(0.2 0.05 55);
   --background: oklch(0.08 0.02 45);
   --foreground: oklch(0.95 0.02 45);
   --surface: oklch(0.12 0.02 45);

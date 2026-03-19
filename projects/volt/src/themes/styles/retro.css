@@ -14,9 +14,6 @@
   --spacing-gap: 0.5rem;
 
   --font-weight-base: 500;
-  --font-weight  --font-weight  --font-weight  --font-weight  --font-weight  --font-weight  --font-wlacier; do
-  for style in sharp soft brutal ghost retro; do
-    cat > "projects/volt/src/themes/presets/${color}-${style}.css" <<EOF
-@import '../core.css';
-@import '../colors/${color}.css';
-@import '../styles/${style}.css';
+  --font-weight-heading: 700;
+  --font-weight-label: 600;
+}
