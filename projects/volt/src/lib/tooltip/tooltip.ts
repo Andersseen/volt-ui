@@ -1,4 +1,4 @@
-import { Directive, inject, input } from '@angular/core';
+import { Directive, input } from '@angular/core';
 import { NgpTooltipTrigger } from 'ng-primitives/tooltip';
 import type { NgpTooltipPlacement } from 'ng-primitives/tooltip';
 

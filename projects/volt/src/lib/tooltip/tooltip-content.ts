@@ -8,9 +8,8 @@ import { NgpTooltip } from 'ng-primitives/tooltip';
   hostDirectives: [NgpTooltip],
   host: {
     class:
-      'z-50 max-w-xs select-none overflow-hidden rounded-[var(--radius-sm)] bg-[var(--foreground)] px-3 py-1.5 text-xs leading-tight font-[var(--font-weight-label)] text-[var(--background)] shadow-[var(--shadow-md)] animate-in fade-in-0 zoom-in-95',
+      'absolute z-50 max-w-xs select-none overflow-hidden rounded-[var(--radius-sm)] bg-[var(--foreground)] px-3 py-1.5 text-xs leading-tight font-[var(--font-weight-label)] text-[var(--background)] shadow-[var(--shadow-md)] animate-in fade-in-0 zoom-in-95',
   },
   template: `<ng-content />`,
 })
 export class VoltTooltipContent {}
-
