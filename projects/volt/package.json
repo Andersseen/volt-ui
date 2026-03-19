@@ -13,5 +13,12 @@
     "ng-primitives": "^0.110.2",
     "@floating-ui/dom": "^1.6.0"
   },
-  "sideEffects": false
+  "exports": {
+    "./themes.css": "./themes.css",
+    "./themes/*": "./themes/*"
+  },
+  "sideEffects": [
+    "./themes.css",
+    "./themes/**/*.css"
+  ]
 }

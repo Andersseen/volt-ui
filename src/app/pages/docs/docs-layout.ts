@@ -6,12 +6,14 @@ import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterOutlet, RouterLink, RouterLinkActive],
   template: `
-    <div class="max-w-6xl mx-auto px-6 py-12 flex flex-col md:flex-row gap-12 items-start">
+    <div
+      class="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-10 flex flex-col md:flex-row gap-6 md:gap-12 items-start"
+    >
       <!-- Sidebar Navigation -->
-      <aside class="w-full md:w-64 flex-shrink-0 sticky top-24">
+      <aside class="w-full md:w-64 flex-shrink-0 md:sticky md:top-24">
         <nav class="flex flex-col space-y-2">
           <h4 class="font-medium text-sm mt-2 text-foreground">Getting Started</h4>
-          <ul class="space-y-1 mt-2 border-l border-border/50 ml-2 pl-4">
+          <ul class="space-y-1 mt-2 md:border-l md:border-border/50 md:ml-2 md:pl-4">
             <li>
               <a
                 routerLink="installation"
@@ -24,7 +26,9 @@ import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
           </ul>
 
           <h4 class="font-medium text-sm mt-8 text-foreground">Components</h4>
-          <ul class="space-y-1 mt-2 border-l border-border/50 ml-2 pl-4">
+          <ul
+            class="mt-2 md:border-l md:border-border/50 md:ml-2 md:pl-4 grid grid-cols-2 sm:grid-cols-3 md:block gap-x-3 gap-y-1"
+          >
             <li>
               <a
                 routerLink="accordion"
@@ -156,7 +160,7 @@ import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
       </aside>
 
       <!-- Main Content -->
-      <main class="flex-1 min-w-0">
+      <main class="flex-1 min-w-0 w-full">
         <router-outlet></router-outlet>
       </main>
     </div>

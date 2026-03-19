@@ -1,0 +1,19 @@
+:root[data-style='ghost'] {
+  --radius: 0.25rem;
+  --border-width: 0;
+  --border-style: solid;
+  --ring-width: 1px;
+  --ring-offset-width: 1px;
+
+  --shadow-sm: none;
+  --shadow: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+
+  --spacing-component: 1.25;
+  --spacing-gap: 1rem;
+
+  --font-weight-base: 300;
+  --font-weight-heading: 500;
+  --font-weight-label: 400;
+}

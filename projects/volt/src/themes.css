@@ -1,0 +1,8 @@
+/*
+ * Volt default theme preset.
+ *
+ * This file intentionally imports a single preset to avoid bundling every theme.
+ * For custom combinations, import from `volt/themes/presets/<color>-<style>.css`.
+ */
+
+@import './themes/presets/volt-sharp.css';

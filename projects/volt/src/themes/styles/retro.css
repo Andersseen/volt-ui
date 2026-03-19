@@ -1,0 +1,22 @@
+:root[data-style='retro'] {
+  --radius: 0.5rem;
+  --border-width: 2px;
+  --border-style: solid;
+  --ring-width: 3px;
+  --ring-offset-width: 2px;
+
+  --shadow-sm: 0 2px 0 var(--border);
+  --shadow: 0 4px 0 var(--border);
+  --shadow-md: 0 6px 0 var(--border), 0 8px 0 oklch(0 0 0 / 0.1);
+  --shadow-lg: 0 8px 0 var(--border), 0 12px 0 oklch(0 0 0 / 0.15);
+
+  --spacing-component: 1.125;
+  --spacing-gap: 0.5rem;
+
+  --font-weight-base: 500;
+  --font-weight  --font-weight  --font-weight  --font-weight  --font-weight  --font-weight  --font-wlacier; do
+  for style in sharp soft brutal ghost retro; do
+    cat > "projects/volt/src/themes/presets/${color}-${style}.css" <<EOF
+@import '../core.css';
+@import '../colors/${color}.css';
+@import '../styles/${style}.css';
