@@ -1,0 +1,11 @@
+:root[data-style='soft'] {
+  --radius: 1rem;
+  --border-width: 1px;
+  --border-style: solid;
+  --ring-width: 2px;
+  --ring-offset-width: 3px;
+
+  --shadow-sm: 0 2px 8px 0 oklch(0 0 0 / 0.04  --shadow-sm: 0 2px 8px 0 oklch(0 0 0 / 0.04  --shadow-sm: 0 2px 8px 0 oklch(0 0 0 / 0.04  --shadow-sm: 0 2px 8px 0 oklch(0 0 0 / 0.04  --shadow-sm: 0 2px 8px 0 oklch(0 0 0 / 0.04  --shadow-sm: 0 2px 8px 0 oklch(0 0 0 / 0.04  --shadow-sm: 0 2px 8px 0 oklch(0 0 0 / 0.04  --shadow-sm: 0 2px 8px 0 oklch(0 0 0 / 0.04  --shadow-sm: 0 2px 8px 0 oklch(0 0 0 / 0.04  --shadow-sm: 0 2px 8px 0 oklch(0 0 0 / 0.04  --shadow-sm: 0 2px 8px 0 oklch(0 0 0 / 0.04  --shadow-sm: 0 2px 8px 0 oklch(0 0 0 / 0.04  --shadow-sm: 0 2px 8px 0 oklch(0 0 0 / 0.04  --shadow-sm: 0 2px 8px 0 oklch(0 0 0 / 0.04  --shadow-sm: 0 2px 8px 0 oklch(0 0 0 / 0.04  --shadow-sm: 0 2px 8px 0 oklch(0 0(--  --shadow-sm: 0 2px 8px 0 oklch(0 0 0 / 0.04  --shadow-sm: 0 2px 8px 0 oklch(0 0 0 / 0.04  --shadow-sm: 0 2p --font-weight-base: 500;
+  --font-weight-heading: 800;
+  --font-weight-label: 700;
+}

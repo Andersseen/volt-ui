@@ -4,10 +4,23 @@
   "lib": {
     "entryFile": "src/public-api.ts"
   },
+  "assets": [
+    {
+      "glob": "themes.css",
+      "input": "src",
+      "output": "."
+    },
+    {
+      "glob": "**/*.css",
+      "input": "src/themes",
+      "output": "themes"
+    }
+  ],
   "allowedNonPeerDependencies": [
     "class-variance-authority",
     "clsx",
     "tailwind-merge",
-    "ng-primitives"
+    "ng-primitives",
+    "@floating-ui/dom"
   ]
 }

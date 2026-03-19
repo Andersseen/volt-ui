@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { booleanAttribute, ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { NgpAccordion } from 'ng-primitives/accordion';
 import type { NgpAccordionType } from 'ng-primitives/accordion';
 
@@ -26,8 +26,8 @@ import type { NgpAccordionType } from 'ng-primitives/accordion';
 })
 export class VoltAccordion {
   readonly type = input<NgpAccordionType>('single');
-  readonly collapsible = input<boolean>(false);
+  readonly collapsible = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly value = input<string | string[] | null>(null);
-  readonly disabled = input<boolean>(false);
+  readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly orientation = input<'horizontal' | 'vertical'>('vertical');
 }

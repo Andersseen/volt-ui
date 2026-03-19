@@ -1,3 +1,3 @@
-export * from './avatar.component';
-export * from './avatar-image.directive';
-export * from './avatar-fallback.component';
+export * from './avatar';
+export * from './avatar-image';
+export * from './avatar-fallback';

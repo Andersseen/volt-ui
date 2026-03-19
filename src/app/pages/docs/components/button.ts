@@ -6,7 +6,7 @@ import { VoltButton } from 'volt';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [VoltButton],
   template: `
-    <div class="space-y-6">
+    <div class="space-y-10">
       <div>
         <h1 class="text-3xl font-bold tracking-tight">Button</h1>
         <p class="text-lg text-muted-foreground mt-2">
@@ -14,31 +14,32 @@ import { VoltButton } from 'volt';
         </p>
       </div>
 
-      <div
-        class="border rounded-xl border-border/50 p-6 md:p-10 flex items-center justify-center bg-background/50 relative overflow-hidden"
-      >
-        <!-- subtle grid background -->
+      <div class="space-y-4">
+        <h3 class="font-semibold text-lg">Variants</h3>
         <div
-          class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"
-        ></div>
+          class="border rounded-xl border-border/50 p-6 md:p-10 flex items-center justify-center bg-background/50 relative overflow-hidden"
+        >
+          <div
+            class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"
+          ></div>
 
-        <div class="relative z-10 flex flex-wrap gap-4 items-center">
-          <button volt-button variant="solid">Solid Button</button>
-
-          <button volt-button variant="outline">Outline</button>
-          <button volt-button variant="ghost">Ghost</button>
-          <button volt-button variant="link">Link</button>
-          <button volt-button variant="destructive">Destructive</button>
+          <div class="relative z-10 flex flex-wrap gap-4 items-center">
+            <volt-button variant="solid">Solid</volt-button>
+            <volt-button variant="outline">Outline</volt-button>
+            <volt-button variant="ghost">Ghost</volt-button>
+            <volt-button variant="link">Link</volt-button>
+            <volt-button variant="destructive">Destructive</volt-button>
+          </div>
         </div>
       </div>
 
       <div class="space-y-4">
         <h3 class="font-semibold text-lg">Sizes</h3>
         <div class="flex flex-wrap gap-4 items-center">
-          <button volt-button size="sm">Small (sm)</button>
-          <button volt-button size="md">Default (md)</button>
-          <button volt-button size="lg">Large (lg)</button>
-          <button volt-button size="icon" aria-label="Icon">
+          <volt-button size="sm">Small (sm)</volt-button>
+          <volt-button size="md">Default (md)</volt-button>
+          <volt-button size="lg">Large (lg)</volt-button>
+          <volt-button size="icon" aria-label="Icon">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="16"
@@ -53,7 +54,54 @@ import { VoltButton } from 'volt';
             >
               <path d="m9 18 6-6-6-6" />
             </svg>
-          </button>
+          </volt-button>
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <h3 class="font-semibold text-lg">States & Icons (Slots)</h3>
+        <div class="flex flex-wrap gap-4 items-center">
+          <volt-button disabled>Disabled</volt-button>
+
+          <volt-button variant="outline">
+            <svg
+              slot="leading"
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-mail"
+            >
+              <rect width="20" height="16" x="2" y="4" rx="2" />
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+            </svg>
+            Login with Email
+          </volt-button>
+
+          <volt-button variant="solid">
+            Continue
+            <svg
+              slot="trailing"
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-arrow-right"
+            >
+              <path d="M5 12h14" />
+              <path d="m12 5 7 7-7 7" />
+            </svg>
+          </volt-button>
         </div>
       </div>
     </div>

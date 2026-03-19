@@ -24,7 +24,7 @@ import { VoltSwitch, VoltLabel } from 'volt';
         <div
           class="relative z-10 flex items-center space-x-3 bg-background p-6 rounded-lg shadow-sm border border-border/50"
         >
-          <button volt-switch id="airplane-mode"></button>
+          <volt-switch id="airplane-mode"></volt-switch>
           <label volt-label for="airplane-mode" class="cursor-pointer">Airplane Mode</label>
         </div>
       </div>

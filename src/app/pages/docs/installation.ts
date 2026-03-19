@@ -9,83 +9,119 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
       <div>
         <h1 class="text-3xl font-bold tracking-tight">Installation</h1>
         <p class="text-lg text-muted-foreground mt-2">
-          How to install dependencies and structure your app.
+          Install Volt UI and apply a theme preset without manually copying CSS variables.
         </p>
       </div>
 
       <div class="space-y-4">
-        <h2 class="text-2xl font-semibold tracking-tight border-b border-border/50 pb-2">1. Prerequisites</h2>
+        <h2 class="text-2xl font-semibold tracking-tight border-b border-border/50 pb-2">
+          1. Prerequisites
+        </h2>
         <p class="text-muted-foreground">
-          Volt UI requires <code class="bg-muted px-1.5 py-0.5 rounded text-sm text-foreground">Angular 19+</code> and 
-          <code class="bg-muted px-1.5 py-0.5 rounded text-sm text-foreground">Tailwind CSS 4+</code>.
+          Volt UI requires
+          <code class="bg-muted px-1.5 py-0.5 rounded text-sm text-foreground">Angular 21+</code>
+          and
+          <code class="bg-muted px-1.5 py-0.5 rounded text-sm text-foreground">Tailwind CSS 4+</code
+          >.
         </p>
       </div>
 
       <div class="space-y-4">
-        <h2 class="text-2xl font-semibold tracking-tight border-b border-border/50 pb-2">2. Install Tailwind v4</h2>
-        <p class="text-muted-foreground">If your project doesn't have Tailwind 4, install it via the latest packages:</p>
-        <div class="relative bg-[#1e1e1e] rounded-lg p-4 font-mono text-sm overflow-x-auto text-zinc-300">
+        <h2 class="text-2xl font-semibold tracking-tight border-b border-border/50 pb-2">
+          2. Install Tailwind v4
+        </h2>
+        <p class="text-muted-foreground">Your project still needs Tailwind v4 installed.</p>
+        <div
+          class="relative bg-[#1e1e1e] rounded-lg p-4 font-mono text-sm overflow-x-auto text-zinc-300"
+        >
           <code>npm install -D tailwindcss@^4.0.0 @tailwindcss/postcss postcss</code>
         </div>
       </div>
 
       <div class="space-y-4">
-        <h2 class="text-2xl font-semibold tracking-tight border-b border-border/50 pb-2">3. Install ng-primitives</h2>
-        <p class="text-muted-foreground">The components rely on the headless accessibility primitives from <code>ng-primitives</code>. Install it and its dependencies:</p>
-        <div class="relative bg-[#1e1e1e] rounded-lg p-4 font-mono text-sm overflow-x-auto text-zinc-300">
-          <code>npm install ng-primitives @floating-ui/dom</code>
+        <h2 class="text-2xl font-semibold tracking-tight border-b border-border/50 pb-2">
+          3. Install Volt UI
+        </h2>
+        <p class="text-muted-foreground">
+          Install Volt once. <code>ng-primitives</code> and <code>@floating-ui/dom</code> are
+          included automatically through Volt dependencies.
+        </p>
+        <div
+          class="relative bg-[#1e1e1e] rounded-lg p-4 font-mono text-sm overflow-x-auto text-zinc-300"
+        >
+          <code>npm install volt</code>
         </div>
       </div>
 
       <div class="space-y-4">
-        <h2 class="text-2xl font-semibold tracking-tight border-b border-border/50 pb-2">4. Add CSS Variables</h2>
-        <p class="text-muted-foreground">Add the following CSS variables to your global stylesheet (e.g., <code>app.css</code>) to enable the ShadCN theme:</p>
-        <div class="relative bg-[#1e1e1e] rounded-lg p-4 font-mono text-sm overflow-x-auto text-zinc-300 whitespace-pre">
-<code>@theme {{ '{' }}
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --radius: var(--radius);
-&#125;
-
-:root {{ '{' }}
-  --background: #ffffff;
-  --foreground: #09090b;
-  --primary: #18181b;
-  --primary-foreground: #fafafa;
-  --muted: #f4f4f5;
-  --muted-foreground: #71717a;
-  --border: #e4e4e7;
-  --input: #e4e4e7;
-  --ring: #18181b;
-  --radius: 0.5rem;
-&#125;
-
-.dark {{ '{' }}
-  --background: #09090b;
-  --foreground: #fafafa;
-  --primary: #fafafa;
-  --primary-foreground: #18181b;
-  --muted: #27272a;
-  --muted-foreground: #a1a1aa;
-  --border: #27272a;
-  --input: #27272a;
-  --ring: #d4d4d8;
-&#125;</code></div>
+        <h2 class="text-2xl font-semibold tracking-tight border-b border-border/50 pb-2">
+          4. Import One Theme Preset
+        </h2>
+        <p class="text-muted-foreground">Import exactly one preset in your global stylesheet.</p>
+        <div
+          class="relative bg-[#1e1e1e] rounded-lg p-4 font-mono text-sm overflow-x-auto text-zinc-300 whitespace-pre"
+        >
+          <code>@import 'volt/themes/presets/sage-soft.css';</code>
+        </div>
+        <p class="text-sm text-muted-foreground">
+          Preset format: <code>volt/themes/presets/&lt;color&gt;-&lt;style&gt;.css</code>.
+        </p>
+        <p class="text-sm text-muted-foreground">
+          Default alias: <code>@import 'volt/themes.css';</code> uses <code>volt-sharp</code>.
+        </p>
       </div>
-      
+
       <div class="space-y-4">
-        <h2 class="text-2xl font-semibold tracking-tight border-b border-border/50 pb-2">5. Start using components</h2>
-        <p class="text-muted-foreground">Copy the component files into your project, or import them directly from your feature library: <code>import &#123; VoltButton &#125; from 'volt';</code></p>
+        <h2 class="text-2xl font-semibold tracking-tight border-b border-border/50 pb-2">
+          5. Match The Root Attributes
+        </h2>
+        <p class="text-muted-foreground">
+          Set matching attributes on the root <code>html</code> element for the preset you imported.
+        </p>
+        <p class="text-sm text-muted-foreground">
+          Colors: <code>volt</code>, <code>ember</code>, <code>sage</code>, <code>dusk</code>,
+          <code>glacier</code>. Styles: <code>sharp</code>, <code>soft</code>, <code>brutal</code>,
+          <code>ghost</code>, <code>retro</code>.
+        </p>
+        <div
+          class="relative bg-[#1e1e1e] rounded-lg p-4 font-mono text-sm overflow-x-auto text-zinc-300"
+        >
+          <code>&lt;html data-color="sage" data-style="soft"&gt;</code>
+        </div>
       </div>
 
+      <div class="space-y-4">
+        <h2 class="text-2xl font-semibold tracking-tight border-b border-border/50 pb-2">
+          6. Set Theme With Angular Provider (Optional)
+        </h2>
+        <p class="text-muted-foreground">
+          If you prefer Angular Material-like setup, use the provider once in
+          <code>app.config.ts</code>.
+        </p>
+        <div
+          class="relative bg-[#1e1e1e] rounded-lg p-4 font-mono text-sm overflow-x-auto text-zinc-300 whitespace-pre"
+        >
+          <code
+            >import &#123; ApplicationConfig &#125; from '@angular/core'; import &#123;
+            provideVoltTheme &#125; from 'volt'; export const appConfig: ApplicationConfig = &#123;
+            providers: [ provideVoltTheme(&#123; color: 'sage', style: 'soft', dark: false &#125;),
+            ], &#125;;</code
+          >
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <h2 class="text-2xl font-semibold tracking-tight border-b border-border/50 pb-2">
+          7. Start Using Components
+        </h2>
+        <p class="text-muted-foreground">Import and use components directly from the library.</p>
+        <div
+          class="relative bg-[#1e1e1e] rounded-lg p-4 font-mono text-sm overflow-x-auto text-zinc-300"
+        >
+          <code>import &#123; VoltButton &#125; from 'volt';</code>
+        </div>
+      </div>
     </div>
-  `
+  `,
 })
 export class InstallationDocs {}

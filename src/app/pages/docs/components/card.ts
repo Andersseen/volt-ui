@@ -62,8 +62,8 @@ import { VoltButton } from 'volt';
               </form>
             </volt-card-content>
             <volt-card-footer class="flex justify-between">
-              <button volt-button variant="outline">Cancel</button>
-              <button volt-button>Deploy</button>
+              <volt-button variant="outline">Cancel</volt-button>
+              <volt-button>Deploy</volt-button>
             </volt-card-footer>
           </volt-card>
         </div>

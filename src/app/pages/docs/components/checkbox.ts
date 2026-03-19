@@ -24,7 +24,7 @@ import { VoltCheckbox, VoltLabel } from 'volt';
         <div
           class="relative z-10 flex items-center space-x-3 bg-background p-6 rounded-lg shadow-sm border border-border/50"
         >
-          <button volt-checkbox id="terms"></button>
+          <volt-checkbox id="terms"></volt-checkbox>
           <div class="grid gap-1.5 leading-none">
             <label
               volt-label

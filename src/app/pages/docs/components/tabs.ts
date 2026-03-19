@@ -24,7 +24,6 @@ import {
     VoltTabsContent,
     VoltButton,
     VoltInput,
-
     VoltCard,
     VoltCardHeader,
     VoltCardTitle,
@@ -51,8 +50,8 @@ import {
         <div class="relative z-10 w-full max-w-[400px]">
           <volt-tabs value="account">
             <volt-tabs-list class="grid w-full grid-cols-2">
-              <button volt-tabs-trigger value="account">Account</button>
-              <button volt-tabs-trigger value="password">Password</button>
+              <volt-tabs-trigger value="account">Account</volt-tabs-trigger>
+              <volt-tabs-trigger value="password">Password</volt-tabs-trigger>
             </volt-tabs-list>
 
             <volt-tabs-content value="account">
@@ -67,15 +66,15 @@ import {
                 <volt-card-content class="space-y-4">
                   <div class="space-y-2">
                     <label volt-label htmlFor="name">Name</label>
-                    <input volt-input id="name" defaultValue="Jane Doe" />
+                    <volt-input id="name" value="Jane Doe" />
                   </div>
                   <div class="space-y-2">
                     <label volt-label htmlFor="username">Username</label>
-                    <input volt-input id="username" defaultValue="@janedoe" />
+                    <volt-input id="username" value="@janedoe" />
                   </div>
                 </volt-card-content>
                 <volt-card-footer>
-                  <button volt-button>Save changes</button>
+                  <volt-button>Save changes</volt-button>
                 </volt-card-footer>
               </volt-card>
             </volt-tabs-content>
@@ -92,15 +91,15 @@ import {
                 <volt-card-content class="space-y-4">
                   <div class="space-y-2">
                     <label volt-label htmlFor="current">Current password</label>
-                    <input volt-input id="current" type="password" />
+                    <volt-input id="current" type="password" />
                   </div>
                   <div class="space-y-2">
                     <label volt-label htmlFor="new">New password</label>
-                    <input volt-input id="new" type="password" />
+                    <volt-input id="new" type="password" />
                   </div>
                 </volt-card-content>
                 <volt-card-footer>
-                  <button volt-button>Save password</button>
+                  <volt-button>Save password</volt-button>
                 </volt-card-footer>
               </volt-card>
             </volt-tabs-content>
