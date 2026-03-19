@@ -8,6 +8,7 @@
     "class-variance-authority",
     "clsx",
     "tailwind-merge",
-    "ng-primitives"
+    "ng-primitives",
+    "@floating-ui/dom"
   ]
 }
