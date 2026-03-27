@@ -4,7 +4,7 @@ import { VoltSwitch, VoltLabel } from 'volt';
 @Component({
   selector: 'app-switch-demo',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [VoltSwitch],
+  imports: [VoltSwitch, VoltLabel],
   template: `
     <div class="space-y-6">
       <div>
@@ -25,7 +25,7 @@ import { VoltSwitch, VoltLabel } from 'volt';
           class="relative z-10 flex items-center space-x-3 bg-background p-6 rounded-lg shadow-sm border border-border/50"
         >
           <volt-switch id="airplane-mode"></volt-switch>
-          <label volt-label for="airplane-mode" class="cursor-pointer">Airplane Mode</label>
+          <volt-label htmlFor="airplane-mode" class="cursor-pointer">Airplane Mode</volt-label>
         </div>
       </div>
     </div>

@@ -1,24 +1,25 @@
 import { ChangeDetectionStrategy, Component, input, model, output } from '@angular/core';
-import { NgpRadioGroup } from 'ng-primitives/radio';
+import { NgpRadioGroup, provideRadioGroupState } from 'ng-primitives/radio';
 
 @Component({
   selector: 'volt-radio-group',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgpRadioGroup],
-  template: `
-    <div
-      ngpRadioGroup
-      [ngpRadioGroupValue]="value()"
-      [ngpRadioGroupDisabled]="disabled()"
-      (ngpRadioGroupValueChange)="value.set($event); valueChange.emit($event)"
-      [attr.aria-orientation]="orientation()"
-      [class.flex-col]="orientation() === 'vertical'"
-      [class.flex-row]="orientation() === 'horizontal'"
-      class="flex gap-2"
-    >
-      <ng-content />
-    </div>
-  `,
+  providers: [provideRadioGroupState()],
+  host: {
+    class: 'flex gap-2',
+    '[attr.aria-orientation]': 'orientation()',
+    '[class.flex-col]': 'orientation() === "vertical"',
+    '[class.flex-row]': 'orientation() === "horizontal"',
+  },
+  hostDirectives: [
+    {
+      directive: NgpRadioGroup,
+      inputs: ['ngpRadioGroupValue: value', 'ngpRadioGroupDisabled: disabled'],
+      outputs: ['ngpRadioGroupValueChange: valueChange'],
+    },
+  ],
+  template: ` <ng-content /> `,
 })
 export class VoltRadioGroup {
   readonly orientation = input<'horizontal' | 'vertical'>('vertical');

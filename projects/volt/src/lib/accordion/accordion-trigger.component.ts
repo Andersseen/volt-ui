@@ -3,11 +3,14 @@ import { NgpAccordionTrigger, injectAccordionItemState } from 'ng-primitives/acc
 
 @Component({
   selector: 'volt-accordion-trigger',
-  imports: [NgpAccordionTrigger],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [],
+  host: {
+    class: 'block w-full',
+  },
+  hostDirectives: [NgpAccordionTrigger],
   template: `
     <button
-      ngpAccordionTrigger
       type="button"
       class="flex w-full flex-1 items-center justify-between py-4 font-medium text-left transition-all hover:underline"
     >
@@ -29,9 +32,6 @@ import { NgpAccordionTrigger, injectAccordionItemState } from 'ng-primitives/acc
       </svg>
     </button>
   `,
-  host: {
-    class: 'block w-full',
-  },
 })
 export class VoltAccordionTrigger {
   protected readonly itemState = injectAccordionItemState();

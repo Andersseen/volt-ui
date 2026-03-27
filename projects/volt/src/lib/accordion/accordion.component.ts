@@ -6,27 +6,31 @@ import {
   model,
   output,
 } from '@angular/core';
-import { NgpAccordion } from 'ng-primitives/accordion';
 import type { NgpAccordionType } from 'ng-primitives/accordion';
+import { NgpAccordion, provideAccordionState } from 'ng-primitives/accordion';
 
 @Component({
   selector: 'volt-accordion',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgpAccordion],
-  template: `
-    <div
-      ngpAccordion
-      [ngpAccordionType]="type()"
-      [ngpAccordionCollapsible]="collapsible()"
-      [ngpAccordionValue]="value()"
-      [ngpAccordionDisabled]="disabled()"
-      [ngpAccordionOrientation]="orientation()"
-      (ngpAccordionValueChange)="value.set($event); valueChange.emit($event)"
-      class="w-full block"
-    >
-      <ng-content />
-    </div>
-  `,
+  imports: [],
+  providers: [provideAccordionState()],
+  host: {
+    class: 'w-full block',
+  },
+  hostDirectives: [
+    {
+      directive: NgpAccordion,
+      inputs: [
+        'ngpAccordionType: type',
+        'ngpAccordionCollapsible: collapsible',
+        'ngpAccordionValue: value',
+        'ngpAccordionDisabled: disabled',
+        'ngpAccordionOrientation: orientation',
+      ],
+      outputs: ['ngpAccordionValueChange: valueChange'],
+    },
+  ],
+  template: ` <ng-content /> `,
 })
 export class VoltAccordion {
   readonly type = input<NgpAccordionType>('single');

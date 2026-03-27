@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, computed, input, model, output } from '@angular/core';
-import { NgpSelect, NgpSelectPortal } from 'ng-primitives/select';
+import { NgpSelect, NgpSelectPortal, provideSelectState } from 'ng-primitives/select';
 
 @Component({
   selector: 'volt-select',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgpSelect, NgpSelectPortal],
+  providers: [provideSelectState()],
   template: `
     <button
       ngpSelect

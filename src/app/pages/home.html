@@ -112,7 +112,7 @@
 
             <div class="space-y-4">
               <div class="space-y-2">
-                <label volt-label for="team-name">Team Name</label>
+                <volt-label htmlFor="team-name">Team Name</volt-label>
                 <volt-input id="team-name" value="Volt Engineers" />
               </div>
 
@@ -120,7 +120,7 @@
                 class="flex items-center justify-between space-x-2 p-3 rounded-lg border border-border/50 bg-muted/40"
               >
                 <div class="space-y-0.5">
-                  <label volt-label class="text-base cursor-pointer">Preview Features</label>
+                  <volt-label class="text-base cursor-pointer">Preview Features</volt-label>
                   <p class="text-xs text-muted-foreground">
                     Enable experimental dashboard features.
                   </p>
@@ -130,12 +130,12 @@
 
               <div class="flex items-center space-x-3">
                 <volt-checkbox id="terms-accept"></volt-checkbox>
-                <label
-                  for="terms-accept"
+                <volt-label
+                  htmlFor="terms-accept"
                   class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
                 >
                   Accept terms and conditions
-                </label>
+                </volt-label>
               </div>
             </div>
           </volt-card-content>
