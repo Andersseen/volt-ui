@@ -1,17 +1,14 @@
-import { ChangeDetectionStrategy, Component, viewChild, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { NgpFormField } from 'ng-primitives/form-field';
 
 @Component({
   selector: 'volt-form-field',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [NgpFormField],
-  host: {
-    class: 'space-y-[var(--spacing-gap)] w-full block',
-  },
-  template: `<ng-content />`,
+  imports: [NgpFormField],
+  template: `
+    <div ngpFormField class="space-y-[var(--spacing-gap)] w-full block">
+      <ng-content />
+    </div>
+  `,
 })
-export class VoltFormField {
-  // Acts primarily as a wrapper for NgpFormField styling
-  // and contextual distribution. Logic handled inside primitive context.
-}
+export class VoltFormField {}

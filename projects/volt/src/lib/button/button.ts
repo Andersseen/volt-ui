@@ -40,32 +40,25 @@ export type ButtonVariants = VariantProps<typeof buttonVariants>;
 
 @Component({
   selector: 'volt-button',
-  standalone: true,
   imports: [NgpButton],
-  hostDirectives: [
-    {
-      directive: NgpButton,
-      inputs: ['disabled'],
-    },
-  ],
   template: `
-    <ng-content select="[slot=leading]" />
-    <ng-content />
-    <ng-content select="[slot=trailing]" />
+    <button
+      ngpButton
+      [disabled]="disabled()"
+      [class]="classes()"
+      [attr.data-variant]="variant()"
+      [attr.data-size]="size()"
+    >
+      <ng-content select="[slot=leading]" />
+      <ng-content />
+      <ng-content select="[slot=trailing]" />
+    </button>
   `,
-  host: {
-    '[class]': 'classes()',
-    '[attr.data-variant]': 'variant()',
-    '[attr.data-size]': 'size()',
-
-    '[attr.disabled]': 'disabled() ? true : null',
-  },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VoltButton {
   readonly variant = input<ButtonVariants['variant']>('solid');
   readonly size = input<ButtonVariants['size']>('md');
-
   readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
 
   protected readonly classes = computed(() =>

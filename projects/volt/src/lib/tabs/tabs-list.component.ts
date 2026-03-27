@@ -3,13 +3,15 @@ import { NgpTabList } from 'ng-primitives/tabs';
 
 @Component({
   selector: 'volt-tabs-list',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [NgpTabList],
-  template: `<ng-content></ng-content>`,
-  host: {
-    class:
-      'inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground',
-  },
+  imports: [NgpTabList],
+  template: `
+    <div
+      ngpTabList
+      class="inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground"
+    >
+      <ng-content />
+    </div>
+  `,
 })
 export class VoltTabsList {}

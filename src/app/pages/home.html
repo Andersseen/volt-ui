@@ -73,12 +73,18 @@
 
           <volt-card-content class="space-y-6">
             <div class="flex items-center space-x-4">
-              <volt-avatar>
-                <volt-avatar-image
+              <volt-avatar ngpAvatar>
+                <img
+                  ngpAvatarImage
                   src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
                   alt="Jane Doe"
+                  class="aspect-square h-full w-full object-cover"
                 />
-                <volt-avatar-fallback [delay]="1000">JD</volt-avatar-fallback>
+                <span
+                  ngpAvatarFallback
+                  class="flex h-full w-full items-center justify-center rounded-full bg-muted font-medium text-foreground"
+                  >JD</span
+                >
               </volt-avatar>
               <div class="flex-1 space-y-1">
                 <p class="text-sm font-medium leading-none">Jane Doe</p>
@@ -195,11 +201,19 @@
                   </p>
                 </div>
                 <div class="flex -space-x-2">
-                  <volt-avatar class="ring-2 ring-background w-8 h-8">
-                    <volt-avatar-image src="https://i.pravatar.cc/150?u=a042581f4e29026704d" />
+                  <volt-avatar ngpAvatar class="ring-2 ring-background w-8 h-8">
+                    <img
+                      ngpAvatarImage
+                      src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+                      class="aspect-square h-full w-full object-cover"
+                    />
                   </volt-avatar>
-                  <volt-avatar class="ring-2 ring-background w-8 h-8">
-                    <volt-avatar-image src="https://i.pravatar.cc/150?u=a04258114e29026702d" />
+                  <volt-avatar ngpAvatar class="ring-2 ring-background w-8 h-8">
+                    <img
+                      ngpAvatarImage
+                      src="https://i.pravatar.cc/150?u=a04258114e29026702d"
+                      class="aspect-square h-full w-full object-cover"
+                    />
                   </volt-avatar>
                 </div>
               </div>
@@ -213,16 +227,18 @@
                     Add interactive tabs following WAI-ARIA specs.
                   </p>
                 </div>
-                <volt-avatar class="w-8 h-8">
-                  <volt-avatar-fallback class="bg-primary/10 text-primary text-xs"
-                    >AP</volt-avatar-fallback
+                <volt-avatar ngpAvatar class="w-8 h-8">
+                  <span
+                    ngpAvatarFallback
+                    class="flex h-full w-full items-center justify-center rounded-full bg-primary/10 text-primary text-xs font-medium"
+                    >AP</span
                   >
                 </volt-avatar>
               </div>
 
               <!-- Task item 3 -->
               <div class="flex items-start space-x-4">
-                <volt-checkbox disabled class="mt-1"></volt-checkbox>
+                <volt-checkbox [disabled]="true" class="mt-1"></volt-checkbox>
                 <div class="space-y-1 flex-1">
                   <p class="text-sm font-medium leading-none opacity-50">Write Documentation</p>
                   <p class="text-sm text-muted-foreground opacity-50">
@@ -243,12 +259,11 @@
             <volt-card-title>Quick Message</volt-card-title>
           </volt-card-header>
           <volt-card-content class="space-y-4">
-            <textarea
-              volt-textarea
+            <volt-textarea
               placeholder="Type your message here..."
               [rows]="3"
               class="resize-none"
-            ></textarea>
+            ></volt-textarea>
             <div class="flex items-center justify-between">
               <div class="flex gap-2">
                 <volt-button variant="ghost" size="icon" class="text-muted-foreground rounded-full">

@@ -3,7 +3,6 @@ import { VoltToggle } from 'volt';
 
 @Component({
   selector: 'app-toggle-demo',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [VoltToggle],
   template: `
@@ -22,7 +21,7 @@ import { VoltToggle } from 'volt';
         <div
           class="p-8 border border-border rounded-lg bg-card/30 flex items-center justify-center min-h-[300px] gap-4"
         >
-          <button volt-toggle aria-label="Toggle italic" [(pressed)]="italic">
+          <volt-toggle aria-label="Toggle italic" [(pressed)]="italic">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="16"
@@ -36,9 +35,9 @@ import { VoltToggle } from 'volt';
             >
               <path d="M19 4h-9M14 20H5M15 4 9 20" />
             </svg>
-          </button>
+          </volt-toggle>
 
-          <button volt-toggle variant="outline" aria-label="Toggle bold" [(pressed)]="bold">
+          <volt-toggle variant="outline" aria-label="Toggle bold" [(pressed)]="bold">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="16"
@@ -52,7 +51,7 @@ import { VoltToggle } from 'volt';
             >
               <path d="M14 12a4 4 0 0 0 0-8H6v8M15 20a4 4 0 0 0 0-8H6v8Z" />
             </svg>
-          </button>
+          </volt-toggle>
         </div>
       </div>
     </div>

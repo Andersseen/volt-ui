@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, input, model } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, model, output } from '@angular/core';
 import { NgpToggle } from 'ng-primitives/toggle';
 import { cva, type VariantProps } from 'class-variance-authority';
 
@@ -32,27 +32,28 @@ export const toggleVariants = cva(
 export type ToggleVariants = VariantProps<typeof toggleVariants>;
 
 @Component({
-  selector: 'button[volt-toggle]',
-  standalone: true,
+  selector: 'volt-toggle',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [
-    {
-      directive: NgpToggle,
-      inputs: ['ngpToggleDisabled: disabled', 'ngpToggleSelected: pressed'],
-      outputs: ['ngpToggleSelectedChange: pressedChange'],
-    },
-  ],
-  host: {
-    '[class]': 'classes()',
-    '[attr.data-disabled]': 'disabled() ? "" : null',
-  },
-  template: `<ng-content />`,
+  imports: [NgpToggle],
+  template: `
+    <button
+      ngpToggle
+      [ngpToggleDisabled]="disabled()"
+      [ngpToggleSelected]="pressed()"
+      (ngpToggleSelectedChange)="pressed.set($event); pressedChange.emit($event)"
+      [class]="classes()"
+      [attr.data-disabled]="disabled() ? '' : null"
+    >
+      <ng-content />
+    </button>
+  `,
 })
 export class VoltToggle {
   readonly variant = input<ToggleVariants['variant']>('default');
   readonly size = input<ToggleVariants['size']>('md');
   readonly disabled = input<boolean>(false);
   readonly pressed = model<boolean>(false);
+  readonly pressedChange = output<boolean>();
 
   protected readonly classes = computed(() =>
     toggleVariants({

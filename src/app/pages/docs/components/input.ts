@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { VoltInput, VoltTextarea, VoltLabel } from 'volt';
+import { VoltInput } from 'volt';
 
 @Component({
   selector: 'app-input-demo',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [VoltInput, VoltTextarea],
+  imports: [VoltInput],
   template: `
     <div class="space-y-6">
       <div>

@@ -3,12 +3,12 @@ import { NgpDescription } from 'ng-primitives/form-field';
 
 @Component({
   selector: 'volt-hint',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [NgpDescription],
-  host: {
-    class: 'text-sm text-muted-foreground',
-  },
-  template: `<ng-content />`,
+  imports: [NgpDescription],
+  template: `
+    <span ngpDescription class="text-sm text-muted-foreground">
+      <ng-content />
+    </span>
+  `,
 })
 export class VoltHint {}
