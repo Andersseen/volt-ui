@@ -36,22 +36,19 @@ export const textareaVariants = cva(
 export type TextareaVariants = VariantProps<typeof textareaVariants>;
 
 @Component({
-  selector: 'textarea[volt-textarea]',
-  standalone: true,
+  selector: 'volt-textarea',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [
-    {
-      directive: NgpTextarea,
-      inputs: ['disabled'],
-    },
-  ],
-  host: {
-    '[class]': 'classes()',
-    '[attr.aria-invalid]': 'state() === "error" ? "true" : null',
-    '[style.resize]': 'resize()',
-    '[attr.rows]': 'rows()',
-  },
-  template: ``,
+  imports: [NgpTextarea],
+  template: `
+    <textarea
+      ngpTextarea
+      [disabled]="disabled()"
+      [class]="classes()"
+      [attr.aria-invalid]="state() === 'error' ? 'true' : null"
+      [style.resize]="resize()"
+      [attr.rows]="rows()"
+    ></textarea>
+  `,
 })
 export class VoltTextarea {
   readonly variant = input<TextareaVariants['variant']>('default');
@@ -59,6 +56,7 @@ export class VoltTextarea {
   readonly state = input<TextareaVariants['state']>('default');
   readonly resize = input<'none' | 'vertical' | 'horizontal' | 'both'>('vertical');
   readonly rows = input<number>(3);
+  readonly disabled = input<boolean>(false);
 
   protected readonly classes = computed(() =>
     textareaVariants({

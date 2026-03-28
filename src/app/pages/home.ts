@@ -1,8 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   VoltAvatar,
-  VoltAvatarFallback,
-  VoltAvatarImage,
   VoltBadge,
   VoltButton,
   VoltCard,
@@ -13,10 +11,12 @@ import {
   VoltCardTitle,
   VoltCheckbox,
   VoltInput,
+  VoltLabel,
   VoltSeparator,
   VoltSwitch,
   VoltTextarea,
 } from 'volt';
+import { NgpAvatar, NgpAvatarImage, NgpAvatarFallback } from 'ng-primitives/avatar';
 
 @Component({
   selector: 'app-home',
@@ -26,6 +26,7 @@ import {
     VoltBadge,
     VoltInput,
     VoltTextarea,
+    VoltLabel,
     VoltCard,
     VoltCardHeader,
     VoltCardTitle,
@@ -36,8 +37,9 @@ import {
     VoltCheckbox,
     VoltSwitch,
     VoltAvatar,
-    VoltAvatarImage,
-    VoltAvatarFallback,
+    NgpAvatar,
+    NgpAvatarImage,
+    NgpAvatarFallback,
   ],
   templateUrl: './home.html',
 })

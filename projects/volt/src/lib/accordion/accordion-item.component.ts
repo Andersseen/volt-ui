@@ -1,20 +1,21 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { NgpAccordionItem } from 'ng-primitives/accordion';
+import { NgpAccordionItem, provideAccordionItemState } from 'ng-primitives/accordion';
 
 @Component({
   selector: 'volt-accordion-item',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [],
+  providers: [provideAccordionItemState()],
+  host: {
+    class: 'border-b border-border/50',
+  },
   hostDirectives: [
     {
       directive: NgpAccordionItem,
       inputs: ['ngpAccordionItemValue: value'],
     },
   ],
-  template: `<ng-content></ng-content>`,
-  host: {
-    class: 'border-b border-border/50',
-  },
+  template: ` <ng-content /> `,
 })
 export class VoltAccordionItem {
   readonly value = input.required<string>();

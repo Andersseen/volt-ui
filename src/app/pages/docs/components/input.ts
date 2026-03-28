@@ -4,7 +4,7 @@ import { VoltInput, VoltTextarea, VoltLabel } from 'volt';
 @Component({
   selector: 'app-input-demo',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [VoltInput, VoltTextarea],
+  imports: [VoltInput, VoltTextarea, VoltLabel],
   template: `
     <div class="space-y-6">
       <div>
@@ -25,24 +25,23 @@ import { VoltInput, VoltTextarea, VoltLabel } from 'volt';
           class="relative z-10 max-w-sm mx-auto space-y-8 bg-background p-6 rounded-lg shadow-sm border border-border/50"
         >
           <div class="space-y-2">
-            <label volt-label htmlFor="email">Email</label>
+            <volt-label htmlFor="email">Email</volt-label>
             <volt-input type="email" id="email" placeholder="Email" />
             <p class="text-sm text-muted-foreground">Enter your email address.</p>
           </div>
 
           <div class="space-y-2">
-            <label volt-label htmlFor="file">File</label>
+            <volt-label htmlFor="file">File</volt-label>
             <volt-input type="file" id="file" />
           </div>
 
           <div class="space-y-2">
-            <label volt-label htmlFor="message">Message (Textarea)</label>
-            <textarea
-              volt-textarea
+            <volt-label htmlFor="message">Message (Textarea)</volt-label>
+            <volt-textarea
               id="message"
               placeholder="Type your message here."
               [rows]="4"
-            ></textarea>
+            ></volt-textarea>
           </div>
         </div>
       </div>

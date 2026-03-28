@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { VoltAvatar, VoltAvatarImage, VoltAvatarFallback } from 'volt';
+import { VoltAvatar } from 'volt';
+import { NgpAvatar, NgpAvatarImage, NgpAvatarFallback } from 'ng-primitives/avatar';
 
 @Component({
   selector: 'app-avatar-demo',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [VoltAvatar, VoltAvatarImage, VoltAvatarFallback],
+  imports: [VoltAvatar, NgpAvatar, NgpAvatarImage, NgpAvatarFallback],
   template: `
     <div class="space-y-6">
       <div>
@@ -22,19 +23,38 @@ import { VoltAvatar, VoltAvatarImage, VoltAvatarFallback } from 'volt';
         ></div>
 
         <div class="relative z-10 flex gap-4">
-          <volt-avatar>
-            <volt-avatar-image src="https://github.com/shadcn.png" alt="@shadcn" />
-            <volt-avatar-fallback>CN</volt-avatar-fallback>
+          <volt-avatar ngpAvatar>
+            <img
+              ngpAvatarImage
+              src="https://github.com/shadcn.png"
+              alt="@shadcn"
+              class="aspect-square h-full w-full object-cover"
+            />
+            <span
+              ngpAvatarFallback
+              class="flex h-full w-full items-center justify-center rounded-full bg-muted font-medium text-foreground"
+              >CN</span
+            >
           </volt-avatar>
-          <volt-avatar>
-            <volt-avatar-image
+          <volt-avatar ngpAvatar>
+            <img
+              ngpAvatarImage
               src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
               alt="@janedoe"
+              class="aspect-square h-full w-full object-cover"
             />
-            <volt-avatar-fallback>JD</volt-avatar-fallback>
+            <span
+              ngpAvatarFallback
+              class="flex h-full w-full items-center justify-center rounded-full bg-muted font-medium text-foreground"
+              >JD</span
+            >
           </volt-avatar>
-          <volt-avatar>
-            <volt-avatar-fallback>AP</volt-avatar-fallback>
+          <volt-avatar ngpAvatar>
+            <span
+              ngpAvatarFallback
+              class="flex h-full w-full items-center justify-center rounded-full bg-muted font-medium text-foreground"
+              >AP</span
+            >
           </volt-avatar>
         </div>
       </div>

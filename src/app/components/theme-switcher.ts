@@ -118,8 +118,8 @@ import { VoltSelect, VoltSelectContent, VoltSelectItem, VoltSelectLabel } from '
   `,
 })
 export class ThemeSwitcher {
-  color = signal('volt');
-  style = signal('sharp');
+  color = signal<unknown>('volt');
+  style = signal<unknown>('sharp');
   isDark = signal(false);
 
   constructor(@Inject(PLATFORM_ID) platformId: Object) {
@@ -137,13 +137,13 @@ export class ThemeSwitcher {
       }
 
       effect(() => {
-        const c = this.color();
+        const c = this.color() as string;
         document.documentElement.setAttribute('data-color', c);
         localStorage.setItem('volt-color', c);
       });
 
       effect(() => {
-        const s = this.style();
+        const s = this.style() as string;
         document.documentElement.setAttribute('data-style', s);
         localStorage.setItem('volt-style', s);
       });

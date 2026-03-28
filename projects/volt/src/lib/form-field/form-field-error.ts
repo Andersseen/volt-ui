@@ -3,14 +3,12 @@ import { NgpError } from 'ng-primitives/form-field';
 
 @Component({
   selector: 'volt-error',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [NgpError],
-  host: {
-    role: 'alert',
-    'aria-live': 'polite',
-    class: 'text-[var(--error)] text-sm font-medium',
-  },
-  template: `<ng-content />`,
+  imports: [NgpError],
+  template: `
+    <span ngpError role="alert" aria-live="polite" class="text-[var(--error)] text-sm font-medium">
+      <ng-content />
+    </span>
+  `,
 })
 export class VoltError {}

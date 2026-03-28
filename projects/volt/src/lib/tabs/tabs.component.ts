@@ -1,10 +1,14 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { NgpTabset } from 'ng-primitives/tabs';
+import { ChangeDetectionStrategy, Component, input, model, output } from '@angular/core';
+import { NgpTabset, provideTabsetState } from 'ng-primitives/tabs';
 
 @Component({
   selector: 'volt-tabs',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [],
+  providers: [provideTabsetState()],
+  host: {
+    class: 'w-full block',
+  },
   hostDirectives: [
     {
       directive: NgpTabset,
@@ -16,9 +20,11 @@ import { NgpTabset } from 'ng-primitives/tabs';
       outputs: ['ngpTabsetValueChange: valueChange'],
     },
   ],
-  template: `<ng-content></ng-content>`,
-  host: {
-    class: 'w-full block',
-  },
+  template: ` <ng-content /> `,
 })
-export class VoltTabs {}
+export class VoltTabs {
+  readonly value = model<string | undefined>(undefined);
+  readonly orientation = input<'horizontal' | 'vertical'>('horizontal');
+  readonly activateOnFocus = input<boolean>(true);
+  readonly valueChange = output<string | undefined>();
+}

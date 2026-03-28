@@ -4,7 +4,7 @@ import { VoltCheckbox, VoltLabel } from 'volt';
 @Component({
   selector: 'app-checkbox-demo',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [VoltCheckbox],
+  imports: [VoltCheckbox, VoltLabel],
   template: `
     <div class="space-y-6">
       <div>
@@ -26,13 +26,12 @@ import { VoltCheckbox, VoltLabel } from 'volt';
         >
           <volt-checkbox id="terms"></volt-checkbox>
           <div class="grid gap-1.5 leading-none">
-            <label
-              volt-label
-              for="terms"
+            <volt-label
+              htmlFor="terms"
               class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex items-center cursor-pointer"
             >
               Accept terms and conditions
-            </label>
+            </volt-label>
             <p class="text-sm text-muted-foreground">
               You agree to our Terms of Service and Privacy Policy.
             </p>

@@ -8,6 +8,7 @@ import {
   VoltCardHeader,
   VoltCardTitle,
   VoltInput,
+  VoltLabel,
   VoltTabs,
   VoltTabsContent,
   VoltTabsList,
@@ -24,6 +25,7 @@ import {
     VoltTabsContent,
     VoltButton,
     VoltInput,
+    VoltLabel,
     VoltCard,
     VoltCardHeader,
     VoltCardTitle,
@@ -65,11 +67,11 @@ import {
                 </volt-card-header>
                 <volt-card-content class="space-y-4">
                   <div class="space-y-2">
-                    <label volt-label htmlFor="name">Name</label>
+                    <volt-label htmlFor="name">Name</volt-label>
                     <volt-input id="name" value="Jane Doe" />
                   </div>
                   <div class="space-y-2">
-                    <label volt-label htmlFor="username">Username</label>
+                    <volt-label htmlFor="username">Username</volt-label>
                     <volt-input id="username" value="@janedoe" />
                   </div>
                 </volt-card-content>
@@ -90,11 +92,11 @@ import {
                 </volt-card-header>
                 <volt-card-content class="space-y-4">
                   <div class="space-y-2">
-                    <label volt-label htmlFor="current">Current password</label>
+                    <volt-label htmlFor="current">Current password</volt-label>
                     <volt-input id="current" type="password" />
                   </div>
                   <div class="space-y-2">
-                    <label volt-label htmlFor="new">New password</label>
+                    <volt-label htmlFor="new">New password</volt-label>
                     <volt-input id="new" type="password" />
                   </div>
                 </volt-card-content>

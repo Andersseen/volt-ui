@@ -3,15 +3,17 @@ import { NgpLabel } from 'ng-primitives/form-field';
 
 @Component({
   selector: 'volt-label',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [NgpLabel],
-  host: {
-    class:
-      'text-sm font-[var(--font-weight-label)] text-foreground leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70',
-    '[class.text-error]': 'error()',
-  },
-  template: `<ng-content />`,
+  imports: [NgpLabel],
+  template: `
+    <label
+      ngpLabel
+      [class.text-error]="error()"
+      class="text-sm font-[var(--font-weight-label)] text-foreground leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+    >
+      <ng-content />
+    </label>
+  `,
 })
 export class VoltLabel {
   readonly error = input<boolean>(false);
