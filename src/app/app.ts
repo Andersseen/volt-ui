@@ -5,7 +5,6 @@ import { Footer } from './components/footer';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterModule, Header, Footer],
   templateUrl: './app.html',

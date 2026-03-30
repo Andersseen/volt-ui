@@ -35,9 +35,6 @@ importers:
       '@floating-ui/dom':
         specifier: ^1.6.0
         version: 1.7.6
-      '@ng-primitives/mcp':
-        specifier: ^0.110.2
-        version: 0.110.2
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -75,6 +72,9 @@ importers:
       '@angular/compiler-cli':
         specifier: ^21.2.0
         version: 21.2.1(@angular/compiler@21.2.1)(typescript@5.9.3)
+      '@ng-primitives/mcp':
+        specifier: ^0.110.2
+        version: 0.110.2
       '@tailwindcss/postcss':
         specifier: ^4.1.12
         version: 4.2.1
