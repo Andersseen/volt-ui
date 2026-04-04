@@ -12,15 +12,33 @@ import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
       <!-- Sidebar Navigation -->
       <aside class="w-full md:w-64 flex-shrink-0 md:sticky md:top-24">
         <nav class="flex flex-col space-y-2">
-          <h4 class="font-medium text-sm mt-2 text-foreground">Getting Started</h4>
+          <h4 class="font-medium text-sm mt-2 text-foreground">Documentation</h4>
           <ul class="space-y-1 mt-2 md:border-l md:border-border/50 md:ml-2 md:pl-4">
             <li>
               <a
-                routerLink="installation"
+                routerLink="introduction"
                 routerLinkActive="font-medium text-foreground"
                 class="block py-1 text-sm text-muted-foreground hover:text-foreground"
               >
-                Installation
+                Introduction
+              </a>
+            </li>
+            <li>
+              <a
+                routerLink="themes"
+                routerLinkActive="font-medium text-foreground"
+                class="block py-1 text-sm text-muted-foreground hover:text-foreground"
+              >
+                Themes
+              </a>
+            </li>
+            <li>
+              <a
+                routerLink="components"
+                routerLinkActive="font-medium text-foreground"
+                class="block py-1 text-sm text-muted-foreground hover:text-foreground"
+              >
+                All Components
               </a>
             </li>
           </ul>
@@ -153,6 +171,15 @@ import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
                 class="block py-1 text-sm text-muted-foreground hover:text-foreground"
               >
                 Tooltip
+              </a>
+            </li>
+            <li>
+              <a
+                routerLink="navigation-menu"
+                routerLinkActive="font-medium text-foreground"
+                class="block py-1 text-sm text-muted-foreground hover:text-foreground"
+              >
+                Navigation Menu
               </a>
             </li>
           </ul>

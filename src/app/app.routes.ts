@@ -9,11 +9,20 @@ export const routes: Routes = [
     path: 'docs',
     loadComponent: () => import('./pages/docs/docs-layout').then((m) => m.DocsLayout),
     children: [
-      { path: '', redirectTo: 'installation', pathMatch: 'full' },
+      { path: '', redirectTo: 'introduction', pathMatch: 'full' },
       {
-        path: 'installation',
-        loadComponent: () => import('./pages/docs/installation').then((m) => m.InstallationDocs),
+        path: 'introduction',
+        loadComponent: () => import('./pages/docs/introduction/introduction').then((m) => m.IntroductionPage),
       },
+      {
+        path: 'themes',
+        loadComponent: () => import('./pages/docs/introduction/themes').then((m) => m.ThemesPage),
+      },
+      {
+        path: 'components',
+        loadComponent: () => import('./pages/docs/components-index').then((m) => m.ComponentsIndexPage),
+      },
+      // Individual component docs
       {
         path: 'button',
         loadComponent: () => import('./pages/docs/components/button').then((m) => m.ButtonDemo),
@@ -71,6 +80,11 @@ export const routes: Routes = [
       {
         path: 'tooltip',
         loadComponent: () => import('./pages/docs/components/tooltip').then((m) => m.TooltipDemo),
+      },
+      {
+        path: 'navigation-menu',
+        loadComponent: () =>
+          import('./pages/docs/components/navigation-menu').then((m) => m.NavigationMenuDemo),
       },
     ],
   },

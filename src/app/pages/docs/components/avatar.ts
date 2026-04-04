@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { VoltAvatar } from 'volt';
-import { NgpAvatar, NgpAvatarImage, NgpAvatarFallback } from 'ng-primitives/avatar';
+import { VoltAvatar, VoltAvatarFallback, VoltAvatarImage } from 'volt';
+import { CodePanel } from '../../../components/code-panel';
+import { AVATAR_SNIPPET } from '../../../lib/snippets';
 
 @Component({
   selector: 'app-avatar-demo',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [VoltAvatar, NgpAvatar, NgpAvatarImage, NgpAvatarFallback],
+  imports: [VoltAvatar, VoltAvatarImage, VoltAvatarFallback, CodePanel],
   template: `
     <div class="space-y-6">
       <div>
@@ -23,42 +24,32 @@ import { NgpAvatar, NgpAvatarImage, NgpAvatarFallback } from 'ng-primitives/avat
         ></div>
 
         <div class="relative z-10 flex gap-4">
-          <volt-avatar ngpAvatar>
-            <img
-              ngpAvatarImage
-              src="https://github.com/shadcn.png"
-              alt="@shadcn"
-              class="aspect-square h-full w-full object-cover"
-            />
-            <span
-              ngpAvatarFallback
-              class="flex h-full w-full items-center justify-center rounded-full bg-muted font-medium text-foreground"
-              >CN</span
-            >
+          <volt-avatar>
+            <img voltAvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+            <volt-avatar-fallback>CN</volt-avatar-fallback>
           </volt-avatar>
-          <volt-avatar ngpAvatar>
-            <img
-              ngpAvatarImage
-              src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
-              alt="@janedoe"
-              class="aspect-square h-full w-full object-cover"
-            />
-            <span
-              ngpAvatarFallback
-              class="flex h-full w-full items-center justify-center rounded-full bg-muted font-medium text-foreground"
-              >JD</span
-            >
+
+          <volt-avatar>
+            <img voltAvatarImage src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="@janedoe" />
+            <volt-avatar-fallback>JD</volt-avatar-fallback>
           </volt-avatar>
-          <volt-avatar ngpAvatar>
-            <span
-              ngpAvatarFallback
-              class="flex h-full w-full items-center justify-center rounded-full bg-muted font-medium text-foreground"
-              >AP</span
-            >
+
+          <volt-avatar>
+            <volt-avatar-fallback>AP</volt-avatar-fallback>
           </volt-avatar>
         </div>
       </div>
+
+      <!-- Source Code Section -->
+      <app-code-panel
+        title="Component Source"
+        [code]="avatarCode"
+        cliCommand="npx volt add avatar"
+        description="Copy this code to your project. The component uses ng-primitives/avatar."
+      />
     </div>
   `,
 })
-export class AvatarDemo {}
+export class AvatarDemo {
+  readonly avatarCode = AVATAR_SNIPPET;
+}

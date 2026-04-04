@@ -8,6 +8,8 @@ import {
   VoltCardFooter,
 } from 'volt';
 import { VoltButton } from 'volt';
+import { CodePanel } from '../../../components/code-panel';
+import { CARD_SNIPPET } from '../../../lib/snippets';
 
 @Component({
   selector: 'app-card-demo',
@@ -20,6 +22,7 @@ import { VoltButton } from 'volt';
     VoltCardContent,
     VoltCardFooter,
     VoltButton,
+    CodePanel,
   ],
   template: `
     <div class="space-y-6">
@@ -68,7 +71,17 @@ import { VoltButton } from 'volt';
           </volt-card>
         </div>
       </div>
+
+      <!-- Source Code Section -->
+      <app-code-panel
+        title="Component Source"
+        [code]="cardCode"
+        cliCommand="npx volt add card"
+        description="Copy this code to your project. The component uses class-variance-authority for variants."
+      />
     </div>
   `,
 })
-export class CardDemo {}
+export class CardDemo {
+  readonly cardCode = CARD_SNIPPET;
+}

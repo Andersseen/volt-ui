@@ -4,7 +4,6 @@ import { NgpTabButton, injectTabButtonState, provideTabButtonState } from 'ng-pr
 @Component({
   selector: 'volt-tabs-trigger',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgpTabButton],
   providers: [provideTabButtonState()],
   host: {
     class:

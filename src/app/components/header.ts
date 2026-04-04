@@ -1,13 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
 import { VoltBadge } from 'volt';
 import { ThemeSwitcher } from './theme-switcher';
 
 @Component({
   selector: 'app-header',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterModule, VoltBadge, ThemeSwitcher],
+  imports: [RouterModule, RouterLink, RouterLinkActive, VoltBadge, ThemeSwitcher],
   template: `
     <header class="sticky top-0 z-50 bg-background/70 backdrop-blur-xl border-b border-border/40">
       <div
@@ -40,19 +39,27 @@ import { ThemeSwitcher } from './theme-switcher';
         </div>
 
         <div class="flex items-center gap-2 sm:gap-3">
-          <nav class="hidden md:flex gap-4 text-sm font-medium text-muted-foreground mr-1">
+          <!-- Navigation -->
+          <nav class="hidden md:flex gap-1 text-sm font-medium text-muted-foreground mr-1">
             <a
               routerLink="/"
               routerLinkActive="text-foreground"
               [routerLinkActiveOptions]="{ exact: true }"
-              class="transition-colors hover:text-foreground"
+              class="px-3 py-2 rounded-md transition-colors hover:text-foreground"
             >
               Home
             </a>
             <a
-              routerLink="/docs"
+              routerLink="/docs/introduction"
               routerLinkActive="text-foreground"
-              class="transition-colors hover:text-foreground"
+              class="px-3 py-2 rounded-md transition-colors hover:text-foreground"
+            >
+              Docs
+            </a>
+            <a
+              routerLink="/docs/components"
+              routerLinkActive="text-foreground"
+              class="px-3 py-2 rounded-md transition-colors hover:text-foreground"
             >
               Components
             </a>

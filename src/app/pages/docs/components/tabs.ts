@@ -14,6 +14,8 @@ import {
   VoltTabsList,
   VoltTabsTrigger,
 } from 'volt';
+import { CodePanel } from '../../../components/code-panel';
+import { TABS_SNIPPET } from '../../../lib/snippets';
 
 @Component({
   selector: 'app-tabs-demo',
@@ -32,6 +34,7 @@ import {
     VoltCardDescription,
     VoltCardContent,
     VoltCardFooter,
+    CodePanel,
   ],
   template: `
     <div class="space-y-6">
@@ -108,7 +111,17 @@ import {
           </volt-tabs>
         </div>
       </div>
+
+      <!-- Source Code Section -->
+      <app-code-panel
+        title="Component Source"
+        [code]="tabsCode"
+        cliCommand="npx volt add tabs"
+        description="Copy this code to your project. The component uses ng-primitives/tabs."
+      />
     </div>
   `,
 })
-export class TabsDemo {}
+export class TabsDemo {
+  readonly tabsCode = TABS_SNIPPET;
+}

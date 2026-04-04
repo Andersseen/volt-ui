@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { VoltTooltip, VoltTooltipContent } from 'volt';
 import { VoltButton } from 'volt';
+import { CodePanel } from '../../../components/code-panel';
+import { TOOLTIP_SNIPPET } from '../../../lib/snippets';
 
 @Component({
   selector: 'app-tooltip-demo',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [VoltTooltip, VoltTooltipContent, VoltButton],
+  imports: [VoltTooltip, VoltTooltipContent, VoltButton, CodePanel],
   template: `
     <div class="space-y-6">
       <div>
@@ -33,7 +34,17 @@ import { VoltButton } from 'volt';
           </ng-template>
         </div>
       </div>
+
+      <!-- Source Code Section -->
+      <app-code-panel
+        title="Component Source"
+        [code]="tooltipCode"
+        cliCommand="npx volt add tooltip"
+        description="Copy this code to your project. The component uses ng-primitives/tooltip."
+      />
     </div>
   `,
 })
-export class TooltipDemo {}
+export class TooltipDemo {
+  readonly tooltipCode = TOOLTIP_SNIPPET;
+}

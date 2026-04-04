@@ -1,10 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { VoltSeparator } from 'volt';
+import { CodePanel } from '../../../components/code-panel';
+import { SEPARATOR_SNIPPET } from '../../../lib/snippets';
 
 @Component({
   selector: 'app-separator-demo',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [VoltSeparator],
+  imports: [VoltSeparator, CodePanel],
   template: `
     <div class="space-y-6">
       <div>
@@ -38,7 +40,17 @@ import { VoltSeparator } from 'volt';
           </div>
         </div>
       </div>
+
+      <!-- Source Code Section -->
+      <app-code-panel
+        title="Component Source"
+        [code]="separatorCode"
+        cliCommand="npx volt add separator"
+        description="Copy this code to your project. The component uses ng-primitives/separator."
+      />
     </div>
   `,
 })
-export class SeparatorDemo {}
+export class SeparatorDemo {
+  readonly separatorCode = SEPARATOR_SNIPPET;
+}

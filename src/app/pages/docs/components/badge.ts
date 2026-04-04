@@ -1,10 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { VoltBadge } from 'volt';
+import { CodePanel } from '../../../components/code-panel';
+import { BADGE_SNIPPET } from '../../../lib/snippets';
 
 @Component({
   selector: 'app-badge-demo',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [VoltBadge],
+  imports: [VoltBadge, CodePanel],
   template: `
     <div class="space-y-6">
       <div>
@@ -28,7 +30,17 @@ import { VoltBadge } from 'volt';
           <volt-badge variant="destructive">Destructive</volt-badge>
         </div>
       </div>
+
+      <!-- Source Code Section -->
+      <app-code-panel
+        title="Component Source"
+        [code]="badgeCode"
+        cliCommand="npx volt add badge"
+        description="Copy this code to your project. The component uses class-variance-authority."
+      />
     </div>
   `,
 })
-export class BadgeDemo {}
+export class BadgeDemo {
+  readonly badgeCode = BADGE_SNIPPET;
+}

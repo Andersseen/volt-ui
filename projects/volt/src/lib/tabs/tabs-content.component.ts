@@ -4,7 +4,6 @@ import { NgpTabPanel, injectTabPanelState, provideTabPanelState } from 'ng-primi
 @Component({
   selector: 'volt-tabs-content',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgpTabPanel],
   providers: [provideTabPanelState()],
   host: {
     class:

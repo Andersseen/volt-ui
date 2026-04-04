@@ -1,10 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { VoltButton } from 'volt';
+import { CodePanel } from '../../../components/code-panel';
+import { BUTTON_SNIPPET } from '../../../lib/snippets';
 
 @Component({
   selector: 'app-button-demo',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [VoltButton],
+  imports: [VoltButton, CodePanel],
   template: `
     <div class="space-y-10">
       <div>
@@ -104,7 +106,17 @@ import { VoltButton } from 'volt';
           </volt-button>
         </div>
       </div>
+
+      <!-- Source Code Section -->
+      <app-code-panel
+        title="Component Source"
+        [code]="buttonCode"
+        cliCommand="npx volt add button"
+        description="Copy this code to your project. The component uses ng-primitives and class-variance-authority."
+      />
     </div>
   `,
 })
-export class ButtonDemo {}
+export class ButtonDemo {
+  readonly buttonCode = BUTTON_SNIPPET;
+}

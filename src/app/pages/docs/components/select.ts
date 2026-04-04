@@ -6,11 +6,13 @@ import {
   VoltSelectLabel,
   VoltSelectSeparator,
 } from 'volt';
+import { CodePanel } from '../../../components/code-panel';
+import { SELECT_SNIPPET } from '../../../lib/snippets';
 
 @Component({
   selector: 'app-select-demo',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [VoltSelect, VoltSelectContent, VoltSelectItem, VoltSelectLabel, VoltSelectSeparator],
+  imports: [VoltSelect, VoltSelectContent, VoltSelectItem, VoltSelectLabel, VoltSelectSeparator, CodePanel],
   template: `
     <div class="px-6 py-12 max-w-3xl mx-auto space-y-12">
       <div>
@@ -49,9 +51,18 @@ import {
           Selected value: <span class="font-medium text-foreground">{{ selectedFruit }}</span>
         </p>
       </div>
+
+      <!-- Source Code Section -->
+      <app-code-panel
+        title="Component Source"
+        [code]="selectCode"
+        cliCommand="npx volt add select"
+        description="Copy this code to your project. The component uses ng-primitives/select."
+      />
     </div>
   `,
 })
 export class SelectDemo {
   selectedFruit = '';
+  readonly selectCode = SELECT_SNIPPET;
 }

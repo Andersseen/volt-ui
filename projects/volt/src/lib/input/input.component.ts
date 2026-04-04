@@ -1,4 +1,4 @@
-import { booleanAttribute, ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { booleanAttribute, ChangeDetectionStrategy, Component, input, model } from '@angular/core';
 import { NgpInput } from 'ng-primitives/input';
 
 @Component({
@@ -21,6 +21,7 @@ import { NgpInput } from 'ng-primitives/input';
       [required]="required()"
       [disabled]="disabled()"
       [value]="value()"
+      (input)="value.set($any($event.target).value)"
       class="flex h-10 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
     />
   `,
@@ -31,7 +32,7 @@ export class VoltInput {
   readonly name = input('');
   readonly placeholder = input('');
   readonly autocomplete = input('');
-  readonly value = input('');
+  readonly value = model('');
 
   readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly readonly = input<boolean, unknown>(false, { transform: booleanAttribute });

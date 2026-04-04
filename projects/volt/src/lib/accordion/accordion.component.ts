@@ -1,18 +1,10 @@
-import {
-  booleanAttribute,
-  ChangeDetectionStrategy,
-  Component,
-  input,
-  model,
-  output,
-} from '@angular/core';
+import { booleanAttribute, ChangeDetectionStrategy, Component, input, model } from '@angular/core';
 import type { NgpAccordionType } from 'ng-primitives/accordion';
 import { NgpAccordion, provideAccordionState } from 'ng-primitives/accordion';
 
 @Component({
   selector: 'volt-accordion',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [],
   providers: [provideAccordionState()],
   host: {
     class: 'w-full block',
@@ -38,5 +30,4 @@ export class VoltAccordion {
   readonly value = model<string | string[] | null>(null);
   readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly orientation = input<'horizontal' | 'vertical'>('vertical');
-  readonly valueChange = output<string | string[] | null>();
 }

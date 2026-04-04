@@ -1,10 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { VoltCheckbox, VoltLabel } from 'volt';
+import { CodePanel } from '../../../components/code-panel';
+import { CHECKBOX_SNIPPET } from '../../../lib/snippets';
 
 @Component({
   selector: 'app-checkbox-demo',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [VoltCheckbox, VoltLabel],
+  imports: [VoltCheckbox, VoltLabel, CodePanel],
   template: `
     <div class="space-y-6">
       <div>
@@ -38,7 +40,17 @@ import { VoltCheckbox, VoltLabel } from 'volt';
           </div>
         </div>
       </div>
+
+      <!-- Source Code Section -->
+      <app-code-panel
+        title="Component Source"
+        [code]="checkboxCode"
+        cliCommand="npx volt add checkbox"
+        description="Copy this code to your project. The component uses ng-primitives/checkbox."
+      />
     </div>
   `,
 })
-export class CheckboxDemo {}
+export class CheckboxDemo {
+  readonly checkboxCode = CHECKBOX_SNIPPET;
+}

@@ -1,10 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { VoltSwitch, VoltLabel } from 'volt';
+import { CodePanel } from '../../../components/code-panel';
+import { SWITCH_SNIPPET } from '../../../lib/snippets';
 
 @Component({
   selector: 'app-switch-demo',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [VoltSwitch, VoltLabel],
+  imports: [VoltSwitch, VoltLabel, CodePanel],
   template: `
     <div class="space-y-6">
       <div>
@@ -28,7 +30,17 @@ import { VoltSwitch, VoltLabel } from 'volt';
           <volt-label htmlFor="airplane-mode" class="cursor-pointer">Airplane Mode</volt-label>
         </div>
       </div>
+
+      <!-- Source Code Section -->
+      <app-code-panel
+        title="Component Source"
+        [code]="switchCode"
+        cliCommand="npx volt add switch"
+        description="Copy this code to your project. The component uses ng-primitives/switch."
+      />
     </div>
   `,
 })
-export class SwitchDemo {}
+export class SwitchDemo {
+  readonly switchCode = SWITCH_SNIPPET;
+}
