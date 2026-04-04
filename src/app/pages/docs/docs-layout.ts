@@ -41,6 +41,34 @@ import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
                 All Components
               </a>
             </li>
+            <li>
+              <a
+                routerLink="mcp"
+                routerLinkActive="font-medium text-foreground"
+                class="block py-1 text-sm text-muted-foreground hover:text-foreground flex items-center gap-2"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M12 2v4" />
+                  <path d="m5 5 2.8 2.8" />
+                  <path d="m19 5-2.8 2.8" />
+                  <path d="M12 12v8" />
+                  <path d="m5 19 2.8-2.8" />
+                  <path d="m19 19-2.8-2.8" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+                AI Integration
+              </a>
+            </li>
           </ul>
 
           <h4 class="font-medium text-sm mt-8 text-foreground">Components</h4>

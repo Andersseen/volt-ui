@@ -1,0 +1,102 @@
+{
+  "mcp": {
+    "name": "volt-ui",
+    "version": "1.0.0",
+    "description": "Volt UI Angular Component Library - Context for Claude",
+    "tools": [
+      {
+        "name": "get_component_info",
+        "description": "Get detailed information about a Volt UI component",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "component": {
+              "type": "string",
+              "enum": ["button", "badge", "card", "input", "textarea", "checkbox", "radio", "switch", "toggle", "select", "tabs", "accordion", "avatar", "separator", "tooltip", "navigation-menu", "form-field"],
+              "description": "Name of the component"
+            }
+          },
+          "required": ["component"]
+        }
+      },
+      {
+        "name": "list_components",
+        "description": "List all available Volt UI components"
+      },
+      {
+        "name": "get_usage_example",
+        "description": "Get usage example for a component",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "component": { "type": "string" },
+            "variant": { "type": "string" },
+            "showImports": { "type": "boolean", "default": true }
+          },
+          "required": ["component"]
+        }
+      },
+      {
+        "name": "get_component_source",
+        "description": "Get source code for a component",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "component": { "type": "string" },
+            "file": { "type": "string" }
+          },
+          "required": ["component"]
+        }
+      },
+      {
+        "name": "get_theme_info",
+        "description": "Get theme system information"
+      },
+      {
+        "name": "generate_cli_command",
+        "description": "Generate CLI command for adding components",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "action": { "type": "string", "enum": ["init", "add", "list"] },
+            "component": { "type": "string" },
+            "targetDir": { "type": "string" }
+          },
+          "required": ["action"]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "name": "component-library",
+        "type": "text/json",
+        "content": {
+          "project": "volt-ui",
+          "type": "angular-component-library",
+          "framework": "Angular v21",
+          "primitives": "ng-primitives",
+          "styling": "Tailwind CSS v4",
+          "variantSystem": "class-variance-authority",
+          "architecture": {
+            "components": "standalone",
+            "changeDetection": "zoneless-signals",
+            "hostDirectives": true
+          },
+          "naming": {
+            "sourcePrefix": "volt",
+            "cliPrefix": "ui",
+            "sourceClassPrefix": "Volt",
+            "cliClassPrefix": "Ui"
+          }
+        }
+      }
+    ],
+    "prompts": [
+      {
+        "name": "volt-assistant",
+        "description": "Assistant for working with Volt UI components",
+        "template": "You are an expert in Volt UI, an Angular component library. When helping users:\n\n1. Always recommend standalone component patterns\n2. Use signals for reactivity (input(), output(), model(), computed())\n3. Use CVA (class-variance-authority) for component variants\n4. Import from 'ng-primitives' for accessibility primitives\n5. Follow the naming convention: volt-* selectors in source, ui-* in user projects\n6. Use OnPush change detection strategy\n7. Recommend the CLI for adding components: node cli/bin/volt add <component>\n\nAvailable components: button, badge, card, input, textarea, checkbox, radio, switch, toggle, select, tabs, accordion, avatar, separator, tooltip, navigation-menu, form-field\n\nTheme system supports colors: volt, ember, sage, dusk, glacier\nStyles: sharp, soft, brutal, ghost, retro"
+      }
+    ]
+  }
+}

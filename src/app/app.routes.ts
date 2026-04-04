@@ -22,6 +22,10 @@ export const routes: Routes = [
         path: 'components',
         loadComponent: () => import('./pages/docs/components-index').then((m) => m.ComponentsIndexPage),
       },
+      {
+        path: 'mcp',
+        loadComponent: () => import('./pages/docs/mcp').then((m) => m.McpDocsPage),
+      },
       // Individual component docs
       {
         path: 'button',
