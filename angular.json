@@ -53,6 +53,10 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "buildTarget": "volt-ui:build:development",
+            "hmr": true
+          },
           "configurations": {
             "production": {
               "buildTarget": "volt-ui:build:production"
