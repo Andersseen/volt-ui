@@ -1,10 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { VoltSwitch, VoltLabel } from 'volt';
+import { CopyButton } from '../../../components/copy-button';
+import { SWITCH_SNIPPET } from '../../../lib/snippets';
 
 @Component({
   selector: 'app-switch-demo',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [VoltSwitch, VoltLabel],
+  imports: [VoltSwitch, VoltLabel, CopyButton],
   template: `
     <div class="space-y-6">
       <div>
@@ -28,7 +30,24 @@ import { VoltSwitch, VoltLabel } from 'volt';
           <volt-label htmlFor="airplane-mode" class="cursor-pointer">Airplane Mode</volt-label>
         </div>
       </div>
+
+      <!-- Source Code Section -->
+      <div class="space-y-4">
+        <div class="flex items-center justify-between">
+          <h3 class="font-semibold text-lg">Component Source</h3>
+          <app-copy-button [code]="switchCode" />
+        </div>
+        <div class="relative rounded-lg border border-border bg-muted/50 overflow-hidden">
+          <pre class="p-4 text-sm overflow-x-auto"><code class="language-typescript">{{ switchCode }}</code></pre>
+        </div>
+        <p class="text-sm text-muted-foreground">
+          Copy this code to your project. The component uses 
+          <code class="px-1 py-0.5 bg-muted rounded text-xs">ng-primitives/switch</code>.
+        </p>
+      </div>
     </div>
   `,
 })
-export class SwitchDemo {}
+export class SwitchDemo {
+  readonly switchCode = SWITCH_SNIPPET;
+}

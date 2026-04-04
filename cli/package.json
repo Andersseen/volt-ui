@@ -1,0 +1,22 @@
+{
+  "name": "@volt/ui-cli",
+  "version": "0.0.1",
+  "description": "CLI for adding Volt UI components to your project",
+  "bin": {
+    "volt": "./bin/volt"
+  },
+  "files": [
+    "bin/"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "angular",
+    "ui",
+    "components",
+    "cli"
+  ],
+  "author": "",
+  "license": "MIT"
+}

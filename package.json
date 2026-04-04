@@ -1,6 +1,9 @@
 {
   "name": "volt-ui",
   "version": "0.0.0",
+  "bin": {
+    "volt": "./cli/bin/volt"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

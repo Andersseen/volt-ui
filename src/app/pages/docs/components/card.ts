@@ -8,6 +8,8 @@ import {
   VoltCardFooter,
 } from 'volt';
 import { VoltButton } from 'volt';
+import { CopyButton } from '../../../components/copy-button';
+import { CARD_SNIPPET } from '../../../lib/snippets';
 
 @Component({
   selector: 'app-card-demo',
@@ -20,6 +22,7 @@ import { VoltButton } from 'volt';
     VoltCardContent,
     VoltCardFooter,
     VoltButton,
+    CopyButton,
   ],
   template: `
     <div class="space-y-6">
@@ -68,7 +71,24 @@ import { VoltButton } from 'volt';
           </volt-card>
         </div>
       </div>
+
+      <!-- Source Code Section -->
+      <div class="space-y-4">
+        <div class="flex items-center justify-between">
+          <h3 class="font-semibold text-lg">Component Source</h3>
+          <app-copy-button [code]="cardCode" />
+        </div>
+        <div class="relative rounded-lg border border-border bg-muted/50 overflow-hidden">
+          <pre class="p-4 text-sm overflow-x-auto"><code class="language-typescript">{{ cardCode }}</code></pre>
+        </div>
+        <p class="text-sm text-muted-foreground">
+          Copy this code to your project. The component uses 
+          <code class="px-1 py-0.5 bg-muted rounded text-xs">class-variance-authority</code>.
+        </p>
+      </div>
     </div>
   `,
 })
-export class CardDemo {}
+export class CardDemo {
+  readonly cardCode = CARD_SNIPPET;
+}

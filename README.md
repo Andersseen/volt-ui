@@ -1,96 +1,117 @@
-# VoltUi
+# Volt UI
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.1.
+An Angular UI component library inspired by shadcn/ui, built on top of [ng-primitives](https://ng-primitives.dev).
 
-## Development server
+## Features
 
-To start a local development server, run:
+- 🎨 **Fully customizable** - Copy components directly into your project and modify them
+- ♿ **Accessible** - Built on ng-primitives with proper ARIA attributes
+- 🎯 **Angular v21** - Uses zoneless change detection and standalone components
+- 💅 **Tailwind CSS** - Styled with Tailwind CSS v4
+- 📦 **TypeScript** - Fully typed with TypeScript
+- 🌙 **Dark mode** - Built-in dark mode support
 
+## Quick Start
+
+### Using the CLI (like shadcn)
+
+1. **Initialize volt/ui in your project:**
 ```bash
-ng serve
+node cli/bin/volt init
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
+2. **Add components:**
 ```bash
-ng generate component component-name
+node cli/bin/volt add button
+node cli/bin/volt add card
+node cli/bin/volt add navigation-menu
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+3. **Use in your components:**
+```typescript
+import { UiButton } from './ui/button';
 
-```bash
-ng generate --help
+@Component({
+  selector: 'app-my-component',
+  imports: [UiButton],
+  template: `<ui-button variant="solid">Click me</ui-button>`
+})
+export class MyComponent {}
 ```
 
-## Building
+### Copy from Demo
 
-To build the project run:
+Each component demo page includes a **"Copy code"** button that copies the full component source code to your clipboard. Simply:
+
+1. Visit the component demo page
+2. Click "Copy code" 
+3. Paste into your project's `ui/` folder
+4. Customize as needed
+
+## Available Components
+
+- [Button](./src/app/pages/docs/components/button.ts)
+- [Badge](./src/app/pages/docs/components/badge.ts)
+- [Card](./src/app/pages/docs/components/card.ts)
+- [Input](./src/app/pages/docs/components/input.ts)
+- [Checkbox](./src/app/pages/docs/components/checkbox.ts)
+- [Switch](./src/app/pages/docs/components/switch.ts)
+- [Select](./src/app/pages/docs/components/select.ts)
+- [Tabs](./src/app/pages/docs/components/tabs.ts)
+- [Accordion](./src/app/pages/docs/components/accordion.ts)
+- [Navigation Menu](./src/app/pages/docs/components/navigation-menu.ts)
+- [Tooltip](./src/app/pages/docs/components/tooltip.ts)
+- [Avatar](./src/app/pages/docs/components/avatar.ts)
+- [Radio](./src/app/pages/docs/components/radio.ts)
+- [Toggle](./src/app/pages/docs/components/toggle.ts)
+- [Separator](./src/app/pages/docs/components/separator.ts)
+
+See all components in the [live demo](https://volt-ui.pages.dev).
+
+## Dependencies
+
+Components require:
 
 ```bash
-ng build
+npm install ng-primitives class-variance-authority
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## Development
 
-## Running unit tests
+This project uses Angular CLI v21 with zoneless change detection.
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+### Start development server
 
 ```bash
-ng test
+pnpm start
 ```
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+### Build
 
 ```bash
-ng e2e
+pnpm build
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+### Build library
 
-## Additional Resources
+```bash
+npx ng build volt
+```
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Architecture
+
+- **Standalone components** - No NgModules required
+- **Zoneless change detection** - Uses signals for reactivity
+- **Host directives** - ng-primitives applied via hostDirectives
+- **CVA (class-variance-authority)** - For component variants
+- **Signals** - input(), output(), model(), computed()
 
 ## Deploy to Cloudflare Pages
-
-This repository is configured to deploy to Cloudflare Pages using Wrangler.
-
-### Local deploy
-
-```bash
-pnpm run deploy:cf
-```
-
-Production deploy to the `master` branch target:
 
 ```bash
 pnpm run deploy
 ```
 
-### Required Cloudflare auth
+## License
 
-Wrangler needs these environment variables:
-
-- `CLOUDFLARE_API_TOKEN`
-- `CLOUDFLARE_ACCOUNT_ID`
-
-### GitHub Actions auto deploy
-
-When `master` is updated, GitHub Actions runs `.github/workflows/deploy-cloudflare-pages.yml` and deploys automatically.
-
-Configure these repository secrets in GitHub:
-
-- `CLOUDFLARE_API_TOKEN`
-- `CLOUDFLARE_ACCOUNT_ID`
-
-If your Cloudflare Pages project is not named `volt-ui`, update:
-
-- `wrangler.toml`
-- `package.json` scripts `deploy:cf` and `deploy:cf:master`
+MIT
