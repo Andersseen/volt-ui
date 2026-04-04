@@ -19,7 +19,7 @@ import {
     VoltNavigationMenuTrigger,
     VoltNavigationMenuContent,
     VoltNavigationMenuContentItem,
-    VoltNavigationMenuLink,
+
   ],
   template: `
     <div class="space-y-6">
@@ -168,7 +168,7 @@ import {
 
               <!-- Direct Link -->
               <volt-navigation-menu-item>
-                <volt-navigation-menu-link href="#">About</volt-navigation-menu-link>
+                <a volt-navigation-menu-link href="#">About</a>
               </volt-navigation-menu-item>
             </volt-navigation-menu-list>
           </volt-navigation-menu>

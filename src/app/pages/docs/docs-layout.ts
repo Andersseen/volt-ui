@@ -155,6 +155,15 @@ import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
                 Tooltip
               </a>
             </li>
+            <li>
+              <a
+                routerLink="navigation-menu"
+                routerLinkActive="font-medium text-foreground"
+                class="block py-1 text-sm text-muted-foreground hover:text-foreground"
+              >
+                Navigation Menu
+              </a>
+            </li>
           </ul>
         </nav>
       </aside>

@@ -1,13 +1,28 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { VoltBadge } from 'volt';
+import { RouterLink, RouterModule } from '@angular/router';
+import {
+  VoltBadge,
+  VoltNavigationMenu,
+  VoltNavigationMenuItem,
+  VoltNavigationMenuLink,
+  VoltNavigationMenuList,
+} from 'volt';
 import { ThemeSwitcher } from './theme-switcher';
 
 @Component({
   selector: 'app-header',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterModule, VoltBadge, ThemeSwitcher],
+  imports: [
+    RouterModule,
+    RouterLink,
+    VoltBadge,
+    VoltNavigationMenu,
+    VoltNavigationMenuList,
+    VoltNavigationMenuItem,
+
+    VoltNavigationMenuLink,
+    ThemeSwitcher,
+  ],
   template: `
     <header class="sticky top-0 z-50 bg-background/70 backdrop-blur-xl border-b border-border/40">
       <div
@@ -40,23 +55,22 @@ import { ThemeSwitcher } from './theme-switcher';
         </div>
 
         <div class="flex items-center gap-2 sm:gap-3">
-          <nav class="hidden md:flex gap-4 text-sm font-medium text-muted-foreground mr-1">
-            <a
-              routerLink="/"
-              routerLinkActive="text-foreground"
-              [routerLinkActiveOptions]="{ exact: true }"
-              class="transition-colors hover:text-foreground"
-            >
-              Home
-            </a>
-            <a
-              routerLink="/docs"
-              routerLinkActive="text-foreground"
-              class="transition-colors hover:text-foreground"
-            >
-              Components
-            </a>
-          </nav>
+          <!-- Navigation Menu -->
+          <volt-navigation-menu class="hidden md:flex">
+            <volt-navigation-menu-list>
+              <volt-navigation-menu-item>
+                <a volt-navigation-menu-link routerLink="/" [active]="isActive('/')"> Home </a>
+              </volt-navigation-menu-item>
+              <volt-navigation-menu-item>
+                <a volt-navigation-menu-link routerLink="/*" [active]="isActive('/*')">
+                  Components
+                </a>
+              </volt-navigation-menu-item>
+              <volt-navigation-menu-item>
+                <a volt-navigation-menu-link routerLink="/docs" [active]="isActive('/')"> Docs </a>
+              </volt-navigation-menu-item>
+            </volt-navigation-menu-list>
+          </volt-navigation-menu>
 
           <a
             href="https://github.com/Andersseen/volt-ui"
@@ -78,4 +92,8 @@ import { ThemeSwitcher } from './theme-switcher';
     </header>
   `,
 })
-export class Header {}
+export class Header {
+  isActive(route: string): boolean {
+    return typeof window !== 'undefined' && window.location.pathname === route;
+  }
+}
