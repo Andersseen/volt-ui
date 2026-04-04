@@ -19,9 +19,3 @@ export * from './lib/tabs/tabs-trigger.component';
 export * from './lib/tabs/tabs-content.component';
 export * from './lib/select';
 export * from './lib/theme';
-
-// Re-export ng-primitives primitives for direct use
-// These are needed when using components like Avatar, Tooltip, etc.
-export { NgpAvatar, NgpAvatarImage, NgpAvatarFallback } from 'ng-primitives/avatar';
-
-export { NgpTooltip, NgpTooltipTrigger } from 'ng-primitives/tooltip';

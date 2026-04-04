@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, model } from '@angular/core';
 import { NgpTextarea } from 'ng-primitives/textarea';
 import { cva, type VariantProps } from 'class-variance-authority';
 
@@ -47,6 +47,8 @@ export type TextareaVariants = VariantProps<typeof textareaVariants>;
       [attr.aria-invalid]="state() === 'error' ? 'true' : null"
       [style.resize]="resize()"
       [attr.rows]="rows()"
+      [value]="value()"
+      (input)="value.set($any($event.target).value)"
     ></textarea>
   `,
 })
@@ -57,6 +59,7 @@ export class VoltTextarea {
   readonly resize = input<'none' | 'vertical' | 'horizontal' | 'both'>('vertical');
   readonly rows = input<number>(3);
   readonly disabled = input<boolean>(false);
+  readonly value = model('');
 
   protected readonly classes = computed(() =>
     textareaVariants({

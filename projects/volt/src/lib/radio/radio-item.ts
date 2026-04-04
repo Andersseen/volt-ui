@@ -8,7 +8,6 @@ import {
 
 @Component({
   selector: 'volt-radio-item',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgpRadioItem, NgpRadioIndicator],
   providers: [provideRadioItemState()],

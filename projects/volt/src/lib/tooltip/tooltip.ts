@@ -4,7 +4,6 @@ import type { NgpTooltipPlacement } from 'ng-primitives/tooltip';
 
 @Directive({
   selector: '[voltTooltip]',
-  standalone: true,
   hostDirectives: [
     {
       directive: NgpTooltipTrigger,

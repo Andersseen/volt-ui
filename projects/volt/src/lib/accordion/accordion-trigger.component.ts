@@ -4,17 +4,17 @@ import { NgpAccordionTrigger, injectAccordionItemState } from 'ng-primitives/acc
 @Component({
   selector: 'volt-accordion-trigger',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [],
+  imports: [NgpAccordionTrigger],
   host: {
     class: 'block w-full',
   },
-  hostDirectives: [NgpAccordionTrigger],
   template: `
     <button
+      ngpAccordionTrigger
       type="button"
-      class="flex w-full flex-1 items-center justify-between py-4 font-medium text-left transition-all hover:underline"
+      class="flex w-full flex-1 items-center justify-between py-4 font-medium text-left transition-all hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
     >
-      <ng-content></ng-content>
+      <ng-content />
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -26,6 +26,7 @@ import { NgpAccordionTrigger, injectAccordionItemState } from 'ng-primitives/acc
         stroke-linecap="round"
         stroke-linejoin="round"
         class="h-4 w-4 shrink-0 transition-transform duration-200"
+        aria-hidden="true"
         [class.rotate-180]="itemState().open()"
       >
         <path d="m6 9 6 6 6-6" />

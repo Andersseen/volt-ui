@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, input, model, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, model } from '@angular/core';
 import { NgpToggle } from 'ng-primitives/toggle';
 import { cva, type VariantProps } from 'class-variance-authority';
 
@@ -40,7 +40,7 @@ export type ToggleVariants = VariantProps<typeof toggleVariants>;
       ngpToggle
       [ngpToggleDisabled]="disabled()"
       [ngpToggleSelected]="pressed()"
-      (ngpToggleSelectedChange)="pressed.set($event); pressedChange.emit($event)"
+      (ngpToggleSelectedChange)="pressed.set($event)"
       [class]="classes()"
       [attr.data-disabled]="disabled() ? '' : null"
     >
@@ -53,7 +53,6 @@ export class VoltToggle {
   readonly size = input<ToggleVariants['size']>('md');
   readonly disabled = input<boolean>(false);
   readonly pressed = model<boolean>(false);
-  readonly pressedChange = output<boolean>();
 
   protected readonly classes = computed(() =>
     toggleVariants({

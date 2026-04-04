@@ -4,15 +4,16 @@ import { NgpSeparator } from 'ng-primitives/separator';
 @Component({
   selector: 'volt-separator',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgpSeparator],
-  template: `
-    <div
-      ngpSeparator
-      [ngpSeparatorOrientation]="orientation()"
-      role="separator"
-      [class]="classes()"
-    ></div>
-  `,
+  hostDirectives: [
+    {
+      directive: NgpSeparator,
+      inputs: ['ngpSeparatorOrientation: orientation'],
+    },
+  ],
+  host: {
+    '[class]': 'classes()',
+  },
+  template: ``,
 })
 export class VoltSeparator {
   readonly orientation = input<'horizontal' | 'vertical'>('horizontal');
