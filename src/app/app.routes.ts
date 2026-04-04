@@ -72,6 +72,11 @@ export const routes: Routes = [
         path: 'tooltip',
         loadComponent: () => import('./pages/docs/components/tooltip').then((m) => m.TooltipDemo),
       },
+      {
+        path: 'navigation-menu',
+        loadComponent: () =>
+          import('./pages/docs/components/navigation-menu').then((m) => m.NavigationMenuDemo),
+      },
     ],
   },
 ];
