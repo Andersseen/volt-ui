@@ -1,10 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { VoltInput, VoltTextarea, VoltLabel } from 'volt';
+import { CodePanel } from '../../../components/code-panel';
+import { INPUT_SNIPPET } from '../../../lib/snippets';
 
 @Component({
   selector: 'app-input-demo',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [VoltInput, VoltTextarea, VoltLabel],
+  imports: [VoltInput, VoltTextarea, VoltLabel, CodePanel],
   template: `
     <div class="space-y-6">
       <div>
@@ -45,7 +47,17 @@ import { VoltInput, VoltTextarea, VoltLabel } from 'volt';
           </div>
         </div>
       </div>
+
+      <!-- Source Code Section -->
+      <app-code-panel
+        title="Component Source"
+        [code]="inputCode"
+        cliCommand="npx volt add input"
+        description="Copy this code to your project. The component uses ng-primitives/input."
+      />
     </div>
   `,
 })
-export class InputDemo {}
+export class InputDemo {
+  readonly inputCode = INPUT_SNIPPET;
+}

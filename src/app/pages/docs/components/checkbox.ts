@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { VoltCheckbox, VoltLabel } from 'volt';
-import { CopyButton } from '../../../components/copy-button';
+import { CodePanel } from '../../../components/code-panel';
 import { CHECKBOX_SNIPPET } from '../../../lib/snippets';
 
 @Component({
   selector: 'app-checkbox-demo',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [VoltCheckbox, VoltLabel, CopyButton],
+  imports: [VoltCheckbox, VoltLabel, CodePanel],
   template: `
     <div class="space-y-6">
       <div>
@@ -42,19 +42,12 @@ import { CHECKBOX_SNIPPET } from '../../../lib/snippets';
       </div>
 
       <!-- Source Code Section -->
-      <div class="space-y-4">
-        <div class="flex items-center justify-between">
-          <h3 class="font-semibold text-lg">Component Source</h3>
-          <app-copy-button [code]="checkboxCode" />
-        </div>
-        <div class="relative rounded-lg border border-border bg-muted/50 overflow-hidden">
-          <pre class="p-4 text-sm overflow-x-auto"><code class="language-typescript">{{ checkboxCode }}</code></pre>
-        </div>
-        <p class="text-sm text-muted-foreground">
-          Copy this code to your project. The component uses 
-          <code class="px-1 py-0.5 bg-muted rounded text-xs">ng-primitives/checkbox</code>.
-        </p>
-      </div>
+      <app-code-panel
+        title="Component Source"
+        [code]="checkboxCode"
+        cliCommand="npx volt add checkbox"
+        description="Copy this code to your project. The component uses ng-primitives/checkbox."
+      />
     </div>
   `,
 })

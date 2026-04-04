@@ -1,10 +1,12 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { VoltToggle } from 'volt';
+import { CodePanel } from '../../../components/code-panel';
+import { TOGGLE_SNIPPET } from '../../../lib/snippets';
 
 @Component({
   selector: 'app-toggle-demo',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [VoltToggle],
+  imports: [VoltToggle, CodePanel],
   template: `
     <div class="space-y-6">
       <div>
@@ -54,10 +56,19 @@ import { VoltToggle } from 'volt';
           </volt-toggle>
         </div>
       </div>
+
+      <!-- Source Code Section -->
+      <app-code-panel
+        title="Component Source"
+        [code]="toggleCode"
+        cliCommand="npx volt add toggle"
+        description="Copy this code to your project. The component uses ng-primitives/toggle."
+      />
     </div>
   `,
 })
 export class ToggleDemo {
   italic = signal(false);
   bold = signal(true);
+  readonly toggleCode = TOGGLE_SNIPPET;
 }

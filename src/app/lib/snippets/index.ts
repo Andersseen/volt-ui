@@ -230,38 +230,59 @@ export class VoltNavigationMenuContent {
   readonly wrap = input<boolean>(false);
 }`;
 
-export const CARD_SNIPPET = `import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { cva, type VariantProps } from 'class-variance-authority';
-
-const cardVariants = cva('rounded-lg border bg-card text-card-foreground shadow-sm', {
-  variants: {
-    variant: {
-      default: '',
-      outline: 'border-2',
-      ghost: 'border-none shadow-none',
-    },
-  },
-  defaultVariants: {
-    variant: 'default',
-  },
-});
-
-export type CardVariants = VariantProps<typeof cardVariants>;
+export const CARD_SNIPPET = `// card.component.ts
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'volt-card',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: 'block',
-    '[class]': 'classes()',
+    class: 'rounded-lg border bg-card text-card-foreground shadow-sm block',
   },
   template: \`<ng-content />\`,
 })
-export class VoltCard {
-  readonly variant = input<CardVariants['variant']>('default');
+export class VoltCard {}
 
-  protected readonly classes = computed(() => cardVariants({ variant: this.variant() }));
-}`;
+// card-header.ts, card-title.ts, card-description.ts, card-content.ts, card-footer.ts
+@Component({
+  selector: 'volt-card-header',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: 'flex flex-col space-y-1.5 p-6' },
+  template: \`<ng-content />\`,
+})
+export class VoltCardHeader {}
+
+@Component({
+  selector: 'volt-card-title',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: 'text-2xl font-semibold leading-none tracking-tight' },
+  template: \`<ng-content />\`,
+})
+export class VoltCardTitle {}
+
+@Component({
+  selector: 'volt-card-description',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: 'text-sm text-muted-foreground' },
+  template: \`<ng-content />\`,
+})
+export class VoltCardDescription {}
+
+@Component({
+  selector: 'volt-card-content',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: 'p-6 pt-0' },
+  template: \`<ng-content />\`,
+})
+export class VoltCardContent {}
+
+@Component({
+  selector: 'volt-card-footer',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: 'flex items-center p-6 pt-0' },
+  template: \`<ng-content />\`,
+})
+export class VoltCardFooter {}`;
 
 export const INPUT_SNIPPET = `import { ChangeDetectionStrategy, Component, input, booleanAttribute } from '@angular/core';
 import { NgpInput } from 'ng-primitives/input';
@@ -276,8 +297,6 @@ import { NgpInput } from 'ng-primitives/input';
       [type]="type()"
       [disabled]="disabled()"
       [placeholder]="placeholder()"
-      [value]="value()"
-      (input)="onInput($event)"
       class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
     />
   \`,
@@ -285,13 +304,7 @@ import { NgpInput } from 'ng-primitives/input';
 export class VoltInput {
   readonly type = input<string>('text');
   readonly placeholder = input<string>('');
-  readonly value = input<string>('');
   readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
-
-  onInput(event: Event) {
-    const target = event.target as HTMLInputElement;
-    this.valueChange.emit(target.value);
-  }
 }`;
 
 export const CHECKBOX_SNIPPET = `import { ChangeDetectionStrategy, Component, input, model, booleanAttribute } from '@angular/core';
@@ -407,20 +420,85 @@ export class VoltAccordionTrigger {}
 })
 export class VoltAccordionContent {}`;
 
-export const TABS_SNIPPET = `import { ChangeDetectionStrategy, Component, input, model } from '@angular/core';
-import { NgpTabset } from 'ng-primitives/tabs';
+export const TABS_SNIPPET = `// tabs.component.ts
+import { ChangeDetectionStrategy, Component, input, model } from '@angular/core';
+import { NgpTabset, provideTabsetState } from 'ng-primitives/tabs';
 
 @Component({
   selector: 'volt-tabs',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgpTabset],
+  providers: [provideTabsetState()],
+  host: { class: 'w-full block' },
+  hostDirectives: [
+    {
+      directive: NgpTabset,
+      inputs: ['ngpTabsetValue: value', 'ngpTabsetOrientation: orientation'],
+      outputs: ['ngpTabsetValueChange: valueChange'],
+    },
+  ],
   template: \`<ng-content />\`,
 })
 export class VoltTabs {
   readonly value = model<string>('');
+  readonly orientation = input<'horizontal' | 'vertical'>('horizontal');
+}
+
+// tabs-list.component.ts
+import { NgpTabList, provideTabListState } from 'ng-primitives/tabs';
+import { provideRovingFocusGroupState } from 'ng-primitives/roving-focus';
+
+@Component({
+  selector: 'volt-tabs-list',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [provideTabListState(), provideRovingFocusGroupState()],
+  host: {
+    class: 'inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground',
+  },
+  hostDirectives: [NgpTabList],
+  template: \`<ng-content />\`,
+})
+export class VoltTabsList {}
+
+// tabs-trigger.component.ts
+import { NgpTabButton, injectTabButtonState, provideTabButtonState } from 'ng-primitives/tabs';
+
+@Component({
+  selector: 'volt-tabs-trigger',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [provideTabButtonState()],
+  host: {
+    class: 'inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm',
+    '[attr.data-state]': "tabButtonState().active() ? 'active' : 'inactive'",
+  },
+  hostDirectives: [{ directive: NgpTabButton, inputs: ['ngpTabButtonValue: value'] }],
+  template: \`<ng-content />\`,
+})
+export class VoltTabsTrigger {
+  readonly value = input.required<string>();
+  protected readonly tabButtonState = injectTabButtonState();
+}
+
+// tabs-content.component.ts
+import { NgpTabPanel, injectTabPanelState, provideTabPanelState } from 'ng-primitives/tabs';
+
+@Component({
+  selector: 'volt-tabs-content',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [provideTabPanelState()],
+  host: {
+    class: 'mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 data-[state=inactive]:hidden',
+    '[attr.data-state]': "tabPanelState().active() ? 'active' : 'inactive'",
+  },
+  hostDirectives: [{ directive: NgpTabPanel, inputs: ['ngpTabPanelValue: value'] }],
+  template: \`<ng-content />\`,
+})
+export class VoltTabsContent {
+  readonly value = input.required<string>();
+  protected readonly tabPanelState = injectTabPanelState();
 }`;
 
-export const TOOLTIP_SNIPPET = `import { Directive, input } from '@angular/core';
+export const TOOLTIP_SNIPPET = `// tooltip.ts
+import { Directive, input } from '@angular/core';
 import { NgpTooltipTrigger } from 'ng-primitives/tooltip';
 import type { NgpTooltipPlacement } from 'ng-primitives/tooltip';
 
@@ -446,4 +524,266 @@ export class VoltTooltip {
   readonly delay = input<number>(300);
   readonly closeDelay = input<number>(100);
   readonly disabled = input<boolean>(false);
+}
+
+// tooltip-content.ts
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { NgpTooltip } from 'ng-primitives/tooltip';
+
+@Component({
+  selector: 'volt-tooltip-content',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [NgpTooltip],
+  host: {
+    class: 'fixed z-50 max-w-xs select-none overflow-hidden rounded-[var(--radius-sm)] bg-[var(--foreground)] px-3 py-1.5 text-xs leading-tight font-[var(--font-weight-label)] text-[var(--background)] shadow-[var(--shadow-md)]',
+  },
+  template: \`<ng-content />\`,
+})
+export class VoltTooltipContent {}`;
+
+export const RADIO_SNIPPET = `// radio-group.ts
+import { ChangeDetectionStrategy, Component, input, model } from '@angular/core';
+import { NgpRadioGroup, provideRadioGroupState } from 'ng-primitives/radio';
+
+@Component({
+  selector: 'volt-radio-group',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [provideRadioGroupState()],
+  host: {
+    class: 'grid gap-2',
+    '[class.flex-col]': 'orientation() === "vertical"',
+    '[class.flex-row]': 'orientation() === "horizontal"',
+  },
+  hostDirectives: [
+    {
+      directive: NgpRadioGroup,
+      inputs: ['ngpRadioGroupValue: value', 'ngpRadioGroupOrientation: orientation'],
+      outputs: ['ngpRadioGroupValueChange: valueChange'],
+    },
+  ],
+  template: \`<ng-content />\`,
+})
+export class VoltRadioGroup {
+  readonly value = model<string>('');
+  readonly orientation = input<'horizontal' | 'vertical'>('vertical');
+}
+
+// radio-item.ts
+import { NgpRadioItem, injectRadioItemState } from 'ng-primitives/radio';
+
+@Component({
+  selector: 'volt-radio-item',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    class: 'flex items-center space-x-2 cursor-pointer',
+  },
+  hostDirectives: [{ directive: NgpRadioItem, inputs: ['ngpRadioItemValue: value'] }],
+  template: \`
+    <button
+      ngpRadioItem
+      class="aspect-square h-4 w-4 rounded-full border border-primary text-primary ring-offset-background focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+    >
+      <span class="flex items-center justify-center">
+        @if (state().checked()) {
+          <span class="h-2.5 w-2.5 rounded-full bg-current"></span>
+        }
+      </span>
+    </button>
+    <ng-content />
+  \`,
+})
+export class VoltRadioItem {
+  readonly value = input.required<string>();
+  protected readonly state = injectRadioItemState();
 }`;
+
+export const SEPARATOR_SNIPPET = `import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { NgpSeparator } from 'ng-primitives/separator';
+
+@Component({
+  selector: 'volt-separator',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgpSeparator],
+  host: {
+    class: 'shrink-0 bg-border',
+    '[class.h-px.w-full]': 'orientation() === "horizontal"',
+    '[class.h-full.w-px]': 'orientation() === "vertical"',
+  },
+  hostDirectives: [{ directive: NgpSeparator, inputs: ['ngpSeparatorOrientation: orientation'] }],
+  template: \`<ng-content />\`,
+})
+export class VoltSeparator {
+  readonly orientation = input<'horizontal' | 'vertical'>('horizontal');
+}`;
+
+export const TOGGLE_SNIPPET = `import { ChangeDetectionStrategy, Component, input, model } from '@angular/core';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { NgpToggle } from 'ng-primitives/toggle';
+
+const toggleVariants = cva(
+  'inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors hover:bg-muted hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[pressed]:bg-accent data-[pressed]:text-accent-foreground',
+  {
+    variants: {
+      variant: {
+        default: 'bg-transparent',
+        outline: 'border border-input bg-transparent hover:bg-accent hover:text-accent-foreground',
+      },
+      size: {
+        default: 'h-10 px-3',
+        sm: 'h-9 px-2.5',
+        lg: 'h-11 px-5',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+      size: 'default',
+    },
+  },
+);
+
+export type ToggleVariants = VariantProps<typeof toggleVariants>;
+
+@Component({
+  selector: 'volt-toggle',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgpToggle],
+  host: {
+    class: 'inline-flex',
+  },
+  template: \`
+    <button
+      ngpToggle
+      [pressed]="pressed()"
+      (ngpToggleChange)="pressed.set($event)"
+      [disabled]="disabled()"
+      [class]="classes()"
+    >
+      <ng-content />
+    </button>
+  \`,
+})
+export class VoltToggle {
+  readonly pressed = model<boolean>(false);
+  readonly variant = input<ToggleVariants['variant']>('default');
+  readonly size = input<ToggleVariants['size']>('default');
+  readonly disabled = input<boolean>(false);
+
+  protected classes = computed(() => toggleVariants({ variant: this.variant(), size: this.size() }));
+}`;
+
+export const SELECT_SNIPPET = `// select.component.ts
+import { ChangeDetectionStrategy, Component, computed, input, model, output } from '@angular/core';
+import { NgpSelect, NgpSelectPortal, provideSelectState } from 'ng-primitives/select';
+
+@Component({
+  selector: 'volt-select',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgpSelect, NgpSelectPortal],
+  providers: [provideSelectState()],
+  template: \`
+    <button
+      ngpSelect
+      [ngpSelectValue]="value()"
+      [ngpSelectDisabled]="disabled()"
+      [ngpSelectMultiple]="multiple()"
+      (ngpSelectValueChange)="value.set($event); valueChange.emit($event)"
+      class="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background cursor-pointer placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+    >
+      <span class="block text-left truncate flex-1 pointer-events-none">
+        @if (value(); as selected) {
+          {{ selected }}
+        } @else {
+          <span class="text-muted-foreground">{{ placeholder() }}</span>
+        }
+      </span>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="h-4 w-4 opacity-50 shrink-0 pointer-events-none"
+      >
+        <path d="m6 9 6 6 6-6" />
+      </svg>
+    </button>
+
+    <ng-template ngpSelectPortal>
+      <ng-content />
+    </ng-template>
+  \`,
+})
+export class VoltSelect {
+  readonly placeholder = input('Select an option');
+  readonly value = model<unknown>(undefined);
+  readonly disabled = input(false);
+  readonly multiple = input(false);
+  readonly valueChange = output<unknown>();
+}
+
+// select-content.component.ts
+import { NgpSelectDropdown } from 'ng-primitives/select';
+
+@Component({
+  selector: 'volt-select-content',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgpSelectDropdown],
+  template: \`
+    <div
+      ngpSelectDropdown
+      class="absolute block z-50 min-w-[8rem] overflow-hidden rounded-md border border-border bg-surface text-surface-foreground shadow-md"
+    >
+      <div class="p-1 w-full flex flex-col">
+        <ng-content />
+      </div>
+    </div>
+  \`,
+})
+export class VoltSelectContent {}`;
+
+export const AVATAR_SNIPPET = `// avatar.ts
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { NgpAvatar } from 'ng-primitives/avatar';
+
+@Component({
+  selector: 'volt-avatar',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgpAvatar],
+  host: {
+    class: 'relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full',
+  },
+  hostDirectives: [NgpAvatar],
+  template: \`<ng-content />\`,
+})
+export class VoltAvatar {}
+
+// avatar-image.ts
+import { Directive } from '@angular/core';
+import { NgpAvatarImage } from 'ng-primitives/avatar';
+
+@Directive({
+  selector: 'img[voltAvatarImage]',
+  hostDirectives: [NgpAvatarImage],
+  host: {
+    class: 'aspect-square h-full w-full',
+  },
+})
+export class VoltAvatarImage {}
+
+// avatar-fallback.ts
+import { Component } from '@angular/core';
+import { NgpAvatarFallback } from 'ng-primitives/avatar';
+
+@Component({
+  selector: 'volt-avatar-fallback',
+  hostDirectives: [NgpAvatarFallback],
+  host: {
+    class: 'flex h-full w-full items-center justify-center rounded-full bg-muted',
+  },
+  template: \`<ng-content />\`,
+})
+export class VoltAvatarFallback {}`;

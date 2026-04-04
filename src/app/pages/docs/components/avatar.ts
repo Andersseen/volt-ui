@@ -1,10 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { VoltAvatar, VoltAvatarFallback, VoltAvatarImage } from 'volt';
+import { CodePanel } from '../../../components/code-panel';
+import { AVATAR_SNIPPET } from '../../../lib/snippets';
 
 @Component({
   selector: 'app-avatar-demo',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [VoltAvatar, VoltAvatarImage, VoltAvatarFallback],
+  imports: [VoltAvatar, VoltAvatarImage, VoltAvatarFallback, CodePanel],
   template: `
     <div class="space-y-6">
       <div>
@@ -37,7 +39,17 @@ import { VoltAvatar, VoltAvatarFallback, VoltAvatarImage } from 'volt';
           </volt-avatar>
         </div>
       </div>
+
+      <!-- Source Code Section -->
+      <app-code-panel
+        title="Component Source"
+        [code]="avatarCode"
+        cliCommand="npx volt add avatar"
+        description="Copy this code to your project. The component uses ng-primitives/avatar."
+      />
     </div>
   `,
 })
-export class AvatarDemo {}
+export class AvatarDemo {
+  readonly avatarCode = AVATAR_SNIPPET;
+}

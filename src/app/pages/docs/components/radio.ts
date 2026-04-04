@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { VoltRadioGroup, VoltRadioItem } from 'volt';
+import { CodePanel } from '../../../components/code-panel';
+import { RADIO_SNIPPET } from '../../../lib/snippets';
 
 @Component({
   selector: 'app-radio-demo',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [VoltRadioGroup, VoltRadioItem],
+  imports: [VoltRadioGroup, VoltRadioItem, CodePanel],
   template: `
     <div class="space-y-6">
       <div>
@@ -30,7 +31,17 @@ import { VoltRadioGroup, VoltRadioItem } from 'volt';
           </volt-radio-group>
         </div>
       </div>
+
+      <!-- Source Code Section -->
+      <app-code-panel
+        title="Component Source"
+        [code]="radioCode"
+        cliCommand="npx volt add radio"
+        description="Copy this code to your project. The component uses ng-primitives/radio."
+      />
     </div>
   `,
 })
-export class RadioDemo {}
+export class RadioDemo {
+  readonly radioCode = RADIO_SNIPPET;
+}

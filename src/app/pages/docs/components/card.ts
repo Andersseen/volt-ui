@@ -8,7 +8,7 @@ import {
   VoltCardFooter,
 } from 'volt';
 import { VoltButton } from 'volt';
-import { CopyButton } from '../../../components/copy-button';
+import { CodePanel } from '../../../components/code-panel';
 import { CARD_SNIPPET } from '../../../lib/snippets';
 
 @Component({
@@ -22,7 +22,7 @@ import { CARD_SNIPPET } from '../../../lib/snippets';
     VoltCardContent,
     VoltCardFooter,
     VoltButton,
-    CopyButton,
+    CodePanel,
   ],
   template: `
     <div class="space-y-6">
@@ -73,19 +73,12 @@ import { CARD_SNIPPET } from '../../../lib/snippets';
       </div>
 
       <!-- Source Code Section -->
-      <div class="space-y-4">
-        <div class="flex items-center justify-between">
-          <h3 class="font-semibold text-lg">Component Source</h3>
-          <app-copy-button [code]="cardCode" />
-        </div>
-        <div class="relative rounded-lg border border-border bg-muted/50 overflow-hidden">
-          <pre class="p-4 text-sm overflow-x-auto"><code class="language-typescript">{{ cardCode }}</code></pre>
-        </div>
-        <p class="text-sm text-muted-foreground">
-          Copy this code to your project. The component uses 
-          <code class="px-1 py-0.5 bg-muted rounded text-xs">class-variance-authority</code>.
-        </p>
-      </div>
+      <app-code-panel
+        title="Component Source"
+        [code]="cardCode"
+        cliCommand="npx volt add card"
+        description="Copy this code to your project. The component uses class-variance-authority for variants."
+      />
     </div>
   `,
 })

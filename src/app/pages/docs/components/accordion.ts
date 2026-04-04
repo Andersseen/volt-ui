@@ -1,10 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { VoltAccordion, VoltAccordionItem, VoltAccordionTrigger, VoltAccordionContent } from 'volt';
+import { CodePanel } from '../../../components/code-panel';
+import { ACCORDION_SNIPPET } from '../../../lib/snippets';
 
 @Component({
   selector: 'app-accordion-demo',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [VoltAccordion, VoltAccordionItem, VoltAccordionTrigger, VoltAccordionContent],
+  imports: [VoltAccordion, VoltAccordionItem, VoltAccordionTrigger, VoltAccordionContent, CodePanel],
   template: `
     <div class="space-y-6">
       <div>
@@ -48,7 +50,17 @@ import { VoltAccordion, VoltAccordionItem, VoltAccordionTrigger, VoltAccordionCo
           </volt-accordion>
         </div>
       </div>
+
+      <!-- Source Code Section -->
+      <app-code-panel
+        title="Component Source"
+        [code]="accordionCode"
+        cliCommand="npx volt add accordion"
+        description="Copy this code to your project. The component uses ng-primitives/accordion."
+      />
     </div>
   `,
 })
-export class AccordionDemo {}
+export class AccordionDemo {
+  readonly accordionCode = ACCORDION_SNIPPET;
+}
