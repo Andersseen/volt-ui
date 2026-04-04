@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import {
   VoltAvatar,
   VoltAvatarFallback,
@@ -23,6 +24,7 @@ import {
   selector: 'app-home',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    RouterLink,
     VoltButton,
     VoltBadge,
     VoltInput,

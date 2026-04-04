@@ -39,7 +39,7 @@ import { ThemeSwitcher } from './theme-switcher';
         </div>
 
         <div class="flex items-center gap-2 sm:gap-3">
-          <!-- Simple Navigation -->
+          <!-- Navigation -->
           <nav class="hidden md:flex gap-1 text-sm font-medium text-muted-foreground mr-1">
             <a
               routerLink="/"
@@ -50,7 +50,14 @@ import { ThemeSwitcher } from './theme-switcher';
               Home
             </a>
             <a
-              routerLink="/docs"
+              routerLink="/docs/introduction"
+              routerLinkActive="text-foreground"
+              class="px-3 py-2 rounded-md transition-colors hover:text-foreground"
+            >
+              Docs
+            </a>
+            <a
+              routerLink="/docs/components"
               routerLinkActive="text-foreground"
               class="px-3 py-2 rounded-md transition-colors hover:text-foreground"
             >

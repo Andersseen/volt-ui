@@ -24,22 +24,29 @@
       Accessible. Customizable. Fast.
     </p>
     <div class="flex flex-wrap justify-center gap-3 sm:gap-4 pt-4">
-      <volt-button size="lg" class="rounded-full shadow-xl shadow-primary/20 group">
-        Get Started
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          class="ml-2 transition-transform group-hover:translate-x-1"
-        >
-          <path d="M5 12h14" />
-          <path d="m12 5 7 7-7 7" />
-        </svg>
-      </volt-button>
+      <a routerLink="/docs/introduction">
+        <volt-button size="lg" class="rounded-full shadow-xl shadow-primary/20 group">
+          Get Started
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            class="ml-2 transition-transform group-hover:translate-x-1"
+          >
+            <path d="M5 12h14" />
+            <path d="m12 5 7 7-7 7" />
+          </svg>
+        </volt-button>
+      </a>
+      <a routerLink="/docs/components">
+        <volt-button size="lg" variant="outline" class="rounded-full">
+          Components
+        </volt-button>
+      </a>
       <a
         href="https://github.com/Andersseen/volt-ui"
         target="_blank"
