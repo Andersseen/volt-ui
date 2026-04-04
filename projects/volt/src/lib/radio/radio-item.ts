@@ -1,16 +1,10 @@
-import { ChangeDetectionStrategy, Component, input, inject } from '@angular/core';
-import {
-  NgpRadioItem,
-  NgpRadioIndicator,
-  injectRadioItemState,
-  provideRadioItemState,
-} from 'ng-primitives/radio';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { NgpRadioItem, NgpRadioIndicator } from 'ng-primitives/radio';
 
 @Component({
   selector: 'volt-radio-item',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgpRadioItem, NgpRadioIndicator],
-  providers: [provideRadioItemState()],
   host: {
     class: 'flex items-center gap-[var(--spacing-gap)]',
   },
@@ -19,17 +13,13 @@ import {
       ngpRadioItem
       [ngpRadioItemValue]="value()"
       [ngpRadioItemDisabled]="disabled()"
-      [attr.data-state]="state().checked() ? 'checked' : 'unchecked'"
-      class="peer relative flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center rounded-full border border-[var(--border)] bg-[var(--background)] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:border-[var(--primary)] data-[state=checked]:bg-[var(--background)]"
+      class="peer relative flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center rounded-full border border-[var(--border)] bg-[var(--background)] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[checked]:border-[var(--primary)] data-[checked]:bg-[var(--background)]"
     >
       <span
         ngpRadioIndicator
-        class="flex items-center justify-center data-[state=unchecked]:hidden"
-        [attr.data-state]="state().checked() ? 'checked' : 'unchecked'"
+        class="items-center justify-center hidden data-[checked]:flex"
       >
-        <span
-          class="h-2.5 w-2.5 rounded-full bg-[var(--primary)] text-[var(--primary)] fill-[var(--primary)]"
-        ></span>
+        <span class="h-2.5 w-2.5 rounded-full bg-[var(--primary)]"></span>
       </span>
     </button>
     <label
@@ -42,5 +32,4 @@ import {
 export class VoltRadioItem {
   readonly value = input.required<string>();
   readonly disabled = input<boolean>(false);
-  protected readonly state = injectRadioItemState();
 }

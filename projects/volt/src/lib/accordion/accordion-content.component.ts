@@ -4,15 +4,16 @@ import { NgpAccordionContent } from 'ng-primitives/accordion';
 @Component({
   selector: 'volt-accordion-content',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [],
   host: {
     class:
-      'overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down w-full block',
+      'grid grid-rows-[0fr] data-[open]:grid-rows-[1fr] transition-[grid-template-rows] duration-200 ease-in-out overflow-hidden text-sm w-full block',
   },
   hostDirectives: [NgpAccordionContent],
   template: `
-    <div class="pb-4 pt-0">
-      <ng-content></ng-content>
+    <div class="min-h-0">
+      <div class="pb-4 pt-0">
+        <ng-content />
+      </div>
     </div>
   `,
 })
