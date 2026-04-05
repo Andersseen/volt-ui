@@ -1,0 +1,38 @@
+// Icons library for Volt UI Demo App
+// Each icon is a standalone component for optimal tree-shaking
+
+export { IconMenu } from './icon-menu';
+export { IconClose } from './icon-close';
+export { IconChevronRight } from './icon-chevron-right';
+export { IconChevronDown } from './icon-chevron-down';
+export { IconGithub } from './icon-github';
+export { IconCopy } from './icon-copy';
+export { IconCheck } from './icon-check';
+export { IconSun } from './icon-sun';
+export { IconMoon } from './icon-moon';
+export { IconSparkles } from './icon-sparkles';
+export { IconHome } from './icon-home';
+export { IconComponents } from './icon-components';
+export { IconButton } from './icon-button';
+export { IconInput } from './icon-input';
+export { IconCheckbox } from './icon-checkbox';
+export { IconSwitch } from './icon-switch';
+export { IconRadio } from './icon-radio';
+export { IconSelect } from './icon-select';
+export { IconToggle } from './icon-toggle';
+export { IconCard } from './icon-card';
+export { IconSeparator } from './icon-separator';
+export { IconAvatar } from './icon-avatar';
+export { IconBadge } from './icon-badge';
+export { IconTooltip } from './icon-tooltip';
+export { IconAccordion } from './icon-accordion';
+export { IconTabs } from './icon-tabs';
+export { IconNavigation } from './icon-navigation';
+export { IconMail } from './icon-mail';
+export { IconArrowRight } from './icon-arrow-right';
+export { IconPlus } from './icon-plus';
+export { IconMoreVertical } from './icon-more-vertical';
+export { IconPaperclip } from './icon-paperclip';
+export { IconSmile } from './icon-smile';
+export { IconSearch } from './icon-search';
+export { IconSettings } from './icon-settings';
