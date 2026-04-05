@@ -134,22 +134,13 @@ function fetchFile(url) {
 
 function transformContent(content) {
   // Replace selector volt- with ui-
-  content = content.replace(/selector:\s*['"]([^'"]*)['"]/g, (match, selector) => {
+  content = content.replace(/selector:\s*['"]([^'"]*)['"]/g, (_match, selector) => {
     const newSelector = selector.replace(/volt-/g, 'ui-');
     return `selector: '${newSelector}'`;
   });
 
-  // Replace class names VoltXxx with UiXxx
-  content = content.replace(/class\s+(Volt\w+)/g, (match, className) => {
-    const newClassName = className.replace('Volt', 'Ui');
-    return `class ${newClassName}`;
-  });
-
-  // Replace export names
-  content = content.replace(/export\s+\{\s*(Volt\w+)\s*\}/g, (match, className) => {
-    const newClassName = className.replace('Volt', 'Ui');
-    return `export { ${newClassName} }`;
-  });
+  // Replace all VoltXxx identifiers with UiXxx (covers class declarations, exports, imports)
+  content = content.replace(/\bVolt([A-Z]\w*)/g, 'Ui$1');
 
   // Replace imports from 'volt'
   content = content.replace(/from\s+['"]volt['"]/g, "from './index'");
