@@ -90,6 +90,11 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./pages/docs/components/navigation-menu').then((m) => m.NavigationMenuDemo),
       },
+      {
+        path: 'dialog',
+        loadComponent: () =>
+          import('./pages/docs/components/dialog').then((m) => m.DialogDemo),
+      },
     ],
   },
 ];

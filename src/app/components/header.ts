@@ -2,11 +2,12 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
 import { VoltBadge } from 'volt';
 import { ThemeSwitcher } from './theme-switcher';
+import { MobileMenu } from './mobile-menu';
 
 @Component({
   selector: 'app-header',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterModule, RouterLink, RouterLinkActive, VoltBadge, ThemeSwitcher],
+  imports: [RouterModule, RouterLink, RouterLinkActive, VoltBadge, ThemeSwitcher, MobileMenu],
   template: `
     <header class="sticky top-0 z-50 bg-background/70 backdrop-blur-xl border-b border-border/40">
       <div
@@ -80,6 +81,9 @@ import { ThemeSwitcher } from './theme-switcher';
           </a>
 
           <app-theme-switcher />
+
+          <!-- Mobile Menu -->
+          <app-mobile-menu />
         </div>
       </div>
     </header>

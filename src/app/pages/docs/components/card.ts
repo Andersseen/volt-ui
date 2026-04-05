@@ -40,7 +40,7 @@ import { CARD_SNIPPET } from '../../../lib/snippets';
           class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"
         ></div>
 
-        <div class="relative z-10 w-[350px]">
+        <div class="relative z-10 w-full max-w-[350px]">
           <volt-card>
             <volt-card-header>
               <volt-card-title>Create project</volt-card-title>

@@ -20,3 +20,4 @@ export * from './lib/tabs/tabs-content.component';
 export * from './lib/select';
 export * from './lib/theme';
 export * from './lib/navigation-menu';
+export * from './lib/dialog';

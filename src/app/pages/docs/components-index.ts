@@ -189,6 +189,18 @@ import { RouterLink } from '@angular/router';
                 </div>
               </div>
             </a>
+
+            <a routerLink="/docs/dialog" class="group p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/30 transition-all">
+              <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-md bg-primary/10 text-primary flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+                </div>
+                <div>
+                  <h3 class="font-medium group-hover:text-primary">Dialog</h3>
+                  <p class="text-xs text-muted-foreground">Modal dialogs & drawers</p>
+                </div>
+              </div>
+            </a>
           </div>
         </div>
 
