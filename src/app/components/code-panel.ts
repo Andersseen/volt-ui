@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CopyButton } from './copy-button';
+import { EditorLoaderService } from '../services/editor-loader.service';
 
 @Component({
   selector: 'app-code-panel',
@@ -76,14 +77,20 @@ import { CopyButton } from './copy-button';
         <div class="absolute top-0 right-0 p-2 z-10">
           <span class="text-xs text-muted-foreground px-2 py-1 bg-muted rounded">TypeScript</span>
         </div>
-        <vertex-editor
-          [attr.value]="code()"
-          [attr.language]="'typescript'"
-          [attr.theme]="editorTheme()"
-          lineNumbers="true"
-          readonly="true"
-          style="display: block; height: 400px; overflow: auto;"
-        ></vertex-editor>
+        @if (editorLoaded()) {
+          <vertex-editor
+            [attr.value]="code()"
+            [attr.language]="'typescript'"
+            [attr.theme]="editorTheme()"
+            lineNumbers="true"
+            readonly="true"
+            style="display: block; height: 400px; overflow: auto;"
+          ></vertex-editor>
+        } @else {
+          <div style="display: block; height: 400px;" class="flex items-center justify-center">
+            <div class="animate-pulse text-muted-foreground">Loading editor...</div>
+          </div>
+        }
       </div>
 
       <!-- Description slot -->
@@ -101,10 +108,16 @@ export class CodePanel implements OnInit {
 
   cliCopied = signal(false);
   editorTheme = signal<'light' | 'dark'>('light');
+  editorLoaded = signal(false);
 
   private destroyRef = inject(DestroyRef);
+  private editorLoader = inject(EditorLoaderService);
 
-  ngOnInit() {
+  async ngOnInit() {
+    // Load editor script lazily
+    await this.editorLoader.loadEditor();
+    this.editorLoaded.set(true);
+
     this.editorTheme.set(document.documentElement.classList.contains('dark') ? 'dark' : 'light');
 
     const observer = new MutationObserver(() => {
