@@ -82,7 +82,7 @@ import { CopyButton } from './copy-button';
           [attr.theme]="editorTheme()"
           lineNumbers="true"
           readonly="true"
-          style="display: block; overflow: auto;"
+          style="display: block; height: 400px; overflow: auto;"
         ></vertex-editor>
       </div>
 
