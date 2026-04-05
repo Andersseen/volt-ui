@@ -49,7 +49,9 @@ import { NAVIGATION_MENU_SNIPPET } from '../../../lib/snippets';
                     Getting Started
                   </volt-navigation-menu-trigger>
                   <ng-template #gettingStartedTpl>
-                    <volt-navigation-menu-content class="w-full max-w-[90vw] sm:w-[400px] md:w-[500px]">
+                    <volt-navigation-menu-content
+                      class="w-full max-w-[90vw] sm:w-[400px] md:w-[500px]"
+                    >
                       <div class="grid gap-3 p-2">
                         <volt-navigation-menu-content-item>
                           <a href="#" class="block">
@@ -94,7 +96,9 @@ import { NAVIGATION_MENU_SNIPPET } from '../../../lib/snippets';
                     Components
                   </volt-navigation-menu-trigger>
                   <ng-template #componentsTpl>
-                    <volt-navigation-menu-content class="w-full max-w-[90vw] sm:w-[400px] md:w-[500px]">
+                    <volt-navigation-menu-content
+                      class="w-full max-w-[90vw] sm:w-[400px] md:w-[500px]"
+                    >
                       <div class="grid grid-cols-2 gap-3 p-2">
                         <volt-navigation-menu-content-item>
                           <a href="#" class="block">
@@ -139,7 +143,9 @@ import { NAVIGATION_MENU_SNIPPET } from '../../../lib/snippets';
                     Resources
                   </volt-navigation-menu-trigger>
                   <ng-template #resourcesTpl>
-                    <volt-navigation-menu-content class="w-full max-w-[90vw] sm:w-[350px] md:w-[400px]">
+                    <volt-navigation-menu-content
+                      class="w-full max-w-[90vw] sm:w-[350px] md:w-[400px]"
+                    >
                       <div class="grid gap-3 p-2">
                         <volt-navigation-menu-content-item>
                           <a href="#" class="block">
@@ -172,7 +178,10 @@ import { NAVIGATION_MENU_SNIPPET } from '../../../lib/snippets';
 
                 <!-- Direct Link -->
                 <volt-navigation-menu-item>
-                  <a href="#" class="inline-flex h-9 items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                  <a
+                    href="#"
+                    class="inline-flex h-9 items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  >
                     About
                   </a>
                 </volt-navigation-menu-item>
@@ -203,6 +212,6 @@ import { NAVIGATION_MENU_SNIPPET } from '../../../lib/snippets';
     </div>
   `,
 })
-export class NavigationMenuDemo {
+export default class NavigationMenuDemo {
   readonly navigationMenuCode = NAVIGATION_MENU_SNIPPET;
 }

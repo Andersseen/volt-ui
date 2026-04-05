@@ -117,6 +117,6 @@ import { BUTTON_SNIPPET } from '../../../lib/snippets';
     </div>
   `,
 })
-export class ButtonDemo {
+export default class ButtonDemo {
   readonly buttonCode = BUTTON_SNIPPET;
 }

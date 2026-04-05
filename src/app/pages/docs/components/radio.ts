@@ -42,6 +42,6 @@ import { RADIO_SNIPPET } from '../../../lib/snippets';
     </div>
   `,
 })
-export class RadioDemo {
+export default class RadioDemo {
   readonly radioCode = RADIO_SNIPPET;
 }

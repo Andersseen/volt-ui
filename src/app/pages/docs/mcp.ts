@@ -327,7 +327,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
         </h2>
         <div class="grid gap-3">
           <a
-            href="https://github.com/your-org/volt-ui/blob/main/mcp/README.md"
+            href="https://github.com/andersseen/volt-ui/blob/main/mcp/README.md"
             target="_blank"
             rel="noopener noreferrer"
             class="flex items-center justify-between rounded-lg border border-border p-4 hover:bg-muted/50 transition-colors"
@@ -357,7 +357,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
           </a>
 
           <a
-            href="https://github.com/your-org/volt-ui/blob/main/mcp/QUICKSTART.md"
+            href="https://github.com/andersseen/volt-ui/blob/main/mcp/QUICKSTART.md"
             target="_blank"
             rel="noopener noreferrer"
             class="flex items-center justify-between rounded-lg border border-border p-4 hover:bg-muted/50 transition-colors"
@@ -385,7 +385,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
           </a>
 
           <a
-            href="https://github.com/your-org/volt-ui/blob/main/mcp/INTEGRATION.md"
+            href="https://github.com/andersseen/volt-ui/blob/main/mcp/INTEGRATION.md"
             target="_blank"
             rel="noopener noreferrer"
             class="flex items-center justify-between rounded-lg border border-border p-4 hover:bg-muted/50 transition-colors"
@@ -416,4 +416,4 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
     </div>
   `,
 })
-export class McpDocsPage {}
+export default class McpDocsPage {}

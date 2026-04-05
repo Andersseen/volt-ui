@@ -41,6 +41,6 @@ import { BADGE_SNIPPET } from '../../../lib/snippets';
     </div>
   `,
 })
-export class BadgeDemo {
+export default class BadgeDemo {
   readonly badgeCode = BADGE_SNIPPET;
 }

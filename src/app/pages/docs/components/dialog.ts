@@ -280,7 +280,7 @@ import { CodePanel } from '../../../components/code-panel';
     </div>
   `,
 })
-export class DialogDemo {
+export default class DialogDemo {
   readonly dialogCode = `import { Directive } from '@angular/core';
 import { 
   NgpDialogTrigger, 

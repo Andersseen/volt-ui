@@ -12,7 +12,14 @@ import { SELECT_SNIPPET } from '../../../lib/snippets';
 @Component({
   selector: 'app-select-demo',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [VoltSelect, VoltSelectContent, VoltSelectItem, VoltSelectLabel, VoltSelectSeparator, CodePanel],
+  imports: [
+    VoltSelect,
+    VoltSelectContent,
+    VoltSelectItem,
+    VoltSelectLabel,
+    VoltSelectSeparator,
+    CodePanel,
+  ],
   template: `
     <div class="px-6 py-12 max-w-3xl mx-auto space-y-12">
       <div>
@@ -62,7 +69,7 @@ import { SELECT_SNIPPET } from '../../../lib/snippets';
     </div>
   `,
 })
-export class SelectDemo {
+export default class SelectDemo {
   selectedFruit = '';
   readonly selectCode = SELECT_SNIPPET;
 }

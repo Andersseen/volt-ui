@@ -51,6 +51,6 @@ import { CHECKBOX_SNIPPET } from '../../../lib/snippets';
     </div>
   `,
 })
-export class CheckboxDemo {
+export default class CheckboxDemo {
   readonly checkboxCode = CHECKBOX_SNIPPET;
 }

@@ -3,97 +3,93 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    loadComponent: () => import('./pages/home').then((m) => m.Home),
+    loadComponent: () => import('./pages/home'),
   },
   {
     path: 'docs',
-    loadComponent: () => import('./pages/docs/docs-layout').then((m) => m.DocsLayout),
+    loadComponent: () => import('./pages/docs/docs-layout'),
     children: [
       { path: '', redirectTo: 'introduction', pathMatch: 'full' },
       {
         path: 'introduction',
-        loadComponent: () => import('./pages/docs/introduction/introduction').then((m) => m.IntroductionPage),
+        loadComponent: () => import('./pages/docs/introduction/introduction'),
       },
       {
         path: 'themes',
-        loadComponent: () => import('./pages/docs/introduction/themes').then((m) => m.ThemesPage),
+        loadComponent: () => import('./pages/docs/introduction/themes'),
       },
       {
         path: 'components',
-        loadComponent: () => import('./pages/docs/components-index').then((m) => m.ComponentsIndexPage),
+        loadComponent: () => import('./pages/docs/components-index'),
       },
       {
         path: 'mcp',
-        loadComponent: () => import('./pages/docs/mcp').then((m) => m.McpDocsPage),
+        loadComponent: () => import('./pages/docs/mcp'),
       },
       // Individual component docs
       {
         path: 'button',
-        loadComponent: () => import('./pages/docs/components/button').then((m) => m.ButtonDemo),
+        loadComponent: () => import('./pages/docs/components/button'),
       },
       {
         path: 'badge',
-        loadComponent: () => import('./pages/docs/components/badge').then((m) => m.BadgeDemo),
+        loadComponent: () => import('./pages/docs/components/badge'),
       },
       {
         path: 'card',
-        loadComponent: () => import('./pages/docs/components/card').then((m) => m.CardDemo),
+        loadComponent: () => import('./pages/docs/components/card'),
       },
       {
         path: 'input',
-        loadComponent: () => import('./pages/docs/components/input').then((m) => m.InputDemo),
+        loadComponent: () => import('./pages/docs/components/input'),
       },
       {
         path: 'checkbox',
-        loadComponent: () => import('./pages/docs/components/checkbox').then((m) => m.CheckboxDemo),
+        loadComponent: () => import('./pages/docs/components/checkbox'),
       },
       {
         path: 'switch',
-        loadComponent: () => import('./pages/docs/components/switch').then((m) => m.SwitchDemo),
+        loadComponent: () => import('./pages/docs/components/switch'),
       },
       {
         path: 'avatar',
-        loadComponent: () => import('./pages/docs/components/avatar').then((m) => m.AvatarDemo),
+        loadComponent: () => import('./pages/docs/components/avatar'),
       },
       {
         path: 'separator',
-        loadComponent: () =>
-          import('./pages/docs/components/separator').then((m) => m.SeparatorDemo),
+        loadComponent: () => import('./pages/docs/components/separator'),
       },
       {
         path: 'accordion',
-        loadComponent: () =>
-          import('./pages/docs/components/accordion').then((m) => m.AccordionDemo),
+        loadComponent: () => import('./pages/docs/components/accordion'),
       },
       {
         path: 'tabs',
-        loadComponent: () => import('./pages/docs/components/tabs').then((m) => m.TabsDemo),
+        loadComponent: () => import('./pages/docs/components/tabs'),
       },
       {
         path: 'select',
-        loadComponent: () => import('./pages/docs/components/select').then((m) => m.SelectDemo),
+        loadComponent: () => import('./pages/docs/components/select'),
       },
       {
         path: 'radio',
-        loadComponent: () => import('./pages/docs/components/radio').then((m) => m.RadioDemo),
+        loadComponent: () => import('./pages/docs/components/radio'),
       },
       {
         path: 'toggle',
-        loadComponent: () => import('./pages/docs/components/toggle').then((m) => m.ToggleDemo),
+        loadComponent: () => import('./pages/docs/components/toggle'),
       },
       {
         path: 'tooltip',
-        loadComponent: () => import('./pages/docs/components/tooltip').then((m) => m.TooltipDemo),
+        loadComponent: () => import('./pages/docs/components/tooltip'),
       },
       {
         path: 'navigation-menu',
-        loadComponent: () =>
-          import('./pages/docs/components/navigation-menu').then((m) => m.NavigationMenuDemo),
+        loadComponent: () => import('./pages/docs/components/navigation-menu'),
       },
       {
         path: 'dialog',
-        loadComponent: () =>
-          import('./pages/docs/components/dialog').then((m) => m.DialogDemo),
+        loadComponent: () => import('./pages/docs/components/dialog'),
       },
     ],
   },

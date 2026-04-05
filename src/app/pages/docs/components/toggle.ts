@@ -67,7 +67,7 @@ import { TOGGLE_SNIPPET } from '../../../lib/snippets';
     </div>
   `,
 })
-export class ToggleDemo {
+export default class ToggleDemo {
   italic = signal(false);
   bold = signal(true);
   readonly toggleCode = TOGGLE_SNIPPET;

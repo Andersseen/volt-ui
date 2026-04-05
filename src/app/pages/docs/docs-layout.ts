@@ -258,7 +258,7 @@ import {
     </ng-template>
   `,
 })
-export class DocsLayout {
+export default class DocsLayout {
   readonly componentLinks = [
     { path: 'accordion', label: 'Accordion' },
     { path: 'avatar', label: 'Avatar' },

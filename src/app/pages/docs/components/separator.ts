@@ -51,6 +51,6 @@ import { SEPARATOR_SNIPPET } from '../../../lib/snippets';
     </div>
   `,
 })
-export class SeparatorDemo {
+export default class SeparatorDemo {
   readonly separatorCode = SEPARATOR_SNIPPET;
 }
