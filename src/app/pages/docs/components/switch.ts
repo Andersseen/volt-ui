@@ -35,7 +35,7 @@ import { SWITCH_SNIPPET } from '../../../lib/snippets';
       <app-code-panel
         title="Component Source"
         [code]="switchCode"
-        cliCommand="npx volt add switch"
+        cliCommand="npx github:Andersseen/volt-ui add switch"
         description="Copy this code to your project. The component uses ng-primitives/switch."
       />
     </div>

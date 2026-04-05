@@ -56,7 +56,7 @@ import { SELECT_SNIPPET } from '../../../lib/snippets';
       <app-code-panel
         title="Component Source"
         [code]="selectCode"
-        cliCommand="npx volt add select"
+        cliCommand="npx github:Andersseen/volt-ui add select"
         description="Copy this code to your project. The component uses ng-primitives/select."
       />
     </div>

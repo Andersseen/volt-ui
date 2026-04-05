@@ -39,7 +39,7 @@ import { TOOLTIP_SNIPPET } from '../../../lib/snippets';
       <app-code-panel
         title="Component Source"
         [code]="tooltipCode"
-        cliCommand="npx volt add tooltip"
+        cliCommand="npx github:Andersseen/volt-ui add tooltip"
         description="Copy this code to your project. The component uses ng-primitives/tooltip."
       />
     </div>

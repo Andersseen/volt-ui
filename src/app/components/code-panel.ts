@@ -1,10 +1,17 @@
-import { ChangeDetectionStrategy, Component, input, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  CUSTOM_ELEMENTS_SCHEMA,
+  input,
+  signal,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CopyButton } from './copy-button';
 
 @Component({
   selector: 'app-code-panel',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [CommonModule, CopyButton],
   template: `
     <div class="space-y-3">
@@ -67,7 +74,13 @@ import { CopyButton } from './copy-button';
           <span class="text-xs text-muted-foreground px-2 py-1 bg-muted rounded">TypeScript</span>
         </div>
         <div class="overflow-auto max-h-[400px]">
-          <pre class="p-4 text-sm"><code class="font-mono whitespace-pre">{{ code() }}</code></pre>
+          <vertex-editor
+            [attr.value]="code()"
+            [attr.language]="'typescript'"
+            theme="light"
+            lineNumbers="true"
+            readonly="true"
+          ></vertex-editor>
         </div>
       </div>
 
@@ -88,7 +101,7 @@ export class CodePanel {
 
   async copyCliCommand() {
     if (!this.cliCommand()) return;
-    
+
     try {
       await navigator.clipboard.writeText(this.cliCommand());
       this.cliCopied.set(true);

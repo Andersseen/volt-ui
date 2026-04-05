@@ -52,7 +52,7 @@ import { INPUT_SNIPPET } from '../../../lib/snippets';
       <app-code-panel
         title="Component Source"
         [code]="inputCode"
-        cliCommand="npx volt add input"
+        cliCommand="npx github:Andersseen/volt-ui add input"
         description="Copy this code to your project. The component uses ng-primitives/input."
       />
     </div>

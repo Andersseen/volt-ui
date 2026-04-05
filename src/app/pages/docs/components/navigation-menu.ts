@@ -197,7 +197,7 @@ import { NAVIGATION_MENU_SNIPPET } from '../../../lib/snippets';
       <app-code-panel
         title="Component Source"
         [code]="navigationMenuCode"
-        cliCommand="npx volt add navigation-menu"
+        cliCommand="npx github:Andersseen/volt-ui add navigation-menu"
         description="Copy this code to your project. The component uses ng-primitives/navigation-menu."
       />
     </div>

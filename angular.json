@@ -25,6 +25,7 @@
                 "input": "public"
               }
             ],
+            "scripts": ["public/web-editor.min.js"],
             "styles": ["src/styles.css"]
           },
           "configurations": {

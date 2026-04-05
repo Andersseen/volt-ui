@@ -35,7 +35,7 @@ import { BADGE_SNIPPET } from '../../../lib/snippets';
       <app-code-panel
         title="Component Source"
         [code]="badgeCode"
-        cliCommand="npx volt add badge"
+        cliCommand="npx github:Andersseen/volt-ui add badge"
         description="Copy this code to your project. The component uses class-variance-authority."
       />
     </div>
