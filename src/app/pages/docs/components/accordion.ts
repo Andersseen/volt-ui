@@ -55,7 +55,7 @@ import { ACCORDION_SNIPPET } from '../../../lib/snippets';
       <app-code-panel
         title="Component Source"
         [code]="accordionCode"
-        cliCommand="npx volt add accordion"
+        cliCommand="npx github:Andersseen/volt-ui add accordion"
         description="Copy this code to your project. The component uses ng-primitives/accordion."
       />
     </div>

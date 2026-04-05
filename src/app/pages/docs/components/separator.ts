@@ -45,7 +45,7 @@ import { SEPARATOR_SNIPPET } from '../../../lib/snippets';
       <app-code-panel
         title="Component Source"
         [code]="separatorCode"
-        cliCommand="npx volt add separator"
+        cliCommand="npx github:Andersseen/volt-ui add separator"
         description="Copy this code to your project. The component uses ng-primitives/separator."
       />
     </div>

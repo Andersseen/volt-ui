@@ -45,7 +45,7 @@ import { CHECKBOX_SNIPPET } from '../../../lib/snippets';
       <app-code-panel
         title="Component Source"
         [code]="checkboxCode"
-        cliCommand="npx volt add checkbox"
+        cliCommand="npx github:Andersseen/volt-ui add checkbox"
         description="Copy this code to your project. The component uses ng-primitives/checkbox."
       />
     </div>

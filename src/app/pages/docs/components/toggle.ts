@@ -61,7 +61,7 @@ import { TOGGLE_SNIPPET } from '../../../lib/snippets';
       <app-code-panel
         title="Component Source"
         [code]="toggleCode"
-        cliCommand="npx volt add toggle"
+        cliCommand="npx github:Andersseen/volt-ui add toggle"
         description="Copy this code to your project. The component uses ng-primitives/toggle."
       />
     </div>

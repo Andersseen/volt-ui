@@ -1,10 +1,20 @@
-import { ChangeDetectionStrategy, Component, input, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  CUSTOM_ELEMENTS_SCHEMA,
+  DestroyRef,
+  inject,
+  input,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CopyButton } from './copy-button';
 
 @Component({
   selector: 'app-code-panel',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [CommonModule, CopyButton],
   template: `
     <div class="space-y-3">
@@ -63,12 +73,17 @@ import { CopyButton } from './copy-button';
 
       <!-- Code Block with fixed height and scroll -->
       <div class="relative rounded-lg border border-border bg-muted/30 overflow-hidden">
-        <div class="absolute top-0 right-0 p-2">
+        <div class="absolute top-0 right-0 p-2 z-10">
           <span class="text-xs text-muted-foreground px-2 py-1 bg-muted rounded">TypeScript</span>
         </div>
-        <div class="overflow-auto max-h-[400px]">
-          <pre class="p-4 text-sm"><code class="font-mono whitespace-pre">{{ code() }}</code></pre>
-        </div>
+        <vertex-editor
+          [attr.value]="code()"
+          [attr.language]="'typescript'"
+          [attr.theme]="editorTheme()"
+          lineNumbers="true"
+          readonly="true"
+          style="display: block; height: 400px; overflow: auto;"
+        ></vertex-editor>
       </div>
 
       <!-- Description slot -->
@@ -78,17 +93,31 @@ import { CopyButton } from './copy-button';
     </div>
   `,
 })
-export class CodePanel {
+export class CodePanel implements OnInit {
   readonly title = input<string>('Component Source');
   readonly code = input.required<string>();
   readonly cliCommand = input<string>('');
   readonly description = input<string>('');
 
   cliCopied = signal(false);
+  editorTheme = signal<'light' | 'dark'>('light');
+
+  private destroyRef = inject(DestroyRef);
+
+  ngOnInit() {
+    this.editorTheme.set(document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+
+    const observer = new MutationObserver(() => {
+      this.editorTheme.set(document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+    });
+
+    observer.observe(document.documentElement, { attributeFilter: ['class'] });
+    this.destroyRef.onDestroy(() => observer.disconnect());
+  }
 
   async copyCliCommand() {
     if (!this.cliCommand()) return;
-    
+
     try {
       await navigator.clipboard.writeText(this.cliCommand());
       this.cliCopied.set(true);

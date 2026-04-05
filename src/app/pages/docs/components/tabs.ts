@@ -116,7 +116,7 @@ import { TABS_SNIPPET } from '../../../lib/snippets';
       <app-code-panel
         title="Component Source"
         [code]="tabsCode"
-        cliCommand="npx volt add tabs"
+        cliCommand="npx github:Andersseen/volt-ui add tabs"
         description="Copy this code to your project. The component uses ng-primitives/tabs."
       />
     </div>

@@ -36,7 +36,7 @@ import { RADIO_SNIPPET } from '../../../lib/snippets';
       <app-code-panel
         title="Component Source"
         [code]="radioCode"
-        cliCommand="npx volt add radio"
+        cliCommand="npx github:Andersseen/volt-ui add radio"
         description="Copy this code to your project. The component uses ng-primitives/radio."
       />
     </div>

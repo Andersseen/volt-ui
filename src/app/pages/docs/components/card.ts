@@ -76,7 +76,7 @@ import { CARD_SNIPPET } from '../../../lib/snippets';
       <app-code-panel
         title="Component Source"
         [code]="cardCode"
-        cliCommand="npx volt add card"
+        cliCommand="npx github:Andersseen/volt-ui add card"
         description="Copy this code to your project. The component uses class-variance-authority for variants."
       />
     </div>

@@ -44,7 +44,7 @@ import { AVATAR_SNIPPET } from '../../../lib/snippets';
       <app-code-panel
         title="Component Source"
         [code]="avatarCode"
-        cliCommand="npx volt add avatar"
+        cliCommand="npx github:Andersseen/volt-ui add avatar"
         description="Copy this code to your project. The component uses ng-primitives/avatar."
       />
     </div>
