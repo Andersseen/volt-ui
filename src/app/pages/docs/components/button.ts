@@ -2,11 +2,12 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { VoltButton } from 'volt';
 import { CodePanel } from '../../../components/code-panel';
 import { BUTTON_SNIPPET } from '../../../lib/snippets';
+import { IconChevronRight, IconMail, IconArrowRight } from '../../../icons';
 
 @Component({
   selector: 'app-button-demo',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [VoltButton, CodePanel],
+  imports: [VoltButton, CodePanel, IconChevronRight, IconMail, IconArrowRight],
   template: `
     <div class="space-y-10">
       <div>
@@ -42,20 +43,7 @@ import { BUTTON_SNIPPET } from '../../../lib/snippets';
           <volt-button size="md">Default (md)</volt-button>
           <volt-button size="lg">Large (lg)</volt-button>
           <volt-button size="icon" aria-label="Icon">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="lucide lucide-chevron-right"
-            >
-              <path d="m9 18 6-6-6-6" />
-            </svg>
+            <icon-chevron-right class="w-4 h-4" />
           </volt-button>
         </div>
       </div>
@@ -66,43 +54,13 @@ import { BUTTON_SNIPPET } from '../../../lib/snippets';
           <volt-button disabled>Disabled</volt-button>
 
           <volt-button variant="outline">
-            <svg
-              slot="leading"
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="lucide lucide-mail"
-            >
-              <rect width="20" height="16" x="2" y="4" rx="2" />
-              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-            </svg>
+            <icon-mail slot="leading" class="w-4 h-4" />
             Login with Email
           </volt-button>
 
           <volt-button variant="solid">
             Continue
-            <svg
-              slot="trailing"
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="lucide lucide-arrow-right"
-            >
-              <path d="M5 12h14" />
-              <path d="m12 5 7 7-7 7" />
-            </svg>
+            <icon-arrow-right slot="trailing" class="w-4 h-4" />
           </volt-button>
         </div>
       </div>

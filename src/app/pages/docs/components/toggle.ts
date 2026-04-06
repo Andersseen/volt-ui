@@ -2,11 +2,12 @@ import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { VoltToggle } from 'volt';
 import { CodePanel } from '../../../components/code-panel';
 import { TOGGLE_SNIPPET } from '../../../lib/snippets';
+import { IconItalic, IconBold } from '../../../icons';
 
 @Component({
   selector: 'app-toggle-demo',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [VoltToggle, CodePanel],
+  imports: [VoltToggle, CodePanel, IconItalic, IconBold],
   template: `
     <div class="space-y-6">
       <div>
@@ -24,35 +25,11 @@ import { TOGGLE_SNIPPET } from '../../../lib/snippets';
           class="p-8 border border-border rounded-lg bg-card/30 flex items-center justify-center min-h-[300px] gap-4"
         >
           <volt-toggle aria-label="Toggle italic" [(pressed)]="italic">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M19 4h-9M14 20H5M15 4 9 20" />
-            </svg>
+            <icon-italic class="w-4 h-4" />
           </volt-toggle>
 
           <volt-toggle variant="outline" aria-label="Toggle bold" [(pressed)]="bold">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M14 12a4 4 0 0 0 0-8H6v8M15 20a4 4 0 0 0 0-8H6v8Z" />
-            </svg>
+            <icon-bold class="w-4 h-4" />
           </volt-toggle>
         </div>
       </div>

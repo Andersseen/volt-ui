@@ -36,3 +36,6 @@ export { IconPaperclip } from './icon-paperclip';
 export { IconSmile } from './icon-smile';
 export { IconSearch } from './icon-search';
 export { IconSettings } from './icon-settings';
+export { IconItalic } from './icon-italic';
+export { IconBold } from './icon-bold';
+export { IconExternalLink } from './icon-external-link';
