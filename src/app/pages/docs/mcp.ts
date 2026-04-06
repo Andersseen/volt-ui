@@ -416,4 +416,4 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
     </div>
   `,
 })
-export class McpDocsPage {}
+export default class McpDocsPage {}

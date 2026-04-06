@@ -41,6 +41,6 @@ import { SWITCH_SNIPPET } from '../../../lib/snippets';
     </div>
   `,
 })
-export class SwitchDemo {
+export default class SwitchDemo {
   readonly switchCode = SWITCH_SNIPPET;
 }

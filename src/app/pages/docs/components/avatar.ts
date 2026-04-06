@@ -30,7 +30,11 @@ import { AVATAR_SNIPPET } from '../../../lib/snippets';
           </volt-avatar>
 
           <volt-avatar>
-            <img voltAvatarImage src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="@janedoe" />
+            <img
+              voltAvatarImage
+              src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+              alt="@janedoe"
+            />
             <volt-avatar-fallback>JD</volt-avatar-fallback>
           </volt-avatar>
 
@@ -50,6 +54,6 @@ import { AVATAR_SNIPPET } from '../../../lib/snippets';
     </div>
   `,
 })
-export class AvatarDemo {
+export default class AvatarDemo {
   readonly avatarCode = AVATAR_SNIPPET;
 }

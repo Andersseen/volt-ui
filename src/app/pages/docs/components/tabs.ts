@@ -122,6 +122,6 @@ import { TABS_SNIPPET } from '../../../lib/snippets';
     </div>
   `,
 })
-export class TabsDemo {
+export default class TabsDemo {
   readonly tabsCode = TABS_SNIPPET;
 }

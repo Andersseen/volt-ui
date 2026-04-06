@@ -45,4 +45,4 @@ import {
   ],
   templateUrl: './home.html',
 })
-export class Home {}
+export default class Home {}

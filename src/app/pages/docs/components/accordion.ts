@@ -6,7 +6,13 @@ import { ACCORDION_SNIPPET } from '../../../lib/snippets';
 @Component({
   selector: 'app-accordion-demo',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [VoltAccordion, VoltAccordionItem, VoltAccordionTrigger, VoltAccordionContent, CodePanel],
+  imports: [
+    VoltAccordion,
+    VoltAccordionItem,
+    VoltAccordionTrigger,
+    VoltAccordionContent,
+    CodePanel,
+  ],
   template: `
     <div class="space-y-6">
       <div>
@@ -61,6 +67,6 @@ import { ACCORDION_SNIPPET } from '../../../lib/snippets';
     </div>
   `,
 })
-export class AccordionDemo {
+export default class AccordionDemo {
   readonly accordionCode = ACCORDION_SNIPPET;
 }

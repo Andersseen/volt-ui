@@ -45,6 +45,6 @@ import { TOOLTIP_SNIPPET } from '../../../lib/snippets';
     </div>
   `,
 })
-export class TooltipDemo {
+export default class TooltipDemo {
   readonly tooltipCode = TOOLTIP_SNIPPET;
 }

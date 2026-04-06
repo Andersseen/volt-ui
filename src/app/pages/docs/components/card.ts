@@ -82,6 +82,6 @@ import { CARD_SNIPPET } from '../../../lib/snippets';
     </div>
   `,
 })
-export class CardDemo {
+export default class CardDemo {
   readonly cardCode = CARD_SNIPPET;
 }

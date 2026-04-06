@@ -58,6 +58,6 @@ import { INPUT_SNIPPET } from '../../../lib/snippets';
     </div>
   `,
 })
-export class InputDemo {
+export default class InputDemo {
   readonly inputCode = INPUT_SNIPPET;
 }
