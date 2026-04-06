@@ -1,0 +1,40 @@
+<div class="space-y-6">
+  <div>
+    <h1 class="text-3xl font-bold tracking-tight">Avatar</h1>
+    <p class="text-lg text-muted-foreground mt-2">
+      An image element with a fallback for representing the user.
+    </p>
+  </div>
+
+  <div
+    class="border rounded-xl border-border/50 p-6 md:p-10 flex flex-col items-center justify-center bg-background/50 relative overflow-hidden min-h-[300px]"
+  >
+    <div
+      class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"
+    ></div>
+
+    <div class="relative z-10 flex gap-4">
+      <volt-avatar>
+        <img voltAvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+        <volt-avatar-fallback>CN</volt-avatar-fallback>
+      </volt-avatar>
+
+      <volt-avatar>
+        <img voltAvatarImage src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="@janedoe" />
+        <volt-avatar-fallback>JD</volt-avatar-fallback>
+      </volt-avatar>
+
+      <volt-avatar>
+        <volt-avatar-fallback>AP</volt-avatar-fallback>
+      </volt-avatar>
+    </div>
+  </div>
+
+  <!-- Source Code Section -->
+  <app-code-panel
+    title="Component Source"
+    [code]="avatarCode"
+    cliCommand="npx github:Andersseen/volt-ui add avatar"
+    description="Copy this code to your project. The component uses ng-primitives/avatar."
+  />
+</div>

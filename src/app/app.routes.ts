@@ -26,7 +26,7 @@ export const routes: Routes = [
         path: 'mcp',
         loadComponent: () => import('./pages/docs/mcp'),
       },
-      // Individual component docs
+      // Individual component docs - using new folder structure
       {
         path: 'button',
         loadComponent: () => import('./pages/docs/components/button'),
