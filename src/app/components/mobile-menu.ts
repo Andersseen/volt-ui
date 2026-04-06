@@ -7,6 +7,7 @@ import {
   NgpDialogTitle,
   NgpDialogTrigger,
 } from 'ng-primitives/dialog';
+import { IconMenu, IconClose } from '../icons';
 
 @Component({
   selector: 'app-mobile-menu',
@@ -19,6 +20,8 @@ import {
     NgpDialogOverlay,
     NgpDialogTitle,
     NgpDialogDescription,
+    IconMenu,
+    IconClose,
   ],
   template: `
     <!-- Mobile Menu Button -->
@@ -27,21 +30,7 @@ import {
       class="md:hidden inline-flex h-9 w-9 items-center justify-center rounded-md border border-border/60 text-muted-foreground transition-colors hover:text-foreground hover:bg-muted/60"
       aria-label="Open menu"
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="18"
-        height="18"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      >
-        <line x1="3" y1="6" x2="21" y2="6" />
-        <line x1="3" y1="12" x2="21" y2="12" />
-        <line x1="3" y1="18" x2="21" y2="18" />
-      </svg>
+      <icon-menu />
     </button>
 
     <!-- Mobile Menu Dialog Template -->
@@ -65,20 +54,7 @@ import {
             class="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:text-foreground hover:bg-muted"
             aria-label="Close menu"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M18 6 6 18" />
-              <path d="m6 6 12 12" />
-            </svg>
+            <icon-close class="w-[18px] h-[18px]" />
           </button>
         </div>
 

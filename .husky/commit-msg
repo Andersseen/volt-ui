@@ -1,0 +1,2 @@
+# Optional: validate conventional commits
+# npx --no-install commitlint --edit "$1"

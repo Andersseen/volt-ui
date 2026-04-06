@@ -2,9 +2,7 @@
   "Volt UI Button": {
     "prefix": ["volt-button", "ui-button"],
     "description": "Volt UI Button component",
-    "body": [
-      "<ui-button variant=\"${1:solid}\" size=\"${2:md}\">${3:Click me}</ui-button>"
-    ]
+    "body": ["<ui-button variant=\"${1:solid}\" size=\"${2:md}\">${3:Click me}</ui-button>"]
   },
   "Volt UI Card": {
     "prefix": ["volt-card", "ui-card"],
@@ -53,9 +51,7 @@
   "Volt UI Import Button": {
     "prefix": ["volt-import-button", "import-ui-button"],
     "description": "Import Volt UI Button",
-    "body": [
-      "import { UiButton } from './ui/button';"
-    ]
+    "body": ["import { UiButton } from './ui/button';"]
   },
   "Volt UI Import Card": {
     "prefix": ["volt-import-card", "import-ui-card"],
@@ -75,9 +71,7 @@
   "Volt UI Checkbox": {
     "prefix": ["volt-checkbox", "ui-checkbox"],
     "description": "Volt UI Checkbox",
-    "body": [
-      "<ui-checkbox [(checked)]=\"${1:checked}\">${2:Label}</ui-checkbox>"
-    ]
+    "body": ["<ui-checkbox [(checked)]=\"${1:checked}\">${2:Label}</ui-checkbox>"]
   },
   "Volt UI Select": {
     "prefix": ["volt-select", "ui-select"],
@@ -125,16 +119,12 @@
   "Volt UI Separator": {
     "prefix": ["volt-separator", "ui-separator"],
     "description": "Volt UI Separator",
-    "body": [
-      "<ui-separator orientation=\"${1|horizontal,vertical|}\" />"
-    ]
+    "body": ["<ui-separator orientation=\"${1|horizontal,vertical|}\" />"]
   },
   "Volt UI Switch": {
     "prefix": ["volt-switch", "ui-switch"],
     "description": "Volt UI Switch",
-    "body": [
-      "<ui-switch [(checked)]=\"${1:checked}\">${2:Label}</ui-switch>"
-    ]
+    "body": ["<ui-switch [(checked)]=\"${1:checked}\">${2:Label}</ui-switch>"]
   },
   "Volt UI Radio": {
     "prefix": ["volt-radio", "ui-radio"],
@@ -149,9 +139,7 @@
   "Volt UI Toggle": {
     "prefix": ["volt-toggle", "ui-toggle"],
     "description": "Volt UI Toggle Button",
-    "body": [
-      "<ui-toggle [(pressed)]=\"${1:pressed}\">${2:Toggle}</ui-toggle>"
-    ]
+    "body": ["<ui-toggle [(pressed)]=\"${1:pressed}\">${2:Toggle}</ui-toggle>"]
   },
   "Volt UI Navigation Menu": {
     "prefix": ["volt-nav-menu", "ui-nav-menu"],
@@ -172,16 +160,12 @@
   "Volt CLI Add": {
     "prefix": ["volt-add", "volt-cli-add"],
     "description": "Add Volt UI component via CLI",
-    "body": [
-      "node /path/to/volt-ui/cli/bin/volt add ${1:button}"
-    ]
+    "body": ["node /path/to/volt-ui/cli/bin/volt add ${1:button}"]
   },
   "Volt CLI Init": {
     "prefix": ["volt-init", "volt-cli-init"],
     "description": "Initialize Volt UI in project",
-    "body": [
-      "node /path/to/volt-ui/cli/bin/volt init ${1:./src/app/ui}"
-    ]
+    "body": ["node /path/to/volt-ui/cli/bin/volt init ${1:./src/app/ui}"]
   },
   "Volt Theme Provider": {
     "prefix": ["volt-theme", "provide-volt-theme"],

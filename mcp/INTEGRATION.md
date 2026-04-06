@@ -24,11 +24,13 @@ node /path/to/volt-ui/mcp/scripts/install-mcp.js -e cursor
 ### Manual Installation
 
 1. Copy `.cursorrules` to your project root:
+
    ```bash
    cp /path/to/volt-ui/mcp/cursor/.cursorrules ./.cursorrules
    ```
 
 2. Create `.cursor/mcp.json`:
+
    ```bash
    mkdir -p .cursor
    cp /path/to/volt-ui/mcp/cursor/mcp.json ./.cursor/mcp.json
@@ -73,17 +75,20 @@ node /path/to/volt-ui/mcp/scripts/install-mcp.js -e claude
 ### Manual Installation
 
 1. Create `.claude` directory:
+
    ```bash
    mkdir -p .claude
    ```
 
 2. Copy configuration files:
+
    ```bash
    cp /path/to/volt-ui/mcp/claude/claude-mcp.json ./.claude/mcp.json
    cp /path/to/volt-ui/mcp/claude/volt-prompts.md ./.claude/volt-prompts.md
    ```
 
 3. For Claude Desktop, add to `claude_desktop_config.json`:
+
    ```json
    {
      "mcpServers": {
@@ -129,11 +134,13 @@ node /path/to/volt-ui/mcp/scripts/install-mcp.js -e copilot
 ### Manual Installation
 
 1. Create `.github` directory:
+
    ```bash
    mkdir -p .github
    ```
 
 2. Copy instructions:
+
    ```bash
    cp /path/to/volt-ui/mcp/copilot/copilot-instructions.md ./.github/copilot-instructions.md
    ```
@@ -193,15 +200,15 @@ node /path/to/volt-ui/mcp/scripts/install-mcp.js -e vscode
 
 Type these prefixes and press `Tab`:
 
-| Prefix | Description |
-|--------|-------------|
-| `volt-button` | Button component |
-| `volt-card` | Full card structure |
-| `volt-form-field` | Form field with input |
-| `volt-tabs` | Tabs component |
-| `volt-import-button` | Import statement |
-| `volt-import-card` | Card imports |
-| `volt-theme` | Theme provider |
+| Prefix               | Description           |
+| -------------------- | --------------------- |
+| `volt-button`        | Button component      |
+| `volt-card`          | Full card structure   |
+| `volt-form-field`    | Form field with input |
+| `volt-tabs`          | Tabs component        |
+| `volt-import-button` | Import statement      |
+| `volt-import-card`   | Card imports          |
+| `volt-theme`         | Theme provider        |
 
 ### Features
 
@@ -219,6 +226,7 @@ Type these prefixes and press `Tab`:
 For editors that support MCP but don't have specific configurations:
 
 1. Install generic MCP:
+
    ```bash
    node /path/to/volt-ui/mcp/scripts/install-mcp.js
    ```
@@ -275,11 +283,13 @@ Then include `.volt-ui/context.md` in your prompts.
 #### "Could not find Volt UI repository"
 
 **Solution**: Specify the path explicitly
+
 ```bash
 node /path/to/volt-ui/mcp/scripts/install-mcp.js -p /path/to/volt-ui
 ```
 
 Or set environment variable:
+
 ```bash
 export VOLT_UI_PATH=/path/to/volt-ui
 ```
@@ -343,30 +353,31 @@ const components = {
     description: 'My custom component',
     files: ['my-custom.ts', 'index.ts'],
     dependencies: [],
-    inputs: [
-      { name: 'customProp', type: 'string' }
-    ]
-  }
+    inputs: [{ name: 'customProp', type: 'string' }],
+  },
 };
 ```
 
 ### Custom Prompts
 
 #### Cursor
+
 Edit `.cursorrules` to add custom rules
 
 #### Claude
+
 Edit `.claude/volt-prompts.md` to add prompts
 
 #### Copilot
+
 Edit `.github/copilot-instructions.md` to add instructions
 
 ### Environment Variables
 
-| Variable | Description |
-|----------|-------------|
-| `VOLT_UI_PATH` | Path to Volt UI repository |
-| `VOLT_MCP_DEBUG` | Enable debug logging |
+| Variable         | Description                |
+| ---------------- | -------------------------- |
+| `VOLT_UI_PATH`   | Path to Volt UI repository |
+| `VOLT_MCP_DEBUG` | Enable debug logging       |
 
 ---
 

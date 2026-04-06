@@ -20,6 +20,7 @@ Point your editor's MCP configuration to `volt-mcp.json`.
 ## Quick Reference
 
 ### Project Structure
+
 ```
 volt-ui/
 ├── projects/volt/src/lib/     # Component source files
@@ -56,7 +57,5 @@ import { UiButton } from './ui/button';
 ```typescript
 import { provideVoltTheme } from 'volt/theme';
 
-providers: [
-  provideVoltTheme({ color: 'ember', style: 'soft', dark: false })
-]
+providers: [provideVoltTheme({ color: 'ember', style: 'soft', dark: false })];
 ```

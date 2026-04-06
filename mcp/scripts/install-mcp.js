@@ -2,13 +2,13 @@
 
 /**
  * Volt UI MCP Installer
- * 
+ *
  * Installs MCP (Model Context Protocol) configuration for Volt UI
  * into your project for various AI editors and assistants.
- * 
+ *
  * Usage:
  *   node install-mcp.js [options]
- * 
+ *
  * Options:
  *   --editor, -e     Target editor (cursor, claude, copilot, vscode, all)
  *   --path, -p       Path to volt-ui repository
@@ -28,7 +28,7 @@ const colors = {
   yellow: '\x1b[33m',
   blue: '\x1b[34m',
   red: '\x1b[31m',
-  cyan: '\x1b[36m'
+  cyan: '\x1b[36m',
 };
 
 function log(message, color = 'reset') {
@@ -70,7 +70,7 @@ function parseArgs() {
   const options = {
     editor: 'all',
     voltUiPath: null,
-    projectPath: process.cwd()
+    projectPath: process.cwd(),
   };
 
   for (let i = 0; i < args.length; i++) {
@@ -108,7 +108,7 @@ function findVoltUiPath() {
   // Check if running from volt-ui repo
   const currentDir = process.cwd();
   const mcpDir = path.join(currentDir, 'mcp');
-  
+
   if (fs.existsSync(mcpDir)) {
     return currentDir;
   }
@@ -144,7 +144,7 @@ function installCursorMCP(voltUiPath, projectPath) {
   // Copy .cursorrules
   const sourceRules = path.join(voltUiPath, 'mcp/cursor/.cursorrules');
   const targetRules = path.join(projectPath, '.cursorrules');
-  
+
   if (fs.existsSync(sourceRules)) {
     fs.copyFileSync(sourceRules, targetRules);
     log(`  ✓ Created ${path.relative(projectPath, targetRules)}`, 'green');
@@ -157,10 +157,10 @@ function installCursorMCP(voltUiPath, projectPath) {
         command: 'node',
         args: [path.join(voltUiPath, 'mcp/scripts/mcp-server.js')],
         env: {
-          VOLT_UI_PATH: voltUiPath
-        }
-      }
-    }
+          VOLT_UI_PATH: voltUiPath,
+        },
+      },
+    },
   };
 
   const mcpConfigPath = path.join(cursorDir, 'mcp.json');
@@ -181,7 +181,7 @@ function installClaudeMCP(voltUiPath, projectPath) {
   // Copy MCP config
   const sourceConfig = path.join(voltUiPath, 'mcp/claude/claude-mcp.json');
   const targetConfig = path.join(claudeDir, 'mcp.json');
-  
+
   if (fs.existsSync(sourceConfig)) {
     fs.copyFileSync(sourceConfig, targetConfig);
     log(`  ✓ Created ${path.relative(projectPath, targetConfig)}`, 'green');
@@ -190,7 +190,7 @@ function installClaudeMCP(voltUiPath, projectPath) {
   // Copy prompts
   const sourcePrompts = path.join(voltUiPath, 'mcp/claude/volt-prompts.md');
   const targetPrompts = path.join(claudeDir, 'volt-prompts.md');
-  
+
   if (fs.existsSync(sourcePrompts)) {
     fs.copyFileSync(sourcePrompts, targetPrompts);
     log(`  ✓ Created ${path.relative(projectPath, targetPrompts)}`, 'green');
@@ -210,7 +210,7 @@ function installCopilotMCP(voltUiPath, projectPath) {
   // Copy instructions
   const sourceInstructions = path.join(voltUiPath, 'mcp/copilot/copilot-instructions.md');
   const targetInstructions = path.join(copilotDir, 'copilot-instructions.md');
-  
+
   if (fs.existsSync(sourceInstructions)) {
     fs.copyFileSync(sourceInstructions, targetInstructions);
     log(`  ✓ Created ${path.relative(projectPath, targetInstructions)}`, 'green');
@@ -224,7 +224,7 @@ function installCopilotMCP(voltUiPath, projectPath) {
 
   const sourceSnippets = path.join(voltUiPath, 'mcp/copilot/volt-snippets.json');
   const targetSnippets = path.join(vscodeDir, 'volt-snippets.code-snippets');
-  
+
   if (fs.existsSync(sourceSnippets)) {
     fs.copyFileSync(sourceSnippets, targetSnippets);
     log(`  ✓ Created ${path.relative(projectPath, targetSnippets)}`, 'green');
@@ -256,8 +256,8 @@ function installVscodeMCP(voltUiPath, projectPath) {
   // Add Volt UI to AI context
   settings['github.copilot.chat.codeGeneration.instructions'] = [
     {
-      "text": "You are working with Volt UI, an Angular component library. Components use 'ui-' prefix (e.g., ui-button) and are imported from './ui/<component>'. Use standalone components with signals for reactivity."
-    }
+      text: "You are working with Volt UI, an Angular component library. Components use 'ui-' prefix (e.g., ui-button) and are imported from './ui/<component>'. Use standalone components with signals for reactivity.",
+    },
   ];
 
   fs.writeFileSync(settingsPath, JSON.stringify(settings, null, 2));
@@ -279,19 +279,32 @@ function createProjectContext(voltUiPath, projectPath) {
     voltUiPath: voltUiPath,
     installedAt: new Date().toISOString(),
     components: [
-      'button', 'badge', 'card', 'input', 'textarea',
-      'checkbox', 'radio', 'switch', 'toggle', 'select',
-      'tabs', 'accordion', 'avatar', 'separator', 'tooltip',
-      'navigation-menu', 'form-field'
+      'button',
+      'badge',
+      'card',
+      'input',
+      'textarea',
+      'checkbox',
+      'radio',
+      'switch',
+      'toggle',
+      'select',
+      'tabs',
+      'accordion',
+      'avatar',
+      'separator',
+      'tooltip',
+      'navigation-menu',
+      'form-field',
     ],
     themes: {
       colors: ['volt', 'ember', 'sage', 'dusk', 'glacier'],
-      styles: ['sharp', 'soft', 'brutal', 'ghost', 'retro']
+      styles: ['sharp', 'soft', 'brutal', 'ghost', 'retro'],
     },
     cli: {
       init: `node ${path.join(voltUiPath, 'cli/bin/volt')} init`,
-      add: `node ${path.join(voltUiPath, 'cli/bin/volt')} add <component>`
-    }
+      add: `node ${path.join(voltUiPath, 'cli/bin/volt')} add <component>`,
+    },
   };
 
   const contextPath = path.join(contextDir, 'context.json');
@@ -301,7 +314,7 @@ function createProjectContext(voltUiPath, projectPath) {
   // Copy generic context
   const genericContext = path.join(voltUiPath, 'mcp/generic/context.md');
   const targetContext = path.join(contextDir, 'context.md');
-  
+
   if (fs.existsSync(genericContext)) {
     fs.copyFileSync(genericContext, targetContext);
     log(`  ✓ Created ${path.relative(projectPath, targetContext)}`, 'green');
@@ -312,7 +325,7 @@ function createProjectContext(voltUiPath, projectPath) {
 
 function updatePackageJson(projectPath, voltUiPath) {
   const packagePath = path.join(projectPath, 'package.json');
-  
+
   if (!fs.existsSync(packagePath)) {
     return false;
   }
@@ -320,10 +333,10 @@ function updatePackageJson(projectPath, voltUiPath) {
   log('\n📦 Updating package.json...', 'blue');
 
   const pkg = JSON.parse(fs.readFileSync(packagePath, 'utf-8'));
-  
+
   // Add scripts
   if (!pkg.scripts) pkg.scripts = {};
-  
+
   pkg.scripts['volt:add'] = `node ${path.join(voltUiPath, 'cli/bin/volt')} add`;
   pkg.scripts['volt:init'] = `node ${path.join(voltUiPath, 'cli/bin/volt')} init`;
   pkg.scripts['volt:list'] = `node ${path.join(voltUiPath, 'cli/bin/volt')} list`;
@@ -346,7 +359,7 @@ ${colors.reset}`);
 
   // Find volt-ui path
   const voltUiPath = options.voltUiPath || findVoltUiPath();
-  
+
   if (!voltUiPath) {
     log('\n❌ Could not find Volt UI repository!', 'red');
     log('Please specify the path with -p or --path option', 'yellow');
@@ -393,9 +406,11 @@ ${colors.reset}`);
   log('  3. Add components:', 'reset');
   log('     node ' + path.join(voltUiPath, 'cli/bin/volt') + ' add button', 'cyan');
   log('  4. Import and use components:', 'reset');
-  log('     import { UiButton } from \'./ui/button\';', 'cyan');
+  log("     import { UiButton } from './ui/button';", 'cyan');
 
-  log(`\n${colors.yellow}Note: Restart your editor for MCP changes to take effect.${colors.reset}\n`);
+  log(
+    `\n${colors.yellow}Note: Restart your editor for MCP changes to take effect.${colors.reset}\n`
+  );
 }
 
 main();

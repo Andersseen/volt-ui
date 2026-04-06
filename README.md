@@ -17,11 +17,13 @@ An Angular UI component library inspired by shadcn/ui, built on top of [ng-primi
 ### Using the CLI (like shadcn)
 
 1. **Initialize volt/ui in your project:**
+
 ```bash
 node cli/bin/volt init
 ```
 
 2. **Add components:**
+
 ```bash
 node cli/bin/volt add button
 node cli/bin/volt add card
@@ -29,13 +31,14 @@ node cli/bin/volt add navigation-menu
 ```
 
 3. **Use in your components:**
+
 ```typescript
 import { UiButton } from './ui/button';
 
 @Component({
   selector: 'app-my-component',
   imports: [UiButton],
-  template: `<ui-button variant="solid">Click me</ui-button>`
+  template: `<ui-button variant="solid">Click me</ui-button>`,
 })
 export class MyComponent {}
 ```
@@ -45,7 +48,7 @@ export class MyComponent {}
 Each component demo page includes a **"Copy code"** button that copies the full component source code to your clipboard. Simply:
 
 1. Visit the component demo page
-2. Click "Copy code" 
+2. Click "Copy code"
 3. Paste into your project's `ui/` folder
 4. Customize as needed
 
@@ -55,13 +58,13 @@ Volt UI includes full MCP support for AI assistants! Get intelligent code sugges
 
 ### Supported Editors
 
-| Editor | Status | Installation |
-|--------|--------|--------------|
-| **Cursor** | ✅ Full support | `node mcp/scripts/install-mcp.js -e cursor` |
-| **Claude** (Desktop/Code) | ✅ Full support | `node mcp/scripts/install-mcp.js -e claude` |
-| **GitHub Copilot** | ✅ Full support | `node mcp/scripts/install-mcp.js -e copilot` |
-| **VS Code** | ✅ Full support | `node mcp/scripts/install-mcp.js -e vscode` |
-| **Other** | ✅ Generic MCP | `node mcp/scripts/install-mcp.js` |
+| Editor                    | Status          | Installation                                 |
+| ------------------------- | --------------- | -------------------------------------------- |
+| **Cursor**                | ✅ Full support | `node mcp/scripts/install-mcp.js -e cursor`  |
+| **Claude** (Desktop/Code) | ✅ Full support | `node mcp/scripts/install-mcp.js -e claude`  |
+| **GitHub Copilot**        | ✅ Full support | `node mcp/scripts/install-mcp.js -e copilot` |
+| **VS Code**               | ✅ Full support | `node mcp/scripts/install-mcp.js -e vscode`  |
+| **Other**                 | ✅ Generic MCP  | `node mcp/scripts/install-mcp.js`            |
 
 ### Quick MCP Setup
 
@@ -160,6 +163,7 @@ npx ng build volt
 Volt UI includes a powerful theme system with multiple color palettes and styles.
 
 ### Available Colors
+
 - `volt` (default) - Blue-purple
 - `ember` - Warm orange-red
 - `sage` - Green
@@ -167,6 +171,7 @@ Volt UI includes a powerful theme system with multiple color palettes and styles
 - `glacier` - Cool blue
 
 ### Available Styles
+
 - `sharp` (default) - Moderate radius
 - `soft` - Larger radius
 - `brutal` - No radius, heavy borders
@@ -179,13 +184,12 @@ Volt UI includes a powerful theme system with multiple color palettes and styles
 import { provideVoltTheme } from 'volt/theme';
 
 bootstrapApplication(AppComponent, {
-  providers: [
-    provideVoltTheme({ color: 'ember', style: 'soft', dark: false })
-  ]
+  providers: [provideVoltTheme({ color: 'ember', style: 'soft', dark: false })],
 });
 ```
 
 Or dynamically:
+
 ```typescript
 import { applyVoltTheme } from 'volt/theme';
 

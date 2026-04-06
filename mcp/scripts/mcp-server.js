@@ -2,7 +2,7 @@
 
 /**
  * Volt UI MCP Server
- * 
+ *
  * Provides MCP (Model Context Protocol) endpoints for AI assistants
  * to query Volt UI component information.
  */
@@ -37,15 +37,20 @@ const components = {
     variants: ['solid', 'outline', 'ghost', 'link', 'destructive'],
     sizes: ['sm', 'md', 'lg', 'icon'],
     inputs: [
-      { name: 'variant', type: 'string', default: 'solid', options: ['solid', 'outline', 'ghost', 'link', 'destructive'] },
+      {
+        name: 'variant',
+        type: 'string',
+        default: 'solid',
+        options: ['solid', 'outline', 'ghost', 'link', 'destructive'],
+      },
       { name: 'size', type: 'string', default: 'md', options: ['sm', 'md', 'lg', 'icon'] },
-      { name: 'disabled', type: 'boolean', default: false }
+      { name: 'disabled', type: 'boolean', default: false },
     ],
     examples: [
       '<ui-button>Click me</ui-button>',
       '<ui-button variant="outline" size="sm">Cancel</ui-button>',
-      '<ui-button variant="destructive" [disabled]="isLoading()">Delete</ui-button>'
-    ]
+      '<ui-button variant="destructive" [disabled]="isLoading()">Delete</ui-button>',
+    ],
   },
   badge: {
     name: 'Badge',
@@ -53,13 +58,8 @@ const components = {
     files: ['badge.ts', 'index.ts'],
     dependencies: [],
     variants: ['default', 'secondary', 'outline', 'destructive'],
-    inputs: [
-      { name: 'variant', type: 'string', default: 'default' }
-    ],
-    examples: [
-      '<ui-badge>New</ui-badge>',
-      '<ui-badge variant="outline">Draft</ui-badge>'
-    ]
+    inputs: [{ name: 'variant', type: 'string', default: 'default' }],
+    examples: ['<ui-badge>New</ui-badge>', '<ui-badge variant="outline">Draft</ui-badge>'],
   },
   card: {
     name: 'Card',
@@ -75,8 +75,8 @@ const components = {
   </ui-card-header>
   <ui-card-content>Content</ui-card-content>
   <ui-card-footer>Footer</ui-card-footer>
-</ui-card>`
-    ]
+</ui-card>`,
+    ],
   },
   input: {
     name: 'Input',
@@ -86,12 +86,12 @@ const components = {
     inputs: [
       { name: 'type', type: 'string', default: 'text' },
       { name: 'placeholder', type: 'string' },
-      { name: 'disabled', type: 'boolean', default: false }
+      { name: 'disabled', type: 'boolean', default: false },
     ],
     examples: [
       '<ui-input placeholder="Enter email" />',
-      '<ui-input type="password" [disabled]="isDisabled()" />'
-    ]
+      '<ui-input type="password" [disabled]="isDisabled()" />',
+    ],
   },
   textarea: {
     name: 'Textarea',
@@ -101,8 +101,8 @@ const components = {
     inputs: [
       { name: 'rows', type: 'number', default: 3 },
       { name: 'placeholder', type: 'string' },
-      { name: 'disabled', type: 'boolean', default: false }
-    ]
+      { name: 'disabled', type: 'boolean', default: false },
+    ],
   },
   checkbox: {
     name: 'Checkbox',
@@ -112,12 +112,12 @@ const components = {
     inputs: [
       { name: 'checked', type: 'boolean', default: false },
       { name: 'disabled', type: 'boolean', default: false },
-      { name: 'indeterminate', type: 'boolean', default: false }
+      { name: 'indeterminate', type: 'boolean', default: false },
     ],
     examples: [
       '<ui-checkbox [(checked)]="isChecked">Accept terms</ui-checkbox>',
-      '<ui-checkbox [indeterminate]="isIndeterminate">Select all</ui-checkbox>'
-    ]
+      '<ui-checkbox [indeterminate]="isIndeterminate">Select all</ui-checkbox>',
+    ],
   },
   radio: {
     name: 'Radio',
@@ -127,14 +127,14 @@ const components = {
     subComponents: ['radio-group', 'radio-item'],
     inputs: [
       { name: 'value', type: 'string' },
-      { name: 'disabled', type: 'boolean', default: false }
+      { name: 'disabled', type: 'boolean', default: false },
     ],
     examples: [
       `<ui-radio-group [(value)]="selectedValue">
   <ui-radio-item value="option1">Option 1</ui-radio-item>
   <ui-radio-item value="option2">Option 2</ui-radio-item>
-</ui-radio-group>`
-    ]
+</ui-radio-group>`,
+    ],
   },
   switch: {
     name: 'Switch',
@@ -143,11 +143,9 @@ const components = {
     dependencies: ['ng-primitives/switch'],
     inputs: [
       { name: 'checked', type: 'boolean', default: false },
-      { name: 'disabled', type: 'boolean', default: false }
+      { name: 'disabled', type: 'boolean', default: false },
     ],
-    examples: [
-      '<ui-switch [(checked)]="isEnabled">Enable notifications</ui-switch>'
-    ]
+    examples: ['<ui-switch [(checked)]="isEnabled">Enable notifications</ui-switch>'],
   },
   toggle: {
     name: 'Toggle',
@@ -156,19 +154,26 @@ const components = {
     dependencies: ['ng-primitives/button'],
     inputs: [
       { name: 'pressed', type: 'boolean', default: false },
-      { name: 'disabled', type: 'boolean', default: false }
-    ]
+      { name: 'disabled', type: 'boolean', default: false },
+    ],
   },
   select: {
     name: 'Select',
     description: 'Dropdown select with options',
-    files: ['select.component.ts', 'select-content.component.ts', 'select-item.component.ts', 'select-label.component.ts', 'select-separator.component.ts', 'index.ts'],
+    files: [
+      'select.component.ts',
+      'select-content.component.ts',
+      'select-item.component.ts',
+      'select-label.component.ts',
+      'select-separator.component.ts',
+      'index.ts',
+    ],
     dependencies: ['ng-primitives/select'],
     subComponents: ['select-content', 'select-item', 'select-label', 'select-separator'],
     inputs: [
       { name: 'value', type: 'string' },
       { name: 'placeholder', type: 'string' },
-      { name: 'disabled', type: 'boolean', default: false }
+      { name: 'disabled', type: 'boolean', default: false },
     ],
     examples: [
       `<ui-select placeholder="Select option">
@@ -177,18 +182,21 @@ const components = {
     <ui-select-item value="1">Option 1</ui-select-item>
     <ui-select-item value="2">Option 2</ui-select-item>
   </ui-select-content>
-</ui-select>`
-    ]
+</ui-select>`,
+    ],
   },
   tabs: {
     name: 'Tabs',
     description: 'Tabbed interface',
-    files: ['tabs.component.ts', 'tabs-list.component.ts', 'tabs-trigger.component.ts', 'tabs-content.component.ts'],
+    files: [
+      'tabs.component.ts',
+      'tabs-list.component.ts',
+      'tabs-trigger.component.ts',
+      'tabs-content.component.ts',
+    ],
     dependencies: ['ng-primitives/tab'],
     subComponents: ['tabs-list', 'tabs-trigger', 'tabs-content'],
-    inputs: [
-      { name: 'value', type: 'string' }
-    ],
+    inputs: [{ name: 'value', type: 'string' }],
     examples: [
       `<ui-tabs value="tab1">
   <ui-tabs-list>
@@ -197,19 +205,25 @@ const components = {
   </ui-tabs-list>
   <ui-tabs-content value="tab1">Content 1</ui-tabs-content>
   <ui-tabs-content value="tab2">Content 2</ui-tabs-content>
-</ui-tabs>`
-    ]
+</ui-tabs>`,
+    ],
   },
   accordion: {
     name: 'Accordion',
     description: 'Collapsible accordion panels',
-    files: ['accordion.component.ts', 'accordion-item.component.ts', 'accordion-trigger.component.ts', 'accordion-content.component.ts', 'index.ts'],
+    files: [
+      'accordion.component.ts',
+      'accordion-item.component.ts',
+      'accordion-trigger.component.ts',
+      'accordion-content.component.ts',
+      'index.ts',
+    ],
     dependencies: ['ng-primitives/accordion'],
     subComponents: ['accordion-item', 'accordion-trigger', 'accordion-content'],
     inputs: [
       { name: 'type', type: 'string', default: 'single', options: ['single', 'multiple'] },
-      { name: 'collapsible', type: 'boolean', default: false }
-    ]
+      { name: 'collapsible', type: 'boolean', default: false },
+    ],
   },
   avatar: {
     name: 'Avatar',
@@ -220,13 +234,13 @@ const components = {
     inputs: [
       { name: 'src', type: 'string' },
       { name: 'alt', type: 'string' },
-      { name: 'delayMs', type: 'number', default: 0 }
+      { name: 'delayMs', type: 'number', default: 0 },
     ],
     examples: [
       `<ui-avatar [src]="user.avatar" [alt]="user.name">
   <ui-avatar-fallback>{{ user.initials }}</ui-avatar-fallback>
-</ui-avatar>`
-    ]
+</ui-avatar>`,
+    ],
   },
   separator: {
     name: 'Separator',
@@ -234,8 +248,13 @@ const components = {
     files: ['separator.component.ts', 'index.ts'],
     dependencies: ['ng-primitives/separator'],
     inputs: [
-      { name: 'orientation', type: 'string', default: 'horizontal', options: ['horizontal', 'vertical'] }
-    ]
+      {
+        name: 'orientation',
+        type: 'string',
+        default: 'horizontal',
+        options: ['horizontal', 'vertical'],
+      },
+    ],
   },
   tooltip: {
     name: 'Tooltip',
@@ -246,23 +265,42 @@ const components = {
     inputs: [
       { name: 'content', type: 'string' },
       { name: 'side', type: 'string', default: 'top' },
-      { name: 'align', type: 'string', default: 'center' }
+      { name: 'align', type: 'string', default: 'center' },
     ],
-    examples: [
-      '<ui-tooltip content="More info"><ui-button>Hover me</ui-button></ui-tooltip>'
-    ]
+    examples: ['<ui-tooltip content="More info"><ui-button>Hover me</ui-button></ui-tooltip>'],
   },
   'navigation-menu': {
     name: 'Navigation Menu',
     description: 'Navigation menu with dropdowns',
-    files: ['navigation-menu.ts', 'navigation-menu-list.ts', 'navigation-menu-item.ts', 'navigation-menu-trigger.ts', 'navigation-menu-content.ts', 'navigation-menu-content-item.ts', 'navigation-menu-link.ts', 'index.ts'],
+    files: [
+      'navigation-menu.ts',
+      'navigation-menu-list.ts',
+      'navigation-menu-item.ts',
+      'navigation-menu-trigger.ts',
+      'navigation-menu-content.ts',
+      'navigation-menu-content-item.ts',
+      'navigation-menu-link.ts',
+      'index.ts',
+    ],
     dependencies: ['ng-primitives/navigation-menu'],
-    subComponents: ['navigation-menu-list', 'navigation-menu-item', 'navigation-menu-trigger', 'navigation-menu-content', 'navigation-menu-link']
+    subComponents: [
+      'navigation-menu-list',
+      'navigation-menu-item',
+      'navigation-menu-trigger',
+      'navigation-menu-content',
+      'navigation-menu-link',
+    ],
   },
   'form-field': {
     name: 'Form Field',
     description: 'Form field wrapper with label, hint, error',
-    files: ['form-field.ts', 'form-field-label.ts', 'form-field-hint.ts', 'form-field-error.ts', 'index.ts'],
+    files: [
+      'form-field.ts',
+      'form-field-label.ts',
+      'form-field-hint.ts',
+      'form-field-error.ts',
+      'index.ts',
+    ],
     dependencies: ['ng-primitives/form-field'],
     subComponents: ['form-field-label', 'form-field-hint', 'form-field-error'],
     examples: [
@@ -271,24 +309,24 @@ const components = {
   <ui-input type="email" />
   <ui-form-field-hint>We'll never share your email</ui-form-field-hint>
   <ui-form-field-error>Invalid email</ui-form-field-error>
-</ui-form-field>`
-    ]
-  }
+</ui-form-field>`,
+    ],
+  },
 };
 
 // MCP Protocol Handlers
 const handlers = {
   // List all components
-  'list_components': () => {
+  list_components: () => {
     return Object.entries(components).map(([key, comp]) => ({
       name: key,
       displayName: comp.name,
-      description: comp.description
+      description: comp.description,
     }));
   },
 
   // Get component details
-  'get_component': (params) => {
+  get_component: params => {
     const component = components[params.name];
     if (!component) {
       return { error: `Component "${params.name}" not found` };
@@ -297,7 +335,7 @@ const handlers = {
   },
 
   // Get component source code
-  'get_component_source': (params) => {
+  get_component_source: params => {
     const component = components[params.name];
     if (!component) {
       return { error: `Component "${params.name}" not found` };
@@ -314,7 +352,7 @@ const handlers = {
   },
 
   // Get usage example
-  'get_usage_example': (params) => {
+  get_usage_example: params => {
     const component = components[params.component];
     if (!component) {
       return { error: `Component "${params.component}" not found` };
@@ -324,12 +362,12 @@ const handlers = {
     return {
       component: params.component,
       import: `import { Ui${component.name.replace(/\s/g, '')} } from './ui/${params.component}';`,
-      examples: examples
+      examples: examples,
     };
   },
 
   // Get theme info
-  'get_theme_info': () => {
+  get_theme_info: () => {
     return {
       colors: ['volt', 'ember', 'sage', 'dusk', 'glacier'],
       styles: ['sharp', 'soft', 'brutal', 'ghost', 'retro'],
@@ -337,15 +375,15 @@ const handlers = {
       dynamic: 'applyVoltTheme',
       usage: {
         provider: `provideVoltTheme({ color: 'ember', style: 'soft', dark: false })`,
-        dynamic: `applyVoltTheme({ color: 'dusk', style: 'brutal', dark: true })`
-      }
+        dynamic: `applyVoltTheme({ color: 'dusk', style: 'brutal', dark: true })`,
+      },
     };
   },
 
   // Generate CLI command
-  'generate_cli_command': (params) => {
+  generate_cli_command: params => {
     const cliPath = path.join(VOLT_UI_PATH, 'cli/bin/volt');
-    
+
     switch (params.action) {
       case 'init':
         return { command: `node ${cliPath} init ${params.targetDir || ''}`.trim() };
@@ -353,7 +391,9 @@ const handlers = {
         if (!params.component) {
           return { error: 'Component name required for add action' };
         }
-        return { command: `node ${cliPath} add ${params.component} ${params.targetDir || ''}`.trim() };
+        return {
+          command: `node ${cliPath} add ${params.component} ${params.targetDir || ''}`.trim(),
+        };
       case 'list':
         return { command: `node ${cliPath} list` };
       default:
@@ -362,7 +402,7 @@ const handlers = {
   },
 
   // Get project info
-  'get_project_info': () => {
+  get_project_info: () => {
     return {
       name: 'Volt UI',
       type: 'angular-component-library',
@@ -372,29 +412,29 @@ const handlers = {
       architecture: {
         components: 'standalone',
         changeDetection: 'zoneless-signals',
-        hostDirectives: true
+        hostDirectives: true,
       },
       naming: {
         sourcePrefix: 'volt',
         cliPrefix: 'ui',
         sourceClassPrefix: 'Volt',
-        cliClassPrefix: 'Ui'
-      }
+        cliClassPrefix: 'Ui',
+      },
     };
-  }
+  },
 };
 
 // MCP Protocol (stdio)
 async function handleRequest(request) {
   const { method, params = {} } = request;
-  
+
   if (handlers[method]) {
     try {
       const result = await handlers[method](params);
       return {
         jsonrpc: '2.0',
         id: request.id,
-        result
+        result,
       };
     } catch (error) {
       return {
@@ -402,8 +442,8 @@ async function handleRequest(request) {
         id: request.id,
         error: {
           code: -32603,
-          message: error.message
-        }
+          message: error.message,
+        },
       };
     }
   }
@@ -413,19 +453,19 @@ async function handleRequest(request) {
     id: request.id,
     error: {
       code: -32601,
-      message: `Method not found: ${method}`
-    }
+      message: `Method not found: ${method}`,
+    },
   };
 }
 
 // Main loop
 async function main() {
   const readline = require('readline');
-  
+
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
-    terminal: false
+    terminal: false,
   });
 
   for await (const line of rl) {
@@ -434,14 +474,16 @@ async function main() {
       const response = await handleRequest(request);
       console.log(JSON.stringify(response));
     } catch (error) {
-      console.log(JSON.stringify({
-        jsonrpc: '2.0',
-        id: null,
-        error: {
-          code: -32700,
-          message: 'Parse error'
-        }
-      }));
+      console.log(
+        JSON.stringify({
+          jsonrpc: '2.0',
+          id: null,
+          error: {
+            code: -32700,
+            message: 'Parse error',
+          },
+        })
+      );
     }
   }
 }

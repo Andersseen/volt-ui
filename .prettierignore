@@ -1,0 +1,12 @@
+node_modules
+dist
+.angular
+coverage
+pnpm-lock.yaml
+.git
+.vscode
+.idea
+*.log
+.DS_Store
+wrangler.toml
+.husky/_

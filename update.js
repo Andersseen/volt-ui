@@ -20,15 +20,15 @@ const appTs = fs.readFileSync('src/app/app.ts', 'utf8');
 let newAppTs = appTs;
 newAppTs = newAppTs.replace(
   /import \{ VoltInput.*\} from 'volt';\nimport \{ VoltCard,[\s\S]*?\} from 'volt';\nimport \{ VoltSeparator \} from 'volt';\nimport \{ VoltCheckbox.*\} from 'volt';\n/,
-  '',
+  ''
 );
 newAppTs = newAppTs.replace(
   "import { VoltButton } from 'volt';",
-  "import { VoltButton } from 'volt';\nimport { RouterOutlet } from '@angular/router';",
+  "import { VoltButton } from 'volt';\nimport { RouterOutlet } from '@angular/router';"
 );
 newAppTs = newAppTs.replace(
   /imports: \[\n    VoltButton,\n    VoltBadge,\n    VoltInput,\n    VoltTextarea,\n    VoltLabel,\n    VoltCard,\n    VoltCardHeader,\n    VoltCardTitle,\n    VoltCardDescription,\n    VoltCardContent,\n    VoltCardFooter,\n    VoltSeparator,\n    VoltCheckbox,\n    VoltSwitch,\n    VoltAvatar,\n    VoltAvatarImage,\n    VoltAvatarFallback,\n  \],/,
-  'imports: [\n    RouterOutlet,\n    VoltButton,\n    VoltBadge,\n  ],',
+  'imports: [\n    RouterOutlet,\n    VoltButton,\n    VoltBadge,\n  ],'
 );
 fs.writeFileSync('src/app/app.ts', newAppTs);
 
@@ -40,7 +40,5 @@ fs.writeFileSync('src/app/app.routes.ts', appRoutesTs);
 const indexHtml = fs.readFileSync('src/index.html', 'utf8');
 fs.writeFileSync(
   'src/index.html',
-  indexHtml
-    .replace('favicon.ico', 'favicon.png')
-    .replace('type="image/x-icon"', 'type="image/png"'),
+  indexHtml.replace('favicon.ico', 'favicon.png').replace('type="image/x-icon"', 'type="image/png"')
 );

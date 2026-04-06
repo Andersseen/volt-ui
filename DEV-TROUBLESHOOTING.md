@@ -7,17 +7,20 @@ If you encounter the error `exit code 143` or esbuild crashes during development
 ### Quick Fixes
 
 #### Option 1: Use the optimized dev script (Recommended)
+
 ```bash
 pnpm dev
 ```
 
 This script automatically:
+
 - Cleans the Angular cache
 - Sets memory limits for Node.js
 - Kills any existing processes on port 4200
 - Uses polling for more stability
 
 #### Option 2: Use the safe start mode
+
 ```bash
 pnpm start:safe
 ```
@@ -25,6 +28,7 @@ pnpm start:safe
 This disables live reload and uses polling, which uses less memory.
 
 #### Option 3: Manual cleanup and restart
+
 ```bash
 # Clean cache
 pnpm clean
@@ -62,6 +66,7 @@ export ulimit -n 65536
 ### Build for Production
 
 For production builds, use:
+
 ```bash
 pnpm build:prod
 ```

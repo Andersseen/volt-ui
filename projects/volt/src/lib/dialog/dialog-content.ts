@@ -30,10 +30,8 @@ export class VoltDialogContent {
       'drawer-right': 'inset-y-0 right-0 h-full w-[300px] max-w-[85vw] border-l border-border',
     };
 
-    const classes = [baseStyles, variants[this.variant()], this.class()]
-      .filter(Boolean)
-      .join(' ');
-    
+    const classes = [baseStyles, variants[this.variant()], this.class()].filter(Boolean).join(' ');
+
     return classes;
   });
 }

@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { IconCopy, IconCheck } from '../icons';
 
 @Component({
   selector: 'app-copy-button',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule],
+  imports: [CommonModule, IconCopy, IconCheck],
   template: `
     <button
       type="button"
@@ -16,35 +17,10 @@ import { CommonModule } from '@angular/common';
       [class.dark:bg-green-950]="copied()"
     >
       @if (copied()) {
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="14"
-          height="14"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="M20 6 9 17l-5-5" />
-        </svg>
+        <icon-check class="w-[14px] h-[14px]" />
         <span>Copied!</span>
       } @else {
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="14"
-          height="14"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
-          <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
-        </svg>
+        <icon-copy />
         <span>Copy code</span>
       }
     </button>

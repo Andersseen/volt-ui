@@ -26,7 +26,7 @@ export const toggleVariants = cva(
       variant: 'default',
       size: 'md',
     },
-  },
+  }
 );
 
 export type ToggleVariants = VariantProps<typeof toggleVariants>;
@@ -58,6 +58,6 @@ export class VoltToggle {
     toggleVariants({
       variant: this.variant(),
       size: this.size(),
-    }),
+    })
   );
 }

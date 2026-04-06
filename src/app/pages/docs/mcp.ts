@@ -1,8 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { IconSparkles, IconCheck, IconExternalLink, IconTabs } from '../../icons';
 
 @Component({
   selector: 'app-mcp-docs',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [IconSparkles, IconCheck, IconExternalLink, IconTabs],
   template: `
     <div class="space-y-8 max-w-3xl">
       <div>
@@ -14,26 +16,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 
       <div class="rounded-lg border border-border bg-muted/30 p-4">
         <div class="flex items-start gap-3">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="text-primary mt-0.5"
-          >
-            <path d="M12 2v4" />
-            <path d="m5 5 2.8 2.8" />
-            <path d="m19 5-2.8 2.8" />
-            <path d="M12 12v8" />
-            <path d="m5 19 2.8-2.8" />
-            <path d="m19 19-2.8-2.8" />
-            <circle cx="12" cy="12" r="3" />
-          </svg>
+          <icon-sparkles class="w-5 h-5 text-primary mt-0.5" />
           <div>
             <h3 class="font-semibold">What is MCP?</h3>
             <p class="text-sm text-muted-foreground mt-1">
@@ -51,21 +34,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
         <div class="grid gap-4 sm:grid-cols-2">
           <div class="rounded-lg border border-border p-4 space-y-2">
             <div class="flex items-center gap-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="text-blue-500"
-              >
-                <rect width="18" height="18" x="3" y="3" rx="2" />
-                <path d="M9 3v18" />
-              </svg>
+              <icon-tabs class="w-5 h-5 text-blue-500" />
               <h3 class="font-semibold">Cursor</h3>
             </div>
             <p class="text-sm text-muted-foreground">
@@ -78,20 +47,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 
           <div class="rounded-lg border border-border p-4 space-y-2">
             <div class="flex items-center gap-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="text-orange-500"
-              >
-                <path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5" />
-              </svg>
+              <icon-sparkles class="w-5 h-5 text-orange-500" />
               <h3 class="font-semibold">Claude</h3>
             </div>
             <p class="text-sm text-muted-foreground">
@@ -104,23 +60,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 
           <div class="rounded-lg border border-border p-4 space-y-2">
             <div class="flex items-center gap-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="text-purple-500"
-              >
-                <path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5" />
-                <path d="M8 12v4" />
-                <path d="M16 12v4" />
-                <path d="M12 16v4" />
-              </svg>
+              <icon-sparkles class="w-5 h-5 text-purple-500" />
               <h3 class="font-semibold">GitHub Copilot</h3>
             </div>
             <p class="text-sm text-muted-foreground">
@@ -133,22 +73,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 
           <div class="rounded-lg border border-border p-4 space-y-2">
             <div class="flex items-center gap-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="text-blue-400"
-              >
-                <path d="m18 16 4-4-4-4" />
-                <path d="m6 8-4 4 4 4" />
-                <path d="m14.5 4-5 16" />
-              </svg>
+              <icon-tabs class="w-5 h-5 text-blue-400" />
               <h3 class="font-semibold">VS Code</h3>
             </div>
             <p class="text-sm text-muted-foreground">
@@ -189,95 +114,30 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
         </h2>
         <ul class="space-y-2 text-muted-foreground">
           <li class="flex items-start gap-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="text-green-500 mt-0.5"
-            >
-              <path d="M20 6 9 17l-5-5" />
-            </svg>
+            <icon-check class="w-[18px] h-[18px] text-green-500 mt-0.5" />
             <span>
               <strong>17 Components</strong> — button, card, input, tabs, select, and more
             </span>
           </li>
           <li class="flex items-start gap-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="text-green-500 mt-0.5"
-            >
-              <path d="M20 6 9 17l-5-5" />
-            </svg>
+            <icon-check class="w-[18px] h-[18px] text-green-500 mt-0.5" />
             <span>
               <strong>Selectors</strong> — Use <code class="bg-muted px-1 rounded">ui-button</code>,
               <code class="bg-muted px-1 rounded">ui-card</code> with correct prefixes
             </span>
           </li>
           <li class="flex items-start gap-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="text-green-500 mt-0.5"
-            >
-              <path d="M20 6 9 17l-5-5" />
-            </svg>
+            <icon-check class="w-[18px] h-[18px] text-green-500 mt-0.5" />
             <span>
               <strong>Variants</strong> — solid, outline, ghost, destructive, and custom sizes
             </span>
           </li>
           <li class="flex items-start gap-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="text-green-500 mt-0.5"
-            >
-              <path d="M20 6 9 17l-5-5" />
-            </svg>
+            <icon-check class="w-[18px] h-[18px] text-green-500 mt-0.5" />
             <span> <strong>Themes</strong> — 5 colors × 5 styles = 25 theme combinations </span>
           </li>
           <li class="flex items-start gap-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="text-green-500 mt-0.5"
-            >
-              <path d="M20 6 9 17l-5-5" />
-            </svg>
+            <icon-check class="w-[18px] h-[18px] text-green-500 mt-0.5" />
             <span>
               <strong>CLI Commands</strong> — <code class="bg-muted px-1 rounded">volt add</code>,
               <code class="bg-muted px-1 rounded">volt init</code>,
@@ -338,22 +198,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
                 Complete documentation for MCP setup and usage
               </p>
             </div>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="text-muted-foreground"
-            >
-              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-              <polyline points="15 3 21 3 21 9" />
-              <line x1="10" x2="21" y1="14" y2="3" />
-            </svg>
+            <icon-external-link class="w-5 h-5 text-muted-foreground" />
           </a>
 
           <a
@@ -366,22 +211,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
               <h3 class="font-semibold">Quick Start Guide</h3>
               <p class="text-sm text-muted-foreground">Get started in under 2 minutes</p>
             </div>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="text-muted-foreground"
-            >
-              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-              <polyline points="15 3 21 3 21 9" />
-              <line x1="10" x2="21" y1="14" y2="3" />
-            </svg>
+            <icon-external-link class="w-5 h-5 text-muted-foreground" />
           </a>
 
           <a
@@ -394,22 +224,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
               <h3 class="font-semibold">Integration Guide</h3>
               <p class="text-sm text-muted-foreground">Editor-specific integration instructions</p>
             </div>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="text-muted-foreground"
-            >
-              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-              <polyline points="15 3 21 3 21 9" />
-              <line x1="10" x2="21" y1="14" y2="3" />
-            </svg>
+            <icon-external-link class="w-5 h-5 text-muted-foreground" />
           </a>
         </div>
       </div>

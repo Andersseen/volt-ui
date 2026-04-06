@@ -7,6 +7,7 @@ import {
   NgpDialogTitle,
   NgpDialogTrigger,
 } from 'ng-primitives/dialog';
+import { IconChevronRight, IconSparkles, IconClose } from '../../icons';
 
 @Component({
   selector: 'app-docs-layout',
@@ -20,6 +21,9 @@ import {
     NgpDialogOverlay,
     NgpDialogTitle,
     NgpDialogDescription,
+    IconChevronRight,
+    IconSparkles,
+    IconClose,
   ],
   template: `
     <div
@@ -32,19 +36,7 @@ import {
           class="w-full inline-flex items-center justify-between px-4 py-2.5 rounded-lg border border-border bg-muted/50 text-sm font-medium hover:bg-muted transition-colors"
         >
           <span>Browse Documentation</span>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="m9 18 6-6-6-6" />
-          </svg>
+          <icon-chevron-right />
         </button>
       </div>
 
@@ -86,25 +78,7 @@ import {
                 routerLinkActive="font-medium text-foreground"
                 class="block py-1 text-sm text-muted-foreground hover:text-foreground flex items-center gap-2 transition-colors"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="M12 2v4" />
-                  <path d="m5 5 2.8 2.8" />
-                  <path d="m19 5-2.8 2.8" />
-                  <path d="M12 12v8" />
-                  <path d="m5 19 2.8-2.8" />
-                  <path d="m19 19-2.8-2.8" />
-                  <circle cx="12" cy="12" r="3" />
-                </svg>
+                <icon-sparkles />
                 AI Integration
               </a>
             </li>
@@ -154,20 +128,7 @@ import {
             class="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:text-foreground hover:bg-muted"
             aria-label="Close menu"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M18 6 6 18" />
-              <path d="m6 6 12 12" />
-            </svg>
+            <icon-close />
           </button>
         </div>
 
@@ -212,25 +173,7 @@ import {
             (click)="close()"
             class="px-3 py-2.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors flex items-center gap-2"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M12 2v4" />
-              <path d="m5 5 2.8 2.8" />
-              <path d="m19 5-2.8 2.8" />
-              <path d="M12 12v8" />
-              <path d="m5 19 2.8-2.8" />
-              <path d="m19 19-2.8-2.8" />
-              <circle cx="12" cy="12" r="3" />
-            </svg>
+            <icon-sparkles />
             AI Integration
           </a>
 

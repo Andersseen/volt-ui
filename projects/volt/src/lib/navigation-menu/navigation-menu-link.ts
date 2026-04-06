@@ -15,10 +15,7 @@ import {
   hostDirectives: [
     {
       directive: NgpNavigationMenuLink,
-      inputs: [
-        'ngpNavigationMenuLinkActive: active',
-        'ngpNavigationMenuLinkDisabled: disabled',
-      ],
+      inputs: ['ngpNavigationMenuLinkActive: active', 'ngpNavigationMenuLinkDisabled: disabled'],
     },
   ],
   template: `<ng-content />`,

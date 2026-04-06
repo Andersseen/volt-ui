@@ -9,8 +9,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [provideNavigationMenuListState()],
   host: {
-    class:
-      'group flex flex-1 list-none items-center justify-center gap-1',
+    class: 'group flex flex-1 list-none items-center justify-center gap-1',
   },
   hostDirectives: [
     {

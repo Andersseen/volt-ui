@@ -5,6 +5,7 @@ A CLI for adding Volt UI components to your Angular project, similar to shadcn/u
 ## Installation
 
 ### Local (from this repo)
+
 ```bash
 # Use directly from the repo
 node cli/bin/volt add button
@@ -17,6 +18,7 @@ volt add button
 ### Usage
 
 #### Initialize volt/ui in your project
+
 ```bash
 volt init [target-dir]
 ```
@@ -24,17 +26,20 @@ volt init [target-dir]
 This creates a `ui` folder with the necessary structure.
 
 #### Add a component
+
 ```bash
 volt add <component-name> [target-dir]
 ```
 
 Example:
+
 ```bash
 volt add button              # Adds to ./src/app/ui/button
 volt add card ./components   # Adds to ./components/card
 ```
 
 #### List available components
+
 ```bash
 volt list
 ```
@@ -78,9 +83,7 @@ import { UiButton } from './ui/button';
 @Component({
   selector: 'app-my-component',
   imports: [UiButton],
-  template: `
-    <ui-button variant="solid">Click me</ui-button>
-  `
+  template: ` <ui-button variant="solid">Click me</ui-button> `,
 })
 export class MyComponent {}
 ```

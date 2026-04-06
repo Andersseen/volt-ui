@@ -1,9 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  TemplateRef,
-  input,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, TemplateRef, input } from '@angular/core';
 import {
   NgpNavigationMenuTrigger,
   provideNavigationMenuTriggerState,

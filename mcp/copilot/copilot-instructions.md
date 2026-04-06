@@ -5,6 +5,7 @@
 Volt UI is an Angular v21 component library inspired by shadcn/ui, built on top of ng-primitives for accessibility primitives.
 
 ### Key Technologies
+
 - Angular v21 with zoneless change detection
 - ng-primitives (accessible component primitives)
 - Tailwind CSS v4
@@ -15,13 +16,14 @@ Volt UI is an Angular v21 component library inspired by shadcn/ui, built on top 
 ## Component Conventions
 
 ### Library Source (projects/volt/src/lib/)
+
 ```typescript
 // Selector: volt-*
 // Class: Volt*
 @Component({
   selector: 'volt-button',
   imports: [NgpButton],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VoltButton {
   readonly variant = input<ButtonVariants['variant']>('solid');
@@ -30,38 +32,39 @@ export class VoltButton {
 ```
 
 ### User Project (after CLI)
+
 ```typescript
 // Selector: ui-*
 // Class: Ui*
 import { UiButton } from './ui/button';
 
 @Component({
-  imports: [UiButton]
+  imports: [UiButton],
 })
 export class MyComponent {}
 ```
 
 ## Available Components
 
-| Component | Import Path | Selector | Key Inputs |
-|-----------|-------------|----------|------------|
-| Button | ./ui/button | ui-button | variant, size, disabled |
-| Badge | ./ui/badge | ui-badge | variant |
-| Card | ./ui/card | ui-card, ui-card-header, ui-card-title, ui-card-description, ui-card-content, ui-card-footer | - |
-| Input | ./ui/input | ui-input | disabled, placeholder |
-| Textarea | ./ui/textarea | ui-textarea | rows, disabled |
-| Checkbox | ./ui/checkbox | ui-checkbox | checked, disabled, indeterminate |
-| Radio | ./ui/radio | ui-radio-group, ui-radio-item | value, disabled |
-| Switch | ./ui/switch | ui-switch | checked, disabled |
-| Toggle | ./ui/toggle | ui-toggle | pressed, disabled |
-| Select | ./ui/select | ui-select, ui-select-content, ui-select-item, ui-select-label, ui-select-separator | value, placeholder, disabled |
-| Tabs | ./ui/tabs | ui-tabs, ui-tabs-list, ui-tabs-trigger, ui-tabs-content | value |
-| Accordion | ./ui/accordion | ui-accordion, ui-accordion-item, ui-accordion-trigger, ui-accordion-content | type, collapsible |
-| Avatar | ./ui/avatar | ui-avatar, ui-avatar-image, ui-avatar-fallback | src, alt, delayMs |
-| Separator | ./ui/separator | ui-separator | orientation |
-| Tooltip | ./ui/tooltip | ui-tooltip, ui-tooltip-content | content, side, align |
-| Navigation Menu | ./ui/navigation-menu | ui-navigation-menu, ui-navigation-menu-list, ui-navigation-menu-item, ui-navigation-menu-trigger, ui-navigation-menu-content | value |
-| Form Field | ./ui/form-field | ui-form-field, ui-form-field-label, ui-form-field-hint, ui-form-field-error | - |
+| Component       | Import Path          | Selector                                                                                                                     | Key Inputs                       |
+| --------------- | -------------------- | ---------------------------------------------------------------------------------------------------------------------------- | -------------------------------- |
+| Button          | ./ui/button          | ui-button                                                                                                                    | variant, size, disabled          |
+| Badge           | ./ui/badge           | ui-badge                                                                                                                     | variant                          |
+| Card            | ./ui/card            | ui-card, ui-card-header, ui-card-title, ui-card-description, ui-card-content, ui-card-footer                                 | -                                |
+| Input           | ./ui/input           | ui-input                                                                                                                     | disabled, placeholder            |
+| Textarea        | ./ui/textarea        | ui-textarea                                                                                                                  | rows, disabled                   |
+| Checkbox        | ./ui/checkbox        | ui-checkbox                                                                                                                  | checked, disabled, indeterminate |
+| Radio           | ./ui/radio           | ui-radio-group, ui-radio-item                                                                                                | value, disabled                  |
+| Switch          | ./ui/switch          | ui-switch                                                                                                                    | checked, disabled                |
+| Toggle          | ./ui/toggle          | ui-toggle                                                                                                                    | pressed, disabled                |
+| Select          | ./ui/select          | ui-select, ui-select-content, ui-select-item, ui-select-label, ui-select-separator                                           | value, placeholder, disabled     |
+| Tabs            | ./ui/tabs            | ui-tabs, ui-tabs-list, ui-tabs-trigger, ui-tabs-content                                                                      | value                            |
+| Accordion       | ./ui/accordion       | ui-accordion, ui-accordion-item, ui-accordion-trigger, ui-accordion-content                                                  | type, collapsible                |
+| Avatar          | ./ui/avatar          | ui-avatar, ui-avatar-image, ui-avatar-fallback                                                                               | src, alt, delayMs                |
+| Separator       | ./ui/separator       | ui-separator                                                                                                                 | orientation                      |
+| Tooltip         | ./ui/tooltip         | ui-tooltip, ui-tooltip-content                                                                                               | content, side, align             |
+| Navigation Menu | ./ui/navigation-menu | ui-navigation-menu, ui-navigation-menu-list, ui-navigation-menu-item, ui-navigation-menu-trigger, ui-navigation-menu-content | value                            |
+| Form Field      | ./ui/form-field      | ui-form-field, ui-form-field-label, ui-form-field-hint, ui-form-field-error                                                  | -                                |
 
 ## Button Variants
 
@@ -141,12 +144,12 @@ import { provideVoltTheme, applyVoltTheme } from 'volt/theme';
 
 // In app.config.ts
 providers: [
-  provideVoltTheme({ 
-    color: 'ember',    // 'volt' | 'ember' | 'sage' | 'dusk' | 'glacier'
-    style: 'soft',     // 'sharp' | 'soft' | 'brutal' | 'ghost' | 'retro'
-    dark: false 
-  })
-]
+  provideVoltTheme({
+    color: 'ember', // 'volt' | 'ember' | 'sage' | 'dusk' | 'glacier'
+    style: 'soft', // 'sharp' | 'soft' | 'brutal' | 'ghost' | 'retro'
+    dark: false,
+  }),
+];
 
 // Or dynamically
 applyVoltTheme({ color: 'dusk', style: 'brutal', dark: true });
@@ -192,10 +195,15 @@ import { UiFormField, UiFormFieldLabel } from './ui/form-field';
 @Component({
   selector: 'app-login-form',
   imports: [
-    UiButton, 
-    UiCard, UiCardHeader, UiCardTitle, UiCardContent, UiCardFooter,
+    UiButton,
+    UiCard,
+    UiCardHeader,
+    UiCardTitle,
+    UiCardContent,
+    UiCardFooter,
     UiInput,
-    UiFormField, UiFormFieldLabel
+    UiFormField,
+    UiFormFieldLabel,
   ],
   template: `
     <ui-card class="w-full max-w-md">
@@ -217,7 +225,7 @@ import { UiFormField, UiFormFieldLabel } from './ui/form-field';
         <ui-button>Sign In</ui-button>
       </ui-card-footer>
     </ui-card>
-  `
+  `,
 })
 export class LoginFormComponent {}
 ```
@@ -225,16 +233,17 @@ export class LoginFormComponent {}
 ## Common Patterns
 
 ### Loading State
+
 ```html
 <ui-button [disabled]="isLoading()">
   @if (isLoading()) {
-    <span class="animate-spin">⟳</span>
-  }
-  Submit
+  <span class="animate-spin">⟳</span>
+  } Submit
 </ui-button>
 ```
 
 ### Icon Button
+
 ```html
 <ui-button size="icon" variant="ghost">
   <svg>...</svg>
@@ -242,11 +251,13 @@ export class LoginFormComponent {}
 ```
 
 ### Disabled State
+
 ```html
 <ui-button [disabled]="form.invalid">Submit</ui-button>
 ```
 
 ### Responsive Layout
+
 ```html
 <ui-card class="w-full max-w-sm md:max-w-md lg:max-w-lg">
   <!-- content -->

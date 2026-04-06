@@ -13,7 +13,7 @@ export const badgeVariants = cva(
       },
     },
     defaultVariants: { variant: 'solid' },
-  },
+  }
 );
 
 export type BadgeVariants = VariantProps<typeof badgeVariants>;

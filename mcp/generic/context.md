@@ -7,6 +7,7 @@
 ## Core Architecture
 
 ### Framework Stack
+
 - **Angular v21** with zoneless change detection
 - **TypeScript** with strict types
 - **Tailwind CSS v4** for styling
@@ -14,6 +15,7 @@
 - **class-variance-authority (CVA)** for component variants
 
 ### Design Principles
+
 1. **Standalone Components** - No NgModules, use `imports` array
 2. **Zoneless Reactivity** - Use signals: `input()`, `output()`, `model()`, `computed()`
 3. **Accessibility First** - Leverage ng-primitives for ARIA and keyboard navigation
@@ -23,14 +25,15 @@
 
 ## Naming Conventions
 
-| Context | Selector | Class Name | Example |
-|---------|----------|------------|---------|
-| Source (Library) | `volt-*` | `Volt*` | `volt-button` / `VoltButton` |
-| CLI Output | `ui-*` | `Ui*` | `ui-button` / `UiButton` |
+| Context          | Selector | Class Name | Example                      |
+| ---------------- | -------- | ---------- | ---------------------------- |
+| Source (Library) | `volt-*` | `Volt*`    | `volt-button` / `VoltButton` |
+| CLI Output       | `ui-*`   | `Ui*`      | `ui-button` / `UiButton`     |
 
 ## Component List
 
 ### Form Controls
+
 - **button** - Button with variants (solid, outline, ghost, link, destructive)
 - **input** - Text input field
 - **textarea** - Multi-line text input
@@ -41,15 +44,18 @@
 - **select** - Dropdown select with content, items, label, separator
 
 ### Layout
+
 - **card** - Card container (card, header, title, description, content, footer)
 - **separator** - Visual divider (horizontal/vertical)
 
 ### Navigation
+
 - **tabs** - Tabbed interface (tabs, list, trigger, content)
 - **accordion** - Collapsible panels
 - **navigation-menu** - Navigation with dropdowns
 
 ### Display
+
 - **badge** - Label/badge component
 - **avatar** - User avatar (avatar, image, fallback)
 - **tooltip** - Floating tooltip
@@ -58,46 +64,46 @@
 ## Component Patterns
 
 ### CVA Pattern (for variants)
+
 ```typescript
 import { cva, type VariantProps } from 'class-variance-authority';
 
-export const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2',
-  {
-    variants: {
-      variant: {
-        solid: 'bg-primary text-primary-foreground',
-        outline: 'border border-input bg-background'
-      },
-      size: {
-        sm: 'h-8 px-3 text-xs',
-        md: 'h-10 px-4 text-sm'
-      }
+export const buttonVariants = cva('inline-flex items-center justify-center gap-2', {
+  variants: {
+    variant: {
+      solid: 'bg-primary text-primary-foreground',
+      outline: 'border border-input bg-background',
     },
-    defaultVariants: {
-      variant: 'solid',
-      size: 'md'
-    }
-  }
-);
+    size: {
+      sm: 'h-8 px-3 text-xs',
+      md: 'h-10 px-4 text-sm',
+    },
+  },
+  defaultVariants: {
+    variant: 'solid',
+    size: 'md',
+  },
+});
 
 export type ButtonVariants = VariantProps<typeof buttonVariants>;
 ```
 
 ### Signal Input Pattern
+
 ```typescript
 export class VoltButton {
   readonly variant = input<ButtonVariants['variant']>('solid');
   readonly size = input<ButtonVariants['size']>('md');
   readonly disabled = input(false, { transform: booleanAttribute });
-  
-  protected readonly classes = computed(() => 
+
+  protected readonly classes = computed(() =>
     buttonVariants({ variant: this.variant(), size: this.size() })
   );
 }
 ```
 
 ### Host Directive Pattern
+
 ```typescript
 @Component({
   selector: 'volt-button',
@@ -108,12 +114,13 @@ export class VoltButton {
 ```
 
 ### Simple Host Class Pattern
+
 ```typescript
 @Component({
   selector: 'volt-card',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'rounded-xl border border-border bg-surface shadow-sm' },
-  template: `<ng-content />`
+  template: `<ng-content />`,
 })
 export class VoltCard {}
 ```
@@ -121,22 +128,27 @@ export class VoltCard {}
 ## CLI Usage
 
 ### Initialize
+
 ```bash
 node /path/to/volt-ui/cli/bin/volt init [target-dir]
 ```
+
 Default target: `./src/app/ui`
 
 ### Add Component
+
 ```bash
 node /path/to/volt-ui/cli/bin/volt add <component-name> [target-dir]
 ```
 
 Transformations applied:
+
 - `volt-*` → `ui-*` selectors
 - `Volt*` → `Ui*` class names
 - Imports updated to local paths
 
 ### List Components
+
 ```bash
 node /path/to/volt-ui/cli/bin/volt list
 ```
@@ -144,6 +156,7 @@ node /path/to/volt-ui/cli/bin/volt list
 ## Theme System
 
 ### Theme Colors
+
 - `volt` (default) - Blue-purple
 - `ember` - Warm orange-red
 - `sage` - Green
@@ -151,6 +164,7 @@ node /path/to/volt-ui/cli/bin/volt list
 - `glacier` - Cool blue
 
 ### Theme Styles
+
 - `sharp` (default) - Moderate radius
 - `soft` - Larger radius
 - `brutal` - No radius, heavy borders
@@ -160,21 +174,23 @@ node /path/to/volt-ui/cli/bin/volt list
 ### Applying Themes
 
 Via provider (app.config.ts):
+
 ```typescript
 import { provideVoltTheme } from 'volt/theme';
 
 export const appConfig = {
   providers: [
-    provideVoltTheme({ 
-      color: 'ember', 
-      style: 'soft', 
-      dark: false 
-    })
-  ]
+    provideVoltTheme({
+      color: 'ember',
+      style: 'soft',
+      dark: false,
+    }),
+  ],
 };
 ```
 
 Dynamically:
+
 ```typescript
 import { applyVoltTheme } from 'volt/theme';
 
@@ -184,6 +200,7 @@ applyVoltTheme({ color: 'dusk', style: 'brutal', dark: true });
 ## CSS Variables
 
 ### Core Variables
+
 ```css
 --color-background, --color-foreground
 --color-surface, --color-surface-foreground
@@ -197,9 +214,11 @@ applyVoltTheme({ color: 'dusk', style: 'brutal', dark: true });
 ## Usage Examples
 
 ### Button
+
 ```typescript
 import { UiButton } from './ui/button';
 ```
+
 ```html
 <ui-button variant="solid" size="lg">Submit</ui-button>
 <ui-button variant="outline" size="sm">Cancel</ui-button>
@@ -208,9 +227,18 @@ import { UiButton } from './ui/button';
 ```
 
 ### Card
+
 ```typescript
-import { UiCard, UiCardHeader, UiCardTitle, UiCardDescription, UiCardContent, UiCardFooter } from './ui/card';
+import {
+  UiCard,
+  UiCardHeader,
+  UiCardTitle,
+  UiCardDescription,
+  UiCardContent,
+  UiCardFooter,
+} from './ui/card';
 ```
+
 ```html
 <ui-card>
   <ui-card-header>
@@ -226,10 +254,12 @@ import { UiCard, UiCardHeader, UiCardTitle, UiCardDescription, UiCardContent, Ui
 ```
 
 ### Form Field
+
 ```typescript
 import { UiFormField, UiFormFieldLabel, UiFormFieldHint, UiFormFieldError } from './ui/form-field';
 import { UiInput } from './ui/input';
 ```
+
 ```html
 <ui-form-field>
   <ui-form-field-label>Email</ui-form-field-label>
@@ -239,9 +269,11 @@ import { UiInput } from './ui/input';
 ```
 
 ### Tabs
+
 ```typescript
 import { UiTabs, UiTabsList, UiTabsTrigger, UiTabsContent } from './ui/tabs';
 ```
+
 ```html
 <ui-tabs value="account">
   <ui-tabs-list>
@@ -256,6 +288,7 @@ import { UiTabs, UiTabsList, UiTabsTrigger, UiTabsContent } from './ui/tabs';
 ## Dependencies
 
 User projects must install:
+
 ```bash
 npm install ng-primitives class-variance-authority
 ```
@@ -263,6 +296,7 @@ npm install ng-primitives class-variance-authority
 ## File Locations
 
 ### Source Components
+
 ```
 projects/volt/src/lib/
 ├── button/
@@ -275,6 +309,7 @@ projects/volt/src/lib/
 ```
 
 ### Themes
+
 ```
 projects/volt/src/themes/
 ├── core.css
@@ -289,6 +324,7 @@ projects/volt/src/themes/
 ```
 
 ### Public API
+
 ```
 projects/volt/src/public-api.ts
 ```
@@ -307,6 +343,7 @@ projects/volt/src/public-api.ts
 ## Common Tasks
 
 ### Adding a New Component
+
 1. Create folder: `projects/volt/src/lib/<name>/`
 2. Create component with `Volt*` class and `volt-*` selector
 3. Create `index.ts` with exports
@@ -314,7 +351,9 @@ projects/volt/src/public-api.ts
 5. Add to CLI's components map in `cli/bin/volt`
 
 ### Creating Component Variants
+
 Use CVA with explicit variant types:
+
 ```typescript
 variants: {
   variant: {
@@ -325,9 +364,14 @@ variants: {
 ```
 
 ### Handling Component State
+
 Use ng-primitives data attributes in CSS:
+
 ```css
-.data-hover\:bg-primary\/90[data-hover] { }
-.data-press\:scale-\[0\.98\][data-press] { }
-.data-disabled\:opacity-50[data-disabled] { }
+.data-hover\:bg-primary\/90[data-hover] {
+}
+.data-press\:scale-\[0\.98\][data-press] {
+}
+.data-disabled\:opacity-50[data-disabled] {
+}
 ```
