@@ -58,7 +58,9 @@ import {
     IconSmile,
   ],
   template: `
-    <main class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-16 space-y-16 sm:space-y-24">
+    <main
+      class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-16 space-y-16 sm:space-y-24"
+    >
       <!-- Hero Section -->
       <section class="flex flex-col items-center text-center space-y-6 max-w-3xl mx-auto py-12">
         <volt-badge
@@ -87,13 +89,13 @@ import {
           <a routerLink="/docs/introduction">
             <volt-button size="lg" class="rounded-full shadow-xl shadow-primary/20 group">
               Get Started
-              <icon-arrow-right class="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
+              <icon-arrow-right
+                class="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1"
+              />
             </volt-button>
           </a>
           <a routerLink="/docs/components">
-            <volt-button size="lg" variant="outline" class="rounded-full">
-              Components
-            </volt-button>
+            <volt-button size="lg" variant="outline" class="rounded-full"> Components </volt-button>
           </a>
           <a
             href="https://github.com/Andersseen/volt-ui"
@@ -125,7 +127,11 @@ import {
               <volt-card-content class="space-y-6">
                 <div class="flex items-center space-x-4">
                   <volt-avatar>
-                    <img voltAvatarImage src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="Jane Doe" />
+                    <img
+                      voltAvatarImage
+                      src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+                      alt="Jane Doe"
+                    />
                     <volt-avatar-fallback>JD</volt-avatar-fallback>
                   </volt-avatar>
                   <div class="flex-1 space-y-1">
@@ -155,7 +161,10 @@ import {
                         Enable experimental dashboard features.
                       </p>
                     </div>
-                    <volt-switch [checked]="true" aria-label="Toggle preview features"></volt-switch>
+                    <volt-switch
+                      [checked]="true"
+                      aria-label="Toggle preview features"
+                    ></volt-switch>
                   </div>
 
                   <div class="flex items-center space-x-3">
@@ -181,7 +190,9 @@ import {
             <div class="flex flex-wrap gap-2">
               <volt-badge variant="solid">Performance</volt-badge>
               <volt-badge variant="secondary">Security</volt-badge>
-              <volt-badge variant="outline" class="border-primary text-primary">Pro Feature</volt-badge>
+              <volt-badge variant="outline" class="border-primary text-primary"
+                >Pro Feature</volt-badge
+              >
               <volt-badge variant="destructive">Deprecated</volt-badge>
             </div>
           </div>
@@ -211,7 +222,9 @@ import {
                   <div class="flex items-start space-x-4">
                     <volt-checkbox [checked]="true" class="mt-1"></volt-checkbox>
                     <div class="space-y-1 flex-1">
-                      <p class="text-sm font-medium leading-none line-through text-muted-foreground">
+                      <p
+                        class="text-sm font-medium leading-none line-through text-muted-foreground"
+                      >
                         Release v0.0.1
                       </p>
                       <p class="text-sm text-muted-foreground line-through">
@@ -220,10 +233,18 @@ import {
                     </div>
                     <div class="flex -space-x-2">
                       <volt-avatar class="ring-2 ring-background w-8 h-8">
-                        <img voltAvatarImage src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="" />
+                        <img
+                          voltAvatarImage
+                          src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+                          alt=""
+                        />
                       </volt-avatar>
                       <volt-avatar class="ring-2 ring-background w-8 h-8">
-                        <img voltAvatarImage src="https://i.pravatar.cc/150?u=a04258114e29026702d" alt="" />
+                        <img
+                          voltAvatarImage
+                          src="https://i.pravatar.cc/150?u=a04258114e29026702d"
+                          alt=""
+                        />
                       </volt-avatar>
                     </div>
                   </div>
@@ -272,10 +293,18 @@ import {
                 ></volt-textarea>
                 <div class="flex items-center justify-between">
                   <div class="flex gap-2">
-                    <volt-button variant="ghost" size="icon" class="text-muted-foreground rounded-full">
+                    <volt-button
+                      variant="ghost"
+                      size="icon"
+                      class="text-muted-foreground rounded-full"
+                    >
                       <icon-paperclip class="w-5 h-5" />
                     </volt-button>
-                    <volt-button variant="ghost" size="icon" class="text-muted-foreground rounded-full">
+                    <volt-button
+                      variant="ghost"
+                      size="icon"
+                      class="text-muted-foreground rounded-full"
+                    >
                       <icon-smile class="w-5 h-5" />
                     </volt-button>
                   </div>

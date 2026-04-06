@@ -33,7 +33,7 @@ export const buttonVariants = cva(
       variant: 'solid',
       size: 'md',
     },
-  },
+  }
 );
 
 export type ButtonVariants = VariantProps<typeof buttonVariants>;
@@ -62,6 +62,6 @@ export class VoltButton {
   readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
 
   protected readonly classes = computed(() =>
-    buttonVariants({ variant: this.variant(), size: this.size() }),
+    buttonVariants({ variant: this.variant(), size: this.size() })
   );
 }

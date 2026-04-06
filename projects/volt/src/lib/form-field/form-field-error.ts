@@ -6,7 +6,12 @@ import { NgpError } from 'ng-primitives/form-field';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgpError],
   template: `
-    <span ngpError role="alert" aria-live="assertive" class="text-[var(--error)] text-sm font-medium">
+    <span
+      ngpError
+      role="alert"
+      aria-live="assertive"
+      class="text-[var(--error)] text-sm font-medium"
+    >
       <ng-content />
     </span>
   `,

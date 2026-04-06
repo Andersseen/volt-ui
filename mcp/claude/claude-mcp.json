@@ -12,7 +12,25 @@
           "properties": {
             "component": {
               "type": "string",
-              "enum": ["button", "badge", "card", "input", "textarea", "checkbox", "radio", "switch", "toggle", "select", "tabs", "accordion", "avatar", "separator", "tooltip", "navigation-menu", "form-field"],
+              "enum": [
+                "button",
+                "badge",
+                "card",
+                "input",
+                "textarea",
+                "checkbox",
+                "radio",
+                "switch",
+                "toggle",
+                "select",
+                "tabs",
+                "accordion",
+                "avatar",
+                "separator",
+                "tooltip",
+                "navigation-menu",
+                "form-field"
+              ],
               "description": "Name of the component"
             }
           },

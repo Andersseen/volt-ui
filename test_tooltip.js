@@ -4,7 +4,7 @@ const puppeteer = require('puppeteer');
   console.log('Starting puppeteer...');
   const browser = await puppeteer.launch({ headless: 'new' });
   const page = await browser.newPage();
-  
+
   await page.goto('http://localhost:4200/docs/tooltip', { waitUntil: 'load' });
   console.log('Page loaded. Waiting a bit...');
   await page.waitForTimeout(2000);
@@ -23,7 +23,11 @@ const puppeteer = require('puppeteer');
     const overlaysHtml = await page.evaluate(() => {
       // ng-primitives appends to the body by default
       // Tooltips usually have role="tooltip" or some overlay container wrapper
-      const tooltips = Array.from(document.querySelectorAll('volt-tooltip-content, [role="tooltip"], .ngp-overlay-container, [data-overlay]'));
+      const tooltips = Array.from(
+        document.querySelectorAll(
+          'volt-tooltip-content, [role="tooltip"], .ngp-overlay-container, [data-overlay]'
+        )
+      );
       return tooltips.map(t => t.outerHTML).join('\n---\n');
     });
 

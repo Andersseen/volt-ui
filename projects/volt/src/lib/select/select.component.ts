@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, input, model, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, model, output } from '@angular/core';
 import { NgpSelect, NgpSelectPortal, provideSelectState } from 'ng-primitives/select';
 
 @Component({

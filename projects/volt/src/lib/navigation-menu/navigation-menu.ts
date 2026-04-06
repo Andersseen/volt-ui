@@ -1,8 +1,5 @@
 import { ChangeDetectionStrategy, Component, input, model } from '@angular/core';
-import {
-  NgpNavigationMenu,
-  provideNavigationMenuState,
-} from 'ng-primitives/navigation-menu';
+import { NgpNavigationMenu, provideNavigationMenuState } from 'ng-primitives/navigation-menu';
 
 @Component({
   selector: 'volt-navigation-menu',

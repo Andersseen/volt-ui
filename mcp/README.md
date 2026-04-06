@@ -5,6 +5,7 @@ This directory contains MCP (Model Context Protocol) configurations for Volt UI,
 ## What is MCP?
 
 Model Context Protocol (MCP) is a standard for providing context to AI assistants about your codebase. It helps AI understand:
+
 - Component structure and patterns
 - Naming conventions
 - Available components and their APIs
@@ -13,13 +14,13 @@ Model Context Protocol (MCP) is a standard for providing context to AI assistant
 
 ## Supported Editors/Assistants
 
-| Editor/Assistant | Directory | Files |
-|------------------|-----------|-------|
-| **Cursor** | `cursor/` | `.cursorrules`, `mcp.json` |
-| **Claude** (Desktop/Code) | `claude/` | `claude-mcp.json`, `volt-prompts.md` |
-| **GitHub Copilot** | `copilot/` | `copilot-instructions.md`, `volt-snippets.json` |
-| **VS Code** | `copilot/` | Settings integration |
-| **Generic** | `generic/` | `volt-mcp.json`, `context.md` |
+| Editor/Assistant          | Directory  | Files                                           |
+| ------------------------- | ---------- | ----------------------------------------------- |
+| **Cursor**                | `cursor/`  | `.cursorrules`, `mcp.json`                      |
+| **Claude** (Desktop/Code) | `claude/`  | `claude-mcp.json`, `volt-prompts.md`            |
+| **GitHub Copilot**        | `copilot/` | `copilot-instructions.md`, `volt-snippets.json` |
+| **VS Code**               | `copilot/` | Settings integration                            |
+| **Generic**               | `generic/` | `volt-mcp.json`, `context.md`                   |
 
 ## Quick Installation
 
@@ -38,12 +39,14 @@ node /path/to/volt-ui/mcp/scripts/install-mcp.js
 Copy the relevant files from this directory to your project:
 
 **For Cursor:**
+
 ```bash
 cp /path/to/volt-ui/mcp/cursor/.cursorrules ./.cursorrules
 cp /path/to/volt-ui/mcp/cursor/mcp.json ./.cursor/mcp.json
 ```
 
 **For Claude:**
+
 ```bash
 mkdir -p ./.claude
 cp /path/to/volt-ui/mcp/claude/claude-mcp.json ./.claude/mcp.json
@@ -51,6 +54,7 @@ cp /path/to/volt-ui/mcp/claude/volt-prompts.md ./.claude/volt-prompts.md
 ```
 
 **For GitHub Copilot:**
+
 ```bash
 mkdir -p ./.github
 cp /path/to/volt-ui/mcp/copilot/copilot-instructions.md ./.github/copilot-instructions.md
@@ -131,6 +135,7 @@ import { UiButton } from './ui/button';
 ### 2. Available Components
 
 AI can suggest from 17 available components:
+
 - Form controls: button, input, textarea, checkbox, radio, switch, toggle, select
 - Layout: card, separator
 - Navigation: tabs, accordion, navigation-menu
@@ -143,17 +148,18 @@ AI can suggest from 17 available components:
 import { provideVoltTheme } from 'volt/theme';
 
 providers: [
-  provideVoltTheme({ 
-    color: 'ember',    // volt | ember | sage | dusk | glacier
-    style: 'soft',     // sharp | soft | brutal | ghost | retro
-    dark: false 
-  })
-]
+  provideVoltTheme({
+    color: 'ember', // volt | ember | sage | dusk | glacier
+    style: 'soft', // sharp | soft | brutal | ghost | retro
+    dark: false,
+  }),
+];
 ```
 
 ### 4. CLI Commands
 
 AI can help generate CLI commands:
+
 ```bash
 # Add button component
 node /path/to/volt-ui/cli/bin/volt add button
@@ -168,15 +174,15 @@ The MCP server (`scripts/mcp-server.js`) provides a protocol for AI assistants t
 
 ### Available Methods
 
-| Method | Description | Parameters |
-|--------|-------------|------------|
-| `list_components` | List all components | - |
-| `get_component` | Get component details | `name` |
-| `get_component_source` | Get source code | `name` |
-| `get_usage_example` | Get usage examples | `component` |
-| `get_theme_info` | Get theme system info | - |
-| `generate_cli_command` | Generate CLI command | `action`, `component`, `targetDir` |
-| `get_project_info` | Get project metadata | - |
+| Method                 | Description           | Parameters                         |
+| ---------------------- | --------------------- | ---------------------------------- |
+| `list_components`      | List all components   | -                                  |
+| `get_component`        | Get component details | `name`                             |
+| `get_component_source` | Get source code       | `name`                             |
+| `get_usage_example`    | Get usage examples    | `component`                        |
+| `get_theme_info`       | Get theme system info | -                                  |
+| `generate_cli_command` | Generate CLI command  | `action`, `component`, `targetDir` |
+| `get_project_info`     | Get project metadata  | -                                  |
 
 ### Using the MCP Server
 
@@ -222,6 +228,7 @@ mcp/
 ### Creating Custom Prompts
 
 Add custom prompts to:
+
 - **Cursor**: Edit `.cursorrules`
 - **Claude**: Edit `.claude/volt-prompts.md`
 - **Copilot**: Edit `.github/copilot-instructions.md`
@@ -237,11 +244,13 @@ Add custom prompts to:
 ### "Could not find Volt UI repository"
 
 Specify the path explicitly:
+
 ```bash
 node /path/to/volt-ui/mcp/scripts/install-mcp.js -p /path/to/volt-ui
 ```
 
 Or set environment variable:
+
 ```bash
 export VOLT_UI_PATH=/path/to/volt-ui
 node /path/to/volt-ui/mcp/scripts/install-mcp.js
@@ -252,12 +261,15 @@ node /path/to/volt-ui/mcp/scripts/install-mcp.js
 ### Prompting AI with MCP Context
 
 **Without MCP:**
+
 > "Create a form with a button"
 
 **With MCP:**
+
 > "Create a form using Volt UI components with form-field, input, and ui-button with outline variant"
 
 The AI will understand:
+
 - Import from `./ui/form-field` and `./ui/button`
 - Use `ui-form-field`, `ui-input`, `ui-button` selectors
 - Use `variant="outline"` for the button

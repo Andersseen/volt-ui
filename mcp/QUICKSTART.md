@@ -10,6 +10,7 @@ node /path/to/volt-ui/mcp/scripts/install-mcp.js
 ```
 
 Or use the shell script:
+
 ```bash
 /path/to/volt-ui/mcp/scripts/setup-mcp.sh
 ```
@@ -49,11 +50,7 @@ import { UiButton } from './ui/button';
 @Component({
   selector: 'app-example',
   imports: [UiButton],
-  template: `
-    <ui-button variant="solid" (click)="handleClick()">
-      Click me
-    </ui-button>
-  `
+  template: ` <ui-button variant="solid" (click)="handleClick()"> Click me </ui-button> `,
 })
 export class ExampleComponent {
   handleClick() {
@@ -67,41 +64,46 @@ export class ExampleComponent {
 After MCP installation, AI assistants know:
 
 ### ✅ Component Names & Selectors
+
 - Use `ui-button`, not `volt-button`
 - Import from `./ui/button`, not `volt`
 
 ### ✅ Component Variants
+
 ```typescript
 <ui-button variant="solid|outline|ghost|link|destructive">
 <ui-button size="sm|md|lg|icon">
 ```
 
 ### ✅ Theme System
+
 ```typescript
 import { provideVoltTheme } from 'volt/theme';
 
 providers: [
-  provideVoltTheme({ 
-    color: 'ember',    // volt | ember | sage | dusk | glacier
-    style: 'soft',     // sharp | soft | brutal | ghost | retro
-    dark: false 
-  })
-]
+  provideVoltTheme({
+    color: 'ember', // volt | ember | sage | dusk | glacier
+    style: 'soft', // sharp | soft | brutal | ghost | retro
+    dark: false,
+  }),
+];
 ```
 
 ### ✅ Architecture Patterns
+
 - Standalone components
 - Signal inputs: `readonly variant = input<Variant>('default')`
 - OnPush change detection
 - CVA for variants
 
 ### ✅ Available Components
-| Category | Components |
-|----------|-----------|
-| Form | button, input, textarea, checkbox, radio, switch, toggle, select |
-| Layout | card, separator |
-| Navigation | tabs, accordion, navigation-menu |
-| Display | badge, avatar, tooltip, form-field |
+
+| Category   | Components                                                       |
+| ---------- | ---------------------------------------------------------------- |
+| Form       | button, input, textarea, checkbox, radio, switch, toggle, select |
+| Layout     | card, separator                                                  |
+| Navigation | tabs, accordion, navigation-menu                                 |
+| Display    | badge, avatar, tooltip, form-field                               |
 
 ## Try These AI Prompts
 
@@ -116,25 +118,31 @@ providers: [
 ## Editor-Specific Setup
 
 ### Cursor
+
 ✅ Automatically configured with `.cursorrules` and `.cursor/mcp.json`
 
 ### Claude (Desktop/Code)
+
 ✅ Automatically configured with `.claude/mcp.json` and `.claude/volt-prompts.md`
 
 ### VS Code + GitHub Copilot
+
 ✅ Automatically configured with `.github/copilot-instructions.md` and `.vscode/volt-snippets.code-snippets`
 
 ### Other Editors
+
 Use the generic context at `.volt-ui/context.md`
 
 ## Troubleshooting
 
 ### AI doesn't recognize Volt UI components
+
 1. **Restart your editor** - MCP changes require restart
 2. **Check `.volt-ui/context.json`** exists in your project
 3. **Verify paths** in editor config files
 
 ### "Command not found" errors
+
 ```bash
 # Make sure volt-ui path is correct
 export VOLT_UI_PATH=/path/to/volt-ui
@@ -142,7 +150,9 @@ node $VOLT_UI_PATH/mcp/scripts/install-mcp.js
 ```
 
 ### Component files not found after `volt add`
+
 Check the target directory (default: `./src/app/ui/`):
+
 ```bash
 ls -la ./src/app/ui/button/
 ```

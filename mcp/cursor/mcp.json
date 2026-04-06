@@ -26,30 +26,133 @@
       "cliClassPrefix": "Ui"
     },
     "list": [
-      { "name": "button", "files": ["button.ts", "index.ts"], "dependencies": ["ng-primitives/button"] },
+      {
+        "name": "button",
+        "files": ["button.ts", "index.ts"],
+        "dependencies": ["ng-primitives/button"]
+      },
       { "name": "badge", "files": ["badge.ts", "index.ts"], "dependencies": [] },
-      { "name": "card", "files": ["card.component.ts", "index.ts"], "dependencies": [], "subComponents": ["card-header", "card-title", "card-description", "card-content", "card-footer"] },
+      {
+        "name": "card",
+        "files": ["card.component.ts", "index.ts"],
+        "dependencies": [],
+        "subComponents": [
+          "card-header",
+          "card-title",
+          "card-description",
+          "card-content",
+          "card-footer"
+        ]
+      },
       { "name": "input", "files": ["input.component.ts", "index.ts"], "dependencies": [] },
       { "name": "textarea", "files": ["textarea.ts", "index.ts"], "dependencies": [] },
-      { "name": "checkbox", "files": ["checkbox.component.ts", "index.ts"], "dependencies": ["ng-primitives/checkbox"] },
-      { "name": "radio", "files": ["radio-group.ts", "radio-item.ts", "index.ts"], "dependencies": ["ng-primitives/radio"] },
-      { "name": "switch", "files": ["switch.component.ts", "index.ts"], "dependencies": ["ng-primitives/switch"] },
-      { "name": "toggle", "files": ["toggle.ts", "index.ts"], "dependencies": ["ng-primitives/button"] },
-      { "name": "select", "files": ["select.component.ts", "select-content.component.ts", "select-item.component.ts", "select-label.component.ts", "select-separator.component.ts", "index.ts"], "dependencies": ["ng-primitives/select"] },
-      { "name": "tabs", "files": ["tabs.component.ts", "tabs-list.component.ts", "tabs-trigger.component.ts", "tabs-content.component.ts"], "dependencies": ["ng-primitives/tab"] },
-      { "name": "accordion", "files": ["accordion.component.ts", "accordion-item.component.ts", "accordion-trigger.component.ts", "accordion-content.component.ts", "index.ts"], "dependencies": ["ng-primitives/accordion"] },
-      { "name": "avatar", "files": ["avatar.ts", "avatar-image.ts", "avatar-fallback.ts", "index.ts"], "dependencies": ["ng-primitives/avatar"] },
-      { "name": "separator", "files": ["separator.component.ts", "index.ts"], "dependencies": ["ng-primitives/separator"] },
-      { "name": "tooltip", "files": ["tooltip.ts", "tooltip-content.ts", "index.ts"], "dependencies": ["ng-primitives/tooltip"] },
-      { "name": "navigation-menu", "files": ["navigation-menu.ts", "navigation-menu-list.ts", "navigation-menu-item.ts", "navigation-menu-trigger.ts", "navigation-menu-content.ts", "navigation-menu-content-item.ts", "navigation-menu-link.ts", "index.ts"], "dependencies": ["ng-primitives/navigation-menu"] },
-      { "name": "form-field", "files": ["form-field.ts", "form-field-label.ts", "form-field-hint.ts", "form-field-error.ts", "index.ts"], "dependencies": ["ng-primitives/form-field"] }
+      {
+        "name": "checkbox",
+        "files": ["checkbox.component.ts", "index.ts"],
+        "dependencies": ["ng-primitives/checkbox"]
+      },
+      {
+        "name": "radio",
+        "files": ["radio-group.ts", "radio-item.ts", "index.ts"],
+        "dependencies": ["ng-primitives/radio"]
+      },
+      {
+        "name": "switch",
+        "files": ["switch.component.ts", "index.ts"],
+        "dependencies": ["ng-primitives/switch"]
+      },
+      {
+        "name": "toggle",
+        "files": ["toggle.ts", "index.ts"],
+        "dependencies": ["ng-primitives/button"]
+      },
+      {
+        "name": "select",
+        "files": [
+          "select.component.ts",
+          "select-content.component.ts",
+          "select-item.component.ts",
+          "select-label.component.ts",
+          "select-separator.component.ts",
+          "index.ts"
+        ],
+        "dependencies": ["ng-primitives/select"]
+      },
+      {
+        "name": "tabs",
+        "files": [
+          "tabs.component.ts",
+          "tabs-list.component.ts",
+          "tabs-trigger.component.ts",
+          "tabs-content.component.ts"
+        ],
+        "dependencies": ["ng-primitives/tab"]
+      },
+      {
+        "name": "accordion",
+        "files": [
+          "accordion.component.ts",
+          "accordion-item.component.ts",
+          "accordion-trigger.component.ts",
+          "accordion-content.component.ts",
+          "index.ts"
+        ],
+        "dependencies": ["ng-primitives/accordion"]
+      },
+      {
+        "name": "avatar",
+        "files": ["avatar.ts", "avatar-image.ts", "avatar-fallback.ts", "index.ts"],
+        "dependencies": ["ng-primitives/avatar"]
+      },
+      {
+        "name": "separator",
+        "files": ["separator.component.ts", "index.ts"],
+        "dependencies": ["ng-primitives/separator"]
+      },
+      {
+        "name": "tooltip",
+        "files": ["tooltip.ts", "tooltip-content.ts", "index.ts"],
+        "dependencies": ["ng-primitives/tooltip"]
+      },
+      {
+        "name": "navigation-menu",
+        "files": [
+          "navigation-menu.ts",
+          "navigation-menu-list.ts",
+          "navigation-menu-item.ts",
+          "navigation-menu-trigger.ts",
+          "navigation-menu-content.ts",
+          "navigation-menu-content-item.ts",
+          "navigation-menu-link.ts",
+          "index.ts"
+        ],
+        "dependencies": ["ng-primitives/navigation-menu"]
+      },
+      {
+        "name": "form-field",
+        "files": [
+          "form-field.ts",
+          "form-field-label.ts",
+          "form-field-hint.ts",
+          "form-field-error.ts",
+          "index.ts"
+        ],
+        "dependencies": ["ng-primitives/form-field"]
+      }
     ]
   },
   "cli": {
     "path": "cli/bin/volt",
     "commands": {
-      "init": { "description": "Initialize volt/ui in project", "args": ["[target-dir]"], "defaultDir": "./src/app/ui" },
-      "add": { "description": "Add component to project", "args": ["<component-name>", "[target-dir]"] },
+      "init": {
+        "description": "Initialize volt/ui in project",
+        "args": ["[target-dir]"],
+        "defaultDir": "./src/app/ui"
+      },
+      "add": {
+        "description": "Add component to project",
+        "args": ["<component-name>", "[target-dir]"]
+      },
       "list": { "description": "List all available components" }
     }
   },

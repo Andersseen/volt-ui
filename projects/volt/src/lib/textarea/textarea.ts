@@ -30,7 +30,7 @@ export const textareaVariants = cva(
       size: 'md',
       state: 'default',
     },
-  },
+  }
 );
 
 export type TextareaVariants = VariantProps<typeof textareaVariants>;
@@ -66,6 +66,6 @@ export class VoltTextarea {
       variant: this.variant(),
       size: this.size(),
       state: this.state(),
-    }),
+    })
   );
 }

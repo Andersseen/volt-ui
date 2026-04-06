@@ -109,7 +109,13 @@
       "description": "Card container with header, content, and footer",
       "files": ["card.component.ts", "index.ts"],
       "dependencies": [],
-      "sub_components": ["card-header", "card-title", "card-description", "card-content", "card-footer"]
+      "sub_components": [
+        "card-header",
+        "card-title",
+        "card-description",
+        "card-content",
+        "card-footer"
+      ]
     },
     "input": {
       "name": "input",
@@ -156,7 +162,14 @@
     "select": {
       "name": "select",
       "description": "Dropdown select with options",
-      "files": ["select.component.ts", "select-content.component.ts", "select-item.component.ts", "select-label.component.ts", "select-separator.component.ts", "index.ts"],
+      "files": [
+        "select.component.ts",
+        "select-content.component.ts",
+        "select-item.component.ts",
+        "select-label.component.ts",
+        "select-separator.component.ts",
+        "index.ts"
+      ],
       "dependencies": ["ng-primitives/select"],
       "sub_components": ["select-content", "select-item", "select-label", "select-separator"],
       "inputs": ["value", "placeholder", "disabled", "multiple"]
@@ -164,7 +177,12 @@
     "tabs": {
       "name": "tabs",
       "description": "Tabbed interface",
-      "files": ["tabs.component.ts", "tabs-list.component.ts", "tabs-trigger.component.ts", "tabs-content.component.ts"],
+      "files": [
+        "tabs.component.ts",
+        "tabs-list.component.ts",
+        "tabs-trigger.component.ts",
+        "tabs-content.component.ts"
+      ],
       "dependencies": ["ng-primitives/tab"],
       "sub_components": ["tabs-list", "tabs-trigger", "tabs-content"],
       "inputs": ["value"]
@@ -172,7 +190,13 @@
     "accordion": {
       "name": "accordion",
       "description": "Collapsible accordion panels",
-      "files": ["accordion.component.ts", "accordion-item.component.ts", "accordion-trigger.component.ts", "accordion-content.component.ts", "index.ts"],
+      "files": [
+        "accordion.component.ts",
+        "accordion-item.component.ts",
+        "accordion-trigger.component.ts",
+        "accordion-content.component.ts",
+        "index.ts"
+      ],
       "dependencies": ["ng-primitives/accordion"],
       "sub_components": ["accordion-item", "accordion-trigger", "accordion-content"],
       "inputs": ["type", "collapsible", "value"]
@@ -203,15 +227,37 @@
     "navigation-menu": {
       "name": "navigation-menu",
       "description": "Navigation menu with dropdowns",
-      "files": ["navigation-menu.ts", "navigation-menu-list.ts", "navigation-menu-item.ts", "navigation-menu-trigger.ts", "navigation-menu-content.ts", "navigation-menu-content-item.ts", "navigation-menu-link.ts", "index.ts"],
+      "files": [
+        "navigation-menu.ts",
+        "navigation-menu-list.ts",
+        "navigation-menu-item.ts",
+        "navigation-menu-trigger.ts",
+        "navigation-menu-content.ts",
+        "navigation-menu-content-item.ts",
+        "navigation-menu-link.ts",
+        "index.ts"
+      ],
       "dependencies": ["ng-primitives/navigation-menu"],
-      "sub_components": ["navigation-menu-list", "navigation-menu-item", "navigation-menu-trigger", "navigation-menu-content", "navigation-menu-content-item", "navigation-menu-link"],
+      "sub_components": [
+        "navigation-menu-list",
+        "navigation-menu-item",
+        "navigation-menu-trigger",
+        "navigation-menu-content",
+        "navigation-menu-content-item",
+        "navigation-menu-link"
+      ],
       "inputs": ["value"]
     },
     "form-field": {
       "name": "form-field",
       "description": "Form field wrapper with label, hint, error",
-      "files": ["form-field.ts", "form-field-label.ts", "form-field-hint.ts", "form-field-error.ts", "index.ts"],
+      "files": [
+        "form-field.ts",
+        "form-field-label.ts",
+        "form-field-hint.ts",
+        "form-field-error.ts",
+        "index.ts"
+      ],
       "dependencies": ["ng-primitives/form-field"],
       "sub_components": ["form-field-label", "form-field-hint", "form-field-error"]
     }
@@ -231,13 +277,23 @@
       "default": "sharp"
     },
     "variables": [
-      "--color-background", "--color-foreground",
-      "--color-surface", "--color-surface-foreground",
-      "--color-primary", "--color-primary-foreground",
-      "--color-destructive", "--color-destructive-foreground",
-      "--color-muted", "--color-muted-foreground",
-      "--color-border", "--color-ring", "--color-input",
-      "--radius-sm", "--radius-md", "--radius-lg", "--radius-xl"
+      "--color-background",
+      "--color-foreground",
+      "--color-surface",
+      "--color-surface-foreground",
+      "--color-primary",
+      "--color-primary-foreground",
+      "--color-destructive",
+      "--color-destructive-foreground",
+      "--color-muted",
+      "--color-muted-foreground",
+      "--color-border",
+      "--color-ring",
+      "--color-input",
+      "--radius-sm",
+      "--radius-md",
+      "--radius-lg",
+      "--radius-xl"
     ]
   },
   "usage": {
