@@ -71,7 +71,7 @@ import {
           <h2 class="text-lg font-semibold mb-4">Form Components</h2>
           <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             <a
-              routerLink="/docs/button"
+              routerLink="/docs/components/button"
               class="group p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/30 transition-all"
             >
               <div class="flex items-center gap-3">
@@ -88,7 +88,7 @@ import {
             </a>
 
             <a
-              routerLink="/docs/input"
+              routerLink="/docs/components/input"
               class="group p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/30 transition-all"
             >
               <div class="flex items-center gap-3">
@@ -105,7 +105,7 @@ import {
             </a>
 
             <a
-              routerLink="/docs/checkbox"
+              routerLink="/docs/components/checkbox"
               class="group p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/30 transition-all"
             >
               <div class="flex items-center gap-3">
@@ -122,7 +122,7 @@ import {
             </a>
 
             <a
-              routerLink="/docs/switch"
+              routerLink="/docs/components/switch"
               class="group p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/30 transition-all"
             >
               <div class="flex items-center gap-3">
@@ -139,7 +139,7 @@ import {
             </a>
 
             <a
-              routerLink="/docs/radio"
+              routerLink="/docs/components/radio"
               class="group p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/30 transition-all"
             >
               <div class="flex items-center gap-3">
@@ -156,7 +156,7 @@ import {
             </a>
 
             <a
-              routerLink="/docs/select"
+              routerLink="/docs/components/select"
               class="group p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/30 transition-all"
             >
               <div class="flex items-center gap-3">
@@ -173,7 +173,7 @@ import {
             </a>
 
             <a
-              routerLink="/docs/toggle"
+              routerLink="/docs/components/toggle"
               class="group p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/30 transition-all"
             >
               <div class="flex items-center gap-3">
@@ -196,7 +196,7 @@ import {
           <h2 class="text-lg font-semibold mb-4">Layout</h2>
           <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             <a
-              routerLink="/docs/card"
+              routerLink="/docs/components/card"
               class="group p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/30 transition-all"
             >
               <div class="flex items-center gap-3">
@@ -213,7 +213,7 @@ import {
             </a>
 
             <a
-              routerLink="/docs/separator"
+              routerLink="/docs/components/separator"
               class="group p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/30 transition-all"
             >
               <div class="flex items-center gap-3">
@@ -236,7 +236,7 @@ import {
           <h2 class="text-lg font-semibold mb-4">Navigation</h2>
           <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             <a
-              routerLink="/docs/navigation-menu"
+              routerLink="/docs/components/navigation-menu"
               class="group p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/30 transition-all"
             >
               <div class="flex items-center gap-3">
@@ -253,7 +253,7 @@ import {
             </a>
 
             <a
-              routerLink="/docs/tabs"
+              routerLink="/docs/components/tabs"
               class="group p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/30 transition-all"
             >
               <div class="flex items-center gap-3">
@@ -270,7 +270,7 @@ import {
             </a>
 
             <a
-              routerLink="/docs/accordion"
+              routerLink="/docs/components/accordion"
               class="group p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/30 transition-all"
             >
               <div class="flex items-center gap-3">
@@ -287,7 +287,7 @@ import {
             </a>
 
             <a
-              routerLink="/docs/dialog"
+              routerLink="/docs/components/dialog"
               class="group p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/30 transition-all"
             >
               <div class="flex items-center gap-3">
@@ -310,7 +310,7 @@ import {
           <h2 class="text-lg font-semibold mb-4">Display</h2>
           <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             <a
-              routerLink="/docs/avatar"
+              routerLink="/docs/components/avatar"
               class="group p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/30 transition-all"
             >
               <div class="flex items-center gap-3">
@@ -327,7 +327,7 @@ import {
             </a>
 
             <a
-              routerLink="/docs/badge"
+              routerLink="/docs/components/badge"
               class="group p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/30 transition-all"
             >
               <div class="flex items-center gap-3">
@@ -344,7 +344,7 @@ import {
             </a>
 
             <a
-              routerLink="/docs/tooltip"
+              routerLink="/docs/components/tooltip"
               class="group p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/30 transition-all"
             >
               <div class="flex items-center gap-3">
