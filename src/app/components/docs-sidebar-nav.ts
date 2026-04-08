@@ -7,6 +7,7 @@ import {
   NgpDialogTitle,
   NgpDialogTrigger,
 } from 'ng-primitives/dialog';
+import { VoltNavSidebar } from 'volt';
 import { IconChevronRight, IconClose } from '../icons';
 
 export interface DocsSidebarLink {
@@ -31,53 +32,47 @@ export interface DocsSidebarGroup {
     NgpDialogOverlay,
     NgpDialogTitle,
     NgpDialogDescription,
+    VoltNavSidebar,
     IconChevronRight,
     IconClose,
   ],
   template: `
-    <!-- Mobile Trigger -->
-    <div class="w-full md:hidden">
+    <volt-nav-sidebar [title]="title()" [description]="description()">
+      <!-- Mobile trigger (projected into [slot=mobile-trigger]) -->
       <button
+        slot="mobile-trigger"
         [ngpDialogTrigger]="mobileDrawer"
         class="w-full inline-flex items-center justify-between px-4 py-2.5 rounded-lg border border-border bg-muted/50 text-sm font-medium hover:bg-muted transition-colors"
       >
         <span>{{ browseLabel() }}</span>
         <icon-chevron-right />
       </button>
-    </div>
 
-    <!-- Desktop Sidebar -->
-    <aside class="hidden md:block w-full md:w-64 flex-shrink-0 md:sticky md:top-24">
-      <nav class="flex flex-col space-y-2" [attr.aria-label]="title()">
-        <h4 class="font-medium text-sm mt-2 text-foreground">{{ title() }}</h4>
-        @if (description()) {
-          <p class="text-xs text-muted-foreground mt-1">{{ description() }}</p>
+      <!-- Desktop nav links -->
+      @for (group of groups(); track $index) {
+        @if (group.heading) {
+          <h5 class="font-medium text-xs mt-4 text-muted-foreground uppercase tracking-wider">
+            {{ group.heading }}
+          </h5>
         }
-        @for (group of groups(); track $index) {
-          @if (group.heading) {
-            <h5 class="font-medium text-xs mt-4 text-muted-foreground uppercase tracking-wider">
-              {{ group.heading }}
-            </h5>
+        <ul class="space-y-1 mt-2 border-l border-border/50 ml-2 pl-4">
+          @for (link of group.links; track link.path) {
+            <li>
+              <a
+                [routerLink]="link.path"
+                routerLinkActive="font-medium text-foreground"
+                [routerLinkActiveOptions]="{ exact: link.exact ?? false }"
+                class="block py-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                {{ link.label }}
+              </a>
+            </li>
           }
-          <ul class="space-y-1 mt-2 md:border-l md:border-border/50 md:ml-2 md:pl-4">
-            @for (link of group.links; track link.path) {
-              <li>
-                <a
-                  [routerLink]="link.path"
-                  routerLinkActive="font-medium text-foreground"
-                  [routerLinkActiveOptions]="{ exact: link.exact ?? false }"
-                  class="block py-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  {{ link.label }}
-                </a>
-              </li>
-            }
-          </ul>
-        }
-      </nav>
-    </aside>
+        </ul>
+      }
+    </volt-nav-sidebar>
 
-    <!-- Mobile Drawer -->
+    <!-- Mobile Drawer (stays in app — uses ng-primitives + app icons) -->
     <ng-template #mobileDrawer let-close="close">
       <div
         ngpDialogOverlay

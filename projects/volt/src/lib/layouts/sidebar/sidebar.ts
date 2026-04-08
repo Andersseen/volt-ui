@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, input, booleanAttribute } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { VoltSidebarService } from './sidebar.service';
-import { VoltTooltip } from 'volt';
+import { VoltTooltip } from '../../components/tooltip';
 
 // ==========================================
 // 1. Sidebar Container

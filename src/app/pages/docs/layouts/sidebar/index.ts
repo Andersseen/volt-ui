@@ -1,6 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { VoltAvatar, VoltSeparator } from 'volt';
+import {
+  VoltAvatar,
+  VoltSeparator,
+  VoltSidebar,
+  VoltSidebarContent,
+  VoltSidebarFooter,
+  VoltSidebarGroup,
+  VoltSidebarHeader,
+  VoltSidebarItem,
+  VoltSidebarService,
+} from 'volt';
 import {
   IconAvatar,
   IconComponents,
@@ -10,19 +20,9 @@ import {
   IconSearch,
   IconSettings,
 } from '../../../../icons';
-import {
-  VoltSidebar,
-  VoltSidebarContent,
-  VoltSidebarFooter,
-  VoltSidebarGroup,
-  VoltSidebarHeader,
-  VoltSidebarItem,
-  VoltSidebarService,
-} from '../../../../layout/sidebar';
 
 @Component({
   selector: 'app-sidebar-demo',
-  standalone: true,
   imports: [
     CommonModule,
     VoltSidebar,
