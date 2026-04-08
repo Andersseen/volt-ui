@@ -73,6 +73,20 @@ import { IconGithub } from '../icons';
             >
               Components
             </a>
+            <a
+              routerLink="/docs/icons"
+              routerLinkActive="text-foreground"
+              class="px-3 py-2 rounded-md transition-colors hover:text-foreground"
+            >
+              Icons
+            </a>
+            <a
+              routerLink="/docs/layouts"
+              routerLinkActive="text-foreground"
+              class="px-3 py-2 rounded-md transition-colors hover:text-foreground"
+            >
+              Layouts
+            </a>
           </nav>
 
           <a
