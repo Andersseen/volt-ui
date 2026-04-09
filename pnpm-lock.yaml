@@ -135,6 +135,9 @@ importers:
       eslint-plugin-prettier:
         specifier: ^5.5.5
         version: 5.5.5(eslint-config-prettier@10.1.8(eslint@10.2.0(jiti@2.6.1)))(eslint@10.2.0(jiti@2.6.1))(prettier@3.8.1)
+      h3:
+        specifier: 1.15.11
+        version: 1.15.11
       husky:
         specifier: ^9.1.7
         version: 9.1.7
