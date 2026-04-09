@@ -38,7 +38,7 @@ import {
   IconTabs,
   IconToggle,
   IconTooltip,
-} from '../../icons';
+} from '../icons';
 
 @Component({
   selector: 'app-docs-icons',
