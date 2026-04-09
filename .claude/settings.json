@@ -11,7 +11,8 @@
       "Bash(cp /Users/andriipap/Andersseen/Web/Projects/volt-ui/src/app/layout/sidebar/sidebar.service.ts /Users/andriipap/Andersseen/Web/Projects/volt-ui/projects/volt/src/lib/layouts/sidebar/sidebar.service.ts)",
       "Bash(rm -rf /Users/andriipap/Andersseen/Web/Projects/volt-ui/projects/volt/src/lib/sidebar)",
       "Bash(cat /Users/andriipap/Andersseen/Web/Projects/volt-ui/projects/volt/src/lib/components/tooltip/*.ts)",
-      "Bash(cat /Users/andriipap/Andersseen/Web/Projects/volt-ui/projects/volt/src/lib/components/dialog/*.ts)"
+      "Bash(cat /Users/andriipap/Andersseen/Web/Projects/volt-ui/projects/volt/src/lib/components/dialog/*.ts)",
+      "Bash(ls *.config.* tsconfig*)"
     ]
   },
   "mcpServers": {
