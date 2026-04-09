@@ -2,10 +2,12 @@
   "name": "volt-ui",
   "version": "0.0.0",
   "bin": {
-    "volt": "./cli/bin/volt"
+    "volt": "./cli/bin/volt",
+    "volt-ui-mcp": "./cli/setup-mcp.js"
   },
   "scripts": {
     "ng": "ng",
+    "setup:mcp": "node cli/setup-mcp.js",
     "start": "NODE_OPTIONS='--max-old-space-size=4096' ng serve",
     "start:safe": "ng serve --poll=2000 --live-reload=false",
     "dev": "./scripts/dev.sh",
@@ -13,6 +15,7 @@
     "build:prod": "NODE_OPTIONS='--max-old-space-size=8192' ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "clean": "rm -rf .angular node_modules/.cache dist",
+    "preview": "wrangler pages dev dist/analog/public",
     "test": "vitest",
     "test:run": "vitest --run",
     "test:coverage": "vitest run --coverage",
@@ -27,8 +30,8 @@
     "typecheck": "tsc --noEmit --project tsconfig.json",
     "typecheck:watch": "tsc --noEmit --project tsconfig.json --watch",
     "deploy": "pnpm run deploy:cf:main",
-    "deploy:cf": "pnpm run build && pnpm exec wrangler pages deploy dist/volt-ui/browser --project-name=volt-ui",
-    "deploy:cf:main": "pnpm run build && pnpm exec wrangler pages deploy dist/volt-ui/browser --project-name=volt-ui --branch=main",
+    "deploy:cf": "pnpm run build && pnpm exec wrangler pages deploy dist/analog/public --project-name=volt-ui",
+    "deploy:cf:main": "pnpm run build && pnpm exec wrangler pages deploy dist/analog/public --project-name=volt-ui --branch=main",
     "prepare": "husky"
   },
   "lint-staged": {
@@ -43,6 +46,8 @@
   "private": true,
   "packageManager": "pnpm@10.30.1",
   "dependencies": {
+    "@analogjs/platform": "^2.4.4",
+    "@analogjs/router": "^2.4.4",
     "@angular/animations": "^21.2.2",
     "@angular/cdk": "^21.0.0",
     "@angular/common": "^21.2.0",
@@ -50,6 +55,7 @@
     "@angular/core": "^21.2.0",
     "@angular/forms": "^21.2.0",
     "@angular/platform-browser": "^21.2.0",
+    "@angular/platform-server": "^21.2.1",
     "@angular/router": "^21.2.0",
     "@floating-ui/dom": "^1.6.0",
     "class-variance-authority": "^0.7.1",
@@ -73,6 +79,7 @@
     "@eslint/js": "^10.0.1",
     "@ng-primitives/mcp": "^0.110.2",
     "@tailwindcss/postcss": "^4.1.12",
+    "@tailwindcss/vite": "^4.2.2",
     "@testing-library/angular": "^19.2.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/user-event": "^14.6.1",
@@ -83,6 +90,7 @@
     "eslint": "^10.2.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.5",
+    "h3": "1.15.11",
     "husky": "^9.1.7",
     "jsdom": "^28.0.0",
     "lint-staged": "^16.4.0",
