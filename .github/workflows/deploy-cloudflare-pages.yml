@@ -39,7 +39,7 @@ jobs:
         run: pnpm build
 
       - name: Deploy to Cloudflare Pages
-        run: pnpm exec wrangler pages deploy dist/volt-ui/browser --project-name=volt-ui --branch=main
+        run: pnpm exec wrangler pages deploy dist/analog/public --project-name=volt-ui --branch=main
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

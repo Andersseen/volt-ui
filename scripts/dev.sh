@@ -3,17 +3,14 @@
 # Development server script with memory optimization
 # Usage: ./scripts/dev.sh
 
-echo "🚀 Starting Volt UI dev server with optimized memory settings..."
+echo "Starting Volt UI dev server..."
 
 # Clean cache
-rm -rf .angular/cache dist
+rm -rf dist
 
-# Set memory limit and start dev server
-export NODE_OPTIONS="--max-old-space-size=4096 --max-semi-space-size=256"
-export NG_BUILD_PARALLELISM=2
-
-# Kill any existing Angular processes on port 4200
+# Kill any existing process on port 4200
 lsof -ti:4200 | xargs kill -9 2>/dev/null || true
 
-# Start dev server with polling for more stability
-npx ng serve --host 0.0.0.0 --port 4200 --poll 1000
+# Start vite dev server
+export NODE_OPTIONS="--max-old-space-size=4096"
+npx vite --host 0.0.0.0 --port 4200

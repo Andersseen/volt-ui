@@ -44,5 +44,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-files
-          path: dist/volt-ui/browser
+          path: dist/analog/public
           retention-days: 1
