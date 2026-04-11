@@ -1,3 +1,4 @@
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -6,12 +7,12 @@ import {
   inject,
   input,
   OnInit,
+  PLATFORM_ID,
   signal,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { CopyButton } from './copy-button';
-import { EditorLoaderService } from '../services/editor-loader.service';
 import { IconCheck, IconCopy } from '../icons';
+import { EditorLoaderService } from '../services/editor-loader.service';
+import { CopyButton } from './copy-button';
 
 @Component({
   selector: 'app-code-panel',
@@ -87,8 +88,11 @@ export class CodePanel implements OnInit {
 
   private destroyRef = inject(DestroyRef);
   private editorLoader = inject(EditorLoaderService);
+  private platformId = inject(PLATFORM_ID);
 
   async ngOnInit() {
+    if (!isPlatformBrowser(this.platformId)) return;
+
     // Load editor script lazily
     await this.editorLoader.loadEditor();
     this.editorLoaded.set(true);

@@ -29,6 +29,11 @@ export class EditorLoaderService {
 
   private loadScript(): Promise<void> {
     return new Promise((resolve, reject) => {
+      // Guard against SSR / non-browser environments
+      if (typeof customElements === 'undefined' || typeof document === 'undefined') {
+        resolve();
+        return;
+      }
       // Check if already defined
       if (customElements.get('vertex-editor')) {
         EditorLoaderService.scriptLoaded = true;
