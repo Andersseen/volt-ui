@@ -1,0 +1,40 @@
+<div class="space-y-6">
+  <div>
+    <h1 class="text-3xl font-bold tracking-tight text-foreground">Breadcrumbs</h1>
+    <p class="text-base text-muted-foreground mt-2">
+      Displays the path to the current resource using a hierarchy of links.
+    </p>
+  </div>
+
+  <div class="w-full h-px bg-border"></div>
+
+  <div class="space-y-4">
+    <h2 class="text-xl font-semibold tracking-tight text-foreground">Example</h2>
+    <div
+      class="p-8 border border-border rounded-lg bg-card/30 flex items-center justify-center min-h-[300px]"
+    >
+      <volt-breadcrumbs>
+        <volt-breadcrumb-list>
+          <volt-breadcrumb-item>
+            <volt-breadcrumb-link href="/">Home</volt-breadcrumb-link>
+          </volt-breadcrumb-item>
+          <volt-breadcrumb-separator />
+          <volt-breadcrumb-item>
+            <volt-breadcrumb-link href="/docs/components">Components</volt-breadcrumb-link>
+          </volt-breadcrumb-item>
+          <volt-breadcrumb-separator />
+          <volt-breadcrumb-item>
+            <volt-breadcrumb-page>Breadcrumbs</volt-breadcrumb-page>
+          </volt-breadcrumb-item>
+        </volt-breadcrumb-list>
+      </volt-breadcrumbs>
+    </div>
+  </div>
+
+  <app-code-panel
+    title="Component Source"
+    [code]="breadcrumbsCode"
+    cliCommand="npx github:Andersseen/volt-ui add breadcrumbs"
+    description="Copy this code to your project. The component uses ng-primitives/breadcrumbs."
+  />
+</div>

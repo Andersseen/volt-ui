@@ -1,0 +1,29 @@
+<div class="space-y-6">
+  <div>
+    <h1 class="text-3xl font-bold tracking-tight text-foreground">Progress</h1>
+    <p class="text-base text-muted-foreground mt-2">
+      Displays an indicator showing the completion progress of a task.
+    </p>
+  </div>
+
+  <div class="w-full h-px bg-border"></div>
+
+  <div class="space-y-4">
+    <h2 class="text-xl font-semibold tracking-tight text-foreground">Example</h2>
+    <div
+      class="p-8 border border-border rounded-lg bg-card/30 flex items-center justify-center min-h-[300px]"
+    >
+      <div class="w-full max-w-sm space-y-4">
+        <volt-progress [value]="value()" />
+        <p class="text-sm text-muted-foreground text-center">{{ value() }}% complete</p>
+      </div>
+    </div>
+  </div>
+
+  <app-code-panel
+    title="Component Source"
+    [code]="progressCode"
+    cliCommand="npx github:Andersseen/volt-ui add progress"
+    description="Copy this code to your project. The component uses ng-primitives/progress."
+  />
+</div>
