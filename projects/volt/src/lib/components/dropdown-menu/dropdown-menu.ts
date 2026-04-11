@@ -7,7 +7,7 @@ import { NgpMenu } from 'ng-primitives/menu';
   hostDirectives: [NgpMenu],
   host: {
     class:
-      'z-50 min-w-[8rem] overflow-hidden rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md',
+      'fixed z-50 min-w-[8rem] overflow-hidden rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md',
   },
   template: `<ng-content />`,
 })

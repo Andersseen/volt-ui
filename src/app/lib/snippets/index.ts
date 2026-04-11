@@ -825,7 +825,7 @@ export class VoltPopoverTrigger {
   hostDirectives: [NgpPopover],
   host: {
     class:
-      'z-50 w-72 rounded-lg border border-border bg-popover p-4 text-popover-foreground shadow-md outline-none',
+      'fixed z-50 w-72 rounded-lg border border-border bg-popover p-4 text-popover-foreground shadow-md outline-none',
   },
   template: \`<ng-content />\`,
 })
@@ -861,7 +861,7 @@ export class VoltDropdownMenuTrigger {
   hostDirectives: [NgpMenu],
   host: {
     class:
-      'z-50 min-w-[8rem] overflow-hidden rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md',
+      'fixed z-50 min-w-[8rem] overflow-hidden rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md',
   },
   template: \`<ng-content />\`,
 })
