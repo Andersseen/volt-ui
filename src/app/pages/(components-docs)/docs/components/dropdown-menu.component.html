@@ -1,0 +1,38 @@
+<div class="space-y-6">
+  <div>
+    <h1 class="text-3xl font-bold tracking-tight text-foreground">Dropdown Menu</h1>
+    <p class="text-base text-muted-foreground mt-2">
+      Displays a menu of options to the user, triggered by a button.
+    </p>
+  </div>
+
+  <div class="w-full h-px bg-border"></div>
+
+  <div class="space-y-4">
+    <h2 class="text-xl font-semibold tracking-tight text-foreground">Example</h2>
+    <div
+      class="p-8 border border-border rounded-lg bg-card/30 flex items-center justify-center min-h-[300px]"
+    >
+      <volt-button variant="outline" [voltDropdownMenu]="myMenu"> Open Menu </volt-button>
+
+      <ng-template #myMenu>
+        <volt-dropdown-menu>
+          <volt-dropdown-menu-label>My Account</volt-dropdown-menu-label>
+          <volt-dropdown-menu-separator />
+          <volt-dropdown-menu-item>Profile</volt-dropdown-menu-item>
+          <volt-dropdown-menu-item>Settings</volt-dropdown-menu-item>
+          <volt-dropdown-menu-item>Billing</volt-dropdown-menu-item>
+          <volt-dropdown-menu-separator />
+          <volt-dropdown-menu-item>Sign out</volt-dropdown-menu-item>
+        </volt-dropdown-menu>
+      </ng-template>
+    </div>
+  </div>
+
+  <app-code-panel
+    title="Component Source"
+    [code]="dropdownMenuCode"
+    cliCommand="npx github:Andersseen/volt-ui add dropdown-menu"
+    description="Copy this code to your project. The component uses ng-primitives/menu."
+  />
+</div>

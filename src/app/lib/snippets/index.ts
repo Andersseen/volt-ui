@@ -787,3 +787,297 @@ import { NgpAvatarFallback } from 'ng-primitives/avatar';
   template: \`<ng-content />\`,
 })
 export class VoltAvatarFallback {}`;
+
+export const POPOVER_SNIPPET = `import { ChangeDetectionStrategy, Component, Directive, input, output } from '@angular/core';
+import { NgpPopoverTrigger } from 'ng-primitives/popover';
+import { NgpPopover } from 'ng-primitives/popover';
+import type { NgpPopoverPlacement } from 'ng-primitives/popover';
+
+@Directive({
+  selector: '[voltPopover]',
+  hostDirectives: [
+    {
+      directive: NgpPopoverTrigger,
+      inputs: [
+        'ngpPopoverTrigger: voltPopover',
+        'ngpPopoverTriggerPlacement: placement',
+        'ngpPopoverTriggerOffset: offset',
+        'ngpPopoverTriggerDisabled: disabled',
+        'ngpPopoverTriggerCloseOnOutsideClick: closeOnOutsideClick',
+        'ngpPopoverTriggerCloseOnEscape: closeOnEscape',
+      ],
+      outputs: ['ngpPopoverTriggerOpenChange: openChange'],
+    },
+  ],
+})
+export class VoltPopoverTrigger {
+  readonly placement = input<NgpPopoverPlacement>('bottom');
+  readonly offset = input<number>(8);
+  readonly disabled = input<boolean>(false);
+  readonly closeOnOutsideClick = input<boolean>(true);
+  readonly closeOnEscape = input<boolean>(true);
+  readonly openChange = output<boolean>();
+}
+
+@Component({
+  selector: 'volt-popover-content',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [NgpPopover],
+  host: {
+    class:
+      'fixed z-50 w-72 rounded-lg border border-border bg-popover p-4 text-popover-foreground shadow-md outline-none',
+  },
+  template: \`<ng-content />\`,
+})
+export class VoltPopoverContent {}`;
+
+export const DROPDOWN_MENU_SNIPPET = `import { ChangeDetectionStrategy, Component, Directive, input } from '@angular/core';
+import { NgpMenuTrigger, NgpMenu, NgpMenuItem } from 'ng-primitives/menu';
+import type { NgpMenuPlacement } from 'ng-primitives/menu';
+
+@Directive({
+  selector: '[voltDropdownMenu]',
+  hostDirectives: [
+    {
+      directive: NgpMenuTrigger,
+      inputs: [
+        'ngpMenuTrigger: voltDropdownMenu',
+        'ngpMenuTriggerPlacement: placement',
+        'ngpMenuTriggerOffset: offset',
+        'ngpMenuTriggerDisabled: disabled',
+      ],
+    },
+  ],
+})
+export class VoltDropdownMenuTrigger {
+  readonly placement = input<NgpMenuPlacement>('bottom-start');
+  readonly offset = input<number>(4);
+  readonly disabled = input<boolean>(false);
+}
+
+@Component({
+  selector: 'volt-dropdown-menu',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [NgpMenu],
+  host: {
+    class:
+      'fixed z-50 min-w-[8rem] overflow-hidden rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md',
+  },
+  template: \`<ng-content />\`,
+})
+export class VoltDropdownMenu {}
+
+@Component({
+  selector: 'volt-dropdown-menu-item',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgpMenuItem],
+  host: { class: 'block w-full' },
+  template: \`
+    <button
+      ngpMenuItem
+      type="button"
+      class="relative flex w-full cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none data-[hover]:bg-accent data-[hover]:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
+    >
+      <ng-content />
+    </button>
+  \`,
+})
+export class VoltDropdownMenuItem {}
+
+@Component({
+  selector: 'volt-dropdown-menu-separator',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: '-mx-1 my-1 h-px bg-border', role: 'separator' },
+  template: \`\`,
+})
+export class VoltDropdownMenuSeparator {}
+
+@Component({
+  selector: 'volt-dropdown-menu-label',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: 'px-2 py-1.5 text-xs font-semibold text-muted-foreground' },
+  template: \`<ng-content />\`,
+})
+export class VoltDropdownMenuLabel {}`;
+
+export const PROGRESS_SNIPPET = `import { ChangeDetectionStrategy, Component, input, numberAttribute } from '@angular/core';
+import {
+  NgpProgress,
+  NgpProgressIndicator,
+  NgpProgressTrack,
+  provideProgressState,
+} from 'ng-primitives/progress';
+
+@Component({
+  selector: 'volt-progress',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [provideProgressState()],
+  hostDirectives: [
+    {
+      directive: NgpProgress,
+      inputs: ['ngpProgressValue: value', 'ngpProgressMin: min', 'ngpProgressMax: max'],
+    },
+  ],
+  host: { class: 'block w-full' },
+  imports: [NgpProgressTrack, NgpProgressIndicator],
+  template: \`
+    <div ngpProgressTrack class="relative h-2 w-full overflow-hidden rounded-full bg-secondary">
+      <div
+        ngpProgressIndicator
+        class="h-full rounded-full bg-primary transition-[width] duration-300 ease-in-out"
+      ></div>
+    </div>
+  \`,
+})
+export class VoltProgress {
+  readonly value = input<number | null, number | null>(null, { transform: numberAttribute as never });
+  readonly min = input<number, number>(0, { transform: numberAttribute });
+  readonly max = input<number, number>(100, { transform: numberAttribute });
+}`;
+
+export const SLIDER_SNIPPET = `import {
+  booleanAttribute,
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  numberAttribute,
+  output,
+} from '@angular/core';
+import {
+  NgpSlider,
+  NgpSliderRange,
+  NgpSliderThumb,
+  NgpSliderTrack,
+  provideSliderState,
+} from 'ng-primitives/slider';
+import type { NgpOrientation } from 'ng-primitives/common';
+
+@Component({
+  selector: 'volt-slider',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [provideSliderState()],
+  hostDirectives: [
+    {
+      directive: NgpSlider,
+      inputs: [
+        'ngpSliderValue: value',
+        'ngpSliderMin: min',
+        'ngpSliderMax: max',
+        'ngpSliderStep: step',
+        'ngpSliderDisabled: disabled',
+        'ngpSliderOrientation: orientation',
+      ],
+      outputs: ['ngpSliderValueChange: valueChange'],
+    },
+  ],
+  host: {
+    class: 'relative flex w-full touch-none select-none items-center',
+  },
+  imports: [NgpSliderTrack, NgpSliderRange, NgpSliderThumb],
+  template: \`
+    <div ngpSliderTrack class="relative h-2 w-full grow overflow-hidden rounded-full bg-secondary">
+      <div ngpSliderRange class="absolute h-full rounded-full bg-primary"></div>
+    </div>
+    <div
+      ngpSliderThumb
+      class="absolute top-1/2 block h-5 w-5 -translate-x-1/2 -translate-y-1/2 cursor-grab rounded-full border-2 border-primary bg-background ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[press]:cursor-grabbing"
+    ></div>
+  \`,
+})
+export class VoltSlider {
+  readonly value = input<number, number>(0, { transform: numberAttribute });
+  readonly min = input<number, number>(0, { transform: numberAttribute });
+  readonly max = input<number, number>(100, { transform: numberAttribute });
+  readonly step = input<number, number>(1, { transform: numberAttribute });
+  readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
+  readonly orientation = input<NgpOrientation>('horizontal');
+  readonly valueChange = output<number>();
+}`;
+
+export const BREADCRUMBS_SNIPPET = `import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import {
+  NgpBreadcrumbs,
+  NgpBreadcrumbList,
+  NgpBreadcrumbItem,
+  NgpBreadcrumbLink,
+  NgpBreadcrumbPage,
+  NgpBreadcrumbSeparator,
+  NgpBreadcrumbEllipsis,
+} from 'ng-primitives/breadcrumbs';
+
+@Component({
+  selector: 'volt-breadcrumbs',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgpBreadcrumbs],
+  template: \`<nav ngpBreadcrumbs aria-label="breadcrumb"><ng-content /></nav>\`,
+})
+export class VoltBreadcrumbs {}
+
+@Component({
+  selector: 'volt-breadcrumb-list',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgpBreadcrumbList],
+  template: \`
+    <ol ngpBreadcrumbList class="flex flex-wrap items-center gap-1.5 break-words text-sm text-muted-foreground sm:gap-2.5">
+      <ng-content />
+    </ol>
+  \`,
+})
+export class VoltBreadcrumbList {}
+
+@Component({
+  selector: 'volt-breadcrumb-item',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgpBreadcrumbItem],
+  template: \`<li ngpBreadcrumbItem class="inline-flex items-center gap-1.5"><ng-content /></li>\`,
+})
+export class VoltBreadcrumbItem {}
+
+@Component({
+  selector: 'volt-breadcrumb-link',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgpBreadcrumbLink],
+  template: \`<a ngpBreadcrumbLink [href]="href()" class="transition-colors hover:text-foreground"><ng-content /></a>\`,
+})
+export class VoltBreadcrumbLink {
+  readonly href = input<string>('#');
+}
+
+@Component({
+  selector: 'volt-breadcrumb-page',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgpBreadcrumbPage],
+  template: \`<span ngpBreadcrumbPage class="font-normal text-foreground"><ng-content /></span>\`,
+})
+export class VoltBreadcrumbPage {}
+
+@Component({
+  selector: 'volt-breadcrumb-separator',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgpBreadcrumbSeparator],
+  template: \`
+    <li ngpBreadcrumbSeparator aria-hidden="true" class="[&>svg]:w-3.5 [&>svg]:h-3.5">
+      <ng-content>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="m9 18 6-6-6-6" />
+        </svg>
+      </ng-content>
+    </li>
+  \`,
+})
+export class VoltBreadcrumbSeparator {}
+
+@Component({
+  selector: 'volt-breadcrumb-ellipsis',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgpBreadcrumbEllipsis],
+  host: { class: 'inline-flex items-center' },
+  template: \`
+    <span ngpBreadcrumbEllipsis class="flex h-9 w-9 items-center justify-center" aria-label="More">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true">
+        <circle cx="12" cy="12" r="1" /><circle cx="19" cy="12" r="1" /><circle cx="5" cy="12" r="1" />
+      </svg>
+    </span>
+  \`,
+})
+export class VoltBreadcrumbEllipsis {}`;

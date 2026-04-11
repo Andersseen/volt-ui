@@ -40,6 +40,11 @@ export default class ComponentsLayout {
         { path: '/docs/components/tabs', label: 'Tabs' },
         { path: '/docs/components/toggle', label: 'Toggle' },
         { path: '/docs/components/tooltip', label: 'Tooltip' },
+        { path: '/docs/components/popover', label: 'Popover' },
+        { path: '/docs/components/dropdown-menu', label: 'Dropdown Menu' },
+        { path: '/docs/components/progress', label: 'Progress' },
+        { path: '/docs/components/slider', label: 'Slider' },
+        { path: '/docs/components/breadcrumbs', label: 'Breadcrumbs' },
       ],
     },
   ];

@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
@@ -7,7 +8,13 @@ export class EditorLoaderService {
   private static scriptLoaded = false;
   private static loadPromise: Promise<void> | null = null;
 
+  private readonly platformId = inject(PLATFORM_ID);
+
   loadEditor(): Promise<void> {
+    if (!isPlatformBrowser(this.platformId)) {
+      return Promise.resolve();
+    }
+
     if (EditorLoaderService.scriptLoaded) {
       return Promise.resolve();
     }
@@ -22,6 +29,11 @@ export class EditorLoaderService {
 
   private loadScript(): Promise<void> {
     return new Promise((resolve, reject) => {
+      // Guard against SSR / non-browser environments
+      if (typeof customElements === 'undefined' || typeof document === 'undefined') {
+        resolve();
+        return;
+      }
       // Check if already defined
       if (customElements.get('vertex-editor')) {
         EditorLoaderService.scriptLoaded = true;

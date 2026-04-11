@@ -1,0 +1,35 @@
+<div class="space-y-6">
+  <div>
+    <h1 class="text-3xl font-bold tracking-tight text-foreground">Slider</h1>
+    <p class="text-base text-muted-foreground mt-2">
+      An input where the user selects a value from within a given range.
+    </p>
+  </div>
+
+  <div class="w-full h-px bg-border"></div>
+
+  <div class="space-y-4">
+    <h2 class="text-xl font-semibold tracking-tight text-foreground">Example</h2>
+    <div
+      class="p-8 border border-border rounded-lg bg-card/30 flex items-center justify-center min-h-[300px]"
+    >
+      <div class="w-full max-w-sm space-y-4">
+        <volt-slider
+          [value]="value()"
+          (valueChange)="value.set($event)"
+          [min]="0"
+          [max]="100"
+          [step]="1"
+        />
+        <p class="text-sm text-muted-foreground text-center">Value: {{ value() }}</p>
+      </div>
+    </div>
+  </div>
+
+  <app-code-panel
+    title="Component Source"
+    [code]="sliderCode"
+    cliCommand="npx github:Andersseen/volt-ui add slider"
+    description="Copy this code to your project. The component uses ng-primitives/slider."
+  />
+</div>
