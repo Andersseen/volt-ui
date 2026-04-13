@@ -236,9 +236,9 @@ const MCP_URL = 'https://volt-ui.pages.dev/api/mcp';
             <icon-check class="w-[18px] h-[18px] text-green-500 mt-0.5 shrink-0" />
             <span>
               <strong>CLI commands</strong> —
-              <code class="bg-muted px-1 rounded">npx volt add</code>,
-              <code class="bg-muted px-1 rounded">npx volt init</code>,
-              <code class="bg-muted px-1 rounded">npx volt list</code>
+              <code class="bg-muted px-1 rounded">npx &#64;voltui/cli add</code>,
+              <code class="bg-muted px-1 rounded">npx &#64;voltui/cli init</code>,
+              <code class="bg-muted px-1 rounded">npx &#64;voltui/cli list</code>
             </span>
           </li>
           <li class="flex items-start gap-2">

@@ -40,31 +40,51 @@ import {
           There are two ways to use Volt UI components in your project:
         </p>
 
-        <div class="grid gap-4 md:grid-cols-2">
-          <!-- Option 1: CLI -->
+        <div class="grid gap-4 md:grid-cols-3">
+          <!-- Option 1: npm install -->
           <volt-card>
             <volt-card-header>
-              <volt-card-title>Option 1: CLI (Recommended)</volt-card-title>
+              <volt-card-title>Option 1: npm package</volt-card-title>
               <volt-card-description>
-                Use our CLI to quickly add components to your project. This copies the source files
-                with ui-* prefix.
+                Install the library directly from npm and import components in your project.
               </volt-card-description>
             </volt-card-header>
             <volt-card-content class="space-y-3">
               <div class="flex items-center gap-2 p-3 rounded-lg bg-muted font-mono text-sm">
-                npx volt add button
+                npm install &#64;voltui/components
               </div>
               <p class="text-sm text-muted-foreground">
-                Initialize first with:
-                <code class="px-1 py-0.5 bg-muted rounded text-xs">npx volt init</code>
+                Then import:
+                <code class="px-1 py-0.5 bg-muted rounded text-xs"
+                  >from '&#64;voltui/components'</code
+                >
               </p>
             </volt-card-content>
           </volt-card>
 
-          <!-- Option 2: Manual -->
+          <!-- Option 2: CLI -->
           <volt-card>
             <volt-card-header>
-              <volt-card-title>Option 2: Copy & Paste</volt-card-title>
+              <volt-card-title>Option 2: CLI (shadcn-style)</volt-card-title>
+              <volt-card-description>
+                Copy component source files into your project with ui-* prefix. Full customization.
+              </volt-card-description>
+            </volt-card-header>
+            <volt-card-content class="space-y-3">
+              <div class="flex items-center gap-2 p-3 rounded-lg bg-muted font-mono text-sm">
+                npx &#64;voltui/cli add button
+              </div>
+              <p class="text-sm text-muted-foreground">
+                Initialize first with:
+                <code class="px-1 py-0.5 bg-muted rounded text-xs">npx &#64;voltui/cli init</code>
+              </p>
+            </volt-card-content>
+          </volt-card>
+
+          <!-- Option 3: Manual -->
+          <volt-card>
+            <volt-card-header>
+              <volt-card-title>Option 3: Copy & Paste</volt-card-title>
               <volt-card-description>
                 Browse component demos and copy the source code directly. Full control over the
                 implementation.
@@ -91,7 +111,17 @@ import {
 
         <div class="space-y-3">
           <div class="p-4 rounded-lg border border-border bg-muted/30">
-            <span class="font-medium">Core Dependencies</span>
+            <span class="font-medium">npm package</span>
+            <p class="text-xs text-muted-foreground mt-1">
+              All dependencies included automatically.
+            </p>
+            <code class="text-sm font-mono text-muted-foreground block mt-2">
+              npm install &#64;voltui/components
+            </code>
+          </div>
+
+          <div class="p-4 rounded-lg border border-border bg-muted/30">
+            <span class="font-medium">CLI / Copy & Paste — manual deps</span>
             <code class="text-sm font-mono text-muted-foreground block mt-2">
               npm install ng-primitives class-variance-authority
             </code>

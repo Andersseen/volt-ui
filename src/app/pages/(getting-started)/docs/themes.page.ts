@@ -153,9 +153,9 @@ import {
         </p>
 
         <div class="p-4 rounded-lg border border-border bg-muted/30 font-mono text-sm">
-          import {{ '{' }} provideVoltTheme {{ '}' }} from 'volt'; export const appConfig:
-          ApplicationConfig = {{ '{' }} providers: [ provideVoltTheme({{ '{' }} color: 'volt',
-          style: 'soft', dark: false {{ '}' }}) ] {{ '}' }};
+          import {{ '{' }} provideVoltTheme {{ '}' }} from '&#64;voltui/components'; export const
+          appConfig: ApplicationConfig = {{ '{' }} providers: [ provideVoltTheme({{ '{' }} color:
+          'volt', style: 'soft', dark: false {{ '}' }}) ] {{ '}' }};
         </div>
       </div>
 
@@ -219,7 +219,7 @@ import {
           <div>provideVoltTheme({{ '{' }} color: 'volt', dark: true {{ '}' }})</div>
           <br />
           <div class="text-muted-foreground">// Or toggle dynamically</div>
-          <div>import {{ '{' }} applyVoltTheme {{ '}' }} from 'volt';</div>
+          <div>import {{ '{' }} applyVoltTheme {{ '}' }} from '&#64;voltui/components';</div>
           <br />
           <div>applyVoltTheme({{ '{' }} dark: true {{ '}' }});</div>
         </div>

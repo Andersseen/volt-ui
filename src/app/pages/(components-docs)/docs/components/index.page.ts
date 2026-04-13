@@ -56,7 +56,9 @@ import {
       <div class="p-4 rounded-lg border border-border bg-muted/30">
         <p class="text-sm">
           <span class="font-medium">Quick install:</span>
-          <code class="px-1.5 py-0.5 bg-muted rounded mx-1">npx volt add [component]</code>
+          <code class="px-1.5 py-0.5 bg-muted rounded mx-1"
+            >npx &#64;voltui/cli add [component]</code
+          >
           or browse below to copy source code.
           <a routerLink="/docs/introduction" class="text-primary hover:underline ml-1"
             >Learn more →</a
