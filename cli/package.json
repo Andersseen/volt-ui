@@ -1,6 +1,6 @@
 {
-  "name": "@volt/ui-cli",
-  "version": "0.0.1",
+  "name": "@voltui/cli",
+  "version": "0.1.0",
   "description": "CLI for adding Volt UI components to your project",
   "bin": {
     "volt": "./bin/volt"
