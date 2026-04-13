@@ -346,14 +346,16 @@ const tools = [
 // ---------------------------------------------------------------------------
 
 const cliActions: Record<string, (args: Record<string, unknown>) => unknown> = {
-  init: args => ({ command: `npx volt init${args['targetDir'] ? ` ${args['targetDir']}` : ''}` }),
+  init: args => ({
+    command: `npx @voltui/cli init${args['targetDir'] ? ` ${args['targetDir']}` : ''}`,
+  }),
   add: args => {
     if (!args['component']) return { error: 'component is required for the "add" action' };
     return {
-      command: `npx volt add ${args['component']}${args['targetDir'] ? ` ${args['targetDir']}` : ''}`,
+      command: `npx @voltui/cli add ${args['component']}${args['targetDir'] ? ` ${args['targetDir']}` : ''}`,
     };
   },
-  list: () => ({ command: 'npx volt list' }),
+  list: () => ({ command: 'npx @voltui/cli list' }),
 };
 
 const toolHandlers: Record<string, (args: Record<string, unknown>) => unknown> = {
@@ -380,9 +382,13 @@ const toolHandlers: Record<string, (args: Record<string, unknown>) => unknown> =
       return {
         error: `Component "${key}" not found. Use list_components to see available components.`,
       };
+    const className = `Ui${comp.name.replace(/\s/g, '')}`;
     return {
       component: key,
-      import: `import { Ui${comp.name.replace(/\s/g, '')} } from './ui/${key}';`,
+      imports: {
+        npm: `import { ${className} } from '@voltui/components';`,
+        cli: `import { ${className} } from './ui/${key}';`,
+      },
       examples: comp.examples ?? [],
     };
   },
@@ -392,6 +398,7 @@ const toolHandlers: Record<string, (args: Record<string, unknown>) => unknown> =
     styles: ['sharp', 'soft', 'brutal', 'ghost', 'retro'],
     provider: 'provideVoltTheme',
     dynamic: 'applyVoltTheme',
+    import: `import { provideVoltTheme, applyVoltTheme } from '@voltui/components';`,
     usage: {
       provider: `provideVoltTheme({ color: 'ember', style: 'soft', dark: false })`,
       dynamic: `applyVoltTheme({ color: 'dusk', style: 'brutal', dark: true })`,
@@ -405,6 +412,16 @@ const toolHandlers: Record<string, (args: Record<string, unknown>) => unknown> =
     primitives: 'ng-primitives',
     styling: 'Tailwind CSS v4',
     docs: 'https://volt-ui.pages.dev',
+    packages: {
+      components: '@voltui/components',
+      cli: '@voltui/cli',
+      mcp: 'volt-ui-mcp',
+    },
+    install: {
+      npm: 'npm install @voltui/components',
+      cli: 'npx @voltui/cli init',
+      mcp: 'npx volt-ui-mcp',
+    },
     architecture: {
       components: 'standalone',
       changeDetection: 'zoneless-signals',
