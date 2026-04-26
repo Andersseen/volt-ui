@@ -234,6 +234,182 @@ const components: Record<string, ComponentMeta> = {
       `<ui-form-field>\n  <ui-form-field-label>Email</ui-form-field-label>\n  <ui-input type="email" />\n  <ui-form-field-hint>We'll never share your email</ui-form-field-hint>\n  <ui-form-field-error>Invalid email</ui-form-field-error>\n</ui-form-field>`,
     ],
   },
+  dialog: {
+    name: 'Dialog',
+    description: 'Modal dialog with overlay, title, description and content',
+    dependencies: ['ng-primitives/dialog'],
+    subComponents: ['dialog-overlay', 'dialog-content', 'dialog-title', 'dialog-description'],
+    inputs: [
+      { name: 'modal', type: 'boolean', default: true },
+      { name: 'open', type: 'boolean', default: false },
+    ],
+    examples: [
+      `<ui-dialog>\n  <ui-dialog-content>\n    <ui-dialog-title>Confirm</ui-dialog-title>\n    <ui-dialog-description>Are you sure?</ui-dialog-description>\n    <ui-button>Confirm</ui-button>\n  </ui-dialog-content>\n</ui-dialog>`,
+    ],
+  },
+  popover: {
+    name: 'Popover',
+    description: 'Floating popover anchored to a trigger element',
+    dependencies: ['ng-primitives/popover'],
+    subComponents: ['popover-trigger', 'popover-content'],
+    inputs: [
+      { name: 'side', type: 'string', default: 'bottom' },
+      { name: 'align', type: 'string', default: 'center' },
+    ],
+    examples: [
+      `<ui-popover>\n  <ui-popover-trigger><ui-button>Open</ui-button></ui-popover-trigger>\n  <ui-popover-content>Popover content</ui-popover-content>\n</ui-popover>`,
+    ],
+  },
+  'dropdown-menu': {
+    name: 'Dropdown Menu',
+    description: 'Dropdown menu with items, labels and separators',
+    dependencies: ['ng-primitives/menu'],
+    subComponents: [
+      'dropdown-menu-trigger',
+      'dropdown-menu-item',
+      'dropdown-menu-label',
+      'dropdown-menu-separator',
+    ],
+    inputs: [{ name: 'disabled', type: 'boolean', default: false }],
+    examples: [
+      `<ui-dropdown-menu>\n  <ui-dropdown-menu-trigger><ui-button>Menu</ui-button></ui-dropdown-menu-trigger>\n  <ui-dropdown-menu-item>Profile</ui-dropdown-menu-item>\n  <ui-dropdown-menu-separator />\n  <ui-dropdown-menu-item>Logout</ui-dropdown-menu-item>\n</ui-dropdown-menu>`,
+    ],
+  },
+  slider: {
+    name: 'Slider',
+    description: 'Range slider input with track and thumb',
+    dependencies: ['ng-primitives/slider'],
+    subComponents: ['slider-track', 'slider-range', 'slider-thumb'],
+    inputs: [
+      { name: 'value', type: 'number', default: 0 },
+      { name: 'min', type: 'number', default: 0 },
+      { name: 'max', type: 'number', default: 100 },
+      { name: 'step', type: 'number', default: 1 },
+      { name: 'disabled', type: 'boolean', default: false },
+    ],
+    examples: ['<ui-slider [min]="0" [max]="100" [(value)]="volume" />'],
+  },
+  progress: {
+    name: 'Progress',
+    description: 'Progress bar with track and indicator',
+    dependencies: ['ng-primitives/progress'],
+    subComponents: ['progress-track', 'progress-indicator'],
+    inputs: [
+      { name: 'value', type: 'number', default: 0 },
+      { name: 'max', type: 'number', default: 100 },
+    ],
+    examples: ['<ui-progress [value]="60" [max]="100" />'],
+  },
+  breadcrumbs: {
+    name: 'Breadcrumbs',
+    description: 'Navigation breadcrumbs with items, links, ellipsis and separators',
+    dependencies: ['ng-primitives/breadcrumbs'],
+    subComponents: [
+      'breadcrumbs-list',
+      'breadcrumbs-item',
+      'breadcrumbs-link',
+      'breadcrumbs-page',
+      'breadcrumbs-separator',
+      'breadcrumbs-ellipsis',
+    ],
+    examples: [
+      `<ui-breadcrumbs>\n  <ui-breadcrumbs-item><ui-breadcrumbs-link href="/">Home</ui-breadcrumbs-link></ui-breadcrumbs-item>\n  <ui-breadcrumbs-separator />\n  <ui-breadcrumbs-item><ui-breadcrumbs-page>Current</ui-breadcrumbs-page></ui-breadcrumbs-item>\n</ui-breadcrumbs>`,
+    ],
+  },
+  'nav-sidebar': {
+    name: 'Nav Sidebar',
+    description: 'Navigation sidebar component for menus',
+    dependencies: ['ng-primitives/navigation-menu'],
+    inputs: [{ name: 'collapsed', type: 'boolean', default: false }],
+    examples: ['<ui-nav-sidebar>…</ui-nav-sidebar>'],
+  },
+  sidebar: {
+    name: 'Sidebar Layout',
+    description: 'Application sidebar layout with header, content, groups, items and footer',
+    dependencies: [],
+    subComponents: [
+      'sidebar-header',
+      'sidebar-content',
+      'sidebar-group',
+      'sidebar-item',
+      'sidebar-footer',
+    ],
+    inputs: [{ name: 'collapsed', type: 'boolean', default: false }],
+    examples: [
+      `<ui-sidebar>\n  <ui-sidebar-header>Logo</ui-sidebar-header>\n  <ui-sidebar-content>\n    <ui-sidebar-group label="Main">\n      <ui-sidebar-item>Dashboard</ui-sidebar-item>\n    </ui-sidebar-group>\n  </ui-sidebar-content>\n  <ui-sidebar-footer>User</ui-sidebar-footer>\n</ui-sidebar>`,
+    ],
+  },
+  'toggle-group': {
+    name: 'Toggle Group',
+    description: 'Group of toggle buttons with single or multiple selection',
+    dependencies: ['ng-primitives/toggle-group'],
+    subComponents: ['toggle-group-item'],
+    inputs: [
+      { name: 'value', type: 'string[]', default: [] },
+      { name: 'type', type: 'string', default: 'single', options: ['single', 'multiple'] },
+      {
+        name: 'orientation',
+        type: 'string',
+        default: 'horizontal',
+        options: ['horizontal', 'vertical'],
+      },
+      { name: 'disabled', type: 'boolean', default: false },
+    ],
+    examples: [
+      `<ui-toggle-group type="single" [(value)]="selected">\n  <ui-toggle-group-item value="bold">Bold</ui-toggle-group-item>\n  <ui-toggle-group-item value="italic">Italic</ui-toggle-group-item>\n</ui-toggle-group>`,
+    ],
+  },
+  meter: {
+    name: 'Meter',
+    description: 'Meter component for displaying a value within a known range',
+    dependencies: ['ng-primitives/meter'],
+    subComponents: ['meter-track', 'meter-indicator'],
+    inputs: [
+      { name: 'value', type: 'number', default: 0 },
+      { name: 'min', type: 'number', default: 0 },
+      { name: 'max', type: 'number', default: 100 },
+    ],
+    examples: [
+      '<ui-meter [value]="75" [max]="100"><ui-meter-track><ui-meter-indicator /></ui-meter-track></ui-meter>',
+    ],
+  },
+  pagination: {
+    name: 'Pagination',
+    description: 'Pagination controls with first, previous, next, last and page buttons',
+    dependencies: ['ng-primitives/pagination'],
+    subComponents: [
+      'pagination-first',
+      'pagination-previous',
+      'pagination-next',
+      'pagination-last',
+      'pagination-button',
+    ],
+    inputs: [
+      { name: 'page', type: 'number', default: 1 },
+      { name: 'pageCount', type: 'number', default: 0 },
+      { name: 'disabled', type: 'boolean', default: false },
+    ],
+    examples: [
+      `<ui-pagination [pageCount]="10" [(page)]="currentPage">\n  <ui-pagination-first />\n  <ui-pagination-previous />\n  <ui-pagination-button *ngFor="let p of pages" [page]="p" />\n  <ui-pagination-next />\n  <ui-pagination-last />\n</ui-pagination>`,
+    ],
+  },
+  toast: {
+    name: 'Toast',
+    description: 'Toast notification container with title, description and close button',
+    dependencies: ['ng-primitives/toast'],
+    subComponents: ['toast-title', 'toast-description', 'toast-close'],
+    inputs: [
+      {
+        name: 'variant',
+        type: 'string',
+        default: 'default',
+        options: ['default', 'success', 'error', 'warning', 'info'],
+      },
+    ],
+    examples: [
+      `<ui-toast>\n  <ui-toast-title>Success</ui-toast-title>\n  <ui-toast-description>Your changes have been saved.</ui-toast-description>\n</ui-toast>`,
+    ],
+  },
 };
 
 // ---------------------------------------------------------------------------
@@ -459,15 +635,23 @@ function callTool(name: string, args: Record<string, unknown>): unknown {
 type RpcHandler = (params: Record<string, unknown>, id: JsonRpcRequest['id']) => unknown;
 
 const rpcHandlers: Record<string, RpcHandler> = {
-  initialize: (_params, id) => ({
-    jsonrpc: '2.0',
-    id,
-    result: {
-      protocolVersion: '2024-11-05',
-      capabilities: { tools: {} },
-      serverInfo: { name: 'volt-ui', version: '1.0.0' },
-    },
-  }),
+  initialize: (params, id) => {
+    // Store client capabilities for potential future adaptation
+    clientCapabilities = (params['capabilities'] as Record<string, unknown>) ?? {};
+
+    return {
+      jsonrpc: '2.0',
+      id,
+      result: {
+        protocolVersion: '2024-11-05',
+        capabilities: {
+          tools: {},
+          logging: {},
+        },
+        serverInfo: { name: 'volt-ui', version: '1.0.0' },
+      },
+    };
+  },
 
   ping: (_params, id) => ({ jsonrpc: '2.0', id, result: {} }),
 
@@ -487,6 +671,18 @@ const rpcHandlers: Record<string, RpcHandler> = {
 
 function handleRpc(request: JsonRpcRequest): unknown {
   const { id, method, params = {} } = request;
+
+  // Silently ignore notifications (no id)
+  if (id === null || id === undefined) {
+    if (method === 'notifications/initialized') {
+      return undefined;
+    }
+    if (method === 'initialize') {
+      // Edge case: some clients send initialize without id
+      return rpcHandlers['initialize']?.(params, null);
+    }
+    return undefined;
+  }
 
   try {
     const handler = rpcHandlers[method];

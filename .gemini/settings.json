@@ -7,6 +7,10 @@
     "ng-primitives": {
       "command": "npx",
       "args": ["-y", "@ng-primitives/mcp"]
+    },
+    "volt-ui": {
+      "command": "npx",
+      "args": ["-y", "volt-ui-mcp"]
     }
   }
 }

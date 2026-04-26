@@ -27,6 +27,10 @@ export * from './lib/components/dropdown-menu';
 export * from './lib/components/progress';
 export * from './lib/components/slider';
 export * from './lib/components/breadcrumbs';
+export * from './lib/components/toggle-group';
+export * from './lib/components/meter';
+export * from './lib/components/pagination';
+export * from './lib/components/toast';
 
 // Layouts
 export * from './lib/layouts/sidebar';
