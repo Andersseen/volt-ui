@@ -31,6 +31,9 @@ export * from './lib/components/toggle-group';
 export * from './lib/components/meter';
 export * from './lib/components/pagination';
 export * from './lib/components/toast';
+export * from './lib/components/input-otp';
+export * from './lib/components/file-upload';
+export * from './lib/components/combobox';
 
 // Layouts
 export * from './lib/layouts/sidebar';

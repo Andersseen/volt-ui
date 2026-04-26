@@ -410,6 +410,60 @@ const components: Record<string, ComponentMeta> = {
       `<ui-toast>\n  <ui-toast-title>Success</ui-toast-title>\n  <ui-toast-description>Your changes have been saved.</ui-toast-description>\n</ui-toast>`,
     ],
   },
+  'input-otp': {
+    name: 'Input OTP',
+    description: 'One-time code / PIN input with slots',
+    dependencies: ['ng-primitives/input-otp'],
+    subComponents: ['input-otp-slot'],
+    inputs: [
+      { name: 'value', type: 'string', default: '' },
+      { name: 'length', type: 'number', default: 6 },
+      { name: 'pattern', type: 'string', default: '[0-9]' },
+      { name: 'inputMode', type: 'string', default: 'numeric' },
+      { name: 'disabled', type: 'boolean', default: false },
+      { name: 'placeholder', type: 'string', default: '○' },
+    ],
+    examples: ['<ui-input-otp [(value)]="otp" [length]="6" />'],
+  },
+  'file-upload': {
+    name: 'File Upload',
+    description: 'File upload trigger and dropzone',
+    dependencies: ['ng-primitives/file-upload'],
+    subComponents: ['file-dropzone'],
+    inputs: [
+      { name: 'fileTypes', type: 'string | string[]' },
+      { name: 'multiple', type: 'boolean', default: false },
+      { name: 'directory', type: 'boolean', default: false },
+      { name: 'dragDrop', type: 'boolean', default: false },
+      { name: 'disabled', type: 'boolean', default: false },
+    ],
+    examples: [
+      '<button ui-file-upload (selected)="onFiles($event)">Upload</button>',
+      '<ui-file-dropzone (selected)="onDrop($event)">Drop files here</ui-file-dropzone>',
+    ],
+  },
+  combobox: {
+    name: 'Combobox',
+    description: 'Autocomplete / searchable select with dropdown and options',
+    dependencies: ['ng-primitives/combobox'],
+    subComponents: ['combobox-input', 'combobox-button', 'combobox-dropdown', 'combobox-option'],
+    inputs: [
+      { name: 'value', type: 'any' },
+      { name: 'items', type: 'any[]', default: [] },
+      { name: 'multiple', type: 'boolean', default: false },
+      { name: 'disabled', type: 'boolean', default: false },
+      { name: 'placeholder', type: 'string', default: 'Select...' },
+      {
+        name: 'dropdownPlacement',
+        type: 'string',
+        default: 'bottom',
+        options: ['top', 'bottom', 'left', 'right'],
+      },
+    ],
+    examples: [
+      '<ui-combobox [(value)]="selected" [items]="items">\n  <ng-template let-item>{{ item.label }}</ng-template>\n</ui-combobox>',
+    ],
+  },
 };
 
 // ---------------------------------------------------------------------------

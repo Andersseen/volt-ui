@@ -35,6 +35,8 @@ Volt UI is inspired by shadcn/ui, built on ng-primitives for accessible Angular 
 ## Components
 button · badge · card · input · textarea · checkbox · radio · switch · toggle ·
 select · tabs · accordion · avatar · separator · tooltip · navigation-menu · form-field ·
+dialog · popover · dropdown-menu · slider · progress · breadcrumbs · nav-sidebar · sidebar ·
+toggle-group · meter · pagination · toast · input-otp · file-upload · combobox ·
 dialog · popover · dropdown-menu · slider · progress · breadcrumbs · nav-sidebar · sidebar
 
 ## Component import
