@@ -112,7 +112,10 @@ Volt UI is inspired by shadcn/ui, built on ng-primitives for accessible Angular 
 
 ## Components
 button · badge · card · input · textarea · checkbox · radio · switch · toggle ·
-select · tabs · accordion · avatar · separator · tooltip · navigation-menu · form-field
+select · tabs · accordion · avatar · separator · tooltip · navigation-menu · form-field ·
+dialog · popover · dropdown-menu · slider · progress · breadcrumbs · nav-sidebar · sidebar ·
+toggle-group · meter · pagination · toast · input-otp · file-upload · combobox ·
+dialog · popover · dropdown-menu · slider · progress · breadcrumbs · nav-sidebar · sidebar
 
 ## Component import
 \`\`\`ts
@@ -187,6 +190,14 @@ You are working with **Volt UI**, an Angular v21 component library (shadcn/ui-in
 | Tooltip | \`./ui/tooltip\` | \`ui-tooltip\` |
 | Navigation Menu | \`./ui/navigation-menu\` | \`ui-navigation-menu\` + sub-components |
 | Form Field | \`./ui/form-field\` | \`ui-form-field\`, \`ui-form-field-label\`, \`ui-form-field-hint\`, \`ui-form-field-error\` |
+| Dialog | \`./ui/dialog\` | \`ui-dialog\` + sub-components |
+| Popover | \`./ui/popover\` | \`ui-popover\` + sub-components |
+| Dropdown Menu | \`./ui/dropdown-menu\` | \`ui-dropdown-menu\` + sub-components |
+| Slider | \`./ui/slider\` | \`ui-slider\` + sub-components |
+| Progress | \`./ui/progress\` | \`ui-progress\` + sub-components |
+| Breadcrumbs | \`./ui/breadcrumbs\` | \`ui-breadcrumbs\` + sub-components |
+| Nav Sidebar | \`./ui/nav-sidebar\` | \`ui-nav-sidebar\` |
+| Sidebar Layout | \`./ui/sidebar\` | \`ui-sidebar\` + sub-components |
 
 ## Button variants
 \`\`\`html

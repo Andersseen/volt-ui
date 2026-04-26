@@ -34,7 +34,10 @@ Volt UI is inspired by shadcn/ui, built on ng-primitives for accessible Angular 
 
 ## Components
 button · badge · card · input · textarea · checkbox · radio · switch · toggle ·
-select · tabs · accordion · avatar · separator · tooltip · navigation-menu · form-field
+select · tabs · accordion · avatar · separator · tooltip · navigation-menu · form-field ·
+dialog · popover · dropdown-menu · slider · progress · breadcrumbs · nav-sidebar · sidebar ·
+toggle-group · meter · pagination · toast · input-otp · file-upload · combobox ·
+dialog · popover · dropdown-menu · slider · progress · breadcrumbs · nav-sidebar · sidebar
 
 ## Component import
 \`\`\`ts
@@ -123,6 +126,14 @@ You are working with **Volt UI**, an Angular v21 component library (shadcn/ui-in
 | Tooltip | \`./ui/tooltip\` | \`ui-tooltip\` |
 | Navigation Menu | \`./ui/navigation-menu\` | \`ui-navigation-menu\` + sub-components |
 | Form Field | \`./ui/form-field\` | \`ui-form-field\` + sub-components |
+| Dialog | \`./ui/dialog\` | \`ui-dialog\` + sub-components |
+| Popover | \`./ui/popover\` | \`ui-popover\` + sub-components |
+| Dropdown Menu | \`./ui/dropdown-menu\` | \`ui-dropdown-menu\` + sub-components |
+| Slider | \`./ui/slider\` | \`ui-slider\` + sub-components |
+| Progress | \`./ui/progress\` | \`ui-progress\` + sub-components |
+| Breadcrumbs | \`./ui/breadcrumbs\` | \`ui-breadcrumbs\` + sub-components |
+| Nav Sidebar | \`./ui/nav-sidebar\` | \`ui-nav-sidebar\` |
+| Sidebar Layout | \`./ui/sidebar\` | \`ui-sidebar\` + sub-components |
 
 ## Button variants
 \`\`\`html
@@ -298,6 +309,49 @@ const VSCODE_SNIPPETS = {
     prefix: ['volt-badge', 'ui-badge'],
     description: 'Volt UI Badge',
     body: ['<ui-badge variant="${1|default,secondary,outline,destructive|}">${2:Label}</ui-badge>'],
+  },
+  'Volt UI Dialog': {
+    prefix: ['volt-dialog', 'ui-dialog'],
+    description: 'Volt UI Dialog',
+    body: [
+      '<ui-dialog>',
+      '  <ui-dialog-content>',
+      '    <ui-dialog-title>${1:Title}</ui-dialog-title>',
+      '    <ui-dialog-description>${2:Description}</ui-dialog-description>',
+      '    ${3:<!-- Content -->}',
+      '  </ui-dialog-content>',
+      '</ui-dialog>',
+    ],
+  },
+  'Volt UI Popover': {
+    prefix: ['volt-popover', 'ui-popover'],
+    description: 'Volt UI Popover',
+    body: [
+      '<ui-popover>',
+      '  <ui-popover-trigger>${1:<ui-button>Open</ui-button>}</ui-popover-trigger>',
+      '  <ui-popover-content>${2:Content}</ui-popover-content>',
+      '</ui-popover>',
+    ],
+  },
+  'Volt UI Dropdown Menu': {
+    prefix: ['volt-dropdown-menu', 'ui-dropdown-menu'],
+    description: 'Volt UI Dropdown Menu',
+    body: [
+      '<ui-dropdown-menu>',
+      '  <ui-dropdown-menu-trigger>${1:<ui-button>Menu</ui-button>}</ui-dropdown-menu-trigger>',
+      '  <ui-dropdown-menu-item>${2:Item}</ui-dropdown-menu-item>',
+      '</ui-dropdown-menu>',
+    ],
+  },
+  'Volt UI Slider': {
+    prefix: ['volt-slider', 'ui-slider'],
+    description: 'Volt UI Slider',
+    body: ['<ui-slider [min]="${1:0}" [max]="${2:100}" [(value)]="${3:value}" />'],
+  },
+  'Volt UI Progress': {
+    prefix: ['volt-progress', 'ui-progress'],
+    description: 'Volt UI Progress',
+    body: ['<ui-progress [value]="${1:60}" [max]="${2:100}" />'],
   },
   'Volt Theme Provider': {
     prefix: ['volt-theme', 'provide-volt-theme'],
