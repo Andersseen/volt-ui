@@ -50,6 +50,7 @@ export default defineConfig({
     }),
   ],
   resolve: {
+    dedupe: ['@analogjs/router'],
     alias: {
       volt: resolve(__dirname, 'projects/volt/src/public-api.ts'),
     },
