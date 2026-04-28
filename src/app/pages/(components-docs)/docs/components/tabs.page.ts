@@ -16,6 +16,7 @@ import {
 } from 'volt';
 import { CodePanel } from '../../../../components/code-panel';
 import { TABS_SNIPPET } from '../../../../lib/snippets';
+import { TABS_USAGE } from '../../../../lib/snippets/usage';
 
 @Component({
   selector: 'app-tabs-demo',
@@ -41,4 +42,5 @@ import { TABS_SNIPPET } from '../../../../lib/snippets';
 })
 export default class TabsDemo {
   readonly tabsCode = TABS_SNIPPET;
+  readonly tabsUsage = TABS_USAGE;
 }

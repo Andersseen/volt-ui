@@ -9,7 +9,10 @@ import {
   OnInit,
   PLATFORM_ID,
   signal,
+  afterNextRender,
+  Injector,
 } from '@angular/core';
+import { VoltTabs, VoltTabsContent, VoltTabsList, VoltTabsTrigger } from 'volt';
 import { IconCheck, IconCopy } from '../icons';
 import { EditorLoaderService } from '../services/editor-loader.service';
 import { CopyButton } from './copy-button';
@@ -18,13 +21,24 @@ import { CopyButton } from './copy-button';
   selector: 'app-code-panel',
   changeDetection: ChangeDetectionStrategy.OnPush,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [CommonModule, CopyButton, IconCheck, IconCopy],
+  imports: [
+    CommonModule,
+    CopyButton,
+    IconCheck,
+    IconCopy,
+    VoltTabs,
+    VoltTabsList,
+    VoltTabsTrigger,
+    VoltTabsContent,
+  ],
   template: `
     <div class="space-y-3">
       <!-- Header with title and copy button -->
       <div class="flex items-center justify-between">
         <h3 class="font-semibold text-lg">{{ title() }}</h3>
-        <app-copy-button [code]="code()" />
+        @if (!tabbed() || activeTab() === 'code') {
+          <app-copy-button [code]="code()" />
+        }
       </div>
 
       <!-- CLI Command -->
@@ -48,26 +62,68 @@ import { CopyButton } from './copy-button';
         </div>
       }
 
-      <!-- Code Block with fixed height and scroll -->
-      <div class="relative rounded-lg border border-border bg-muted/30 overflow-hidden">
-        <div class="absolute top-0 right-0 p-2 z-10">
-          <span class="text-xs text-muted-foreground px-2 py-1 bg-muted rounded">TypeScript</span>
-        </div>
-        @if (editorLoaded()) {
-          <vertex-editor
-            [attr.value]="code()"
-            [attr.language]="'typescript'"
-            [attr.theme]="editorTheme()"
-            lineNumbers="true"
-            readonly="true"
-            style="display: block; height: 400px; overflow: auto;"
-          ></vertex-editor>
-        } @else {
-          <div style="display: block; height: 400px;" class="flex items-center justify-center">
-            <div class="animate-pulse text-muted-foreground">Loading editor...</div>
+      @if (tabbed()) {
+        <volt-tabs [value]="activeTab()" (valueChange)="onTabChange($event)">
+          <volt-tabs-list class="grid w-full grid-cols-2">
+            <volt-tabs-trigger value="preview">Preview</volt-tabs-trigger>
+            <volt-tabs-trigger value="code">Code</volt-tabs-trigger>
+          </volt-tabs-list>
+
+          <volt-tabs-content value="preview">
+            <div class="rounded-lg border border-border bg-muted/20 p-6">
+              <ng-content />
+            </div>
+          </volt-tabs-content>
+
+          <volt-tabs-content value="code">
+            <div class="relative rounded-lg border border-border bg-muted/30 overflow-hidden">
+              <div class="absolute top-0 right-0 p-2 z-10">
+                <span class="text-xs text-muted-foreground px-2 py-1 bg-muted rounded"
+                  >TypeScript</span
+                >
+              </div>
+              @if (editorLoaded()) {
+                <vertex-editor
+                  [attr.value]="code()"
+                  [attr.language]="'typescript'"
+                  [attr.theme]="editorTheme()"
+                  readonly="true"
+                  lineNumbers="true"
+                  style="display: block; height: 400px; overflow: auto;"
+                ></vertex-editor>
+              } @else {
+                <div
+                  style="display: block; height: 400px;"
+                  class="flex items-center justify-center"
+                >
+                  <div class="animate-pulse text-muted-foreground">Loading editor...</div>
+                </div>
+              }
+            </div>
+          </volt-tabs-content>
+        </volt-tabs>
+      } @else {
+        <!-- Code Block with fixed height and scroll -->
+        <div class="relative rounded-lg border border-border bg-muted/30 overflow-hidden">
+          <div class="absolute top-0 right-0 p-2 z-10">
+            <span class="text-xs text-muted-foreground px-2 py-1 bg-muted rounded">TypeScript</span>
           </div>
-        }
-      </div>
+          @if (editorLoaded()) {
+            <vertex-editor
+              [attr.value]="code()"
+              [attr.language]="'typescript'"
+              [attr.theme]="editorTheme()"
+              readonly="true"
+              lineNumbers="true"
+              style="display: block; height: 400px; overflow: auto;"
+            ></vertex-editor>
+          } @else {
+            <div style="display: block; height: 400px;" class="flex items-center justify-center">
+              <div class="animate-pulse text-muted-foreground">Loading editor...</div>
+            </div>
+          }
+        </div>
+      }
 
       <!-- Description slot -->
       @if (description()) {
@@ -81,14 +137,18 @@ export class CodePanel implements OnInit {
   readonly code = input.required<string>();
   readonly cliCommand = input<string>('');
   readonly description = input<string>('');
+  readonly tabbed = input<boolean>(false);
 
   cliCopied = signal(false);
   editorTheme = signal<'light' | 'dark'>('light');
   editorLoaded = signal(false);
+  editorReady = signal(false);
+  activeTab = signal<'preview' | 'code'>('preview');
 
   private destroyRef = inject(DestroyRef);
   private editorLoader = inject(EditorLoaderService);
   private platformId = inject(PLATFORM_ID);
+  private injector = inject(Injector);
 
   async ngOnInit() {
     if (!isPlatformBrowser(this.platformId)) return;
@@ -96,6 +156,11 @@ export class CodePanel implements OnInit {
     // Load editor script lazily
     await this.editorLoader.loadEditor();
     this.editorLoaded.set(true);
+
+    // Set readonly after the editor DOM element has connected and initialized its CodeMirror view.
+    // vertex-editor's editable effect only fires when editorView is non-null, which is after
+    // connectedCallback — afterNextRender guarantees we're past that point.
+    afterNextRender(() => this.editorReady.set(true), { injector: this.injector });
 
     this.editorTheme.set(document.documentElement.classList.contains('dark') ? 'dark' : 'light');
 
@@ -116,6 +181,12 @@ export class CodePanel implements OnInit {
       setTimeout(() => this.cliCopied.set(false), 2000);
     } catch (err) {
       console.error('Failed to copy:', err);
+    }
+  }
+
+  onTabChange(value: string | undefined) {
+    if (value === 'preview' || value === 'code') {
+      this.activeTab.set(value);
     }
   }
 }

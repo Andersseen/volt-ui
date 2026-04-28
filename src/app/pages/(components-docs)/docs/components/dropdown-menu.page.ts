@@ -9,6 +9,7 @@ import {
 import { VoltButton } from 'volt';
 import { CodePanel } from '../../../../components/code-panel';
 import { DROPDOWN_MENU_SNIPPET } from '../../../../lib/snippets';
+import { DROPDOWN_MENU_USAGE } from '../../../../lib/snippets/usage';
 
 @Component({
   selector: 'app-dropdown-menu-demo',
@@ -27,4 +28,5 @@ import { DROPDOWN_MENU_SNIPPET } from '../../../../lib/snippets';
 })
 export default class DropdownMenuDemo {
   readonly dropdownMenuCode = DROPDOWN_MENU_SNIPPET;
+  readonly dropdownMenuUsage = DROPDOWN_MENU_USAGE;
 }

@@ -8,6 +8,7 @@ import {
 } from 'volt';
 import { CodePanel } from '../../../../components/code-panel';
 import { SELECT_SNIPPET } from '../../../../lib/snippets';
+import { SELECT_USAGE } from '../../../../lib/snippets/usage';
 
 @Component({
   selector: 'app-select-demo',
@@ -26,4 +27,5 @@ import { SELECT_SNIPPET } from '../../../../lib/snippets';
 export default class SelectDemo {
   selectedFruit = '';
   readonly selectCode = SELECT_SNIPPET;
+  readonly selectUsage = SELECT_USAGE;
 }

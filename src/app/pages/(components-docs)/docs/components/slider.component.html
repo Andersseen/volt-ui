@@ -8,8 +8,8 @@
 
   <div class="w-full h-px bg-border"></div>
 
-  <div class="space-y-4">
-    <h2 class="text-xl font-semibold tracking-tight text-foreground">Example</h2>
+  <!-- Usage Example -->
+  <app-code-panel title="Usage" [code]="sliderUsage" [tabbed]="true">
     <div
       class="p-8 border border-border rounded-lg bg-card/30 flex items-center justify-center min-h-[300px]"
     >
@@ -24,7 +24,7 @@
         <p class="text-sm text-muted-foreground text-center">Value: {{ value() }}</p>
       </div>
     </div>
-  </div>
+  </app-code-panel>
 
   <app-code-panel
     title="Component Source"

@@ -6,35 +6,36 @@
     </p>
   </div>
 
-  <div class="space-y-4">
-    <h2 class="text-xl font-semibold tracking-tight">Preview</h2>
-    <div
-      class="p-12 flex justify-center items-center rounded-xl border bg-card/30 backdrop-blur-sm shadow-sm ring-1 ring-border/50"
-    >
-      <div class="w-full max-w-xs">
-        <volt-select [(value)]="selectedFruit" placeholder="Select a fruit">
-          <volt-select-content>
-            <volt-select-label>Fruits</volt-select-label>
-            <volt-select-item value="apple">Apple</volt-select-item>
-            <volt-select-item value="banana">Banana</volt-select-item>
-            <volt-select-item value="blueberry">Blueberry</volt-select-item>
-            <volt-select-item value="grapes">Grapes</volt-select-item>
-            <volt-select-item value="pineapple">Pineapple</volt-select-item>
+  <app-code-panel title="Usage" [code]="selectUsage" [tabbed]="true">
+    <div class="space-y-4">
+      <div
+        class="p-12 flex justify-center items-center rounded-xl border bg-card/30 backdrop-blur-sm shadow-sm ring-1 ring-border/50"
+      >
+        <div class="w-full max-w-xs">
+          <volt-select [(value)]="selectedFruit" placeholder="Select a fruit">
+            <volt-select-content>
+              <volt-select-label>Fruits</volt-select-label>
+              <volt-select-item value="apple">Apple</volt-select-item>
+              <volt-select-item value="banana">Banana</volt-select-item>
+              <volt-select-item value="blueberry">Blueberry</volt-select-item>
+              <volt-select-item value="grapes">Grapes</volt-select-item>
+              <volt-select-item value="pineapple">Pineapple</volt-select-item>
 
-            <volt-select-separator></volt-select-separator>
+              <volt-select-separator></volt-select-separator>
 
-            <volt-select-label>Vegetables</volt-select-label>
-            <volt-select-item value="carrot">Carrot</volt-select-item>
-            <volt-select-item value="broccoli">Broccoli</volt-select-item>
-            <volt-select-item value="spinach" disabled="true">Spinach</volt-select-item>
-          </volt-select-content>
-        </volt-select>
+              <volt-select-label>Vegetables</volt-select-label>
+              <volt-select-item value="carrot">Carrot</volt-select-item>
+              <volt-select-item value="broccoli">Broccoli</volt-select-item>
+              <volt-select-item value="spinach" disabled="true">Spinach</volt-select-item>
+            </volt-select-content>
+          </volt-select>
+        </div>
       </div>
+      <p class="text-sm text-muted-foreground text-center">
+        Selected value: <span class="font-medium text-foreground">{{ selectedFruit }}</span>
+      </p>
     </div>
-    <p class="text-sm text-muted-foreground text-center">
-      Selected value: <span class="font-medium text-foreground">{{ selectedFruit }}</span>
-    </p>
-  </div>
+  </app-code-panel>
 
   <!-- Source Code Section -->
   <app-code-panel

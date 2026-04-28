@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { VoltRadioGroup, VoltRadioItem } from 'volt';
 import { CodePanel } from '../../../../components/code-panel';
 import { RADIO_SNIPPET } from '../../../../lib/snippets';
+import { RADIO_USAGE } from '../../../../lib/snippets/usage';
 
 @Component({
   selector: 'app-radio-demo',
@@ -12,4 +13,5 @@ import { RADIO_SNIPPET } from '../../../../lib/snippets';
 })
 export default class RadioDemo {
   readonly radioCode = RADIO_SNIPPET;
+  readonly radioUsage = RADIO_USAGE;
 }
