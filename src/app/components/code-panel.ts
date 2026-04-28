@@ -87,7 +87,7 @@ import { CopyButton } from './copy-button';
                   [attr.value]="code()"
                   [attr.language]="'typescript'"
                   [attr.theme]="editorTheme()"
-                  [attr.readonly]="editorReady() ? 'true' : null"
+                  readonly="true"
                   lineNumbers="true"
                   style="display: block; height: 400px; overflow: auto;"
                 ></vertex-editor>
@@ -113,7 +113,7 @@ import { CopyButton } from './copy-button';
               [attr.value]="code()"
               [attr.language]="'typescript'"
               [attr.theme]="editorTheme()"
-              [attr.readonly]="editorReady() ? 'true' : null"
+              readonly="true"
               lineNumbers="true"
               style="display: block; height: 400px; overflow: auto;"
             ></vertex-editor>
