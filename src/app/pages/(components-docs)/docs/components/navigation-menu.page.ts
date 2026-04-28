@@ -9,6 +9,7 @@ import {
 } from 'volt';
 import { CodePanel } from '../../../../components/code-panel';
 import { NAVIGATION_MENU_SNIPPET } from '../../../../lib/snippets';
+import { NAVIGATION_MENU_USAGE } from '../../../../lib/snippets/usage';
 
 @Component({
   selector: 'app-navigation-menu-demo',
@@ -27,4 +28,5 @@ import { NAVIGATION_MENU_SNIPPET } from '../../../../lib/snippets';
 })
 export default class NavigationMenuDemo {
   readonly navigationMenuCode = NAVIGATION_MENU_SNIPPET;
+  readonly navigationMenuUsage = NAVIGATION_MENU_USAGE;
 }

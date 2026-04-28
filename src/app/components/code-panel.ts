@@ -9,6 +9,8 @@ import {
   OnInit,
   PLATFORM_ID,
   signal,
+  afterNextRender,
+  Injector,
 } from '@angular/core';
 import { IconCheck, IconCopy } from '../icons';
 import { EditorLoaderService } from '../services/editor-loader.service';
@@ -58,8 +60,8 @@ import { CopyButton } from './copy-button';
             [attr.value]="code()"
             [attr.language]="'typescript'"
             [attr.theme]="editorTheme()"
+            [attr.readonly]="editorReady() ? 'true' : null"
             lineNumbers="true"
-            readonly="true"
             style="display: block; height: 400px; overflow: auto;"
           ></vertex-editor>
         } @else {
@@ -85,10 +87,12 @@ export class CodePanel implements OnInit {
   cliCopied = signal(false);
   editorTheme = signal<'light' | 'dark'>('light');
   editorLoaded = signal(false);
+  editorReady = signal(false);
 
   private destroyRef = inject(DestroyRef);
   private editorLoader = inject(EditorLoaderService);
   private platformId = inject(PLATFORM_ID);
+  private injector = inject(Injector);
 
   async ngOnInit() {
     if (!isPlatformBrowser(this.platformId)) return;
@@ -96,6 +100,11 @@ export class CodePanel implements OnInit {
     // Load editor script lazily
     await this.editorLoader.loadEditor();
     this.editorLoaded.set(true);
+
+    // Set readonly after the editor DOM element has connected and initialized its CodeMirror view.
+    // vertex-editor's editable effect only fires when editorView is non-null, which is after
+    // connectedCallback — afterNextRender guarantees we're past that point.
+    afterNextRender(() => this.editorReady.set(true), { injector: this.injector });
 
     this.editorTheme.set(document.documentElement.classList.contains('dark') ? 'dark' : 'light');
 

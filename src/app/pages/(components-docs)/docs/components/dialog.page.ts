@@ -7,6 +7,7 @@ import {
   NgpDialogTrigger,
 } from 'ng-primitives/dialog';
 import { CodePanel } from '../../../../components/code-panel';
+import { DIALOG_USAGE } from '../../../../lib/snippets/usage';
 import { IconClose } from '../../../../icons';
 
 @Component({
@@ -25,6 +26,7 @@ import { IconClose } from '../../../../icons';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class DialogDemo {
+  readonly dialogUsage = DIALOG_USAGE;
   readonly dialogCode = `import { Directive } from '@angular/core';
 import { 
   NgpDialogTrigger, 
