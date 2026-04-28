@@ -9,8 +9,8 @@
 
   <div class="w-full h-px bg-border"></div>
 
-  <div class="space-y-4">
-    <h2 class="text-xl font-semibold tracking-tight text-foreground">Example</h2>
+  <!-- Usage Example -->
+  <app-code-panel title="Usage" [code]="tooltipUsage" [tabbed]="true">
     <div
       class="p-8 border border-border rounded-lg bg-card/30 flex items-center justify-center min-h-[300px]"
     >
@@ -22,9 +22,7 @@
         <volt-tooltip-content>Add to library</volt-tooltip-content>
       </ng-template>
     </div>
-  </div>
-  <!-- Usage Example -->
-  <app-code-panel title="Usage" [code]="tooltipUsage" />
+  </app-code-panel>
 
   <!-- Source Code Section -->
   <app-code-panel
