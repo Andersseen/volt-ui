@@ -11,7 +11,6 @@ import {
   signal,
   afterNextRender,
   Injector,
-  computed,
 } from '@angular/core';
 import { VoltTabs, VoltTabsContent, VoltTabsList, VoltTabsTrigger } from 'volt';
 import { IconCheck, IconCopy } from '../icons';
@@ -146,17 +145,12 @@ export class CodePanel implements OnInit {
   editorReady = signal(false);
   activeTab = signal<'preview' | 'code'>('preview');
 
-  readonly xxx = computed(() => this.cliCopied());
-  aaa = computed(() => this.cliCopied());
-
   private destroyRef = inject(DestroyRef);
   private editorLoader = inject(EditorLoaderService);
   private platformId = inject(PLATFORM_ID);
   private injector = inject(Injector);
 
   async ngOnInit() {
-    this.xxx = this.tabbed();
-    this.aaa = this.tabbed();
     if (!isPlatformBrowser(this.platformId)) return;
 
     // Load editor script lazily

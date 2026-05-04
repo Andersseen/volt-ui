@@ -91,7 +91,7 @@ export class ThemeSwitcher {
   style = signal<unknown>('sharp');
   isDark = signal(false);
 
-  constructor(@Inject(PLATFORM_ID) platformId: Object) {
+  constructor(@Inject(PLATFORM_ID) platformId: object) {
     if (isPlatformBrowser(platformId)) {
       const savedColor = localStorage.getItem('volt-color') || 'volt';
       const savedStyle = localStorage.getItem('volt-style') || 'sharp';
