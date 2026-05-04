@@ -34,6 +34,9 @@ export * from './lib/components/toast';
 export * from './lib/components/input-otp';
 export * from './lib/components/file-upload';
 export * from './lib/components/combobox';
+export * from './lib/components/date-picker';
+export * from './lib/components/listbox';
+export * from './lib/components/toolbar';
 
 // Layouts
 export * from './lib/layouts/sidebar';

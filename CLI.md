@@ -63,6 +63,23 @@ volt list
 - `navigation-menu` - Navigation menu component
 - `form-field` - Form field wrapper
 - `toggle` - Toggle button component
+- `dialog` - Modal dialog primitives
+- `popover` - Floating popover primitives
+- `dropdown-menu` - Dropdown menu primitives
+- `progress` - Progress indicator
+- `slider` - Range slider
+- `breadcrumbs` - Breadcrumb navigation
+- `nav-sidebar` - Navigation sidebar
+- `toggle-group` - Grouped toggle controls
+- `meter` - Meter value indicator
+- `pagination` - Pagination controls
+- `toast` - Toast notification primitives
+- `input-otp` - One-time password input
+- `file-upload` - File upload trigger and dropzone
+- `combobox` - Autocomplete/select combobox
+- `date-picker` - Date picker and date range picker primitives
+- `listbox` - Single or multiple selection listbox
+- `toolbar` - Toolbar container for grouped controls
 
 ## How it works
 

@@ -37,7 +37,7 @@ button · badge · card · input · textarea · checkbox · radio · switch · t
 select · tabs · accordion · avatar · separator · tooltip · navigation-menu · form-field ·
 dialog · popover · dropdown-menu · slider · progress · breadcrumbs · nav-sidebar · sidebar ·
 toggle-group · meter · pagination · toast · input-otp · file-upload · combobox ·
-dialog · popover · dropdown-menu · slider · progress · breadcrumbs · nav-sidebar · sidebar
+date-picker · listbox · toolbar
 
 ## Component import
 \`\`\`ts
@@ -134,6 +134,16 @@ You are working with **Volt UI**, an Angular v21 component library (shadcn/ui-in
 | Breadcrumbs | \`./ui/breadcrumbs\` | \`ui-breadcrumbs\` + sub-components |
 | Nav Sidebar | \`./ui/nav-sidebar\` | \`ui-nav-sidebar\` |
 | Sidebar Layout | \`./ui/sidebar\` | \`ui-sidebar\` + sub-components |
+| Toggle Group | \`./ui/toggle-group\` | \`ui-toggle-group\` + sub-components |
+| Meter | \`./ui/meter\` | \`ui-meter\` + sub-components |
+| Pagination | \`./ui/pagination\` | \`ui-pagination\` + sub-components |
+| Toast | \`./ui/toast\` | \`ui-toast\` + sub-components |
+| Input OTP | \`./ui/input-otp\` | \`ui-input-otp\` + sub-components |
+| File Upload | \`./ui/file-upload\` | \`ui-file-upload\`, \`ui-file-dropzone\` |
+| Combobox | \`./ui/combobox\` | \`ui-combobox\` + sub-components |
+| Date Picker | \`./ui/date-picker\` | \`ui-date-picker\`, \`ui-date-range-picker\` + sub-components |
+| Listbox | \`./ui/listbox\` | \`ui-listbox\` + sub-components |
+| Toolbar | \`./ui/toolbar\` | \`ui-toolbar\` |
 
 ## Button variants
 \`\`\`html

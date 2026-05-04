@@ -114,6 +114,139 @@ const components = {
     ],
     dependencies: [],
   },
+  dialog: {
+    files: [
+      'dialog/dialog.ts',
+      'dialog/dialog-overlay.ts',
+      'dialog/dialog-content.ts',
+      'dialog/dialog-title.ts',
+      'dialog/dialog-description.ts',
+      'dialog/index.ts',
+    ],
+    dependencies: [],
+  },
+  popover: {
+    files: ['popover/popover-trigger.ts', 'popover/popover-content.ts', 'popover/index.ts'],
+    dependencies: [],
+  },
+  'dropdown-menu': {
+    files: [
+      'dropdown-menu/dropdown-menu-trigger.ts',
+      'dropdown-menu/dropdown-menu.ts',
+      'dropdown-menu/dropdown-menu-item.ts',
+      'dropdown-menu/dropdown-menu-separator.ts',
+      'dropdown-menu/dropdown-menu-label.ts',
+      'dropdown-menu/index.ts',
+    ],
+    dependencies: [],
+  },
+  progress: {
+    files: ['progress/progress.ts', 'progress/index.ts'],
+    dependencies: [],
+  },
+  slider: {
+    files: ['slider/slider.ts', 'slider/index.ts'],
+    dependencies: [],
+  },
+  breadcrumbs: {
+    files: [
+      'breadcrumbs/breadcrumbs.ts',
+      'breadcrumbs/breadcrumbs-list.ts',
+      'breadcrumbs/breadcrumbs-item.ts',
+      'breadcrumbs/breadcrumbs-link.ts',
+      'breadcrumbs/breadcrumbs-page.ts',
+      'breadcrumbs/breadcrumbs-separator.ts',
+      'breadcrumbs/breadcrumbs-ellipsis.ts',
+      'breadcrumbs/index.ts',
+    ],
+    dependencies: [],
+  },
+  'nav-sidebar': {
+    files: ['nav-sidebar/nav-sidebar.ts', 'nav-sidebar/index.ts'],
+    dependencies: [],
+  },
+  'toggle-group': {
+    files: [
+      'toggle-group/toggle-group.ts',
+      'toggle-group/toggle-group-item.ts',
+      'toggle-group/index.ts',
+    ],
+    dependencies: [],
+  },
+  meter: {
+    files: ['meter/meter.ts', 'meter/meter-track.ts', 'meter/meter-indicator.ts', 'meter/index.ts'],
+    dependencies: [],
+  },
+  pagination: {
+    files: [
+      'pagination/pagination.ts',
+      'pagination/pagination-first.ts',
+      'pagination/pagination-previous.ts',
+      'pagination/pagination-next.ts',
+      'pagination/pagination-last.ts',
+      'pagination/pagination-button.ts',
+      'pagination/index.ts',
+    ],
+    dependencies: [],
+  },
+  toast: {
+    files: [
+      'toast/toast.ts',
+      'toast/toast-title.ts',
+      'toast/toast-description.ts',
+      'toast/toast-close.ts',
+      'toast/index.ts',
+    ],
+    dependencies: [],
+  },
+  'input-otp': {
+    files: ['input-otp/input-otp.ts', 'input-otp/input-otp-slot.ts', 'input-otp/index.ts'],
+    dependencies: [],
+  },
+  'file-upload': {
+    files: ['file-upload/file-upload.ts', 'file-upload/file-dropzone.ts', 'file-upload/index.ts'],
+    dependencies: [],
+  },
+  combobox: {
+    files: [
+      'combobox/combobox.ts',
+      'combobox/combobox-input.ts',
+      'combobox/combobox-button.ts',
+      'combobox/combobox-dropdown.ts',
+      'combobox/combobox-option.ts',
+      'combobox/index.ts',
+    ],
+    dependencies: [],
+  },
+  'date-picker': {
+    files: [
+      'date-picker/date-picker.ts',
+      'date-picker/date-range-picker.ts',
+      'date-picker/date-picker-label.ts',
+      'date-picker/date-picker-grid.ts',
+      'date-picker/date-picker-cell.ts',
+      'date-picker/date-picker-date-button.ts',
+      'date-picker/date-picker-next-month.ts',
+      'date-picker/date-picker-previous-month.ts',
+      'date-picker/index.ts',
+    ],
+    dependencies: [],
+  },
+  listbox: {
+    files: [
+      'listbox/listbox.ts',
+      'listbox/listbox-option.ts',
+      'listbox/listbox-section.ts',
+      'listbox/listbox-header.ts',
+      'listbox/listbox-trigger.ts',
+      'listbox/index.ts',
+    ],
+    dependencies: [],
+  },
+  toolbar: {
+    files: ['toolbar/toolbar.ts', 'toolbar/index.ts'],
+    dependencies: [],
+  },
 };
 
 function fetchFile(url) {

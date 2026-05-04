@@ -80,7 +80,12 @@ function writeText(filePath, content) {
 function deepMerge(target, source) {
   const out = { ...target };
   for (const [key, value] of Object.entries(source)) {
-    if (value && typeof value === 'object' && !Array.isArray(value) && typeof out[key] === 'object') {
+    if (
+      value &&
+      typeof value === 'object' &&
+      !Array.isArray(value) &&
+      typeof out[key] === 'object'
+    ) {
       out[key] = deepMerge(out[key], value);
     } else {
       out[key] = value;
@@ -115,7 +120,7 @@ button · badge · card · input · textarea · checkbox · radio · switch · t
 select · tabs · accordion · avatar · separator · tooltip · navigation-menu · form-field ·
 dialog · popover · dropdown-menu · slider · progress · breadcrumbs · nav-sidebar · sidebar ·
 toggle-group · meter · pagination · toast · input-otp · file-upload · combobox ·
-dialog · popover · dropdown-menu · slider · progress · breadcrumbs · nav-sidebar · sidebar
+date-picker · listbox · toolbar
 
 ## Component import
 \`\`\`ts
@@ -198,6 +203,16 @@ You are working with **Volt UI**, an Angular v21 component library (shadcn/ui-in
 | Breadcrumbs | \`./ui/breadcrumbs\` | \`ui-breadcrumbs\` + sub-components |
 | Nav Sidebar | \`./ui/nav-sidebar\` | \`ui-nav-sidebar\` |
 | Sidebar Layout | \`./ui/sidebar\` | \`ui-sidebar\` + sub-components |
+| Toggle Group | \`./ui/toggle-group\` | \`ui-toggle-group\` + sub-components |
+| Meter | \`./ui/meter\` | \`ui-meter\` + sub-components |
+| Pagination | \`./ui/pagination\` | \`ui-pagination\` + sub-components |
+| Toast | \`./ui/toast\` | \`ui-toast\` + sub-components |
+| Input OTP | \`./ui/input-otp\` | \`ui-input-otp\` + sub-components |
+| File Upload | \`./ui/file-upload\` | \`ui-file-upload\`, \`ui-file-dropzone\` |
+| Combobox | \`./ui/combobox\` | \`ui-combobox\` + sub-components |
+| Date Picker | \`./ui/date-picker\` | \`ui-date-picker\`, \`ui-date-range-picker\` + sub-components |
+| Listbox | \`./ui/listbox\` | \`ui-listbox\` + sub-components |
+| Toolbar | \`./ui/toolbar\` | \`ui-toolbar\` |
 
 ## Button variants
 \`\`\`html
@@ -251,7 +266,9 @@ const VSCODE_SNIPPETS = {
   'Volt UI Button': {
     prefix: ['volt-button', 'ui-button'],
     description: 'Volt UI Button component',
-    body: ['<ui-button variant="${1|solid,outline,ghost,link,destructive|}" size="${2|md,sm,lg,icon|}">${3:Label}</ui-button>'],
+    body: [
+      '<ui-button variant="${1|solid,outline,ghost,link,destructive|}" size="${2|md,sm,lg,icon|}">${3:Label}</ui-button>',
+    ],
   },
   'Volt UI Card': {
     prefix: ['volt-card', 'ui-card'],
@@ -355,7 +372,11 @@ const VSCODE_SNIPPETS = {
   'Volt UI Tooltip': {
     prefix: ['volt-tooltip', 'ui-tooltip'],
     description: 'Volt UI Tooltip',
-    body: ['<ui-tooltip content="${1:Tooltip text}">', '  ${2:<ui-button>Hover me</ui-button>}', '</ui-tooltip>'],
+    body: [
+      '<ui-tooltip content="${1:Tooltip text}">',
+      '  ${2:<ui-button>Hover me</ui-button>}',
+      '</ui-tooltip>',
+    ],
   },
   'Volt UI Badge': {
     prefix: ['volt-badge', 'ui-badge'],
@@ -464,7 +485,13 @@ const installers = {
 
 function resolveClaudeDesktopConfig() {
   const candidates = {
-    darwin: path.join(os.homedir(), 'Library', 'Application Support', 'Claude', 'claude_desktop_config.json'),
+    darwin: path.join(
+      os.homedir(),
+      'Library',
+      'Application Support',
+      'Claude',
+      'claude_desktop_config.json'
+    ),
     win32: path.join(process.env.APPDATA || '', 'Claude', 'claude_desktop_config.json'),
     linux: path.join(os.homedir(), '.config', 'Claude', 'claude_desktop_config.json'),
   };
@@ -496,7 +523,10 @@ async function selectAgents(rl) {
   });
   log(`  ${c.cyan}a${c.reset}. All of the above\n`);
 
-  const answer = await ask(rl, `${c.bold}Select agent(s)${c.reset} [1-${keys.length}, comma-separated, or "a" for all]: `);
+  const answer = await ask(
+    rl,
+    `${c.bold}Select agent(s)${c.reset} [1-${keys.length}, comma-separated, or "a" for all]: `
+  );
   const trimmed = answer.trim().toLowerCase();
 
   if (!trimmed || trimmed === 'a' || trimmed === 'all') return keys;

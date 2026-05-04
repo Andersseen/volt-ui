@@ -205,7 +205,7 @@ const MCP_URL = 'https://volt-ui.pages.dev/api/mcp';
           <li class="flex items-start gap-2">
             <icon-check class="w-[18px] h-[18px] text-green-500 mt-0.5 shrink-0" />
             <span>
-              <strong>17 components</strong> — button, card, input, tabs, accordion, select, and
+              <strong>34 components</strong> — button, card, input, tabs, accordion, select, and
               more
             </span>
           </li>

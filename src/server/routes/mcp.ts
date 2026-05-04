@@ -464,6 +464,67 @@ const components: Record<string, ComponentMeta> = {
       '<ui-combobox [(value)]="selected" [items]="items">\n  <ng-template let-item>{{ item.label }}</ng-template>\n</ui-combobox>',
     ],
   },
+  'date-picker': {
+    name: 'Date Picker',
+    description: 'Calendar date picker and date range picker primitives',
+    dependencies: ['ng-primitives/date-picker', 'ng-primitives/date-time'],
+    subComponents: [
+      'date-range-picker',
+      'date-picker-label',
+      'date-picker-grid',
+      'date-picker-cell',
+      'date-picker-date-button',
+      'date-picker-next-month',
+      'date-picker-previous-month',
+    ],
+    inputs: [
+      { name: 'date', type: 'Date | undefined' },
+      { name: 'focusedDate', type: 'Date', default: 'new Date()' },
+      { name: 'min', type: 'Date | undefined' },
+      { name: 'max', type: 'Date | undefined' },
+      { name: 'disabled', type: 'boolean', default: false },
+      {
+        name: 'firstDayOfWeek',
+        type: 'number',
+        default: 7,
+        options: ['1', '2', '3', '4', '5', '6', '7'],
+      },
+    ],
+    examples: [
+      `<ui-date-picker [(date)]="selectedDate">\n  <div class="flex items-center justify-between">\n    <ui-date-picker-previous-month>Prev</ui-date-picker-previous-month>\n    <ui-date-picker-label />\n    <ui-date-picker-next-month>Next</ui-date-picker-next-month>\n  </div>\n  <ui-date-picker-grid>...</ui-date-picker-grid>\n</ui-date-picker>`,
+      `<ui-date-range-picker [(startDate)]="start" [(endDate)]="end">...</ui-date-range-picker>`,
+    ],
+  },
+  listbox: {
+    name: 'Listbox',
+    description: 'Accessible single or multiple selection listbox',
+    dependencies: ['ng-primitives/listbox'],
+    subComponents: ['listbox-option', 'listbox-section', 'listbox-header'],
+    inputs: [
+      { name: 'mode', type: 'string', default: 'single', options: ['single', 'multiple'] },
+      { name: 'value', type: 'unknown[]', default: [] },
+      { name: 'disabled', type: 'boolean', default: false },
+    ],
+    examples: [
+      `<ui-listbox [(value)]="selected">\n  <ui-listbox-option value="angular">Angular</ui-listbox-option>\n  <ui-listbox-option value="react">React</ui-listbox-option>\n</ui-listbox>`,
+    ],
+  },
+  toolbar: {
+    name: 'Toolbar',
+    description: 'Accessible toolbar container for grouped controls with roving focus',
+    dependencies: ['ng-primitives/toolbar', 'ng-primitives/roving-focus'],
+    inputs: [
+      {
+        name: 'orientation',
+        type: 'string',
+        default: 'horizontal',
+        options: ['horizontal', 'vertical'],
+      },
+    ],
+    examples: [
+      `<ui-toolbar>\n  <ui-toggle>Bold</ui-toggle>\n  <ui-toggle>Italic</ui-toggle>\n  <ui-button size="icon">Save</ui-button>\n</ui-toolbar>`,
+    ],
+  },
 };
 
 // ---------------------------------------------------------------------------
@@ -494,6 +555,8 @@ interface JsonRpcRequest {
   method: string;
   params?: Record<string, unknown>;
 }
+
+// let clientCapabilities: Record<string, unknown> = {};
 
 // ---------------------------------------------------------------------------
 // MCP tool definitions
