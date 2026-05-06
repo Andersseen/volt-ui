@@ -1,24 +1,20 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { DocsSidebarNav, type DocsSidebarGroup } from '../components/docs-sidebar-nav';
+import { DocsPageShell } from '../components/docs-page-shell';
+import type { DocsSidebarGroup } from '../components/docs-sidebar-nav';
 
 @Component({
   selector: 'app-docs-layout',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterOutlet, DocsSidebarNav],
+  imports: [RouterOutlet, DocsPageShell],
   template: `
-    <div
-      class="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-10 flex flex-col md:flex-row gap-6 md:gap-12 items-start"
+    <app-docs-page-shell
+      title="Getting Started"
+      browseLabel="Browse Documentation"
+      [groups]="groups"
     >
-      <app-docs-sidebar-nav
-        title="Getting Started"
-        browseLabel="Browse Documentation"
-        [groups]="groups"
-      />
-      <main class="flex-1 min-w-0 w-full">
-        <router-outlet />
-      </main>
-    </div>
+      <router-outlet />
+    </app-docs-page-shell>
   `,
 })
 export default class DocsLayout {

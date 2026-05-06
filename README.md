@@ -82,7 +82,7 @@ See [MCP Quick Start](./mcp/QUICKSTART.md) for detailed instructions.
 
 After MCP installation, AI assistants automatically know:
 
-- ✅ All 17 available components and their APIs
+- ✅ All available components and their APIs
 - ✅ Component selectors (`ui-button`, `ui-card`, etc.)
 - ✅ Import paths (`./ui/button`, `./ui/card`)
 - ✅ Variant options (`solid`, `outline`, `ghost`, etc.)
@@ -106,6 +106,8 @@ See [MCP Documentation](./mcp/README.md) for complete details.
 - [Badge](./src/app/pages/docs/components/badge.ts)
 - [Card](./src/app/pages/docs/components/card.ts)
 - [Input](./src/app/pages/docs/components/input.ts)
+- Search
+- Autofill
 - [Checkbox](./src/app/pages/docs/components/checkbox.ts)
 - [Switch](./src/app/pages/docs/components/switch.ts)
 - [Select](./src/app/pages/docs/components/select.ts)
@@ -117,6 +119,24 @@ See [MCP Documentation](./mcp/README.md) for complete details.
 - [Radio](./src/app/pages/docs/components/radio.ts)
 - [Toggle](./src/app/pages/docs/components/toggle.ts)
 - [Separator](./src/app/pages/docs/components/separator.ts)
+- Dialog
+- Popover
+- Dropdown Menu
+- Slider
+- Progress
+- Breadcrumbs
+- Nav Sidebar
+- Sidebar Layout
+- Toggle Group
+- Meter
+- Pagination
+- Toast
+- Input OTP
+- File Upload
+- Combobox
+- Date Picker
+- Listbox
+- Toolbar
 
 See all components in the [live demo](https://volt-ui.pages.dev).
 

@@ -455,3 +455,225 @@ import { VoltButton } from 'volt';
   \`,
 })
 export class MyComponent {}`;
+
+export const TEXTAREA_USAGE = `import { Component, signal } from '@angular/core';
+import { VoltTextarea } from 'volt';
+
+@Component({
+  imports: [VoltTextarea],
+  template: \`
+    <volt-textarea [(value)]="message" rows="4" />
+  \`,
+})
+export class MyComponent {
+  message = signal('');
+}`;
+
+export const FORM_FIELD_USAGE = `import { Component } from '@angular/core';
+import { VoltFormField, VoltLabel, VoltHint, VoltInput } from 'volt';
+
+@Component({
+  imports: [VoltFormField, VoltLabel, VoltHint, VoltInput],
+  template: \`
+    <volt-form-field>
+      <volt-label>Email</volt-label>
+      <volt-input type="email" placeholder="you@example.com" />
+      <volt-hint>We'll only use this for account updates.</volt-hint>
+    </volt-form-field>
+  \`,
+})
+export class MyComponent {}`;
+
+export const TOGGLE_GROUP_USAGE = `import { Component, signal } from '@angular/core';
+import { VoltToggleGroup, VoltToggleGroupItem } from 'volt';
+
+@Component({
+  imports: [VoltToggleGroup, VoltToggleGroupItem],
+  template: \`
+    <volt-toggle-group [(value)]="formatting">
+      <volt-toggle-group-item value="bold">Bold</volt-toggle-group-item>
+      <volt-toggle-group-item value="italic">Italic</volt-toggle-group-item>
+      <volt-toggle-group-item value="underline">Underline</volt-toggle-group-item>
+    </volt-toggle-group>
+  \`,
+})
+export class MyComponent {
+  formatting = signal(['bold']);
+}`;
+
+export const METER_USAGE = `import { Component } from '@angular/core';
+import { VoltMeter, VoltMeterTrack, VoltMeterIndicator } from 'volt';
+
+@Component({
+  imports: [VoltMeter, VoltMeterTrack, VoltMeterIndicator],
+  template: \`
+    <volt-meter [value]="72">
+      <volt-meter-track>
+        <volt-meter-indicator />
+      </volt-meter-track>
+    </volt-meter>
+  \`,
+})
+export class MyComponent {}`;
+
+export const PAGINATION_USAGE = `import { Component, signal } from '@angular/core';
+import {
+  VoltPagination,
+  VoltPaginationPrevious,
+  VoltPaginationButton,
+  VoltPaginationNext,
+} from 'volt';
+
+@Component({
+  imports: [VoltPagination, VoltPaginationPrevious, VoltPaginationButton, VoltPaginationNext],
+  template: \`
+    <volt-pagination [(page)]="page" [pageCount]="5">
+      <volt-pagination-previous />
+      <volt-pagination-button [page]="1" />
+      <volt-pagination-button [page]="2" />
+      <volt-pagination-button [page]="3" />
+      <volt-pagination-next />
+    </volt-pagination>
+  \`,
+})
+export class MyComponent {
+  page = signal(1);
+}`;
+
+export const TOAST_USAGE = `import { Component, TemplateRef, viewChild } from '@angular/core';
+import {
+  NgpToastManager,
+  VoltButton,
+  VoltToast,
+  VoltToastTitle,
+  VoltToastDescription,
+  VoltToastClose,
+} from 'volt';
+
+@Component({
+  imports: [VoltButton, VoltToast, VoltToastTitle, VoltToastDescription, VoltToastClose],
+  template: \`
+    <volt-button (click)="showToast()">Show toast</volt-button>
+
+    <ng-template #toastTemplate>
+      <volt-toast>
+        <div>
+          <volt-toast-title>Saved</volt-toast-title>
+          <volt-toast-description>Your changes have been synced.</volt-toast-description>
+        </div>
+        <volt-toast-close />
+      </volt-toast>
+    </ng-template>
+  \`,
+})
+export class MyComponent {
+  readonly toastTemplate = viewChild.required<TemplateRef<void>>('toastTemplate');
+
+  constructor(private readonly toastManager: NgpToastManager) {}
+
+  showToast() {
+    this.toastManager.show(this.toastTemplate(), { placement: 'bottom-end' });
+  }
+}`;
+
+export const INPUT_OTP_USAGE = `import { Component, signal } from '@angular/core';
+import { VoltInputOtp } from 'volt';
+
+@Component({
+  imports: [VoltInputOtp],
+  template: \`
+    <volt-input-otp [(value)]="code" [length]="6" />
+  \`,
+})
+export class MyComponent {
+  code = signal('');
+}`;
+
+export const FILE_UPLOAD_USAGE = `import { Component } from '@angular/core';
+import { VoltFileDropzone } from 'volt';
+
+@Component({
+  imports: [VoltFileDropzone],
+  template: \`
+    <volt-file-dropzone multiple>
+      Drop files here or click to upload
+    </volt-file-dropzone>
+  \`,
+})
+export class MyComponent {}`;
+
+export const COMBOBOX_USAGE = `import { Component, signal } from '@angular/core';
+import { VoltCombobox } from 'volt';
+
+@Component({
+  imports: [VoltCombobox],
+  template: \`
+    <volt-combobox [(value)]="framework" [items]="frameworks">
+      <ng-template let-item>{{ item }}</ng-template>
+    </volt-combobox>
+  \`,
+})
+export class MyComponent {
+  framework = signal('');
+  frameworks = ['Angular', 'React', 'Vue', 'Svelte'];
+}`;
+
+export const DATE_PICKER_USAGE = `import { Component, signal } from '@angular/core';
+import { VoltDatePicker } from 'volt';
+
+@Component({
+  imports: [VoltDatePicker],
+  template: \`
+    <volt-date-picker [(date)]="date" />
+  \`,
+})
+export class MyComponent {
+  date = signal<Date | undefined>(new Date());
+}`;
+
+export const LISTBOX_USAGE = `import { Component, signal } from '@angular/core';
+import { VoltListbox, VoltListboxOption } from 'volt';
+
+@Component({
+  imports: [VoltListbox, VoltListboxOption],
+  template: \`
+    <volt-listbox [(value)]="selected">
+      <volt-listbox-option value="angular">Angular</volt-listbox-option>
+      <volt-listbox-option value="react">React</volt-listbox-option>
+      <volt-listbox-option value="vue">Vue</volt-listbox-option>
+    </volt-listbox>
+  \`,
+})
+export class MyComponent {
+  selected = signal(['angular']);
+}`;
+
+export const TOOLBAR_USAGE = `import { Component } from '@angular/core';
+import { VoltToolbar, VoltToggle, VoltButton } from 'volt';
+
+@Component({
+  imports: [VoltToolbar, VoltToggle, VoltButton],
+  template: \`
+    <volt-toolbar>
+      <volt-toggle>Bold</volt-toggle>
+      <volt-toggle>Italic</volt-toggle>
+      <volt-button size="sm" variant="outline">Save</volt-button>
+    </volt-toolbar>
+  \`,
+})
+export class MyComponent {}`;
+
+export const NAV_SIDEBAR_USAGE = `import { Component } from '@angular/core';
+import { VoltNavSidebar } from 'volt';
+
+@Component({
+  imports: [VoltNavSidebar],
+  template: \`
+    <volt-nav-sidebar title="Settings" description="Workspace controls">
+      <a href="/profile">Profile</a>
+      <a href="/billing">Billing</a>
+      <a href="/team">Team</a>
+    </volt-nav-sidebar>
+  \`,
+})
+export class MyComponent {}`;

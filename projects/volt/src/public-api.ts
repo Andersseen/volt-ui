@@ -2,6 +2,8 @@
 export * from './lib/components/button';
 export * from './lib/components/badge';
 export * from './lib/components/input';
+export * from './lib/components/search';
+export * from './lib/components/autofill';
 export * from './lib/components/textarea';
 export * from './lib/components/card';
 export * from './lib/components/checkbox';
@@ -34,6 +36,9 @@ export * from './lib/components/toast';
 export * from './lib/components/input-otp';
 export * from './lib/components/file-upload';
 export * from './lib/components/combobox';
+export * from './lib/components/date-picker';
+export * from './lib/components/listbox';
+export * from './lib/components/toolbar';
 
 // Layouts
 export * from './lib/layouts/sidebar';

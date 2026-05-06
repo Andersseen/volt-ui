@@ -1,47 +1,24 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import {
-  IconButton,
-  IconInput,
-  IconCheckbox,
-  IconSwitch,
-  IconRadio,
-  IconSelect,
-  IconToggle,
-  IconCard,
-  IconSeparator,
-  IconNavigation,
-  IconTabs,
-  IconAccordion,
-  IconAvatar,
-  IconBadge,
-  IconTooltip,
-} from '../../../../icons';
+import { IconComponents } from '../../../../icons';
+
+interface ComponentLink {
+  name: string;
+  path: string;
+  description: string;
+}
+
+interface ComponentGroup {
+  title: string;
+  links: ComponentLink[];
+}
 
 @Component({
   selector: 'app-components-index-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    RouterLink,
-    IconButton,
-    IconInput,
-    IconCheckbox,
-    IconSwitch,
-    IconRadio,
-    IconSelect,
-    IconToggle,
-    IconCard,
-    IconSeparator,
-    IconNavigation,
-    IconTabs,
-    IconAccordion,
-    IconAvatar,
-    IconBadge,
-    IconTooltip,
-  ],
+  imports: [RouterLink, IconComponents],
   template: `
     <div class="space-y-8">
-      <!-- Header -->
       <div>
         <h1 class="text-3xl font-bold tracking-tight">Components</h1>
         <p class="text-lg text-muted-foreground mt-2">
@@ -52,7 +29,6 @@ import {
 
       <div class="w-full h-px bg-border"></div>
 
-      <!-- Installation Note -->
       <div class="p-4 rounded-lg border border-border bg-muted/30">
         <p class="text-sm">
           <span class="font-medium">Quick install:</span>
@@ -61,310 +37,139 @@ import {
           >
           or browse below to copy source code.
           <a routerLink="/docs/introduction" class="text-primary hover:underline ml-1"
-            >Learn more →</a
+            >Learn more -></a
           >
         </p>
       </div>
 
-      <!-- Components Grid -->
-      <div class="space-y-6">
-        <!-- Form Components -->
-        <div>
-          <h2 class="text-lg font-semibold mb-4">Form Components</h2>
-          <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            <a
-              routerLink="/docs/components/button"
-              class="group p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/30 transition-all"
-            >
-              <div class="flex items-center gap-3">
-                <div
-                  class="w-8 h-8 rounded-md bg-primary/10 text-primary flex items-center justify-center"
+      <div class="space-y-8">
+        @for (group of groups; track group.title) {
+          <section class="space-y-4">
+            <h2 class="text-lg font-semibold">{{ group.title }}</h2>
+            <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              @for (item of group.links; track item.path) {
+                <a
+                  [routerLink]="item.path"
+                  class="group p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/30 transition-all"
                 >
-                  <icon-button class="w-4 h-4" />
-                </div>
-                <div>
-                  <h3 class="font-medium group-hover:text-primary">Button</h3>
-                  <p class="text-xs text-muted-foreground">Interactive button with variants</p>
-                </div>
-              </div>
-            </a>
-
-            <a
-              routerLink="/docs/components/input"
-              class="group p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/30 transition-all"
-            >
-              <div class="flex items-center gap-3">
-                <div
-                  class="w-8 h-8 rounded-md bg-primary/10 text-primary flex items-center justify-center"
-                >
-                  <icon-input class="w-4 h-4" />
-                </div>
-                <div>
-                  <h3 class="font-medium group-hover:text-primary">Input</h3>
-                  <p class="text-xs text-muted-foreground">Text input fields</p>
-                </div>
-              </div>
-            </a>
-
-            <a
-              routerLink="/docs/components/checkbox"
-              class="group p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/30 transition-all"
-            >
-              <div class="flex items-center gap-3">
-                <div
-                  class="w-8 h-8 rounded-md bg-primary/10 text-primary flex items-center justify-center"
-                >
-                  <icon-checkbox class="w-4 h-4" />
-                </div>
-                <div>
-                  <h3 class="font-medium group-hover:text-primary">Checkbox</h3>
-                  <p class="text-xs text-muted-foreground">Toggle checkboxes</p>
-                </div>
-              </div>
-            </a>
-
-            <a
-              routerLink="/docs/components/switch"
-              class="group p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/30 transition-all"
-            >
-              <div class="flex items-center gap-3">
-                <div
-                  class="w-8 h-8 rounded-md bg-primary/10 text-primary flex items-center justify-center"
-                >
-                  <icon-switch class="w-4 h-4" />
-                </div>
-                <div>
-                  <h3 class="font-medium group-hover:text-primary">Switch</h3>
-                  <p class="text-xs text-muted-foreground">Toggle switches</p>
-                </div>
-              </div>
-            </a>
-
-            <a
-              routerLink="/docs/components/radio"
-              class="group p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/30 transition-all"
-            >
-              <div class="flex items-center gap-3">
-                <div
-                  class="w-8 h-8 rounded-md bg-primary/10 text-primary flex items-center justify-center"
-                >
-                  <icon-radio class="w-4 h-4" />
-                </div>
-                <div>
-                  <h3 class="font-medium group-hover:text-primary">Radio Group</h3>
-                  <p class="text-xs text-muted-foreground">Single-select options</p>
-                </div>
-              </div>
-            </a>
-
-            <a
-              routerLink="/docs/components/select"
-              class="group p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/30 transition-all"
-            >
-              <div class="flex items-center gap-3">
-                <div
-                  class="w-8 h-8 rounded-md bg-primary/10 text-primary flex items-center justify-center"
-                >
-                  <icon-select class="w-4 h-4" />
-                </div>
-                <div>
-                  <h3 class="font-medium group-hover:text-primary">Select</h3>
-                  <p class="text-xs text-muted-foreground">Dropdown selection</p>
-                </div>
-              </div>
-            </a>
-
-            <a
-              routerLink="/docs/components/toggle"
-              class="group p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/30 transition-all"
-            >
-              <div class="flex items-center gap-3">
-                <div
-                  class="w-8 h-8 rounded-md bg-primary/10 text-primary flex items-center justify-center"
-                >
-                  <icon-toggle class="w-4 h-4" />
-                </div>
-                <div>
-                  <h3 class="font-medium group-hover:text-primary">Toggle Button</h3>
-                  <p class="text-xs text-muted-foreground">Press toggle buttons</p>
-                </div>
-              </div>
-            </a>
-          </div>
-        </div>
-
-        <!-- Layout Components -->
-        <div>
-          <h2 class="text-lg font-semibold mb-4">Layout</h2>
-          <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            <a
-              routerLink="/docs/components/card"
-              class="group p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/30 transition-all"
-            >
-              <div class="flex items-center gap-3">
-                <div
-                  class="w-8 h-8 rounded-md bg-primary/10 text-primary flex items-center justify-center"
-                >
-                  <icon-card class="w-4 h-4" />
-                </div>
-                <div>
-                  <h3 class="font-medium group-hover:text-primary">Card</h3>
-                  <p class="text-xs text-muted-foreground">Content containers</p>
-                </div>
-              </div>
-            </a>
-
-            <a
-              routerLink="/docs/components/separator"
-              class="group p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/30 transition-all"
-            >
-              <div class="flex items-center gap-3">
-                <div
-                  class="w-8 h-8 rounded-md bg-primary/10 text-primary flex items-center justify-center"
-                >
-                  <icon-separator class="w-4 h-4" />
-                </div>
-                <div>
-                  <h3 class="font-medium group-hover:text-primary">Separator</h3>
-                  <p class="text-xs text-muted-foreground">Visual dividers</p>
-                </div>
-              </div>
-            </a>
-          </div>
-        </div>
-
-        <!-- Navigation -->
-        <div>
-          <h2 class="text-lg font-semibold mb-4">Navigation</h2>
-          <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            <a
-              routerLink="/docs/components/navigation-menu"
-              class="group p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/30 transition-all"
-            >
-              <div class="flex items-center gap-3">
-                <div
-                  class="w-8 h-8 rounded-md bg-primary/10 text-primary flex items-center justify-center"
-                >
-                  <icon-navigation class="w-4 h-4" />
-                </div>
-                <div>
-                  <h3 class="font-medium group-hover:text-primary">Navigation Menu</h3>
-                  <p class="text-xs text-muted-foreground">Navbar with dropdowns</p>
-                </div>
-              </div>
-            </a>
-
-            <a
-              routerLink="/docs/components/tabs"
-              class="group p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/30 transition-all"
-            >
-              <div class="flex items-center gap-3">
-                <div
-                  class="w-8 h-8 rounded-md bg-primary/10 text-primary flex items-center justify-center"
-                >
-                  <icon-tabs class="w-4 h-4" />
-                </div>
-                <div>
-                  <h3 class="font-medium group-hover:text-primary">Tabs</h3>
-                  <p class="text-xs text-muted-foreground">Tabbed interface</p>
-                </div>
-              </div>
-            </a>
-
-            <a
-              routerLink="/docs/components/accordion"
-              class="group p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/30 transition-all"
-            >
-              <div class="flex items-center gap-3">
-                <div
-                  class="w-8 h-8 rounded-md bg-primary/10 text-primary flex items-center justify-center"
-                >
-                  <icon-accordion class="w-4 h-4" />
-                </div>
-                <div>
-                  <h3 class="font-medium group-hover:text-primary">Accordion</h3>
-                  <p class="text-xs text-muted-foreground">Collapsible sections</p>
-                </div>
-              </div>
-            </a>
-
-            <a
-              routerLink="/docs/components/dialog"
-              class="group p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/30 transition-all"
-            >
-              <div class="flex items-center gap-3">
-                <div
-                  class="w-8 h-8 rounded-md bg-primary/10 text-primary flex items-center justify-center"
-                >
-                  <icon-card class="w-4 h-4" />
-                </div>
-                <div>
-                  <h3 class="font-medium group-hover:text-primary">Dialog</h3>
-                  <p class="text-xs text-muted-foreground">Modal dialogs & drawers</p>
-                </div>
-              </div>
-            </a>
-          </div>
-        </div>
-
-        <!-- Display -->
-        <div>
-          <h2 class="text-lg font-semibold mb-4">Display</h2>
-          <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            <a
-              routerLink="/docs/components/avatar"
-              class="group p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/30 transition-all"
-            >
-              <div class="flex items-center gap-3">
-                <div
-                  class="w-8 h-8 rounded-md bg-primary/10 text-primary flex items-center justify-center"
-                >
-                  <icon-avatar class="w-4 h-4" />
-                </div>
-                <div>
-                  <h3 class="font-medium group-hover:text-primary">Avatar</h3>
-                  <p class="text-xs text-muted-foreground">User profile images</p>
-                </div>
-              </div>
-            </a>
-
-            <a
-              routerLink="/docs/components/badge"
-              class="group p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/30 transition-all"
-            >
-              <div class="flex items-center gap-3">
-                <div
-                  class="w-8 h-8 rounded-md bg-primary/10 text-primary flex items-center justify-center"
-                >
-                  <icon-badge class="w-4 h-4" />
-                </div>
-                <div>
-                  <h3 class="font-medium group-hover:text-primary">Badge</h3>
-                  <p class="text-xs text-muted-foreground">Status indicators</p>
-                </div>
-              </div>
-            </a>
-
-            <a
-              routerLink="/docs/components/tooltip"
-              class="group p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/30 transition-all"
-            >
-              <div class="flex items-center gap-3">
-                <div
-                  class="w-8 h-8 rounded-md bg-primary/10 text-primary flex items-center justify-center"
-                >
-                  <icon-tooltip class="w-4 h-4" />
-                </div>
-                <div>
-                  <h3 class="font-medium group-hover:text-primary">Tooltip</h3>
-                  <p class="text-xs text-muted-foreground">Hover information</p>
-                </div>
-              </div>
-            </a>
-          </div>
-        </div>
+                  <div class="flex items-center gap-3">
+                    <div
+                      class="w-8 h-8 rounded-md bg-primary/10 text-primary flex items-center justify-center"
+                    >
+                      <icon-components class="w-4 h-4" />
+                    </div>
+                    <div>
+                      <h3 class="font-medium group-hover:text-primary">{{ item.name }}</h3>
+                      <p class="text-xs text-muted-foreground">{{ item.description }}</p>
+                    </div>
+                  </div>
+                </a>
+              }
+            </div>
+          </section>
+        }
       </div>
     </div>
   `,
 })
-export default class ComponentsIndexPage {}
+export default class ComponentsIndexPage {
+  readonly groups: ComponentGroup[] = [
+    {
+      title: 'Forms',
+      links: [
+        { name: 'Button', path: '/docs/components/button', description: 'Interactive buttons' },
+        { name: 'Input', path: '/docs/components/input', description: 'Text input fields' },
+        {
+          name: 'Search',
+          path: '/docs/components/search',
+          description: 'Search with clear action',
+        },
+        {
+          name: 'Autofill',
+          path: '/docs/components/autofill',
+          description: 'Browser autofill detection',
+        },
+        { name: 'Textarea', path: '/docs/components/textarea', description: 'Multi-line input' },
+        {
+          name: 'Form Field',
+          path: '/docs/components/form-field',
+          description: 'Labels, hints, and errors',
+        },
+        { name: 'Checkbox', path: '/docs/components/checkbox', description: 'Boolean selection' },
+        { name: 'Switch', path: '/docs/components/switch', description: 'On/off controls' },
+        { name: 'Radio', path: '/docs/components/radio', description: 'Single-select options' },
+        { name: 'Select', path: '/docs/components/select', description: 'Dropdown selection' },
+        { name: 'Combobox', path: '/docs/components/combobox', description: 'Searchable select' },
+        { name: 'Input OTP', path: '/docs/components/input-otp', description: 'PIN code input' },
+        {
+          name: 'File Upload',
+          path: '/docs/components/file-upload',
+          description: 'Upload controls',
+        },
+        { name: 'Slider', path: '/docs/components/slider', description: 'Range input' },
+      ],
+    },
+    {
+      title: 'Controls',
+      links: [
+        { name: 'Toggle', path: '/docs/components/toggle', description: 'Pressed state button' },
+        {
+          name: 'Toggle Group',
+          path: '/docs/components/toggle-group',
+          description: 'Grouped toggle controls',
+        },
+        { name: 'Toolbar', path: '/docs/components/toolbar', description: 'Grouped actions' },
+        { name: 'Pagination', path: '/docs/components/pagination', description: 'Page navigation' },
+        {
+          name: 'Date Picker',
+          path: '/docs/components/date-picker',
+          description: 'Calendar input',
+        },
+        { name: 'Listbox', path: '/docs/components/listbox', description: 'Selection list' },
+      ],
+    },
+    {
+      title: 'Navigation',
+      links: [
+        {
+          name: 'Navigation Menu',
+          path: '/docs/components/navigation-menu',
+          description: 'Navbar with dropdowns',
+        },
+        { name: 'Tabs', path: '/docs/components/tabs', description: 'Tabbed interface' },
+        { name: 'Breadcrumbs', path: '/docs/components/breadcrumbs', description: 'Path trail' },
+        { name: 'Nav Sidebar', path: '/docs/components/nav-sidebar', description: 'Sidebar nav' },
+      ],
+    },
+    {
+      title: 'Overlays',
+      links: [
+        { name: 'Dialog', path: '/docs/components/dialog', description: 'Modal dialogs' },
+        { name: 'Popover', path: '/docs/components/popover', description: 'Floating panels' },
+        {
+          name: 'Dropdown Menu',
+          path: '/docs/components/dropdown-menu',
+          description: 'Action menus',
+        },
+        { name: 'Tooltip', path: '/docs/components/tooltip', description: 'Hover information' },
+        { name: 'Toast', path: '/docs/components/toast', description: 'Notifications' },
+      ],
+    },
+    {
+      title: 'Display',
+      links: [
+        {
+          name: 'Accordion',
+          path: '/docs/components/accordion',
+          description: 'Collapsible panels',
+        },
+        { name: 'Avatar', path: '/docs/components/avatar', description: 'User images' },
+        { name: 'Badge', path: '/docs/components/badge', description: 'Status indicators' },
+        { name: 'Card', path: '/docs/components/card', description: 'Content containers' },
+        { name: 'Meter', path: '/docs/components/meter', description: 'Known-range values' },
+        { name: 'Progress', path: '/docs/components/progress', description: 'Task completion' },
+        { name: 'Separator', path: '/docs/components/separator', description: 'Visual dividers' },
+      ],
+    },
+  ];
+}
