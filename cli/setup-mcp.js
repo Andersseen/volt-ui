@@ -182,17 +182,19 @@ You are working with **Volt UI**, an Angular v21 component library (shadcn/ui-in
 | Badge | \`./ui/badge\` | \`ui-badge\` |
 | Card | \`./ui/card\` | \`ui-card\`, \`ui-card-header\`, \`ui-card-title\`, \`ui-card-content\`, \`ui-card-footer\` |
 | Input | \`./ui/input\` | \`ui-input\` |
+| Search | \`./ui/search\` | \`ui-search\`, \`ui-search-clear\` |
+| Autofill | \`./ui/autofill\` | \`uiAutofill\` directive |
 | Textarea | \`./ui/textarea\` | \`ui-textarea\` |
 | Checkbox | \`./ui/checkbox\` | \`ui-checkbox\` |
 | Radio | \`./ui/radio\` | \`ui-radio-group\`, \`ui-radio-item\` |
 | Switch | \`./ui/switch\` | \`ui-switch\` |
 | Toggle | \`./ui/toggle\` | \`ui-toggle\` |
-| Select | \`./ui/select\` | \`ui-select\`, \`ui-select-content\`, \`ui-select-item\` |
+| Select | \`./ui/select\` | \`ui-select\`, \`ui-native-select\`, \`ui-select-content\`, \`ui-select-item\` |
 | Tabs | \`./ui/tabs\` | \`ui-tabs\`, \`ui-tabs-list\`, \`ui-tabs-trigger\`, \`ui-tabs-content\` |
 | Accordion | \`./ui/accordion\` | \`ui-accordion\`, \`ui-accordion-item\`, \`ui-accordion-trigger\`, \`ui-accordion-content\` |
 | Avatar | \`./ui/avatar\` | \`ui-avatar\`, \`ui-avatar-image\`, \`ui-avatar-fallback\` |
 | Separator | \`./ui/separator\` | \`ui-separator\` |
-| Tooltip | \`./ui/tooltip\` | \`ui-tooltip\` |
+| Tooltip | \`./ui/tooltip\` | \`ui-tooltip\`, \`ui-tooltip-arrow\` |
 | Navigation Menu | \`./ui/navigation-menu\` | \`ui-navigation-menu\` + sub-components |
 | Form Field | \`./ui/form-field\` | \`ui-form-field\`, \`ui-form-field-label\`, \`ui-form-field-hint\`, \`ui-form-field-error\` |
 | Dialog | \`./ui/dialog\` | \`ui-dialog\` + sub-components |

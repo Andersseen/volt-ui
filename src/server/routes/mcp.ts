@@ -75,6 +75,23 @@ const components: Record<string, ComponentMeta> = {
       '<ui-input type="password" [disabled]="isDisabled()" />',
     ],
   },
+  search: {
+    name: 'Search',
+    description: 'Search field wrapper with a clear action',
+    dependencies: ['ng-primitives/search', 'ng-primitives/input'],
+    subComponents: ['search-clear'],
+    examples: [
+      `<ui-search>\n  <ui-input type="search" placeholder="Search..." />\n  <ui-search-clear>Clear</ui-search-clear>\n</ui-search>`,
+    ],
+  },
+  autofill: {
+    name: 'Autofill',
+    description: 'Directive for detecting browser autofill state on form controls',
+    dependencies: ['ng-primitives/autofill'],
+    examples: [
+      `<input uiAutofill autocomplete="email" (autofillChange)="autofilled.set($event)" />`,
+    ],
+  },
   textarea: {
     name: 'Textarea',
     description: 'Multi-line text input',

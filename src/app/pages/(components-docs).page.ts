@@ -27,6 +27,8 @@ export default class ComponentsLayout {
       links: [
         { path: '/docs/components/button', label: 'Button' },
         { path: '/docs/components/input', label: 'Input' },
+        { path: '/docs/components/search', label: 'Search' },
+        { path: '/docs/components/autofill', label: 'Autofill' },
         { path: '/docs/components/textarea', label: 'Textarea' },
         { path: '/docs/components/form-field', label: 'Form Field' },
         { path: '/docs/components/checkbox', label: 'Checkbox' },

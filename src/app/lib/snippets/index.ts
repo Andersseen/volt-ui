@@ -4,7 +4,10 @@ import badgeSource from '../../../../projects/volt/src/lib/components/badge/badg
 import cardSource from '../../../../projects/volt/src/lib/components/card/card.component.ts?raw';
 import checkboxSource from '../../../../projects/volt/src/lib/components/checkbox/checkbox.component.ts?raw';
 import inputSource from '../../../../projects/volt/src/lib/components/input/input.component.ts?raw';
+import autofillSource from '../../../../projects/volt/src/lib/components/autofill/autofill.ts?raw';
 import progressSource from '../../../../projects/volt/src/lib/components/progress/progress.ts?raw';
+import searchSource from '../../../../projects/volt/src/lib/components/search/search.ts?raw';
+import searchClearSource from '../../../../projects/volt/src/lib/components/search/search-clear.ts?raw';
 import separatorSource from '../../../../projects/volt/src/lib/components/separator/separator.component.ts?raw';
 import sliderSource from '../../../../projects/volt/src/lib/components/slider/slider.ts?raw';
 import switchSource from '../../../../projects/volt/src/lib/components/switch/switch.component.ts?raw';
@@ -32,6 +35,7 @@ import breadcrumbsEllipsisSource from '../../../../projects/volt/src/lib/compone
 
 import dropdownMenuSource from '../../../../projects/volt/src/lib/components/dropdown-menu/dropdown-menu.ts?raw';
 import dropdownMenuTriggerSource from '../../../../projects/volt/src/lib/components/dropdown-menu/dropdown-menu-trigger.ts?raw';
+import dropdownMenuSubmenuTriggerSource from '../../../../projects/volt/src/lib/components/dropdown-menu/dropdown-menu-submenu-trigger.ts?raw';
 import dropdownMenuItemSource from '../../../../projects/volt/src/lib/components/dropdown-menu/dropdown-menu-item.ts?raw';
 import dropdownMenuLabelSource from '../../../../projects/volt/src/lib/components/dropdown-menu/dropdown-menu-label.ts?raw';
 import dropdownMenuSeparatorSource from '../../../../projects/volt/src/lib/components/dropdown-menu/dropdown-menu-separator.ts?raw';
@@ -46,11 +50,13 @@ import navigationMenuContentItemSource from '../../../../projects/volt/src/lib/c
 
 import popoverTriggerSource from '../../../../projects/volt/src/lib/components/popover/popover-trigger.ts?raw';
 import popoverContentSource from '../../../../projects/volt/src/lib/components/popover/popover-content.ts?raw';
+import popoverArrowSource from '../../../../projects/volt/src/lib/components/popover/popover-arrow.ts?raw';
 
 import radioGroupSource from '../../../../projects/volt/src/lib/components/radio/radio-group.ts?raw';
 import radioItemSource from '../../../../projects/volt/src/lib/components/radio/radio-item.ts?raw';
 
 import selectSource from '../../../../projects/volt/src/lib/components/select/select.component.ts?raw';
+import nativeSelectSource from '../../../../projects/volt/src/lib/components/select/native-select.ts?raw';
 import selectContentSource from '../../../../projects/volt/src/lib/components/select/select-content.component.ts?raw';
 import selectItemSource from '../../../../projects/volt/src/lib/components/select/select-item.component.ts?raw';
 import selectLabelSource from '../../../../projects/volt/src/lib/components/select/select-label.component.ts?raw';
@@ -63,6 +69,7 @@ import tabsContentSource from '../../../../projects/volt/src/lib/components/tabs
 
 import tooltipSource from '../../../../projects/volt/src/lib/components/tooltip/tooltip.ts?raw';
 import tooltipContentSource from '../../../../projects/volt/src/lib/components/tooltip/tooltip-content.ts?raw';
+import tooltipArrowSource from '../../../../projects/volt/src/lib/components/tooltip/tooltip-arrow.ts?raw';
 
 import comboboxSource from '../../../../projects/volt/src/lib/components/combobox/combobox.ts?raw';
 import comboboxInputSource from '../../../../projects/volt/src/lib/components/combobox/combobox-input.ts?raw';
@@ -126,7 +133,12 @@ export const BADGE_SNIPPET = badgeSource;
 export const CARD_SNIPPET = cardSource;
 export const CHECKBOX_SNIPPET = checkboxSource;
 export const INPUT_SNIPPET = inputSource;
+export const AUTOFILL_SNIPPET = autofillSource;
 export const PROGRESS_SNIPPET = progressSource;
+export const SEARCH_SNIPPET = join(
+  ['search.ts', searchSource],
+  ['search-clear.ts', searchClearSource]
+);
 export const SEPARATOR_SNIPPET = separatorSource;
 export const SLIDER_SNIPPET = sliderSource;
 export const SWITCH_SNIPPET = switchSource;
@@ -160,6 +172,7 @@ export const BREADCRUMBS_SNIPPET = join(
 export const DROPDOWN_MENU_SNIPPET = join(
   ['dropdown-menu.ts', dropdownMenuSource],
   ['dropdown-menu-trigger.ts', dropdownMenuTriggerSource],
+  ['dropdown-menu-submenu-trigger.ts', dropdownMenuSubmenuTriggerSource],
   ['dropdown-menu-item.ts', dropdownMenuItemSource],
   ['dropdown-menu-label.ts', dropdownMenuLabelSource],
   ['dropdown-menu-separator.ts', dropdownMenuSeparatorSource]
@@ -177,7 +190,8 @@ export const NAVIGATION_MENU_SNIPPET = join(
 
 export const POPOVER_SNIPPET = join(
   ['popover-trigger.ts', popoverTriggerSource],
-  ['popover-content.ts', popoverContentSource]
+  ['popover-content.ts', popoverContentSource],
+  ['popover-arrow.ts', popoverArrowSource]
 );
 
 export const RADIO_SNIPPET = join(
@@ -187,6 +201,7 @@ export const RADIO_SNIPPET = join(
 
 export const SELECT_SNIPPET = join(
   ['select.component.ts', selectSource],
+  ['native-select.ts', nativeSelectSource],
   ['select-content.component.ts', selectContentSource],
   ['select-item.component.ts', selectItemSource],
   ['select-label.component.ts', selectLabelSource],
@@ -202,7 +217,8 @@ export const TABS_SNIPPET = join(
 
 export const TOOLTIP_SNIPPET = join(
   ['tooltip.ts', tooltipSource],
-  ['tooltip-content.ts', tooltipContentSource]
+  ['tooltip-content.ts', tooltipContentSource],
+  ['tooltip-arrow.ts', tooltipArrowSource]
 );
 
 export const COMBOBOX_SNIPPET = join(

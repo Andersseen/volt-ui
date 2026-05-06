@@ -79,6 +79,16 @@ export default class ComponentsIndexPage {
       links: [
         { name: 'Button', path: '/docs/components/button', description: 'Interactive buttons' },
         { name: 'Input', path: '/docs/components/input', description: 'Text input fields' },
+        {
+          name: 'Search',
+          path: '/docs/components/search',
+          description: 'Search with clear action',
+        },
+        {
+          name: 'Autofill',
+          path: '/docs/components/autofill',
+          description: 'Browser autofill detection',
+        },
         { name: 'Textarea', path: '/docs/components/textarea', description: 'Multi-line input' },
         {
           name: 'Form Field',

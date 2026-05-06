@@ -20,6 +20,14 @@ const components = {
     files: ['input/input.component.ts', 'input/index.ts'],
     dependencies: [],
   },
+  search: {
+    files: ['search/search.ts', 'search/search-clear.ts', 'search/index.ts'],
+    dependencies: [],
+  },
+  autofill: {
+    files: ['autofill/autofill.ts', 'autofill/index.ts'],
+    dependencies: [],
+  },
   textarea: {
     files: ['textarea/textarea.ts', 'textarea/index.ts'],
     dependencies: [],
@@ -47,6 +55,7 @@ const components = {
   select: {
     files: [
       'select/select.component.ts',
+      'select/native-select.ts',
       'select/select-content.component.ts',
       'select/select-item.component.ts',
       'select/select-label.component.ts',
@@ -88,7 +97,12 @@ const components = {
     dependencies: [],
   },
   tooltip: {
-    files: ['tooltip/tooltip.ts', 'tooltip/tooltip-content.ts', 'tooltip/index.ts'],
+    files: [
+      'tooltip/tooltip.ts',
+      'tooltip/tooltip-content.ts',
+      'tooltip/tooltip-arrow.ts',
+      'tooltip/index.ts',
+    ],
     dependencies: [],
   },
   'navigation-menu': {
@@ -126,12 +140,18 @@ const components = {
     dependencies: [],
   },
   popover: {
-    files: ['popover/popover-trigger.ts', 'popover/popover-content.ts', 'popover/index.ts'],
+    files: [
+      'popover/popover-trigger.ts',
+      'popover/popover-content.ts',
+      'popover/popover-arrow.ts',
+      'popover/index.ts',
+    ],
     dependencies: [],
   },
   'dropdown-menu': {
     files: [
       'dropdown-menu/dropdown-menu-trigger.ts',
+      'dropdown-menu/dropdown-menu-submenu-trigger.ts',
       'dropdown-menu/dropdown-menu.ts',
       'dropdown-menu/dropdown-menu-item.ts',
       'dropdown-menu/dropdown-menu-separator.ts',
@@ -275,12 +295,13 @@ function fetchFile(url) {
 function transformContent(content) {
   // Replace selector volt- with ui-
   content = content.replace(/selector:\s*['"]([^'"]*)['"]/g, (_match, selector) => {
-    const newSelector = selector.replace(/volt-/g, 'ui-');
+    const newSelector = selector.replace(/volt-/g, 'ui-').replace(/\bvolt([A-Z]\w*)/g, 'ui$1');
     return `selector: '${newSelector}'`;
   });
 
   // Replace all VoltXxx identifiers with UiXxx (covers class declarations, exports, imports)
   content = content.replace(/\bVolt([A-Z]\w*)/g, 'Ui$1');
+  content = content.replace(/\bvolt([A-Z]\w*)/g, 'ui$1');
 
   // Replace imports from 'volt'
   content = content.replace(/from\s+['"]volt['"]/g, "from './index'");
