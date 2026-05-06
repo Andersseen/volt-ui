@@ -11,7 +11,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
     <!-- Desktop aside -->
     <aside
-      class="hidden md:flex w-full md:w-64 flex-shrink-0 md:sticky md:top-24 flex-col gap-2"
+      class="hidden md:flex w-full md:w-64 flex-shrink-0 md:sticky md:top-24 md:max-h-[calc(100vh-7rem)] flex-col gap-2 overflow-y-auto overscroll-contain pr-3 pb-6"
       [attr.aria-label]="label() || title()"
     >
       @if (title()) {
