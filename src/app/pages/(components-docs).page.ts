@@ -54,7 +54,6 @@ export default class ComponentsLayout {
         { path: '/docs/components/navigation-menu', label: 'Nav Menu' },
         { path: '/docs/components/tabs', label: 'Tabs' },
         { path: '/docs/components/breadcrumbs', label: 'Breadcrumbs' },
-        { path: '/docs/components/nav-sidebar', label: 'Nav Sidebar' },
       ],
     },
     {

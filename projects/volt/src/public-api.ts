@@ -23,7 +23,6 @@ export * from './lib/components/select';
 export * from './lib/components/theme';
 export * from './lib/components/navigation-menu';
 export * from './lib/components/dialog';
-export * from './lib/components/nav-sidebar';
 export * from './lib/components/popover';
 export * from './lib/components/dropdown-menu';
 export * from './lib/components/progress';

@@ -14,14 +14,22 @@
   --color-foreground: var(--foreground);
   --color-surface: var(--surface);
   --color-surface-foreground: var(--surface-foreground);
+  --color-card: var(--surface);
+  --color-card-foreground: var(--surface-foreground);
+  --color-popover: var(--surface);
+  --color-popover-foreground: var(--surface-foreground);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--muted);
+  --color-accent-foreground: var(--foreground);
   --color-border: var(--border);
   --color-ring: var(--ring);
   --color-input: var(--input);
 
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
 
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
@@ -37,6 +45,11 @@
 
   --color-info: var(--info);
   --color-info-foreground: var(--info-foreground);
+
+  --scrollbar-size: 0.75rem;
+  --scrollbar-track: color-mix(in oklch, var(--background) 88%, var(--surface));
+  --scrollbar-thumb: color-mix(in oklch, var(--primary) 42%, var(--border));
+  --scrollbar-thumb-hover: color-mix(in oklch, var(--primary) 64%, var(--border));
 
   /* Dynamic radius based on user selection */
   --radius-sm: calc(var(--radius) - 0.125rem);
@@ -59,6 +72,35 @@
   --radius: 0.5rem; /* default */
 }
 
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+*::-webkit-scrollbar {
+  width: var(--scrollbar-size);
+  height: var(--scrollbar-size);
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+*::-webkit-scrollbar-thumb {
+  min-height: 2rem;
+  border: 3px solid var(--scrollbar-track);
+  border-radius: var(--radius-full);
+  background: var(--scrollbar-thumb);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+*::-webkit-scrollbar-corner {
+  background: var(--scrollbar-track);
+}
+
 /* Base Light Mode variables */
 :root {
   --background: oklch(1 0 0);
@@ -73,6 +115,8 @@
 
   --primary: oklch(0.6 0.22 265); /* default indigo */
   --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.96 0.004 265);
+  --secondary-foreground: oklch(0.14 0.006 265);
 
   --destructive: oklch(0.6 0.22 25);
   --destructive-foreground: oklch(1 0 0);
@@ -105,6 +149,8 @@
 
   --primary: oklch(0.7 0.16 265); /* default indigo */
   --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.15 0.01 265);
+  --secondary-foreground: oklch(0.98 0.002 265);
 
   --destructive: oklch(0.7 0.18 25);
   --destructive-foreground: oklch(1 0 0);

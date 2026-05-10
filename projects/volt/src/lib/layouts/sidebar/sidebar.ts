@@ -77,7 +77,7 @@ export class VoltSidebarHeader {
         background: transparent;
       }
       .volt-scrollbar::-webkit-scrollbar-thumb {
-        background-color: hsl(var(--border));
+        background-color: var(--scrollbar-thumb);
         border-radius: 10px;
       }
     `,

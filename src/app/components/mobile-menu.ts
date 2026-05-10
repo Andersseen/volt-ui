@@ -38,7 +38,7 @@ import { IconMenu, IconClose } from '../icons';
       <!-- Overlay/Backdrop -->
       <div
         ngpDialogOverlay
-        class="fixed inset-0 bg-black/50 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
+        class="fixed inset-0 bg-foreground/50 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
       ></div>
 
       <!-- Drawer Content -->
@@ -89,7 +89,15 @@ import { IconMenu, IconClose } from '../icons';
             Components
           </a>
           <a
-            routerLink="/docs/icons"
+            routerLink="/create-theme"
+            routerLinkActive="bg-muted text-foreground font-medium"
+            (click)="close()"
+            class="px-3 py-2.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+          >
+            Create Theme
+          </a>
+          <a
+            routerLink="/icons"
             routerLinkActive="bg-muted text-foreground font-medium"
             (click)="close()"
             class="px-3 py-2.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"

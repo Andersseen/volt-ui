@@ -21,7 +21,7 @@ export class VoltDialogContent {
 
   protected computedClass = computed(() => {
     const baseStyles =
-      'fixed z-50 bg-background shadow-xl border transition-transform duration-300 ease-out';
+      'fixed z-50 bg-surface text-surface-foreground shadow-xl border transition-transform duration-300 ease-out';
 
     const variants: Record<DialogVariant, string> = {
       default:

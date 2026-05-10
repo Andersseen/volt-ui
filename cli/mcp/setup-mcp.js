@@ -118,7 +118,7 @@ Volt UI is inspired by shadcn/ui, built on ng-primitives for accessible Angular 
 ## Components
 button · badge · card · input · textarea · checkbox · radio · switch · toggle ·
 select · tabs · accordion · avatar · separator · tooltip · navigation-menu · form-field ·
-dialog · popover · dropdown-menu · slider · progress · breadcrumbs · nav-sidebar · sidebar ·
+dialog · popover · dropdown-menu · slider · progress · breadcrumbs · sidebar ·
 toggle-group · meter · pagination · toast · input-otp · file-upload · combobox ·
 date-picker · listbox · toolbar
 
@@ -203,7 +203,6 @@ You are working with **Volt UI**, an Angular v21 component library (shadcn/ui-in
 | Slider | \`./ui/slider\` | \`ui-slider\` + sub-components |
 | Progress | \`./ui/progress\` | \`ui-progress\` + sub-components |
 | Breadcrumbs | \`./ui/breadcrumbs\` | \`ui-breadcrumbs\` + sub-components |
-| Nav Sidebar | \`./ui/nav-sidebar\` | \`ui-nav-sidebar\` |
 | Toggle Group | \`./ui/toggle-group\` | \`ui-toggle-group\` + sub-components |
 | Meter | \`./ui/meter\` | \`ui-meter\` + sub-components |
 | Pagination | \`./ui/pagination\` | \`ui-pagination\` + sub-components |

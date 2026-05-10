@@ -1,4 +1,4 @@
-import { Directive, input, output } from '@angular/core';
+import { booleanAttribute, Directive, input, output } from '@angular/core';
 import { NgpFileUpload } from 'ng-primitives/file-upload';
 
 @Directive({
@@ -25,10 +25,10 @@ import { NgpFileUpload } from 'ng-primitives/file-upload';
 })
 export class VoltFileUpload {
   readonly fileTypes = input<string | string[]>();
-  readonly multiple = input<boolean>(false);
-  readonly directory = input<boolean>(false);
-  readonly dragDrop = input<boolean>(false);
-  readonly disabled = input<boolean>(false);
+  readonly multiple = input<boolean, unknown>(false, { transform: booleanAttribute });
+  readonly directory = input<boolean, unknown>(false, { transform: booleanAttribute });
+  readonly dragDrop = input<boolean, unknown>(false, { transform: booleanAttribute });
+  readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
 
   readonly selected = output<FileList | null>();
   readonly canceled = output<void>();
