@@ -46,6 +46,11 @@
   --color-info: var(--info);
   --color-info-foreground: var(--info-foreground);
 
+  --scrollbar-size: 0.75rem;
+  --scrollbar-track: color-mix(in oklch, var(--background) 88%, var(--surface));
+  --scrollbar-thumb: color-mix(in oklch, var(--primary) 42%, var(--border));
+  --scrollbar-thumb-hover: color-mix(in oklch, var(--primary) 64%, var(--border));
+
   /* Dynamic radius based on user selection */
   --radius-sm: calc(var(--radius) - 0.125rem);
   --radius-md: var(--radius);
@@ -65,6 +70,35 @@
 
 :root {
   --radius: 0.5rem; /* default */
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+*::-webkit-scrollbar {
+  width: var(--scrollbar-size);
+  height: var(--scrollbar-size);
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+*::-webkit-scrollbar-thumb {
+  min-height: 2rem;
+  border: 3px solid var(--scrollbar-track);
+  border-radius: var(--radius-full);
+  background: var(--scrollbar-thumb);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+*::-webkit-scrollbar-corner {
+  background: var(--scrollbar-track);
 }
 
 /* Base Light Mode variables */

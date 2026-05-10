@@ -35,6 +35,11 @@
   --color-info: var(--info);
   --color-info-foreground: var(--info-foreground);
 
+  --scrollbar-size: 0.75rem;
+  --scrollbar-track: color-mix(in oklch, var(--background) 88%, var(--surface));
+  --scrollbar-thumb: color-mix(in oklch, var(--primary) 42%, var(--border));
+  --scrollbar-thumb-hover: color-mix(in oklch, var(--primary) 64%, var(--border));
+
   --radius-sm: calc(var(--radius) - 0.125rem);
   --radius-md: var(--radius);
   --radius-lg: calc(var(--radius) + 0.125rem);
@@ -136,4 +141,33 @@
   --font-weight-base: 400;
   --font-weight-heading: 600;
   --font-weight-label: 500;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+*::-webkit-scrollbar {
+  width: var(--scrollbar-size);
+  height: var(--scrollbar-size);
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+*::-webkit-scrollbar-thumb {
+  min-height: 2rem;
+  border: 3px solid var(--scrollbar-track);
+  border-radius: var(--radius-full);
+  background: var(--scrollbar-thumb);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+*::-webkit-scrollbar-corner {
+  background: var(--scrollbar-track);
 }
