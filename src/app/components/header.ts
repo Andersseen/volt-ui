@@ -74,6 +74,13 @@ import { IconGithub } from '../icons';
               Components
             </a>
             <a
+              routerLink="/create-theme"
+              routerLinkActive="text-foreground"
+              class="px-3 py-2 rounded-md transition-colors hover:text-foreground"
+            >
+              Create Theme
+            </a>
+            <a
               routerLink="/icons"
               routerLinkActive="text-foreground"
               class="px-3 py-2 rounded-md transition-colors hover:text-foreground"

@@ -89,7 +89,15 @@ import { IconMenu, IconClose } from '../icons';
             Components
           </a>
           <a
-            routerLink="/docs/icons"
+            routerLink="/create-theme"
+            routerLinkActive="bg-muted text-foreground font-medium"
+            (click)="close()"
+            class="px-3 py-2.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+          >
+            Create Theme
+          </a>
+          <a
+            routerLink="/icons"
             routerLinkActive="bg-muted text-foreground font-medium"
             (click)="close()"
             class="px-3 py-2.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
