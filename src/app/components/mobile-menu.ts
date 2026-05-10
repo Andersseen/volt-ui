@@ -38,7 +38,7 @@ import { IconMenu, IconClose } from '../icons';
       <!-- Overlay/Backdrop -->
       <div
         ngpDialogOverlay
-        class="fixed inset-0 bg-black/50 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
+        class="fixed inset-0 bg-foreground/50 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
       ></div>
 
       <!-- Drawer Content -->

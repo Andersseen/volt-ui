@@ -181,10 +181,6 @@ const components = {
     ],
     dependencies: [],
   },
-  'nav-sidebar': {
-    files: ['nav-sidebar/nav-sidebar.ts', 'nav-sidebar/index.ts'],
-    dependencies: [],
-  },
   'toggle-group': {
     files: [
       'toggle-group/toggle-group.ts',

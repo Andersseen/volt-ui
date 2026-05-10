@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { booleanAttribute, ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { NgpFileDropzone } from 'ng-primitives/file-upload';
 
 @Component({
@@ -28,9 +28,9 @@ import { NgpFileDropzone } from 'ng-primitives/file-upload';
 })
 export class VoltFileDropzone {
   readonly fileTypes = input<string | string[]>();
-  readonly multiple = input<boolean>(false);
-  readonly directory = input<boolean>(false);
-  readonly disabled = input<boolean>(false);
+  readonly multiple = input<boolean, unknown>(false, { transform: booleanAttribute });
+  readonly directory = input<boolean, unknown>(false, { transform: booleanAttribute });
+  readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
 
   readonly selected = output<FileList | null>();
   readonly rejected = output<void>();

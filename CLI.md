@@ -69,7 +69,6 @@ volt list
 - `progress` - Progress indicator
 - `slider` - Range slider
 - `breadcrumbs` - Breadcrumb navigation
-- `nav-sidebar` - Navigation sidebar
 - `toggle-group` - Grouped toggle controls
 - `meter` - Meter value indicator
 - `pagination` - Pagination controls

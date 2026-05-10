@@ -138,7 +138,6 @@ export default class ComponentsIndexPage {
         },
         { name: 'Tabs', path: '/docs/components/tabs', description: 'Tabbed interface' },
         { name: 'Breadcrumbs', path: '/docs/components/breadcrumbs', description: 'Path trail' },
-        { name: 'Nav Sidebar', path: '/docs/components/nav-sidebar', description: 'Sidebar nav' },
       ],
     },
     {

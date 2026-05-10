@@ -125,7 +125,6 @@ See [MCP Documentation](./mcp/README.md) for complete details.
 - Slider
 - Progress
 - Breadcrumbs
-- Nav Sidebar
 - Sidebar Layout
 - Toggle Group
 - Meter

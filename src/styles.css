@@ -14,14 +14,22 @@
   --color-foreground: var(--foreground);
   --color-surface: var(--surface);
   --color-surface-foreground: var(--surface-foreground);
+  --color-card: var(--surface);
+  --color-card-foreground: var(--surface-foreground);
+  --color-popover: var(--surface);
+  --color-popover-foreground: var(--surface-foreground);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--muted);
+  --color-accent-foreground: var(--foreground);
   --color-border: var(--border);
   --color-ring: var(--ring);
   --color-input: var(--input);
 
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
 
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
@@ -73,6 +81,8 @@
 
   --primary: oklch(0.6 0.22 265); /* default indigo */
   --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.96 0.004 265);
+  --secondary-foreground: oklch(0.14 0.006 265);
 
   --destructive: oklch(0.6 0.22 25);
   --destructive-foreground: oklch(1 0 0);
@@ -105,6 +115,8 @@
 
   --primary: oklch(0.7 0.16 265); /* default indigo */
   --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.15 0.01 265);
+  --secondary-foreground: oklch(0.98 0.002 265);
 
   --destructive: oklch(0.7 0.18 25);
   --destructive-foreground: oklch(1 0 0);

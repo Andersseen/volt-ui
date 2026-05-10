@@ -333,13 +333,6 @@ const components: Record<string, ComponentMeta> = {
       `<ui-breadcrumbs>\n  <ui-breadcrumbs-item><ui-breadcrumbs-link href="/">Home</ui-breadcrumbs-link></ui-breadcrumbs-item>\n  <ui-breadcrumbs-separator />\n  <ui-breadcrumbs-item><ui-breadcrumbs-page>Current</ui-breadcrumbs-page></ui-breadcrumbs-item>\n</ui-breadcrumbs>`,
     ],
   },
-  'nav-sidebar': {
-    name: 'Nav Sidebar',
-    description: 'Navigation sidebar component for menus',
-    dependencies: ['ng-primitives/navigation-menu'],
-    inputs: [{ name: 'collapsed', type: 'boolean', default: false }],
-    examples: ['<ui-nav-sidebar>…</ui-nav-sidebar>'],
-  },
   sidebar: {
     name: 'Sidebar Layout',
     description: 'Application sidebar layout with header, content, groups, items and footer',
@@ -573,7 +566,16 @@ interface JsonRpcRequest {
   params?: Record<string, unknown>;
 }
 
-// let clientCapabilities: Record<string, unknown> = {};
+let clientCapabilities: Record<string, unknown> = {};
+
+function getServerCapabilities(): Record<string, unknown> {
+  const supportsLogging = 'logging' in clientCapabilities;
+
+  return {
+    tools: {},
+    ...(supportsLogging ? { logging: {} } : {}),
+  };
+}
 
 // ---------------------------------------------------------------------------
 // MCP tool definitions
@@ -778,10 +780,7 @@ const rpcHandlers: Record<string, RpcHandler> = {
       id,
       result: {
         protocolVersion: '2024-11-05',
-        capabilities: {
-          tools: {},
-          logging: {},
-        },
+        capabilities: getServerCapabilities(),
         serverInfo: { name: 'volt-ui', version: '1.0.0' },
       },
     };

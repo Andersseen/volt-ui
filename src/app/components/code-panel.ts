@@ -52,8 +52,8 @@ import { CopyButton } from './copy-button';
             class="ml-auto inline-flex items-center gap-1 px-2 py-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
           >
             @if (cliCopied()) {
-              <icon-check class="w-[14px] h-[14px] text-green-600" />
-              <span class="text-green-600">Copied!</span>
+              <icon-check class="w-[14px] h-[14px] text-success" />
+              <span class="text-success">Copied!</span>
             } @else {
               <icon-copy class="w-[14px] h-[14px]" />
               <span>Copy</span>
@@ -70,8 +70,12 @@ import { CopyButton } from './copy-button';
           </volt-tabs-list>
 
           <volt-tabs-content value="preview">
-            <div class="rounded-lg border border-border bg-muted/20 p-6">
-              <ng-content />
+            <div
+              class="flex h-[400px] items-center justify-center overflow-auto rounded-lg border border-border bg-muted/20 p-6"
+            >
+              <div class="w-full">
+                <ng-content />
+              </div>
             </div>
           </volt-tabs-content>
 

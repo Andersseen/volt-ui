@@ -662,18 +662,3 @@ import { VoltToolbar, VoltToggle, VoltButton } from 'volt';
   \`,
 })
 export class MyComponent {}`;
-
-export const NAV_SIDEBAR_USAGE = `import { Component } from '@angular/core';
-import { VoltNavSidebar } from 'volt';
-
-@Component({
-  imports: [VoltNavSidebar],
-  template: \`
-    <volt-nav-sidebar title="Settings" description="Workspace controls">
-      <a href="/profile">Profile</a>
-      <a href="/billing">Billing</a>
-      <a href="/team">Team</a>
-    </volt-nav-sidebar>
-  \`,
-})
-export class MyComponent {}`;

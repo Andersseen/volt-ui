@@ -10,7 +10,7 @@ import { NgpDialogOverlay } from 'ng-primitives/dialog';
     },
   ],
   host: {
-    class: 'fixed inset-0 bg-black/50 transition-opacity duration-300',
+    class: 'fixed inset-0 bg-foreground/50 transition-opacity duration-300',
   },
 })
 export class VoltDialogOverlay {}

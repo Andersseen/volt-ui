@@ -7,7 +7,6 @@ import {
   NgpDialogTitle,
   NgpDialogTrigger,
 } from 'ng-primitives/dialog';
-import { VoltNavSidebar } from 'volt';
 import { IconChevronRight, IconClose } from '../icons';
 
 export interface DocsSidebarLink {
@@ -32,23 +31,28 @@ export interface DocsSidebarGroup {
     NgpDialogOverlay,
     NgpDialogTitle,
     NgpDialogDescription,
-    VoltNavSidebar,
     IconChevronRight,
     IconClose,
   ],
   template: `
-    <volt-nav-sidebar [title]="title()" [description]="description()">
-      <!-- Mobile trigger (projected into [slot=mobile-trigger]) -->
+    <div class="w-full md:hidden">
       <button
-        slot="mobile-trigger"
         [ngpDialogTrigger]="mobileDrawer"
         class="w-full inline-flex items-center justify-between px-4 py-2.5 rounded-lg border border-border bg-muted/50 text-sm font-medium hover:bg-muted transition-colors"
       >
         <span>{{ browseLabel() }}</span>
         <icon-chevron-right />
       </button>
+    </div>
 
-      <!-- Desktop nav links -->
+    <aside
+      class="hidden md:flex w-full md:w-64 flex-shrink-0 md:sticky md:top-24 md:max-h-[calc(100vh-7rem)] flex-col gap-2 overflow-y-auto overscroll-contain pr-3 pb-6"
+      [attr.aria-label]="title()"
+    >
+      <h4 class="font-medium text-sm mt-2 text-foreground">{{ title() }}</h4>
+      @if (description()) {
+        <p class="text-xs text-muted-foreground">{{ description() }}</p>
+      }
       @for (group of groups(); track $index) {
         @if (group.heading) {
           <h5 class="font-medium text-xs mt-4 text-muted-foreground uppercase tracking-wider">
@@ -70,17 +74,17 @@ export interface DocsSidebarGroup {
           }
         </ul>
       }
-    </volt-nav-sidebar>
+    </aside>
 
     <!-- Mobile Drawer (stays in app — uses ng-primitives + app icons) -->
     <ng-template #mobileDrawer let-close="close">
       <div
         ngpDialogOverlay
-        class="fixed inset-0 bg-black/50 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
+        class="fixed inset-0 bg-foreground/50 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
       ></div>
       <div
         ngpDialog
-        class="fixed inset-y-0 left-0 z-50 h-full w-[300px] bg-background shadow-xl border-r border-border data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left duration-300"
+        class="fixed inset-y-0 left-0 z-50 h-full w-[300px] bg-surface text-surface-foreground shadow-xl border-r border-border data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left duration-300"
       >
         <div class="flex items-center justify-between p-4 border-b border-border">
           <h2 ngpDialogTitle class="text-lg font-semibold">{{ title() }}</h2>

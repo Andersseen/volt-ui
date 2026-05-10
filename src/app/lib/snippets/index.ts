@@ -107,8 +107,6 @@ import meterSource from '../../../../projects/volt/src/lib/components/meter/mete
 import meterTrackSource from '../../../../projects/volt/src/lib/components/meter/meter-track.ts?raw';
 import meterIndicatorSource from '../../../../projects/volt/src/lib/components/meter/meter-indicator.ts?raw';
 
-import navSidebarSource from '../../../../projects/volt/src/lib/components/nav-sidebar/nav-sidebar.ts?raw';
-
 import paginationSource from '../../../../projects/volt/src/lib/components/pagination/pagination.ts?raw';
 import paginationFirstSource from '../../../../projects/volt/src/lib/components/pagination/pagination-first.ts?raw';
 import paginationPreviousSource from '../../../../projects/volt/src/lib/components/pagination/pagination-previous.ts?raw';
@@ -270,8 +268,6 @@ export const METER_SNIPPET = join(
   ['meter-track.ts', meterTrackSource],
   ['meter-indicator.ts', meterIndicatorSource]
 );
-
-export const NAV_SIDEBAR_SNIPPET = navSidebarSource;
 
 export const PAGINATION_SNIPPET = join(
   ['pagination.ts', paginationSource],
