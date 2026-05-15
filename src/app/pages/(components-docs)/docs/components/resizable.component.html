@@ -1,0 +1,53 @@
+<div class="space-y-6">
+  <div>
+    <h1 class="text-3xl font-bold tracking-tight">Resizable</h1>
+    <p class="text-lg text-muted-foreground mt-2">
+      Accessible resizable panel groups with draggable handles.
+    </p>
+  </div>
+
+  <app-code-panel title="Usage" [code]="resizableUsage" [tabbed]="true">
+    <div
+      class="border rounded-xl border-border/50 p-6 md:p-10 flex flex-col items-center justify-center bg-background/50 relative overflow-hidden min-h-[300px]"
+    >
+      <div
+        class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"
+      ></div>
+
+      <div class="relative z-10 w-full max-w-2xl space-y-6">
+        <div>
+          <p class="text-sm font-medium mb-2">Horizontal</p>
+          <volt-resizable orientation="horizontal" class="h-48 rounded-lg border border-border">
+            <volt-resizable-panel class="p-4 bg-muted/30 border-r border-border">
+              <p class="text-sm text-muted-foreground">Left panel</p>
+            </volt-resizable-panel>
+            <volt-resizable-handle />
+            <volt-resizable-panel class="p-4 bg-muted/30">
+              <p class="text-sm text-muted-foreground">Right panel</p>
+            </volt-resizable-panel>
+          </volt-resizable>
+        </div>
+
+        <div>
+          <p class="text-sm font-medium mb-2">Vertical</p>
+          <volt-resizable orientation="vertical" class="h-48 rounded-lg border border-border">
+            <volt-resizable-panel class="p-4 bg-muted/30 border-b border-border">
+              <p class="text-sm text-muted-foreground">Top panel</p>
+            </volt-resizable-panel>
+            <volt-resizable-handle />
+            <volt-resizable-panel class="p-4 bg-muted/30">
+              <p class="text-sm text-muted-foreground">Bottom panel</p>
+            </volt-resizable-panel>
+          </volt-resizable>
+        </div>
+      </div>
+    </div>
+  </app-code-panel>
+
+  <app-code-panel
+    title="Component Source"
+    [code]="resizableCode"
+    cliCommand="npx github:Andersseen/volt-ui add resizable"
+    description="Copy this code to your project."
+  />
+</div>

@@ -1,0 +1,124 @@
+<div class="space-y-6">
+  <div>
+    <h1 class="text-3xl font-bold tracking-tight">Drawer</h1>
+    <p class="text-lg text-muted-foreground mt-2">
+      A panel that slides in from the edge of the screen. Built on top of Dialog primitives.
+    </p>
+  </div>
+
+  <app-code-panel title="Usage" [code]="drawerUsage" [tabbed]="true">
+    <div
+      class="border rounded-xl border-border/50 p-6 md:p-10 flex flex-col items-center justify-center bg-background/50 relative overflow-hidden min-h-[300px]"
+    >
+      <div
+        class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"
+      ></div>
+
+      <div class="relative z-10 flex flex-wrap gap-3 justify-center items-center">
+        <volt-button variant="outline" [voltDrawer]="drawerRightTpl">
+          Open Right Drawer
+        </volt-button>
+        <volt-button variant="outline" [voltDrawer]="drawerLeftTpl"> Open Left Drawer </volt-button>
+        <volt-button variant="outline" [voltDrawer]="drawerTopTpl"> Open Top Drawer </volt-button>
+        <volt-button variant="outline" [voltDrawer]="drawerBottomTpl">
+          Open Bottom Drawer
+        </volt-button>
+
+        <ng-template #drawerRightTpl let-close="close">
+          <div voltDrawerOverlay></div>
+          <div voltDrawerContent side="right">
+            <div class="flex items-center justify-between p-4 border-b border-border">
+              <h2 voltDrawerTitle>Menu</h2>
+              <volt-drawer-close>
+                <icon-close class="w-4 h-4" />
+              </volt-drawer-close>
+            </div>
+            <nav class="p-4" voltDrawerDescription>
+              <ul class="space-y-2">
+                <li>
+                  <a href="#" class="block px-3 py-2 rounded-md text-sm hover:bg-muted">Home</a>
+                </li>
+                <li>
+                  <a href="#" class="block px-3 py-2 rounded-md text-sm hover:bg-muted">About</a>
+                </li>
+                <li>
+                  <a href="#" class="block px-3 py-2 rounded-md text-sm hover:bg-muted">Services</a>
+                </li>
+                <li>
+                  <a href="#" class="block px-3 py-2 rounded-md text-sm hover:bg-muted">Contact</a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </ng-template>
+
+        <ng-template #drawerLeftTpl let-close="close">
+          <div voltDrawerOverlay></div>
+          <div voltDrawerContent side="left">
+            <div class="flex items-center justify-between p-4 border-b border-border">
+              <h2 voltDrawerTitle>Settings</h2>
+              <volt-drawer-close>
+                <icon-close class="w-4 h-4" />
+              </volt-drawer-close>
+            </div>
+            <div class="p-4" voltDrawerDescription>
+              <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                  <span class="text-sm font-medium">Dark Mode</span>
+                  <volt-switch [(checked)]="darkMode" />
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-sm font-medium">Notifications</span>
+                  <volt-switch [(checked)]="notifications" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+
+        <ng-template #drawerTopTpl let-close="close">
+          <div voltDrawerOverlay></div>
+          <div voltDrawerContent side="top">
+            <div class="flex items-center justify-between p-4 border-b border-border">
+              <h2 voltDrawerTitle>Search</h2>
+              <volt-drawer-close>
+                <icon-close class="w-4 h-4" />
+              </volt-drawer-close>
+            </div>
+            <div class="p-4" voltDrawerDescription>
+              <input
+                class="flex h-10 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm"
+                placeholder="Type to search..."
+              />
+            </div>
+          </div>
+        </ng-template>
+
+        <ng-template #drawerBottomTpl let-close="close">
+          <div voltDrawerOverlay></div>
+          <div voltDrawerContent side="bottom">
+            <div class="flex items-center justify-between p-4 border-b border-border">
+              <h2 voltDrawerTitle>Actions</h2>
+              <volt-drawer-close>
+                <icon-close class="w-4 h-4" />
+              </volt-drawer-close>
+            </div>
+            <div class="p-4" voltDrawerDescription>
+              <div class="flex gap-2">
+                <volt-button variant="outline">Cancel</volt-button>
+                <volt-button>Confirm</volt-button>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </app-code-panel>
+
+  <app-code-panel
+    title="Component Source"
+    [code]="drawerCode"
+    cliCommand="npx github:Andersseen/volt-ui add drawer"
+    description="Copy this code to your project. The component uses ng-primitives/dialog."
+  />
+</div>

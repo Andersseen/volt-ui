@@ -122,6 +122,28 @@ import toastCloseSource from '../../../../projects/volt/src/lib/components/toast
 import toggleGroupSource from '../../../../projects/volt/src/lib/components/toggle-group/toggle-group.ts?raw';
 import toggleGroupItemSource from '../../../../projects/volt/src/lib/components/toggle-group/toggle-group-item.ts?raw';
 
+import skeletonSource from '../../../../projects/volt/src/lib/components/skeleton/skeleton.ts?raw';
+
+import tableSource from '../../../../projects/volt/src/lib/components/table/table.ts?raw';
+import tableHeaderSource from '../../../../projects/volt/src/lib/components/table/table-header.ts?raw';
+import tableBodySource from '../../../../projects/volt/src/lib/components/table/table-body.ts?raw';
+import tableFooterSource from '../../../../projects/volt/src/lib/components/table/table-footer.ts?raw';
+import tableRowSource from '../../../../projects/volt/src/lib/components/table/table-row.ts?raw';
+import tableHeadSource from '../../../../projects/volt/src/lib/components/table/table-head.ts?raw';
+import tableCellSource from '../../../../projects/volt/src/lib/components/table/table-cell.ts?raw';
+import tableCaptionSource from '../../../../projects/volt/src/lib/components/table/table-caption.ts?raw';
+
+import drawerSource from '../../../../projects/volt/src/lib/components/drawer/drawer.ts?raw';
+import drawerOverlaySource from '../../../../projects/volt/src/lib/components/drawer/drawer-overlay.ts?raw';
+import drawerContentSource from '../../../../projects/volt/src/lib/components/drawer/drawer-content.ts?raw';
+import drawerTitleSource from '../../../../projects/volt/src/lib/components/drawer/drawer-title.ts?raw';
+import drawerDescriptionSource from '../../../../projects/volt/src/lib/components/drawer/drawer-description.ts?raw';
+import drawerCloseSource from '../../../../projects/volt/src/lib/components/drawer/drawer-close.ts?raw';
+
+import resizableSource from '../../../../projects/volt/src/lib/components/resizable/resizable.ts?raw';
+import resizablePanelSource from '../../../../projects/volt/src/lib/components/resizable/resizable-panel.ts?raw';
+import resizableHandleSource from '../../../../projects/volt/src/lib/components/resizable/resizable-handle.ts?raw';
+
 function join(...parts: [filename: string, source: string][]): string {
   return parts.map(([filename, source]) => `// ${filename}\n${source}`).join('\n\n');
 }
@@ -288,4 +310,32 @@ export const TOAST_SNIPPET = join(
 export const TOGGLE_GROUP_SNIPPET = join(
   ['toggle-group.ts', toggleGroupSource],
   ['toggle-group-item.ts', toggleGroupItemSource]
+);
+
+export const SKELETON_SNIPPET = skeletonSource;
+
+export const TABLE_SNIPPET = join(
+  ['table.ts', tableSource],
+  ['table-header.ts', tableHeaderSource],
+  ['table-body.ts', tableBodySource],
+  ['table-footer.ts', tableFooterSource],
+  ['table-row.ts', tableRowSource],
+  ['table-head.ts', tableHeadSource],
+  ['table-cell.ts', tableCellSource],
+  ['table-caption.ts', tableCaptionSource]
+);
+
+export const DRAWER_SNIPPET = join(
+  ['drawer.ts', drawerSource],
+  ['drawer-overlay.ts', drawerOverlaySource],
+  ['drawer-content.ts', drawerContentSource],
+  ['drawer-title.ts', drawerTitleSource],
+  ['drawer-description.ts', drawerDescriptionSource],
+  ['drawer-close.ts', drawerCloseSource]
+);
+
+export const RESIZABLE_SNIPPET = join(
+  ['resizable.ts', resizableSource],
+  ['resizable-panel.ts', resizablePanelSource],
+  ['resizable-handle.ts', resizableHandleSource]
 );
