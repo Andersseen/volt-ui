@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { VoltButton, VoltCard, VoltCheckbox, VoltInput, VoltLabel, VoltSeparator } from 'volt';
+import { VoltButton, VoltCard, VoltCheckbox, VoltInput, VoltLabel } from 'volt';
 
 // ==========================================
 // 1. Social Sign Up Button
@@ -22,15 +22,7 @@ class SocialSignUpButton {}
 // ==========================================
 @Component({
   selector: 'app-signup-form',
-  imports: [
-    VoltCard,
-    VoltInput,
-    VoltLabel,
-    VoltCheckbox,
-    VoltButton,
-    VoltSeparator,
-    SocialSignUpButton,
-  ],
+  imports: [VoltCard, VoltInput, VoltLabel, VoltCheckbox, VoltButton, SocialSignUpButton],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <volt-card class="w-full max-w-sm p-8 shadow-lg">

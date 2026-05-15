@@ -18,7 +18,7 @@ import type { DocsSidebarGroup } from '../components/docs-sidebar-nav';
     </app-docs-page-shell>
   `,
 })
-// Layouts documentation shell
+// Layouts documentation shell - updated routes
 export default class LayoutsLayout {
   readonly groups: DocsSidebarGroup[] = [
     {
@@ -27,7 +27,21 @@ export default class LayoutsLayout {
         { path: '/docs/layouts/admin-dashboard', label: 'Admin Dashboard' },
         { path: '/docs/layouts/top-nav', label: 'Top Navigation' },
         { path: '/docs/layouts/analytics', label: 'Analytics' },
+      ],
+    },
+    {
+      heading: 'Base',
+      links: [
         { path: '/docs/layouts/sidebar', label: 'Sidebar' },
+        { path: '/docs/layouts/settings', label: 'Settings' },
+        { path: '/docs/layouts/profile', label: 'Profile' },
+      ],
+    },
+    {
+      heading: 'Productivity',
+      links: [
+        { path: '/docs/layouts/kanban', label: 'Kanban Board' },
+        { path: '/docs/layouts/chat', label: 'Chat / Messages' },
       ],
     },
     {
