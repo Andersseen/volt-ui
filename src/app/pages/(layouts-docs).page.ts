@@ -18,10 +18,16 @@ import type { DocsSidebarGroup } from '../components/docs-sidebar-nav';
     </app-docs-page-shell>
   `,
 })
+// Layouts documentation shell
 export default class LayoutsLayout {
   readonly groups: DocsSidebarGroup[] = [
     {
-      links: [{ path: '/docs/layouts/sidebar', label: 'Sidebar' }],
+      links: [
+        { path: '/docs/layouts/admin-dashboard', label: 'Admin Dashboard' },
+        { path: '/docs/layouts/top-nav', label: 'Top Navigation' },
+        { path: '/docs/layouts/analytics', label: 'Analytics' },
+        { path: '/docs/layouts/sidebar', label: 'Sidebar' },
+      ],
     },
   ];
 }
