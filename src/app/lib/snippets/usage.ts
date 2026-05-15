@@ -662,3 +662,113 @@ import { VoltToolbar, VoltToggle, VoltButton } from 'volt';
   \`,
 })
 export class MyComponent {}`;
+
+export const SKELETON_USAGE = `import { Component } from '@angular/core';
+import { VoltSkeleton } from 'volt';
+
+@Component({
+  imports: [VoltSkeleton],
+  template: \`
+    <div class="flex items-center gap-4">
+      <volt-skeleton variant="circle" width="40px" height="40px" />
+      <div class="space-y-2">
+        <volt-skeleton variant="text" width="120px" height="16px" />
+        <volt-skeleton variant="text" width="80px" height="14px" />
+      </div>
+    </div>
+  \`,
+})
+export class MyComponent {}`;
+
+export const TABLE_USAGE = `import { Component } from '@angular/core';
+import {
+  VoltTable,
+  VoltTableHeader,
+  VoltTableBody,
+  VoltTableRow,
+  VoltTableHead,
+  VoltTableCell,
+  VoltTableCaption,
+} from 'volt';
+
+@Component({
+  imports: [VoltTable, VoltTableHeader, VoltTableBody, VoltTableRow, VoltTableHead, VoltTableCell, VoltTableCaption],
+  template: \`
+    <volt-table>
+      <volt-table-caption>A list of your recent invoices.</volt-table-caption>
+      <volt-table-header>
+        <volt-table-row>
+          <volt-table-head>Invoice</volt-table-head>
+          <volt-table-head>Status</volt-table-head>
+          <volt-table-head>Method</volt-table-head>
+          <volt-table-head class="text-right">Amount</volt-table-head>
+        </volt-table-row>
+      </volt-table-header>
+      <volt-table-body>
+        <volt-table-row>
+          <volt-table-cell class="font-medium">INV001</volt-table-cell>
+          <volt-table-cell>Paid</volt-table-cell>
+          <volt-table-cell>Credit Card</volt-table-cell>
+          <volt-table-cell class="text-right">$250.00</volt-table-cell>
+        </volt-table-row>
+      </volt-table-body>
+    </volt-table>
+  \`,
+})
+export class MyComponent {}`;
+
+export const DRAWER_USAGE = `import { Component } from '@angular/core';
+import {
+  VoltDrawer,
+  VoltDrawerContent,
+  VoltDrawerTitle,
+  VoltDrawerDescription,
+  VoltDrawerOverlay,
+  VoltDrawerClose,
+  VoltButton,
+} from 'volt';
+
+@Component({
+  imports: [VoltDrawer, VoltDrawerContent, VoltDrawerTitle, VoltDrawerDescription, VoltDrawerOverlay, VoltDrawerClose, VoltButton],
+  template: \`
+    <button volt-button [voltDrawer]="drawerTpl">Open Drawer</button>
+
+    <ng-template #drawerTpl let-close="close">
+      <div voltDrawerOverlay></div>
+      <div voltDrawerContent side="right">
+        <div class="flex items-center justify-between p-4 border-b border-border">
+          <h2 voltDrawerTitle>Menu</h2>
+          <volt-drawer-close>
+            <icon-close class="w-4 h-4" />
+          </volt-drawer-close>
+        </div>
+        <nav class="p-4" voltDrawerDescription>
+          <ul class="space-y-2">
+            <li><a href="#" class="block px-3 py-2 rounded-md text-sm hover:bg-muted">Home</a></li>
+            <li><a href="#" class="block px-3 py-2 rounded-md text-sm hover:bg-muted">Settings</a></li>
+          </ul>
+        </nav>
+      </div>
+    </ng-template>
+  \`,
+})
+export class MyComponent {}`;
+
+export const RESIZABLE_USAGE = `import { Component } from '@angular/core';
+import { VoltResizable, VoltResizablePanel, VoltResizableHandle } from 'volt';
+
+@Component({
+  imports: [VoltResizable, VoltResizablePanel, VoltResizableHandle],
+  template: \`
+    <volt-resizable orientation="horizontal" class="h-64 rounded-lg border border-border">
+      <volt-resizable-panel class="p-4">
+        <p>Left panel</p>
+      </volt-resizable-panel>
+      <volt-resizable-handle />
+      <volt-resizable-panel class="p-4">
+        <p>Right panel</p>
+      </volt-resizable-panel>
+    </volt-resizable>
+  \`,
+})
+export class MyComponent {}`;

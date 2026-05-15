@@ -60,6 +60,7 @@ export default class ComponentsLayout {
       heading: 'Overlays',
       links: [
         { path: '/docs/components/dialog', label: 'Dialog' },
+        { path: '/docs/components/drawer', label: 'Drawer' },
         { path: '/docs/components/popover', label: 'Popover' },
         { path: '/docs/components/dropdown-menu', label: 'Dropdown Menu' },
         { path: '/docs/components/tooltip', label: 'Tooltip' },
@@ -76,7 +77,13 @@ export default class ComponentsLayout {
         { path: '/docs/components/meter', label: 'Meter' },
         { path: '/docs/components/progress', label: 'Progress' },
         { path: '/docs/components/separator', label: 'Separator' },
+        { path: '/docs/components/skeleton', label: 'Skeleton' },
+        { path: '/docs/components/table', label: 'Table' },
       ],
+    },
+    {
+      heading: 'Layout',
+      links: [{ path: '/docs/components/resizable', label: 'Resizable' }],
     },
   ];
 }

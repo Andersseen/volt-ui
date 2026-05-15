@@ -144,6 +144,7 @@ export default class ComponentsIndexPage {
       title: 'Overlays',
       links: [
         { name: 'Dialog', path: '/docs/components/dialog', description: 'Modal dialogs' },
+        { name: 'Drawer', path: '/docs/components/drawer', description: 'Slide-in panels' },
         { name: 'Popover', path: '/docs/components/popover', description: 'Floating panels' },
         {
           name: 'Dropdown Menu',
@@ -168,6 +169,18 @@ export default class ComponentsIndexPage {
         { name: 'Meter', path: '/docs/components/meter', description: 'Known-range values' },
         { name: 'Progress', path: '/docs/components/progress', description: 'Task completion' },
         { name: 'Separator', path: '/docs/components/separator', description: 'Visual dividers' },
+        {
+          name: 'Skeleton',
+          path: '/docs/components/skeleton',
+          description: 'Loading placeholders',
+        },
+        { name: 'Table', path: '/docs/components/table', description: 'Data tables' },
+      ],
+    },
+    {
+      title: 'Layout',
+      links: [
+        { name: 'Resizable', path: '/docs/components/resizable', description: 'Resizable panels' },
       ],
     },
   ];

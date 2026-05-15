@@ -23,6 +23,7 @@ export * from './lib/components/select';
 export * from './lib/components/theme';
 export * from './lib/components/navigation-menu';
 export * from './lib/components/dialog';
+export * from './lib/components/drawer';
 export * from './lib/components/popover';
 export * from './lib/components/dropdown-menu';
 export * from './lib/components/progress';
@@ -38,6 +39,9 @@ export * from './lib/components/combobox';
 export * from './lib/components/date-picker';
 export * from './lib/components/listbox';
 export * from './lib/components/toolbar';
+export * from './lib/components/skeleton';
+export * from './lib/components/table';
+export * from './lib/components/resizable';
 
 // Layouts
 export * from './lib/layouts/sidebar';

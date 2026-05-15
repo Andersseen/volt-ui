@@ -1,0 +1,85 @@
+<div class="space-y-6">
+  <div>
+    <h1 class="text-3xl font-bold tracking-tight">Table</h1>
+    <p class="text-lg text-muted-foreground mt-2">
+      A responsive table component for displaying tabular data.
+    </p>
+  </div>
+
+  <app-code-panel title="Usage" [code]="tableUsage" [tabbed]="true">
+    <div
+      class="border rounded-xl border-border/50 p-6 md:p-10 flex flex-col items-center justify-center bg-background/50 relative overflow-hidden min-h-[300px]"
+    >
+      <div
+        class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"
+      ></div>
+
+      <div class="relative z-10 w-full max-w-2xl overflow-auto">
+        <volt-table>
+          <volt-table-caption>A list of your recent invoices.</volt-table-caption>
+          <volt-table-header>
+            <volt-table-row>
+              <volt-table-head>Invoice</volt-table-head>
+              <volt-table-head>Status</volt-table-head>
+              <volt-table-head>Method</volt-table-head>
+              <volt-table-head class="text-right">Amount</volt-table-head>
+            </volt-table-row>
+          </volt-table-header>
+          <volt-table-body>
+            <volt-table-row>
+              <volt-table-cell class="font-medium">INV001</volt-table-cell>
+              <volt-table-cell
+                ><span
+                  class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium border-transparent bg-primary text-primary-foreground"
+                  >Paid</span
+                ></volt-table-cell
+              >
+              <volt-table-cell>Credit Card</volt-table-cell>
+              <volt-table-cell class="text-right">$250.00</volt-table-cell>
+            </volt-table-row>
+            <volt-table-row>
+              <volt-table-cell class="font-medium">INV002</volt-table-cell>
+              <volt-table-cell
+                ><span
+                  class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium border-transparent bg-muted text-foreground"
+                  >Pending</span
+                ></volt-table-cell
+              >
+              <volt-table-cell>PayPal</volt-table-cell>
+              <volt-table-cell class="text-right">$150.00</volt-table-cell>
+            </volt-table-row>
+            <volt-table-row>
+              <volt-table-cell class="font-medium">INV003</volt-table-cell>
+              <volt-table-cell
+                ><span
+                  class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium border-transparent bg-primary text-primary-foreground"
+                  >Paid</span
+                ></volt-table-cell
+              >
+              <volt-table-cell>Bank Transfer</volt-table-cell>
+              <volt-table-cell class="text-right">$350.00</volt-table-cell>
+            </volt-table-row>
+            <volt-table-row>
+              <volt-table-cell class="font-medium">INV004</volt-table-cell>
+              <volt-table-cell
+                ><span
+                  class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium border-transparent bg-destructive text-destructive-foreground"
+                  >Overdue</span
+                ></volt-table-cell
+              >
+              <volt-table-cell>Credit Card</volt-table-cell>
+              <volt-table-cell class="text-right">$450.00</volt-table-cell>
+            </volt-table-row>
+          </volt-table-body>
+        </volt-table>
+      </div>
+    </div>
+  </app-code-panel>
+
+  <app-code-panel
+    title="Component Source"
+    [code]="tableCode"
+    cliCommand="npx github:Andersseen/volt-ui add table"
+    description="Copy this code to your project."
+  />
+</div>

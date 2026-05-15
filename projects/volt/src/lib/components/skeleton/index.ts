@@ -1,0 +1,1 @@
+export { VoltSkeleton } from './skeleton';
