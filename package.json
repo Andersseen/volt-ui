@@ -30,6 +30,8 @@
     "deploy": "pnpm run deploy:cf:main",
     "deploy:cf": "pnpm run build && pnpm exec wrangler pages deploy dist/analog/public --project-name=volt-ui",
     "deploy:cf:main": "pnpm run build && pnpm exec wrangler pages deploy dist/analog/public --project-name=volt-ui --branch=main",
+    "build:lib": "ng build volt",
+    "publish:lib": "ng build volt && cd dist/volt && npm publish --access public",
     "prepare": "husky"
   },
   "lint-staged": {
