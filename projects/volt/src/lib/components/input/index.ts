@@ -1,1 +1,1 @@
-export { VoltInput } from './input.component';
+export { VoltInput } from './input';

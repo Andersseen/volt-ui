@@ -1,409 +1,59 @@
 #!/usr/bin/env node
 
-const https = require('https');
-const fs = require('fs');
-const path = require('path');
+const {
+  loadManifest,
+  copyComponent,
+  initProject,
+  clearCache,
+} = require('../lib/core');
 
-const GITHUB_RAW_BASE =
-  'https://raw.githubusercontent.com/Andersseen/volt-ui/main/projects/volt/src/lib';
+async function main() {
+  const args = process.argv.slice(2);
+  const command = args[0];
 
-const components = {
-  button: {
-    files: ['button/button.ts', 'button/index.ts'],
-    dependencies: [],
-  },
-  badge: {
-    files: ['badge/badge.ts', 'badge/index.ts'],
-    dependencies: [],
-  },
-  input: {
-    files: ['input/input.component.ts', 'input/index.ts'],
-    dependencies: [],
-  },
-  search: {
-    files: ['search/search.ts', 'search/search-clear.ts', 'search/index.ts'],
-    dependencies: [],
-  },
-  autofill: {
-    files: ['autofill/autofill.ts', 'autofill/index.ts'],
-    dependencies: [],
-  },
-  textarea: {
-    files: ['textarea/textarea.ts', 'textarea/index.ts'],
-    dependencies: [],
-  },
-  card: {
-    files: ['card/card.component.ts', 'card/index.ts'],
-    dependencies: [],
-  },
-  checkbox: {
-    files: ['checkbox/checkbox.component.ts', 'checkbox/index.ts'],
-    dependencies: [],
-  },
-  radio: {
-    files: ['radio/radio-group.ts', 'radio/radio-item.ts', 'radio/index.ts'],
-    dependencies: [],
-  },
-  switch: {
-    files: ['switch/switch.component.ts', 'switch/index.ts'],
-    dependencies: [],
-  },
-  toggle: {
-    files: ['toggle/toggle.ts', 'toggle/index.ts'],
-    dependencies: [],
-  },
-  select: {
-    files: [
-      'select/select.component.ts',
-      'select/native-select.ts',
-      'select/select-content.component.ts',
-      'select/select-item.component.ts',
-      'select/select-label.component.ts',
-      'select/select-separator.component.ts',
-      'select/index.ts',
-    ],
-    dependencies: [],
-  },
-  tabs: {
-    files: [
-      'tabs/tabs.component.ts',
-      'tabs/tabs-list.component.ts',
-      'tabs/tabs-trigger.component.ts',
-      'tabs/tabs-content.component.ts',
-    ],
-    dependencies: [],
-  },
-  accordion: {
-    files: [
-      'accordion/accordion.component.ts',
-      'accordion/accordion-item.component.ts',
-      'accordion/accordion-trigger.component.ts',
-      'accordion/accordion-content.component.ts',
-      'accordion/index.ts',
-    ],
-    dependencies: [],
-  },
-  avatar: {
-    files: [
-      'avatar/avatar.ts',
-      'avatar/avatar-image.ts',
-      'avatar/avatar-fallback.ts',
-      'avatar/index.ts',
-    ],
-    dependencies: [],
-  },
-  separator: {
-    files: ['separator/separator.component.ts', 'separator/index.ts'],
-    dependencies: [],
-  },
-  tooltip: {
-    files: [
-      'tooltip/tooltip.ts',
-      'tooltip/tooltip-content.ts',
-      'tooltip/tooltip-arrow.ts',
-      'tooltip/index.ts',
-    ],
-    dependencies: [],
-  },
-  'navigation-menu': {
-    files: [
-      'navigation-menu/navigation-menu.ts',
-      'navigation-menu/navigation-menu-list.ts',
-      'navigation-menu/navigation-menu-item.ts',
-      'navigation-menu/navigation-menu-trigger.ts',
-      'navigation-menu/navigation-menu-content.ts',
-      'navigation-menu/navigation-menu-content-item.ts',
-      'navigation-menu/navigation-menu-link.ts',
-      'navigation-menu/index.ts',
-    ],
-    dependencies: [],
-  },
-  'form-field': {
-    files: [
-      'form-field/form-field.ts',
-      'form-field/form-field-label.ts',
-      'form-field/form-field-hint.ts',
-      'form-field/form-field-error.ts',
-      'form-field/index.ts',
-    ],
-    dependencies: [],
-  },
-  dialog: {
-    files: [
-      'dialog/dialog.ts',
-      'dialog/dialog-overlay.ts',
-      'dialog/dialog-content.ts',
-      'dialog/dialog-title.ts',
-      'dialog/dialog-description.ts',
-      'dialog/index.ts',
-    ],
-    dependencies: [],
-  },
-  popover: {
-    files: [
-      'popover/popover-trigger.ts',
-      'popover/popover-content.ts',
-      'popover/popover-arrow.ts',
-      'popover/index.ts',
-    ],
-    dependencies: [],
-  },
-  'dropdown-menu': {
-    files: [
-      'dropdown-menu/dropdown-menu-trigger.ts',
-      'dropdown-menu/dropdown-menu-submenu-trigger.ts',
-      'dropdown-menu/dropdown-menu.ts',
-      'dropdown-menu/dropdown-menu-item.ts',
-      'dropdown-menu/dropdown-menu-separator.ts',
-      'dropdown-menu/dropdown-menu-label.ts',
-      'dropdown-menu/index.ts',
-    ],
-    dependencies: [],
-  },
-  progress: {
-    files: ['progress/progress.ts', 'progress/index.ts'],
-    dependencies: [],
-  },
-  slider: {
-    files: ['slider/slider.ts', 'slider/index.ts'],
-    dependencies: [],
-  },
-  breadcrumbs: {
-    files: [
-      'breadcrumbs/breadcrumbs.ts',
-      'breadcrumbs/breadcrumbs-list.ts',
-      'breadcrumbs/breadcrumbs-item.ts',
-      'breadcrumbs/breadcrumbs-link.ts',
-      'breadcrumbs/breadcrumbs-page.ts',
-      'breadcrumbs/breadcrumbs-separator.ts',
-      'breadcrumbs/breadcrumbs-ellipsis.ts',
-      'breadcrumbs/index.ts',
-    ],
-    dependencies: [],
-  },
-  'toggle-group': {
-    files: [
-      'toggle-group/toggle-group.ts',
-      'toggle-group/toggle-group-item.ts',
-      'toggle-group/index.ts',
-    ],
-    dependencies: [],
-  },
-  meter: {
-    files: ['meter/meter.ts', 'meter/meter-track.ts', 'meter/meter-indicator.ts', 'meter/index.ts'],
-    dependencies: [],
-  },
-  pagination: {
-    files: [
-      'pagination/pagination.ts',
-      'pagination/pagination-first.ts',
-      'pagination/pagination-previous.ts',
-      'pagination/pagination-next.ts',
-      'pagination/pagination-last.ts',
-      'pagination/pagination-button.ts',
-      'pagination/index.ts',
-    ],
-    dependencies: [],
-  },
-  toast: {
-    files: [
-      'toast/toast.ts',
-      'toast/toast-title.ts',
-      'toast/toast-description.ts',
-      'toast/toast-close.ts',
-      'toast/index.ts',
-    ],
-    dependencies: [],
-  },
-  'input-otp': {
-    files: ['input-otp/input-otp.ts', 'input-otp/input-otp-slot.ts', 'input-otp/index.ts'],
-    dependencies: [],
-  },
-  'file-upload': {
-    files: ['file-upload/file-upload.ts', 'file-upload/file-dropzone.ts', 'file-upload/index.ts'],
-    dependencies: [],
-  },
-  combobox: {
-    files: [
-      'combobox/combobox.ts',
-      'combobox/combobox-input.ts',
-      'combobox/combobox-button.ts',
-      'combobox/combobox-dropdown.ts',
-      'combobox/combobox-option.ts',
-      'combobox/index.ts',
-    ],
-    dependencies: [],
-  },
-  'date-picker': {
-    files: [
-      'date-picker/date-picker.ts',
-      'date-picker/date-range-picker.ts',
-      'date-picker/date-picker-label.ts',
-      'date-picker/date-picker-grid.ts',
-      'date-picker/date-picker-cell.ts',
-      'date-picker/date-picker-date-button.ts',
-      'date-picker/date-picker-next-month.ts',
-      'date-picker/date-picker-previous-month.ts',
-      'date-picker/index.ts',
-    ],
-    dependencies: [],
-  },
-  listbox: {
-    files: [
-      'listbox/listbox.ts',
-      'listbox/listbox-option.ts',
-      'listbox/listbox-section.ts',
-      'listbox/listbox-header.ts',
-      'listbox/listbox-trigger.ts',
-      'listbox/index.ts',
-    ],
-    dependencies: [],
-  },
-  toolbar: {
-    files: ['toolbar/toolbar.ts', 'toolbar/index.ts'],
-    dependencies: [],
-  },
-};
+  if (command === 'add') {
+    const componentName = args[1];
+    const targetDir = args[2] || './src/app/ui';
 
-function fetchFile(url) {
-  return new Promise((resolve, reject) => {
-    https
-      .get(url, res => {
-        if (res.statusCode === 301 || res.statusCode === 302) {
-          fetchFile(res.headers.location).then(resolve).catch(reject);
-          return;
-        }
-
-        if (res.statusCode !== 200) {
-          reject(new Error(`Failed to fetch ${url}: HTTP ${res.statusCode}`));
-          return;
-        }
-
-        let data = '';
-        res.on('data', chunk => (data += chunk));
-        res.on('end', () => resolve(data));
-        res.on('error', reject);
-      })
-      .on('error', reject);
-  });
-}
-
-function transformContent(content) {
-  // Replace selector volt- with ui-
-  content = content.replace(/selector:\s*['"]([^'"]*)['"]/g, (_match, selector) => {
-    const newSelector = selector.replace(/volt-/g, 'ui-').replace(/\bvolt([A-Z]\w*)/g, 'ui$1');
-    return `selector: '${newSelector}'`;
-  });
-
-  // Replace all VoltXxx identifiers with UiXxx (covers class declarations, exports, imports)
-  content = content.replace(/\bVolt([A-Z]\w*)/g, 'Ui$1');
-  content = content.replace(/\bvolt([A-Z]\w*)/g, 'ui$1');
-
-  // Replace imports from 'volt'
-  content = content.replace(/from\s+['"]volt['"]/g, "from './index'");
-  content = content.replace(/from\s+['"]\.\.\/index['"]/g, "from '../index'");
-
-  return content;
-}
-
-function capitalize(str) {
-  return str
-    .split(' ')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
-}
-
-async function copyComponent(componentName, targetDir = './src/app/ui') {
-  const component = components[componentName];
-
-  if (!component) {
-    console.error(`❌ Component "${componentName}" not found.`);
-    console.log('Available components:');
-    Object.keys(components).forEach(name => console.log(`  - ${name}`));
-    process.exit(1);
-  }
-
-  const componentDir = path.join(targetDir, componentName);
-
-  if (!fs.existsSync(componentDir)) {
-    fs.mkdirSync(componentDir, { recursive: true });
-  }
-
-  console.log(`\nFetching "${componentName}" from GitHub...`);
-
-  for (const file of component.files) {
-    const url = `${GITHUB_RAW_BASE}/${file}`;
-    const fileName = path.basename(file);
-    const targetPath = path.join(componentDir, fileName);
-
-    try {
-      const content = await fetchFile(url);
-      const transformed = transformContent(content);
-      fs.writeFileSync(targetPath, transformed);
-      console.log(`  ✓ Created ${path.relative(process.cwd(), targetPath)}`);
-    } catch (err) {
-      console.error(`  ❌ Failed to fetch ${file}: ${err.message}`);
+    if (!componentName) {
+      console.error('❌ Please specify a component name.');
+      console.log('Usage: volt add <component-name> [target-dir]');
       process.exit(1);
     }
-  }
 
-  const className = capitalize(componentName.replace(/-/g, ' ')).replace(/\s/g, '');
-  console.log(`\n✅ Component "${componentName}" added successfully!`);
-  console.log(`\nImport in your component:`);
-  console.log(`  import { Ui${className} } from './ui/${componentName}';`);
+    const manifest = await loadManifest();
+    const result = await copyComponent(componentName, targetDir, manifest);
+    console.log(`\n✅ Component "${result.componentName}" added successfully!`);
+    console.log(`\nImport in your component:`);
+    console.log(`  import { ${result.className} } from './ui/${result.componentName}';`);
+  } else if (command === 'init') {
+    const targetDir = args[1] || './src/app/ui';
+    initProject(targetDir);
+    console.log('✅ Initialized volt/ui in', targetDir);
+  } else if (command === 'list') {
+    const manifest = await loadManifest();
+    console.log('Available components:');
+    Object.keys(manifest.components).forEach(name => console.log(`  - ${name}`));
+  } else if (command === 'clear-cache') {
+    clearCache();
+    console.log('✅ Cache cleared');
+  } else {
+    console.log('Volt UI CLI');
+    console.log('');
+    console.log('Usage:');
+    console.log('  volt init [target-dir]       Initialize volt/ui in your project');
+    console.log('  volt add <component>         Add a component to your project');
+    console.log('  volt list                    List all available components');
+    console.log('  volt clear-cache             Clear local component cache');
+    console.log('');
+    console.log('Examples:');
+    console.log('  npx @voltui/cli init');
+    console.log('  npx @voltui/cli add button');
+    console.log('  npx @voltui/cli add card');
+  }
 }
 
-async function initProject(targetDir = './src/app/ui') {
-  if (!fs.existsSync(targetDir)) {
-    fs.mkdirSync(targetDir, { recursive: true });
-  }
-
-  const indexContent = `// UI Components
-// Generated by volt CLI
-
-export {};
-`;
-  fs.writeFileSync(path.join(targetDir, 'index.ts'), indexContent);
-  console.log('✅ Initialized volt/ui in', targetDir);
-}
-
-// CLI
-const args = process.argv.slice(2);
-const command = args[0];
-
-if (command === 'add') {
-  const componentName = args[1];
-  const targetDir = args[2] || './src/app/ui';
-
-  if (!componentName) {
-    console.error('❌ Please specify a component name.');
-    console.log('Usage: volt add <component-name> [target-dir]');
-    process.exit(1);
-  }
-
-  copyComponent(componentName, targetDir).catch(err => {
-    console.error('❌ Unexpected error:', err.message);
-    process.exit(1);
-  });
-} else if (command === 'init') {
-  const targetDir = args[1] || './src/app/ui';
-  initProject(targetDir).catch(err => {
-    console.error('❌ Unexpected error:', err.message);
-    process.exit(1);
-  });
-} else if (command === 'list') {
-  console.log('Available components:');
-  Object.keys(components).forEach(name => console.log(`  - ${name}`));
-} else {
-  console.log('Volt UI CLI');
-  console.log('');
-  console.log('Usage:');
-  console.log('  volt init [target-dir]       Initialize volt/ui in your project');
-  console.log('  volt add <component>         Add a component to your project');
-  console.log('  volt list                    List all available components');
-  console.log('');
-  console.log('Examples:');
-  console.log('  npx github:Andersseen/volt-ui init');
-  console.log('  npx github:Andersseen/volt-ui add button');
-  console.log('  npx github:Andersseen/volt-ui add card');
-}
+main().catch(err => {
+  console.error('❌ Unexpected error:', err.message);
+  process.exit(1);
+});

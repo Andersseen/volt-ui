@@ -5,4 +5,4 @@ export {
   VoltCardDescription,
   VoltCardContent,
   VoltCardFooter,
-} from './card.component';
+} from './card';

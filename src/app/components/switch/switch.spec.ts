@@ -1,22 +1,32 @@
 import { describe, it, expect } from 'vitest';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 
 describe('VoltSwitch', () => {
-  it('should have correct default checked state', () => {
-    const defaultChecked = false;
-    expect(defaultChecked).toBe(false);
+  const sourcePath = resolve('projects/volt/src/lib/components/switch/switch.ts');
+  const source = readFileSync(sourcePath, 'utf-8');
+
+  it('should exist as a source file', () => {
+    expect(source).toBeTruthy();
+    expect(source.length).toBeGreaterThan(0);
   });
 
-  it('should have correct default disabled state', () => {
-    const defaultDisabled = false;
-    expect(defaultDisabled).toBe(false);
+  it('should have correct selector', () => {
+    expect(source).toContain("selector: 'volt-switch'");
   });
 
-  it('should toggle checked state', () => {
-    let checked = false;
-    checked = !checked;
-    expect(checked).toBe(true);
+  it('should use OnPush change detection', () => {
+    expect(source).toContain('ChangeDetectionStrategy.OnPush');
+  });
 
-    checked = !checked;
-    expect(checked).toBe(false);
+  it('should have checked model and disabled input', () => {
+    expect(source).toContain('readonly checked = model(false)');
+    expect(source).toContain('readonly disabled = input(false)');
+  });
+
+  it('should use ng-primitives NgpSwitch', () => {
+    expect(source).toContain("from 'ng-primitives/switch'");
+    expect(source).toContain('NgpSwitch');
+    expect(source).toContain('ngpSwitch');
   });
 });

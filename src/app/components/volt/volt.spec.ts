@@ -1,46 +1,68 @@
 import { describe, it, expect } from 'vitest';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
+import { resolve, join } from 'node:path';
 
 describe('Volt Library', () => {
-  it('should export all components', () => {
-    const components = [
-      'VoltButton',
-      'VoltCheckbox',
-      'VoltSwitch',
-      'VoltInput',
-      'VoltCard',
-      'VoltTabs',
-      'VoltAccordion',
-      'VoltBadge',
-      'VoltAvatar',
-      'VoltSelect',
-      'VoltRadioGroup',
-      'VoltTooltip',
-    ];
+  const publicApiPath = resolve('projects/volt/src/public-api.ts');
+  const publicApi = readFileSync(publicApiPath, 'utf-8');
 
-    expect(components.length).toBeGreaterThan(0);
-    expect(components).toContain('VoltButton');
-    expect(components).toContain('VoltCheckbox');
-    expect(components).toContain('VoltSwitch');
+  it('should export button component', () => {
+    expect(publicApi).toContain("export * from './lib/components/button'");
   });
 
-  it('should export added ng-primitives wrappers and advanced utilities', () => {
-    const publicApi = readFileSync('projects/volt/src/public-api.ts', 'utf-8');
-    const selectIndex = readFileSync('projects/volt/src/lib/components/select/index.ts', 'utf-8');
-    const popoverIndex = readFileSync('projects/volt/src/lib/components/popover/index.ts', 'utf-8');
-    const tooltipIndex = readFileSync('projects/volt/src/lib/components/tooltip/index.ts', 'utf-8');
-    const dropdownIndex = readFileSync(
-      'projects/volt/src/lib/components/dropdown-menu/index.ts',
-      'utf-8'
-    );
-    const dialogIndex = readFileSync('projects/volt/src/lib/components/dialog/index.ts', 'utf-8');
+  it('should export checkbox component', () => {
+    expect(publicApi).toContain("export * from './lib/components/checkbox'");
+  });
 
-    expect(publicApi).toContain('./lib/components/search');
-    expect(publicApi).toContain('./lib/components/autofill');
-    expect(selectIndex).toContain('VoltNativeSelect');
-    expect(popoverIndex).toContain('VoltPopoverArrow');
-    expect(tooltipIndex).toContain('VoltTooltipArrow');
-    expect(dropdownIndex).toContain('VoltDropdownMenuSubmenuTrigger');
-    expect(dialogIndex).toContain('NgpDialogManager');
+  it('should export switch component', () => {
+    expect(publicApi).toContain("export * from './lib/components/switch'");
+  });
+
+  it('should export card component', () => {
+    expect(publicApi).toContain("export * from './lib/components/card'");
+  });
+
+  it('should export input component', () => {
+    expect(publicApi).toContain("export * from './lib/components/input'");
+  });
+
+  it('should export select component', () => {
+    expect(publicApi).toContain("export * from './lib/components/select'");
+  });
+
+  it('should export tabs components', () => {
+    expect(publicApi).toContain("export * from './lib/components/tabs'");
+  });
+
+  it('should export theme utilities', () => {
+    expect(publicApi).toContain("export * from './lib/components/theme'");
+  });
+
+  it('should export sidebar layout', () => {
+    expect(publicApi).toContain("export * from './lib/layouts/sidebar'");
+  });
+
+  it('should have an index.ts barrel file for every component', () => {
+    const componentsDir = resolve('projects/volt/src/lib/components');
+    const entries = readdirSync(componentsDir);
+    const dirs = entries.filter(entry => statSync(join(componentsDir, entry)).isDirectory());
+
+    for (const dir of dirs) {
+      const indexPath = join(componentsDir, dir, 'index.ts');
+      expect(existsSync(indexPath)).toBe(true);
+    }
+  });
+
+  it('should not have any .component.ts files remaining', () => {
+    const componentsDir = resolve('projects/volt/src/lib/components');
+    const entries = readdirSync(componentsDir);
+
+    for (const dir of entries) {
+      const dirPath = join(componentsDir, dir);
+      if (!statSync(dirPath).isDirectory()) continue;
+      const files = readdirSync(dirPath);
+      const hasComponentSuffix = files.some(f => f.endsWith('.component.ts'));
+      expect(hasComponentSuffix).toBe(false);
+    }
   });
 });

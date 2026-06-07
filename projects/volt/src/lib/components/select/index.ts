@@ -1,9 +1,9 @@
-export { VoltSelect } from './select.component';
+export { VoltSelect } from './select';
 export { VoltNativeSelect } from './native-select';
-export { VoltSelectContent } from './select-content.component';
-export { VoltSelectItem } from './select-item.component';
-export { VoltSelectLabel } from './select-label.component';
-export { VoltSelectSeparator } from './select-separator.component';
+export { VoltSelectContent } from './select-content';
+export { VoltSelectItem } from './select-item';
+export { VoltSelectLabel } from './select-label';
+export { VoltSelectSeparator } from './select-separator';
 export {
   injectNativeSelectState,
   injectSelectConfig,

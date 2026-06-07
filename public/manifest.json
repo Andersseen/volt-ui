@@ -1,0 +1,334 @@
+{
+  "version": "0.1.0",
+  "baseUrl": "https://raw.githubusercontent.com/Andersseen/volt-ui/main/projects/volt/src/lib",
+  "components": {
+    "accordion": {
+      "files": [
+        "components/accordion/accordion-content.ts",
+        "components/accordion/accordion-item.ts",
+        "components/accordion/accordion-trigger.ts",
+        "components/accordion/accordion.ts",
+        "components/accordion/index.ts"
+      ],
+      "dependencies": []
+    },
+    "autofill": {
+      "files": ["components/autofill/autofill.ts", "components/autofill/index.ts"],
+      "dependencies": []
+    },
+    "avatar": {
+      "files": [
+        "components/avatar/avatar-fallback.ts",
+        "components/avatar/avatar-image.ts",
+        "components/avatar/avatar.ts",
+        "components/avatar/index.ts"
+      ],
+      "dependencies": []
+    },
+    "badge": {
+      "files": ["components/badge/badge.ts", "components/badge/index.ts"],
+      "dependencies": []
+    },
+    "breadcrumbs": {
+      "files": [
+        "components/breadcrumbs/breadcrumbs-ellipsis.ts",
+        "components/breadcrumbs/breadcrumbs-item.ts",
+        "components/breadcrumbs/breadcrumbs-link.ts",
+        "components/breadcrumbs/breadcrumbs-list.ts",
+        "components/breadcrumbs/breadcrumbs-page.ts",
+        "components/breadcrumbs/breadcrumbs-separator.ts",
+        "components/breadcrumbs/breadcrumbs.ts",
+        "components/breadcrumbs/index.ts"
+      ],
+      "dependencies": []
+    },
+    "button": {
+      "files": ["components/button/button.ts", "components/button/index.ts"],
+      "dependencies": []
+    },
+    "card": {
+      "files": ["components/card/card.ts", "components/card/index.ts"],
+      "dependencies": []
+    },
+    "checkbox": {
+      "files": ["components/checkbox/checkbox.ts", "components/checkbox/index.ts"],
+      "dependencies": []
+    },
+    "combobox": {
+      "files": [
+        "components/combobox/combobox-button.ts",
+        "components/combobox/combobox-dropdown.ts",
+        "components/combobox/combobox-input.ts",
+        "components/combobox/combobox-option.ts",
+        "components/combobox/combobox.ts",
+        "components/combobox/index.ts"
+      ],
+      "dependencies": []
+    },
+    "date-picker": {
+      "files": [
+        "components/date-picker/date-picker-cell.ts",
+        "components/date-picker/date-picker-date-button.ts",
+        "components/date-picker/date-picker-grid.ts",
+        "components/date-picker/date-picker-label.ts",
+        "components/date-picker/date-picker-next-month.ts",
+        "components/date-picker/date-picker-previous-month.ts",
+        "components/date-picker/date-picker.ts",
+        "components/date-picker/date-range-picker.ts",
+        "components/date-picker/index.ts"
+      ],
+      "dependencies": []
+    },
+    "dialog": {
+      "files": [
+        "components/dialog/dialog-content.ts",
+        "components/dialog/dialog-description.ts",
+        "components/dialog/dialog-overlay.ts",
+        "components/dialog/dialog-title.ts",
+        "components/dialog/dialog.ts",
+        "components/dialog/index.ts"
+      ],
+      "dependencies": []
+    },
+    "drawer": {
+      "files": [
+        "components/drawer/drawer-close.ts",
+        "components/drawer/drawer-content.ts",
+        "components/drawer/drawer-description.ts",
+        "components/drawer/drawer-overlay.ts",
+        "components/drawer/drawer-title.ts",
+        "components/drawer/drawer.ts",
+        "components/drawer/index.ts"
+      ],
+      "dependencies": []
+    },
+    "dropdown-menu": {
+      "files": [
+        "components/dropdown-menu/dropdown-menu-item.ts",
+        "components/dropdown-menu/dropdown-menu-label.ts",
+        "components/dropdown-menu/dropdown-menu-separator.ts",
+        "components/dropdown-menu/dropdown-menu-submenu-trigger.ts",
+        "components/dropdown-menu/dropdown-menu-trigger.ts",
+        "components/dropdown-menu/dropdown-menu.ts",
+        "components/dropdown-menu/index.ts"
+      ],
+      "dependencies": []
+    },
+    "file-upload": {
+      "files": [
+        "components/file-upload/file-dropzone.ts",
+        "components/file-upload/file-upload.ts",
+        "components/file-upload/index.ts"
+      ],
+      "dependencies": []
+    },
+    "form-field": {
+      "files": [
+        "components/form-field/form-field-error.ts",
+        "components/form-field/form-field-hint.ts",
+        "components/form-field/form-field-label.ts",
+        "components/form-field/form-field.ts",
+        "components/form-field/index.ts"
+      ],
+      "dependencies": []
+    },
+    "input": {
+      "files": ["components/input/index.ts", "components/input/input.ts"],
+      "dependencies": []
+    },
+    "input-otp": {
+      "files": [
+        "components/input-otp/index.ts",
+        "components/input-otp/input-otp-slot.ts",
+        "components/input-otp/input-otp.ts"
+      ],
+      "dependencies": []
+    },
+    "listbox": {
+      "files": [
+        "components/listbox/index.ts",
+        "components/listbox/listbox-header.ts",
+        "components/listbox/listbox-option.ts",
+        "components/listbox/listbox-section.ts",
+        "components/listbox/listbox-trigger.ts",
+        "components/listbox/listbox.ts"
+      ],
+      "dependencies": []
+    },
+    "meter": {
+      "files": [
+        "components/meter/index.ts",
+        "components/meter/meter-indicator.ts",
+        "components/meter/meter-track.ts",
+        "components/meter/meter.ts"
+      ],
+      "dependencies": []
+    },
+    "navigation-menu": {
+      "files": [
+        "components/navigation-menu/index.ts",
+        "components/navigation-menu/navigation-menu-content-item.ts",
+        "components/navigation-menu/navigation-menu-content.ts",
+        "components/navigation-menu/navigation-menu-item.ts",
+        "components/navigation-menu/navigation-menu-link.ts",
+        "components/navigation-menu/navigation-menu-list.ts",
+        "components/navigation-menu/navigation-menu-trigger.ts",
+        "components/navigation-menu/navigation-menu.ts"
+      ],
+      "dependencies": []
+    },
+    "pagination": {
+      "files": [
+        "components/pagination/index.ts",
+        "components/pagination/pagination-button.ts",
+        "components/pagination/pagination-first.ts",
+        "components/pagination/pagination-last.ts",
+        "components/pagination/pagination-next.ts",
+        "components/pagination/pagination-previous.ts",
+        "components/pagination/pagination.ts"
+      ],
+      "dependencies": []
+    },
+    "popover": {
+      "files": [
+        "components/popover/index.ts",
+        "components/popover/popover-arrow.ts",
+        "components/popover/popover-content.ts",
+        "components/popover/popover-trigger.ts"
+      ],
+      "dependencies": []
+    },
+    "progress": {
+      "files": ["components/progress/index.ts", "components/progress/progress.ts"],
+      "dependencies": []
+    },
+    "radio": {
+      "files": [
+        "components/radio/index.ts",
+        "components/radio/radio-group.ts",
+        "components/radio/radio-item.ts"
+      ],
+      "dependencies": []
+    },
+    "resizable": {
+      "files": [
+        "components/resizable/index.ts",
+        "components/resizable/resizable-handle.ts",
+        "components/resizable/resizable-panel.ts",
+        "components/resizable/resizable.ts"
+      ],
+      "dependencies": []
+    },
+    "search": {
+      "files": [
+        "components/search/index.ts",
+        "components/search/search-clear.ts",
+        "components/search/search.ts"
+      ],
+      "dependencies": []
+    },
+    "select": {
+      "files": [
+        "components/select/index.ts",
+        "components/select/native-select.ts",
+        "components/select/select-content.ts",
+        "components/select/select-item.ts",
+        "components/select/select-label.ts",
+        "components/select/select-separator.ts",
+        "components/select/select.ts"
+      ],
+      "dependencies": []
+    },
+    "separator": {
+      "files": ["components/separator/index.ts", "components/separator/separator.ts"],
+      "dependencies": []
+    },
+    "skeleton": {
+      "files": ["components/skeleton/index.ts", "components/skeleton/skeleton.ts"],
+      "dependencies": []
+    },
+    "slider": {
+      "files": ["components/slider/index.ts", "components/slider/slider.ts"],
+      "dependencies": []
+    },
+    "switch": {
+      "files": ["components/switch/index.ts", "components/switch/switch.ts"],
+      "dependencies": []
+    },
+    "table": {
+      "files": [
+        "components/table/index.ts",
+        "components/table/table-body.ts",
+        "components/table/table-caption.ts",
+        "components/table/table-cell.ts",
+        "components/table/table-footer.ts",
+        "components/table/table-head.ts",
+        "components/table/table-header.ts",
+        "components/table/table-row.ts",
+        "components/table/table.ts"
+      ],
+      "dependencies": []
+    },
+    "tabs": {
+      "files": [
+        "components/tabs/index.ts",
+        "components/tabs/tabs-content.ts",
+        "components/tabs/tabs-list.ts",
+        "components/tabs/tabs-trigger.ts",
+        "components/tabs/tabs.ts"
+      ],
+      "dependencies": []
+    },
+    "textarea": {
+      "files": ["components/textarea/index.ts", "components/textarea/textarea.ts"],
+      "dependencies": []
+    },
+    "theme": {
+      "files": ["components/theme/index.ts", "components/theme/theme.ts"],
+      "dependencies": []
+    },
+    "toast": {
+      "files": [
+        "components/toast/index.ts",
+        "components/toast/toast-close.ts",
+        "components/toast/toast-description.ts",
+        "components/toast/toast-title.ts",
+        "components/toast/toast.ts"
+      ],
+      "dependencies": []
+    },
+    "toggle": {
+      "files": ["components/toggle/index.ts", "components/toggle/toggle.ts"],
+      "dependencies": []
+    },
+    "toggle-group": {
+      "files": [
+        "components/toggle-group/index.ts",
+        "components/toggle-group/toggle-group-item.ts",
+        "components/toggle-group/toggle-group.ts"
+      ],
+      "dependencies": []
+    },
+    "toolbar": {
+      "files": ["components/toolbar/index.ts", "components/toolbar/toolbar.ts"],
+      "dependencies": []
+    },
+    "tooltip": {
+      "files": [
+        "components/tooltip/index.ts",
+        "components/tooltip/tooltip-arrow.ts",
+        "components/tooltip/tooltip-content.ts",
+        "components/tooltip/tooltip.ts"
+      ],
+      "dependencies": []
+    },
+    "sidebar": {
+      "files": [
+        "layouts/sidebar/index.ts",
+        "layouts/sidebar/sidebar.service.ts",
+        "layouts/sidebar/sidebar.ts"
+      ],
+      "dependencies": []
+    }
+  }
+}
