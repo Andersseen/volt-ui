@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, TemplateRef, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, TemplateRef, viewChild } from '@angular/core';
 import {
   NgpToastManager,
   VoltButton,
@@ -55,8 +55,7 @@ export default class ToastDemo {
   readonly code = TOAST_SNIPPET;
   readonly usage = TOAST_USAGE;
   readonly toastTemplate = viewChild.required<TemplateRef<void>>('toastTemplate');
-
-  constructor(private readonly toastManager: NgpToastManager) {}
+  private readonly toastManager = inject(NgpToastManager);
 
   showToast() {
     this.toastManager.show(this.toastTemplate(), {

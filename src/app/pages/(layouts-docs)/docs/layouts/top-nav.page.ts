@@ -330,12 +330,16 @@ import { LmnSearchIcon } from 'lumen-icons';
                 <h3 class="font-semibold mb-4">Project Settings</h3>
                 <div class="space-y-4">
                   <div>
-                    <label class="text-sm font-medium">Project Name</label>
-                    <volt-input value="Project Alpha" class="mt-1" />
+                    <label for="project-name" class="text-sm font-medium">Project Name</label>
+                    <volt-input id="project-name" value="Project Alpha" class="mt-1" />
                   </div>
                   <div>
-                    <label class="text-sm font-medium">Description</label>
-                    <volt-input value="Main product development" class="mt-1" />
+                    <label for="project-description" class="text-sm font-medium">Description</label>
+                    <volt-input
+                      id="project-description"
+                      value="Main product development"
+                      class="mt-1"
+                    />
                   </div>
                   <div class="flex items-center justify-between pt-2">
                     <span class="text-sm">Public Project</span>

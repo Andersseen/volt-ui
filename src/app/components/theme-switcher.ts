@@ -3,7 +3,7 @@ import {
   ChangeDetectionStrategy,
   signal,
   effect,
-  Inject,
+  inject,
   PLATFORM_ID,
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
@@ -97,9 +97,10 @@ export class ThemeSwitcher {
   color = signal<unknown>('volt');
   style = signal<unknown>('sharp');
   isDark = signal(false);
+  private readonly platformId = inject(PLATFORM_ID);
 
-  constructor(@Inject(PLATFORM_ID) platformId: object) {
-    if (isPlatformBrowser(platformId)) {
+  constructor() {
+    if (isPlatformBrowser(this.platformId)) {
       const savedColor = localStorage.getItem('volt-color') || 'volt';
       const savedStyle = localStorage.getItem('volt-style') || 'sharp';
       const isDarkMode = localStorage.getItem('volt-dark') === 'true';

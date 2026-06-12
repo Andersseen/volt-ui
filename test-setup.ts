@@ -5,10 +5,7 @@ import { vi } from 'vitest';
 // Initialize Angular TestBed with zoneless change detection
 import { getTestBed } from '@angular/core/testing';
 import { NgModule, provideZonelessChangeDetection } from '@angular/core';
-import {
-  BrowserDynamicTestingModule,
-  platformBrowserDynamicTesting,
-} from '@angular/platform-browser-dynamic/testing';
+import { BrowserTestingModule, platformBrowserTesting } from '@angular/platform-browser/testing';
 
 @NgModule({
   providers: [provideZonelessChangeDetection()],
@@ -16,8 +13,8 @@ import {
 class ZonelessTestModule {}
 
 getTestBed().initTestEnvironment(
-  [BrowserDynamicTestingModule, ZonelessTestModule],
-  platformBrowserDynamicTesting()
+  [BrowserTestingModule, ZonelessTestModule],
+  platformBrowserTesting()
 );
 
 // Mock matchMedia for tests

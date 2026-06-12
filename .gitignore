@@ -44,8 +44,10 @@ test-results/
 playwright-report/
 
 # Generated editor bundles
-public/web-editor.min.js
 public/web-editor.min.js.map
+
+# Generated component manifest
+public/manifest.json
 
 # System files
 .DS_Store

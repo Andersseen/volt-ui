@@ -9,6 +9,7 @@ import { NgpLabel } from 'ng-primitives/form-field';
     <label
       ngpLabel
       [class.text-error]="error()"
+      [attr.for]="htmlFor()"
       class="text-sm font-[var(--font-weight-label)] text-foreground leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
     >
       <ng-content />
@@ -17,4 +18,5 @@ import { NgpLabel } from 'ng-primitives/form-field';
 })
 export class VoltLabel {
   readonly error = input<boolean>(false);
+  readonly htmlFor = input<string>('');
 }
