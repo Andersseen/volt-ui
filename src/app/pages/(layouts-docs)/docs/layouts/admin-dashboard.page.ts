@@ -24,14 +24,14 @@ import {
   VoltInput,
 } from 'volt';
 import {
-  IconAvatar,
-  IconComponents,
-  IconHome,
-  IconMail,
-  IconMenu,
-  IconSearch,
-  IconSettings,
-} from '../../../../icons';
+  LmnAvatarIcon,
+  LmnGridIcon,
+  LmnHomeIcon,
+  LmnMailIcon,
+  LmnMenuIcon,
+  LmnSearchIcon,
+  LmnSettingsIcon,
+} from 'lumen-icons';
 
 @Component({
   selector: 'app-admin-dashboard-demo',
@@ -57,13 +57,13 @@ import {
     VoltTableRow,
     VoltProgress,
     VoltInput,
-    IconHome,
-    IconSettings,
-    IconMail,
-    IconAvatar,
-    IconComponents,
-    IconMenu,
-    IconSearch,
+    LmnHomeIcon,
+    LmnSettingsIcon,
+    LmnMailIcon,
+    LmnAvatarIcon,
+    LmnGridIcon,
+    LmnMenuIcon,
+    LmnSearchIcon,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -73,7 +73,7 @@ import {
       <!-- Mobile trigger -->
       <div class="absolute top-4 left-4 z-10 md:hidden">
         <button volt-button variant="outline" size="icon" (click)="sidebarService.toggleMobile()">
-          <icon-menu class="h-4 w-4" />
+          <lmn-menu class="h-4 w-4" />
         </button>
       </div>
 
@@ -101,10 +101,10 @@ import {
               [exact]="true"
               label="Dashboard"
             >
-              <icon-home slot="icon" class="h-4 w-4" />
+              <lmn-home slot="icon" class="h-4 w-4" />
             </volt-sidebar-item>
             <volt-sidebar-item routerLink="/docs/layouts/admin-dashboard" label="Analytics">
-              <icon-components slot="icon" class="h-4 w-4" />
+              <lmn-grid slot="icon" class="h-4 w-4" />
             </volt-sidebar-item>
           </volt-sidebar-group>
 
@@ -114,10 +114,10 @@ import {
 
           <volt-sidebar-group label="Management">
             <volt-sidebar-item routerLink="/docs/layouts/admin-dashboard" label="Users">
-              <icon-avatar slot="icon" class="h-4 w-4" />
+              <lmn-avatar slot="icon" class="h-4 w-4" />
             </volt-sidebar-item>
             <volt-sidebar-item routerLink="/docs/layouts/admin-dashboard" label="Messages">
-              <icon-mail slot="icon" class="h-4 w-4" />
+              <lmn-mail slot="icon" class="h-4 w-4" />
               <div
                 slot="trailing"
                 class="ml-auto inline-flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-medium text-primary-foreground"
@@ -126,7 +126,7 @@ import {
               </div>
             </volt-sidebar-item>
             <volt-sidebar-item routerLink="/docs/layouts/admin-dashboard" label="Settings">
-              <icon-settings slot="icon" class="h-4 w-4" />
+              <lmn-settings slot="icon" class="h-4 w-4" />
             </volt-sidebar-item>
           </volt-sidebar-group>
         </volt-sidebar-content>
@@ -159,7 +159,7 @@ import {
               class="h-8 w-8"
               (click)="sidebarService.toggleCollapse()"
             >
-              <icon-menu class="h-4 w-4" />
+              <lmn-menu class="h-4 w-4" />
             </button>
             <volt-separator orientation="vertical" class="h-4 mx-2" />
             <span>Dashboard</span>
@@ -169,7 +169,7 @@ import {
           <div class="flex items-center gap-2 ml-auto">
             <volt-input placeholder="Search..." class="w-48 h-8 text-xs" />
             <volt-button variant="outline" size="sm">
-              <icon-search class="h-3.5 w-3.5 mr-1" />
+              <lmn-search class="h-3.5 w-3.5 mr-1" />
               Search
             </volt-button>
           </div>

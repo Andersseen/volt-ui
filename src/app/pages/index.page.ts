@@ -20,13 +20,13 @@ import {
   VoltTextarea,
 } from 'volt';
 import {
-  IconArrowRight,
-  IconGithub,
-  IconMoreVertical,
-  IconPlus,
-  IconPaperclip,
-  IconSmile,
-} from '../icons';
+  LmnArrowRightIcon,
+  LmnGithubIcon,
+  LmnMoreVerticalIcon,
+  LmnPaperclipIcon,
+  LmnPlusIcon,
+  LmnSmileIcon,
+} from 'lumen-icons';
 
 @Component({
   selector: 'app-home',
@@ -50,12 +50,12 @@ import {
     VoltAvatar,
     VoltAvatarImage,
     VoltAvatarFallback,
-    IconArrowRight,
-    IconGithub,
-    IconMoreVertical,
-    IconPlus,
-    IconPaperclip,
-    IconSmile,
+    LmnArrowRightIcon,
+    LmnGithubIcon,
+    LmnMoreVerticalIcon,
+    LmnPlusIcon,
+    LmnPaperclipIcon,
+    LmnSmileIcon,
   ],
   template: `
     <main
@@ -89,8 +89,9 @@ import {
           <a routerLink="/docs/introduction">
             <volt-button size="lg" class="rounded-full shadow-xl shadow-primary/20 group">
               Get Started
-              <icon-arrow-right
-                class="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1"
+              <lmn-arrow-right
+                [size]="16"
+                class="ml-2 transition-transform group-hover:translate-x-1"
               />
             </volt-button>
           </a>
@@ -104,7 +105,7 @@ import {
             class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-input bg-background/60 text-foreground shadow-sm backdrop-blur-md transition-colors hover:bg-muted"
             aria-label="GitHub repository"
           >
-            <icon-github class="w-5 h-5" />
+            <lmn-github [size]="20" />
           </a>
         </div>
       </section>
@@ -140,7 +141,7 @@ import {
                   </div>
                   <!-- Dropdown trigger placeholder -->
                   <volt-button variant="ghost" size="icon" class="rounded-full">
-                    <icon-more-vertical class="w-4 h-4" />
+                    <lmn-more-vertical [size]="16" />
                   </volt-button>
                 </div>
 
@@ -211,7 +212,7 @@ import {
                     >
                   </div>
                   <volt-button variant="outline" size="sm" class="shadow-sm">
-                    <icon-plus class="mr-2 w-[14px] h-[14px]" />
+                    <lmn-plus class="mr-2" [size]="14" />
                     New Task
                   </volt-button>
                 </div>
@@ -298,14 +299,14 @@ import {
                       size="icon"
                       class="text-muted-foreground rounded-full"
                     >
-                      <icon-paperclip class="w-5 h-5" />
+                      <lmn-paperclip [size]="20" />
                     </volt-button>
                     <volt-button
                       variant="ghost"
                       size="icon"
                       class="text-muted-foreground rounded-full"
                     >
-                      <icon-smile class="w-5 h-5" />
+                      <lmn-smile [size]="20" />
                     </volt-button>
                   </div>
                   <volt-button size="sm" class="shadow-sm">Send Message</volt-button>

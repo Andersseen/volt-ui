@@ -12,14 +12,14 @@ import {
   VoltSidebarService,
 } from 'volt';
 import {
-  IconAvatar,
-  IconComponents,
-  IconHome,
-  IconMail,
-  IconMenu,
-  IconSearch,
-  IconSettings,
-} from '../../../../icons';
+  LmnAvatarIcon,
+  LmnGridIcon,
+  LmnHomeIcon,
+  LmnMailIcon,
+  LmnMenuIcon,
+  LmnSearchIcon,
+  LmnSettingsIcon,
+} from 'lumen-icons';
 
 @Component({
   selector: 'app-sidebar-demo',
@@ -33,13 +33,13 @@ import {
     VoltSidebarItem,
     VoltAvatar,
     VoltSeparator,
-    IconHome,
-    IconSettings,
-    IconMail,
-    IconAvatar,
-    IconComponents,
-    IconMenu,
-    IconSearch,
+    LmnHomeIcon,
+    LmnSettingsIcon,
+    LmnMailIcon,
+    LmnAvatarIcon,
+    LmnGridIcon,
+    LmnMenuIcon,
+    LmnSearchIcon,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -50,7 +50,7 @@ import {
       <!-- Trigger for Mobile Sidebar -->
       <div class="absolute top-4 left-4 z-10 md:hidden">
         <button volt-button variant="outline" size="icon" (click)="sidebarService.toggleMobile()">
-          <icon-menu />
+          <lmn-menu />
         </button>
       </div>
 
@@ -76,7 +76,7 @@ import {
                 class="h-6 w-6 shrink-0"
                 (click)="sidebarService.toggleCollapse()"
               >
-                <icon-settings class="h-4 w-4 text-muted-foreground" />
+                <lmn-settings class="h-4 w-4 text-muted-foreground" />
               </button>
             }
           </div>
@@ -86,10 +86,10 @@ import {
           <!-- Main Group -->
           <volt-sidebar-group label="Platform">
             <volt-sidebar-item routerLink="/docs/layouts/sidebar" [exact]="true" label="Dashboard">
-              <icon-home slot="icon" class="h-4 w-4" />
+              <lmn-home slot="icon" class="h-4 w-4" />
             </volt-sidebar-item>
             <volt-sidebar-item routerLink="/docs/layouts/sidebar" label="Inbox">
-              <icon-mail slot="icon" class="h-4 w-4" />
+              <lmn-mail slot="icon" class="h-4 w-4" />
               <div
                 slot="trailing"
                 class="ml-auto inline-flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-medium text-primary-foreground"
@@ -98,7 +98,7 @@ import {
               </div>
             </volt-sidebar-item>
             <volt-sidebar-item routerLink="/docs/layouts/sidebar" label="Components">
-              <icon-components slot="icon" class="h-4 w-4" />
+              <lmn-grid slot="icon" class="h-4 w-4" />
             </volt-sidebar-item>
           </volt-sidebar-group>
 
@@ -109,13 +109,13 @@ import {
           <!-- Secondary Group -->
           <volt-sidebar-group label="Configuration">
             <volt-sidebar-item routerLink="/docs/layouts/sidebar" label="Profile">
-              <icon-avatar slot="icon" class="h-4 w-4" />
+              <lmn-avatar slot="icon" class="h-4 w-4" />
             </volt-sidebar-item>
             <volt-sidebar-item routerLink="/docs/layouts/sidebar" label="Settings">
-              <icon-settings slot="icon" class="h-4 w-4" />
+              <lmn-settings slot="icon" class="h-4 w-4" />
             </volt-sidebar-item>
             <volt-sidebar-item routerLink="/docs/layouts/sidebar" label="Search">
-              <icon-search slot="icon" class="h-4 w-4" />
+              <lmn-search slot="icon" class="h-4 w-4" />
             </volt-sidebar-item>
           </volt-sidebar-group>
         </volt-sidebar-content>
@@ -148,7 +148,7 @@ import {
               class="h-8 w-8"
               (click)="sidebarService.toggleCollapse()"
             >
-              <icon-menu class="h-4 w-4" />
+              <lmn-menu class="h-4 w-4" />
             </button>
             <volt-separator orientation="vertical" class="h-4 mx-2" />
             <span>Platform</span>

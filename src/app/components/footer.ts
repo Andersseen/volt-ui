@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { IconGithub } from '../icons';
+import { LmnGithubIcon } from 'lumen-icons';
 
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [IconGithub],
+  imports: [LmnGithubIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <footer
@@ -23,7 +23,7 @@ import { IconGithub } from '../icons';
             class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-border/60 hover:text-foreground transition-colors"
             aria-label="GitHub repository"
           >
-            <icon-github class="w-4 h-4" />
+            <lmn-github [size]="16" />
           </a>
           <a href="#" class="hover:text-foreground transition-colors">Discord</a>
         </div>

@@ -3,12 +3,12 @@ import { VoltToggle } from 'volt';
 import { CodePanel } from '../../../../components/code-panel';
 import { TOGGLE_SNIPPET } from '../../../../lib/snippets';
 import { TOGGLE_USAGE } from '../../../../lib/snippets/usage';
-import { IconItalic, IconBold } from '../../../../icons';
+import { LmnBoldIcon, LmnItalicIcon } from 'lumen-icons';
 
 @Component({
   selector: 'app-toggle-demo',
   standalone: true,
-  imports: [VoltToggle, CodePanel, IconItalic, IconBold],
+  imports: [VoltToggle, CodePanel, LmnItalicIcon, LmnBoldIcon],
   templateUrl: './toggle.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

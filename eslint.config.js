@@ -25,7 +25,7 @@ module.exports = tseslint.config(
       ],
       '@angular-eslint/component-selector': [
         'warn',
-        { type: 'element', prefix: ['app', 'volt', 'ui', 'icon'], style: 'kebab-case' },
+        { type: 'element', prefix: ['app', 'volt', 'ui'], style: 'kebab-case' },
       ],
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],

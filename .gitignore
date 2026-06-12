@@ -39,6 +39,14 @@ testem.log
 /typings
 __screenshots__/
 
+# Playwright
+test-results/
+playwright-report/
+
+# Generated editor bundles
+public/web-editor.min.js
+public/web-editor.min.js.map
+
 # System files
 .DS_Store
 Thumbs.db

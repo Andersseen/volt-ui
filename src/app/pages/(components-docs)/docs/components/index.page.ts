@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { IconComponents } from '../../../../icons';
+import { LmnGridIcon } from 'lumen-icons';
 
 interface ComponentLink {
   name: string;
@@ -16,7 +16,7 @@ interface ComponentGroup {
 @Component({
   selector: 'app-components-index-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, IconComponents],
+  imports: [RouterLink, LmnGridIcon],
   template: `
     <div class="space-y-8">
       <div>
@@ -56,7 +56,7 @@ interface ComponentGroup {
                     <div
                       class="w-8 h-8 rounded-md bg-primary/10 text-primary flex items-center justify-center"
                     >
-                      <icon-components class="w-4 h-4" />
+                      <lmn-grid [size]="16" />
                     </div>
                     <div>
                       <h3 class="font-medium group-hover:text-primary">{{ item.name }}</h3>

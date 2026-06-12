@@ -19,7 +19,7 @@ import {
   VoltTableRow,
   VoltInput,
 } from 'volt';
-import { IconSearch } from '../../../../icons';
+import { LmnSearchIcon } from 'lumen-icons';
 
 @Component({
   selector: 'app-top-nav-demo',
@@ -42,7 +42,7 @@ import { IconSearch } from '../../../../icons';
     VoltTableHeader,
     VoltTableRow,
     VoltInput,
-    IconSearch,
+    LmnSearchIcon,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -79,7 +79,7 @@ import { IconSearch } from '../../../../icons';
         <div class="flex items-center gap-3">
           <volt-input placeholder="Search..." class="w-40 h-8 text-xs hidden sm:block" />
           <volt-button variant="outline" size="sm" class="hidden sm:inline-flex">
-            <icon-search class="h-3.5 w-3.5 mr-1" />
+            <lmn-search class="h-3.5 w-3.5 mr-1" />
             Search
           </volt-button>
           <volt-separator orientation="vertical" class="h-6 hidden sm:block" />

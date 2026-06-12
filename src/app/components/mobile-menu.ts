@@ -7,7 +7,7 @@ import {
   NgpDialogTitle,
   NgpDialogTrigger,
 } from 'ng-primitives/dialog';
-import { IconMenu, IconClose } from '../icons';
+import { LmnMenuIcon, LmnXIcon } from 'lumen-icons';
 
 @Component({
   selector: 'app-mobile-menu',
@@ -20,8 +20,8 @@ import { IconMenu, IconClose } from '../icons';
     NgpDialogOverlay,
     NgpDialogTitle,
     NgpDialogDescription,
-    IconMenu,
-    IconClose,
+    LmnMenuIcon,
+    LmnXIcon,
   ],
   template: `
     <!-- Mobile Menu Button -->
@@ -30,7 +30,7 @@ import { IconMenu, IconClose } from '../icons';
       class="md:hidden inline-flex h-9 w-9 items-center justify-center rounded-md border border-border/60 text-muted-foreground transition-colors hover:text-foreground hover:bg-muted/60"
       aria-label="Open menu"
     >
-      <icon-menu />
+      <lmn-menu [size]="20" />
     </button>
 
     <!-- Mobile Menu Dialog Template -->
@@ -54,7 +54,7 @@ import { IconMenu, IconClose } from '../icons';
             class="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:text-foreground hover:bg-muted"
             aria-label="Close menu"
           >
-            <icon-close class="w-[18px] h-[18px]" />
+            <lmn-x [size]="20" />
           </button>
         </div>
 
@@ -95,14 +95,6 @@ import { IconMenu, IconClose } from '../icons';
             class="px-3 py-2.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
           >
             Create Theme
-          </a>
-          <a
-            routerLink="/icons"
-            routerLinkActive="bg-muted text-foreground font-medium"
-            (click)="close()"
-            class="px-3 py-2.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
-          >
-            Icons
           </a>
           <a
             routerLink="/docs/layouts"

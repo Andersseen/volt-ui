@@ -10,7 +10,7 @@ import {
   VoltSwitch,
 } from 'volt';
 import { CodePanel } from '../../../../components/code-panel';
-import { IconClose } from '../../../../icons';
+import { LmnXIcon } from 'lumen-icons';
 import { DRAWER_SNIPPET } from '../../../../lib/snippets';
 import { DRAWER_USAGE } from '../../../../lib/snippets/usage';
 
@@ -27,7 +27,7 @@ import { DRAWER_USAGE } from '../../../../lib/snippets/usage';
     VoltButton,
     VoltSwitch,
     CodePanel,
-    IconClose,
+    LmnXIcon,
   ],
   templateUrl: './drawer.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
