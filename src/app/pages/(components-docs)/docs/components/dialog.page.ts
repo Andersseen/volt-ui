@@ -8,7 +8,6 @@ import {
 } from 'ng-primitives/dialog';
 import { CodePanel } from '../../../../components/code-panel';
 import { DIALOG_USAGE } from '../../../../lib/snippets/usage';
-import { IconClose } from '../../../../icons';
 
 @Component({
   selector: 'app-dialog-demo',
@@ -20,7 +19,6 @@ import { IconClose } from '../../../../icons';
     NgpDialogTitle,
     NgpDialogDescription,
     CodePanel,
-    IconClose,
   ],
   templateUrl: './dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

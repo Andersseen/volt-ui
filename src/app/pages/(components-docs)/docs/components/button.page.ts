@@ -3,12 +3,12 @@ import { VoltButton } from 'volt';
 import { CodePanel } from '../../../../components/code-panel';
 import { BUTTON_SNIPPET } from '../../../../lib/snippets';
 import { BUTTON_USAGE } from '../../../../lib/snippets/usage';
-import { IconChevronRight, IconMail, IconArrowRight } from '../../../../icons';
+import { LmnArrowRightIcon, LmnChevronRightIcon, LmnMailIcon } from 'lumen-icons';
 
 @Component({
   selector: 'app-button-demo',
   standalone: true,
-  imports: [VoltButton, CodePanel, IconChevronRight, IconMail, IconArrowRight],
+  imports: [VoltButton, CodePanel, LmnChevronRightIcon, LmnMailIcon, LmnArrowRightIcon],
   templateUrl: './button.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

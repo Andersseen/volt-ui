@@ -13,7 +13,7 @@ import {
   Injector,
 } from '@angular/core';
 import { VoltTabs, VoltTabsContent, VoltTabsList, VoltTabsTrigger } from 'volt';
-import { IconCheck, IconCopy } from '../icons';
+import { LmnCheckIcon, LmnCopyIcon } from 'lumen-icons';
 import { EditorLoaderService } from '../services/editor-loader.service';
 import { CopyButton } from './copy-button';
 
@@ -24,8 +24,8 @@ import { CopyButton } from './copy-button';
   imports: [
     CommonModule,
     CopyButton,
-    IconCheck,
-    IconCopy,
+    LmnCheckIcon,
+    LmnCopyIcon,
     VoltTabs,
     VoltTabsList,
     VoltTabsTrigger,
@@ -52,10 +52,10 @@ import { CopyButton } from './copy-button';
             class="ml-auto inline-flex items-center gap-1 px-2 py-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
           >
             @if (cliCopied()) {
-              <icon-check class="w-[14px] h-[14px] text-success" />
+              <lmn-check [size]="14" class="text-success" />
               <span class="text-success">Copied!</span>
             } @else {
-              <icon-copy class="w-[14px] h-[14px]" />
+              <lmn-copy [size]="14" />
               <span>Copy</span>
             }
           </button>
@@ -71,9 +71,12 @@ import { CopyButton } from './copy-button';
 
           <volt-tabs-content value="preview">
             <div
-              class="flex h-[400px] items-center justify-center overflow-auto rounded-lg border border-border bg-muted/20 p-6"
+              class="relative flex h-[400px] items-center justify-center overflow-auto rounded-lg border border-border bg-background/50 p-6"
             >
-              <div class="w-full">
+              <div
+                class="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"
+              ></div>
+              <div class="relative z-10 w-full">
                 <ng-content />
               </div>
             </div>

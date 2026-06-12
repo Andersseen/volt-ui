@@ -5,7 +5,12 @@ import { resolve } from 'path';
 export default defineConfig({
   plugins: [
     angular({
-      include: ['src/**/*.spec.ts', 'projects/volt/src/**/*.spec.ts', 'projects/volt/src/**/*.ts'],
+      include: [
+        'test-setup.ts',
+        'src/**/*.spec.ts',
+        'projects/volt/src/**/*.spec.ts',
+        'projects/volt/src/**/*.ts',
+      ],
     }),
   ],
   resolve: {
@@ -17,7 +22,7 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: ['./test-setup.ts'],
-    include: ['src/**/*.spec.ts', 'projects/volt/src/**/*.spec.ts'],
+    include: ['src/**/*.spec.ts', 'projects/volt/src/**/*.spec.ts', 'cli/**/*.spec.js'],
     coverage: {
       reporter: ['text', 'html', 'lcov'],
       exclude: ['node_modules/', 'dist/', '.angular/', '**/*.d.ts'],

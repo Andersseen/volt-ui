@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { IconSparkles, IconCheck, IconExternalLink, IconTabs } from '../../../icons';
+import { LmnCheckIcon, LmnExternalLinkIcon, LmnListIcon, LmnSparklesIcon } from 'lumen-icons';
 
 const MCP_URL = 'https://volt-ui.pages.dev/api/mcp';
 
 @Component({
   selector: 'app-mcp-docs',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [IconSparkles, IconCheck, IconExternalLink, IconTabs],
+  imports: [LmnSparklesIcon, LmnCheckIcon, LmnExternalLinkIcon, LmnListIcon],
   template: `
     <div class="space-y-8 max-w-3xl">
       <!-- Header -->
@@ -21,7 +21,7 @@ const MCP_URL = 'https://volt-ui.pages.dev/api/mcp';
       <!-- What is MCP -->
       <div class="rounded-lg border border-border bg-muted/30 p-4">
         <div class="flex items-start gap-3">
-          <icon-sparkles class="w-5 h-5 text-primary mt-0.5 shrink-0" />
+          <lmn-sparkles [size]="20" class="text-primary mt-0.5 shrink-0" />
           <div>
             <h3 class="font-semibold">How it works</h3>
             <p class="text-sm text-muted-foreground mt-1">
@@ -73,7 +73,7 @@ const MCP_URL = 'https://volt-ui.pages.dev/api/mcp';
           <!-- Claude -->
           <div class="rounded-lg border border-border p-4 space-y-3">
             <div class="flex items-center gap-2">
-              <icon-sparkles class="w-5 h-5 text-orange-500" />
+              <lmn-sparkles [size]="20" class="text-orange-500" />
               <h3 class="font-semibold">Claude</h3>
               <span
                 class="ml-auto text-xs bg-green-500/10 text-green-600 px-2 py-0.5 rounded-full font-medium"
@@ -95,7 +95,7 @@ const MCP_URL = 'https://volt-ui.pages.dev/api/mcp';
           <!-- Cursor -->
           <div class="rounded-lg border border-border p-4 space-y-3">
             <div class="flex items-center gap-2">
-              <icon-tabs class="w-5 h-5 text-blue-500" />
+              <lmn-list [size]="20" class="text-blue-500" />
               <h3 class="font-semibold">Cursor</h3>
               <span
                 class="ml-auto text-xs bg-green-500/10 text-green-600 px-2 py-0.5 rounded-full font-medium"
@@ -118,7 +118,7 @@ const MCP_URL = 'https://volt-ui.pages.dev/api/mcp';
           <!-- Windsurf -->
           <div class="rounded-lg border border-border p-4 space-y-3">
             <div class="flex items-center gap-2">
-              <icon-sparkles class="w-5 h-5 text-cyan-500" />
+              <lmn-sparkles [size]="20" class="text-cyan-500" />
               <h3 class="font-semibold">Windsurf</h3>
               <span
                 class="ml-auto text-xs bg-green-500/10 text-green-600 px-2 py-0.5 rounded-full font-medium"
@@ -139,7 +139,7 @@ const MCP_URL = 'https://volt-ui.pages.dev/api/mcp';
           <!-- Copilot -->
           <div class="rounded-lg border border-border p-4 space-y-3">
             <div class="flex items-center gap-2">
-              <icon-sparkles class="w-5 h-5 text-purple-500" />
+              <lmn-sparkles [size]="20" class="text-purple-500" />
               <h3 class="font-semibold">GitHub Copilot</h3>
               <span
                 class="ml-auto text-xs bg-muted text-muted-foreground px-2 py-0.5 rounded-full font-medium"
@@ -203,14 +203,14 @@ const MCP_URL = 'https://volt-ui.pages.dev/api/mcp';
         </h2>
         <ul class="space-y-2 text-muted-foreground">
           <li class="flex items-start gap-2">
-            <icon-check class="w-[18px] h-[18px] text-green-500 mt-0.5 shrink-0" />
+            <lmn-check class="w-[18px] h-[18px] text-green-500 mt-0.5 shrink-0" />
             <span>
               <strong>All components</strong> — button, card, input, tabs, accordion, select, and
               more
             </span>
           </li>
           <li class="flex items-start gap-2">
-            <icon-check class="w-[18px] h-[18px] text-green-500 mt-0.5 shrink-0" />
+            <lmn-check class="w-[18px] h-[18px] text-green-500 mt-0.5 shrink-0" />
             <span>
               <strong>Correct selectors</strong> —
               <code class="bg-muted px-1 rounded">ui-button</code>,
@@ -219,13 +219,13 @@ const MCP_URL = 'https://volt-ui.pages.dev/api/mcp';
             </span>
           </li>
           <li class="flex items-start gap-2">
-            <icon-check class="w-[18px] h-[18px] text-green-500 mt-0.5 shrink-0" />
+            <lmn-check class="w-[18px] h-[18px] text-green-500 mt-0.5 shrink-0" />
             <span>
               <strong>Variants &amp; inputs</strong> — solid, outline, ghost, destructive + sizes
             </span>
           </li>
           <li class="flex items-start gap-2">
-            <icon-check class="w-[18px] h-[18px] text-green-500 mt-0.5 shrink-0" />
+            <lmn-check class="w-[18px] h-[18px] text-green-500 mt-0.5 shrink-0" />
             <span>
               <strong>Theme system</strong> — 5 colors × 5 styles,
               <code class="bg-muted px-1 rounded">provideVoltTheme</code> and
@@ -233,7 +233,7 @@ const MCP_URL = 'https://volt-ui.pages.dev/api/mcp';
             </span>
           </li>
           <li class="flex items-start gap-2">
-            <icon-check class="w-[18px] h-[18px] text-green-500 mt-0.5 shrink-0" />
+            <lmn-check class="w-[18px] h-[18px] text-green-500 mt-0.5 shrink-0" />
             <span>
               <strong>CLI commands</strong> —
               <code class="bg-muted px-1 rounded">npx &#64;voltui/cli add</code>,
@@ -242,7 +242,7 @@ const MCP_URL = 'https://volt-ui.pages.dev/api/mcp';
             </span>
           </li>
           <li class="flex items-start gap-2">
-            <icon-check class="w-[18px] h-[18px] text-green-500 mt-0.5 shrink-0" />
+            <lmn-check class="w-[18px] h-[18px] text-green-500 mt-0.5 shrink-0" />
             <span>
               <strong>Angular patterns</strong> — standalone components, zoneless signals, OnPush,
               CVA variants, ng-primitives host directives
@@ -285,7 +285,7 @@ const MCP_URL = 'https://volt-ui.pages.dev/api/mcp';
                 list
               </p>
             </div>
-            <icon-external-link class="w-5 h-5 text-muted-foreground shrink-0" />
+            <lmn-external-link [size]="20" class="text-muted-foreground shrink-0" />
           </a>
 
           <a
@@ -301,7 +301,7 @@ const MCP_URL = 'https://volt-ui.pages.dev/api/mcp';
                 files to write per agent
               </p>
             </div>
-            <icon-external-link class="w-5 h-5 text-muted-foreground shrink-0" />
+            <lmn-external-link [size]="20" class="text-muted-foreground shrink-0" />
           </a>
         </div>
       </div>

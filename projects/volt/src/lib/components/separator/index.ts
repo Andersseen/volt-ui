@@ -1,1 +1,1 @@
-export { VoltSeparator } from './separator.component';
+export { VoltSeparator } from './separator';

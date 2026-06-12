@@ -19,7 +19,7 @@ import {
   VoltTableRow,
   VoltInput,
 } from 'volt';
-import { IconSearch } from '../../../../icons';
+import { LmnSearchIcon } from 'lumen-icons';
 
 @Component({
   selector: 'app-top-nav-demo',
@@ -42,7 +42,7 @@ import { IconSearch } from '../../../../icons';
     VoltTableHeader,
     VoltTableRow,
     VoltInput,
-    IconSearch,
+    LmnSearchIcon,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -79,7 +79,7 @@ import { IconSearch } from '../../../../icons';
         <div class="flex items-center gap-3">
           <volt-input placeholder="Search..." class="w-40 h-8 text-xs hidden sm:block" />
           <volt-button variant="outline" size="sm" class="hidden sm:inline-flex">
-            <icon-search class="h-3.5 w-3.5 mr-1" />
+            <lmn-search class="h-3.5 w-3.5 mr-1" />
             Search
           </volt-button>
           <volt-separator orientation="vertical" class="h-6 hidden sm:block" />
@@ -330,12 +330,16 @@ import { IconSearch } from '../../../../icons';
                 <h3 class="font-semibold mb-4">Project Settings</h3>
                 <div class="space-y-4">
                   <div>
-                    <label class="text-sm font-medium">Project Name</label>
-                    <volt-input value="Project Alpha" class="mt-1" />
+                    <label for="project-name" class="text-sm font-medium">Project Name</label>
+                    <volt-input id="project-name" value="Project Alpha" class="mt-1" />
                   </div>
                   <div>
-                    <label class="text-sm font-medium">Description</label>
-                    <volt-input value="Main product development" class="mt-1" />
+                    <label for="project-description" class="text-sm font-medium">Description</label>
+                    <volt-input
+                      id="project-description"
+                      value="Main product development"
+                      class="mt-1"
+                    />
                   </div>
                   <div class="flex items-center justify-between pt-2">
                     <span class="text-sm">Public Project</span>

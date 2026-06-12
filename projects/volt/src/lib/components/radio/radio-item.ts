@@ -19,11 +19,11 @@ import { NgpRadioItem, NgpRadioIndicator } from 'ng-primitives/radio';
         <span class="h-2.5 w-2.5 rounded-full bg-[var(--primary)]"></span>
       </span>
     </button>
-    <label
+    <span
       class="text-sm font-[var(--font-weight-label)] leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
     >
       <ng-content />
-    </label>
+    </span>
   `,
 })
 export class VoltRadioItem {

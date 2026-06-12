@@ -1,14 +1,21 @@
+import '@angular/compiler';
 import '@testing-library/jest-dom';
 import { vi } from 'vitest';
 
-// Initialize Angular TestBed
-import { TestBed } from '@angular/core/testing';
-import {
-  BrowserDynamicTestingModule,
-  platformBrowserDynamicTesting,
-} from '@angular/platform-browser-dynamic/testing';
+// Initialize Angular TestBed with zoneless change detection
+import { getTestBed } from '@angular/core/testing';
+import { NgModule, provideZonelessChangeDetection } from '@angular/core';
+import { BrowserTestingModule, platformBrowserTesting } from '@angular/platform-browser/testing';
 
-TestBed.initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting());
+@NgModule({
+  providers: [provideZonelessChangeDetection()],
+})
+class ZonelessTestModule {}
+
+getTestBed().initTestEnvironment(
+  [BrowserTestingModule, ZonelessTestModule],
+  platformBrowserTesting()
+);
 
 // Mock matchMedia for tests
 Object.defineProperty(window, 'matchMedia', {

@@ -3,7 +3,7 @@ import { RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
 import { VoltBadge } from 'volt';
 import { ThemeSwitcher } from './theme-switcher';
 import { MobileMenu } from './mobile-menu';
-import { IconGithub } from '../icons';
+import { LmnGithubIcon } from 'lumen-icons';
 
 @Component({
   selector: 'app-header',
@@ -15,7 +15,7 @@ import { IconGithub } from '../icons';
     VoltBadge,
     ThemeSwitcher,
     MobileMenu,
-    IconGithub,
+    LmnGithubIcon,
   ],
   template: `
     <header class="sticky top-0 z-50 bg-background/70 backdrop-blur-xl border-b border-border/40">
@@ -81,13 +81,6 @@ import { IconGithub } from '../icons';
               Create Theme
             </a>
             <a
-              routerLink="/icons"
-              routerLinkActive="text-foreground"
-              class="px-3 py-2 rounded-md transition-colors hover:text-foreground"
-            >
-              Icons
-            </a>
-            <a
               routerLink="/docs/layouts"
               routerLinkActive="text-foreground"
               class="px-3 py-2 rounded-md transition-colors hover:text-foreground"
@@ -103,7 +96,7 @@ import { IconGithub } from '../icons';
             class="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border/60 text-muted-foreground transition-colors hover:text-foreground hover:bg-muted/60"
             aria-label="GitHub repository"
           >
-            <icon-github class="w-[18px] h-[18px]" />
+            <lmn-github [size]="20" />
           </a>
 
           <app-theme-switcher />

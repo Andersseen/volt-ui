@@ -5,6 +5,7 @@ import {
 } from 'ng-primitives/navigation-menu';
 
 @Component({
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'a[volt-navigation-menu-link]',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [provideNavigationMenuLinkState()],

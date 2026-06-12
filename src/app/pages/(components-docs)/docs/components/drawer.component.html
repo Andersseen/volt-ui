@@ -10,10 +10,6 @@
     <div
       class="border rounded-xl border-border/50 p-6 md:p-10 flex flex-col items-center justify-center bg-background/50 relative overflow-hidden min-h-[300px]"
     >
-      <div
-        class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"
-      ></div>
-
       <div class="relative z-10 flex flex-wrap gap-3 justify-center items-center">
         <volt-button variant="outline" [voltDrawer]="drawerRightTpl">
           Open Right Drawer
@@ -30,7 +26,7 @@
             <div class="flex items-center justify-between p-4 border-b border-border">
               <h2 voltDrawerTitle>Menu</h2>
               <volt-drawer-close>
-                <icon-close class="w-4 h-4" />
+                <lmn-x [size]="16" />
               </volt-drawer-close>
             </div>
             <nav class="p-4" voltDrawerDescription>
@@ -58,7 +54,7 @@
             <div class="flex items-center justify-between p-4 border-b border-border">
               <h2 voltDrawerTitle>Settings</h2>
               <volt-drawer-close>
-                <icon-close class="w-4 h-4" />
+                <lmn-x [size]="16" />
               </volt-drawer-close>
             </div>
             <div class="p-4" voltDrawerDescription>
@@ -82,7 +78,7 @@
             <div class="flex items-center justify-between p-4 border-b border-border">
               <h2 voltDrawerTitle>Search</h2>
               <volt-drawer-close>
-                <icon-close class="w-4 h-4" />
+                <lmn-x [size]="16" />
               </volt-drawer-close>
             </div>
             <div class="p-4" voltDrawerDescription>
@@ -100,7 +96,7 @@
             <div class="flex items-center justify-between p-4 border-b border-border">
               <h2 voltDrawerTitle>Actions</h2>
               <volt-drawer-close>
-                <icon-close class="w-4 h-4" />
+                <lmn-x [size]="16" />
               </volt-drawer-close>
             </div>
             <div class="p-4" voltDrawerDescription>

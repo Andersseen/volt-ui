@@ -48,7 +48,7 @@ class SettingsSection {
   template: `
     <div class="flex items-center justify-between py-4">
       <div class="space-y-0.5">
-        <label class="text-sm font-medium">{{ label() }}</label>
+        <span class="text-sm font-medium">{{ label() }}</span>
         <p class="text-xs text-muted-foreground">{{ hint() }}</p>
       </div>
       <ng-content />

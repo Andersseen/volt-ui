@@ -1,4 +1,4 @@
-export { VoltAccordion } from './accordion.component';
-export { VoltAccordionItem } from './accordion-item.component';
-export { VoltAccordionTrigger } from './accordion-trigger.component';
-export { VoltAccordionContent } from './accordion-content.component';
+export { VoltAccordion } from './accordion';
+export { VoltAccordionItem } from './accordion-item';
+export { VoltAccordionTrigger } from './accordion-trigger';
+export { VoltAccordionContent } from './accordion-content';

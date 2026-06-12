@@ -1,25 +1,25 @@
 // Single-file components
 import buttonSource from '../../../../projects/volt/src/lib/components/button/button.ts?raw';
 import badgeSource from '../../../../projects/volt/src/lib/components/badge/badge.ts?raw';
-import cardSource from '../../../../projects/volt/src/lib/components/card/card.component.ts?raw';
-import checkboxSource from '../../../../projects/volt/src/lib/components/checkbox/checkbox.component.ts?raw';
-import inputSource from '../../../../projects/volt/src/lib/components/input/input.component.ts?raw';
+import cardSource from '../../../../projects/volt/src/lib/components/card/card.ts?raw';
+import checkboxSource from '../../../../projects/volt/src/lib/components/checkbox/checkbox.ts?raw';
+import inputSource from '../../../../projects/volt/src/lib/components/input/input.ts?raw';
 import autofillSource from '../../../../projects/volt/src/lib/components/autofill/autofill.ts?raw';
 import progressSource from '../../../../projects/volt/src/lib/components/progress/progress.ts?raw';
 import searchSource from '../../../../projects/volt/src/lib/components/search/search.ts?raw';
 import searchClearSource from '../../../../projects/volt/src/lib/components/search/search-clear.ts?raw';
-import separatorSource from '../../../../projects/volt/src/lib/components/separator/separator.component.ts?raw';
+import separatorSource from '../../../../projects/volt/src/lib/components/separator/separator.ts?raw';
 import sliderSource from '../../../../projects/volt/src/lib/components/slider/slider.ts?raw';
-import switchSource from '../../../../projects/volt/src/lib/components/switch/switch.component.ts?raw';
+import switchSource from '../../../../projects/volt/src/lib/components/switch/switch.ts?raw';
 import textareaSource from '../../../../projects/volt/src/lib/components/textarea/textarea.ts?raw';
 import toggleSource from '../../../../projects/volt/src/lib/components/toggle/toggle.ts?raw';
 import toolbarSource from '../../../../projects/volt/src/lib/components/toolbar/toolbar.ts?raw';
 
 // Multi-file components
-import accordionSource from '../../../../projects/volt/src/lib/components/accordion/accordion.component.ts?raw';
-import accordionItemSource from '../../../../projects/volt/src/lib/components/accordion/accordion-item.component.ts?raw';
-import accordionTriggerSource from '../../../../projects/volt/src/lib/components/accordion/accordion-trigger.component.ts?raw';
-import accordionContentSource from '../../../../projects/volt/src/lib/components/accordion/accordion-content.component.ts?raw';
+import accordionSource from '../../../../projects/volt/src/lib/components/accordion/accordion.ts?raw';
+import accordionItemSource from '../../../../projects/volt/src/lib/components/accordion/accordion-item.ts?raw';
+import accordionTriggerSource from '../../../../projects/volt/src/lib/components/accordion/accordion-trigger.ts?raw';
+import accordionContentSource from '../../../../projects/volt/src/lib/components/accordion/accordion-content.ts?raw';
 
 import avatarSource from '../../../../projects/volt/src/lib/components/avatar/avatar.ts?raw';
 import avatarImageSource from '../../../../projects/volt/src/lib/components/avatar/avatar-image.ts?raw';
@@ -55,17 +55,17 @@ import popoverArrowSource from '../../../../projects/volt/src/lib/components/pop
 import radioGroupSource from '../../../../projects/volt/src/lib/components/radio/radio-group.ts?raw';
 import radioItemSource from '../../../../projects/volt/src/lib/components/radio/radio-item.ts?raw';
 
-import selectSource from '../../../../projects/volt/src/lib/components/select/select.component.ts?raw';
+import selectSource from '../../../../projects/volt/src/lib/components/select/select.ts?raw';
 import nativeSelectSource from '../../../../projects/volt/src/lib/components/select/native-select.ts?raw';
-import selectContentSource from '../../../../projects/volt/src/lib/components/select/select-content.component.ts?raw';
-import selectItemSource from '../../../../projects/volt/src/lib/components/select/select-item.component.ts?raw';
-import selectLabelSource from '../../../../projects/volt/src/lib/components/select/select-label.component.ts?raw';
-import selectSeparatorSource from '../../../../projects/volt/src/lib/components/select/select-separator.component.ts?raw';
+import selectContentSource from '../../../../projects/volt/src/lib/components/select/select-content.ts?raw';
+import selectItemSource from '../../../../projects/volt/src/lib/components/select/select-item.ts?raw';
+import selectLabelSource from '../../../../projects/volt/src/lib/components/select/select-label.ts?raw';
+import selectSeparatorSource from '../../../../projects/volt/src/lib/components/select/select-separator.ts?raw';
 
-import tabsSource from '../../../../projects/volt/src/lib/components/tabs/tabs.component.ts?raw';
-import tabsListSource from '../../../../projects/volt/src/lib/components/tabs/tabs-list.component.ts?raw';
-import tabsTriggerSource from '../../../../projects/volt/src/lib/components/tabs/tabs-trigger.component.ts?raw';
-import tabsContentSource from '../../../../projects/volt/src/lib/components/tabs/tabs-content.component.ts?raw';
+import tabsSource from '../../../../projects/volt/src/lib/components/tabs/tabs.ts?raw';
+import tabsListSource from '../../../../projects/volt/src/lib/components/tabs/tabs-list.ts?raw';
+import tabsTriggerSource from '../../../../projects/volt/src/lib/components/tabs/tabs-trigger.ts?raw';
+import tabsContentSource from '../../../../projects/volt/src/lib/components/tabs/tabs-content.ts?raw';
 
 import tooltipSource from '../../../../projects/volt/src/lib/components/tooltip/tooltip.ts?raw';
 import tooltipContentSource from '../../../../projects/volt/src/lib/components/tooltip/tooltip-content.ts?raw';
@@ -167,10 +167,10 @@ export const TOGGLE_SNIPPET = toggleSource;
 export const TOOLBAR_SNIPPET = toolbarSource;
 
 export const ACCORDION_SNIPPET = join(
-  ['accordion.component.ts', accordionSource],
-  ['accordion-item.component.ts', accordionItemSource],
-  ['accordion-trigger.component.ts', accordionTriggerSource],
-  ['accordion-content.component.ts', accordionContentSource]
+  ['accordion.ts', accordionSource],
+  ['accordion-item.ts', accordionItemSource],
+  ['accordion-trigger.ts', accordionTriggerSource],
+  ['accordion-content.ts', accordionContentSource]
 );
 
 export const AVATAR_SNIPPET = join(
@@ -220,19 +220,19 @@ export const RADIO_SNIPPET = join(
 );
 
 export const SELECT_SNIPPET = join(
-  ['select.component.ts', selectSource],
+  ['select.ts', selectSource],
   ['native-select.ts', nativeSelectSource],
-  ['select-content.component.ts', selectContentSource],
-  ['select-item.component.ts', selectItemSource],
-  ['select-label.component.ts', selectLabelSource],
-  ['select-separator.component.ts', selectSeparatorSource]
+  ['select-content.ts', selectContentSource],
+  ['select-item.ts', selectItemSource],
+  ['select-label.ts', selectLabelSource],
+  ['select-separator.ts', selectSeparatorSource]
 );
 
 export const TABS_SNIPPET = join(
-  ['tabs.component.ts', tabsSource],
-  ['tabs-list.component.ts', tabsListSource],
-  ['tabs-trigger.component.ts', tabsTriggerSource],
-  ['tabs-content.component.ts', tabsContentSource]
+  ['tabs.ts', tabsSource],
+  ['tabs-list.ts', tabsListSource],
+  ['tabs-trigger.ts', tabsTriggerSource],
+  ['tabs-content.ts', tabsContentSource]
 );
 
 export const TOOLTIP_SNIPPET = join(

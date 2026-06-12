@@ -11,7 +11,7 @@ import { VoltButton } from 'volt';
 
     <!-- With icon slots -->
     <volt-button>
-      <icon-mail slot="leading" class="w-4 h-4" />
+      <lmn-mail slot="leading" [size]="16" />
       Login with Email
     </volt-button>
   \`,
@@ -431,7 +431,7 @@ import { VoltToggle } from 'volt';
   imports: [VoltToggle],
   template: \`
     <volt-toggle [(pressed)]="bold" aria-label="Toggle bold">
-      <icon-bold class="w-4 h-4" />
+      <lmn-bold [size]="16" />
     </volt-toggle>
   \`,
 })
@@ -739,7 +739,7 @@ import {
         <div class="flex items-center justify-between p-4 border-b border-border">
           <h2 voltDrawerTitle>Menu</h2>
           <volt-drawer-close>
-            <icon-close class="w-4 h-4" />
+            <lmn-x [size]="16" />
           </volt-drawer-close>
         </div>
         <nav class="p-4" voltDrawerDescription>

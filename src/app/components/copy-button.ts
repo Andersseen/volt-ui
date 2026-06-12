@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IconCopy, IconCheck } from '../icons';
+import { LmnCheckIcon, LmnCopyIcon } from 'lumen-icons';
 
 @Component({
   selector: 'app-copy-button',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, IconCopy, IconCheck],
+  imports: [CommonModule, LmnCheckIcon, LmnCopyIcon],
   template: `
     <button
       type="button"
@@ -16,10 +16,10 @@ import { IconCopy, IconCheck } from '../icons';
       [class.text-success-foreground]="copied()"
     >
       @if (copied()) {
-        <icon-check class="w-[14px] h-[14px]" />
+        <lmn-check [size]="14" />
         <span>Copied!</span>
       } @else {
-        <icon-copy />
+        <lmn-copy [size]="14" />
         <span>Copy code</span>
       }
     </button>

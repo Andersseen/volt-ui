@@ -3,17 +3,24 @@ import {
   ChangeDetectionStrategy,
   signal,
   effect,
-  Inject,
+  inject,
   PLATFORM_ID,
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { VoltSelect, VoltSelectContent, VoltSelectItem, VoltSelectLabel } from 'volt';
-import { IconSun, IconMoon } from '../icons';
+import { LmnMoonIcon, LmnSunIcon } from 'lumen-icons';
 
 @Component({
   selector: 'app-theme-switcher',
   standalone: true,
-  imports: [VoltSelect, VoltSelectContent, VoltSelectItem, VoltSelectLabel, IconSun, IconMoon],
+  imports: [
+    VoltSelect,
+    VoltSelectContent,
+    VoltSelectItem,
+    VoltSelectLabel,
+    LmnSunIcon,
+    LmnMoonIcon,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="flex items-center gap-2 sm:gap-3">
@@ -78,9 +85,9 @@ import { IconSun, IconMoon } from '../icons';
         aria-label="Toggle dark mode"
       >
         @if (isDark()) {
-          <icon-moon />
+          <lmn-moon [size]="20" />
         } @else {
-          <icon-sun />
+          <lmn-sun [size]="20" />
         }
       </button>
     </div>
@@ -90,9 +97,10 @@ export class ThemeSwitcher {
   color = signal<unknown>('volt');
   style = signal<unknown>('sharp');
   isDark = signal(false);
+  private readonly platformId = inject(PLATFORM_ID);
 
-  constructor(@Inject(PLATFORM_ID) platformId: object) {
-    if (isPlatformBrowser(platformId)) {
+  constructor() {
+    if (isPlatformBrowser(this.platformId)) {
       const savedColor = localStorage.getItem('volt-color') || 'volt';
       const savedStyle = localStorage.getItem('volt-style') || 'sharp';
       const isDarkMode = localStorage.getItem('volt-dark') === 'true';
