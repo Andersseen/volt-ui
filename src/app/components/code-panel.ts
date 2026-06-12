@@ -71,9 +71,12 @@ import { CopyButton } from './copy-button';
 
           <volt-tabs-content value="preview">
             <div
-              class="flex h-[400px] items-center justify-center overflow-auto rounded-lg border border-border bg-muted/20 p-6"
+              class="relative flex h-[400px] items-center justify-center overflow-auto rounded-lg border border-border bg-background/50 p-6"
             >
-              <div class="w-full">
+              <div
+                class="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"
+              ></div>
+              <div class="relative z-10 w-full">
                 <ng-content />
               </div>
             </div>
