@@ -141,7 +141,7 @@ import { UiFormField, UiFormFieldLabel, UiFormFieldHint } from './ui/form-field'
 
 ## Theme
 \`\`\`ts
-import { provideVoltTheme } from 'volt/theme';
+import { provideVoltTheme } from '@voltui/components';
 // colors: volt | ember | sage | dusk | glacier
 // styles: sharp | soft | brutal | ghost | retro
 provideVoltTheme({ color: 'ember', style: 'soft', dark: false })
@@ -149,9 +149,9 @@ provideVoltTheme({ color: 'ember', style: 'soft', dark: false })
 
 ## CLI
 \`\`\`bash
-npx volt init           # scaffold ui/ folder
-npx volt add button     # add a component
-npx volt list           # list all components
+npx @voltui/cli init           # scaffold ui/ folder
+npx @voltui/cli add button     # add a component
+npx @voltui/cli list           # list all components
 \`\`\`
 
 ## AI tools
@@ -244,7 +244,7 @@ You are working with **Volt UI**, an Angular v21 component library (shadcn/ui-in
 
 ## Theme
 \`\`\`ts
-import { provideVoltTheme } from 'volt/theme';
+import { provideVoltTheme } from '@voltui/components';
 providers: [provideVoltTheme({ color: 'ember', style: 'soft', dark: false })]
 // colors: volt | ember | sage | dusk | glacier
 // styles: sharp | soft | brutal | ghost | retro
@@ -252,7 +252,7 @@ providers: [provideVoltTheme({ color: 'ember', style: 'soft', dark: false })]
 
 ## CLI
 \`\`\`bash
-npx volt init && npx volt add button card form-field input
+npx @voltui/cli init && npx @voltui/cli add button && npx @voltui/cli add card && npx @voltui/cli add form-field && npx @voltui/cli add input
 \`\`\`
 
 ## Rules
@@ -387,7 +387,7 @@ const VSCODE_SNIPPETS = {
     prefix: ['volt-theme', 'provide-volt-theme'],
     description: 'Provide Volt theme in app config',
     body: [
-      "import { provideVoltTheme } from 'volt/theme';",
+      "import { provideVoltTheme } from '@voltui/components';",
       '',
       'providers: [',
       '  provideVoltTheme({',
@@ -591,9 +591,9 @@ async function main() {
   log(`\n${c.green}${c.bold}Done!${c.reset} Restart your editor if needed.\n`);
 
   log(`${c.dim}Next steps:${c.reset}`);
-  log(`  ${c.cyan}npx volt init${c.reset}          — scaffold ui/ folder in your project`);
-  log(`  ${c.cyan}npx volt add button${c.reset}    — add a component`);
-  log(`  ${c.cyan}npx volt list${c.reset}          — list all available components\n`);
+  log(`  ${c.cyan}npx @voltui/cli init${c.reset}          — scaffold ui/ folder in your project`);
+  log(`  ${c.cyan}npx @voltui/cli add button${c.reset}    — add a component`);
+  log(`  ${c.cyan}npx @voltui/cli list${c.reset}          — list all available components\n`);
 }
 
 main().catch(err => {

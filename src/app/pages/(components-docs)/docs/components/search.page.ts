@@ -26,7 +26,7 @@ import { VoltInput, VoltSearch, VoltSearchClear } from 'volt';
       <app-code-panel
         title="Component Source"
         [code]="sourceCode"
-        cliCommand="npx github:Andersseen/volt-ui add search"
+        cliCommand="npx @voltui/cli add search"
       />
     </div>
   `,

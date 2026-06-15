@@ -35,7 +35,7 @@ import { LISTBOX_USAGE } from '../../../../lib/snippets/usage';
       <app-code-panel
         title="Component Source"
         [code]="code"
-        cliCommand="npx github:Andersseen/volt-ui add listbox"
+        cliCommand="npx @voltui/cli add listbox"
         description="Copy this code to your project. The component uses ng-primitives/listbox."
       />
     </div>

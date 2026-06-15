@@ -32,7 +32,7 @@ import { TOOLBAR_USAGE } from '../../../../lib/snippets/usage';
       <app-code-panel
         title="Component Source"
         [code]="code"
-        cliCommand="npx github:Andersseen/volt-ui add toolbar"
+        cliCommand="npx @voltui/cli add toolbar"
         description="Copy this code to your project. The component uses ng-primitives/toolbar."
       />
     </div>

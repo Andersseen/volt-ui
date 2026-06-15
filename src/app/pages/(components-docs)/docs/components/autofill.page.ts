@@ -33,7 +33,7 @@ import { VoltAutofill } from 'volt';
       <app-code-panel
         title="Directive Source"
         [code]="sourceCode"
-        cliCommand="npx github:Andersseen/volt-ui add autofill"
+        cliCommand="npx @voltui/cli add autofill"
       />
     </div>
   `,

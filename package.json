@@ -24,8 +24,9 @@
     "pretest:coverage": "node cli/generate-manifest.js",
     "test:ui": "vitest --ui",
     "test:e2e": "playwright test",
+    "test:e2e:ci": "pnpm build && E2E_SERVER=preview E2E_PORT=5174 playwright test --project=chromium",
     "test:e2e:ui": "playwright test --ui",
-    "test:all": "pnpm test:run && pnpm test:e2e",
+    "test:all": "pnpm lint && pnpm typecheck && pnpm test:run && pnpm build:lib && pnpm test:e2e:ci",
     "lint": "eslint . --ext .ts,.html",
     "lint:fix": "eslint . --ext .ts,.html --fix",
     "format": "prettier --write .",
@@ -36,6 +37,7 @@
     "deploy:cf": "pnpm run build && pnpm exec wrangler pages deploy dist/analog/public --project-name=volt-ui",
     "deploy:cf:main": "pnpm run build && pnpm exec wrangler pages deploy dist/analog/public --project-name=volt-ui --branch=main",
     "build:lib": "ng build volt",
+    "pack:cli": "cd cli && npm pack --dry-run",
     "publish:lib": "ng build volt && cd dist/volt && npm publish --access public",
     "prepare": "husky",
     "manifest": "node cli/generate-manifest.js"

@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Initial stable release of Volt UI component library
+- Initial alpha release of Volt UI component library
 - 40+ accessible components built on ng-primitives
 - CLI for adding components (`volt add`)
 - MCP support for AI assistants (Claude, Cursor, Copilot, VS Code, Windsurf)

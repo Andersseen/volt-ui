@@ -6,7 +6,8 @@
     "volt": "./bin/volt"
   },
   "files": [
-    "bin/"
+    "bin/",
+    "lib/"
   ],
   "scripts": {
     "test": "vitest --run tests/"

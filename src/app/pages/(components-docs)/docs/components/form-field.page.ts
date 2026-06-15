@@ -37,7 +37,7 @@ import { FORM_FIELD_USAGE } from '../../../../lib/snippets/usage';
       <app-code-panel
         title="Component Source"
         [code]="code"
-        cliCommand="npx github:Andersseen/volt-ui add form-field"
+        cliCommand="npx @voltui/cli add form-field"
         description="Copy this code to your project. The component uses ng-primitives/form-field."
       />
     </div>

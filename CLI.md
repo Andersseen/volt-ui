@@ -10,8 +10,11 @@ A CLI for adding Volt UI components to your Angular project, similar to shadcn/u
 # Use directly from the repo
 node cli/bin/volt add button
 
-# Or install globally
-npm link
+# Or use the published CLI
+npx @voltui/cli add button
+
+# During local development you can also link it
+cd cli && npm link
 volt add button
 ```
 
@@ -84,7 +87,7 @@ volt list
 
 When you run `volt add button`:
 
-1. The component files are copied from `projects/volt/src/lib/button/` to your project's `ui/button/` folder
+1. The component files are copied from `projects/volt/src/lib/components/button/` to your project's `ui/button/` folder
 2. All selectors are transformed from `volt-*` to `ui-*` (e.g., `volt-button` → `ui-button`)
 3. All class names are transformed from `VoltXxx` to `UiXxx` (e.g., `VoltButton` → `UiButton`)
 4. Imports are updated to work locally

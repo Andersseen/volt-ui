@@ -1,12 +1,13 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   contentChild,
   input,
   model,
   TemplateRef,
 } from '@angular/core';
-import { NgpCombobox, NgpComboboxPortal } from 'ng-primitives/combobox';
+import { injectComboboxState, NgpCombobox, NgpComboboxPortal } from 'ng-primitives/combobox';
 import { VoltComboboxInput } from './combobox-input';
 import { VoltComboboxButton } from './combobox-button';
 import { VoltComboboxDropdown } from './combobox-dropdown';
@@ -90,7 +91,6 @@ export class VoltCombobox {
   readonly trackByFn = input<(index: number, item: unknown) => unknown>((_i, item) => item);
   readonly optionTemplate = contentChild<TemplateRef<unknown>>(TemplateRef);
 
-  // This is a stub for aria-expanded; the real open state would require
-  // injecting combobox state. For simplicity we leave it undefined.
-  protected readonly open = () => false;
+  private readonly combobox = injectComboboxState();
+  protected readonly open = computed(() => this.combobox().open());
 }
