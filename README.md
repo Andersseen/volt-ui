@@ -19,15 +19,15 @@ An Angular UI component library inspired by shadcn/ui, built on top of [ng-primi
 1. **Initialize volt/ui in your project:**
 
 ```bash
-node cli/bin/volt init
+npx @voltui/cli init
 ```
 
 2. **Add components:**
 
 ```bash
-node cli/bin/volt add button
-node cli/bin/volt add card
-node cli/bin/volt add navigation-menu
+npx @voltui/cli add button
+npx @voltui/cli add card
+npx @voltui/cli add navigation-menu
 ```
 
 3. **Use in your components:**
@@ -58,25 +58,21 @@ Volt UI includes full MCP support for AI assistants! Get intelligent code sugges
 
 ### Supported Editors
 
-| Editor                    | Status          | Installation                                 |
-| ------------------------- | --------------- | -------------------------------------------- |
-| **Cursor**                | ✅ Full support | `node mcp/scripts/install-mcp.js -e cursor`  |
-| **Claude** (Desktop/Code) | ✅ Full support | `node mcp/scripts/install-mcp.js -e claude`  |
-| **GitHub Copilot**        | ✅ Full support | `node mcp/scripts/install-mcp.js -e copilot` |
-| **VS Code**               | ✅ Full support | `node mcp/scripts/install-mcp.js -e vscode`  |
-| **Other**                 | ✅ Generic MCP  | `node mcp/scripts/install-mcp.js`            |
+| Editor                    | Status          | Installation              |
+| ------------------------- | --------------- | ------------------------- |
+| **Cursor**                | ✅ Full support | `npx volt-ui-mcp cursor`  |
+| **Claude** (Desktop/Code) | ✅ Full support | `npx volt-ui-mcp claude`  |
+| **GitHub Copilot**        | ✅ Full support | `npx volt-ui-mcp copilot` |
+| **VS Code**               | ✅ Full support | `npx volt-ui-mcp vscode`  |
+| **Other**                 | ✅ Generic MCP  | `npx volt-ui-mcp`         |
 
 ### Quick MCP Setup
 
 ```bash
-# Install MCP in your Angular project
-node /path/to/volt-ui/mcp/scripts/install-mcp.js
-
-# Or use the shell script
-/path/to/volt-ui/mcp/scripts/setup-mcp.sh
+npx volt-ui-mcp
 ```
 
-See [MCP Quick Start](./mcp/QUICKSTART.md) for detailed instructions.
+See the [AI Integration docs](<./src/app/pages/(getting-started)/docs/mcp.page.ts>) for setup details.
 
 ### What AI Now Understands
 
@@ -200,7 +196,7 @@ Volt UI includes a powerful theme system with multiple color palettes and styles
 ### Applying Themes
 
 ```typescript
-import { provideVoltTheme } from 'volt/theme';
+import { provideVoltTheme } from '@voltui/components';
 
 bootstrapApplication(AppComponent, {
   providers: [provideVoltTheme({ color: 'ember', style: 'soft', dark: false })],
@@ -210,22 +206,16 @@ bootstrapApplication(AppComponent, {
 Or dynamically:
 
 ```typescript
-import { applyVoltTheme } from 'volt/theme';
+import { applyVoltTheme } from '@voltui/components';
 
 applyVoltTheme({ color: 'dusk', style: 'brutal', dark: true });
 ```
 
-## MCP Structure
+## Stability
 
-```
-mcp/
-├── cursor/          # Cursor editor MCP config
-├── claude/          # Claude Desktop/Code MCP config
-├── copilot/         # GitHub Copilot instructions
-├── generic/         # Generic MCP for any AI
-├── scripts/         # Installation scripts
-└── README.md        # Full MCP documentation
-```
+Volt UI is currently in alpha hardening. The core components are usable, but the public API,
+CLI packaging, form integrations, and advanced interaction components are still being stabilized
+before a v1 release.
 
 ## Deploy to Cloudflare Pages
 

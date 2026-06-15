@@ -67,7 +67,7 @@ import { DATE_PICKER_USAGE } from '../../../../lib/snippets/usage';
       <app-code-panel
         title="Component Source"
         [code]="code"
-        cliCommand="npx github:Andersseen/volt-ui add date-picker"
+        cliCommand="npx @voltui/cli add date-picker"
         description="Copy this code to your project. The component uses ng-primitives/date-picker."
       />
     </div>

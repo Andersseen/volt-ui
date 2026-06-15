@@ -58,7 +58,7 @@ import { UiFormField, UiFormFieldLabel, UiFormFieldHint } from './ui/form-field'
 
 ## Theme
 \`\`\`ts
-import { provideVoltTheme } from 'volt/theme';
+import { provideVoltTheme } from '@voltui/components';
 // colors: volt | ember | sage | dusk | glacier
 // styles: sharp | soft | brutal | ghost | retro
 provideVoltTheme({ color: 'ember', style: 'soft', dark: false })
@@ -66,9 +66,9 @@ provideVoltTheme({ color: 'ember', style: 'soft', dark: false })
 
 ## CLI
 \`\`\`bash
-npx volt init           # scaffold ui/ folder
-npx volt add button     # add a component
-npx volt list           # list all components
+npx @voltui/cli init           # scaffold ui/ folder
+npx @voltui/cli add button     # add a component
+npx @voltui/cli list           # list all components
 \`\`\`
 
 ## Component pattern
@@ -179,7 +179,7 @@ import { UiCard, UiCardHeader, UiCardTitle, UiCardDescription, UiCardContent, Ui
 
 ## Theme system
 \`\`\`ts
-import { provideVoltTheme } from 'volt/theme';
+import { provideVoltTheme } from '@voltui/components';
 // colors: volt | ember | sage | dusk | glacier
 // styles: sharp | soft | brutal | ghost | retro
 providers: [provideVoltTheme({ color: 'ember', style: 'soft', dark: false })]
@@ -187,7 +187,7 @@ providers: [provideVoltTheme({ color: 'ember', style: 'soft', dark: false })]
 
 ## CLI
 \`\`\`bash
-npx volt init && npx volt add button card form-field input
+npx @voltui/cli init && npx @voltui/cli add button && npx @voltui/cli add card && npx @voltui/cli add form-field && npx @voltui/cli add input
 \`\`\`
 
 ## Code guidelines
@@ -366,7 +366,7 @@ const VSCODE_SNIPPETS = {
     prefix: ['volt-theme', 'provide-volt-theme'],
     description: 'Provide Volt theme in app config',
     body: [
-      "import { provideVoltTheme } from 'volt/theme';",
+      "import { provideVoltTheme } from '@voltui/components';",
       '',
       'providers: [',
       '  provideVoltTheme({',

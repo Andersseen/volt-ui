@@ -29,7 +29,7 @@ import { INPUT_OTP_USAGE } from '../../../../lib/snippets/usage';
       <app-code-panel
         title="Component Source"
         [code]="code"
-        cliCommand="npx github:Andersseen/volt-ui add input-otp"
+        cliCommand="npx @voltui/cli add input-otp"
         description="Copy this code to your project. The component uses ng-primitives/input-otp."
       />
     </div>

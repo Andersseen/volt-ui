@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Button Demo Page', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/docs/button');
+    await page.goto('/docs/components/button');
   });
 
   test('should load page and display title', async ({ page }) => {
@@ -10,7 +10,7 @@ test.describe('Button Demo Page', () => {
   });
 
   test('should have working navigation', async ({ page }) => {
-    await page.getByRole('link', { name: 'Components' }).click();
+    await page.getByRole('link', { name: 'Components', exact: true }).click();
     await expect(page).toHaveURL('/docs/components');
   });
 
@@ -35,13 +35,13 @@ test.describe('Button Demo Page', () => {
   });
 
   test('should render CLI command', async ({ page }) => {
-    await expect(page.getByText('npx github:Andersseen/volt-ui add button')).toBeVisible();
+    await expect(page.getByText('npx @voltui/cli add button')).toBeVisible();
   });
 });
 
 test.describe('Card Demo Page', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/docs/card');
+    await page.goto('/docs/components/card');
   });
 
   test('should load page and display title', async ({ page }) => {
@@ -49,7 +49,7 @@ test.describe('Card Demo Page', () => {
   });
 
   test('should render card with form', async ({ page }) => {
-    await expect(page.getByPlaceholder('Name of your project')).toBeVisible();
+    await expect(page.locator('input[placeholder="Name of your project"]')).toBeVisible();
     await expect(page.getByRole('button', { name: 'Deploy' })).toBeVisible();
     await expect(page.getByRole('button', { name: 'Cancel' })).toBeVisible();
   });
@@ -57,7 +57,7 @@ test.describe('Card Demo Page', () => {
 
 test.describe('Input Demo Page', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/docs/input');
+    await page.goto('/docs/components/input');
   });
 
   test('should load page and display title', async ({ page }) => {
@@ -65,10 +65,10 @@ test.describe('Input Demo Page', () => {
   });
 
   test('should render email input', async ({ page }) => {
-    await expect(page.getByPlaceholder('Email')).toBeVisible();
+    await expect(page.getByRole('textbox', { name: 'Email' })).toBeVisible();
   });
 
   test('should render textarea', async ({ page }) => {
-    await expect(page.getByPlaceholder('Type your message here.')).toBeVisible();
+    await expect(page.getByRole('textbox', { name: 'Type your message here.' })).toBeVisible();
   });
 });

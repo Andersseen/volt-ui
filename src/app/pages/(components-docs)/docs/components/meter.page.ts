@@ -35,7 +35,7 @@ import { METER_USAGE } from '../../../../lib/snippets/usage';
       <app-code-panel
         title="Component Source"
         [code]="code"
-        cliCommand="npx github:Andersseen/volt-ui add meter"
+        cliCommand="npx @voltui/cli add meter"
         description="Copy this code to your project. The component uses ng-primitives/meter."
       />
     </div>

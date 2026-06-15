@@ -32,7 +32,7 @@ import { TOGGLE_GROUP_USAGE } from '../../../../lib/snippets/usage';
       <app-code-panel
         title="Component Source"
         [code]="code"
-        cliCommand="npx github:Andersseen/volt-ui add toggle-group"
+        cliCommand="npx @voltui/cli add toggle-group"
         description="Copy this code to your project. The component uses ng-primitives/toggle-group."
       />
     </div>

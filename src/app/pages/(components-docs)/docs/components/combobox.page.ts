@@ -34,7 +34,7 @@ import { COMBOBOX_USAGE } from '../../../../lib/snippets/usage';
       <app-code-panel
         title="Component Source"
         [code]="code"
-        cliCommand="npx github:Andersseen/volt-ui add combobox"
+        cliCommand="npx @voltui/cli add combobox"
         description="Copy this code to your project. The component uses ng-primitives/combobox."
       />
     </div>

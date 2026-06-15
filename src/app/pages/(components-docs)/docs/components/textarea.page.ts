@@ -29,7 +29,7 @@ import { TEXTAREA_USAGE } from '../../../../lib/snippets/usage';
       <app-code-panel
         title="Component Source"
         [code]="code"
-        cliCommand="npx github:Andersseen/volt-ui add textarea"
+        cliCommand="npx @voltui/cli add textarea"
         description="Copy this code to your project. The component uses ng-primitives/textarea."
       />
     </div>
