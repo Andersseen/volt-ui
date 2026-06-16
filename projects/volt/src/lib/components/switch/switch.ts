@@ -21,6 +21,62 @@ import { NgpSwitch, NgpSwitchThumb } from 'ng-primitives/switch';
       multi: true,
     },
   ],
+  styles: [
+    `
+      [ngpSwitch] {
+        box-sizing: border-box;
+        display: inline-flex;
+        height: 1.25rem;
+        width: 2.25rem;
+        flex-shrink: 0;
+        cursor: pointer;
+        align-items: center;
+        border: 2px solid transparent;
+        border-radius: var(--radius-full, 9999px);
+        background: color-mix(
+          in oklch,
+          var(--muted-foreground, oklch(0.55 0.012 265)) 20%,
+          transparent
+        );
+        transition-property: color, background-color, border-color, outline-color, box-shadow;
+        transition-duration: 150ms;
+      }
+
+      [ngpSwitch][data-checked] {
+        background: var(--primary, oklch(0.6 0.22 265));
+      }
+
+      [ngpSwitch][data-disabled],
+      [ngpSwitch]:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+      }
+
+      [ngpSwitch]:focus-visible {
+        outline: 2px solid transparent;
+        outline-offset: 2px;
+        box-shadow:
+          0 0 0 2px var(--background, oklch(1 0 0)),
+          0 0 0 4px var(--ring, oklch(0.6 0.22 265));
+      }
+
+      [ngpSwitchThumb] {
+        pointer-events: none;
+        display: block;
+        height: 1rem;
+        width: 1rem;
+        border-radius: var(--radius-full, 9999px);
+        background: var(--background, oklch(1 0 0));
+        box-shadow: var(--shadow-sm, 0 1px 2px 0 oklch(0 0 0 / 0.05));
+        transform: translateX(0);
+        transition: transform 150ms ease-in-out;
+      }
+
+      [ngpSwitchThumb][data-checked] {
+        transform: translateX(1rem);
+      }
+    `,
+  ],
   template: `
     <button
       ngpSwitch
