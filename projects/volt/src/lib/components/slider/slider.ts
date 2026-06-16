@@ -37,6 +37,83 @@ import type { NgpOrientation } from 'ng-primitives/common';
     class: 'relative flex w-full touch-none select-none items-center',
   },
   imports: [NgpSliderTrack, NgpSliderRange, NgpSliderThumb],
+  styles: [
+    `
+      :host {
+        position: relative;
+        display: flex;
+        width: 100%;
+        touch-action: none;
+        user-select: none;
+        align-items: center;
+      }
+
+      :host([data-orientation='vertical']) {
+        height: 100%;
+        width: auto;
+        flex-direction: column;
+      }
+
+      [ngpSliderTrack] {
+        position: relative;
+        height: 0.5rem;
+        width: 100%;
+        flex-grow: 1;
+        overflow: hidden;
+        border-radius: var(--radius-full, 9999px);
+        background: var(--secondary, oklch(0.96 0.004 265));
+      }
+
+      [ngpSliderTrack][data-orientation='vertical'] {
+        height: 100%;
+        width: 0.5rem;
+      }
+
+      [ngpSliderRange] {
+        position: absolute;
+        height: 100%;
+        border-radius: var(--radius-full, 9999px);
+        background: var(--primary, oklch(0.6 0.22 265));
+      }
+
+      [ngpSliderRange][data-orientation='vertical'] {
+        bottom: 0;
+        width: 100%;
+      }
+
+      [ngpSliderThumb] {
+        position: absolute;
+        top: 50%;
+        display: block;
+        height: 1.25rem;
+        width: 1.25rem;
+        cursor: grab;
+        border: 2px solid var(--primary, oklch(0.6 0.22 265));
+        border-radius: var(--radius-full, 9999px);
+        background: var(--background, oklch(1 0 0));
+        transform: translate(-50%, -50%);
+        transition-property: color, background-color, border-color, outline-color, box-shadow;
+        transition-duration: 150ms;
+      }
+
+      [ngpSliderThumb][data-press] {
+        cursor: grabbing;
+      }
+
+      [ngpSliderThumb][data-disabled] {
+        pointer-events: none;
+        opacity: 0.5;
+      }
+
+      [ngpSliderThumb]:focus-visible {
+        outline: 2px solid transparent;
+        outline-offset: 2px;
+        box-shadow:
+          0 0 0 2px var(--background, oklch(1 0 0)),
+          0 0 0 4px var(--ring, oklch(0.6 0.22 265));
+      }
+    `,
+  ],
   template: `
     <div ngpSliderTrack class="relative h-2 w-full grow overflow-hidden rounded-full bg-secondary">
       <div ngpSliderRange class="absolute h-full rounded-full bg-primary"></div>

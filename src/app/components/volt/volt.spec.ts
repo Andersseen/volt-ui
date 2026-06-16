@@ -65,4 +65,46 @@ describe('Volt Library', () => {
       expect(hasComponentSuffix).toBe(false);
     }
   });
+
+  it('should embed critical component styles for npm consumers that do not scan node_modules', () => {
+    const criticalStyleChecks = [
+      {
+        path: 'projects/volt/src/lib/components/slider/slider.ts',
+        snippets: ['[ngpSliderTrack]', 'height: 0.5rem', '[ngpSliderThumb]', 'height: 1.25rem'],
+      },
+      {
+        path: 'projects/volt/src/lib/components/progress/progress.ts',
+        snippets: ['[ngpProgressTrack]', 'height: 0.5rem', '[ngpProgressIndicator]'],
+      },
+      {
+        path: 'projects/volt/src/lib/components/switch/switch.ts',
+        snippets: ['[ngpSwitch]', 'height: 1.25rem', '[ngpSwitchThumb]', 'height: 1rem'],
+      },
+      {
+        path: 'projects/volt/src/lib/components/checkbox/checkbox.ts',
+        snippets: ['[ngpCheckbox]', 'height: 1rem', 'width: 1rem'],
+      },
+      {
+        path: 'projects/volt/src/lib/components/radio/radio-item.ts',
+        snippets: ['[ngpRadioItem]', 'height: 1rem', '[ngpRadioIndicator] > span'],
+      },
+      {
+        path: 'projects/volt/src/lib/components/meter/meter-track.ts',
+        snippets: [':host', 'height: 0.5rem', 'width: 100%'],
+      },
+      {
+        path: 'projects/volt/src/lib/components/meter/meter-indicator.ts',
+        snippets: [':host', 'height: 100%', 'background: var(--primary'],
+      },
+    ];
+
+    for (const check of criticalStyleChecks) {
+      const source = readFileSync(resolve(check.path), 'utf-8');
+      expect(source).toContain('styles:');
+
+      for (const snippet of check.snippets) {
+        expect(source).toContain(snippet);
+      }
+    }
+  });
 });

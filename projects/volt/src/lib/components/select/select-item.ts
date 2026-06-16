@@ -5,6 +5,60 @@ import { NgpSelectOption } from 'ng-primitives/select';
   selector: 'volt-select-item',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgpSelectOption],
+  styles: [
+    `
+      [ngpSelectOption] {
+        box-sizing: border-box;
+        position: relative;
+        display: flex;
+        width: 100%;
+        cursor: pointer;
+        user-select: none;
+        align-items: center;
+        border-radius: var(--radius-sm, 0.25rem);
+        padding: 0.375rem 0.5rem 0.375rem 2rem;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        outline: none;
+        transition-property: color, background-color;
+        transition-duration: 150ms;
+      }
+
+      [ngpSelectOption]:focus,
+      [ngpSelectOption][data-highlighted],
+      [ngpSelectOption][data-active] {
+        background: var(--muted, oklch(0.96 0.004 265));
+        color: var(--muted-foreground, oklch(0.55 0.012 265));
+      }
+
+      [ngpSelectOption][aria-disabled='true'],
+      [ngpSelectOption][data-disabled] {
+        pointer-events: none;
+        opacity: 0.5;
+      }
+
+      [ngpSelectOption] > span {
+        position: absolute;
+        left: 0.5rem;
+        display: flex;
+        height: 0.875rem;
+        width: 0.875rem;
+        align-items: center;
+        justify-content: center;
+      }
+
+      [ngpSelectOption] svg {
+        display: none;
+        height: 1rem;
+        width: 1rem;
+      }
+
+      [ngpSelectOption][data-selected] svg,
+      [ngpSelectOption][aria-selected='true'] svg {
+        display: block;
+      }
+    `,
+  ],
   template: `
     <div
       ngpSelectOption

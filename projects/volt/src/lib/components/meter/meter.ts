@@ -8,6 +8,14 @@ import { NgpMeter, provideMeterState } from 'ng-primitives/meter';
   host: {
     class: 'block w-full',
   },
+  styles: [
+    `
+      :host {
+        display: block;
+        width: 100%;
+      }
+    `,
+  ],
   hostDirectives: [
     {
       directive: NgpMeter,

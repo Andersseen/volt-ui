@@ -25,6 +25,7 @@
     "test:ui": "vitest --ui",
     "test:e2e": "playwright test",
     "test:e2e:ci": "pnpm build && E2E_SERVER=preview E2E_PORT=5174 playwright test --project=chromium",
+    "test:e2e:consumer": "pnpm build:lib && playwright test -c playwright.consumer.config.ts",
     "test:e2e:ui": "playwright test --ui",
     "test:all": "pnpm lint && pnpm typecheck && pnpm test:run && pnpm build:lib && pnpm test:e2e:ci",
     "lint": "eslint . --ext .ts,.html",

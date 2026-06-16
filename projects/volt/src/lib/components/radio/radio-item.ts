@@ -8,6 +8,67 @@ import { NgpRadioItem, NgpRadioIndicator } from 'ng-primitives/radio';
   host: {
     class: 'flex items-center gap-[var(--spacing-gap)]',
   },
+  styles: [
+    `
+      :host {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-gap, 0.5rem);
+      }
+
+      [ngpRadioItem] {
+        box-sizing: border-box;
+        position: relative;
+        display: flex;
+        height: 1rem;
+        width: 1rem;
+        flex-shrink: 0;
+        cursor: pointer;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--border, oklch(0.92 0.006 265));
+        border-radius: var(--radius-full, 9999px);
+        background: var(--background, oklch(1 0 0));
+        transition-property: color, background-color, border-color, outline-color, box-shadow;
+        transition-duration: 150ms;
+      }
+
+      [ngpRadioItem][data-checked] {
+        border-color: var(--primary, oklch(0.6 0.22 265));
+      }
+
+      [ngpRadioItem][data-disabled],
+      [ngpRadioItem]:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+      }
+
+      [ngpRadioItem]:focus-visible {
+        outline: 2px solid transparent;
+        outline-offset: 2px;
+        box-shadow:
+          0 0 0 2px var(--background, oklch(1 0 0)),
+          0 0 0 4px var(--ring, oklch(0.6 0.22 265));
+      }
+
+      [ngpRadioIndicator] {
+        display: none;
+        align-items: center;
+        justify-content: center;
+      }
+
+      [ngpRadioIndicator][data-checked] {
+        display: flex;
+      }
+
+      [ngpRadioIndicator] > span {
+        height: 0.625rem;
+        width: 0.625rem;
+        border-radius: var(--radius-full, 9999px);
+        background: var(--primary, oklch(0.6 0.22 265));
+      }
+    `,
+  ],
   template: `
     <button
       ngpRadioItem

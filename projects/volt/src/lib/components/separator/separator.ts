@@ -13,6 +13,24 @@ import { NgpSeparator } from 'ng-primitives/separator';
   host: {
     '[class]': 'classes()',
   },
+  styles: [
+    `
+      :host {
+        flex-shrink: 0;
+        background: var(--border, oklch(0.92 0.006 265));
+      }
+
+      :host([data-orientation='vertical']) {
+        width: 1px;
+        height: 100%;
+      }
+
+      :host([data-orientation='horizontal']) {
+        width: 100%;
+        height: 1px;
+      }
+    `,
+  ],
   template: ``,
 })
 export class VoltSeparator {

@@ -14,6 +14,49 @@ An Angular UI component library inspired by shadcn/ui, built on top of [ng-primi
 
 ## Quick Start
 
+### Using the npm package
+
+1. **Install the package:**
+
+```bash
+npm install @voltui/components
+```
+
+2. **Import the theme CSS in your global stylesheet:**
+
+```css
+@import '@voltui/components/themes.css';
+```
+
+3. **Add the theme provider:**
+
+```typescript
+import { provideVoltTheme } from '@voltui/components';
+
+bootstrapApplication(AppComponent, {
+  providers: [provideVoltTheme({ color: 'volt', style: 'sharp', dark: false })],
+});
+```
+
+4. **Import and render components:**
+
+```typescript
+import { VoltButton, VoltSlider } from '@voltui/components';
+
+@Component({
+  selector: 'app-example',
+  imports: [VoltButton, VoltSlider],
+  template: `
+    <volt-button>Save</volt-button>
+    <volt-slider [value]="10" [min]="0" [max]="24" />
+  `,
+})
+export class ExampleComponent {}
+```
+
+Volt UI ships critical component layout styles with the Angular components, so Tailwind CSS v4
+consumers do not need to add an `@source` directive for `node_modules/@voltui/components`.
+
 ### Using the CLI (like shadcn)
 
 1. **Initialize volt/ui in your project:**
@@ -137,7 +180,9 @@ See all components in the [live demo](https://volt-ui.pages.dev).
 
 ## Dependencies
 
-Components require:
+When using `@voltui/components` from npm, runtime dependencies are installed with the package.
+
+When copying components into your app with the CLI or manually, install:
 
 ```bash
 npm install ng-primitives class-variance-authority
@@ -194,6 +239,12 @@ Volt UI includes a powerful theme system with multiple color palettes and styles
 - `retro` - Classic aesthetic
 
 ### Applying Themes
+
+Import the theme CSS once in your global stylesheet:
+
+```css
+@import '@voltui/components/themes.css';
+```
 
 ```typescript
 import { provideVoltTheme } from '@voltui/components';
