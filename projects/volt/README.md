@@ -1,64 +1,71 @@
-# Volt
+# @voltui/components
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.0.
+Accessible Angular components built on top of ng-primitives, with Volt UI themes and standalone
+imports.
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Installation
 
 ```bash
-ng generate --help
+npm install @voltui/components
 ```
 
-## Building
+Import the theme CSS once in your global stylesheet:
 
-To build the library, run:
-
-```bash
-ng build volt
+```css
+@import '@voltui/components/themes.css';
 ```
 
-This command will compile your project, and the build artifacts will be placed in the `dist/` directory.
+Add the theme provider during application bootstrap:
 
-### Publishing the Library
+```typescript
+import { provideVoltTheme } from '@voltui/components';
 
-Once the project is built, you can publish your library by following these steps:
-
-1. Navigate to the `dist` directory:
-
-   ```bash
-   cd dist/volt
-   ```
-
-2. Run the `npm publish` command to publish your library to the npm registry:
-   ```bash
-   npm publish
-   ```
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
+bootstrapApplication(AppComponent, {
+  providers: [provideVoltTheme({ color: 'volt', style: 'sharp', dark: false })],
+});
 ```
 
-## Running end-to-end tests
+## Usage
 
-For end-to-end (e2e) testing, run:
+```typescript
+import { Component } from '@angular/core';
+import { VoltButton, VoltSlider } from '@voltui/components';
 
-```bash
-ng e2e
+@Component({
+  selector: 'app-example',
+  imports: [VoltButton, VoltSlider],
+  template: `
+    <volt-button>Save</volt-button>
+    <volt-slider [value]="10" [min]="0" [max]="24" />
+  `,
+})
+export class ExampleComponent {}
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## Tailwind CSS v4
 
-## Additional Resources
+Volt UI ships critical layout styles inside the Angular components. Apps using Tailwind CSS v4 do
+not need to scan `node_modules/@voltui/components` with `@source` for components to render
+correctly.
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Your app can still use Tailwind normally for its own templates:
+
+```css
+@import 'tailwindcss';
+@import '@voltui/components/themes.css';
+```
+
+## Themes
+
+Available theme colors: `volt`, `ember`, `sage`, `dusk`, `glacier`.
+
+Available styles: `sharp`, `soft`, `brutal`, `ghost`, `retro`.
+
+```typescript
+provideVoltTheme({ color: 'ember', style: 'soft', dark: true });
+```
+
+## Links
+
+- Documentation: https://volt-ui.pages.dev
+- Package: https://www.npmjs.com/package/@voltui/components

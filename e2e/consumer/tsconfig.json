@@ -1,0 +1,9 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "paths": {
+      "@voltui/components": ["../../dist/volt/fesm2022/voltui-components.mjs"]
+    }
+  },
+  "include": ["src/**/*.ts"]
+}

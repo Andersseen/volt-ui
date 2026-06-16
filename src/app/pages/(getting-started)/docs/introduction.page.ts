@@ -53,6 +53,9 @@ import {
               <div class="flex items-center gap-2 p-3 rounded-lg bg-muted font-mono text-sm">
                 npm install &#64;voltui/components
               </div>
+              <div class="flex items-center gap-2 p-3 rounded-lg bg-muted font-mono text-sm">
+                &#64;import '&#64;voltui/components/themes.css';
+              </div>
               <p class="text-sm text-muted-foreground">
                 Then import:
                 <code class="px-1 py-0.5 bg-muted rounded text-xs"
@@ -113,10 +116,14 @@ import {
           <div class="p-4 rounded-lg border border-border bg-muted/30">
             <span class="font-medium">npm package</span>
             <p class="text-xs text-muted-foreground mt-1">
-              All dependencies included automatically.
+              Runtime dependencies are included automatically. Import the theme CSS once in your
+              global stylesheet.
             </p>
             <code class="text-sm font-mono text-muted-foreground block mt-2">
               npm install &#64;voltui/components
+            </code>
+            <code class="text-sm font-mono text-muted-foreground block mt-2">
+              &#64;import '&#64;voltui/components/themes.css';
             </code>
           </div>
 
@@ -129,6 +136,11 @@ import {
 
           <div class="p-4 rounded-lg border border-border bg-muted/30">
             <span class="font-medium">Tailwind CSS v4</span>
+            <p class="text-xs text-muted-foreground mt-1">
+              Volt components ship critical layout CSS, so npm consumers do not need an
+              <code class="px-1 py-0.5 bg-muted rounded text-xs">&#64;source</code> directive for
+              <code class="px-1 py-0.5 bg-muted rounded text-xs">node_modules</code>.
+            </p>
             <code class="text-sm font-mono text-muted-foreground block mt-2">
               npm install -D tailwindcss @tailwindcss/postcss
             </code>
