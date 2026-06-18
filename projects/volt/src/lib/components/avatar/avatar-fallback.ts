@@ -25,7 +25,7 @@ import { NgpAvatarFallback } from 'ng-primitives/avatar';
         border-radius: var(--radius-full, 9999px);
         background: var(--muted, oklch(0.96 0.004 265));
         color: var(--foreground, oklch(0.14 0.006 265));
-        font-weight: var(--font-weight-label, 500);
+        font-weight: var(--volt-font-weight-label, 500);
       }
     `,
   ],

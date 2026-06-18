@@ -1,4 +1,5 @@
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
   Component,
   computed,
@@ -67,7 +68,7 @@ import { NgpSwitch, NgpSwitchThumb } from 'ng-primitives/switch';
         width: 1rem;
         border-radius: var(--radius-full, 9999px);
         background: var(--background, oklch(1 0 0));
-        box-shadow: var(--shadow-sm, 0 1px 2px 0 oklch(0 0 0 / 0.05));
+        box-shadow: var(--volt-shadow-sm, 0 1px 2px 0 oklch(0 0 0 / 0.05));
         transform: translateX(0);
         transition: transform 150ms ease-in-out;
       }
@@ -95,7 +96,7 @@ import { NgpSwitch, NgpSwitchThumb } from 'ng-primitives/switch';
 })
 export class VoltSwitch implements ControlValueAccessor {
   readonly checked = model(false);
-  readonly disabled = input(false);
+  readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
 
   private readonly controlDisabled = signal(false);
   protected readonly isDisabled = computed(() => this.disabled() || this.controlDisabled());

@@ -537,7 +537,7 @@ function indent(lines: string[]): string {
 
               <div class="h-[680px] overflow-auto p-4">
                 <div
-                  class="overflow-hidden rounded-xl border border-border shadow-[var(--shadow-lg)]"
+                  class="overflow-hidden rounded-xl border border-border shadow-lg"
                   [ngStyle]="previewStyle()"
                 >
                   <div class="min-h-[620px] bg-background p-5 text-foreground">

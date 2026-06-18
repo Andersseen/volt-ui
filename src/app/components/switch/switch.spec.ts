@@ -21,7 +21,10 @@ describe('VoltSwitch', () => {
 
   it('should have checked model and disabled input', () => {
     expect(source).toContain('readonly checked = model(false)');
-    expect(source).toContain('readonly disabled = input(false)');
+    expect(source).toContain('booleanAttribute');
+    expect(source).toContain(
+      'readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute })'
+    );
   });
 
   it('should use ng-primitives NgpSwitch', () => {

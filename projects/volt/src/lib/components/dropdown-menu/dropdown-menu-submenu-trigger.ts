@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { booleanAttribute, ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { NgpSubmenuTrigger } from 'ng-primitives/menu';
 import type { NgpMenuPlacement } from 'ng-primitives/menu';
 import type { NgpOverlayContent } from 'ng-primitives/portal';
@@ -25,5 +25,5 @@ export class VoltDropdownMenuSubmenuTrigger {
   readonly submenu = input<NgpOverlayContent<unknown> | undefined>(undefined);
   readonly placement = input<NgpMenuPlacement>('right-start');
   readonly offset = input<number>(4);
-  readonly disabled = input(false);
+  readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
 }

@@ -128,7 +128,10 @@ describe('CLI Core', () => {
     it('should copy and transform card component using cache', async () => {
       const cardUrl = `${manifest.baseUrl}/components/card/card.ts`;
       const indexUrl = `${manifest.baseUrl}/components/card/index.ts`;
-      core.setCachedFile(cardUrl, "export const card = 'test';\nexport class VoltCard {}\nselector: 'volt-card'");
+      core.setCachedFile(
+        cardUrl,
+        "export const card = 'test';\nexport class VoltCard {}\nselector: 'volt-card'"
+      );
       core.setCachedFile(indexUrl, "export * from './card';\n");
 
       const result = await core.copyComponent('card', testDir, manifest);

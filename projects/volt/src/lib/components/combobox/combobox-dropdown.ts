@@ -12,7 +12,7 @@ import { NgpComboboxDropdown } from 'ng-primitives/combobox';
   ],
   host: {
     class:
-      'relative z-50 w-full min-w-[var(--ngp-combobox-dropdown-width)] overflow-hidden rounded-[var(--radius-md)] border border-input bg-background p-1 shadow-[var(--shadow-md)]',
+      'relative z-50 w-full min-w-[var(--ngp-combobox-dropdown-width)] overflow-hidden rounded-md border border-input bg-background p-1 shadow-md',
   },
   template: `<ng-content />`,
 })

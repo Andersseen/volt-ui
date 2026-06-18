@@ -17,7 +17,7 @@ import { NgpSelectDropdown } from 'ng-primitives/select';
         border-radius: var(--radius-md, 0.375rem);
         background: var(--surface, oklch(1 0 0));
         color: var(--surface-foreground, oklch(0.14 0.006 265));
-        box-shadow: var(--shadow-md, 0 4px 6px -1px oklch(0 0 0 / 0.1));
+        box-shadow: var(--volt-shadow-md, 0 4px 6px -1px oklch(0 0 0 / 0.1));
       }
 
       [ngpSelectDropdown] > div {

@@ -23,9 +23,14 @@ describe('VoltCheckbox', () => {
     expect(source).toContain('readonly checked = model(false)');
   });
 
-  it('should have disabled and required inputs', () => {
-    expect(source).toContain('readonly disabled = input(false)');
-    expect(source).toContain('readonly required = input(false)');
+  it('should have disabled and required inputs with booleanAttribute transform', () => {
+    expect(source).toContain('booleanAttribute');
+    expect(source).toContain(
+      'readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute })'
+    );
+    expect(source).toContain(
+      'readonly required = input<boolean, unknown>(false, { transform: booleanAttribute })'
+    );
   });
 
   it('should use ng-primitives NgpCheckbox', () => {
