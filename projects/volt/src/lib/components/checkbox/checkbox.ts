@@ -22,47 +22,6 @@ import { NgpCheckbox } from 'ng-primitives/checkbox';
       multi: true,
     },
   ],
-  styles: [
-    `
-      [ngpCheckbox] {
-        box-sizing: border-box;
-        display: flex;
-        height: 1rem;
-        width: 1rem;
-        flex-shrink: 0;
-        cursor: pointer;
-        align-items: center;
-        justify-content: center;
-        border: 1px solid var(--primary, oklch(0.6 0.22 265));
-        border-radius: var(--radius-sm, 0.25rem);
-        background: transparent;
-        color: var(--primary-foreground, oklch(1 0 0));
-      }
-
-      [ngpCheckbox][data-checked] {
-        background: var(--primary, oklch(0.6 0.22 265));
-      }
-
-      [ngpCheckbox][data-disabled],
-      [ngpCheckbox]:disabled {
-        cursor: not-allowed;
-        opacity: 0.5;
-      }
-
-      [ngpCheckbox]:focus-visible {
-        outline: 2px solid transparent;
-        outline-offset: 2px;
-        box-shadow:
-          0 0 0 2px var(--background, oklch(1 0 0)),
-          0 0 0 4px var(--ring, oklch(0.6 0.22 265));
-      }
-
-      svg {
-        height: 0.75rem;
-        width: 0.75rem;
-      }
-    `,
-  ],
   template: `
     <button
       ngpCheckbox

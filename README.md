@@ -14,7 +14,9 @@ An Angular UI component library inspired by shadcn/ui, built on top of [ng-primi
 
 ## Quick Start
 
-### Using the npm package
+### Using the npm package (themes and utilities only)
+
+For the copy-paste workflow you do **not** need to install `@voltui/components`. The package is provided for projects that want to consume the theme system and utilities directly:
 
 1. **Install the package:**
 
@@ -38,24 +40,7 @@ bootstrapApplication(AppComponent, {
 });
 ```
 
-4. **Import and render components:**
-
-```typescript
-import { VoltButton, VoltSlider } from '@voltui/components';
-
-@Component({
-  selector: 'app-example',
-  imports: [VoltButton, VoltSlider],
-  template: `
-    <volt-button>Save</volt-button>
-    <volt-slider [value]="10" [min]="0" [max]="24" />
-  `,
-})
-export class ExampleComponent {}
-```
-
-Volt UI ships critical component layout styles with the Angular components, so Tailwind CSS v4
-consumers do not need to add an `@source` directive for `node_modules/@voltui/components`.
+> **Note:** If you copy components with the CLI below, you do not need `@voltui/components` unless you want to reuse the theme package.
 
 ### Using the CLI (like shadcn)
 
@@ -264,9 +249,16 @@ applyVoltTheme({ color: 'dusk', style: 'brutal', dark: true });
 
 ## Stability
 
-Volt UI is currently in alpha hardening. The core components are usable, but the public API,
-CLI packaging, form integrations, and advanced interaction components are still being stabilized
-before a v1 release.
+Volt UI is currently in **alpha hardening**. The component architecture has stabilized around a shadcn/ui-style copy-paste model, the CLI copies source files locally, and a growing suite of real Angular unit tests is in place. Advanced overlay components (dialog, popover, dropdown-menu) and form integrations are still being hardened before a v1 release.
+
+## Architecture
+
+- **shadcn/ui-style copy-paste** - Use the CLI to copy components into your project and own the code.
+- **Standalone components** - No NgModules required.
+- **Zoneless change detection** - Uses signals for reactivity.
+- **Host directives** - ng-primitives applied via hostDirectives.
+- **CVA (class-variance-authority)** - For component variants.
+- **Tailwind-first styling** - Components use Tailwind utilities directly; no embedded critical CSS required.
 
 ## Deploy to Cloudflare Pages
 

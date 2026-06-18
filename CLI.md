@@ -87,10 +87,11 @@ volt list
 
 When you run `volt add button`:
 
-1. The component files are copied from `projects/volt/src/lib/components/button/` to your project's `ui/button/` folder
-2. All selectors are transformed from `volt-*` to `ui-*` (e.g., `volt-button` → `ui-button`)
-3. All class names are transformed from `VoltXxx` to `UiXxx` (e.g., `VoltButton` → `UiButton`)
-4. Imports are updated to work locally
+1. Component files are copied from the local Volt UI repository (`projects/volt/src/lib/components/button/`) to your project's `ui/button/` folder.
+2. All selectors are transformed from `volt-*` to `ui-*` (e.g., `volt-button` → `ui-button`).
+3. All class names are transformed from `VoltXxx` to `UiXxx` (e.g., `VoltButton` → `UiButton`).
+4. Transitive component dependencies are resolved automatically (e.g., `toggle-group` pulls in `toggle`).
+5. An `index.ts` barrel file is created/updated in the target directory.
 
 ## Usage in your components
 
@@ -109,10 +110,16 @@ export class MyComponent {}
 
 ## Dependencies
 
-Components require these dependencies in your project:
+Copied components require these runtime dependencies in your project:
 
 ```bash
-npm install ng-primitives class-variance-authority
+npm install ng-primitives class-variance-authority clsx tailwind-merge
+```
+
+Or let the CLI install them for you:
+
+```bash
+volt add button --install
 ```
 
 ## Component Source Code

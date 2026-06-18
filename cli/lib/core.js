@@ -2,55 +2,13 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const os = require('os');
+const { execSync } = require('child_process');
 
-const MANIFEST_URL = 'https://volt-ui.pages.dev/manifest.json';
-const LOCAL_MANIFEST_PATH = path.resolve(__dirname, '../../public/manifest.json');
+const REPO_ROOT = path.resolve(__dirname, '../..');
+const COMPONENTS_ROOT = path.join(REPO_ROOT, 'projects/volt/src/lib');
+const MANIFEST_PATH = path.join(REPO_ROOT, 'public/manifest.json');
 const CACHE_DIR = path.join(os.homedir(), '.volt-ui', 'cache');
 const CACHE_TTL_MS = 1000 * 60 * 60; // 1 hour
-
-// ---------------------------------------------------------------------------
-// Known component dependencies (transitive)
-// ---------------------------------------------------------------------------
-
-const COMPONENT_DEPENDENCIES = {
-  'dropdown-menu': ['button'],
-  accordion: [],
-  avatar: [],
-  breadcrumbs: [],
-  button: [],
-  card: [],
-  checkbox: [],
-  combobox: [],
-  'date-picker': [],
-  dialog: [],
-  drawer: [],
-  'file-upload': [],
-  'form-field': [],
-  'input-otp': [],
-  input: [],
-  listbox: [],
-  meter: [],
-  'navigation-menu': [],
-  pagination: [],
-  popover: [],
-  progress: [],
-  radio: [],
-  resizable: [],
-  search: [],
-  select: [],
-  separator: [],
-  skeleton: [],
-  slider: [],
-  switch: [],
-  table: [],
-  tabs: [],
-  textarea: [],
-  toast: [],
-  toggle: [],
-  'toggle-group': ['toggle'],
-  toolbar: [],
-  tooltip: [],
-};
 
 // Runtime dependencies required by copied components.
 const RUNTIME_DEPENDENCIES = [
@@ -59,6 +17,12 @@ const RUNTIME_DEPENDENCIES = [
   'clsx',
   'tailwind-merge',
 ];
+
+// Known transitive component dependencies.
+const COMPONENT_DEPENDENCIES = {
+  'toggle-group': ['toggle'],
+  'dropdown-menu': ['button'],
+};
 
 // ---------------------------------------------------------------------------
 // Package manager detection
@@ -86,7 +50,7 @@ function installCommand(packageManager) {
 }
 
 // ---------------------------------------------------------------------------
-// HTTP helpers
+// HTTP helpers (kept for backwards compatibility; CLI no longer uses network)
 // ---------------------------------------------------------------------------
 
 function fetchJson(url) {
@@ -116,12 +80,12 @@ function fetchJson(url) {
   });
 }
 
-async function fetchFile(url, retries = 2) {
+function fetchFile(url) {
   return new Promise((resolve, reject) => {
     https
       .get(url, res => {
         if (res.statusCode === 301 || res.statusCode === 302) {
-          fetchFile(res.headers.location, retries).then(resolve).catch(reject);
+          fetchFile(res.headers.location).then(resolve).catch(reject);
           return;
         }
         if (res.statusCode !== 200) {
@@ -129,28 +93,16 @@ async function fetchFile(url, retries = 2) {
           return;
         }
         let data = '';
-        res.setEncoding('utf8');
         res.on('data', chunk => (data += chunk));
         res.on('end', () => resolve(data));
         res.on('error', reject);
       })
-      .on('error', async err => {
-        if (retries > 0) {
-          try {
-            const result = await fetchFile(url, retries - 1);
-            resolve(result);
-          } catch (retryErr) {
-            reject(retryErr);
-          }
-        } else {
-          reject(err);
-        }
-      });
+      .on('error', reject);
   });
 }
 
 // ---------------------------------------------------------------------------
-// Cache helpers
+// Cache helpers (kept for backwards compatibility)
 // ---------------------------------------------------------------------------
 
 function ensureCacheDir() {
@@ -198,9 +150,9 @@ function setCachedFile(url, content) {
 // ---------------------------------------------------------------------------
 
 function getLocalManifest() {
-  if (fs.existsSync(LOCAL_MANIFEST_PATH)) {
+  if (fs.existsSync(MANIFEST_PATH)) {
     try {
-      return JSON.parse(fs.readFileSync(LOCAL_MANIFEST_PATH, 'utf-8'));
+      return JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf-8'));
     } catch {
       return null;
     }
@@ -218,9 +170,10 @@ async function loadManifest() {
   if (manifest) {
     return manifest;
   }
-  manifest = await fetchJson(MANIFEST_URL);
-  setCachedManifest(manifest);
-  return manifest;
+
+  throw new Error(
+    'Unable to load Volt UI manifest. Run "pnpm manifest" from the volt-ui repository first.'
+  );
 }
 
 // ---------------------------------------------------------------------------
@@ -256,9 +209,15 @@ function capitalize(str) {
     .join(' ');
 }
 
+function findComponentInManifest(componentName, manifest) {
+  const component = manifest.components[componentName];
+  if (!component) return null;
+  return component;
+}
+
 function collectDependencies(componentName, manifest, collected = new Set()) {
   if (collected.has(componentName)) return collected;
-  const component = manifest.components[componentName];
+  const component = findComponentInManifest(componentName, manifest);
   if (!component) return collected;
 
   collected.add(componentName);
@@ -271,32 +230,69 @@ function collectDependencies(componentName, manifest, collected = new Set()) {
   return collected;
 }
 
-async function copySingleComponent(componentName, targetDir, manifest) {
-  const component = manifest.components[componentName];
-  const componentDir = path.join(targetDir, componentName);
+function copySingleComponent(componentName, targetDir, manifest) {
+  const component = findComponentInManifest(componentName, manifest);
+  if (!component) {
+    throw new Error(`Component "${componentName}" not found in manifest.`);
+  }
 
+  const componentDir = path.join(targetDir, componentName);
   if (!fs.existsSync(componentDir)) {
     fs.mkdirSync(componentDir, { recursive: true });
   }
 
   for (const file of component.files) {
-    const url = `${manifest.baseUrl}/${file}`;
+    const sourcePath = path.join(COMPONENTS_ROOT, file);
     const fileName = path.basename(file);
     const targetPath = path.join(componentDir, fileName);
 
-    let content = getCachedFile(url);
-    if (!content) {
-      content = await fetchFile(url);
-      setCachedFile(url, content);
+    if (!fs.existsSync(sourcePath)) {
+      throw new Error(`Source file not found: ${sourcePath}`);
     }
 
+    const content = fs.readFileSync(sourcePath, 'utf-8');
     const transformed = transformContent(content);
     fs.writeFileSync(targetPath, transformed);
   }
 }
 
-async function copyComponent(componentName, targetDir, manifest) {
-  const component = manifest.components[componentName];
+function installDependencies(targetDir, options = {}) {
+  const packageManager = detectPackageManager(targetDir);
+  const cmd = `${installCommand(packageManager)} ${RUNTIME_DEPENDENCIES.join(' ')}`;
+
+  if (options.dryRun) {
+    return { packageManager, cmd, executed: false };
+  }
+
+  try {
+    execSync(cmd, { cwd: targetDir, stdio: 'inherit' });
+    return { packageManager, cmd, executed: true };
+  } catch (err) {
+    throw new Error(`Failed to install dependencies. Run manually:\n  ${cmd}`);
+  }
+}
+
+function updateIndexFile(targetDir, addedComponents) {
+  const indexPath = path.join(targetDir, 'index.ts');
+  let content = '';
+
+  if (fs.existsSync(indexPath)) {
+    content = fs.readFileSync(indexPath, 'utf-8');
+  }
+
+  const exports = addedComponents
+    .map(name => `export * from './${name}';`)
+    .filter(line => !content.includes(line));
+
+  if (exports.length === 0) return;
+
+  const updated = content.replace(/export \{\};\n?/, '').trimEnd();
+  const newContent = updated ? `${updated}\n${exports.join('\n')}\n` : `${exports.join('\n')}\n`;
+  fs.writeFileSync(indexPath, newContent);
+}
+
+function copyComponent(componentName, targetDir, manifest, options = {}) {
+  const component = findComponentInManifest(componentName, manifest);
 
   if (!component) {
     throw new Error(
@@ -308,14 +304,20 @@ async function copyComponent(componentName, targetDir, manifest) {
     name => name !== componentName
   );
 
-  await copySingleComponent(componentName, targetDir, manifest);
-
+  copySingleComponent(componentName, targetDir, manifest);
   for (const dep of dependencies) {
-    await copySingleComponent(dep, targetDir, manifest);
+    copySingleComponent(dep, targetDir, manifest);
   }
+
+  updateIndexFile(targetDir, [componentName, ...dependencies]);
 
   const packageManager = detectPackageManager(process.cwd());
   const installCmd = `${installCommand(packageManager)} ${RUNTIME_DEPENDENCIES.join(' ')}`;
+
+  let installResult = null;
+  if (options.install) {
+    installResult = installDependencies(process.cwd(), { dryRun: false });
+  }
 
   return {
     componentName,
@@ -323,6 +325,7 @@ async function copyComponent(componentName, targetDir, manifest) {
     targetDir,
     dependencies,
     installCommand: installCmd,
+    installResult,
   };
 }
 
@@ -331,12 +334,13 @@ function initProject(targetDir) {
     fs.mkdirSync(targetDir, { recursive: true });
   }
 
+  const indexPath = path.join(targetDir, 'index.ts');
   const indexContent = `// UI Components
 // Generated by volt CLI
 
 export {};
 `;
-  fs.writeFileSync(path.join(targetDir, 'index.ts'), indexContent);
+  fs.writeFileSync(indexPath, indexContent);
   return targetDir;
 }
 
@@ -358,5 +362,8 @@ module.exports = {
   copyComponent,
   initProject,
   clearCache,
+  installDependencies,
+  detectPackageManager,
+  installCommand,
   CACHE_DIR,
 };
