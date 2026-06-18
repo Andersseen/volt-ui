@@ -1,4 +1,4 @@
-import { Directive, input } from '@angular/core';
+import { booleanAttribute, Directive, input } from '@angular/core';
 import { NgpTooltipTrigger } from 'ng-primitives/tooltip';
 import type { NgpTooltipPlacement } from 'ng-primitives/tooltip';
 import type {
@@ -44,11 +44,11 @@ export class VoltTooltip {
   readonly flip = input<NgpFlip>(true);
   readonly shift = input<NgpShift>(true);
   readonly container = input<HTMLElement | string | null>(null);
-  readonly showOnOverflow = input(false);
+  readonly showOnOverflow = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly context = input<unknown>(undefined);
-  readonly disabled = input<boolean>(false);
-  readonly useTextContent = input<boolean>(false);
-  readonly trackPosition = input(false);
+  readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
+  readonly useTextContent = input<boolean, unknown>(false, { transform: booleanAttribute });
+  readonly trackPosition = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly position = input<NgpPosition | null>(null);
   readonly scrollBehavior = input<'reposition' | 'close'>('reposition');
   readonly cooldown = input(300);

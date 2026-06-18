@@ -5,15 +5,15 @@
   --ring-width: 3px;
   --ring-offset-width: 2px;
 
-  --shadow-sm: 0 2px 0 var(--border);
-  --shadow: 0 4px 0 var(--border);
-  --shadow-md: 0 6px 0 var(--border), 0 8px 0 oklch(0 0 0 / 0.1);
-  --shadow-lg: 0 8px 0 var(--border), 0 12px 0 oklch(0 0 0 / 0.15);
+  --volt-shadow-sm: 0 2px 0 var(--border);
+  --volt-shadow: 0 4px 0 var(--border);
+  --volt-shadow-md: 0 6px 0 var(--border), 0 8px 0 oklch(0 0 0 / 0.1);
+  --volt-shadow-lg: 0 8px 0 var(--border), 0 12px 0 oklch(0 0 0 / 0.15);
 
   --spacing-component: 1.125;
   --spacing-gap: 0.5rem;
 
-  --font-weight-base: 500;
-  --font-weight-heading: 700;
-  --font-weight-label: 600;
+  --volt-font-weight-base: 500;
+  --volt-font-weight-heading: 700;
+  --volt-font-weight-label: 600;
 }

@@ -10,7 +10,7 @@ import { NgpLabel } from 'ng-primitives/form-field';
       ngpLabel
       [class.text-error]="error()"
       [attr.for]="htmlFor()"
-      class="text-sm font-[var(--font-weight-label)] text-foreground leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+      class="text-sm font-medium text-foreground leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
     >
       <ng-content />
     </label>

@@ -58,14 +58,14 @@
   --radius-xl: calc(var(--radius) + 0.25rem);
   --radius-full: 9999px;
 
-  --shadow-sm: var(--shadow-sm);
-  --shadow: var(--shadow);
-  --shadow-md: var(--shadow-md);
-  --shadow-lg: var(--shadow-lg);
-  --font-weight-normal: var(--font-weight-base);
-  --font-weight-medium: var(--font-weight-label);
-  --font-weight-semibold: var(--font-weight-heading);
-  --font-weight-bold: var(--font-weight-heading);
+  --shadow-sm: var(--volt-shadow-sm);
+  --shadow: var(--volt-shadow);
+  --shadow-md: var(--volt-shadow-md);
+  --shadow-lg: var(--volt-shadow-lg);
+  --font-weight-normal: var(--volt-font-weight-base);
+  --font-weight-medium: var(--volt-font-weight-label);
+  --font-weight-semibold: var(--volt-font-weight-heading);
+  --font-weight-bold: var(--volt-font-weight-heading);
 }
 
 :root {
@@ -380,17 +380,17 @@
   --ring-width: 2px;
   --ring-offset-width: 2px;
 
-  --shadow-sm: 0 1px 2px 0 oklch(0 0 0 / 0.05);
-  --shadow: 0 1px 3px 0 oklch(0 0 0 / 0.1), 0 1px 2px -1px oklch(0 0 0 / 0.1);
-  --shadow-md: 0 4px 6px -1px oklch(0 0 0 / 0.1), 0 2px 4px -2px oklch(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px oklch(0 0 0 / 0.1), 0 4px 6px -4px oklch(0 0 0 / 0.1);
+  --volt-shadow-sm: 0 1px 2px 0 oklch(0 0 0 / 0.05);
+  --volt-shadow: 0 1px 3px 0 oklch(0 0 0 / 0.1), 0 1px 2px -1px oklch(0 0 0 / 0.1);
+  --volt-shadow-md: 0 4px 6px -1px oklch(0 0 0 / 0.1), 0 2px 4px -2px oklch(0 0 0 / 0.1);
+  --volt-shadow-lg: 0 10px 15px -3px oklch(0 0 0 / 0.1), 0 4px 6px -4px oklch(0 0 0 / 0.1);
 
   --spacing-component: 1;
   --spacing-gap: 0.5rem;
 
-  --font-weight-base: 400;
-  --font-weight-heading: 600;
-  --font-weight-label: 500;
+  --volt-font-weight-base: 400;
+  --volt-font-weight-heading: 600;
+  --volt-font-weight-label: 500;
   --letter-spacing-base: normal;
   --letter-spacing-heading: normal;
 }
@@ -403,17 +403,17 @@
   --ring-width: 2px;
   --ring-offset-width: 3px;
 
-  --shadow-sm: 0 2px 8px 0 oklch(0 0 0 / 0.04);
-  --shadow: 0 4px 16px 0 oklch(0 0 0 / 0.06), 0 2px 4px 0 oklch(0 0 0 / 0.04);
-  --shadow-md: 0 8px 24px 0 oklch(0 0 0 / 0.08), 0 4px 8px 0 oklch(0 0 0 / 0.04);
-  --shadow-lg: 0 16px 32px 0 oklch(0 0 0 / 0.1);
+  --volt-shadow-sm: 0 2px 8px 0 oklch(0 0 0 / 0.04);
+  --volt-shadow: 0 4px 16px 0 oklch(0 0 0 / 0.06), 0 2px 4px 0 oklch(0 0 0 / 0.04);
+  --volt-shadow-md: 0 8px 24px 0 oklch(0 0 0 / 0.08), 0 4px 8px 0 oklch(0 0 0 / 0.04);
+  --volt-shadow-lg: 0 16px 32px 0 oklch(0 0 0 / 0.1);
 
   --spacing-component: 1.25;
   --spacing-gap: 0.75rem;
 
-  --font-weight-base: 400;
-  --font-weight-heading: 600;
-  --font-weight-label: 500;
+  --volt-font-weight-base: 400;
+  --volt-font-weight-heading: 600;
+  --volt-font-weight-label: 500;
   --letter-spacing-base: normal;
   --letter-spacing-heading: normal;
 }
@@ -426,17 +426,17 @@
   --ring-width: 2px;
   --ring-offset-width: 2px;
 
-  --shadow-sm: 2px 2px 0 var(--border);
-  --shadow: 4px 4px 0 var(--border);
-  --shadow-md: 6px 6px 0 var(--border);
-  --shadow-lg: 8px 8px 0 var(--border);
+  --volt-shadow-sm: 2px 2px 0 var(--border);
+  --volt-shadow: 4px 4px 0 var(--border);
+  --volt-shadow-md: 6px 6px 0 var(--border);
+  --volt-shadow-lg: 8px 8px 0 var(--border);
 
   --spacing-component: 0.875;
   --spacing-gap: 0.375rem;
 
-  --font-weight-base: 500;
-  --font-weight-heading: 800;
-  --font-weight-label: 700;
+  --volt-font-weight-base: 500;
+  --volt-font-weight-heading: 800;
+  --volt-font-weight-label: 700;
   --letter-spacing-base: normal;
   --letter-spacing-heading: -0.02em;
 }
@@ -449,17 +449,17 @@
   --ring-width: 1px;
   --ring-offset-width: 1px;
 
-  --shadow-sm: none;
-  --shadow: none;
-  --shadow-md: none;
-  --shadow-lg: none;
+  --volt-shadow-sm: none;
+  --volt-shadow: none;
+  --volt-shadow-md: none;
+  --volt-shadow-lg: none;
 
   --spacing-component: 1.25;
   --spacing-gap: 1rem;
 
-  --font-weight-base: 300;
-  --font-weight-heading: 500;
-  --font-weight-label: 400;
+  --volt-font-weight-base: 300;
+  --volt-font-weight-heading: 500;
+  --volt-font-weight-label: 400;
   --letter-spacing-base: 0.01em;
   --letter-spacing-heading: normal;
 }
@@ -472,17 +472,17 @@
   --ring-width: 3px;
   --ring-offset-width: 2px;
 
-  --shadow-sm: 0 2px 0 var(--border);
-  --shadow: 0 4px 0 var(--border);
-  --shadow-md: 0 6px 0 var(--border), 0 8px 0 oklch(0 0 0 / 0.1);
-  --shadow-lg: 0 8px 0 var(--border), 0 12px 0 oklch(0 0 0 / 0.15);
+  --volt-shadow-sm: 0 2px 0 var(--border);
+  --volt-shadow: 0 4px 0 var(--border);
+  --volt-shadow-md: 0 6px 0 var(--border), 0 8px 0 oklch(0 0 0 / 0.1);
+  --volt-shadow-lg: 0 8px 0 var(--border), 0 12px 0 oklch(0 0 0 / 0.15);
 
   --spacing-component: 1.125;
   --spacing-gap: 0.5rem;
 
-  --font-weight-base: 500;
-  --font-weight-heading: 700;
-  --font-weight-label: 600;
+  --volt-font-weight-base: 500;
+  --volt-font-weight-heading: 700;
+  --volt-font-weight-label: 600;
   --letter-spacing-base: normal;
   --letter-spacing-heading: 0.05em;
 }

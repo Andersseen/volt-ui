@@ -46,14 +46,14 @@
   --radius-xl: calc(var(--radius) + 0.25rem);
   --radius-full: 9999px;
 
-  --shadow-sm: var(--shadow-sm);
-  --shadow: var(--shadow);
-  --shadow-md: var(--shadow-md);
-  --shadow-lg: var(--shadow-lg);
-  --font-weight-normal: var(--font-weight-base);
-  --font-weight-medium: var(--font-weight-label);
-  --font-weight-semibold: var(--font-weight-heading);
-  --font-weight-bold: var(--font-weight-heading);
+  --shadow-sm: var(--volt-shadow-sm);
+  --shadow: var(--volt-shadow);
+  --shadow-md: var(--volt-shadow-md);
+  --shadow-lg: var(--volt-shadow-lg);
+  --font-weight-normal: var(--volt-font-weight-base);
+  --font-weight-medium: var(--volt-font-weight-label);
+  --font-weight-semibold: var(--volt-font-weight-heading);
+  --font-weight-bold: var(--volt-font-weight-heading);
 }
 
 :root,
@@ -130,17 +130,17 @@
   --ring-width: 2px;
   --ring-offset-width: 2px;
 
-  --shadow-sm: 0 1px 2px 0 oklch(0 0 0 / 0.05);
-  --shadow: 0 1px 3px 0 oklch(0 0 0 / 0.1), 0 1px 2px -1px oklch(0 0 0 / 0.1);
-  --shadow-md: 0 4px 6px -1px oklch(0 0 0 / 0.1), 0 2px 4px -2px oklch(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px oklch(0 0 0 / 0.1), 0 4px 6px -4px oklch(0 0 0 / 0.1);
+  --volt-shadow-sm: 0 1px 2px 0 oklch(0 0 0 / 0.05);
+  --volt-shadow: 0 1px 3px 0 oklch(0 0 0 / 0.1), 0 1px 2px -1px oklch(0 0 0 / 0.1);
+  --volt-shadow-md: 0 4px 6px -1px oklch(0 0 0 / 0.1), 0 2px 4px -2px oklch(0 0 0 / 0.1);
+  --volt-shadow-lg: 0 10px 15px -3px oklch(0 0 0 / 0.1), 0 4px 6px -4px oklch(0 0 0 / 0.1);
 
   --spacing-component: 1;
   --spacing-gap: 0.5rem;
 
-  --font-weight-base: 400;
-  --font-weight-heading: 600;
-  --font-weight-label: 500;
+  --volt-font-weight-base: 400;
+  --volt-font-weight-heading: 600;
+  --volt-font-weight-label: 500;
 }
 
 * {

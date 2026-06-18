@@ -1,11 +1,6 @@
 #!/usr/bin/env node
 
-const {
-  loadManifest,
-  copyComponent,
-  initProject,
-  clearCache,
-} = require('../lib/core');
+const { loadManifest, copyComponent, initProject, clearCache } = require('../lib/core');
 
 async function main() {
   const args = process.argv.slice(2);
@@ -24,8 +19,17 @@ async function main() {
     const manifest = await loadManifest();
     const result = await copyComponent(componentName, targetDir, manifest);
     console.log(`\n✅ Component "${result.componentName}" added successfully!`);
+
+    if (result.dependencies.length > 0) {
+      console.log(`\n📦 Required dependencies also copied:`);
+      result.dependencies.forEach(dep => console.log(`  - ${dep}`));
+    }
+
     console.log(`\nImport in your component:`);
     console.log(`  import { ${result.className} } from './ui/${result.componentName}';`);
+
+    console.log(`\n⚠️  Ensure runtime dependencies are installed:`);
+    console.log(`  ${result.installCommand}`);
   } else if (command === 'init') {
     const targetDir = args[1] || './src/app/ui';
     initProject(targetDir);

@@ -13,8 +13,9 @@ function scanComponents(dir, category) {
   for (const entry of entries) {
     if (!entry.isDirectory()) continue;
     const componentDir = path.join(dir, entry.name);
-    const files = fs.readdirSync(componentDir)
-      .filter(f => f.endsWith('.ts'))
+    const files = fs
+      .readdirSync(componentDir)
+      .filter(f => f.endsWith('.ts') && !f.endsWith('.spec.ts') && !f.endsWith('.test.ts'))
       .map(f => path.posix.join(category, entry.name, f));
 
     if (files.length === 0) continue;

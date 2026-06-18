@@ -1,4 +1,5 @@
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
   Component,
   computed,
@@ -127,8 +128,8 @@ import { NgpSelect, NgpSelectPortal, provideSelectState } from 'ng-primitives/se
 export class VoltSelect implements ControlValueAccessor {
   readonly placeholder = input('Select an option');
   readonly value = model<unknown>(undefined);
-  readonly disabled = input(false);
-  readonly multiple = input(false);
+  readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
+  readonly multiple = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly valueChange = output<unknown>();
 
   private readonly controlDisabled = signal(false);

@@ -1,4 +1,5 @@
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
   Component,
   computed,
@@ -92,8 +93,8 @@ import { NgpCheckbox } from 'ng-primitives/checkbox';
 })
 export class VoltCheckbox implements ControlValueAccessor {
   readonly checked = model(false);
-  readonly disabled = input(false);
-  readonly required = input(false);
+  readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
+  readonly required = input<boolean, unknown>(false, { transform: booleanAttribute });
 
   private readonly controlDisabled = signal(false);
   protected readonly isDisabled = computed(() => this.disabled() || this.controlDisabled());

@@ -9,6 +9,83 @@ const CACHE_DIR = path.join(os.homedir(), '.volt-ui', 'cache');
 const CACHE_TTL_MS = 1000 * 60 * 60; // 1 hour
 
 // ---------------------------------------------------------------------------
+// Known component dependencies (transitive)
+// ---------------------------------------------------------------------------
+
+const COMPONENT_DEPENDENCIES = {
+  'dropdown-menu': ['button'],
+  accordion: [],
+  avatar: [],
+  breadcrumbs: [],
+  button: [],
+  card: [],
+  checkbox: [],
+  combobox: [],
+  'date-picker': [],
+  dialog: [],
+  drawer: [],
+  'file-upload': [],
+  'form-field': [],
+  'input-otp': [],
+  input: [],
+  listbox: [],
+  meter: [],
+  'navigation-menu': [],
+  pagination: [],
+  popover: [],
+  progress: [],
+  radio: [],
+  resizable: [],
+  search: [],
+  select: [],
+  separator: [],
+  skeleton: [],
+  slider: [],
+  switch: [],
+  table: [],
+  tabs: [],
+  textarea: [],
+  toast: [],
+  toggle: [],
+  'toggle-group': ['toggle'],
+  toolbar: [],
+  tooltip: [],
+};
+
+// Runtime dependencies required by copied components.
+const RUNTIME_DEPENDENCIES = [
+  'ng-primitives',
+  'class-variance-authority',
+  'clsx',
+  'tailwind-merge',
+];
+
+// ---------------------------------------------------------------------------
+// Package manager detection
+// ---------------------------------------------------------------------------
+
+function detectPackageManager(targetDir) {
+  if (fs.existsSync(path.join(targetDir, 'pnpm-lock.yaml'))) return 'pnpm';
+  if (fs.existsSync(path.join(targetDir, 'yarn.lock'))) return 'yarn';
+  if (fs.existsSync(path.join(targetDir, 'package-lock.json'))) return 'npm';
+  if (fs.existsSync(path.join(targetDir, 'bun.lockb'))) return 'bun';
+  return 'npm';
+}
+
+function installCommand(packageManager) {
+  switch (packageManager) {
+    case 'pnpm':
+      return 'pnpm add';
+    case 'yarn':
+      return 'yarn add';
+    case 'bun':
+      return 'bun add';
+    default:
+      return 'npm install';
+  }
+}
+
+// ---------------------------------------------------------------------------
 // HTTP helpers
 // ---------------------------------------------------------------------------
 
@@ -39,12 +116,12 @@ function fetchJson(url) {
   });
 }
 
-function fetchFile(url) {
+async function fetchFile(url, retries = 2) {
   return new Promise((resolve, reject) => {
     https
       .get(url, res => {
         if (res.statusCode === 301 || res.statusCode === 302) {
-          fetchFile(res.headers.location).then(resolve).catch(reject);
+          fetchFile(res.headers.location, retries).then(resolve).catch(reject);
           return;
         }
         if (res.statusCode !== 200) {
@@ -52,11 +129,23 @@ function fetchFile(url) {
           return;
         }
         let data = '';
+        res.setEncoding('utf8');
         res.on('data', chunk => (data += chunk));
         res.on('end', () => resolve(data));
         res.on('error', reject);
       })
-      .on('error', reject);
+      .on('error', async err => {
+        if (retries > 0) {
+          try {
+            const result = await fetchFile(url, retries - 1);
+            resolve(result);
+          } catch (retryErr) {
+            reject(retryErr);
+          }
+        } else {
+          reject(err);
+        }
+      });
   });
 }
 
@@ -167,13 +256,23 @@ function capitalize(str) {
     .join(' ');
 }
 
-async function copyComponent(componentName, targetDir, manifest) {
+function collectDependencies(componentName, manifest, collected = new Set()) {
+  if (collected.has(componentName)) return collected;
   const component = manifest.components[componentName];
+  if (!component) return collected;
 
-  if (!component) {
-    throw new Error(`Component "${componentName}" not found.`);
+  collected.add(componentName);
+
+  const direct = COMPONENT_DEPENDENCIES[componentName] || component.dependencies || [];
+  for (const dep of direct) {
+    collectDependencies(dep, manifest, collected);
   }
 
+  return collected;
+}
+
+async function copySingleComponent(componentName, targetDir, manifest) {
+  const component = manifest.components[componentName];
   const componentDir = path.join(targetDir, componentName);
 
   if (!fs.existsSync(componentDir)) {
@@ -194,11 +293,36 @@ async function copyComponent(componentName, targetDir, manifest) {
     const transformed = transformContent(content);
     fs.writeFileSync(targetPath, transformed);
   }
+}
+
+async function copyComponent(componentName, targetDir, manifest) {
+  const component = manifest.components[componentName];
+
+  if (!component) {
+    throw new Error(
+      `Component "${componentName}" not found. Run "volt list" to see available components.`
+    );
+  }
+
+  const dependencies = Array.from(collectDependencies(componentName, manifest)).filter(
+    name => name !== componentName
+  );
+
+  await copySingleComponent(componentName, targetDir, manifest);
+
+  for (const dep of dependencies) {
+    await copySingleComponent(dep, targetDir, manifest);
+  }
+
+  const packageManager = detectPackageManager(process.cwd());
+  const installCmd = `${installCommand(packageManager)} ${RUNTIME_DEPENDENCIES.join(' ')}`;
 
   return {
     componentName,
     className: `Ui${capitalize(componentName.replace(/-/g, ' ')).replace(/\s/g, '')}`,
     targetDir,
+    dependencies,
+    installCommand: installCmd,
   };
 }
 

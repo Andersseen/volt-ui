@@ -1,4 +1,4 @@
-import { Directive, input, output } from '@angular/core';
+import { booleanAttribute, Directive, input, output } from '@angular/core';
 import { NgpPopoverTrigger } from 'ng-primitives/popover';
 import type { NgpPopoverPlacement } from 'ng-primitives/popover';
 import type { NgpFlip, NgpOffset, NgpOverlayContent, NgpShift } from 'ng-primitives/portal';
@@ -42,7 +42,7 @@ export class VoltPopoverTrigger {
   readonly scrollBehavior = input<'reposition' | 'block' | 'close'>('reposition');
   readonly context = input<unknown>(undefined);
   readonly anchor = input<HTMLElement | null>(null);
-  readonly trackPosition = input(false);
+  readonly trackPosition = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly cooldown = input(0);
   readonly disabled = input<boolean>(false);
   readonly closeOnOutsideClick = input<boolean>(true);
