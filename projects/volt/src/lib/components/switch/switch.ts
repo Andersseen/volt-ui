@@ -11,6 +11,8 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NgpSwitch, NgpSwitchThumb } from 'ng-primitives/switch';
 
+let nextSwitchId = 0;
+
 @Component({
   selector: 'volt-switch',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -25,6 +27,7 @@ import { NgpSwitch, NgpSwitchThumb } from 'ng-primitives/switch';
   template: `
     <button
       ngpSwitch
+      [id]="id()"
       [ngpSwitchChecked]="checked()"
       [ngpSwitchDisabled]="isDisabled()"
       (ngpSwitchCheckedChange)="onCheckedChange($event)"
@@ -39,6 +42,7 @@ import { NgpSwitch, NgpSwitchThumb } from 'ng-primitives/switch';
   `,
 })
 export class VoltSwitch implements ControlValueAccessor {
+  readonly id = input(`volt-switch-${++nextSwitchId}`);
   readonly checked = model(false);
   readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
 

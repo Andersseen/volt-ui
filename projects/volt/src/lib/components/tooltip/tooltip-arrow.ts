@@ -9,7 +9,7 @@ import { NgpTooltipArrow } from 'ng-primitives/tooltip';
     <span
       ngpTooltipArrow
       [ngpTooltipArrowPadding]="padding()"
-      class="block h-2 w-2 rotate-45 bg-[var(--foreground)]"
+      class="block h-2 w-2 rotate-45 bg-foreground"
       [class.hidden]="hidden()"
     ></span>
   `,

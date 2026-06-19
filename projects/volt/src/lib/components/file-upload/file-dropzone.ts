@@ -22,7 +22,7 @@ import { NgpFileDropzone } from 'ng-primitives/file-upload';
   ],
   host: {
     class:
-      'flex flex-col items-center justify-center rounded-[var(--radius-lg)] border-2 border-dashed border-input bg-background p-8 text-sm text-muted-foreground transition-colors hover:bg-accent/50 hover:text-accent-foreground data-[drag-over]:border-primary data-[drag-over]:bg-primary/5 cursor-pointer',
+      'flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-input bg-background p-8 text-sm text-muted-foreground transition-colors hover:bg-accent/50 hover:text-accent-foreground data-[drag-over]:border-primary data-[drag-over]:bg-primary/5 cursor-pointer',
   },
   template: `<ng-content />`,
 })

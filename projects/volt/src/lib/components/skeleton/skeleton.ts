@@ -5,8 +5,8 @@ export const skeletonVariants = cva('animate-pulse bg-muted', {
   variants: {
     variant: {
       circle: 'rounded-full',
-      rectangle: 'rounded-[var(--radius-md)]',
-      text: 'rounded-[var(--radius-md)]',
+      rectangle: 'rounded-md',
+      text: 'rounded-md',
     },
   },
   defaultVariants: {

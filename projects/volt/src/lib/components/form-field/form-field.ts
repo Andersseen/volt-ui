@@ -6,7 +6,7 @@ import { NgpFormField } from 'ng-primitives/form-field';
   changeDetection: ChangeDetectionStrategy.OnPush,
   hostDirectives: [NgpFormField],
   host: {
-    class: 'space-y-[var(--spacing-gap)] w-full block',
+    class: 'space-y-2 w-full block',
   },
   template: `<ng-content />`,
 })

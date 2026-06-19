@@ -1,23 +1,25 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { NgpComboboxButton } from 'ng-primitives/combobox';
+
+let nextComboboxButtonId = 0;
 
 @Component({
   selector: 'volt-combobox-button',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [
-    {
-      directive: NgpComboboxButton,
-      inputs: ['id'],
-    },
-  ],
+  imports: [NgpComboboxButton],
   host: {
-    class:
-      'inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-[var(--radius-md)] border border-input bg-background text-muted-foreground shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 cursor-pointer',
+    class: 'contents',
   },
   template: `
-    <button type="button" class="inline-flex items-center justify-center">
+    <button
+      ngpComboboxButton
+      [id]="id()"
+      class="inline-flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-md border border-input bg-background text-muted-foreground shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+    >
       <ng-content />
     </button>
   `,
 })
-export class VoltComboboxButton {}
+export class VoltComboboxButton {
+  readonly id = input(`volt-combobox-button-${++nextComboboxButtonId}`);
+}

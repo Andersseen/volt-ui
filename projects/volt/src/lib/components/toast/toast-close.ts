@@ -5,7 +5,7 @@ import { ChangeDetectionStrategy, Component, output } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class:
-      'inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-[var(--radius-sm)] text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer',
+      'inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer',
   },
   template: `
     <svg

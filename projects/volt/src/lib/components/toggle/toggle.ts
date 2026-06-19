@@ -3,17 +3,16 @@ import { NgpToggle } from 'ng-primitives/toggle';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 export const toggleVariants = cva(
-  'inline-flex items-center justify-center gap-2 rounded-md font-medium transition-colors hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-[var(--ring-width)] focus-visible:ring-[var(--ring)] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[selected]:bg-[var(--muted)] data-[selected]:text-foreground cursor-pointer',
+  'inline-flex items-center justify-center gap-2 rounded-md font-medium transition-colors hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[selected]:bg-muted data-[selected]:text-foreground cursor-pointer',
   {
     variants: {
       variant: {
         default: 'bg-transparent',
         outline:
-          'border border-[var(--border)] bg-transparent hover:bg-[var(--muted)] hover:text-foreground data-[selected]:bg-transparent data-[selected]:text-foreground',
-        ghost:
-          'bg-transparent hover:bg-[var(--muted)] hover:text-foreground data-[selected]:bg-[var(--muted)]',
+          'border border-border bg-transparent hover:bg-muted hover:text-foreground data-[selected]:bg-transparent data-[selected]:text-foreground',
+        ghost: 'bg-transparent hover:bg-muted hover:text-foreground data-[selected]:bg-muted',
         solid:
-          'bg-[var(--background)] hover:bg-[var(--muted)] data-[selected]:bg-[var(--primary)] data-[selected]:text-[var(--primary-foreground)]',
+          'bg-background hover:bg-muted data-[selected]:bg-primary data-[selected]:text-primary-foreground',
       },
       size: {
         sm: 'h-8 px-2 text-xs',

@@ -6,7 +6,7 @@ import { NgpRadioItem, NgpRadioIndicator } from 'ng-primitives/radio';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgpRadioItem, NgpRadioIndicator],
   host: {
-    class: 'flex items-center gap-[var(--spacing-gap)]',
+    class: 'flex items-center gap-2',
   },
   template: `
     <button

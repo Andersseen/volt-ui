@@ -6,8 +6,7 @@ import { NgpToggleGroup, provideToggleGroupState } from 'ng-primitives/toggle-gr
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [provideToggleGroupState()],
   host: {
-    class:
-      'inline-flex items-center rounded-[var(--radius-md)] border border-input bg-background p-1 shadow-sm',
+    class: 'inline-flex items-center rounded-md border border-input bg-background p-1 shadow-sm',
   },
   hostDirectives: [
     {
