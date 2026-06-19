@@ -66,45 +66,26 @@ describe('Volt Library', () => {
     }
   });
 
-  it('should embed critical component styles for npm consumers that do not scan node_modules', () => {
-    const criticalStyleChecks = [
-      {
-        path: 'projects/volt/src/lib/components/slider/slider.ts',
-        snippets: ['[ngpSliderTrack]', 'height: 0.5rem', '[ngpSliderThumb]', 'height: 1.25rem'],
-      },
-      {
-        path: 'projects/volt/src/lib/components/progress/progress.ts',
-        snippets: ['[ngpProgressTrack]', 'height: 0.5rem', '[ngpProgressIndicator]'],
-      },
-      {
-        path: 'projects/volt/src/lib/components/switch/switch.ts',
-        snippets: ['[ngpSwitch]', 'height: 1.25rem', '[ngpSwitchThumb]', 'height: 1rem'],
-      },
-      {
-        path: 'projects/volt/src/lib/components/checkbox/checkbox.ts',
-        snippets: ['[ngpCheckbox]', 'height: 1rem', 'width: 1rem'],
-      },
-      {
-        path: 'projects/volt/src/lib/components/radio/radio-item.ts',
-        snippets: ['[ngpRadioItem]', 'height: 1rem', '[ngpRadioIndicator] > span'],
-      },
-      {
-        path: 'projects/volt/src/lib/components/meter/meter-track.ts',
-        snippets: [':host', 'height: 0.5rem', 'width: 100%'],
-      },
-      {
-        path: 'projects/volt/src/lib/components/meter/meter-indicator.ts',
-        snippets: [':host', 'height: 100%', 'background: var(--primary'],
-      },
+  it('should use Tailwind utilities instead of embedded critical styles for shadcn-style copy-paste', () => {
+    const componentPaths = [
+      'projects/volt/src/lib/components/slider/slider.ts',
+      'projects/volt/src/lib/components/progress/progress.ts',
+      'projects/volt/src/lib/components/switch/switch.ts',
+      'projects/volt/src/lib/components/checkbox/checkbox.ts',
+      'projects/volt/src/lib/components/radio/radio-item.ts',
+      'projects/volt/src/lib/components/meter/meter-track.ts',
+      'projects/volt/src/lib/components/meter/meter-indicator.ts',
+      'projects/volt/src/lib/components/select/select.ts',
+      'projects/volt/src/lib/components/select/select-content.ts',
+      'projects/volt/src/lib/components/select/select-item.ts',
+      'projects/volt/src/lib/components/avatar/avatar.ts',
+      'projects/volt/src/lib/components/avatar/avatar-fallback.ts',
+      'projects/volt/src/lib/components/separator/separator.ts',
     ];
 
-    for (const check of criticalStyleChecks) {
-      const source = readFileSync(resolve(check.path), 'utf-8');
-      expect(source).toContain('styles:');
-
-      for (const snippet of check.snippets) {
-        expect(source).toContain(snippet);
-      }
+    for (const relativePath of componentPaths) {
+      const source = readFileSync(resolve(relativePath), 'utf-8');
+      expect(source).not.toContain('styles:');
     }
   });
 });

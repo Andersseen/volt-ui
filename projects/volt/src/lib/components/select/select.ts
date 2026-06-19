@@ -24,69 +24,6 @@ import { NgpSelect, NgpSelectPortal, provideSelectState } from 'ng-primitives/se
       multi: true,
     },
   ],
-  styles: [
-    `
-      :host {
-        display: block;
-        width: 100%;
-      }
-
-      [ngpSelect] {
-        box-sizing: border-box;
-        display: flex;
-        height: 2.5rem;
-        width: 100%;
-        cursor: pointer;
-        align-items: center;
-        justify-content: space-between;
-        border: 1px solid var(--input, oklch(0.92 0.006 265));
-        border-radius: var(--radius-md, 0.375rem);
-        background: var(--background, oklch(1 0 0));
-        padding: 0.5rem 0.75rem;
-        color: var(--foreground, oklch(0.14 0.006 265));
-        font-size: 0.875rem;
-        line-height: 1.25rem;
-      }
-
-      [ngpSelect]:disabled {
-        cursor: not-allowed;
-        opacity: 0.5;
-      }
-
-      [ngpSelect]:focus {
-        outline: 2px solid transparent;
-        outline-offset: 2px;
-      }
-
-      [ngpSelect]:focus-visible {
-        box-shadow:
-          0 0 0 2px var(--background, oklch(1 0 0)),
-          0 0 0 4px var(--ring, oklch(0.6 0.22 265));
-      }
-
-      [ngpSelect] > span {
-        display: block;
-        flex: 1 1 0%;
-        overflow: hidden;
-        text-align: left;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        pointer-events: none;
-      }
-
-      [ngpSelect] > span > span {
-        color: var(--muted-foreground, oklch(0.55 0.012 265));
-      }
-
-      [ngpSelect] svg {
-        height: 1rem;
-        width: 1rem;
-        flex-shrink: 0;
-        opacity: 0.5;
-        pointer-events: none;
-      }
-    `,
-  ],
   template: `
     <button
       ngpSelect

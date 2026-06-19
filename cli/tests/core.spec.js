@@ -148,9 +148,12 @@ describe('CLI Core', () => {
     });
 
     it('should throw for unknown component', async () => {
-      await expect(core.copyComponent('nonexistent', testDir, manifest)).rejects.toThrow(
-        'Component "nonexistent" not found.'
-      );
+      try {
+        await core.copyComponent('nonexistent', testDir, manifest);
+        expect.unreachable('Expected copyComponent to throw');
+      } catch (err) {
+        expect(err.message).toContain('Component "nonexistent" not found');
+      }
     });
   });
 

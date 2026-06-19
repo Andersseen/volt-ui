@@ -43,3 +43,10 @@ Object.defineProperty(window, 'ResizeObserver', {
   writable: true,
   value: ResizeObserverMock,
 });
+
+// Mock Element.prototype.getAnimations for jsdom (used by ng-primitives overlay animations)
+Object.defineProperty(Element.prototype, 'getAnimations', {
+  writable: true,
+  configurable: true,
+  value: vi.fn().mockReturnValue([]),
+});

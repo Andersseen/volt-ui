@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, input, model, numberAttribute } from '@angular/core';
+import {
+  booleanAttribute,
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  model,
+  numberAttribute,
+} from '@angular/core';
 import { NgpPagination, providePaginationState } from 'ng-primitives/pagination';
 
 @Component({
@@ -24,5 +31,5 @@ import { NgpPagination, providePaginationState } from 'ng-primitives/pagination'
 export class VoltPagination {
   readonly page = model<number>(1);
   readonly pageCount = input<number, number>(0, { transform: numberAttribute });
-  readonly disabled = input<boolean>(false);
+  readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
 }

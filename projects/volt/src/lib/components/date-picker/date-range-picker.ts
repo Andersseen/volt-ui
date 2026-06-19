@@ -29,7 +29,7 @@ import type { VoltDatePickerFirstDayOfWeek } from './date-picker';
   ],
   host: {
     class:
-      'grid w-fit gap-3 rounded-[var(--radius-md)] border border-border bg-popover p-3 text-popover-foreground shadow-sm',
+      'grid w-fit gap-3 rounded-md border border-border bg-popover p-3 text-popover-foreground shadow-sm',
   },
   template: `<ng-content />`,
 })
