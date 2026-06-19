@@ -1,7 +1,12 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import {
+  booleanAttribute,
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+} from '@angular/core';
 import { NgpToggleGroupItem, provideToggleGroupItemState } from 'ng-primitives/toggle-group';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { computed } from '@angular/core';
 
 export const toggleGroupItemVariants = cva(
   'inline-flex items-center justify-center rounded-sm px-3 py-1.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 cursor-pointer select-none',
@@ -32,24 +37,25 @@ export type ToggleGroupItemVariants = VariantProps<typeof toggleGroupItemVariant
   selector: 'volt-toggle-group-item',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [provideToggleGroupItemState()],
+  imports: [NgpToggleGroupItem],
   host: {
     class: 'inline-flex',
   },
-  hostDirectives: [
-    {
-      directive: NgpToggleGroupItem,
-      inputs: ['ngpToggleGroupItemValue: value', 'ngpToggleGroupItemDisabled: disabled'],
-    },
-  ],
   template: `
-    <button [class]="classes()" type="button">
+    <button
+      ngpToggleGroupItem
+      [ngpToggleGroupItemValue]="value()"
+      [ngpToggleGroupItemDisabled]="disabled()"
+      [class]="classes()"
+      type="button"
+    >
       <ng-content />
     </button>
   `,
 })
 export class VoltToggleGroupItem {
   readonly value = input.required<string>();
-  readonly disabled = input<boolean>(false);
+  readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly variant = input<ToggleGroupItemVariants['variant']>('default');
   readonly size = input<ToggleGroupItemVariants['size']>('md');
 

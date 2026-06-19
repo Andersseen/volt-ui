@@ -13,8 +13,10 @@
       <div
         class="relative z-10 flex items-center space-x-3 bg-background p-6 rounded-lg shadow-sm border border-border/50"
       >
-        <volt-switch id="airplane-mode"></volt-switch>
-        <volt-label htmlFor="airplane-mode" class="cursor-pointer">Airplane Mode</volt-label>
+        <volt-switch id="airplane-mode" [(checked)]="enabled"></volt-switch>
+        <volt-label htmlFor="airplane-mode" class="cursor-pointer select-none"
+          >Airplane Mode</volt-label
+        >
       </div>
     </div>
   </app-code-panel>

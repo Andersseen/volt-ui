@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { VoltSwitch, VoltLabel } from 'volt';
 import { CodePanel } from '../../../../components/code-panel';
 import { SWITCH_SNIPPET } from '../../../../lib/snippets';
@@ -14,4 +14,5 @@ import { SWITCH_USAGE } from '../../../../lib/snippets/usage';
 export default class SwitchDemo {
   readonly switchCode = SWITCH_SNIPPET;
   readonly switchUsage = SWITCH_USAGE;
+  readonly enabled = signal(false);
 }

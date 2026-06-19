@@ -5,11 +5,14 @@ import {
   Component,
   computed,
   contentChild,
+  effect,
+  ElementRef,
   forwardRef,
   input,
   model,
   signal,
   TemplateRef,
+  viewChild,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NgpCombobox, NgpComboboxPortal, type NgpComboboxPlacement } from 'ng-primitives/combobox';
@@ -57,9 +60,9 @@ let nextComboboxId = 0;
       class="relative inline-flex w-full items-center gap-1"
     >
       <input
+        #inputRef
         voltComboboxInput
         [id]="id()"
-        [value]="filter()"
         [placeholder]="placeholder()"
         [attr.aria-label]="label()"
         (focus)="onInputFocus(combobox)"
@@ -122,6 +125,8 @@ export class VoltCombobox implements ControlValueAccessor {
   readonly trackByFn = input<(index: number, item: unknown) => unknown>((_i, item) => item);
   readonly optionTemplate = contentChild<TemplateRef<unknown>>(TemplateRef);
 
+  private readonly inputRef = viewChild('inputRef', { read: ElementRef<HTMLInputElement> });
+
   protected readonly filteredItems = computed(() => {
     const filter = this.filter().trim().toLowerCase();
 
@@ -137,6 +142,19 @@ export class VoltCombobox implements ControlValueAccessor {
   private readonly controlDisabled = signal(false);
   private onChange: (value: unknown) => void = () => {};
   protected onTouched: () => void = () => {};
+
+  constructor() {
+    effect(() => {
+      const value = this.value();
+      const label = value === undefined || value === null ? '' : this.itemLabel()(value);
+      this.filter.set(label);
+
+      const input = this.inputRef();
+      if (input) {
+        input.nativeElement.value = label;
+      }
+    });
+  }
 
   protected onInputFocus(combobox: NgpCombobox): void {
     void combobox.openDropdown();
@@ -161,7 +179,6 @@ export class VoltCombobox implements ControlValueAccessor {
 
   writeValue(value: unknown): void {
     this.value.set(value ?? undefined);
-    this.syncFilterWithValue();
   }
 
   registerOnChange(fn: (value: unknown) => void): void {
@@ -178,6 +195,12 @@ export class VoltCombobox implements ControlValueAccessor {
 
   private syncFilterWithValue(): void {
     const value = this.value();
-    this.filter.set(value === undefined || value === null ? '' : this.itemLabel()(value));
+    const label = value === undefined || value === null ? '' : this.itemLabel()(value);
+    this.filter.set(label);
+
+    const input = this.inputRef();
+    if (input) {
+      input.nativeElement.value = label;
+    }
   }
 }

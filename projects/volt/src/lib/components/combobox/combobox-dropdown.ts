@@ -14,7 +14,7 @@ let nextComboboxDropdownId = 0;
     <div
       ngpComboboxDropdown
       [id]="id()"
-      class="relative z-50 w-full min-w-[var(--ngp-combobox-dropdown-width)] overflow-hidden rounded-md border border-input bg-background p-1 shadow-md"
+      class="absolute z-50 min-w-[var(--ngp-combobox-width)] max-w-[var(--ngp-combobox-width)] w-full overflow-hidden rounded-md border border-input bg-background p-1 shadow-md"
     >
       <ng-content />
     </div>
