@@ -14,7 +14,7 @@ import { NgpComboboxOption } from 'ng-primitives/combobox';
       [ngpComboboxOptionValue]="value()"
       [ngpComboboxOptionDisabled]="disabled()"
       [ngpComboboxOptionIndex]="index()"
-      class="relative flex w-full cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[selected]:bg-accent data-[selected]:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
+      class="relative flex w-full cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm text-surface-foreground outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[selected]:bg-primary data-[selected]:text-primary-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
     >
       <ng-content />
     </div>

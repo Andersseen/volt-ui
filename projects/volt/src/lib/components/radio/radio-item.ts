@@ -20,7 +20,7 @@ import { NgpRadioItem, NgpRadioIndicator } from 'ng-primitives/radio';
       </span>
     </button>
     <span
-      class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+      class="text-sm font-medium leading-none text-foreground peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
     >
       <ng-content />
     </span>

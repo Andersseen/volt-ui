@@ -3,7 +3,7 @@ import { NgpToggle } from 'ng-primitives/toggle';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 export const toggleVariants = cva(
-  'inline-flex items-center justify-center gap-2 rounded-md font-medium transition-colors hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[selected]:bg-muted data-[selected]:text-foreground cursor-pointer',
+  'inline-flex items-center justify-center gap-2 rounded-md font-medium text-foreground transition-colors hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[selected]:bg-muted data-[selected]:text-foreground cursor-pointer',
   {
     variants: {
       variant: {

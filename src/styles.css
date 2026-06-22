@@ -168,6 +168,11 @@
   --info-foreground: oklch(1 0 0);
 }
 
+body {
+  color: var(--foreground);
+  background-color: var(--background);
+}
+
 /* ────────────────────────────────────────────────────────────
    COLOR THEMES (System 1: data-color)
    ──────────────────────────────────────────────────────────── */

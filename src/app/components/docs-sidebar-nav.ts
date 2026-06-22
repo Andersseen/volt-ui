@@ -64,9 +64,9 @@ export interface DocsSidebarGroup {
             <li>
               <a
                 [routerLink]="link.path"
-                routerLinkActive="font-medium text-foreground"
+                routerLinkActive="font-medium text-foreground bg-muted"
                 [routerLinkActiveOptions]="{ exact: link.exact ?? false }"
-                class="block py-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                class="block px-2 py-1 text-sm rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
               >
                 {{ link.label }}
               </a>

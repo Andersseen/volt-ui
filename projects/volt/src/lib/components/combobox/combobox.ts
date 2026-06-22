@@ -15,10 +15,14 @@ import {
   viewChild,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { NgpCombobox, NgpComboboxPortal, type NgpComboboxPlacement } from 'ng-primitives/combobox';
-import { VoltComboboxInput } from './combobox-input';
-import { VoltComboboxButton } from './combobox-button';
-import { VoltComboboxDropdown } from './combobox-dropdown';
+import {
+  NgpCombobox,
+  NgpComboboxButton,
+  NgpComboboxDropdown,
+  NgpComboboxInput,
+  NgpComboboxPortal,
+  type NgpComboboxPlacement,
+} from 'ng-primitives/combobox';
 import { VoltComboboxOption } from './combobox-option';
 
 let nextComboboxId = 0;
@@ -28,12 +32,12 @@ let nextComboboxId = 0;
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     NgpCombobox,
-    VoltComboboxInput,
-    VoltComboboxButton,
-    VoltComboboxDropdown,
+    NgpComboboxInput,
+    NgpComboboxButton,
+    NgpComboboxDropdown,
+    NgpComboboxPortal,
     VoltComboboxOption,
     NgTemplateOutlet,
-    NgpComboboxPortal,
   ],
   providers: [
     {
@@ -57,19 +61,25 @@ let nextComboboxId = 0;
       [ngpComboboxDropdownPlacement]="dropdownPlacement()"
       (ngpComboboxValueChange)="onValueChange($event)"
       (ngpComboboxOpenChange)="onOpenChange($event)"
-      class="relative inline-flex w-full items-center gap-1"
+      class="relative flex h-9 w-full items-center justify-between rounded-md border border-input bg-background shadow-sm transition-colors focus-within:ring-1 focus-within:ring-ring data-[disabled]:opacity-50"
     >
       <input
         #inputRef
-        voltComboboxInput
+        ngpComboboxInput
         [id]="id()"
         [placeholder]="placeholder()"
         [attr.aria-label]="label()"
         (focus)="onInputFocus(combobox)"
         (input)="onFilterChange($event, combobox)"
         (blur)="onTouched()"
+        class="h-full flex-1 border-0 bg-transparent px-3 py-1 text-sm text-foreground outline-none placeholder:text-muted-foreground focus:ring-0 disabled:cursor-not-allowed disabled:opacity-50"
       />
-      <volt-combobox-button aria-label="Toggle dropdown">
+
+      <button
+        ngpComboboxButton
+        aria-label="Toggle dropdown"
+        class="inline-flex h-full w-9 shrink-0 cursor-pointer items-center justify-center rounded-md border-0 bg-transparent text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="16"
@@ -84,24 +94,23 @@ let nextComboboxId = 0;
         >
           <path d="m6 9 6 6 6-6" />
         </svg>
-      </volt-combobox-button>
+      </button>
 
-      <ng-template ngpComboboxPortal>
-        <volt-combobox-dropdown>
-          @for (item of filteredItems(); track trackByFn()($index, item)) {
-            <volt-combobox-option [value]="item" [index]="$index">
-              <ng-container
-                *ngTemplateOutlet="
-                  optionTemplate() || defaultTemplate;
-                  context: { $implicit: item }
-                "
-              />
-            </volt-combobox-option>
-          } @empty {
-            <div class="px-2 py-1.5 text-sm text-muted-foreground">No results found.</div>
-          }
-        </volt-combobox-dropdown>
-      </ng-template>
+      <div
+        *ngpComboboxPortal
+        ngpComboboxDropdown
+        class="absolute top-full left-0 z-50 mt-1 max-h-[240px] w-[var(--ngp-combobox-width)] overflow-y-auto rounded-md border border-border bg-surface p-1 text-surface-foreground shadow-md outline-none"
+      >
+        @for (item of filteredItems(); track trackByFn()($index, item)) {
+          <volt-combobox-option [value]="item" [index]="$index">
+            <ng-container
+              *ngTemplateOutlet="optionTemplate() || defaultTemplate; context: { $implicit: item }"
+            />
+          </volt-combobox-option>
+        } @empty {
+          <div class="px-2 py-1.5 text-sm text-muted-foreground">No results found.</div>
+        }
+      </div>
     </div>
 
     <ng-template #defaultTemplate let-item>{{ item }}</ng-template>

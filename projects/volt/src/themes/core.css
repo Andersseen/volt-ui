@@ -122,6 +122,11 @@
   --info-foreground: oklch(1 0 0);
 }
 
+body {
+  color: var(--foreground);
+  background-color: var(--background);
+}
+
 :root,
 :root[data-style='sharp'] {
   --radius: 0.375rem;

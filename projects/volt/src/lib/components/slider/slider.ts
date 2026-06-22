@@ -38,7 +38,10 @@ import type { NgpOrientation } from 'ng-primitives/common';
   },
   imports: [NgpSliderTrack, NgpSliderRange, NgpSliderThumb],
   template: `
-    <div ngpSliderTrack class="relative h-2 w-full grow overflow-hidden rounded-full bg-secondary">
+    <div
+      ngpSliderTrack
+      class="relative h-2 w-full grow overflow-hidden rounded-full bg-muted-foreground/20"
+    >
       <div ngpSliderRange class="absolute h-full rounded-full bg-primary"></div>
     </div>
     <div
