@@ -43,9 +43,6 @@ __screenshots__/
 test-results/
 playwright-report/
 
-# Generated editor bundles
-public/web-editor.min.js.map
-
 # Generated component manifest
 public/manifest.json
 

@@ -90,14 +90,13 @@ import { CopyButton } from './copy-button';
                 >
               </div>
               @if (editorLoaded()) {
-                <vertex-editor
+                <vertex-editor-lite
                   [attr.value]="code()"
                   [attr.language]="'typescript'"
                   [attr.theme]="editorTheme()"
-                  readonly="true"
-                  lineNumbers="true"
+                  line-numbers="true"
                   style="display: block; height: 400px; overflow: auto;"
-                ></vertex-editor>
+                ></vertex-editor-lite>
               } @else {
                 <div
                   style="display: block; height: 400px;"
@@ -116,14 +115,13 @@ import { CopyButton } from './copy-button';
             <span class="text-xs text-muted-foreground px-2 py-1 bg-muted rounded">TypeScript</span>
           </div>
           @if (editorLoaded()) {
-            <vertex-editor
+            <vertex-editor-lite
               [attr.value]="code()"
               [attr.language]="'typescript'"
               [attr.theme]="editorTheme()"
-              readonly="true"
-              lineNumbers="true"
+              line-numbers="true"
               style="display: block; height: 400px; overflow: auto;"
-            ></vertex-editor>
+            ></vertex-editor-lite>
           } @else {
             <div style="display: block; height: 400px;" class="flex items-center justify-center">
               <div class="animate-pulse text-muted-foreground">Loading editor...</div>
@@ -160,7 +158,7 @@ export class CodePanel implements OnInit {
   async ngOnInit() {
     if (!isPlatformBrowser(this.platformId)) return;
 
-    // Load editor script lazily
+    // Load the lightweight read-only editor script lazily
     await this.editorLoader.loadEditor();
     this.editorLoaded.set(true);
 

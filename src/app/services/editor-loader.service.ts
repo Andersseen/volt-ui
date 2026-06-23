@@ -1,12 +1,15 @@
 import { inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 
+const SCRIPT_NAME = 'web-editor-lite.min.js';
+const TAG_NAME = 'vertex-editor-lite';
+
 @Injectable({
   providedIn: 'root',
 })
 export class EditorLoaderService {
-  private static scriptLoaded = false;
-  private static loadPromise: Promise<void> | null = null;
+  private static loaded = false;
+  private static promise: Promise<void> | null = null;
 
   private readonly platformId = inject(PLATFORM_ID);
 
@@ -15,16 +18,17 @@ export class EditorLoaderService {
       return Promise.resolve();
     }
 
-    if (EditorLoaderService.scriptLoaded) {
+    if (EditorLoaderService.loaded) {
       return Promise.resolve();
     }
 
-    if (EditorLoaderService.loadPromise) {
-      return EditorLoaderService.loadPromise;
+    if (EditorLoaderService.promise) {
+      return EditorLoaderService.promise;
     }
 
-    EditorLoaderService.loadPromise = this.loadScript();
-    return EditorLoaderService.loadPromise;
+    const promise = this.loadScript();
+    EditorLoaderService.promise = promise;
+    return promise;
   }
 
   private loadScript(): Promise<void> {
@@ -34,25 +38,26 @@ export class EditorLoaderService {
         resolve();
         return;
       }
+
       // Check if already defined
-      if (customElements.get('vertex-editor')) {
-        EditorLoaderService.scriptLoaded = true;
+      if (customElements.get(TAG_NAME)) {
+        EditorLoaderService.loaded = true;
         resolve();
         return;
       }
 
       const script = document.createElement('script');
-      script.src = 'web-editor.min.js';
+      script.src = SCRIPT_NAME;
       script.async = true;
       script.defer = true;
 
       script.onload = () => {
-        EditorLoaderService.scriptLoaded = true;
+        EditorLoaderService.loaded = true;
         resolve();
       };
 
       script.onerror = () => {
-        reject(new Error('Failed to load vertex-editor script'));
+        reject(new Error(`Failed to load ${SCRIPT_NAME}`));
       };
 
       document.head.appendChild(script);
