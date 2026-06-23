@@ -1,5 +1,6 @@
 @import 'tailwindcss' source(none);
 @source './**/*.{html,ts}';
+@source '../../../dist/volt/fesm2022/voltui-components.mjs';
 
 @import '@voltui/components/themes.css';
 

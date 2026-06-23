@@ -6,7 +6,7 @@ import { NgpMeterTrack } from 'ng-primitives/meter';
   changeDetection: ChangeDetectionStrategy.OnPush,
   hostDirectives: [NgpMeterTrack],
   host: {
-    class: 'relative h-2 w-full overflow-hidden rounded-full bg-secondary',
+    class: 'relative block h-2 w-full overflow-hidden rounded-full bg-secondary',
   },
   template: `<ng-content />`,
 })

@@ -6,7 +6,7 @@ import { NgpMeterIndicator } from 'ng-primitives/meter';
   changeDetection: ChangeDetectionStrategy.OnPush,
   hostDirectives: [NgpMeterIndicator],
   host: {
-    class: 'h-full rounded-full bg-primary transition-[width] duration-300 ease-in-out',
+    class: 'block h-full rounded-full bg-primary transition-[width] duration-300 ease-in-out',
   },
   template: ``,
 })

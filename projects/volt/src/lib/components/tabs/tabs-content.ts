@@ -7,7 +7,7 @@ import { NgpTabPanel, injectTabPanelState, provideTabPanelState } from 'ng-primi
   providers: [provideTabPanelState()],
   host: {
     class:
-      'mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 data-[state=inactive]:hidden',
+      'block mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 data-[state=inactive]:hidden',
     '[attr.data-state]': "tabPanelState().active() ? 'active' : 'inactive'",
   },
   hostDirectives: [

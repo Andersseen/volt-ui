@@ -19,7 +19,7 @@ export class VoltSeparator {
   readonly orientation = input<'horizontal' | 'vertical'>('horizontal');
 
   protected readonly classes = computed(() => {
-    const base = 'shrink-0 bg-border';
+    const base = 'block shrink-0 bg-border';
     return this.orientation() === 'vertical' ? `${base} w-px h-full` : `${base} h-px w-full`;
   });
 }

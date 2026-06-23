@@ -15,6 +15,9 @@ import { NgpSelect, NgpSelectPortal, provideSelectState } from 'ng-primitives/se
 @Component({
   selector: 'volt-select',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    class: 'block w-full',
+  },
   imports: [NgpSelect, NgpSelectPortal],
   providers: [
     provideSelectState(),
