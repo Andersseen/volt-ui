@@ -164,6 +164,7 @@ export class CodePanel implements OnInit {
 
       if (editor._ready && typeof editor.setValue === 'function') {
         editor.setValue(code);
+        editor.setAttribute('theme', theme);
       } else if (!this.editorsWithReadyListener.has(editor)) {
         this.editorsWithReadyListener.add(editor);
         editor.addEventListener(
@@ -172,12 +173,11 @@ export class CodePanel implements OnInit {
             if (typeof editor.setValue === 'function') {
               editor.setValue(this.code());
             }
+            editor.setAttribute('theme', this.editorTheme());
           },
           { once: true }
         );
       }
-
-      editor.setAttribute('theme', theme);
     });
   });
 
