@@ -24,7 +24,6 @@ import { NgpInput } from 'ng-primitives/input';
   ],
   host: {
     class: 'block w-full',
-    '[attr.id]': 'null',
   },
   template: `
     <input

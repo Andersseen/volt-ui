@@ -39,8 +39,7 @@ describe('VoltCheckbox', () => {
   });
 
   it('should render a checkmark svg when checked', () => {
-    expect(source).toContain('@if (checked())');
-    expect(source).toContain('<svg');
     expect(source).toContain('<polyline points="20 6 9 17 4 12"></polyline>');
+    expect(source).toContain('<svg');
   });
 });

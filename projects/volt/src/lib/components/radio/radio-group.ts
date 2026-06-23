@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, input, model } from '@angular/core';
+import { booleanAttribute, ChangeDetectionStrategy, Component, input, model } from '@angular/core';
 import { NgpRadioGroup, provideRadioGroupState } from 'ng-primitives/radio';
+import type { NgpOrientation } from 'ng-primitives/common';
 
 @Component({
   selector: 'volt-radio-group',
@@ -14,14 +15,22 @@ import { NgpRadioGroup, provideRadioGroupState } from 'ng-primitives/radio';
   hostDirectives: [
     {
       directive: NgpRadioGroup,
-      inputs: ['ngpRadioGroupValue: value', 'ngpRadioGroupDisabled: disabled'],
+      inputs: [
+        'id: id',
+        'ngpRadioGroupValue: value',
+        'ngpRadioGroupDisabled: disabled',
+        'ngpRadioGroupOrientation: orientation',
+        'ngpRadioGroupCompareWith: compareWith',
+      ],
       outputs: ['ngpRadioGroupValueChange: valueChange'],
     },
   ],
   template: ` <ng-content /> `,
 })
 export class VoltRadioGroup {
-  readonly orientation = input<'horizontal' | 'vertical'>('vertical');
+  readonly id = input<string>();
+  readonly orientation = input<NgpOrientation>('vertical');
   readonly value = model<string | null>(null);
-  readonly disabled = input<boolean>(false);
+  readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
+  readonly compareWith = input<(a: string | null, b: string | null) => boolean>(Object.is);
 }

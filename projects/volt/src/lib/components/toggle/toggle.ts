@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, Component, computed, input, model } from '@angular/core';
+import {
+  booleanAttribute,
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  forwardRef,
+  input,
+  model,
+  signal,
+} from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NgpToggle } from 'ng-primitives/toggle';
 import { cva, type VariantProps } from 'class-variance-authority';
 
@@ -34,24 +44,35 @@ export type ToggleVariants = VariantProps<typeof toggleVariants>;
   selector: 'volt-toggle',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgpToggle],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => VoltToggle),
+      multi: true,
+    },
+  ],
   template: `
     <button
       ngpToggle
-      [ngpToggleDisabled]="disabled()"
+      [ngpToggleDisabled]="isDisabled()"
       [ngpToggleSelected]="pressed()"
-      (ngpToggleSelectedChange)="pressed.set($event)"
+      (ngpToggleSelectedChange)="onSelectedChange($event)"
+      (blur)="onTouched()"
       [class]="classes()"
-      [attr.data-disabled]="disabled() ? '' : null"
+      [attr.data-disabled]="isDisabled() ? '' : null"
     >
       <ng-content />
     </button>
   `,
 })
-export class VoltToggle {
+export class VoltToggle implements ControlValueAccessor {
   readonly variant = input<ToggleVariants['variant']>('default');
   readonly size = input<ToggleVariants['size']>('md');
-  readonly disabled = input<boolean>(false);
+  readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly pressed = model<boolean>(false);
+
+  private readonly controlDisabled = signal(false);
+  protected readonly isDisabled = computed(() => this.disabled() || this.controlDisabled());
 
   protected readonly classes = computed(() =>
     toggleVariants({
@@ -59,4 +80,28 @@ export class VoltToggle {
       size: this.size(),
     })
   );
+
+  private onChange: (value: boolean) => void = () => {};
+  protected onTouched: () => void = () => {};
+
+  protected onSelectedChange(value: boolean): void {
+    this.pressed.set(value);
+    this.onChange(value);
+  }
+
+  writeValue(value: boolean | null | undefined): void {
+    this.pressed.set(!!value);
+  }
+
+  registerOnChange(fn: (value: boolean) => void): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.controlDisabled.set(isDisabled);
+  }
 }

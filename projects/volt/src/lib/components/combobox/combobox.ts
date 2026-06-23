@@ -23,6 +23,7 @@ import {
   NgpComboboxPortal,
   type NgpComboboxPlacement,
 } from 'ng-primitives/combobox';
+import type { NgpFlipInput } from 'ng-primitives/portal';
 import { VoltComboboxOption } from './combobox-option';
 
 let nextComboboxId = 0;
@@ -59,6 +60,10 @@ let nextComboboxId = 0;
       [ngpComboboxAllowDeselect]="allowDeselect()"
       [ngpComboboxCompareWith]="compareWith()"
       [ngpComboboxDropdownPlacement]="dropdownPlacement()"
+      [ngpComboboxDropdownContainer]="container()"
+      [ngpComboboxDropdownFlip]="flip()"
+      [ngpComboboxScrollToOption]="scrollToOption()"
+      [ngpComboboxOptions]="allOptions()"
       (ngpComboboxValueChange)="onValueChange($event)"
       (ngpComboboxOpenChange)="onOpenChange($event)"
       class="relative flex h-9 w-full items-center justify-between rounded-md border border-input bg-background shadow-sm transition-colors focus-within:ring-1 focus-within:ring-ring data-[disabled]:opacity-50"
@@ -125,6 +130,17 @@ export class VoltCombobox implements ControlValueAccessor {
   readonly allowDeselect = input<boolean, unknown>(true, { transform: booleanAttribute });
   readonly compareWith = input<(a: unknown, b: unknown) => boolean>(Object.is);
   readonly dropdownPlacement = input<NgpComboboxPlacement>('bottom');
+  readonly container = input<string | HTMLElement | null>('body');
+  readonly flip = input<NgpFlipInput, NgpFlipInput>(true, {
+    transform: (value: NgpFlipInput) => {
+      if (typeof value === 'string') {
+        return value === 'true';
+      }
+      return value;
+    },
+  });
+  readonly scrollToOption = input<((index: number) => void) | undefined>(undefined);
+  readonly allOptions = input<unknown[] | undefined>(undefined);
 
   readonly items = input<unknown[]>([]);
   readonly placeholder = input<string>('Select...');
