@@ -10,7 +10,9 @@ import {
   PLATFORM_ID,
   signal,
   afterNextRender,
+  afterRenderEffect,
   Injector,
+  ElementRef,
 } from '@angular/core';
 import { VoltTabs, VoltTabsContent, VoltTabsList, VoltTabsTrigger } from 'volt';
 import { LmnCheckIcon, LmnCopyIcon } from 'lumen-icons';
@@ -91,7 +93,6 @@ import { CopyButton } from './copy-button';
               </div>
               @if (editorLoaded()) {
                 <vertex-editor-lite
-                  [attr.value]="code()"
                   [attr.language]="'typescript'"
                   [attr.theme]="editorTheme()"
                   line-numbers="true"
@@ -116,7 +117,6 @@ import { CopyButton } from './copy-button';
           </div>
           @if (editorLoaded()) {
             <vertex-editor-lite
-              [attr.value]="code()"
               [attr.language]="'typescript'"
               [attr.theme]="editorTheme()"
               line-numbers="true"
@@ -149,6 +149,37 @@ export class CodePanel implements OnInit {
   editorLoaded = signal(false);
   editorReady = signal(false);
   activeTab = signal<'preview' | 'code'>('preview');
+
+  private readonly hostElement = inject(ElementRef).nativeElement as HTMLElement;
+  private readonly editorsWithReadyListener = new WeakSet<HTMLElement>();
+
+  private readonly syncEditorEffect = afterRenderEffect(() => {
+    const code = this.code();
+    const theme = this.editorTheme();
+    // Ensure this effect re-runs once the editor element is added to the DOM.
+    void this.editorLoaded();
+
+    this.hostElement.querySelectorAll('vertex-editor-lite').forEach(el => {
+      const editor = el as HTMLElement & { _ready?: boolean; setValue?: (value: string) => void };
+
+      if (editor._ready && typeof editor.setValue === 'function') {
+        editor.setValue(code);
+      } else if (!this.editorsWithReadyListener.has(editor)) {
+        this.editorsWithReadyListener.add(editor);
+        editor.addEventListener(
+          'ready',
+          () => {
+            if (typeof editor.setValue === 'function') {
+              editor.setValue(this.code());
+            }
+          },
+          { once: true }
+        );
+      }
+
+      editor.setAttribute('theme', theme);
+    });
+  });
 
   private destroyRef = inject(DestroyRef);
   private editorLoader = inject(EditorLoaderService);
