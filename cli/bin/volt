@@ -17,41 +17,76 @@ function parseArgs(rawArgs) {
   return { args, flags };
 }
 
+function parseAddArgs(args, manifest) {
+  const candidates = args.slice(1);
+  let targetDir = './src/app/ui';
+  const componentNames = [];
+
+  for (const candidate of candidates) {
+    if (manifest.components[candidate]) {
+      componentNames.push(candidate);
+    } else if (componentNames.length > 0) {
+      targetDir = candidate;
+      break;
+    } else {
+      console.error(`❌ Component "${candidate}" not found. Run "volt list" to see available components.`);
+      process.exit(1);
+    }
+  }
+
+  return { componentNames, targetDir };
+}
+
 async function main() {
   const { args, flags } = parseArgs(process.argv.slice(2));
   const command = args[0];
 
   if (command === 'add') {
-    const componentName = args[1];
-    const targetDir = args[2] || './src/app/ui';
-
-    if (!componentName) {
-      console.error('❌ Please specify a component name.');
-      console.log('Usage: volt add <component-name> [target-dir] [--install]');
+    if (args.length < 2) {
+      console.error('❌ Please specify at least one component name.');
+      console.log('Usage: volt add <component-name>... [target-dir] [--install]');
       process.exit(1);
     }
 
     const manifest = await loadManifest();
-    const result = await copyComponent(componentName, targetDir, manifest, {
-      install: flags.install,
-    });
+    const { componentNames, targetDir } = parseAddArgs(args, manifest);
 
-    console.log(`\n✅ Component "${result.componentName}" added successfully!`);
+    const results = [];
+    for (const componentName of componentNames) {
+      const result = await copyComponent(componentName, targetDir, manifest, {
+        install: false, // install once at the end
+      });
+      results.push(result);
+    }
 
-    if (result.dependencies.length > 0) {
+    if (flags.install) {
+      const { installDependencies } = require('../lib/core');
+      installDependencies(process.cwd(), { dryRun: false });
+    }
+
+    console.log(`\n✅ Added ${results.length} component(s) successfully!`);
+    for (const result of results) {
+      console.log(`  - ${result.componentName}`);
+    }
+
+    const allDependencies = [...new Set(results.flatMap(r => r.dependencies))];
+    if (allDependencies.length > 0) {
       console.log(`\n📦 Required dependencies also copied:`);
-      result.dependencies.forEach(dep => console.log(`  - ${dep}`));
+      allDependencies.forEach(dep => console.log(`  - ${dep}`));
     }
 
     console.log(`\nImport in your component:`);
-    console.log(`  import { ${result.className} } from './ui/${result.componentName}';`);
+    for (const result of results) {
+      console.log(`  import { ${result.className} } from './ui/${result.componentName}';`);
+    }
 
-    if (result.installResult?.executed) {
+    if (flags.install) {
       console.log(`\n✅ Runtime dependencies installed.`);
     } else {
+      const firstResult = results[0];
       console.log(`\n⚠️  Ensure runtime dependencies are installed:`);
-      console.log(`  ${result.installCommand}`);
-      console.log(`\n  Or run: volt add ${componentName} --install`);
+      console.log(`  ${firstResult.installCommand}`);
+      console.log(`\n  Or run: volt add ${componentNames.join(' ')} --install`);
     }
   } else if (command === 'init') {
     const targetDir = args[1] || './src/app/ui';
@@ -67,15 +102,15 @@ async function main() {
     console.log('Volt UI CLI');
     console.log('');
     console.log('Usage:');
-    console.log('  volt init [target-dir]              Initialize volt/ui in your project');
-    console.log('  volt add <component> [target-dir]   Add a component to your project');
-    console.log('  volt add <component> --install      Add component and install runtime deps');
-    console.log('  volt list                           List all available components');
-    console.log('  volt clear-cache                    Clear local component cache');
+    console.log('  volt init [target-dir]                Initialize volt/ui in your project');
+    console.log('  volt add <component>... [target-dir]  Add one or more components to your project');
+    console.log('  volt add <component>... --install     Add component(s) and install runtime deps');
+    console.log('  volt list                             List all available components');
     console.log('');
     console.log('Examples:');
     console.log('  npx @voltui/cli init');
     console.log('  npx @voltui/cli add button');
+    console.log('  npx @voltui/cli add button card input');
     console.log('  npx @voltui/cli add card --install');
   }
 }

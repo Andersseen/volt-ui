@@ -200,5 +200,17 @@ describe('CLI Core', () => {
       expect(buttonContent).toContain("selector: 'ui-button'");
       expect(buttonContent).toContain('class UiButton');
     });
+
+    it('should add multiple components in a single command', () => {
+      execSync(`node ${cliPath} init ${testDir}`, { cwd: repoRoot, stdio: 'pipe' });
+      execSync(`node ${cliPath} add button badge ${testDir}`, { cwd: repoRoot, stdio: 'pipe' });
+
+      expect(existsSync(join(testDir, 'button', 'button.ts'))).toBe(true);
+      expect(existsSync(join(testDir, 'badge', 'badge.ts'))).toBe(true);
+
+      const indexContent = readFileSync(join(testDir, 'index.ts'), 'utf-8');
+      expect(indexContent).toContain("export * from './button';");
+      expect(indexContent).toContain("export * from './badge';");
+    });
   });
 });
