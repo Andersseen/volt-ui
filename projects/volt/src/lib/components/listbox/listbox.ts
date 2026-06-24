@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, model } from '@angular/core';
+import { booleanAttribute, ChangeDetectionStrategy, Component, input, model } from '@angular/core';
 import { NgpListbox, provideListboxState } from 'ng-primitives/listbox';
 import type { NgpSelectionMode } from 'ng-primitives/common';
 
@@ -29,6 +29,6 @@ export class VoltListbox<T = unknown> {
   readonly id = input<string>();
   readonly mode = input<NgpSelectionMode>('single');
   readonly value = model<T[]>([]);
-  readonly disabled = input<boolean>(false);
+  readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly compareWith = input<(a: T, b: T) => boolean>((a, b) => a === b);
 }

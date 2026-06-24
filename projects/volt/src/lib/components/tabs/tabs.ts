@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, model } from '@angular/core';
+import { booleanAttribute, ChangeDetectionStrategy, Component, input, model } from '@angular/core';
 import { NgpTabset, provideTabsetState } from 'ng-primitives/tabs';
 
 @Component({
@@ -24,5 +24,5 @@ import { NgpTabset, provideTabsetState } from 'ng-primitives/tabs';
 export class VoltTabs {
   readonly value = model<string | undefined>(undefined);
   readonly orientation = input<'horizontal' | 'vertical'>('horizontal');
-  readonly activateOnFocus = input<boolean>(true);
+  readonly activateOnFocus = input<boolean, unknown>(true, { transform: booleanAttribute });
 }

@@ -44,8 +44,8 @@ export class VoltPopoverTrigger {
   readonly anchor = input<HTMLElement | null>(null);
   readonly trackPosition = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly cooldown = input(0);
-  readonly disabled = input<boolean>(false);
-  readonly closeOnOutsideClick = input<boolean>(true);
-  readonly closeOnEscape = input<boolean>(true);
+  readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
+  readonly closeOnOutsideClick = input<boolean, unknown>(true, { transform: booleanAttribute });
+  readonly closeOnEscape = input<boolean, unknown>(true, { transform: booleanAttribute });
   readonly openChange = output<boolean>();
 }

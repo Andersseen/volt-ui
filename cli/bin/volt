@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const { loadManifest, copyComponent, initProject, clearCache } = require('../lib/core');
+const { loadManifest, copyComponent, initProject } = require('../lib/core');
 
 function parseArgs(rawArgs) {
   const args = [];
@@ -63,9 +63,6 @@ async function main() {
     Object.keys(manifest.components)
       .sort()
       .forEach(name => console.log(`  - ${name}`));
-  } else if (command === 'clear-cache') {
-    clearCache();
-    console.log('✅ Cache cleared');
   } else {
     console.log('Volt UI CLI');
     console.log('');

@@ -1,14 +1,10 @@
 const fs = require('fs');
 const path = require('path');
-const https = require('https');
-const os = require('os');
 const { execSync } = require('child_process');
 
 const REPO_ROOT = path.resolve(__dirname, '../..');
 const COMPONENTS_ROOT = path.join(REPO_ROOT, 'projects/volt/src/lib');
 const MANIFEST_PATH = path.join(REPO_ROOT, 'public/manifest.json');
-const CACHE_DIR = path.join(os.homedir(), '.volt-ui', 'cache');
-const CACHE_TTL_MS = 1000 * 60 * 60; // 1 hour
 
 // Runtime dependencies required by copied components.
 const RUNTIME_DEPENDENCIES = [
@@ -17,12 +13,6 @@ const RUNTIME_DEPENDENCIES = [
   'clsx',
   'tailwind-merge',
 ];
-
-// Known transitive component dependencies.
-const COMPONENT_DEPENDENCIES = {
-  'toggle-group': ['toggle'],
-  'dropdown-menu': ['button'],
-};
 
 // ---------------------------------------------------------------------------
 // Package manager detection
@@ -50,102 +40,6 @@ function installCommand(packageManager) {
 }
 
 // ---------------------------------------------------------------------------
-// HTTP helpers (kept for backwards compatibility; CLI no longer uses network)
-// ---------------------------------------------------------------------------
-
-function fetchJson(url) {
-  return new Promise((resolve, reject) => {
-    https
-      .get(url, res => {
-        if (res.statusCode === 301 || res.statusCode === 302) {
-          fetchJson(res.headers.location).then(resolve).catch(reject);
-          return;
-        }
-        if (res.statusCode !== 200) {
-          reject(new Error(`HTTP ${res.statusCode}: ${url}`));
-          return;
-        }
-        let data = '';
-        res.on('data', chunk => (data += chunk));
-        res.on('end', () => {
-          try {
-            resolve(JSON.parse(data));
-          } catch {
-            reject(new Error(`Invalid JSON from ${url}`));
-          }
-        });
-        res.on('error', reject);
-      })
-      .on('error', reject);
-  });
-}
-
-function fetchFile(url) {
-  return new Promise((resolve, reject) => {
-    https
-      .get(url, res => {
-        if (res.statusCode === 301 || res.statusCode === 302) {
-          fetchFile(res.headers.location).then(resolve).catch(reject);
-          return;
-        }
-        if (res.statusCode !== 200) {
-          reject(new Error(`Failed to fetch ${url}: HTTP ${res.statusCode}`));
-          return;
-        }
-        let data = '';
-        res.on('data', chunk => (data += chunk));
-        res.on('end', () => resolve(data));
-        res.on('error', reject);
-      })
-      .on('error', reject);
-  });
-}
-
-// ---------------------------------------------------------------------------
-// Cache helpers (kept for backwards compatibility)
-// ---------------------------------------------------------------------------
-
-function ensureCacheDir() {
-  if (!fs.existsSync(CACHE_DIR)) {
-    fs.mkdirSync(CACHE_DIR, { recursive: true });
-  }
-}
-
-function getCachedManifest() {
-  ensureCacheDir();
-  const cachePath = path.join(CACHE_DIR, 'manifest.json');
-  if (!fs.existsSync(cachePath)) return null;
-  const stat = fs.statSync(cachePath);
-  if (Date.now() - stat.mtimeMs > CACHE_TTL_MS) return null;
-  try {
-    return JSON.parse(fs.readFileSync(cachePath, 'utf-8'));
-  } catch {
-    return null;
-  }
-}
-
-function setCachedManifest(manifest) {
-  ensureCacheDir();
-  const cachePath = path.join(CACHE_DIR, 'manifest.json');
-  fs.writeFileSync(cachePath, JSON.stringify(manifest, null, 2));
-}
-
-function getCachedFile(url) {
-  ensureCacheDir();
-  const hash = Buffer.from(url).toString('base64url');
-  const cachePath = path.join(CACHE_DIR, hash);
-  if (!fs.existsSync(cachePath)) return null;
-  return fs.readFileSync(cachePath, 'utf-8');
-}
-
-function setCachedFile(url, content) {
-  ensureCacheDir();
-  const hash = Buffer.from(url).toString('base64url');
-  const cachePath = path.join(CACHE_DIR, hash);
-  fs.writeFileSync(cachePath, content);
-}
-
-// ---------------------------------------------------------------------------
 // Manifest loader
 // ---------------------------------------------------------------------------
 
@@ -164,11 +58,6 @@ async function loadManifest() {
   const local = getLocalManifest();
   if (local) {
     return local;
-  }
-
-  let manifest = getCachedManifest();
-  if (manifest) {
-    return manifest;
   }
 
   throw new Error(
@@ -210,9 +99,7 @@ function capitalize(str) {
 }
 
 function findComponentInManifest(componentName, manifest) {
-  const component = manifest.components[componentName];
-  if (!component) return null;
-  return component;
+  return manifest.components[componentName] || null;
 }
 
 function collectDependencies(componentName, manifest, collected = new Set()) {
@@ -222,7 +109,7 @@ function collectDependencies(componentName, manifest, collected = new Set()) {
 
   collected.add(componentName);
 
-  const direct = COMPONENT_DEPENDENCIES[componentName] || component.dependencies || [];
+  const direct = component.dependencies || [];
   for (const dep of direct) {
     collectDependencies(dep, manifest, collected);
   }
@@ -344,26 +231,14 @@ export {};
   return targetDir;
 }
 
-function clearCache() {
-  ensureCacheDir();
-  fs.rmSync(CACHE_DIR, { recursive: true, force: true });
-}
-
 module.exports = {
-  fetchJson,
-  fetchFile,
-  getCachedManifest,
-  setCachedManifest,
-  getCachedFile,
-  setCachedFile,
   getLocalManifest,
   loadManifest,
   transformContent,
   copyComponent,
   initProject,
-  clearCache,
   installDependencies,
   detectPackageManager,
   installCommand,
-  CACHE_DIR,
+  RUNTIME_DEPENDENCIES,
 };

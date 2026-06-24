@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { booleanAttribute, ChangeDetectionStrategy, Component, input } from '@angular/core';
 import {
   NgpNavigationMenuContent,
   provideNavigationMenuContentState,
@@ -25,5 +25,5 @@ import {
 })
 export class VoltNavigationMenuContent {
   readonly orientation = input<'vertical' | 'horizontal'>('vertical');
-  readonly wrap = input<boolean>(false);
+  readonly wrap = input<boolean, unknown>(false, { transform: booleanAttribute });
 }

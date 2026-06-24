@@ -1,4 +1,4 @@
-import { Directive, input } from '@angular/core';
+import { booleanAttribute, Directive, input } from '@angular/core';
 import { NgpMenuTrigger } from 'ng-primitives/menu';
 import type { NgpMenuPlacement } from 'ng-primitives/menu';
 import type { NgpFlip, NgpOffset, NgpOverlayContent, NgpShift } from 'ng-primitives/portal';
@@ -41,5 +41,5 @@ export class VoltDropdownMenuTrigger {
   readonly triggers = input<VoltMenuTriggerType[]>(['click']);
   readonly showDelay = input(0);
   readonly hideDelay = input(0);
-  readonly disabled = input<boolean>(false);
+  readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
 }

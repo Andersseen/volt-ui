@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { booleanAttribute, ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { NgpLabel } from 'ng-primitives/form-field';
 
 @Component({
@@ -17,6 +17,6 @@ import { NgpLabel } from 'ng-primitives/form-field';
   `,
 })
 export class VoltLabel {
-  readonly error = input<boolean>(false);
+  readonly error = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly htmlFor = input<string>('');
 }

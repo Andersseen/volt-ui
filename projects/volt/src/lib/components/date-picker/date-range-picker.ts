@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, model } from '@angular/core';
+import { booleanAttribute, ChangeDetectionStrategy, Component, input, model } from '@angular/core';
 import { NgpDateRangePicker, provideDatePickerConfig } from 'ng-primitives/date-picker';
 import { NgpNativeDateAdapter, provideDateAdapter } from 'ng-primitives/date-time';
 import type { VoltDatePickerFirstDayOfWeek } from './date-picker';
@@ -36,7 +36,7 @@ import type { VoltDatePickerFirstDayOfWeek } from './date-picker';
 export class VoltDateRangePicker {
   readonly min = input<Date>();
   readonly max = input<Date>();
-  readonly disabled = input<boolean>(false);
+  readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly dateDisabled = input<(date: Date) => boolean>(() => false);
   readonly firstDayOfWeek = input<VoltDatePickerFirstDayOfWeek>(7);
   readonly startDate = model<Date | undefined>();

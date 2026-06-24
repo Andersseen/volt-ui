@@ -1,4 +1,5 @@
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
   Component,
   input,
@@ -54,7 +55,7 @@ export class VoltInputOtp {
   readonly inputMode = input<'numeric' | 'text' | 'decimal' | 'tel' | 'search' | 'email' | 'url'>(
     'numeric'
   );
-  readonly disabled = input<boolean>(false);
+  readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly placeholder = input<string>('○');
   readonly slotTemplate = contentChild<TemplateRef<unknown>>('slotTemplate');
 

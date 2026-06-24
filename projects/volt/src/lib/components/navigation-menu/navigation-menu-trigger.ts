@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, TemplateRef, input } from '@angular/core';
+import {
+  booleanAttribute,
+  ChangeDetectionStrategy,
+  Component,
+  TemplateRef,
+  input,
+} from '@angular/core';
 import {
   NgpNavigationMenuTrigger,
   provideNavigationMenuTriggerState,
@@ -57,7 +63,7 @@ export class VoltNavigationMenuTrigger {
   readonly content = input.required<TemplateRef<unknown>>();
   readonly placement = input<NavigationMenuPlacement>('bottom-start');
   readonly offset = input<number>(4);
-  readonly flip = input<boolean>(true);
-  readonly disabled = input<boolean>(false);
+  readonly flip = input<boolean, unknown>(true, { transform: booleanAttribute });
+  readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly cooldown = input<number>(300);
 }

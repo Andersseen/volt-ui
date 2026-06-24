@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { booleanAttribute, ChangeDetectionStrategy, Component, input } from '@angular/core';
 import {
   NgpNavigationMenuContentItem,
   provideNavigationMenuContentItemState,
@@ -21,5 +21,5 @@ import {
   template: `<ng-content />`,
 })
 export class VoltNavigationMenuContentItem {
-  readonly disabled = input<boolean>(false);
+  readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
 }

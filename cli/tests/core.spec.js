@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { readFileSync, existsSync, rmSync, readdirSync } from 'node:fs';
 import { resolve, join } from 'node:path';
 import { tmpdir } from 'node:os';
+import { execSync } from 'node:child_process';
 
 const core = require('../lib/core.js');
 
@@ -65,6 +66,19 @@ describe('CLI Core', () => {
       expect(manifest.components.tabs).toBeTruthy();
       expect(manifest.components.tabs.files).toContain('components/tabs/index.ts');
     });
+
+    it('should not contain a network baseUrl', () => {
+      const manifest = core.getLocalManifest();
+      expect(manifest.baseUrl).toBeUndefined();
+    });
+  });
+
+  describe('manifest dependency mapping', () => {
+    it('should reflect inter-component dependencies detected from source imports', () => {
+      const manifest = core.getLocalManifest();
+      // sidebar imports tooltip from the components folder
+      expect(manifest.components.sidebar.dependencies).toContain('tooltip');
+    });
   });
 
   describe('initProject', () => {
@@ -125,15 +139,7 @@ describe('CLI Core', () => {
       expect(content).not.toContain('class VoltButton');
     });
 
-    it('should copy and transform card component using cache', async () => {
-      const cardUrl = `${manifest.baseUrl}/components/card/card.ts`;
-      const indexUrl = `${manifest.baseUrl}/components/card/index.ts`;
-      core.setCachedFile(
-        cardUrl,
-        "export const card = 'test';\nexport class VoltCard {}\nselector: 'volt-card'"
-      );
-      core.setCachedFile(indexUrl, "export * from './card';\n");
-
+    it('should copy and transform card component from local source', async () => {
       const result = await core.copyComponent('card', testDir, manifest);
       expect(result.componentName).toBe('card');
       expect(result.className).toBe('UiCard');
@@ -147,6 +153,14 @@ describe('CLI Core', () => {
       expect(content).toContain("selector: 'ui-card'");
     });
 
+    it('should copy transitive dependencies declared in the manifest', async () => {
+      const result = await core.copyComponent('sidebar', testDir, manifest);
+      expect(result.dependencies).toContain('tooltip');
+
+      const tooltipDir = join(testDir, 'tooltip');
+      expect(existsSync(tooltipDir)).toBe(true);
+    });
+
     it('should throw for unknown component', async () => {
       try {
         await core.copyComponent('nonexistent', testDir, manifest);
@@ -157,18 +171,34 @@ describe('CLI Core', () => {
     });
   });
 
-  describe('cache', () => {
-    it('should store and retrieve cached files', () => {
-      const testUrl = 'https://example.com/test-file.ts';
-      const testContent = 'export const foo = 1;';
-      core.setCachedFile(testUrl, testContent);
-      const retrieved = core.getCachedFile(testUrl);
-      expect(retrieved).toBe(testContent);
+  describe('CLI integration', () => {
+    const repoRoot = resolve(__dirname, '../..');
+    const cliPath = join(repoRoot, 'cli/bin/volt');
+    let testDir;
+
+    beforeEach(() => {
+      testDir = join(tmpdir(), `volt-cli-integration-${Date.now()}`);
     });
 
-    it('should return null for uncached files', () => {
-      const retrieved = core.getCachedFile('https://example.com/uncached.ts');
-      expect(retrieved).toBeNull();
+    afterEach(() => {
+      if (existsSync(testDir)) {
+        rmSync(testDir, { recursive: true, force: true });
+      }
+    });
+
+    it('should init and add a component via the CLI binary', () => {
+      execSync(`node ${cliPath} init ${testDir}`, { cwd: repoRoot, stdio: 'pipe' });
+      expect(existsSync(join(testDir, 'index.ts'))).toBe(true);
+
+      execSync(`node ${cliPath} add button ${testDir}`, { cwd: repoRoot, stdio: 'pipe' });
+      expect(existsSync(join(testDir, 'button', 'button.ts'))).toBe(true);
+
+      const indexContent = readFileSync(join(testDir, 'index.ts'), 'utf-8');
+      expect(indexContent).toContain("export * from './button';");
+
+      const buttonContent = readFileSync(join(testDir, 'button', 'button.ts'), 'utf-8');
+      expect(buttonContent).toContain("selector: 'ui-button'");
+      expect(buttonContent).toContain('class UiButton');
     });
   });
 });

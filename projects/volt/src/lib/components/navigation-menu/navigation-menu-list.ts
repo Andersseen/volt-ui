@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { booleanAttribute, ChangeDetectionStrategy, Component, input } from '@angular/core';
 import {
   NgpNavigationMenuList,
   provideNavigationMenuListState,
@@ -20,5 +20,5 @@ import {
   template: `<ng-content />`,
 })
 export class VoltNavigationMenuList {
-  readonly wrap = input<boolean>(false);
+  readonly wrap = input<boolean, unknown>(false, { transform: booleanAttribute });
 }

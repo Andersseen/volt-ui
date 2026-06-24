@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import {
+  booleanAttribute,
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+} from '@angular/core';
 import { NgpListboxOption } from 'ng-primitives/listbox';
 import { cva, type VariantProps } from 'class-variance-authority';
 
@@ -40,7 +46,7 @@ export type ListboxOptionVariants = VariantProps<typeof listboxOptionVariants>;
 export class VoltListboxOption<T = unknown> {
   readonly id = input<string>();
   readonly value = input.required<T>();
-  readonly disabled = input<boolean>(false);
+  readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly inset = input<ListboxOptionVariants['inset']>(false);
 
   protected readonly classes = computed(() => listboxOptionVariants({ inset: this.inset() }));

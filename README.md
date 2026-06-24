@@ -126,40 +126,48 @@ See [MCP Documentation](./mcp/README.md) for complete details.
 
 ## Available Components
 
-- [Button](./src/app/pages/docs/components/button.ts)
-- [Badge](./src/app/pages/docs/components/badge.ts)
-- [Card](./src/app/pages/docs/components/card.ts)
-- [Input](./src/app/pages/docs/components/input.ts)
-- Search
-- Autofill
-- [Checkbox](./src/app/pages/docs/components/checkbox.ts)
-- [Switch](./src/app/pages/docs/components/switch.ts)
-- [Select](./src/app/pages/docs/components/select.ts)
-- [Tabs](./src/app/pages/docs/components/tabs.ts)
-- [Accordion](./src/app/pages/docs/components/accordion.ts)
-- [Navigation Menu](./src/app/pages/docs/components/navigation-menu.ts)
-- [Tooltip](./src/app/pages/docs/components/tooltip.ts)
-- [Avatar](./src/app/pages/docs/components/avatar.ts)
-- [Radio](./src/app/pages/docs/components/radio.ts)
-- [Toggle](./src/app/pages/docs/components/toggle.ts)
-- [Separator](./src/app/pages/docs/components/separator.ts)
-- Dialog
-- Popover
-- Dropdown Menu
-- Slider
-- Progress
-- Breadcrumbs
-- Sidebar Layout
-- Toggle Group
-- Meter
-- Pagination
-- Toast
-- Input OTP
-- File Upload
-- Combobox
-- Date Picker
-- Listbox
-- Toolbar
+- [Accordion](<./src/app/pages/(components-docs)/docs/components/accordion.page.ts>)
+- [Autofill](<./src/app/pages/(components-docs)/docs/components/autofill.page.ts>)
+- [Avatar](<./src/app/pages/(components-docs)/docs/components/avatar.page.ts>)
+- [Badge](<./src/app/pages/(components-docs)/docs/components/badge.page.ts>)
+- [Breadcrumbs](<./src/app/pages/(components-docs)/docs/components/breadcrumbs.page.ts>)
+- [Button](<./src/app/pages/(components-docs)/docs/components/button.page.ts>)
+- [Card](<./src/app/pages/(components-docs)/docs/components/card.page.ts>)
+- [Checkbox](<./src/app/pages/(components-docs)/docs/components/checkbox.page.ts>)
+- [Combobox](<./src/app/pages/(components-docs)/docs/components/combobox.page.ts>)
+- [Date Picker](<./src/app/pages/(components-docs)/docs/components/date-picker.page.ts>)
+- [Dialog](<./src/app/pages/(components-docs)/docs/components/dialog.page.ts>)
+- [Drawer](<./src/app/pages/(components-docs)/docs/components/drawer.page.ts>)
+- [Dropdown Menu](<./src/app/pages/(components-docs)/docs/components/dropdown-menu.page.ts>)
+- [File Upload](<./src/app/pages/(components-docs)/docs/components/file-upload.page.ts>)
+- [Input](<./src/app/pages/(components-docs)/docs/components/input.page.ts>)
+- [Input OTP](<./src/app/pages/(components-docs)/docs/components/input-otp.page.ts>)
+- [Listbox](<./src/app/pages/(components-docs)/docs/components/listbox.page.ts>)
+- [Meter](<./src/app/pages/(components-docs)/docs/components/meter.page.ts>)
+- [Navigation Menu](<./src/app/pages/(components-docs)/docs/components/navigation-menu.page.ts>)
+- [Pagination](<./src/app/pages/(components-docs)/docs/components/pagination.page.ts>)
+- [Popover](<./src/app/pages/(components-docs)/docs/components/popover.page.ts>)
+- [Progress](<./src/app/pages/(components-docs)/docs/components/progress.page.ts>)
+- [Radio](<./src/app/pages/(components-docs)/docs/components/radio.page.ts>)
+- [Resizable](<./src/app/pages/(components-docs)/docs/components/resizable.page.ts>)
+- [Search](<./src/app/pages/(components-docs)/docs/components/search.page.ts>)
+- [Select](<./src/app/pages/(components-docs)/docs/components/select.page.ts>)
+- [Separator](<./src/app/pages/(components-docs)/docs/components/separator.page.ts>)
+- [Skeleton](<./src/app/pages/(components-docs)/docs/components/skeleton.page.ts>)
+- [Slider](<./src/app/pages/(components-docs)/docs/components/slider.page.ts>)
+- [Switch](<./src/app/pages/(components-docs)/docs/components/switch.page.ts>)
+- [Table](<./src/app/pages/(components-docs)/docs/components/table.page.ts>)
+- [Tabs](<./src/app/pages/(components-docs)/docs/components/tabs.page.ts>)
+- [Textarea](<./src/app/pages/(components-docs)/docs/components/textarea.page.ts>)
+- [Toast](<./src/app/pages/(components-docs)/docs/components/toast.page.ts>)
+- [Toggle](<./src/app/pages/(components-docs)/docs/components/toggle.page.ts>)
+- [Toggle Group](<./src/app/pages/(components-docs)/docs/components/toggle-group.page.ts>)
+- [Toolbar](<./src/app/pages/(components-docs)/docs/components/toolbar.page.ts>)
+- [Tooltip](<./src/app/pages/(components-docs)/docs/components/tooltip.page.ts>)
+
+### Layouts
+
+- [Sidebar](<./src/app/pages/(layouts-docs)/docs/layouts/sidebar.page.ts>)
 
 See all components in the [live demo](https://volt-ui.pages.dev).
 
