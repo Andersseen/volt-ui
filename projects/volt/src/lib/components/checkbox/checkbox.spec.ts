@@ -1,4 +1,5 @@
 import { Component, input, model } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/angular';
 import userEvent from '@testing-library/user-event';
@@ -75,5 +76,32 @@ describe('VoltCheckbox', () => {
 
     await user.click(checkbox);
     expect(changeSpy).not.toHaveBeenCalled();
+  });
+
+  it('should work with reactive forms', async () => {
+    const user = userEvent.setup();
+
+    @Component({
+      selector: 'app-checkbox-form-wrapper',
+      imports: [ReactiveFormsModule, VoltCheckbox],
+      template: `<volt-checkbox [formControl]="control">Accept</volt-checkbox>`,
+    })
+    class CheckboxFormWrapper {
+      control = new FormControl(false, { nonNullable: true });
+    }
+
+    const { fixture } = await render(CheckboxFormWrapper);
+    const checkbox = screen.getByRole('checkbox');
+
+    await user.click(checkbox);
+    expect(fixture.componentInstance.control.value).toBe(true);
+
+    fixture.componentInstance.control.setValue(false);
+    fixture.detectChanges();
+    expect(checkbox).not.toBeChecked();
+
+    fixture.componentInstance.control.disable();
+    fixture.detectChanges();
+    expect(checkbox).toBeDisabled();
   });
 });

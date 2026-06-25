@@ -17,6 +17,13 @@ async function openAndExpectBox(
   await expectBox(page.getByTestId(targetTestId), targetTestId);
 }
 
+async function focusWithKeyboard(page: Page, locator: Locator, maxTabs = 12): Promise<void> {
+  for (let i = 0; i < maxTabs; i++) {
+    if (await locator.evaluate(element => element === document.activeElement)) return;
+    await page.keyboard.press('Tab');
+  }
+}
+
 test.describe('npm consumer fixture', () => {
   test.beforeEach(async ({ page }) => {
     const runtimeErrors: string[] = [];
@@ -60,22 +67,37 @@ test.describe('npm consumer fixture', () => {
   });
 
   test('opens overlay components with visible positioned content', async ({ page }) => {
-    await page.getByTestId('select').click();
-    await expectBox(page.getByRole('listbox'), 'select listbox');
-    await page.keyboard.press('Escape');
+    const select = page.getByRole('combobox');
+    await focusWithKeyboard(page, select);
+    await expect(select, 'keyboard focus should reach the select trigger').toBeFocused();
 
-    await openAndExpectBox(page, 'popover-trigger', 'popover-content');
+    await select.click();
+    const listbox = page.getByRole('listbox');
+    await expectBox(listbox, 'select listbox');
     await page.keyboard.press('Escape');
+    await expect(listbox).toBeHidden();
+
+    const popoverTrigger = page.getByTestId('popover-trigger');
+    await openAndExpectBox(page, 'popover-trigger', 'popover-content');
+    await expect(popoverTrigger).toBeFocused();
+    await page.keyboard.press('Escape');
+    await expect(page.getByTestId('popover-content')).toBeHidden();
 
     await openAndExpectBox(page, 'dropdown-trigger', 'dropdown-menu');
     await page.keyboard.press('Escape');
+    await expect(page.getByTestId('dropdown-menu')).toBeHidden();
 
     await page.getByTestId('tooltip-trigger').hover();
     await expectBox(page.getByTestId('tooltip-content'), 'tooltip content');
 
+    const dialogTrigger = page.getByTestId('dialog-trigger');
     await openAndExpectBox(page, 'dialog-trigger', 'dialog-content');
     await page.keyboard.press('Escape');
+    await expect(page.getByTestId('dialog-content')).toBeHidden();
+    await expect(dialogTrigger).toBeFocused();
 
     await openAndExpectBox(page, 'drawer-trigger', 'drawer-content');
+    await page.keyboard.press('Escape');
+    await expect(page.getByTestId('drawer-content')).toBeHidden();
   });
 });

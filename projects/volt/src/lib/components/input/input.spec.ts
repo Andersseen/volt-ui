@@ -1,4 +1,5 @@
 import { Component, input, model } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/angular';
 import userEvent from '@testing-library/user-event';
@@ -60,6 +61,36 @@ describe('VoltInput', () => {
     });
 
     const input = screen.getByRole('textbox');
+    expect(input).toBeDisabled();
+  });
+
+  it('should work with reactive forms', async () => {
+    const user = userEvent.setup();
+
+    @Component({
+      selector: 'app-input-form-wrapper',
+      imports: [ReactiveFormsModule, VoltInput],
+      template: `<volt-input [formControl]="control" placeholder="Email" />`,
+    })
+    class InputFormWrapper {
+      control = new FormControl('hello', { nonNullable: true });
+    }
+
+    const { fixture } = await render(InputFormWrapper);
+    const input = screen.getByRole('textbox');
+
+    expect(input).toHaveValue('hello');
+
+    fixture.componentInstance.control.setValue('updated');
+    fixture.detectChanges();
+    expect(input).toHaveValue('updated');
+
+    await user.clear(input);
+    await user.type(input, 'typed');
+    expect(fixture.componentInstance.control.value).toBe('typed');
+
+    fixture.componentInstance.control.disable();
+    fixture.detectChanges();
     expect(input).toBeDisabled();
   });
 });

@@ -1,15 +1,20 @@
 {
   "name": "@voltui/cli",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "CLI for adding Volt UI components to your project",
   "bin": {
     "volt": "./bin/volt"
   },
   "files": [
     "bin/",
-    "lib/"
+    "lib/",
+    "registry/"
   ],
   "scripts": {
+    "pack:registry": "node prepare-package.js && npm pack --dry-run && node prepare-package.js --clean",
+    "publish:registry": "node prepare-package.js && npm publish --access public && node prepare-package.js --clean",
+    "prepack": "node prepare-package.js",
+    "postpack": "node prepare-package.js --clean",
     "test": "vitest --run tests/"
   },
   "keywords": [

@@ -3,8 +3,24 @@ const path = require('path');
 const { execSync } = require('child_process');
 
 const REPO_ROOT = path.resolve(__dirname, '../..');
-const COMPONENTS_ROOT = path.join(REPO_ROOT, 'projects/volt/src/lib');
-const MANIFEST_PATH = path.join(REPO_ROOT, 'public/manifest.json');
+const PACKAGE_ROOT = path.resolve(__dirname, '..');
+
+function resolveRegistryPaths() {
+  const localManifestPath = path.join(REPO_ROOT, 'public/manifest.json');
+  const localComponentsRoot = path.join(REPO_ROOT, 'projects/volt/src/lib');
+
+  if (fs.existsSync(localManifestPath) && fs.existsSync(localComponentsRoot)) {
+    return {
+      manifestPath: localManifestPath,
+      componentsRoot: localComponentsRoot,
+    };
+  }
+
+  return {
+    manifestPath: path.join(PACKAGE_ROOT, 'registry/manifest.json'),
+    componentsRoot: path.join(PACKAGE_ROOT, 'registry/src/lib'),
+  };
+}
 
 // Runtime dependencies required by copied components.
 const RUNTIME_DEPENDENCIES = [
@@ -44,9 +60,11 @@ function installCommand(packageManager) {
 // ---------------------------------------------------------------------------
 
 function getLocalManifest() {
-  if (fs.existsSync(MANIFEST_PATH)) {
+  const { manifestPath } = resolveRegistryPaths();
+
+  if (fs.existsSync(manifestPath)) {
     try {
-      return JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf-8'));
+      return JSON.parse(fs.readFileSync(manifestPath, 'utf-8'));
     } catch {
       return null;
     }
@@ -61,7 +79,7 @@ async function loadManifest() {
   }
 
   throw new Error(
-    'Unable to load Volt UI manifest. Run "pnpm manifest" from the volt-ui repository first.'
+    'Unable to load Volt UI manifest. Run "pnpm manifest" from the volt-ui repository first, or reinstall @voltui/cli.'
   );
 }
 
@@ -117,19 +135,16 @@ function collectDependencies(componentName, manifest, collected = new Set()) {
   return collected;
 }
 
-function copySingleComponent(componentName, targetDir, manifest) {
+function getComponentFiles(componentName, targetDir, manifest) {
+  const { componentsRoot } = resolveRegistryPaths();
   const component = findComponentInManifest(componentName, manifest);
   if (!component) {
     throw new Error(`Component "${componentName}" not found in manifest.`);
   }
 
   const componentDir = path.join(targetDir, componentName);
-  if (!fs.existsSync(componentDir)) {
-    fs.mkdirSync(componentDir, { recursive: true });
-  }
-
-  for (const file of component.files) {
-    const sourcePath = path.join(COMPONENTS_ROOT, file);
+  return component.files.map(file => {
+    const sourcePath = path.join(componentsRoot, file);
     const fileName = path.basename(file);
     const targetPath = path.join(componentDir, fileName);
 
@@ -137,10 +152,40 @@ function copySingleComponent(componentName, targetDir, manifest) {
       throw new Error(`Source file not found: ${sourcePath}`);
     }
 
+    return { sourcePath, targetPath, componentDir };
+  });
+}
+
+function assertCanWriteFiles(files, options = {}) {
+  if (options.force) return;
+
+  const existing = files.filter(file => fs.existsSync(file.targetPath));
+  if (existing.length === 0) return;
+
+  const formatted = existing.map(file => `  - ${file.targetPath}`).join('\n');
+  throw new Error(
+    `Refusing to overwrite existing file(s):\n${formatted}\n\nPass --force to overwrite, or choose a different target-dir.`
+  );
+}
+
+function copySingleComponent(componentName, targetDir, manifest, options = {}) {
+  const files = getComponentFiles(componentName, targetDir, manifest);
+
+  if (options.dryRun) {
+    return files.map(file => file.targetPath);
+  }
+
+  for (const { sourcePath, targetPath, componentDir } of files) {
+    if (!fs.existsSync(componentDir)) {
+      fs.mkdirSync(componentDir, { recursive: true });
+    }
+
     const content = fs.readFileSync(sourcePath, 'utf-8');
     const transformed = transformContent(content);
     fs.writeFileSync(targetPath, transformed);
   }
+
+  return files.map(file => file.targetPath);
 }
 
 function installDependencies(targetDir, options = {}) {
@@ -159,7 +204,7 @@ function installDependencies(targetDir, options = {}) {
   }
 }
 
-function updateIndexFile(targetDir, addedComponents) {
+function updateIndexFile(targetDir, addedComponents, options = {}) {
   const indexPath = path.join(targetDir, 'index.ts');
   let content = '';
 
@@ -175,6 +220,12 @@ function updateIndexFile(targetDir, addedComponents) {
 
   const updated = content.replace(/export \{\};\n?/, '').trimEnd();
   const newContent = updated ? `${updated}\n${exports.join('\n')}\n` : `${exports.join('\n')}\n`;
+  if (options.dryRun) return;
+
+  if (!fs.existsSync(targetDir)) {
+    fs.mkdirSync(targetDir, { recursive: true });
+  }
+
   fs.writeFileSync(indexPath, newContent);
 }
 
@@ -190,20 +241,26 @@ function copyComponent(componentName, targetDir, manifest, options = {}) {
   const dependencies = Array.from(collectDependencies(componentName, manifest)).filter(
     name => name !== componentName
   );
+  const componentNames = [componentName, ...dependencies];
+  const plannedFiles = componentNames.flatMap(name => getComponentFiles(name, targetDir, manifest));
 
-  copySingleComponent(componentName, targetDir, manifest);
-  for (const dep of dependencies) {
-    copySingleComponent(dep, targetDir, manifest);
+  assertCanWriteFiles(plannedFiles, options);
+
+  if (!options.dryRun) {
+    copySingleComponent(componentName, targetDir, manifest, options);
+    for (const dep of dependencies) {
+      copySingleComponent(dep, targetDir, manifest, options);
+    }
   }
 
-  updateIndexFile(targetDir, [componentName, ...dependencies]);
+  updateIndexFile(targetDir, componentNames, options);
 
   const packageManager = detectPackageManager(process.cwd());
   const installCmd = `${installCommand(packageManager)} ${RUNTIME_DEPENDENCIES.join(' ')}`;
 
   let installResult = null;
   if (options.install) {
-    installResult = installDependencies(process.cwd(), { dryRun: false });
+    installResult = installDependencies(process.cwd(), { dryRun: options.dryRun });
   }
 
   return {
@@ -211,6 +268,9 @@ function copyComponent(componentName, targetDir, manifest, options = {}) {
     className: `Ui${capitalize(componentName.replace(/-/g, ' ')).replace(/\s/g, '')}`,
     targetDir,
     dependencies,
+    files: plannedFiles.map(file => file.targetPath),
+    dryRun: !!options.dryRun,
+    force: !!options.force,
     installCommand: installCmd,
     installResult,
   };

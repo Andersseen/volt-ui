@@ -1,6 +1,6 @@
 # Volt UI — Software Design Document (SDD)
 
-**Version:** 0.2.0-alpha  
+**Version:** 0.3.0-alpha  
 **Status:** Pre-v1 hardening  
 **Last updated:** 2026-06-24  
 **Maintainers:** Volt UI contributors
@@ -10,6 +10,8 @@
 ## 1. Overview
 
 **Volt UI** is an Angular component library inspired by [shadcn/ui](https://ui.shadcn.com). It ships ready-to-copy components that consumers own and customize in their own codebases, combined with a published theme/CSS package (`@voltui/components`) for the design tokens and runtime utilities.
+
+Volt UI is an independent Angular implementation under the `@voltui` scope. It is not affiliated with, derived from, or maintained by PrimeVue Volt UI.
 
 The project exists because the Angular ecosystem lacks a shadcn/ui equivalent: existing solutions such as Spartan/ng are mostly headless directives, while Volt UI provides higher-level, opinionated but customizable components with a built-in theme system.
 
@@ -26,7 +28,7 @@ The project exists because the Angular ecosystem lacks a shadcn/ui equivalent: e
 Volt UI has two consumption paths:
 
 1. **CLI / copy-paste workflow (recommended):** install `@voltui/cli`, run `volt init`, then `volt add <component>`. Source files are copied into the consumer's `src/app/ui/` folder, renamed from `volt-*` / `Volt*` to `ui-*` / `Ui*`, and wired to local imports.
-2. **npm package workflow:** install `@voltui/components` to reuse the theme CSS, theme provider, and a small set of utilities directly.
+2. **npm package workflow:** install `@voltui/components` to reuse the theme CSS, theme provider, and a small set of utilities directly. Full package component consumption is advanced and secondary to source ownership.
 
 The library is **not** a traditional drop-in component package for every component; the source-code ownership model is the primary design choice.
 
@@ -237,12 +239,14 @@ The CLI package is `@voltui/cli` located in `cli/`.
 
 ### 7.1 Commands
 
-| Command                                         | Description                                                                                  |
-| ----------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| `volt init [target-dir]`                        | Scaffolds the local `ui/` folder with an `index.ts`.                                         |
-| `volt add <component> [target-dir] [--install]` | Copies a component and its local dependencies, transforms naming, and installs runtime deps. |
-| `volt list`                                     | Lists components from `public/manifest.json`.                                                |
-| `volt clear-cache`                              | Clears `~/.volt-ui/cache`.                                                                   |
+| Command                                         | Description                                                                                             |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `volt init [target-dir]`                        | Scaffolds the local `ui/` folder with an `index.ts`.                                                    |
+| `volt add <component> [target-dir] [--install]` | Copies a component and its local dependencies, transforms naming, and optionally installs runtime deps. |
+| `volt add <component> [target-dir] [--dry-run]` | Prints the files that would be copied without writing.                                                  |
+| `volt add <component> [target-dir] [--force]`   | Allows overwriting existing copied files. Default behavior refuses overwrite.                           |
+| `volt list`                                     | Lists components from `public/manifest.json`.                                                           |
+| `volt clear-cache`                              | Clears `~/.volt-ui/cache`.                                                                              |
 
 ### 7.2 Copy / transform behavior
 
@@ -251,7 +255,9 @@ The CLI package is `@voltui/cli` located in `cli/`.
 3. Replaces `Volt*` / `volt*` identifiers with `Ui*` / `ui*`.
 4. Rewrites `from 'volt'` imports to local `./index`.
 5. Updates the target `index.ts` barrel.
-6. Installs runtime dependencies if `--install` is passed: `ng-primitives`, `class-variance-authority`, `clsx`, `tailwind-merge`.
+6. Refuses to overwrite existing files unless `--force` is passed.
+7. Installs runtime dependencies if `--install` is passed: `ng-primitives`, `class-variance-authority`, `clsx`, `tailwind-merge`.
+8. Supports `--dry-run` to preview the file plan without creating directories, writing files, or installing packages.
 
 ### 7.3 Manifest
 
@@ -267,7 +273,7 @@ Run `pnpm manifest` to regenerate it after component changes.
 ### 7.4 Known limitations
 
 - Dependency mapping relies on explicit cross-component imports in source files; components that are only used together in demos but not imported in source must still be added manually if needed.
-- The CLI does not yet support adding multiple components in a single command.
+- Adding multiple components is supported, but dependency mapping still comes from the manifest and explicit source imports.
 
 ---
 
@@ -317,7 +323,7 @@ When adding or editing a component, both snippet files must be updated.
 
 ### 9.3 CLI tests
 
-- `cli/tests/core.spec.js` covers `transformContent`, manifest loading, `initProject`, `copyComponent`, and cache behavior.
+- `cli/tests/core.spec.js` covers `transformContent`, manifest loading, `initProject`, `copyComponent`, dependency copying, overwrite protection, `--force`, and `--dry-run`.
 
 ---
 
@@ -367,6 +373,15 @@ The library currently exposes 40 component groups plus one layout from `projects
 
 The following items are considered blockers or strong requirements for a v1.0.0 release.
 
+### 12.0 Stability policy while pre-v1
+
+- `stable candidate` components should avoid casual breaking changes, but may still change before v1 when accessibility, forms integration, or CLI copy behavior requires it.
+- `beta` components may change inputs, outputs, markup, generated class composition, or dependency structure in minor `0.x` releases.
+- `experimental` components may change more freely before v1, especially overlays, composite inputs, date/file workflows, navigation-menu, and resizable.
+- Breaking changes in `0.x` releases should be documented in release notes and kept focused.
+- After v1, breaking changes should move to major releases.
+- A component is considered stable only when its public API is documented, source-copy output is usable, forms/keyboard behavior is tested where applicable, and known accessibility caveats are documented.
+
 ### 12.1 Harden overlay and form components
 
 - Dialog, popover, dropdown-menu, toast, drawer, tooltip.
@@ -383,7 +398,9 @@ The following items are considered blockers or strong requirements for a v1.0.0 
 - ✅ Removed the GitHub raw URL fallback; local source copy is now the only path.
 - ✅ Generate transitive dependency mapping automatically from source imports.
 - ✅ Added integration tests that run `volt init` and `volt add` against a temporary directory.
-- Support adding multiple components in one command (`volt add button card input`).
+- ✅ Support adding multiple components in one command (`volt add button card input`).
+- ✅ Refuse overwrite by default, with explicit `--force`.
+- ✅ Support `--dry-run` previews.
 
 ### 12.4 Documentation completeness
 

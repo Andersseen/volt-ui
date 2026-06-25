@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { NgpButton } from 'ng-primitives/button';
 import { cva, type VariantProps } from 'class-variance-authority';
+import { cn } from '../../utils';
 
 export const buttonVariants = cva(
   'inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 cursor-pointer select-none',
@@ -60,8 +61,14 @@ export class VoltButton {
   readonly variant = input<ButtonVariants['variant']>('solid');
   readonly size = input<ButtonVariants['size']>('md');
   readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
+  readonly class = input<string>('');
+  readonly customClass = input<string>('');
 
   protected readonly classes = computed(() =>
-    buttonVariants({ variant: this.variant(), size: this.size() })
+    cn(
+      buttonVariants({ variant: this.variant(), size: this.size() }),
+      this.class(),
+      this.customClass()
+    )
   );
 }

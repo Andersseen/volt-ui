@@ -1,138 +1,123 @@
 # Volt UI CLI
 
-A CLI for adding Volt UI components to your Angular project, similar to shadcn/ui.
+`@voltui/cli` copies Volt UI component source into your Angular project, similar to shadcn/ui.
+
+> Volt UI is an independent Angular project and is not related to PrimeVue Volt UI.
+
+## Philosophy
+
+The CLI workflow is the recommended way to use Volt UI components. Copied files become code in your app. You can edit them, delete variants, add styles, or change behavior without waiting on the library package.
+
+The npm package `@voltui/components` is mainly for themes, utilities, and advanced direct package consumption.
 
 ## Installation
 
-### Local (from this repo)
-
 ```bash
-# Use directly from the repo
-node cli/bin/volt add button
-
-# Or use the published CLI
+npx @voltui/cli init
 npx @voltui/cli add button
-
-# During local development you can also link it
-cd cli && npm link
-volt add button
 ```
 
-### Usage
+During local development in this repo:
 
-#### Initialize volt/ui in your project
+```bash
+node cli/bin/volt add button
+```
+
+## Commands
+
+### init
 
 ```bash
 volt init [target-dir]
 ```
 
-This creates a `ui` folder with the necessary structure.
+Creates the target UI directory and an `index.ts` barrel.
 
-#### Add a component
+Default target:
 
-```bash
-volt add <component-name> [target-dir]
+```text
+./src/app/ui
 ```
 
 Example:
 
 ```bash
-volt add button              # Adds to ./src/app/ui/button
-volt add card ./components   # Adds to ./components/card
+volt init ./src/app/shared/ui
 ```
 
-#### List available components
+### add
+
+```bash
+volt add <component-name>... [target-dir] [--install] [--dry-run] [--force]
+```
+
+Examples:
+
+```bash
+volt add button
+volt add button card input
+volt add card ./src/app/shared/ui
+volt add dialog ./src/app/shared/ui --dry-run
+volt add button --install
+volt add button --force
+```
+
+Flags:
+
+| Flag         | Description                                                                                   |
+| ------------ | --------------------------------------------------------------------------------------------- |
+| `target-dir` | Optional destination directory. Defaults to `./src/app/ui`.                                   |
+| `--install`  | Installs runtime dependencies in the current working directory.                               |
+| `--dry-run`  | Prints the files that would be copied without writing files or installing packages.           |
+| `--force`    | Allows overwriting existing component files. Without this flag, the CLI refuses to overwrite. |
+
+Runtime dependencies installed by `--install`:
+
+```bash
+ng-primitives class-variance-authority clsx tailwind-merge
+```
+
+### list
 
 ```bash
 volt list
 ```
 
-## Available Components
+Prints component names from `public/manifest.json`.
 
-- `button` - Button component with variants
-- `badge` - Badge component
-- `card` - Card with header, content, footer
-- `input` - Input field component
-- `textarea` - Textarea component
-- `checkbox` - Checkbox component
-- `switch` - Switch/toggle component
-- `radio` - Radio group component
-- `select` - Select dropdown component
-- `tabs` - Tabs component
-- `accordion` - Accordion component
-- `avatar` - Avatar component
-- `separator` - Separator component
-- `tooltip` - Tooltip component
-- `navigation-menu` - Navigation menu component
-- `form-field` - Form field wrapper
-- `toggle` - Toggle button component
-- `dialog` - Modal dialog primitives
-- `popover` - Floating popover primitives
-- `dropdown-menu` - Dropdown menu primitives
-- `progress` - Progress indicator
-- `slider` - Range slider
-- `breadcrumbs` - Breadcrumb navigation
-- `toggle-group` - Grouped toggle controls
-- `meter` - Meter value indicator
-- `pagination` - Pagination controls
-- `toast` - Toast notification primitives
-- `input-otp` - One-time password input
-- `file-upload` - File upload trigger and dropzone
-- `combobox` - Autocomplete/select combobox
-- `date-picker` - Date picker and date range picker primitives
-- `listbox` - Single or multiple selection listbox
-- `toolbar` - Toolbar container for grouped controls
-
-## How it works
+## How Copying Works
 
 When you run `volt add button`:
 
-1. Component files are copied from the local Volt UI repository (`projects/volt/src/lib/components/button/`) to your project's `ui/button/` folder.
-2. All selectors are transformed from `volt-*` to `ui-*` (e.g., `volt-button` → `ui-button`).
-3. All class names are transformed from `VoltXxx` to `UiXxx` (e.g., `VoltButton` → `UiButton`).
-4. Transitive component dependencies are resolved automatically (e.g., `toggle-group` pulls in `toggle`).
-5. An `index.ts` barrel file is created/updated in the target directory.
+1. Source files are read from `projects/volt/src/lib/components/button/`.
+2. Selectors are transformed from `volt-*` to `ui-*`.
+3. Class and identifier names are transformed from `Volt*` / `volt*` to `Ui*` / `ui*`.
+4. Local component dependencies from the manifest are copied too.
+5. The target `index.ts` barrel is updated.
+6. Existing files are protected unless you pass `--force`.
 
-## Usage in your components
+The CLI reports unknown components clearly. Run `volt list` if a component name fails.
 
-After adding a component:
+## Usage In Your App
 
-```typescript
+```ts
 import { UiButton } from './ui/button';
 
 @Component({
   selector: 'app-my-component',
   imports: [UiButton],
-  template: ` <ui-button variant="solid">Click me</ui-button> `,
+  template: `<ui-button variant="solid">Click me</ui-button>`,
 })
 export class MyComponent {}
 ```
 
-## Dependencies
+## Available Components
 
-Copied components require these runtime dependencies in your project:
+See [COMPONENT_STATUS.md](./COMPONENT_STATUS.md) for the current component list and pre-v1 maturity status.
 
-```bash
-npm install ng-primitives class-variance-authority clsx tailwind-merge
-```
+## Safety Notes
 
-Or let the CLI install them for you:
-
-```bash
-volt add button --install
-```
-
-## Component Source Code
-
-Each component demo page includes a "Copy code" button that lets you copy the full source code of the component directly to your clipboard. This makes it easy to:
-
-1. Copy the component source
-2. Paste it into your project
-3. Customize it as needed
-
-## Differences from npm package
-
-- **No npm registry required** - Components are copied directly as source files
-- **Full customization** - You own the code and can modify it freely
-- **Tree-shakeable** - Only included components are bundled
-- **No version conflicts** - Each project has its own copy
+- Copied components are yours to maintain.
+- Re-running `volt add` over an edited component requires `--force`; review the diff before doing that.
+- Prefer `--dry-run` when adding experimental or dependency-heavy components.
+- Regenerate the manifest with `pnpm manifest` after changing component source in this repo.

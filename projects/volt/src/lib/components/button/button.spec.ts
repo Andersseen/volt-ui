@@ -48,6 +48,17 @@ describe('VoltButton', () => {
     expect(button).toHaveClass('border');
   });
 
+  it('should merge consumer classes from class and customClass inputs', async () => {
+    const { container } = await render(VoltButton, {
+      componentInputs: { class: 'w-full', customClass: 'justify-start' },
+      componentProperties: {},
+    });
+
+    const button = container.querySelector('button');
+    expect(button).toHaveClass('w-full');
+    expect(button).toHaveClass('justify-start');
+  });
+
   it('should be disabled and not clickable', async () => {
     const clickSpy = vi.fn();
     const user = userEvent.setup();

@@ -1,6 +1,8 @@
 import { Component, input } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/angular';
+import userEvent from '@testing-library/user-event';
 import { VoltTextarea } from './textarea';
 
 @Component({
@@ -43,6 +45,36 @@ describe('VoltTextarea', () => {
     });
 
     const textarea = screen.getByPlaceholderText('Type here...');
+    expect(textarea).toBeDisabled();
+  });
+
+  it('should work with reactive forms', async () => {
+    const user = userEvent.setup();
+
+    @Component({
+      selector: 'app-textarea-form-wrapper',
+      imports: [ReactiveFormsModule, VoltTextarea],
+      template: `<volt-textarea [formControl]="control" placeholder="Message" />`,
+    })
+    class TextareaFormWrapper {
+      control = new FormControl('initial', { nonNullable: true });
+    }
+
+    const { fixture } = await render(TextareaFormWrapper);
+    const textarea = screen.getByRole('textbox');
+
+    expect(textarea).toHaveValue('initial');
+
+    fixture.componentInstance.control.setValue('updated');
+    fixture.detectChanges();
+    expect(textarea).toHaveValue('updated');
+
+    await user.clear(textarea);
+    await user.type(textarea, 'typed message');
+    expect(fixture.componentInstance.control.value).toBe('typed message');
+
+    fixture.componentInstance.control.disable();
+    fixture.detectChanges();
     expect(textarea).toBeDisabled();
   });
 });

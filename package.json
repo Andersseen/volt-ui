@@ -1,6 +1,6 @@
 {
   "name": "volt-ui",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "bin": {
     "volt": "./cli/bin/volt",
     "volt-ui-mcp": "./cli/setup-mcp.js"
@@ -38,8 +38,9 @@
     "deploy:cf": "pnpm run build && pnpm exec wrangler pages deploy dist/analog/public --project-name=volt-ui",
     "deploy:cf:main": "pnpm run build && pnpm exec wrangler pages deploy dist/analog/public --project-name=volt-ui --branch=main",
     "build:lib": "ng build volt",
-    "pack:cli": "cd cli && npm pack --dry-run",
+    "pack:cli": "cd cli && node prepare-package.js && npm pack --dry-run && node prepare-package.js --clean",
     "publish:lib": "ng build volt && cd dist/volt && npm publish --access public",
+    "publish:cli": "cd cli && node prepare-package.js && npm publish --access public && node prepare-package.js --clean",
     "prepare": "husky",
     "manifest": "node cli/generate-manifest.js"
   },

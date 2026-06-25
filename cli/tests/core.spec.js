@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { readFileSync, existsSync, rmSync, readdirSync } from 'node:fs';
+import { readFileSync, existsSync, rmSync, readdirSync, writeFileSync, mkdirSync } from 'node:fs';
 import { resolve, join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { execSync } from 'node:child_process';
@@ -20,6 +20,19 @@ describe('CLI Core', () => {
       expect(output).toContain('class UiButton');
     });
 
+    it('should replace Volt identifiers and volt selectors together', () => {
+      const input = `
+        @Component({ selector: 'volt-toggle-group' })
+        export class VoltToggleGroup {
+          protected readonly voltToggleGroupState = true;
+        }
+      `;
+      const output = core.transformContent(input);
+      expect(output).toContain("selector: 'ui-toggle-group'");
+      expect(output).toContain('class UiToggleGroup');
+      expect(output).toContain('uiToggleGroupState');
+    });
+
     it('should replace voltCamelCase with uiCamelCase', () => {
       const input = `const voltThemeColor = 'blue';`;
       const output = core.transformContent(input);
@@ -30,6 +43,16 @@ describe('CLI Core', () => {
       const input = `import { VoltButton } from 'volt';`;
       const output = core.transformContent(input);
       expect(output).toContain("from './index'");
+    });
+
+    it('should not rewrite relative imports', () => {
+      const input = `
+        import { helper } from './helper';
+        import { Thing } from '../thing';
+      `;
+      const output = core.transformContent(input);
+      expect(output).toContain("from './helper'");
+      expect(output).toContain("from '../thing'");
     });
 
     it('should not replace non-selector volt strings', () => {
@@ -161,6 +184,37 @@ describe('CLI Core', () => {
       expect(existsSync(tooltipDir)).toBe(true);
     });
 
+    it('should not overwrite existing files without force', async () => {
+      mkdirSync(join(testDir, 'button'), { recursive: true });
+      writeFileSync(join(testDir, 'button', 'button.ts'), 'user-owned code');
+
+      expect(() => core.copyComponent('button', testDir, manifest)).toThrow(/Refusing to overwrite/);
+
+      expect(readFileSync(join(testDir, 'button', 'button.ts'), 'utf-8')).toBe(
+        'user-owned code'
+      );
+    });
+
+    it('should overwrite existing files when force is enabled', async () => {
+      mkdirSync(join(testDir, 'button'), { recursive: true });
+      writeFileSync(join(testDir, 'button', 'button.ts'), 'old code');
+
+      await core.copyComponent('button', testDir, manifest, { force: true });
+
+      const content = readFileSync(join(testDir, 'button', 'button.ts'), 'utf-8');
+      expect(content).toContain('class UiButton');
+      expect(content).not.toBe('old code');
+    });
+
+    it('should report planned files without writing during dry-run', async () => {
+      const result = await core.copyComponent('button', testDir, manifest, { dryRun: true });
+
+      expect(result.dryRun).toBe(true);
+      expect(result.files.some(file => file.endsWith(join('button', 'button.ts')))).toBe(true);
+      expect(existsSync(join(testDir, 'button', 'button.ts'))).toBe(false);
+      expect(existsSync(join(testDir, 'index.ts'))).toBe(false);
+    });
+
     it('should throw for unknown component', async () => {
       try {
         await core.copyComponent('nonexistent', testDir, manifest);
@@ -211,6 +265,30 @@ describe('CLI Core', () => {
       const indexContent = readFileSync(join(testDir, 'index.ts'), 'utf-8');
       expect(indexContent).toContain("export * from './button';");
       expect(indexContent).toContain("export * from './badge';");
+    });
+
+    it('should fail when adding over an existing component unless --force is passed', () => {
+      execSync(`node ${cliPath} init ${testDir}`, { cwd: repoRoot, stdio: 'pipe' });
+      execSync(`node ${cliPath} add button ${testDir}`, { cwd: repoRoot, stdio: 'pipe' });
+
+      expect(() =>
+        execSync(`node ${cliPath} add button ${testDir}`, { cwd: repoRoot, stdio: 'pipe' })
+      ).toThrow();
+
+      execSync(`node ${cliPath} add button ${testDir} --force`, { cwd: repoRoot, stdio: 'pipe' });
+      expect(existsSync(join(testDir, 'button', 'button.ts'))).toBe(true);
+    });
+
+    it('should print a dry-run plan without creating files', () => {
+      const output = execSync(`node ${cliPath} add button ${testDir} --dry-run`, {
+        cwd: repoRoot,
+        stdio: 'pipe',
+        encoding: 'utf-8',
+      });
+
+      expect(output).toContain('Dry run');
+      expect(output).toContain('button.ts');
+      expect(existsSync(join(testDir, 'button', 'button.ts'))).toBe(false);
     });
   });
 });
