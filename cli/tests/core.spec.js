@@ -82,6 +82,10 @@ describe('CLI Core', () => {
       expect(manifest.components.button).toBeTruthy();
       expect(manifest.components.button.files).toContain('components/button/button.ts');
       expect(manifest.components.button.files).toContain('components/button/index.ts');
+      expect(manifest.components.button.files).toContain('components/button/variants.ts');
+      expect(manifest.components.button.stability).toBe('stable');
+      expect(manifest.components.button.group).toBe('Forms');
+      expect(manifest.components.button.description).toBe('Interactive buttons');
     });
 
     it('should contain tabs component', () => {
@@ -101,6 +105,39 @@ describe('CLI Core', () => {
       const manifest = core.getLocalManifest();
       // sidebar imports tooltip from the components folder
       expect(manifest.components.sidebar.dependencies).toContain('tooltip');
+    });
+  });
+
+  describe('component listing', () => {
+    it('should list components with metadata', () => {
+      const manifest = core.getLocalManifest();
+      const components = core.listComponents(manifest);
+
+      expect(components.length).toBeGreaterThan(0);
+      expect(components).toContainEqual(
+        expect.objectContaining({
+          name: 'button',
+          group: 'Forms',
+          stability: 'stable',
+        })
+      );
+    });
+
+    it('should filter components by stability', () => {
+      const manifest = core.getLocalManifest();
+      const stable = core.listComponents(manifest, { status: 'stable' });
+
+      expect(stable.length).toBeGreaterThan(0);
+      expect(stable.every(component => component.stability === 'stable')).toBe(true);
+      expect(stable.map(component => component.name)).toContain('button');
+    });
+
+    it('should group components by metadata group', () => {
+      const manifest = core.getLocalManifest();
+      const groups = core.groupComponents(core.listComponents(manifest));
+
+      expect(groups.Forms.map(component => component.name)).toContain('button');
+      expect(groups.Overlays.map(component => component.name)).toContain('dialog');
     });
   });
 
@@ -155,11 +192,15 @@ describe('CLI Core', () => {
       expect(existsSync(buttonDir)).toBe(true);
       expect(existsSync(join(buttonDir, 'button.ts'))).toBe(true);
       expect(existsSync(join(buttonDir, 'index.ts'))).toBe(true);
+      expect(existsSync(join(buttonDir, 'variants.ts'))).toBe(true);
 
       const content = readFileSync(join(buttonDir, 'button.ts'), 'utf-8');
       expect(content).toContain("selector: 'ui-button'");
       expect(content).toContain('class UiButton');
       expect(content).not.toContain('class VoltButton');
+
+      const variants = readFileSync(join(buttonDir, 'variants.ts'), 'utf-8');
+      expect(variants).toContain('export const buttonVariants');
     });
 
     it('should copy and transform card component from local source', async () => {
@@ -289,6 +330,36 @@ describe('CLI Core', () => {
       expect(output).toContain('Dry run');
       expect(output).toContain('button.ts');
       expect(existsSync(join(testDir, 'button', 'button.ts'))).toBe(false);
+    });
+
+    it('should list components grouped by status metadata', () => {
+      const output = execSync(`node ${cliPath} list --status=stable`, {
+        cwd: repoRoot,
+        stdio: 'pipe',
+        encoding: 'utf-8',
+      });
+
+      expect(output).toContain('Available stable components');
+      expect(output).toContain('Forms');
+      expect(output).toContain('button');
+      expect(output).toContain('Interactive buttons');
+      expect(output).not.toContain('dialog');
+    });
+
+    it('should print list metadata as JSON', () => {
+      const output = execSync(`node ${cliPath} list --status=stable --json`, {
+        cwd: repoRoot,
+        stdio: 'pipe',
+        encoding: 'utf-8',
+      });
+      const components = JSON.parse(output);
+
+      expect(components).toContainEqual(
+        expect.objectContaining({
+          name: 'button',
+          stability: 'stable',
+        })
+      );
     });
   });
 });

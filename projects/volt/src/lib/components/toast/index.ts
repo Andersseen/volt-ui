@@ -1,4 +1,5 @@
 export { VoltToast } from './toast';
+export { toastVariants, type ToastVariants } from './variants';
 export { VoltToastTitle } from './toast-title';
 export { VoltToastDescription } from './toast-description';
 export { VoltToastClose } from './toast-close';

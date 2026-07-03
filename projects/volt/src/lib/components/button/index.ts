@@ -1,1 +1,2 @@
-export { VoltButton, buttonVariants, type ButtonVariants } from './button';
+export { VoltButton } from './button';
+export { buttonVariants, type ButtonVariants } from './variants';

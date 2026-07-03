@@ -37,6 +37,22 @@ describe('VoltButton', () => {
     expect(screen.getByRole('button', { name: /Click me/i })).toBeInTheDocument();
   });
 
+  it('should default to type button to avoid accidental form submits', async () => {
+    const { container } = await render(VoltButton);
+
+    const button = container.querySelector('button');
+    expect(button).toHaveAttribute('type', 'button');
+  });
+
+  it('should allow submit buttons when explicitly requested', async () => {
+    const { container } = await render(VoltButton, {
+      componentInputs: { type: 'submit' },
+    });
+
+    const button = container.querySelector('button');
+    expect(button).toHaveAttribute('type', 'submit');
+  });
+
   it('should apply variant and size classes', async () => {
     const { container } = await render(ButtonTestWrapper, {
       componentInputs: { variant: 'outline', size: 'lg' },

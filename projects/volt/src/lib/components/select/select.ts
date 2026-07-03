@@ -30,6 +30,7 @@ import { NgpSelect, NgpSelectPortal, provideSelectState } from 'ng-primitives/se
   template: `
     <button
       ngpSelect
+      type="button"
       [ngpSelectValue]="value()"
       [ngpSelectDisabled]="isDisabled()"
       [ngpSelectMultiple]="multiple()"

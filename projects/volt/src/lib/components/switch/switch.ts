@@ -30,6 +30,7 @@ let nextSwitchId = 0;
   template: `
     <button
       ngpSwitch
+      type="button"
       [id]="id()"
       [ngpSwitchChecked]="checked()"
       [ngpSwitchDisabled]="isDisabled()"

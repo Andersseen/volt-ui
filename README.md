@@ -119,13 +119,20 @@ Components should use semantic Tailwind utilities such as `bg-primary`, `text-fo
 
 ## Components Status
 
-Volt UI is in pre-v1 hardening. Some primitives are stable candidates; complex overlays, composite inputs, file workflows, and layout interactions are still experimental.
+Volt UI is in pre-v1 hardening. The docs label every component as `stable`, `beta`, or `experimental` so teams can adopt the reliable core while still trying newer primitives.
 
 See [COMPONENT_STATUS.md](./COMPONENT_STATUS.md) for the current status table covering forms, keyboard support, overlay/focus behavior, docs, and tests.
 
 ## Stability / Roadmap To v1
 
-Current status: `0.x`, alpha hardening.
+Current status: `0.4.0`, pre-v1 hardening.
+
+Release guidance:
+
+- **Stable** components are recommended for early adoption.
+- **Beta** components are usable, but may still gain more forms, keyboard, accessibility, or edge-case coverage.
+- **Experimental** components are published for feedback and may change before v1.
+- All components remain available through the package and CLI; the status label communicates confidence, not availability.
 
 Before v1, the project needs:
 
@@ -151,6 +158,8 @@ While Volt UI remains pre-v1, minor releases may still include breaking changes 
 ```bash
 pnpm install
 pnpm dev
+pnpm release:check
+pnpm release:minor
 pnpm typecheck
 pnpm lint
 pnpm test:run

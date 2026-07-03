@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { DocsPageShell } from '../components/docs-page-shell';
 import type { DocsSidebarGroup } from '../components/docs-sidebar-nav';
+import { COMPONENT_GROUPS } from '../lib/component-metadata';
 
 @Component({
   selector: 'app-components-layout',
@@ -18,72 +19,13 @@ export default class ComponentsLayout {
     {
       links: [{ path: '/docs/components', label: 'All Components', exact: true }],
     },
-    {
-      heading: 'Forms',
-      links: [
-        { path: '/docs/components/button', label: 'Button' },
-        { path: '/docs/components/input', label: 'Input' },
-        { path: '/docs/components/search', label: 'Search' },
-        { path: '/docs/components/autofill', label: 'Autofill' },
-        { path: '/docs/components/textarea', label: 'Textarea' },
-        { path: '/docs/components/form-field', label: 'Form Field' },
-        { path: '/docs/components/checkbox', label: 'Checkbox' },
-        { path: '/docs/components/switch', label: 'Switch' },
-        { path: '/docs/components/radio', label: 'Radio' },
-        { path: '/docs/components/select', label: 'Select' },
-        { path: '/docs/components/combobox', label: 'Combobox' },
-        { path: '/docs/components/input-otp', label: 'Input OTP' },
-        { path: '/docs/components/file-upload', label: 'File Upload' },
-        { path: '/docs/components/slider', label: 'Slider' },
-      ],
-    },
-    {
-      heading: 'Controls',
-      links: [
-        { path: '/docs/components/toggle', label: 'Toggle' },
-        { path: '/docs/components/toggle-group', label: 'Toggle Group' },
-        { path: '/docs/components/toolbar', label: 'Toolbar' },
-        { path: '/docs/components/pagination', label: 'Pagination' },
-        { path: '/docs/components/date-picker', label: 'Date Picker' },
-        { path: '/docs/components/listbox', label: 'Listbox' },
-      ],
-    },
-    {
-      heading: 'Navigation',
-      links: [
-        { path: '/docs/components/navigation-menu', label: 'Nav Menu' },
-        { path: '/docs/components/tabs', label: 'Tabs' },
-        { path: '/docs/components/breadcrumbs', label: 'Breadcrumbs' },
-      ],
-    },
-    {
-      heading: 'Overlays',
-      links: [
-        { path: '/docs/components/dialog', label: 'Dialog' },
-        { path: '/docs/components/drawer', label: 'Drawer' },
-        { path: '/docs/components/popover', label: 'Popover' },
-        { path: '/docs/components/dropdown-menu', label: 'Dropdown Menu' },
-        { path: '/docs/components/tooltip', label: 'Tooltip' },
-        { path: '/docs/components/toast', label: 'Toast' },
-      ],
-    },
-    {
-      heading: 'Display',
-      links: [
-        { path: '/docs/components/accordion', label: 'Accordion' },
-        { path: '/docs/components/avatar', label: 'Avatar' },
-        { path: '/docs/components/badge', label: 'Badge' },
-        { path: '/docs/components/card', label: 'Card' },
-        { path: '/docs/components/meter', label: 'Meter' },
-        { path: '/docs/components/progress', label: 'Progress' },
-        { path: '/docs/components/separator', label: 'Separator' },
-        { path: '/docs/components/skeleton', label: 'Skeleton' },
-        { path: '/docs/components/table', label: 'Table' },
-      ],
-    },
-    {
-      heading: 'Layout',
-      links: [{ path: '/docs/components/resizable', label: 'Resizable' }],
-    },
+    ...COMPONENT_GROUPS.map(group => ({
+      heading: group.title,
+      links: group.components.map(component => ({
+        path: component.path,
+        label: component.label === 'Navigation Menu' ? 'Nav Menu' : component.label,
+        stability: component.stability,
+      })),
+    })),
   ];
 }

@@ -1,6 +1,12 @@
 #!/usr/bin/env node
 
-const { loadManifest, copyComponent, initProject } = require('../lib/core');
+const {
+  loadManifest,
+  copyComponent,
+  initProject,
+  listComponents,
+  groupComponents,
+} = require('../lib/core');
 
 function parseArgs(rawArgs) {
   const args = [];
@@ -109,10 +115,29 @@ async function main() {
     console.log('✅ Initialized volt/ui in', targetDir);
   } else if (command === 'list') {
     const manifest = await loadManifest();
-    console.log('Available components:');
-    Object.keys(manifest.components)
-      .sort()
-      .forEach(name => console.log(`  - ${name}`));
+    const status = typeof flags.status === 'string' ? flags.status : null;
+    const validStatuses = ['stable', 'beta', 'experimental'];
+    if (status && !validStatuses.includes(status)) {
+      console.error(`❌ Unknown status "${status}". Use one of: ${validStatuses.join(', ')}`);
+      process.exit(1);
+    }
+
+    const components = listComponents(manifest, { status });
+    if (flags.json) {
+      console.log(JSON.stringify(components, null, 2));
+      return;
+    }
+
+    console.log(status ? `Available ${status} components:` : 'Available components:');
+    const groups = groupComponents(components);
+    for (const [group, items] of Object.entries(groups)) {
+      console.log(`\n${group}`);
+      for (const item of items) {
+        const statusLabel = item.stability.padEnd(12);
+        const description = item.description ? ` - ${item.description}` : '';
+        console.log(`  - ${item.name.padEnd(16)} ${statusLabel}${description}`);
+      }
+    }
   } else {
     console.log('Volt UI CLI');
     console.log('');
@@ -123,6 +148,8 @@ async function main() {
     console.log('  volt add <component>... [target-dir] --force    Overwrite existing component files');
     console.log('  volt add <component>... --install     Add component(s) and install runtime deps');
     console.log('  volt list                             List all available components');
+    console.log('  volt list --status=stable             List components by stability');
+    console.log('  volt list --json                      Print component metadata as JSON');
     console.log('');
     console.log('Examples:');
     console.log('  npx @voltui/cli init');

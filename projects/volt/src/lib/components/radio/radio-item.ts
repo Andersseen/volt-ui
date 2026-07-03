@@ -11,6 +11,7 @@ import { NgpRadioItem, NgpRadioIndicator } from 'ng-primitives/radio';
   template: `
     <button
       ngpRadioItem
+      type="button"
       [ngpRadioItemValue]="value()"
       [ngpRadioItemDisabled]="disabled()"
       class="peer relative flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center rounded-full border border-border bg-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[checked]:border-primary"
