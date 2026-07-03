@@ -8,11 +8,13 @@ import {
   NgpDialogTrigger,
 } from 'ng-primitives/dialog';
 import { LmnChevronRightIcon, LmnXIcon } from 'lumen-icons';
+import type { ComponentStability } from '../lib/component-metadata';
 
 export interface DocsSidebarLink {
   path: string;
   label: string;
   exact?: boolean;
+  stability?: ComponentStability;
 }
 
 export interface DocsSidebarGroup {
@@ -66,9 +68,17 @@ export interface DocsSidebarGroup {
                 [routerLink]="link.path"
                 routerLinkActive="font-medium text-foreground bg-muted"
                 [routerLinkActiveOptions]="{ exact: link.exact ?? false }"
-                class="block px-2 py-1 text-sm rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+                class="flex items-center justify-between gap-2 px-2 py-1 text-sm rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
               >
-                {{ link.label }}
+                <span class="truncate">{{ link.label }}</span>
+                @if (link.stability; as stability) {
+                  <span
+                    class="shrink-0 rounded-full px-1.5 py-0.5 text-[10px] font-medium leading-none"
+                    [class]="stabilityClass(stability)"
+                  >
+                    {{ stabilityLabel(stability) }}
+                  </span>
+                }
               </a>
             </li>
           }
@@ -114,9 +124,17 @@ export interface DocsSidebarGroup {
                 routerLinkActive="bg-muted text-foreground font-medium"
                 [routerLinkActiveOptions]="{ exact: link.exact ?? false }"
                 (click)="close()"
-                class="px-3 py-2.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+                class="flex items-center justify-between gap-3 px-3 py-2.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
               >
-                {{ link.label }}
+                <span>{{ link.label }}</span>
+                @if (link.stability; as stability) {
+                  <span
+                    class="rounded-full px-1.5 py-0.5 text-[10px] font-medium leading-none"
+                    [class]="stabilityClass(stability)"
+                  >
+                    {{ stabilityLabel(stability) }}
+                  </span>
+                }
               </a>
             }
             @if (!$last) {
@@ -133,4 +151,19 @@ export class DocsSidebarNav {
   readonly browseLabel = input<string>('Browse');
   readonly description = input<string>('');
   readonly groups = input.required<DocsSidebarGroup[]>();
+
+  protected stabilityLabel(stability: ComponentStability): string {
+    return stability === 'experimental' ? 'exp' : stability;
+  }
+
+  protected stabilityClass(stability: ComponentStability): string {
+    switch (stability) {
+      case 'stable':
+        return 'bg-success/15 text-success';
+      case 'beta':
+        return 'bg-info/15 text-info';
+      case 'experimental':
+        return 'bg-warning/20 text-warning';
+    }
+  }
 }

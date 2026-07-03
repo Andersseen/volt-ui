@@ -1,6 +1,6 @@
 {
   "name": "volt-ui",
-  "version": "0.3.0",
+  "version": "0.4.0-alpha.0",
   "bin": {
     "volt": "./cli/bin/volt",
     "volt-ui-mcp": "./cli/setup-mcp.js"
@@ -28,6 +28,8 @@
     "test:e2e:consumer": "pnpm build:lib && playwright test -c playwright.consumer.config.ts",
     "test:e2e:ui": "playwright test --ui",
     "test:all": "pnpm lint && pnpm typecheck && pnpm test:run && pnpm build:lib && pnpm test:e2e:ci",
+    "release:check": "pnpm lint && pnpm typecheck && pnpm test:run && pnpm build:lib && pnpm pack:cli",
+    "release:alpha": "pnpm release:check",
     "lint": "eslint . --ext .ts,.html",
     "lint:fix": "eslint . --ext .ts,.html --fix",
     "format": "prettier --write .",
@@ -38,9 +40,11 @@
     "deploy:cf": "pnpm run build && pnpm exec wrangler pages deploy dist/analog/public --project-name=volt-ui",
     "deploy:cf:main": "pnpm run build && pnpm exec wrangler pages deploy dist/analog/public --project-name=volt-ui --branch=main",
     "build:lib": "ng build volt",
-    "pack:cli": "cd cli && node prepare-package.js && npm pack --dry-run && node prepare-package.js --clean",
+    "pack:cli": "cd cli && node prepare-package.js && npm --cache ../.npm-cache pack --dry-run && node prepare-package.js --clean",
     "publish:lib": "ng build volt && cd dist/volt && npm publish --access public",
-    "publish:cli": "cd cli && node prepare-package.js && npm publish --access public && node prepare-package.js --clean",
+    "publish:lib:alpha": "ng build volt && cd dist/volt && npm --cache ../../.npm-cache publish --access public --tag alpha",
+    "publish:cli": "cd cli && node prepare-package.js && npm --cache ../.npm-cache publish --access public && node prepare-package.js --clean",
+    "publish:cli:alpha": "cd cli && node prepare-package.js && npm --cache ../.npm-cache publish --access public --tag alpha && node prepare-package.js --clean",
     "prepare": "husky",
     "manifest": "node cli/generate-manifest.js"
   },
