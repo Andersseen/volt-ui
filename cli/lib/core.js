@@ -135,6 +135,32 @@ function collectDependencies(componentName, manifest, collected = new Set()) {
   return collected;
 }
 
+function listComponents(manifest, options = {}) {
+  const status = options.status;
+  const components = Object.entries(manifest.components)
+    .map(([name, meta]) => ({
+      name,
+      group: meta.group || (meta.category === 'layouts' ? 'Layout' : 'Components'),
+      label: meta.label || name,
+      description: meta.description || '',
+      stability: meta.stability || 'experimental',
+      category: meta.category || 'components',
+      dependencies: meta.dependencies || [],
+    }))
+    .filter(component => !status || component.stability === status)
+    .sort((a, b) => a.group.localeCompare(b.group) || a.name.localeCompare(b.name));
+
+  return components;
+}
+
+function groupComponents(components) {
+  return components.reduce((groups, component) => {
+    if (!groups[component.group]) groups[component.group] = [];
+    groups[component.group].push(component);
+    return groups;
+  }, {});
+}
+
 function getComponentFiles(componentName, targetDir, manifest) {
   const { componentsRoot } = resolveRegistryPaths();
   const component = findComponentInManifest(componentName, manifest);
@@ -294,6 +320,8 @@ export {};
 module.exports = {
   getLocalManifest,
   loadManifest,
+  listComponents,
+  groupComponents,
   transformContent,
   copyComponent,
   initProject,

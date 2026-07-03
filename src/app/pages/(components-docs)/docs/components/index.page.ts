@@ -25,7 +25,7 @@ import {
         <div class="rounded-lg border border-border bg-muted/20 p-4">
           <div class="text-sm font-medium text-success">Stable</div>
           <p class="mt-1 text-xs text-muted-foreground">
-            Recommended for alpha adoption. APIs are close to their v1 shape.
+            Recommended for early adoption. APIs are close to their v1 shape.
           </p>
         </div>
         <div class="rounded-lg border border-border bg-muted/20 p-4">

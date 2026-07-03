@@ -5,20 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.4.0-alpha.0] - 2026-07-03
+## [0.4.0] - 2026-07-03
 
 ### Added
 
-- Added shared component metadata for docs grouping and alpha stability labels.
+- Added shared component metadata for docs grouping and release stability labels.
 - Added `stable`, `beta`, and `experimental` badges to the components index and sidebar.
-- Added `release:check` and `release:alpha` scripts for the minor alpha release path.
-- Added alpha publish scripts that use the npm `alpha` tag for the component and CLI packages.
+- Added stability metadata to the generated CLI manifest.
+- Added grouped `volt list` output with descriptions, `--status=<stable|beta|experimental>` filtering, and `--json`.
+- Added `pack:lib`, `release:check`, and `release:minor` scripts for the minor release path.
 
 ### Changed
 
-- Bumped the root package, `@voltui/components`, and `@voltui/cli` to `0.4.0-alpha.0`.
+- Bumped the root package, `@voltui/components`, and `@voltui/cli` to `0.4.0`.
 - Updated README and component status guidance to recommend stable components while keeping all components available.
-- Aligned component status labels around alpha confidence instead of hiding experimental components.
+- Aligned component status labels around release confidence instead of hiding experimental components.
+- Updated package dry-run scripts to use a repo-local npm cache so release checks do not depend on the user's global npm cache permissions.
 
 ## [0.2.0] - 2026-06-18
 

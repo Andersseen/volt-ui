@@ -6,11 +6,11 @@ Volt UI is pre-v1. Status labels describe the current confidence level for the c
 
 ## Status Labels
 
-- **stable**: recommended for alpha adoption; API and behavior are close to v1 shape, with meaningful tests and docs.
+- **stable**: recommended for early adoption; API and behavior are close to v1 shape, with meaningful tests and docs.
 - **beta**: usable, but may still need more form, keyboard, accessibility, or edge-case coverage.
 - **experimental**: useful demos exist, but the API or behavior may change before v1.
 
-## Alpha Release Groups
+## Release Groups
 
 - **Stable**: `button`, `input`, `textarea`, `avatar`, `badge`, `breadcrumbs`, `card`, `meter`, `progress`, `separator`, `skeleton`.
 - **Beta**: `accordion`, `checkbox`, `form-field`, `pagination`, `radio`, `search`, `slider`, `switch`, `table`, `tabs`, `toggle`, `toggle-group`, `toolbar`.
