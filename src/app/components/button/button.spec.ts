@@ -4,7 +4,9 @@ import { resolve } from 'node:path';
 
 describe('VoltButton', () => {
   const buttonPath = resolve('projects/volt/src/lib/components/button/button.ts');
+  const variantsPath = resolve('projects/volt/src/lib/components/button/variants.ts');
   const source = readFileSync(buttonPath, 'utf-8');
+  const variantsSource = readFileSync(variantsPath, 'utf-8');
 
   it('should exist as a source file', () => {
     expect(source).toBeTruthy();
@@ -12,20 +14,20 @@ describe('VoltButton', () => {
   });
 
   it('should define buttonVariants with all expected variants', () => {
-    expect(source).toContain('variant: {');
-    expect(source).toContain('solid:');
-    expect(source).toContain('outline:');
-    expect(source).toContain('ghost:');
-    expect(source).toContain('link:');
-    expect(source).toContain('destructive:');
+    expect(variantsSource).toContain('variant: {');
+    expect(variantsSource).toContain('solid:');
+    expect(variantsSource).toContain('outline:');
+    expect(variantsSource).toContain('ghost:');
+    expect(variantsSource).toContain('link:');
+    expect(variantsSource).toContain('destructive:');
   });
 
   it('should define all expected sizes', () => {
-    expect(source).toContain('size: {');
-    expect(source).toContain('sm:');
-    expect(source).toContain('md:');
-    expect(source).toContain('lg:');
-    expect(source).toContain('icon:');
+    expect(variantsSource).toContain('size: {');
+    expect(variantsSource).toContain('sm:');
+    expect(variantsSource).toContain('md:');
+    expect(variantsSource).toContain('lg:');
+    expect(variantsSource).toContain('icon:');
   });
 
   it('should have correct selector', () => {

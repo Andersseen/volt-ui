@@ -82,6 +82,7 @@ let nextComboboxId = 0;
 
       <button
         ngpComboboxButton
+        type="button"
         aria-label="Toggle dropdown"
         class="inline-flex h-full w-9 shrink-0 cursor-pointer items-center justify-center rounded-md border-0 bg-transparent text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
       >

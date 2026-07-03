@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added stability metadata to the generated CLI manifest.
 - Added grouped `volt list` output with descriptions, `--status=<stable|beta|experimental>` filtering, and `--json`.
 - Added `pack:lib`, `release:check`, and `release:minor` scripts for the minor release path.
+- Added dedicated `variants.ts` files for CVA-based components so variant styling can be maintained separately from component behavior.
 
 ### Changed
 
@@ -21,6 +22,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated README and component status guidance to recommend stable components while keeping all components available.
 - Aligned component status labels around release confidence instead of hiding experimental components.
 - Updated package dry-run scripts to use a repo-local npm cache so release checks do not depend on the user's global npm cache permissions.
+- Updated docs source snippets and CLI manifest output to include component `variants.ts` files.
+
+### Fixed
+
+- `VoltButton` now defaults to `type="button"` and accepts an explicit `type` input for submit/reset usage.
+- Button-like controls now render `type="button"` internally to avoid accidental form submissions.
 
 ## [0.2.0] - 2026-06-18
 

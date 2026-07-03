@@ -4,3 +4,4 @@ export { VoltPaginationLast } from './pagination-last';
 export { VoltPaginationNext } from './pagination-next';
 export { VoltPaginationPrevious } from './pagination-previous';
 export { VoltPaginationButton } from './pagination-button';
+export { paginationButtonVariants, type PaginationButtonVariants } from './variants';

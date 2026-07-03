@@ -1,6 +1,8 @@
 // Single-file components
 import buttonSource from '../../../../projects/volt/src/lib/components/button/button.ts?raw';
+import buttonVariantsSource from '../../../../projects/volt/src/lib/components/button/variants.ts?raw';
 import badgeSource from '../../../../projects/volt/src/lib/components/badge/badge.ts?raw';
+import badgeVariantsSource from '../../../../projects/volt/src/lib/components/badge/variants.ts?raw';
 import cardSource from '../../../../projects/volt/src/lib/components/card/card.ts?raw';
 import checkboxSource from '../../../../projects/volt/src/lib/components/checkbox/checkbox.ts?raw';
 import inputSource from '../../../../projects/volt/src/lib/components/input/input.ts?raw';
@@ -12,7 +14,9 @@ import separatorSource from '../../../../projects/volt/src/lib/components/separa
 import sliderSource from '../../../../projects/volt/src/lib/components/slider/slider.ts?raw';
 import switchSource from '../../../../projects/volt/src/lib/components/switch/switch.ts?raw';
 import textareaSource from '../../../../projects/volt/src/lib/components/textarea/textarea.ts?raw';
+import textareaVariantsSource from '../../../../projects/volt/src/lib/components/textarea/variants.ts?raw';
 import toggleSource from '../../../../projects/volt/src/lib/components/toggle/toggle.ts?raw';
+import toggleVariantsSource from '../../../../projects/volt/src/lib/components/toggle/variants.ts?raw';
 import toolbarSource from '../../../../projects/volt/src/lib/components/toolbar/toolbar.ts?raw';
 
 // Multi-file components
@@ -99,6 +103,7 @@ import inputOtpSlotSource from '../../../../projects/volt/src/lib/components/inp
 
 import listboxSource from '../../../../projects/volt/src/lib/components/listbox/listbox.ts?raw';
 import listboxOptionSource from '../../../../projects/volt/src/lib/components/listbox/listbox-option.ts?raw';
+import listboxVariantsSource from '../../../../projects/volt/src/lib/components/listbox/variants.ts?raw';
 import listboxSectionSource from '../../../../projects/volt/src/lib/components/listbox/listbox-section.ts?raw';
 import listboxHeaderSource from '../../../../projects/volt/src/lib/components/listbox/listbox-header.ts?raw';
 import listboxTriggerSource from '../../../../projects/volt/src/lib/components/listbox/listbox-trigger.ts?raw';
@@ -108,6 +113,7 @@ import meterTrackSource from '../../../../projects/volt/src/lib/components/meter
 import meterIndicatorSource from '../../../../projects/volt/src/lib/components/meter/meter-indicator.ts?raw';
 
 import paginationSource from '../../../../projects/volt/src/lib/components/pagination/pagination.ts?raw';
+import paginationVariantsSource from '../../../../projects/volt/src/lib/components/pagination/variants.ts?raw';
 import paginationFirstSource from '../../../../projects/volt/src/lib/components/pagination/pagination-first.ts?raw';
 import paginationPreviousSource from '../../../../projects/volt/src/lib/components/pagination/pagination-previous.ts?raw';
 import paginationNextSource from '../../../../projects/volt/src/lib/components/pagination/pagination-next.ts?raw';
@@ -115,14 +121,17 @@ import paginationLastSource from '../../../../projects/volt/src/lib/components/p
 import paginationButtonSource from '../../../../projects/volt/src/lib/components/pagination/pagination-button.ts?raw';
 
 import toastSource from '../../../../projects/volt/src/lib/components/toast/toast.ts?raw';
+import toastVariantsSource from '../../../../projects/volt/src/lib/components/toast/variants.ts?raw';
 import toastTitleSource from '../../../../projects/volt/src/lib/components/toast/toast-title.ts?raw';
 import toastDescriptionSource from '../../../../projects/volt/src/lib/components/toast/toast-description.ts?raw';
 import toastCloseSource from '../../../../projects/volt/src/lib/components/toast/toast-close.ts?raw';
 
 import toggleGroupSource from '../../../../projects/volt/src/lib/components/toggle-group/toggle-group.ts?raw';
 import toggleGroupItemSource from '../../../../projects/volt/src/lib/components/toggle-group/toggle-group-item.ts?raw';
+import toggleGroupVariantsSource from '../../../../projects/volt/src/lib/components/toggle-group/variants.ts?raw';
 
 import skeletonSource from '../../../../projects/volt/src/lib/components/skeleton/skeleton.ts?raw';
+import skeletonVariantsSource from '../../../../projects/volt/src/lib/components/skeleton/variants.ts?raw';
 
 import tableSource from '../../../../projects/volt/src/lib/components/table/table.ts?raw';
 import tableHeaderSource from '../../../../projects/volt/src/lib/components/table/table-header.ts?raw';
@@ -148,8 +157,11 @@ function join(...parts: [filename: string, source: string][]): string {
   return parts.map(([filename, source]) => `// ${filename}\n${source}`).join('\n\n');
 }
 
-export const BUTTON_SNIPPET = buttonSource;
-export const BADGE_SNIPPET = badgeSource;
+export const BUTTON_SNIPPET = join(
+  ['button.ts', buttonSource],
+  ['variants.ts', buttonVariantsSource]
+);
+export const BADGE_SNIPPET = join(['badge.ts', badgeSource], ['variants.ts', badgeVariantsSource]);
 export const CARD_SNIPPET = cardSource;
 export const CHECKBOX_SNIPPET = checkboxSource;
 export const INPUT_SNIPPET = inputSource;
@@ -162,8 +174,14 @@ export const SEARCH_SNIPPET = join(
 export const SEPARATOR_SNIPPET = separatorSource;
 export const SLIDER_SNIPPET = sliderSource;
 export const SWITCH_SNIPPET = switchSource;
-export const TEXTAREA_SNIPPET = textareaSource;
-export const TOGGLE_SNIPPET = toggleSource;
+export const TEXTAREA_SNIPPET = join(
+  ['textarea.ts', textareaSource],
+  ['variants.ts', textareaVariantsSource]
+);
+export const TOGGLE_SNIPPET = join(
+  ['toggle.ts', toggleSource],
+  ['variants.ts', toggleVariantsSource]
+);
 export const TOOLBAR_SNIPPET = toolbarSource;
 
 export const ACCORDION_SNIPPET = join(
@@ -280,6 +298,7 @@ export const INPUT_OTP_SNIPPET = join(
 export const LISTBOX_SNIPPET = join(
   ['listbox.ts', listboxSource],
   ['listbox-option.ts', listboxOptionSource],
+  ['variants.ts', listboxVariantsSource],
   ['listbox-section.ts', listboxSectionSource],
   ['listbox-header.ts', listboxHeaderSource],
   ['listbox-trigger.ts', listboxTriggerSource]
@@ -293,6 +312,7 @@ export const METER_SNIPPET = join(
 
 export const PAGINATION_SNIPPET = join(
   ['pagination.ts', paginationSource],
+  ['variants.ts', paginationVariantsSource],
   ['pagination-first.ts', paginationFirstSource],
   ['pagination-previous.ts', paginationPreviousSource],
   ['pagination-next.ts', paginationNextSource],
@@ -302,6 +322,7 @@ export const PAGINATION_SNIPPET = join(
 
 export const TOAST_SNIPPET = join(
   ['toast.ts', toastSource],
+  ['variants.ts', toastVariantsSource],
   ['toast-title.ts', toastTitleSource],
   ['toast-description.ts', toastDescriptionSource],
   ['toast-close.ts', toastCloseSource]
@@ -309,10 +330,14 @@ export const TOAST_SNIPPET = join(
 
 export const TOGGLE_GROUP_SNIPPET = join(
   ['toggle-group.ts', toggleGroupSource],
-  ['toggle-group-item.ts', toggleGroupItemSource]
+  ['toggle-group-item.ts', toggleGroupItemSource],
+  ['variants.ts', toggleGroupVariantsSource]
 );
 
-export const SKELETON_SNIPPET = skeletonSource;
+export const SKELETON_SNIPPET = join(
+  ['skeleton.ts', skeletonSource],
+  ['variants.ts', skeletonVariantsSource]
+);
 
 export const TABLE_SNIPPET = join(
   ['table.ts', tableSource],

@@ -82,6 +82,7 @@ describe('CLI Core', () => {
       expect(manifest.components.button).toBeTruthy();
       expect(manifest.components.button.files).toContain('components/button/button.ts');
       expect(manifest.components.button.files).toContain('components/button/index.ts');
+      expect(manifest.components.button.files).toContain('components/button/variants.ts');
       expect(manifest.components.button.stability).toBe('stable');
       expect(manifest.components.button.group).toBe('Forms');
       expect(manifest.components.button.description).toBe('Interactive buttons');
@@ -191,11 +192,15 @@ describe('CLI Core', () => {
       expect(existsSync(buttonDir)).toBe(true);
       expect(existsSync(join(buttonDir, 'button.ts'))).toBe(true);
       expect(existsSync(join(buttonDir, 'index.ts'))).toBe(true);
+      expect(existsSync(join(buttonDir, 'variants.ts'))).toBe(true);
 
       const content = readFileSync(join(buttonDir, 'button.ts'), 'utf-8');
       expect(content).toContain("selector: 'ui-button'");
       expect(content).toContain('class UiButton');
       expect(content).not.toContain('class VoltButton');
+
+      const variants = readFileSync(join(buttonDir, 'variants.ts'), 'utf-8');
+      expect(variants).toContain('export const buttonVariants');
     });
 
     it('should copy and transform card component from local source', async () => {

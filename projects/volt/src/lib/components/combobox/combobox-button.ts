@@ -13,6 +13,7 @@ let nextComboboxButtonId = 0;
   template: `
     <button
       ngpComboboxButton
+      type="button"
       [id]="id()"
       class="inline-flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-md border border-input bg-background text-muted-foreground shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
     >

@@ -28,6 +28,7 @@ let nextCheckboxId = 0;
   template: `
     <button
       ngpCheckbox
+      type="button"
       [id]="id()"
       [ngpCheckboxChecked]="checked()"
       [ngpCheckboxIndeterminate]="indeterminate()"

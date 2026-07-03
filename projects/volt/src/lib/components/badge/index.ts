@@ -1,1 +1,2 @@
-export { VoltBadge, badgeVariants, type BadgeVariants } from './badge';
+export { VoltBadge } from './badge';
+export { badgeVariants, type BadgeVariants } from './variants';
