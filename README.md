@@ -76,8 +76,11 @@ npm install @voltui/components
 Import themes once:
 
 ```css
+@import 'tailwindcss';
 @import '@voltui/components/themes.css';
 ```
+
+That single import is all Tailwind v4 needs. The theme CSS self-registers the compiled component bundle as a `@source`, so every utility class the components use is generated automatically — no `@source '../node_modules/...'` line to maintain. It also aligns Tailwind's `dark:` variant with the `.dark` class that Volt's theme system toggles, so your own `dark:` utilities follow the theme. (Override that variant in your own CSS if you prefer `prefers-color-scheme`.)
 
 Provide a theme:
 

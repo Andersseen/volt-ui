@@ -7,7 +7,15 @@ import {
   PLATFORM_ID,
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { VoltSelect, VoltSelectContent, VoltSelectItem, VoltSelectLabel } from 'volt';
+import {
+  applyVoltTheme,
+  VoltSelect,
+  VoltSelectContent,
+  VoltSelectItem,
+  VoltSelectLabel,
+  type VoltThemeColor,
+  type VoltThemeStyle,
+} from 'volt';
 import { LmnMoonIcon, LmnSunIcon } from 'lumen-icons';
 
 @Component({
@@ -109,19 +117,21 @@ export class ThemeSwitcher {
       this.style.set(savedStyle);
       this.isDark.set(isDarkMode);
 
-      if (isDarkMode) {
-        document.documentElement.classList.add('dark');
-      }
+      applyVoltTheme({
+        color: savedColor as VoltThemeColor,
+        style: savedStyle as VoltThemeStyle,
+        dark: isDarkMode,
+      });
 
       effect(() => {
-        const c = this.color() as string;
-        document.documentElement.setAttribute('data-color', c);
+        const c = this.color() as VoltThemeColor;
+        applyVoltTheme({ color: c });
         localStorage.setItem('volt-color', c);
       });
 
       effect(() => {
-        const s = this.style() as string;
-        document.documentElement.setAttribute('data-style', s);
+        const s = this.style() as VoltThemeStyle;
+        applyVoltTheme({ style: s });
         localStorage.setItem('volt-style', s);
       });
     }
@@ -129,12 +139,7 @@ export class ThemeSwitcher {
 
   toggleDark() {
     this.isDark.set(!this.isDark());
-    if (this.isDark()) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('volt-dark', 'true');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('volt-dark', 'false');
-    }
+    applyVoltTheme({ dark: this.isDark() });
+    localStorage.setItem('volt-dark', String(this.isDark()));
   }
 }

@@ -39,6 +39,7 @@ export function applyVoltTheme(options: VoltThemeOptions = {}, doc?: Document): 
 
   if (options.dark !== undefined) {
     root.classList.toggle('dark', options.dark);
+    root.style.colorScheme = options.dark ? 'dark' : 'light';
   }
 }
 

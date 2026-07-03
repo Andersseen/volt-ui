@@ -32,7 +32,14 @@
       "Bash(sed -i '' 's|readonly selectCode = SELECT_SNIPPET;|readonly selectCode = SELECT_SNIPPET;\\\\n  readonly selectUsage = SELECT_USAGE;|' '/Users/andriipap/Andersseen/Web/Projects/volt-ui/src/app/pages/\\(components-docs\\)/docs/components/select.page.ts')",
       "Bash(sed -i '' 's|import { SEPARATOR_SNIPPET } from '\\\\''../../../../lib/snippets'\\\\'';|import { SEPARATOR_SNIPPET } from '\\\\''../../../../lib/snippets'\\\\'';\\\\nimport { SEPARATOR_USAGE } from '\\\\''../../../../lib/snippets/usage'\\\\'';|' '/Users/andriipap/Andersseen/Web/Projects/volt-ui/src/app/pages/\\(components-docs\\)/docs/components/separator.page.ts')",
       "Bash(sed -i '' 's|readonly separatorCode = SEPARATOR_SNIPPET;|readonly separatorCode = SEPARATOR_SNIPPET;\\\\n  readonly separatorUsage = SEPARATOR_USAGE;|' '/Users/andriipap/Andersseen/Web/Projects/volt-ui/src/app/pages/\\(components-docs\\)/docs/components/separator.page.ts')",
-      "Bash(sed -i '' 's|import { SLIDER_SNIPPET } from '\\\\''../../../../lib/snippets'\\\\'';|import { SLIDER_SNIPPET } from '\\\\''../../../../lib/snippets'\\\\'';\\\\nimport { SLIDER_USAGE } from '\\\\''../../../../lib/snippets/usage'\\\\'';|' '/Users/andriipap/Andersseen/Web/Projects/volt-ui/src/app/pages/\\(components-docs\\)/docs/components/slider.page.ts')"
+      "Bash(sed -i '' 's|import { SLIDER_SNIPPET } from '\\\\''../../../../lib/snippets'\\\\'';|import { SLIDER_SNIPPET } from '\\\\''../../../../lib/snippets'\\\\'';\\\\nimport { SLIDER_USAGE } from '\\\\''../../../../lib/snippets/usage'\\\\'';|' '/Users/andriipap/Andersseen/Web/Projects/volt-ui/src/app/pages/\\(components-docs\\)/docs/components/slider.page.ts')",
+      "Bash(find projects/volt/src/lib/components/button -type f; echo \"---\"; sed -n '1,40p' projects/volt/src/lib/components/button/*.ts 2>/dev/null | head -60)",
+      "Bash(npx vitest *)",
+      "Bash(pnpm build:lib)",
+      "Bash(npx vite *)"
+    ],
+    "additionalDirectories": [
+      "/Users/andriipap/Andersseen/Web/Projects/volt-ui/projects/volt/src/lib/components/button"
     ]
   },
   "mcpServers": {

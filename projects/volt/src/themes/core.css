@@ -1,3 +1,20 @@
+/*
+ * Self-registered Tailwind source. Consumers only need to
+ * `@import '@voltui/components/themes.css'` — Tailwind will scan the compiled
+ * component bundle for every utility class the components use, so none of them
+ * are purged. The path is relative to this file inside the published package
+ * (node_modules/@voltui/components/themes/core.css -> ../fesm2022).
+ */
+@source '../fesm2022';
+
+/*
+ * Volt's theming is driven by the `.dark` class on <html> (see applyVoltTheme).
+ * Align Tailwind's `dark:` variant with that class so a consumer's own `dark:`
+ * utilities follow the same toggle. Override in your own CSS if you'd rather
+ * key off `prefers-color-scheme`.
+ */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
