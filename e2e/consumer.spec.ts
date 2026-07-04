@@ -1,28 +1,14 @@
-import { expect, test, type Locator, type Page } from '@playwright/test';
-
-async function expectBox(locator: Locator, label: string): Promise<void> {
-  await expect(locator, label).toBeVisible();
-  const box = await locator.boundingBox();
-  expect(box, `${label} should have a layout box`).not.toBeNull();
-  expect(box!.width, `${label} width`).toBeGreaterThan(0);
-  expect(box!.height, `${label} height`).toBeGreaterThan(0);
-}
-
-async function openAndExpectBox(
-  page: Page,
-  triggerTestId: string,
-  targetTestId: string
-): Promise<void> {
-  await page.getByTestId(triggerTestId).click();
-  await expectBox(page.getByTestId(targetTestId), targetTestId);
-}
-
-async function focusWithKeyboard(page: Page, locator: Locator, maxTabs = 12): Promise<void> {
-  for (let i = 0; i < maxTabs; i++) {
-    if (await locator.evaluate(element => element === document.activeElement)) return;
-    await page.keyboard.press('Tab');
-  }
-}
+import { expect, test } from '@playwright/test';
+import {
+  expectBox,
+  expectEscapeCloses,
+  expectFocusReturn,
+  expectFocusTrap,
+  expectInViewport,
+  expectOutsideClickCloses,
+  focusWithKeyboard,
+  openAndExpectBox,
+} from './utils/overlay';
 
 test.describe('npm consumer fixture', () => {
   test.beforeEach(async ({ page }) => {
@@ -80,24 +66,104 @@ test.describe('npm consumer fixture', () => {
     const popoverTrigger = page.getByTestId('popover-trigger');
     await openAndExpectBox(page, 'popover-trigger', 'popover-content');
     await expect(popoverTrigger).toBeFocused();
-    await page.keyboard.press('Escape');
-    await expect(page.getByTestId('popover-content')).toBeHidden();
+    await expectInViewport(page, page.getByTestId('popover-content'), 'popover content');
+    await expectEscapeCloses(page, page.getByTestId('popover-content'));
+    await openAndExpectBox(page, 'popover-trigger', 'popover-content');
+    await expectOutsideClickCloses(page, page.getByTestId('popover-content'));
 
-    await openAndExpectBox(page, 'dropdown-trigger', 'dropdown-menu');
-    await page.keyboard.press('Escape');
+    const dropdownTrigger = page.getByTestId('dropdown-trigger');
+    await dropdownTrigger.focus();
+    await expect(dropdownTrigger).toBeFocused();
+    await page.keyboard.press('ArrowDown');
+    await expectBox(page.getByTestId('dropdown-menu'), 'dropdown-menu');
+    await expectInViewport(page, page.getByTestId('dropdown-menu'), 'dropdown menu');
+    await expect(page.getByRole('menuitem', { name: 'First action' })).toBeFocused();
+    await page.keyboard.press('ArrowDown');
+    await expect(page.getByRole('menuitem', { name: 'Second action' })).toBeFocused();
+    await page.keyboard.press('Home');
+    await expect(page.getByRole('menuitem', { name: 'First action' })).toBeFocused();
+    await page.keyboard.press('End');
+    await expect(page.getByRole('menuitem', { name: 'Third action' })).toBeFocused();
+    await page.keyboard.press('Enter');
+    await expect(page.getByTestId('menu-action')).toHaveText('third');
     await expect(page.getByTestId('dropdown-menu')).toBeHidden();
 
-    await page.getByTestId('tooltip-trigger').hover();
+    await dropdownTrigger.focus();
+    await page.keyboard.press('ArrowDown');
+    await expectBox(page.getByTestId('dropdown-menu'), 'dropdown-menu');
+    await expectEscapeCloses(page, page.getByTestId('dropdown-menu'));
+    await openAndExpectBox(page, 'dropdown-trigger', 'dropdown-menu');
+    await expectOutsideClickCloses(page, page.getByTestId('dropdown-menu'));
+
+    const tooltipTrigger = page.getByTestId('tooltip-trigger');
+    await tooltipTrigger.hover();
     await expectBox(page.getByTestId('tooltip-content'), 'tooltip content');
+    await expectInViewport(page, page.getByTestId('tooltip-content'), 'tooltip content');
+    await page.mouse.move(0, 0);
+    await expect(page.getByTestId('tooltip-content')).toBeHidden();
+
+    await tooltipTrigger.focus();
+    await expectBox(page.getByTestId('tooltip-content'), 'tooltip content');
+    await expect(tooltipTrigger).toHaveAttribute('aria-describedby', /.+/);
+    await expectEscapeCloses(page, page.getByTestId('tooltip-content'));
+    await page.getByTestId('dialog-trigger').focus();
+    await tooltipTrigger.focus();
+    await expectBox(page.getByTestId('tooltip-content'), 'tooltip content');
+    await page.keyboard.press('Tab');
+    await expect(page.getByTestId('tooltip-content')).toBeHidden();
 
     const dialogTrigger = page.getByTestId('dialog-trigger');
     await openAndExpectBox(page, 'dialog-trigger', 'dialog-content');
+    await expectFocusTrap(
+      page,
+      page.getByTestId('dialog-content'),
+      page.getByTestId('dialog-first'),
+      page.getByTestId('dialog-close')
+    );
+    await expectFocusReturn(page, dialogTrigger, page.getByTestId('dialog-content'));
+
+    await openAndExpectBox(page, 'dialog-trigger', 'dialog-content');
+    await expectOutsideClickCloses(page, page.getByTestId('dialog-content'));
+
+    await openAndExpectBox(page, 'dialog-nested-trigger', 'dialog-content');
+    await page.getByTestId('nested-dropdown-trigger').click();
+    await expectBox(page.getByTestId('nested-dropdown-menu'), 'nested dropdown menu');
+    await page.getByRole('menuitem', { name: 'Nested action' }).focus();
+    await expect(page.getByRole('menuitem', { name: 'Nested action' })).toBeFocused();
     await page.keyboard.press('Escape');
+    await expect(page.getByTestId('nested-dropdown-menu')).toBeHidden();
+    await expect(page.getByTestId('dialog-content')).toBeVisible();
+    await page.getByTestId('dialog-close').click();
     await expect(page.getByTestId('dialog-content')).toBeHidden();
-    await expect(dialogTrigger).toBeFocused();
+
+    const drawerTrigger = page.getByTestId('drawer-trigger');
+    await openAndExpectBox(page, 'drawer-trigger', 'drawer-content');
+    await expectFocusTrap(
+      page,
+      page.getByTestId('drawer-content'),
+      page.getByTestId('drawer-first'),
+      page.getByTestId('drawer-close')
+    );
+    await expectFocusReturn(page, drawerTrigger, page.getByTestId('drawer-content'));
 
     await openAndExpectBox(page, 'drawer-trigger', 'drawer-content');
-    await page.keyboard.press('Escape');
-    await expect(page.getByTestId('drawer-content')).toBeHidden();
+    await expectOutsideClickCloses(page, page.getByTestId('drawer-content'));
+
+    const toastErrors: string[] = [];
+    page.on('pageerror', error => toastErrors.push(error.message));
+    page.on('console', message => {
+      if (message.type() === 'error') toastErrors.push(message.text());
+    });
+    await page.getByTestId('toast-trigger').click();
+    expect(toastErrors).toEqual([]);
+    await expectBox(page.getByTestId('toast'), 'toast');
+    await expect(page.getByTestId('toast')).toHaveAttribute('role', 'status');
+    await page.getByTestId('toast').hover();
+    await page.waitForTimeout(600);
+    await expect(page.getByTestId('toast')).toBeVisible();
+    await page.getByTestId('toast-close').focus();
+    await expect(page.getByTestId('toast-close')).toBeFocused();
+    await page.keyboard.press('Enter');
+    await expect(page.getByTestId('toast')).toBeHidden();
   });
 });

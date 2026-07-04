@@ -6,7 +6,6 @@ import {
   forwardRef,
   input,
   model,
-  output,
   signal,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -75,7 +74,6 @@ export class VoltSelect implements ControlValueAccessor {
   readonly value = model<unknown>(undefined);
   readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly multiple = input<boolean, unknown>(false, { transform: booleanAttribute });
-  readonly valueChange = output<unknown>();
 
   private readonly controlDisabled = signal(false);
   protected readonly isDisabled = computed(() => this.disabled() || this.controlDisabled());
@@ -85,7 +83,6 @@ export class VoltSelect implements ControlValueAccessor {
 
   protected onValueChange(value: unknown): void {
     this.value.set(value);
-    this.valueChange.emit(value);
     this.onChange(value);
   }
 

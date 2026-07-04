@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0] - 2026-07-04
+
+### Added
+
+- Added shared Playwright overlay helpers for visible layout, Escape dismissal, outside-click dismissal, focus return, and focus trap checks.
+- Expanded consumer e2e overlay coverage for popover outside click, dropdown keyboard navigation, tooltip hover/focus, dialog/drawer focus trap and focus return, nested overlays, and toast dismissal.
+- Added overlay unit coverage for drawer, dropdown menu, popover, toast, and tooltip primitives.
+
+### Changed
+
+- Bumped the root package, `@voltui/components`, and `@voltui/cli` to `0.6.0`.
+- Updated docs/demo select usage to prefer `[(value)]` model binding for `volt-select`.
+- Updated `volt-dropdown-menu-item` to attach `NgpMenuItem` on the host so roving focus can register menu items correctly.
+- Dropdown menu triggers now support keyboard opening with Enter and ArrowDown by default.
+- Promoted dialog, drawer, dropdown-menu, popover, toast, and tooltip to beta in the component status matrix.
+- Updated toast docs and snippets to use a stable `TemplateRef` query for Angular 21.
+
+### Fixed
+
+- Fixed `VoltSelect` declaring `valueChange` twice; `value = model(...)` now owns the generated `valueChange` output.
+- Fixed keyboard-opened dropdown menus not moving focus to the first visible menu item.
+- Fixed `volt-toast-close` so click, Enter, and Space dismiss the active toast.
+- Fixed nested dropdown Escape handling in dialog demos by exposing `closeOnEscape` on `voltDialog`.
+
 ## [0.5.0] - 2026-07-04
 
 ### Added

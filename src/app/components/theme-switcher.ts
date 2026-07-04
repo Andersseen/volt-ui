@@ -33,11 +33,7 @@ import { LmnMoonIcon, LmnSunIcon } from 'lumen-icons';
     <div class="flex items-center gap-2 sm:gap-3">
       <div class="hidden lg:flex items-center gap-2">
         <div class="w-[130px] xl:w-[140px]">
-          <volt-select
-            [value]="color()"
-            (valueChange)="color.set($event)"
-            placeholder="Theme Color"
-          >
+          <volt-select [(value)]="color" placeholder="Theme Color">
             <volt-select-content>
               <volt-select-label>Palettes</volt-select-label>
               <volt-select-item value="volt">
@@ -72,7 +68,7 @@ import { LmnMoonIcon, LmnSunIcon } from 'lumen-icons';
 
       <div class="hidden xl:flex items-center gap-2">
         <div class="w-[120px]">
-          <volt-select [value]="style()" (valueChange)="style.set($event)" placeholder="Style">
+          <volt-select [(value)]="style" placeholder="Style">
             <volt-select-content>
               <volt-select-label>Styles</volt-select-label>
               <volt-select-item value="sharp">Sharp</volt-select-item>

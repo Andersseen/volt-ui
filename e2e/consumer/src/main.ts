@@ -1,7 +1,15 @@
-import { Component, provideZonelessChangeDetection } from '@angular/core';
+import {
+  Component,
+  inject,
+  provideZonelessChangeDetection,
+  signal,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import '@angular/compiler';
 import { bootstrapApplication } from '@angular/platform-browser';
 import {
+  NgpToastManager,
   VoltAvatar,
   VoltAvatarFallback,
   VoltButton,
@@ -39,6 +47,10 @@ import {
   VoltTabsTrigger,
   VoltTooltip,
   VoltTooltipContent,
+  VoltToast,
+  VoltToastClose,
+  VoltToastDescription,
+  VoltToastTitle,
 } from '@voltui/components';
 
 import './styles.css';
@@ -84,6 +96,10 @@ import './styles.css';
     VoltTabsTrigger,
     VoltTooltip,
     VoltTooltipContent,
+    VoltToast,
+    VoltToastClose,
+    VoltToastDescription,
+    VoltToastTitle,
   ],
   template: `
     <main class="mx-auto flex max-w-3xl flex-col gap-6 p-6">
@@ -135,12 +151,27 @@ import './styles.css';
         </button>
         <ng-template #menuTpl>
           <volt-dropdown-menu data-testid="dropdown-menu">
-            <volt-dropdown-menu-item>First action</volt-dropdown-menu-item>
-            <volt-dropdown-menu-item>Second action</volt-dropdown-menu-item>
+            <volt-dropdown-menu-item (click)="menuAction.set('first')">
+              First action
+            </volt-dropdown-menu-item>
+            <volt-dropdown-menu-item (click)="menuAction.set('second')">
+              Second action
+            </volt-dropdown-menu-item>
+            <volt-dropdown-menu-item (click)="menuAction.set('third')">
+              Third action
+            </volt-dropdown-menu-item>
           </volt-dropdown-menu>
         </ng-template>
+        <span data-testid="menu-action">{{ menuAction() }}</span>
 
-        <button voltTooltip [voltTooltip]="tooltipTpl" data-testid="tooltip-trigger">
+        <button
+          voltTooltip
+          [voltTooltip]="tooltipTpl"
+          [delay]="0"
+          [closeDelay]="0"
+          [cooldown]="0"
+          data-testid="tooltip-trigger"
+        >
           Tooltip target
         </button>
         <ng-template #tooltipTpl>
@@ -152,23 +183,68 @@ import './styles.css';
         <button type="button" [voltDialog]="dialogTpl" data-testid="dialog-trigger">
           Open dialog
         </button>
-        <ng-template #dialogTpl>
+        <button
+          type="button"
+          [voltDialog]="dialogTpl"
+          [closeOnEscape]="false"
+          data-testid="dialog-nested-trigger"
+        >
+          Open nested dialog
+        </button>
+        <ng-template #dialogTpl let-close="close">
           <div voltDialogOverlay></div>
           <div voltDialogContent data-testid="dialog-content">
             <h2 voltDialogTitle>Dialog title</h2>
             <p voltDialogDescription>Dialog description</p>
+            <div class="mt-4 flex gap-2">
+              <button type="button" data-testid="dialog-first">First dialog action</button>
+              <button
+                type="button"
+                [voltDropdownMenu]="nestedMenuTpl"
+                data-testid="nested-dropdown-trigger"
+              >
+                Nested menu
+              </button>
+              <button type="button" data-testid="dialog-close" (click)="close()">
+                Close dialog
+              </button>
+            </div>
           </div>
+        </ng-template>
+        <ng-template #nestedMenuTpl>
+          <volt-dropdown-menu data-testid="nested-dropdown-menu">
+            <volt-dropdown-menu-item>Nested action</volt-dropdown-menu-item>
+          </volt-dropdown-menu>
         </ng-template>
 
         <button type="button" [voltDrawer]="drawerTpl" data-testid="drawer-trigger">
           Open drawer
         </button>
-        <ng-template #drawerTpl>
+        <ng-template #drawerTpl let-close="close">
           <div voltDrawerOverlay></div>
           <div voltDrawerContent data-testid="drawer-content">
             <h2 voltDrawerTitle>Drawer title</h2>
             <p voltDrawerDescription>Drawer description</p>
+            <div class="mt-4 flex gap-2">
+              <button type="button" data-testid="drawer-first">First drawer action</button>
+              <button type="button" data-testid="drawer-close" (click)="close()">
+                Close drawer
+              </button>
+            </div>
           </div>
+        </ng-template>
+      </section>
+
+      <section aria-label="toasts" class="flex flex-wrap items-center gap-4">
+        <button type="button" data-testid="toast-trigger" (click)="showToast()">Show toast</button>
+        <ng-template #toastTpl>
+          <volt-toast data-testid="toast">
+            <div>
+              <volt-toast-title>Saved</volt-toast-title>
+              <volt-toast-description>Consumer toast body</volt-toast-description>
+            </div>
+            <volt-toast-close data-testid="toast-close" />
+          </volt-toast>
         </ng-template>
       </section>
 
@@ -183,7 +259,20 @@ import './styles.css';
     </main>
   `,
 })
-class ConsumerApp {}
+class ConsumerApp {
+  readonly menuAction = signal('none');
+  @ViewChild('toastTpl', { read: TemplateRef }) private toastTpl?: TemplateRef<void>;
+  private readonly toastManager = inject(NgpToastManager);
+
+  showToast(): void {
+    if (!this.toastTpl) return;
+
+    this.toastManager.show(this.toastTpl, {
+      duration: 3000,
+      placement: 'bottom-end',
+    });
+  }
+}
 
 bootstrapApplication(ConsumerApp, {
   providers: [provideZonelessChangeDetection()],

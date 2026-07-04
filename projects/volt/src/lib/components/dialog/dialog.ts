@@ -6,7 +6,7 @@ import { NgpDialogTrigger } from 'ng-primitives/dialog';
   hostDirectives: [
     {
       directive: NgpDialogTrigger,
-      inputs: ['ngpDialogTrigger: voltDialog'],
+      inputs: ['ngpDialogTrigger: voltDialog', 'ngpDialogTriggerCloseOnEscape: closeOnEscape'],
       outputs: ['ngpDialogTriggerClosed: closed'],
     },
   ],

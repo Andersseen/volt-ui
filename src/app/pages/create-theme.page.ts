@@ -356,11 +356,7 @@ function indent(lines: string[]): string {
 
                 <div class="space-y-2">
                   <span class="text-sm font-medium text-foreground">Start from</span>
-                  <volt-select
-                    [value]="selectedPreset()"
-                    (valueChange)="applyPreset($event)"
-                    placeholder="Choose preset"
-                  >
+                  <volt-select [(value)]="presetValue" placeholder="Choose preset">
                     <volt-select-content>
                       <volt-select-label>Presets</volt-select-label>
                       <volt-select-item value="glacier">Glacier</volt-select-item>
@@ -693,7 +689,11 @@ export default class CreateThemePage {
     this.theme.update(theme => ({ ...theme, name: value }));
   }
 
-  protected applyPreset(value: unknown): void {
+  protected get presetValue(): PresetName {
+    return this.selectedPreset();
+  }
+
+  protected set presetValue(value: unknown) {
     if (!this.isPresetName(value)) return;
     this.selectedPreset.set(value);
     this.theme.set(clonePreset(value, this.theme().name));
