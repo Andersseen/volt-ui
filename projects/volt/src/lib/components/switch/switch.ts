@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NgpSwitch, NgpSwitchThumb } from 'ng-primitives/switch';
+import { injectFormControlState } from '../../form-control-state';
 
 let nextSwitchId = 0;
 
@@ -34,6 +35,7 @@ let nextSwitchId = 0;
       [id]="id()"
       [ngpSwitchChecked]="checked()"
       [ngpSwitchDisabled]="isDisabled()"
+      [attr.aria-invalid]="formControlState.invalid() ? 'true' : null"
       (ngpSwitchCheckedChange)="onCheckedChange($event)"
       (blur)="onTouched()"
       class="relative inline-flex h-6 w-10 shrink-0 cursor-pointer items-center rounded-full border border-input bg-input p-0 transition-colors duration-150 ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[checked]:border-primary data-[checked]:bg-primary"
@@ -46,6 +48,8 @@ let nextSwitchId = 0;
   `,
 })
 export class VoltSwitch implements ControlValueAccessor {
+  protected readonly formControlState = injectFormControlState();
+
   readonly id = input(`volt-switch-${++nextSwitchId}`);
   readonly checked = model(false);
   readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });

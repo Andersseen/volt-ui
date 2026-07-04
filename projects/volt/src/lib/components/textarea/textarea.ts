@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NgpTextarea } from 'ng-primitives/textarea';
+import { injectFormControlState } from '../../form-control-state';
 import { textareaVariants, type TextareaVariants } from './variants';
 
 @Component({
@@ -33,7 +34,7 @@ import { textareaVariants, type TextareaVariants } from './variants';
       [required]="required()"
       [disabled]="isDisabled()"
       [class]="classes()"
-      [attr.aria-invalid]="state() === 'error' ? 'true' : null"
+      [attr.aria-invalid]="state() === 'error' || formControlState.invalid() ? 'true' : null"
       [style.resize]="resize()"
       [attr.rows]="rows()"
       [value]="value()"
@@ -43,6 +44,8 @@ import { textareaVariants, type TextareaVariants } from './variants';
   `,
 })
 export class VoltTextarea implements ControlValueAccessor {
+  protected readonly formControlState = injectFormControlState();
+
   readonly id = input('');
   readonly name = input('');
   readonly placeholder = input('');

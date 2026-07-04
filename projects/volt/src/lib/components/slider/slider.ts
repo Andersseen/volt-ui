@@ -2,10 +2,13 @@ import {
   booleanAttribute,
   ChangeDetectionStrategy,
   Component,
+  computed,
+  effect,
   forwardRef,
   input,
   numberAttribute,
   output,
+  signal,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import {
@@ -18,6 +21,7 @@ import {
 } from 'ng-primitives/slider';
 
 import type { NgpOrientation } from 'ng-primitives/common';
+import { injectFormControlState } from '../../form-control-state';
 
 @Component({
   selector: 'volt-slider',
@@ -60,6 +64,7 @@ import type { NgpOrientation } from 'ng-primitives/common';
     <div
       ngpSliderThumb
       [attr.aria-label]="ariaLabel()"
+      [attr.aria-invalid]="formControlState.invalid() ? 'true' : null"
       class="absolute top-1/2 block h-5 w-5 -translate-x-1/2 -translate-y-1/2 cursor-grab rounded-full border-2 border-primary bg-background ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[press]:cursor-grabbing"
     ></div>
   `,
@@ -67,6 +72,7 @@ import type { NgpOrientation } from 'ng-primitives/common';
 export class VoltSlider implements ControlValueAccessor {
   /** Access the slider state to wire up forms integration. */
   private readonly state = injectSliderState();
+  protected readonly formControlState = injectFormControlState();
 
   readonly id = input<string>();
   readonly value = input<number, number>(0, { transform: numberAttribute });
@@ -78,10 +84,17 @@ export class VoltSlider implements ControlValueAccessor {
   readonly ariaLabel = input<string>();
   readonly valueChange = output<number>();
 
+  private readonly controlDisabled = signal(false);
+  private readonly isDisabled = computed(() => this.disabled() || this.controlDisabled());
+
   private onChange: (value: number) => void = () => {};
   protected onTouched: () => void = () => {};
 
   constructor() {
+    effect(() => {
+      this.state().setDisabled(this.isDisabled());
+    });
+
     this.state().valueChange.subscribe(value => this.onChange(value));
   }
 
@@ -100,6 +113,7 @@ export class VoltSlider implements ControlValueAccessor {
   }
 
   setDisabledState(isDisabled: boolean): void {
-    this.state().setDisabled(isDisabled);
+    this.controlDisabled.set(isDisabled);
+    this.state().setDisabled(this.isDisabled());
   }
 }

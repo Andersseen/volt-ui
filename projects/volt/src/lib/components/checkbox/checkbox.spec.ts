@@ -1,5 +1,5 @@
 import { Component, input, model } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/angular';
 import userEvent from '@testing-library/user-event';
@@ -103,5 +103,60 @@ describe('VoltCheckbox', () => {
     fixture.componentInstance.control.disable();
     fixture.detectChanges();
     expect(checkbox).toBeDisabled();
+
+    await user.click(checkbox);
+    expect(fixture.componentInstance.control.value).toBe(false);
+  });
+
+  it('should mark reactive forms control as touched on blur and expose invalid state', async () => {
+    const user = userEvent.setup();
+
+    @Component({
+      selector: 'app-checkbox-invalid-wrapper',
+      imports: [ReactiveFormsModule, VoltCheckbox],
+      template: `<volt-checkbox [formControl]="control">Accept</volt-checkbox>`,
+    })
+    class CheckboxInvalidWrapper {
+      control = new FormControl(false, {
+        nonNullable: true,
+        validators: Validators.requiredTrue,
+      });
+    }
+
+    const { fixture } = await render(CheckboxInvalidWrapper);
+    const checkbox = screen.getByRole('checkbox');
+
+    expect(checkbox).not.toHaveAttribute('aria-invalid');
+
+    await user.tab();
+    await user.tab();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.control.touched).toBe(true);
+    expect(checkbox).toHaveAttribute('aria-invalid', 'true');
+  });
+
+  it('should work with template-driven forms', async () => {
+    const user = userEvent.setup();
+
+    @Component({
+      selector: 'app-checkbox-ng-model-wrapper',
+      imports: [FormsModule, VoltCheckbox],
+      template: `<volt-checkbox [(ngModel)]="checked">Accept</volt-checkbox>`,
+    })
+    class CheckboxNgModelWrapper {
+      checked = false;
+    }
+
+    const { fixture } = await render(CheckboxNgModelWrapper);
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const checkbox = screen.getByRole('checkbox');
+
+    expect(checkbox).not.toBeChecked();
+
+    await user.click(checkbox);
+
+    expect(fixture.componentInstance.checked).toBe(true);
   });
 });

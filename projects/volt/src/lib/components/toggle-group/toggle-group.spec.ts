@@ -1,4 +1,5 @@
 import { Component, input, model } from '@angular/core';
+import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/angular';
 import userEvent from '@testing-library/user-event';
@@ -110,5 +111,103 @@ describe('VoltToggleGroup', () => {
     await user.keyboard('{ArrowRight}');
 
     expect(document.activeElement).toBe(italic);
+  });
+
+  it('should work with reactive forms', async () => {
+    const user = userEvent.setup();
+
+    @Component({
+      selector: 'app-toggle-group-form-wrapper',
+      imports: [ReactiveFormsModule, VoltToggleGroup, VoltToggleGroupItem],
+      template: `
+        <volt-toggle-group [formControl]="control">
+          <volt-toggle-group-item value="bold">Bold</volt-toggle-group-item>
+          <volt-toggle-group-item value="italic">Italic</volt-toggle-group-item>
+        </volt-toggle-group>
+      `,
+    })
+    class ToggleGroupFormWrapper {
+      control = new FormControl<string[]>(['bold'], { nonNullable: true });
+    }
+
+    const { fixture } = await render(ToggleGroupFormWrapper);
+    const bold = screen.getByRole('radio', { name: /Bold/i });
+    const italic = screen.getByRole('radio', { name: /Italic/i });
+
+    expect(bold).toHaveAttribute('data-selected');
+
+    fixture.componentInstance.control.setValue(['italic']);
+    fixture.detectChanges();
+    expect(italic).toHaveAttribute('data-selected');
+
+    await user.click(bold);
+    expect(fixture.componentInstance.control.value).toEqual(['bold']);
+
+    fixture.componentInstance.control.disable();
+    fixture.detectChanges();
+    expect(bold).toHaveAttribute('aria-disabled', 'true');
+
+    await user.click(italic);
+    expect(fixture.componentInstance.control.value).toEqual(['bold']);
+  });
+
+  it('should mark reactive forms control as touched on blur and expose invalid state', async () => {
+    const user = userEvent.setup();
+
+    @Component({
+      selector: 'app-toggle-group-invalid-wrapper',
+      imports: [ReactiveFormsModule, VoltToggleGroup, VoltToggleGroupItem],
+      template: `
+        <volt-toggle-group [formControl]="control">
+          <volt-toggle-group-item value="bold">Bold</volt-toggle-group-item>
+          <volt-toggle-group-item value="italic">Italic</volt-toggle-group-item>
+        </volt-toggle-group>
+      `,
+    })
+    class ToggleGroupInvalidWrapper {
+      control = new FormControl<string[]>([], {
+        nonNullable: true,
+        validators: Validators.required,
+      });
+    }
+
+    const { fixture } = await render(ToggleGroupInvalidWrapper);
+    const group = fixture.nativeElement.querySelector('volt-toggle-group');
+
+    expect(group).not.toHaveAttribute('aria-invalid');
+
+    await user.tab();
+    await user.tab();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.control.touched).toBe(true);
+    expect(group).toHaveAttribute('aria-invalid', 'true');
+  });
+
+  it('should work with template-driven forms', async () => {
+    const user = userEvent.setup();
+
+    @Component({
+      selector: 'app-toggle-group-ng-model-wrapper',
+      imports: [FormsModule, VoltToggleGroup, VoltToggleGroupItem],
+      template: `
+        <volt-toggle-group [(ngModel)]="value">
+          <volt-toggle-group-item value="bold">Bold</volt-toggle-group-item>
+          <volt-toggle-group-item value="italic">Italic</volt-toggle-group-item>
+        </volt-toggle-group>
+      `,
+    })
+    class ToggleGroupNgModelWrapper {
+      value = ['bold'];
+    }
+
+    const { fixture } = await render(ToggleGroupNgModelWrapper);
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const italic = screen.getByRole('radio', { name: /Italic/i });
+
+    await user.click(italic);
+
+    expect(fixture.componentInstance.value).toEqual(['italic']);
   });
 });

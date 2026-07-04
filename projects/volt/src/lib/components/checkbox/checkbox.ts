@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NgpCheckbox } from 'ng-primitives/checkbox';
+import { injectFormControlState } from '../../form-control-state';
 
 let nextCheckboxId = 0;
 
@@ -34,6 +35,7 @@ let nextCheckboxId = 0;
       [ngpCheckboxIndeterminate]="indeterminate()"
       [ngpCheckboxDisabled]="isDisabled()"
       [ngpCheckboxRequired]="required()"
+      [attr.aria-invalid]="formControlState.invalid() ? 'true' : null"
       (ngpCheckboxCheckedChange)="onCheckedChange($event)"
       (ngpCheckboxIndeterminateChange)="onIndeterminateChange($event)"
       (blur)="onTouched()"
@@ -72,6 +74,8 @@ let nextCheckboxId = 0;
   `,
 })
 export class VoltCheckbox implements ControlValueAccessor {
+  protected readonly formControlState = injectFormControlState();
+
   readonly id = input(`volt-checkbox-${++nextCheckboxId}`);
   readonly checked = model(false);
   readonly indeterminate = model(false);

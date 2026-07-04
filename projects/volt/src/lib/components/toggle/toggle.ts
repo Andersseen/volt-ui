@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NgpToggle } from 'ng-primitives/toggle';
+import { injectFormControlState } from '../../form-control-state';
 import { toggleVariants, type ToggleVariants } from './variants';
 
 @Component({
@@ -33,12 +34,15 @@ import { toggleVariants, type ToggleVariants } from './variants';
       (blur)="onTouched()"
       [class]="classes()"
       [attr.data-disabled]="isDisabled() ? '' : null"
+      [attr.aria-invalid]="formControlState.invalid() ? 'true' : null"
     >
       <ng-content />
     </button>
   `,
 })
 export class VoltToggle implements ControlValueAccessor {
+  protected readonly formControlState = injectFormControlState();
+
   readonly variant = input<ToggleVariants['variant']>('default');
   readonly size = input<ToggleVariants['size']>('md');
   readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
