@@ -55,49 +55,52 @@ import { VoltCard } from 'volt';
 export class MyComponent {}`;
 
 export const INPUT_USAGE = `import { Component } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { VoltInput } from 'volt';
 
 @Component({
-  imports: [VoltInput],
+  imports: [ReactiveFormsModule, VoltInput],
   template: \`
-    <volt-input type="text" placeholder="Enter your name" />
-    <volt-input type="email" placeholder="Email address" />
-    <volt-input type="password" placeholder="Password" />
+    <volt-input [formControl]="email" type="email" placeholder="Email address" />
     <volt-input disabled placeholder="Disabled input" />
   \`,
 })
-export class MyComponent {}`;
+export class MyComponent {
+  email = new FormControl('', { nonNullable: true });
+}`;
 
-export const CHECKBOX_USAGE = `import { Component, signal } from '@angular/core';
+export const CHECKBOX_USAGE = `import { Component } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { VoltCheckbox, VoltLabel } from 'volt';
 
 @Component({
-  imports: [VoltCheckbox, VoltLabel],
+  imports: [ReactiveFormsModule, VoltCheckbox, VoltLabel],
   template: \`
     <div class="flex items-center gap-2">
-      <volt-checkbox id="terms" [(checked)]="accepted" />
+      <volt-checkbox id="terms" [formControl]="accepted" />
       <volt-label htmlFor="terms">Accept terms and conditions</volt-label>
     </div>
   \`,
 })
 export class MyComponent {
-  accepted = signal(false);
+  accepted = new FormControl(false, { nonNullable: true });
 }`;
 
-export const SWITCH_USAGE = `import { Component, signal } from '@angular/core';
+export const SWITCH_USAGE = `import { Component } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { VoltSwitch, VoltLabel } from 'volt';
 
 @Component({
-  imports: [VoltSwitch, VoltLabel],
+  imports: [ReactiveFormsModule, VoltSwitch, VoltLabel],
   template: \`
     <div class="flex items-center gap-2">
-      <volt-switch id="airplane-mode" [(checked)]="enabled" />
+      <volt-switch id="airplane-mode" [formControl]="enabled" />
       <volt-label htmlFor="airplane-mode">Airplane Mode</volt-label>
     </div>
   \`,
 })
 export class MyComponent {
-  enabled = signal(false);
+  enabled = new FormControl(false, { nonNullable: true });
 }`;
 
 export const TABS_USAGE = `import { Component } from '@angular/core';
@@ -338,13 +341,14 @@ export class MyComponent {
   progress = signal(60);
 }`;
 
-export const RADIO_USAGE = `import { Component, signal } from '@angular/core';
+export const RADIO_USAGE = `import { Component } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { VoltRadioGroup, VoltRadioItem, VoltLabel } from 'volt';
 
 @Component({
-  imports: [VoltRadioGroup, VoltRadioItem, VoltLabel],
+  imports: [ReactiveFormsModule, VoltRadioGroup, VoltRadioItem, VoltLabel],
   template: \`
-    <volt-radio-group [(value)]="selected">
+    <volt-radio-group [formControl]="selected">
       <div class="flex items-center gap-2">
         <volt-radio-item id="option-1" value="option1" />
         <volt-label htmlFor="option-1">Option 1</volt-label>
@@ -357,10 +361,11 @@ import { VoltRadioGroup, VoltRadioItem, VoltLabel } from 'volt';
   \`,
 })
 export class MyComponent {
-  selected = signal('option1');
+  selected = new FormControl<string | null>('option1');
 }`;
 
-export const SELECT_USAGE = `import { Component, signal } from '@angular/core';
+export const SELECT_USAGE = `import { Component } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import {
   VoltSelect,
   VoltSelectContent,
@@ -370,9 +375,16 @@ import {
 } from 'volt';
 
 @Component({
-  imports: [VoltSelect, VoltSelectContent, VoltSelectItem, VoltSelectLabel, VoltSelectSeparator],
+  imports: [
+    ReactiveFormsModule,
+    VoltSelect,
+    VoltSelectContent,
+    VoltSelectItem,
+    VoltSelectLabel,
+    VoltSelectSeparator,
+  ],
   template: \`
-    <volt-select placeholder="Select a fruit" [(value)]="selected">
+    <volt-select placeholder="Select a fruit" [formControl]="selected">
       <volt-select-content>
         <volt-select-label>Fruits</volt-select-label>
         <volt-select-item value="apple">Apple</volt-select-item>
@@ -385,7 +397,7 @@ import {
   \`,
 })
 export class MyComponent {
-  selected = signal('');
+  selected = new FormControl<string | undefined>(undefined, { nonNullable: true });
 }`;
 
 export const SEPARATOR_USAGE = `import { Component } from '@angular/core';
@@ -410,33 +422,35 @@ import { VoltSeparator } from 'volt';
 })
 export class MyComponent {}`;
 
-export const SLIDER_USAGE = `import { Component, signal } from '@angular/core';
+export const SLIDER_USAGE = `import { Component } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { VoltSlider } from 'volt';
 
 @Component({
-  imports: [VoltSlider],
+  imports: [ReactiveFormsModule, VoltSlider],
   template: \`
-    <volt-slider [(value)]="volume" [min]="0" [max]="100" [step]="1" />
-    <p>Volume: {{ volume() }}</p>
+    <volt-slider [formControl]="volume" [min]="0" [max]="100" [step]="1" />
+    <p>Volume: {{ volume.value }}</p>
   \`,
 })
 export class MyComponent {
-  volume = signal(50);
+  volume = new FormControl(50, { nonNullable: true });
 }`;
 
-export const TOGGLE_USAGE = `import { Component, signal } from '@angular/core';
+export const TOGGLE_USAGE = `import { Component } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { VoltToggle } from 'volt';
 
 @Component({
-  imports: [VoltToggle],
+  imports: [ReactiveFormsModule, VoltToggle],
   template: \`
-    <volt-toggle [(pressed)]="bold" aria-label="Toggle bold">
+    <volt-toggle [formControl]="bold" aria-label="Toggle bold">
       <lmn-bold [size]="16" />
     </volt-toggle>
   \`,
 })
 export class MyComponent {
-  bold = signal(false);
+  bold = new FormControl(false, { nonNullable: true });
 }`;
 
 export const TOOLTIP_USAGE = `import { Component } from '@angular/core';
@@ -456,41 +470,46 @@ import { VoltButton } from 'volt';
 })
 export class MyComponent {}`;
 
-export const TEXTAREA_USAGE = `import { Component, signal } from '@angular/core';
+export const TEXTAREA_USAGE = `import { Component } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { VoltTextarea } from 'volt';
 
 @Component({
-  imports: [VoltTextarea],
+  imports: [ReactiveFormsModule, VoltTextarea],
   template: \`
-    <volt-textarea [(value)]="message" rows="4" />
+    <volt-textarea [formControl]="message" rows="4" />
   \`,
 })
 export class MyComponent {
-  message = signal('');
+  message = new FormControl('', { nonNullable: true });
 }`;
 
 export const FORM_FIELD_USAGE = `import { Component } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { VoltFormField, VoltLabel, VoltHint, VoltInput } from 'volt';
 
 @Component({
-  imports: [VoltFormField, VoltLabel, VoltHint, VoltInput],
+  imports: [ReactiveFormsModule, VoltFormField, VoltLabel, VoltHint, VoltInput],
   template: \`
     <volt-form-field>
       <volt-label>Email</volt-label>
-      <volt-input type="email" placeholder="you@example.com" />
+      <volt-input [formControl]="email" type="email" placeholder="you@example.com" />
       <volt-hint>We'll only use this for account updates.</volt-hint>
     </volt-form-field>
   \`,
 })
-export class MyComponent {}`;
+export class MyComponent {
+  email = new FormControl('', { nonNullable: true });
+}`;
 
-export const TOGGLE_GROUP_USAGE = `import { Component, signal } from '@angular/core';
+export const TOGGLE_GROUP_USAGE = `import { Component } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { VoltToggleGroup, VoltToggleGroupItem } from 'volt';
 
 @Component({
-  imports: [VoltToggleGroup, VoltToggleGroupItem],
+  imports: [ReactiveFormsModule, VoltToggleGroup, VoltToggleGroupItem],
   template: \`
-    <volt-toggle-group [(value)]="formatting">
+    <volt-toggle-group [formControl]="formatting">
       <volt-toggle-group-item value="bold">Bold</volt-toggle-group-item>
       <volt-toggle-group-item value="italic">Italic</volt-toggle-group-item>
       <volt-toggle-group-item value="underline">Underline</volt-toggle-group-item>
@@ -498,7 +517,7 @@ import { VoltToggleGroup, VoltToggleGroupItem } from 'volt';
   \`,
 })
 export class MyComponent {
-  formatting = signal(['bold']);
+  formatting = new FormControl<string[]>(['bold'], { nonNullable: true });
 }`;
 
 export const METER_USAGE = `import { Component } from '@angular/core';

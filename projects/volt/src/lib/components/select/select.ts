@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NgpSelect, NgpSelectPortal, provideSelectState } from 'ng-primitives/select';
+import { injectFormControlState } from '../../form-control-state';
 
 @Component({
   selector: 'volt-select',
@@ -34,6 +35,7 @@ import { NgpSelect, NgpSelectPortal, provideSelectState } from 'ng-primitives/se
       [ngpSelectValue]="value()"
       [ngpSelectDisabled]="isDisabled()"
       [ngpSelectMultiple]="multiple()"
+      [attr.aria-invalid]="formControlState.invalid() ? 'true' : null"
       (ngpSelectValueChange)="onValueChange($event)"
       (blur)="onTouched()"
       class="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background cursor-pointer placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1"
@@ -67,6 +69,8 @@ import { NgpSelect, NgpSelectPortal, provideSelectState } from 'ng-primitives/se
   `,
 })
 export class VoltSelect implements ControlValueAccessor {
+  protected readonly formControlState = injectFormControlState();
+
   readonly placeholder = input('Select an option');
   readonly value = model<unknown>(undefined);
   readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });

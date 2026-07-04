@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] - 2026-07-04
+
+### Added
+
+- Added full Forms contract tests for `input`, `textarea`, `checkbox`, `radio`, `switch`, `toggle`, `toggle-group`, `slider`, and `select`.
+- Added `ControlValueAccessor` support to `VoltRadioGroup` and `VoltToggleGroup`.
+- Added template-driven forms smoke coverage for CVA-backed form controls.
+- Added form-field tests for label association, hint/error wiring, and projected input/select/textarea controls.
+- Added Reactive Forms usage snippets for promoted form controls.
+
+### Changed
+
+- Bumped the root package, `@voltui/components`, and `@voltui/cli` to `0.5.0`.
+- Promoted form controls with the full CVA contract in `COMPONENT_STATUS.md`.
+- Promoted `select` from experimental to beta now that its Forms contract is covered; overlay hardening remains scheduled separately.
+- Kept `search` as a structural wrapper around `NgpSearch`; use `volt-input type="search"` for CVA-backed search inputs.
+
+### Fixed
+
+- Forms-driven disabled state now composes with attribute-driven disabled state for `radio`, `toggle-group`, and `slider`.
+- CVA-backed controls now expose `aria-invalid="true"` when their Angular form control is invalid and touched.
+- Radio and toggle-group items now inherit group-level disabled state.
+
 ## [0.4.0] - 2026-07-03
 
 ### Added

@@ -1,12 +1,37 @@
-import { booleanAttribute, ChangeDetectionStrategy, Component, input, model } from '@angular/core';
-import { NgpToggleGroup, provideToggleGroupState } from 'ng-primitives/toggle-group';
+import {
+  booleanAttribute,
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  forwardRef,
+  input,
+  model,
+  signal,
+} from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import {
+  injectToggleGroupState,
+  NgpToggleGroup,
+  provideToggleGroupState,
+} from 'ng-primitives/toggle-group';
+import { injectFormControlState } from '../../form-control-state';
 
 @Component({
   selector: 'volt-toggle-group',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [provideToggleGroupState()],
+  providers: [
+    provideToggleGroupState(),
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => VoltToggleGroup),
+      multi: true,
+    },
+  ],
   host: {
     class: 'inline-flex items-center rounded-md border border-input bg-background p-1 shadow-sm',
+    '[attr.aria-invalid]': 'formControlState.invalid() ? "true" : null',
+    '(focusout)': 'onTouched()',
   },
   hostDirectives: [
     {
@@ -23,10 +48,53 @@ import { NgpToggleGroup, provideToggleGroupState } from 'ng-primitives/toggle-gr
   ],
   template: `<ng-content />`,
 })
-export class VoltToggleGroup {
+export class VoltToggleGroup implements ControlValueAccessor {
+  private readonly state = injectToggleGroupState();
+  protected readonly formControlState = injectFormControlState();
+
   readonly value = model<string[]>([]);
   readonly type = input<'single' | 'multiple'>('single');
   readonly orientation = input<'horizontal' | 'vertical'>('horizontal');
   readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly allowDeselection = input<boolean, unknown>(true, { transform: booleanAttribute });
+
+  private readonly controlDisabled = signal(false);
+  readonly isDisabled = computed(() => this.disabled() || this.controlDisabled());
+
+  private onChange: (value: string[]) => void = () => {};
+  protected onTouched: () => void = () => {};
+
+  constructor() {
+    effect(() => {
+      this.state().setDisabled(this.isDisabled());
+    });
+
+    effect(() => {
+      this.state().setValue(this.value());
+    });
+
+    this.state().valueChange.subscribe(value => {
+      this.value.set(value);
+      this.onChange(value);
+    });
+  }
+
+  writeValue(value: string[] | null | undefined): void {
+    const nextValue = value ?? [];
+    this.value.set(nextValue);
+    this.state().setValue(nextValue);
+  }
+
+  registerOnChange(fn: (value: string[]) => void): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.controlDisabled.set(isDisabled);
+    this.state().setDisabled(this.isDisabled());
+  }
 }

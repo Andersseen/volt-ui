@@ -1,5 +1,5 @@
 import { Component, input, model } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/angular';
 import userEvent from '@testing-library/user-event';
@@ -84,5 +84,60 @@ describe('VoltSwitch', () => {
     fixture.componentInstance.control.disable();
     fixture.detectChanges();
     expect(switchButton).toBeDisabled();
+
+    await user.click(switchButton);
+    expect(fixture.componentInstance.control.value).toBe(false);
+  });
+
+  it('should mark reactive forms control as touched on blur and expose invalid state', async () => {
+    const user = userEvent.setup();
+
+    @Component({
+      selector: 'app-switch-invalid-wrapper',
+      imports: [ReactiveFormsModule, VoltSwitch],
+      template: `<volt-switch [formControl]="control">Notifications</volt-switch>`,
+    })
+    class SwitchInvalidWrapper {
+      control = new FormControl(false, {
+        nonNullable: true,
+        validators: Validators.requiredTrue,
+      });
+    }
+
+    const { fixture } = await render(SwitchInvalidWrapper);
+    const switchButton = screen.getByRole('switch');
+
+    expect(switchButton).not.toHaveAttribute('aria-invalid');
+
+    await user.tab();
+    await user.tab();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.control.touched).toBe(true);
+    expect(switchButton).toHaveAttribute('aria-invalid', 'true');
+  });
+
+  it('should work with template-driven forms', async () => {
+    const user = userEvent.setup();
+
+    @Component({
+      selector: 'app-switch-ng-model-wrapper',
+      imports: [FormsModule, VoltSwitch],
+      template: `<volt-switch [(ngModel)]="enabled">Notifications</volt-switch>`,
+    })
+    class SwitchNgModelWrapper {
+      enabled = false;
+    }
+
+    const { fixture } = await render(SwitchNgModelWrapper);
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const switchButton = screen.getByRole('switch');
+
+    expect(switchButton).toHaveAttribute('aria-checked', 'false');
+
+    await user.click(switchButton);
+
+    expect(fixture.componentInstance.enabled).toBe(true);
   });
 });

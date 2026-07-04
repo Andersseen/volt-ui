@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/angular';
 import userEvent from '@testing-library/user-event';
@@ -76,5 +76,58 @@ describe('VoltTextarea', () => {
     fixture.componentInstance.control.disable();
     fixture.detectChanges();
     expect(textarea).toBeDisabled();
+
+    await user.type(textarea, ' blocked');
+    expect(fixture.componentInstance.control.value).toBe('typed message');
+  });
+
+  it('should mark reactive forms control as touched on blur and expose invalid state', async () => {
+    const user = userEvent.setup();
+
+    @Component({
+      selector: 'app-textarea-invalid-wrapper',
+      imports: [ReactiveFormsModule, VoltTextarea],
+      template: `<volt-textarea [formControl]="control" placeholder="Message" />`,
+    })
+    class TextareaInvalidWrapper {
+      control = new FormControl('', { nonNullable: true, validators: Validators.required });
+    }
+
+    const { fixture } = await render(TextareaInvalidWrapper);
+    const textarea = screen.getByRole('textbox');
+
+    expect(textarea).not.toHaveAttribute('aria-invalid');
+
+    await user.click(textarea);
+    await user.tab();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.control.touched).toBe(true);
+    expect(textarea).toHaveAttribute('aria-invalid', 'true');
+  });
+
+  it('should work with template-driven forms', async () => {
+    const user = userEvent.setup();
+
+    @Component({
+      selector: 'app-textarea-ng-model-wrapper',
+      imports: [FormsModule, VoltTextarea],
+      template: `<volt-textarea [(ngModel)]="value" placeholder="Message" />`,
+    })
+    class TextareaNgModelWrapper {
+      value = 'initial';
+    }
+
+    const { fixture } = await render(TextareaNgModelWrapper);
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const textarea = screen.getByRole('textbox');
+
+    expect(textarea).toHaveValue('initial');
+
+    await user.clear(textarea);
+    await user.type(textarea, 'typed');
+
+    expect(fixture.componentInstance.value).toBe('typed');
   });
 });

@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NgpInput } from 'ng-primitives/input';
+import { injectFormControlState } from '../../form-control-state';
 
 @Component({
   selector: 'volt-input',
@@ -37,6 +38,7 @@ import { NgpInput } from 'ng-primitives/input';
       [required]="required()"
       [disabled]="isDisabled()"
       [value]="value()"
+      [attr.aria-invalid]="formControlState.invalid() ? 'true' : null"
       (input)="onInput($event)"
       (blur)="onTouched()"
       class="flex h-10 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
@@ -44,6 +46,8 @@ import { NgpInput } from 'ng-primitives/input';
   `,
 })
 export class VoltInput implements ControlValueAccessor {
+  protected readonly formControlState = injectFormControlState();
+
   readonly id = input('');
   readonly type = input('text');
   readonly name = input('');

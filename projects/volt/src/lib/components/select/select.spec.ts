@@ -1,5 +1,5 @@
 import { Component, model } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/angular';
 import userEvent from '@testing-library/user-event';
@@ -73,5 +73,74 @@ describe('VoltSelect', () => {
     fixture.componentInstance.control.disable();
     fixture.detectChanges();
     expect(trigger).toBeDisabled();
+
+    await user.click(trigger);
+    expect(fixture.componentInstance.control.value).toBe('a');
+  });
+
+  it('should mark reactive forms control as touched on blur and expose invalid state', async () => {
+    const user = userEvent.setup();
+
+    @Component({
+      selector: 'app-select-invalid-wrapper',
+      imports: [ReactiveFormsModule, VoltSelect, VoltSelectContent, VoltSelectItem],
+      template: `
+        <volt-select [formControl]="control" placeholder="Choose an option">
+          <volt-select-content>
+            <volt-select-item value="a">Option A</volt-select-item>
+          </volt-select-content>
+        </volt-select>
+      `,
+    })
+    class SelectInvalidWrapper {
+      control = new FormControl<string | undefined>(undefined, {
+        nonNullable: true,
+        validators: Validators.required,
+      });
+    }
+
+    const { fixture } = await render(SelectInvalidWrapper);
+    const trigger = screen.getByRole('combobox');
+
+    expect(trigger).not.toHaveAttribute('aria-invalid');
+
+    await user.tab();
+    await user.tab();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.control.touched).toBe(true);
+    expect(trigger).toHaveAttribute('aria-invalid', 'true');
+  });
+
+  it('should work with template-driven forms', async () => {
+    const user = userEvent.setup();
+
+    @Component({
+      selector: 'app-select-ng-model-wrapper',
+      imports: [FormsModule, VoltSelect, VoltSelectContent, VoltSelectItem],
+      template: `
+        <volt-select [(ngModel)]="value" placeholder="Choose an option">
+          <volt-select-content>
+            <volt-select-item value="a">Option A</volt-select-item>
+            <volt-select-item value="b">Option B</volt-select-item>
+          </volt-select-content>
+        </volt-select>
+      `,
+    })
+    class SelectNgModelWrapper {
+      value = 'a';
+    }
+
+    const { fixture } = await render(SelectNgModelWrapper);
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const trigger = screen.getByRole('combobox');
+
+    expect(trigger).toHaveTextContent('a');
+
+    await user.click(trigger);
+    await user.click(await screen.findByText('Option B'));
+
+    expect(fixture.componentInstance.value).toBe('b');
   });
 });
