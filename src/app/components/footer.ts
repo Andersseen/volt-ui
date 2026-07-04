@@ -3,7 +3,6 @@ import { LmnGithubIcon } from 'lumen-icons';
 
 @Component({
   selector: 'app-footer',
-  standalone: true,
   imports: [LmnGithubIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -15,7 +14,6 @@ import { LmnGithubIcon } from 'lumen-icons';
       >
         <div>&copy; {{ currentYear }} Volt UI. All rights reserved.</div>
         <div class="flex items-center gap-4">
-          <a href="#" class="hover:text-foreground transition-colors">Twitter</a>
           <a
             href="https://github.com/Andersseen/volt-ui"
             target="_blank"
@@ -25,7 +23,6 @@ import { LmnGithubIcon } from 'lumen-icons';
           >
             <lmn-github [size]="16" />
           </a>
-          <a href="#" class="hover:text-foreground transition-colors">Discord</a>
         </div>
       </div>
     </footer>

@@ -20,7 +20,6 @@ import { LmnMoonIcon, LmnSunIcon } from 'lumen-icons';
 
 @Component({
   selector: 'app-theme-switcher',
-  standalone: true,
   imports: [
     VoltSelect,
     VoltSelectContent,
