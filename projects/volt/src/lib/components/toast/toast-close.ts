@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, output } from '@angular/core';
+import { NgpToast, NgpToastManager } from 'ng-primitives/toast';
 
 @Component({
   selector: 'volt-toast-close',
@@ -6,6 +7,11 @@ import { ChangeDetectionStrategy, Component, output } from '@angular/core';
   host: {
     class:
       'inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer',
+    role: 'button',
+    tabindex: '0',
+    '(click)': 'close()',
+    '(keydown.enter)': 'close()',
+    '(keydown.space)': 'close(); $event.preventDefault()',
   },
   template: `
     <svg
@@ -28,4 +34,14 @@ import { ChangeDetectionStrategy, Component, output } from '@angular/core';
 })
 export class VoltToastClose {
   readonly closeChange = output<void>();
+  private readonly toast = inject(NgpToast, { optional: true });
+  private readonly toastManager = inject(NgpToastManager, { optional: true });
+
+  protected close(): void {
+    this.closeChange.emit();
+
+    if (this.toast) {
+      void this.toastManager?.dismiss(this.toast);
+    }
+  }
 }

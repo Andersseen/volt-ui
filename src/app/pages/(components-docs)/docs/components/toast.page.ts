@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, TemplateRef, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, TemplateRef, ViewChild } from '@angular/core';
 import {
   NgpToastManager,
   VoltButton,
@@ -54,11 +54,13 @@ import { TOAST_USAGE } from '../../../../lib/snippets/usage';
 export default class ToastDemo {
   readonly code = TOAST_SNIPPET;
   readonly usage = TOAST_USAGE;
-  readonly toastTemplate = viewChild.required<TemplateRef<void>>('toastTemplate');
+  @ViewChild('toastTemplate', { read: TemplateRef }) private toastTemplate?: TemplateRef<void>;
   private readonly toastManager = inject(NgpToastManager);
 
   showToast() {
-    this.toastManager.show(this.toastTemplate(), {
+    if (!this.toastTemplate) return;
+
+    this.toastManager.show(this.toastTemplate, {
       duration: 3000,
       placement: 'bottom-end',
     });

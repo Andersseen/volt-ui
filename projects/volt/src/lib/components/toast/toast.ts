@@ -8,6 +8,7 @@ import { toastVariants, type ToastVariants } from './variants';
   hostDirectives: [NgpToast],
   host: {
     '[class]': 'classes()',
+    role: 'status',
   },
   template: `<ng-content />`,
 })

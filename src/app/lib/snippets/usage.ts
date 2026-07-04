@@ -559,7 +559,7 @@ export class MyComponent {
   page = signal(1);
 }`;
 
-export const TOAST_USAGE = `import { Component, TemplateRef, viewChild } from '@angular/core';
+export const TOAST_USAGE = `import { Component, TemplateRef, ViewChild } from '@angular/core';
 import {
   NgpToastManager,
   VoltButton,
@@ -586,12 +586,14 @@ import {
   \`,
 })
 export class MyComponent {
-  readonly toastTemplate = viewChild.required<TemplateRef<void>>('toastTemplate');
+  @ViewChild('toastTemplate', { read: TemplateRef }) private toastTemplate?: TemplateRef<void>;
 
   constructor(private readonly toastManager: NgpToastManager) {}
 
   showToast() {
-    this.toastManager.show(this.toastTemplate(), { placement: 'bottom-end' });
+    if (!this.toastTemplate) return;
+
+    this.toastManager.show(this.toastTemplate, { placement: 'bottom-end' });
   }
 }`;
 
