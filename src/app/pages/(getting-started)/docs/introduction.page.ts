@@ -33,6 +33,50 @@ import {
 
       <div class="w-full h-px bg-border"></div>
 
+      <!-- AI Tools -->
+      <div class="space-y-4">
+        <h2 class="text-xl font-semibold tracking-tight">AI Tools for Consumers</h2>
+        <p class="text-muted-foreground">
+          Volt UI ships with three complementary ways to give AI assistants full context about its
+          components, selectors, and conventions.
+        </p>
+
+        <div class="grid gap-4 md:grid-cols-3">
+          <a
+            routerLink="/docs/ai-skill"
+            class="group p-4 rounded-lg border border-border hover:border-primary/50 transition-colors"
+          >
+            <h3 class="font-medium group-hover:text-primary">Local Skill →</h3>
+            <p class="text-sm text-muted-foreground mt-1">
+              Auto-discovered by OpenCode / Claude Code. Component catalog, naming, and usage rules.
+            </p>
+          </a>
+
+          <a
+            routerLink="/docs/ai-mcp"
+            class="group p-4 rounded-lg border border-border hover:border-primary/50 transition-colors"
+          >
+            <h3 class="font-medium group-hover:text-primary">MCP Server →</h3>
+            <p class="text-sm text-muted-foreground mt-1">
+              Hosted MCP tools for listing components, getting examples, and generating CLI
+              commands.
+            </p>
+          </a>
+
+          <a
+            routerLink="/docs/ai-prompt"
+            class="group p-4 rounded-lg border border-border hover:border-primary/50 transition-colors"
+          >
+            <h3 class="font-medium group-hover:text-primary">Prompt Reference →</h3>
+            <p class="text-sm text-muted-foreground mt-1">
+              A single-file prompt to paste into any LLM chat for correct selectors and examples.
+            </p>
+          </a>
+        </div>
+      </div>
+
+      <div class="w-full h-px bg-border"></div>
+
       <!-- Installation Options -->
       <div class="space-y-4">
         <h2 class="text-xl font-semibold tracking-tight">Installation Options</h2>
@@ -75,11 +119,17 @@ import {
             </volt-card-header>
             <volt-card-content class="space-y-3">
               <div class="flex items-center gap-2 p-3 rounded-lg bg-muted font-mono text-sm">
-                npx &#64;voltui/cli add button
+                npx &#64;voltui/cli init
+              </div>
+              <div class="flex items-center gap-2 p-3 rounded-lg bg-muted font-mono text-sm">
+                npx &#64;voltui/cli add button card input
               </div>
               <p class="text-sm text-muted-foreground">
-                Initialize first with:
-                <code class="px-1 py-0.5 bg-muted rounded text-xs">npx &#64;voltui/cli init</code>
+                Use
+                <code class="px-1 py-0.5 bg-muted rounded text-xs">--dry-run</code>
+                to preview files and
+                <code class="px-1 py-0.5 bg-muted rounded text-xs">--force</code>
+                to overwrite edited components.
               </p>
             </volt-card-content>
           </volt-card>
@@ -102,6 +152,41 @@ import {
               </a>
             </volt-card-content>
           </volt-card>
+        </div>
+      </div>
+
+      <!-- Naming conventions -->
+      <div class="space-y-4">
+        <h2 class="text-xl font-semibold tracking-tight">Naming Conventions</h2>
+        <p class="text-muted-foreground">
+          Volt UI uses different prefixes for library source and CLI-generated output.
+        </p>
+
+        <div class="p-4 rounded-lg border border-border bg-muted/30 overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="text-left text-muted-foreground border-b border-border">
+                <th class="pb-2 font-medium">Context</th>
+                <th class="pb-2 font-medium">Selector</th>
+                <th class="pb-2 font-medium">Class name</th>
+                <th class="pb-2 font-medium">Import path</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-border/50">
+                <td class="py-2">Library source</td>
+                <td class="py-2 font-mono">volt-* / [voltXxx]</td>
+                <td class="py-2 font-mono">VoltXxx</td>
+                <td class="py-2 font-mono">'volt'</td>
+              </tr>
+              <tr>
+                <td class="py-2">CLI output</td>
+                <td class="py-2 font-mono">ui-* / [uiXxx]</td>
+                <td class="py-2 font-mono">UiXxx</td>
+                <td class="py-2 font-mono">'./ui/&lt;component&gt;'</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
 
@@ -128,9 +213,9 @@ import {
           </div>
 
           <div class="p-4 rounded-lg border border-border bg-muted/30">
-            <span class="font-medium">CLI / Copy & Paste — manual deps</span>
+            <span class="font-medium">CLI / Copy & Paste — runtime deps</span>
             <code class="text-sm font-mono text-muted-foreground block mt-2">
-              npm install ng-primitives class-variance-authority
+              npm install ng-primitives class-variance-authority clsx tailwind-merge
             </code>
           </div>
 
@@ -142,8 +227,38 @@ import {
               <code class="px-1 py-0.5 bg-muted rounded text-xs">node_modules</code>.
             </p>
             <code class="text-sm font-mono text-muted-foreground block mt-2">
-              npm install -D tailwindcss @tailwindcss/postcss
+              npm install -D tailwindcss &#64;tailwindcss/postcss
             </code>
+          </div>
+        </div>
+      </div>
+
+      <!-- Theme -->
+      <div class="space-y-4">
+        <h2 class="text-xl font-semibold tracking-tight">Theme System</h2>
+        <p class="text-muted-foreground">
+          Volt UI provides semantic Tailwind tokens via CSS custom properties. Configure the theme
+          in your app config.
+        </p>
+
+        <div
+          class="p-4 rounded-lg border border-border bg-muted/30 font-mono text-sm overflow-x-auto"
+        >
+          <div>
+            import {{ '{' }} provideVoltTheme {{ '}' }} from '&#64;voltui/components';<br /><br />
+          </div>
+          <div>
+            bootstrapApplication(AppComponent, {{ '{' }}<br />
+            &nbsp;&nbsp;providers: [<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;provideVoltTheme({{ '{' }}<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;color: 'volt', &nbsp;&nbsp;// volt | ember | sage |
+            dusk | glacier<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;style: 'sharp', // sharp | soft | brutal | ghost |
+            retro<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dark: false<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;{{ '}' }})<br />
+            &nbsp;&nbsp;]<br />
+            {{ '}' }});<br />
           </div>
         </div>
       </div>
@@ -162,7 +277,7 @@ import {
           <div class="pl-12 text-muted-foreground">button.ts</div>
           <div class="pl-12 text-muted-foreground">index.ts</div>
           <div class="pl-8 text-muted-foreground">card/</div>
-          <div class="pl-12 text-muted-foreground">card.component.ts</div>
+          <div class="pl-12 text-muted-foreground">card.ts</div>
           <div class="pl-12 text-muted-foreground">index.ts</div>
           <div class="pl-4">...</div>
         </div>
@@ -191,10 +306,87 @@ import {
         </div>
       </div>
 
+      <!-- Overlay pattern -->
+      <div class="space-y-4">
+        <h2 class="text-xl font-semibold tracking-tight">Overlay Components</h2>
+        <p class="text-muted-foreground">
+          Dialog, drawer, popover, tooltip, and dropdown-menu use an attribute-directive trigger
+          that references an
+          <code class="px-1 py-0.5 bg-muted rounded text-xs">&lt;ng-template&gt;</code>
+          containing the overlay content.
+        </p>
+
+        <div
+          class="p-4 rounded-lg border border-border bg-muted/30 font-mono text-sm overflow-x-auto"
+        >
+          <div>&lt;button [uiDialog]="dialogTpl"&gt;Open Dialog&lt;/button&gt;<br /><br /></div>
+          <div>&lt;ng-template #dialogTpl let-close="close"&gt;<br /></div>
+          <div>&nbsp;&nbsp;&lt;div uiDialogOverlay&gt;&lt;/div&gt;<br /></div>
+          <div>&nbsp;&nbsp;&lt;div uiDialogContent&gt;<br /></div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;&lt;h2 uiDialogTitle&gt;Confirm&lt;/h2&gt;<br /></div>
+          <div>
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;p uiDialogDescription&gt;Are you sure?&lt;/p&gt;<br />
+          </div>
+          <div>
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;ui-button (click)="close()"&gt;Confirm&lt;/ui-button&gt;<br />
+          </div>
+          <div>&nbsp;&nbsp;&lt;/div&gt;<br /></div>
+          <div>&lt;/ng-template&gt;</div>
+        </div>
+      </div>
+
+      <!-- Component catalog -->
+      <div class="space-y-4">
+        <h2 class="text-xl font-semibold tracking-tight">Component Catalog</h2>
+        <p class="text-muted-foreground">
+          Volt UI is pre-v1. Components are labeled
+          <span class="text-green-600 font-medium">stable</span>,
+          <span class="text-yellow-600 font-medium">beta</span>, or
+          <span class="text-orange-600 font-medium">experimental</span>
+          to communicate confidence, not availability.
+        </p>
+
+        <div class="grid gap-6 md:grid-cols-3">
+          <div class="p-4 rounded-lg border border-border bg-muted/30">
+            <h3 class="font-medium text-green-600 mb-2">Stable</h3>
+            <p class="text-sm text-muted-foreground mb-2">
+              Ready for early adoption. Meaningful tests, documented API, and CVA coverage where
+              applicable.
+            </p>
+            <div class="font-mono text-xs text-muted-foreground">
+              avatar, badge, breadcrumbs, button, card, checkbox, form-field, input, meter,
+              progress, radio, separator, skeleton, slider, switch, textarea, toggle, toggle-group
+            </div>
+          </div>
+
+          <div class="p-4 rounded-lg border border-border bg-muted/30">
+            <h3 class="font-medium text-yellow-600 mb-2">Beta</h3>
+            <p class="text-sm text-muted-foreground mb-2">
+              Usable, but may still gain more forms, keyboard, accessibility, or edge-case coverage.
+            </p>
+            <div class="font-mono text-xs text-muted-foreground">
+              accordion, dialog, drawer, dropdown-menu, input-otp, pagination, popover, search,
+              select, table, tabs, toast, toolbar, tooltip
+            </div>
+          </div>
+
+          <div class="p-4 rounded-lg border border-border bg-muted/30">
+            <h3 class="font-medium text-orange-600 mb-2">Experimental</h3>
+            <p class="text-sm text-muted-foreground mb-2">
+              Useful demos exist, but the API or behavior may change before v1.
+            </p>
+            <div class="font-mono text-xs text-muted-foreground">
+              autofill, combobox, date-picker, file-upload, listbox, navigation-menu, resizable,
+              sidebar, theme
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Next Steps -->
       <div class="space-y-4">
         <h2 class="text-xl font-semibold tracking-tight">Next Steps</h2>
-        <div class="grid gap-4 md:grid-cols-2">
+        <div class="grid gap-4 md:grid-cols-3">
           <a
             routerLink="/docs/themes"
             class="group p-4 rounded-lg border border-border hover:border-primary/50 transition-colors"
@@ -211,6 +403,15 @@ import {
             <h3 class="font-medium group-hover:text-primary">Components →</h3>
             <p class="text-sm text-muted-foreground mt-1">
               Explore all available components with examples and source code.
+            </p>
+          </a>
+          <a
+            routerLink="/docs/mcp"
+            class="group p-4 rounded-lg border border-border hover:border-primary/50 transition-colors"
+          >
+            <h3 class="font-medium group-hover:text-primary">AI Integration →</h3>
+            <p class="text-sm text-muted-foreground mt-1">
+              Configure the MCP server and IDE snippets for Claude, Cursor, Copilot, and more.
             </p>
           </a>
         </div>

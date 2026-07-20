@@ -109,7 +109,7 @@ import { VoltTabs, VoltTabsList, VoltTabsTrigger, VoltTabsContent } from 'volt';
 @Component({
   imports: [VoltTabs, VoltTabsList, VoltTabsTrigger, VoltTabsContent],
   template: \`
-    <volt-tabs defaultValue="account">
+    <volt-tabs value="account">
       <volt-tabs-list>
         <volt-tabs-trigger value="account">Account</volt-tabs-trigger>
         <volt-tabs-trigger value="password">Password</volt-tabs-trigger>
@@ -161,7 +161,7 @@ import { VoltAvatar, VoltAvatarImage, VoltAvatarFallback } from 'volt';
   imports: [VoltAvatar, VoltAvatarImage, VoltAvatarFallback],
   template: \`
     <volt-avatar>
-      <volt-avatar-image src="https://github.com/shadcn.png" alt="@shadcn" />
+      <img voltAvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
       <volt-avatar-fallback>CN</volt-avatar-fallback>
     </volt-avatar>
   \`,
@@ -189,25 +189,25 @@ import {
   ],
   template: \`
     <volt-breadcrumbs>
-      <volt-breadcrumbs-list>
-        <volt-breadcrumbs-item>
-          <volt-breadcrumbs-link href="/">Home</volt-breadcrumbs-link>
-        </volt-breadcrumbs-item>
-        <volt-breadcrumbs-separator />
-        <volt-breadcrumbs-item>
-          <volt-breadcrumbs-link href="/docs">Docs</volt-breadcrumbs-link>
-        </volt-breadcrumbs-item>
-        <volt-breadcrumbs-separator />
-        <volt-breadcrumbs-item>
-          <volt-breadcrumbs-page>Components</volt-breadcrumbs-page>
-        </volt-breadcrumbs-item>
-      </volt-breadcrumbs-list>
+      <volt-breadcrumb-list>
+        <volt-breadcrumb-item>
+          <volt-breadcrumb-link href="/">Home</volt-breadcrumb-link>
+        </volt-breadcrumb-item>
+        <volt-breadcrumb-separator />
+        <volt-breadcrumb-item>
+          <volt-breadcrumb-link href="/docs">Docs</volt-breadcrumb-link>
+        </volt-breadcrumb-item>
+        <volt-breadcrumb-separator />
+        <volt-breadcrumb-item>
+          <volt-breadcrumb-page>Components</volt-breadcrumb-page>
+        </volt-breadcrumb-item>
+      </volt-breadcrumb-list>
     </volt-breadcrumbs>
   \`,
 })
 export class MyComponent {}`;
 
-export const DIALOG_USAGE = `import { Component, signal } from '@angular/core';
+export const DIALOG_USAGE = `import { Component } from '@angular/core';
 import {
   VoltDialog,
   VoltDialogContent,
@@ -220,23 +220,21 @@ import { VoltButton } from 'volt';
 @Component({
   imports: [VoltDialog, VoltDialogContent, VoltDialogTitle, VoltDialogDescription, VoltDialogOverlay, VoltButton],
   template: \`
-    <volt-button (click)="open.set(true)">Open Dialog</volt-button>
+    <button voltDialog [voltDialog]="dialogTpl">Open Dialog</button>
 
-    <volt-dialog [(open)]="open">
-      <volt-dialog-overlay />
-      <volt-dialog-content>
-        <volt-dialog-title>Are you sure?</volt-dialog-title>
-        <volt-dialog-description>
+    <ng-template #dialogTpl let-close="close">
+      <div voltDialogOverlay></div>
+      <div voltDialogContent>
+        <h2 voltDialogTitle>Are you sure?</h2>
+        <p voltDialogDescription>
           This action cannot be undone.
-        </volt-dialog-description>
-        <volt-button (click)="open.set(false)">Confirm</volt-button>
-      </volt-dialog-content>
-    </volt-dialog>
+        </p>
+        <volt-button (click)="close()">Confirm</volt-button>
+      </div>
+    </ng-template>
   \`,
 })
-export class MyComponent {
-  open = signal(false);
-}`;
+export class MyComponent {}`;
 
 export const DROPDOWN_MENU_USAGE = `import { Component } from '@angular/core';
 import {
@@ -258,17 +256,20 @@ import { VoltButton } from 'volt';
     VoltDropdownMenuSeparator,
   ],
   template: \`
-    <volt-dropdown-menu>
-      <volt-dropdown-menu-trigger>
-        <volt-button variant="outline">Open Menu</volt-button>
-      </volt-dropdown-menu-trigger>
-      <volt-dropdown-menu-label>My Account</volt-dropdown-menu-label>
-      <volt-dropdown-menu-separator />
-      <volt-dropdown-menu-item>Profile</volt-dropdown-menu-item>
-      <volt-dropdown-menu-item>Settings</volt-dropdown-menu-item>
-      <volt-dropdown-menu-separator />
-      <volt-dropdown-menu-item>Logout</volt-dropdown-menu-item>
-    </volt-dropdown-menu>
+    <button [voltDropdownMenu]="menuTpl" volt-button>
+      <volt-button variant="outline">Open Menu</volt-button>
+    </button>
+
+    <ng-template #menuTpl>
+      <volt-dropdown-menu>
+        <volt-dropdown-menu-label>My Account</volt-dropdown-menu-label>
+        <volt-dropdown-menu-separator />
+        <volt-dropdown-menu-item>Profile</volt-dropdown-menu-item>
+        <volt-dropdown-menu-item>Settings</volt-dropdown-menu-item>
+        <volt-dropdown-menu-separator />
+        <volt-dropdown-menu-item>Logout</volt-dropdown-menu-item>
+      </volt-dropdown-menu>
+    </ng-template>
   \`,
 })
 export class MyComponent {}`;
@@ -298,8 +299,8 @@ import {
         <volt-navigation-menu-item>
           <volt-navigation-menu-trigger>Getting Started</volt-navigation-menu-trigger>
           <volt-navigation-menu-content>
-            <volt-navigation-menu-link href="/docs">Introduction</volt-navigation-menu-link>
-            <volt-navigation-menu-link href="/docs/installation">Installation</volt-navigation-menu-link>
+            <a volt-navigation-menu-link href="/docs">Introduction</a>
+            <a volt-navigation-menu-link href="/docs/installation">Installation</a>
           </volt-navigation-menu-content>
         </volt-navigation-menu-item>
         <volt-navigation-menu-item>
@@ -311,19 +312,22 @@ import {
 })
 export class MyComponent {}`;
 
-export const POPOVER_USAGE = `import { Component, signal } from '@angular/core';
+export const POPOVER_USAGE = `import { Component } from '@angular/core';
 import { VoltPopoverTrigger, VoltPopoverContent } from 'volt';
 import { VoltButton } from 'volt';
 
 @Component({
   imports: [VoltButton, VoltPopoverTrigger, VoltPopoverContent],
   template: \`
-    <volt-popover-trigger>
+    <button voltPopover [voltPopover]="popoverTpl">
       <volt-button variant="outline">Open Popover</volt-button>
-    </volt-popover-trigger>
-    <volt-popover-content>
-      <p class="text-sm">Popover content goes here.</p>
-    </volt-popover-content>
+    </button>
+
+    <ng-template #popoverTpl>
+      <volt-popover-content>
+        <p class="text-sm">Popover content goes here.</p>
+      </volt-popover-content>
+    </ng-template>
   \`,
 })
 export class MyComponent {}`;
@@ -460,12 +464,15 @@ import { VoltButton } from 'volt';
 @Component({
   imports: [VoltButton, VoltTooltip, VoltTooltipContent],
   template: \`
-    <volt-tooltip>
+    <button voltTooltip [voltTooltip]="tooltipTpl">
       <volt-button variant="outline">Hover me</volt-button>
+    </button>
+
+    <ng-template #tooltipTpl>
       <volt-tooltip-content>
         <p>This is a tooltip</p>
       </volt-tooltip-content>
-    </volt-tooltip>
+    </ng-template>
   \`,
 })
 export class MyComponent {}`;

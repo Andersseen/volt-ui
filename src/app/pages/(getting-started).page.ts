@@ -23,7 +23,15 @@ export default class DocsLayout {
       links: [
         { path: '/docs/introduction', label: 'Introduction' },
         { path: '/docs/themes', label: 'Themes' },
+      ],
+    },
+    {
+      heading: 'AI Tools',
+      links: [
         { path: '/docs/mcp', label: 'AI Integration' },
+        { path: '/docs/ai-skill', label: 'Local Skill' },
+        { path: '/docs/ai-mcp', label: 'MCP Server' },
+        { path: '/docs/ai-prompt', label: 'Prompt Reference' },
       ],
     },
   ];

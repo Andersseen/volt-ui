@@ -13,8 +13,8 @@ Volt UI is pre-v1. Status labels describe the current confidence level for the c
 ## Release Groups
 
 - **Stable**: `avatar`, `badge`, `breadcrumbs`, `button`, `card`, `checkbox`, `form-field`, `input`, `meter`, `progress`, `radio`, `separator`, `skeleton`, `slider`, `switch`, `textarea`, `toggle`, `toggle-group`.
-- **Beta**: `accordion`, `dialog`, `drawer`, `dropdown-menu`, `pagination`, `popover`, `search`, `select`, `table`, `tabs`, `toast`, `toolbar`, `tooltip`.
-- **Experimental**: `autofill`, `combobox`, `date-picker`, `file-upload`, `input-otp`, `listbox`, `navigation-menu`, `resizable`, `sidebar`, `theme`.
+- **Beta**: `accordion`, `dialog`, `drawer`, `dropdown-menu`, `input-otp`, `pagination`, `popover`, `search`, `select`, `table`, `tabs`, `toast`, `toolbar`, `tooltip`.
+- **Experimental**: `autofill`, `combobox`, `date-picker`, `file-upload`, `listbox`, `navigation-menu`, `resizable`, `sidebar`, `theme`.
 
 ## Table
 

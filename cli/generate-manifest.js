@@ -53,7 +53,7 @@ const COMPONENT_METADATA = {
     group: 'Forms',
     label: 'Checkbox',
     description: 'Boolean selection',
-    stability: 'beta',
+    stability: 'stable',
   },
   combobox: {
     group: 'Forms',
@@ -71,19 +71,19 @@ const COMPONENT_METADATA = {
     group: 'Overlays',
     label: 'Dialog',
     description: 'Modal dialogs',
-    stability: 'experimental',
+    stability: 'beta',
   },
   drawer: {
     group: 'Overlays',
     label: 'Drawer',
     description: 'Slide-in panels',
-    stability: 'experimental',
+    stability: 'beta',
   },
   'dropdown-menu': {
     group: 'Overlays',
     label: 'Dropdown Menu',
     description: 'Action menus',
-    stability: 'experimental',
+    stability: 'beta',
   },
   'file-upload': {
     group: 'Forms',
@@ -95,7 +95,7 @@ const COMPONENT_METADATA = {
     group: 'Forms',
     label: 'Form Field',
     description: 'Labels, hints, and errors',
-    stability: 'beta',
+    stability: 'stable',
   },
   input: {
     group: 'Forms',
@@ -107,7 +107,7 @@ const COMPONENT_METADATA = {
     group: 'Forms',
     label: 'Input OTP',
     description: 'PIN code input',
-    stability: 'experimental',
+    stability: 'beta',
   },
   listbox: {
     group: 'Controls',
@@ -137,7 +137,7 @@ const COMPONENT_METADATA = {
     group: 'Overlays',
     label: 'Popover',
     description: 'Floating panels',
-    stability: 'experimental',
+    stability: 'beta',
   },
   progress: {
     group: 'Display',
@@ -149,7 +149,7 @@ const COMPONENT_METADATA = {
     group: 'Forms',
     label: 'Radio',
     description: 'Single-select options',
-    stability: 'beta',
+    stability: 'stable',
   },
   resizable: {
     group: 'Layout',
@@ -167,7 +167,7 @@ const COMPONENT_METADATA = {
     group: 'Forms',
     label: 'Select',
     description: 'Dropdown selection',
-    stability: 'experimental',
+    stability: 'beta',
   },
   separator: {
     group: 'Display',
@@ -191,13 +191,13 @@ const COMPONENT_METADATA = {
     group: 'Forms',
     label: 'Slider',
     description: 'Range input',
-    stability: 'beta',
+    stability: 'stable',
   },
   switch: {
     group: 'Forms',
     label: 'Switch',
     description: 'On/off controls',
-    stability: 'beta',
+    stability: 'stable',
   },
   table: {
     group: 'Display',
@@ -227,19 +227,19 @@ const COMPONENT_METADATA = {
     group: 'Overlays',
     label: 'Toast',
     description: 'Notifications',
-    stability: 'experimental',
+    stability: 'beta',
   },
   toggle: {
     group: 'Controls',
     label: 'Toggle',
     description: 'Pressed state button',
-    stability: 'beta',
+    stability: 'stable',
   },
   'toggle-group': {
     group: 'Controls',
     label: 'Toggle Group',
     description: 'Grouped toggle controls',
-    stability: 'beta',
+    stability: 'stable',
   },
   toolbar: {
     group: 'Controls',
@@ -251,7 +251,7 @@ const COMPONENT_METADATA = {
     group: 'Overlays',
     label: 'Tooltip',
     description: 'Hover information',
-    stability: 'experimental',
+    stability: 'beta',
   },
 };
 

@@ -1,308 +1,154 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { LmnCheckIcon, LmnExternalLinkIcon, LmnListIcon, LmnSparklesIcon } from 'lumen-icons';
+import { RouterLink } from '@angular/router';
 
 const MCP_URL = 'https://volt-ui.pages.dev/api/mcp';
 
 @Component({
   selector: 'app-mcp-docs',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [LmnSparklesIcon, LmnCheckIcon, LmnExternalLinkIcon, LmnListIcon],
+  imports: [RouterLink],
   template: `
     <div class="space-y-8 max-w-3xl">
       <!-- Header -->
       <div>
-        <h1 class="text-3xl font-bold tracking-tight">AI Integration (MCP)</h1>
+        <h1 class="text-3xl font-bold tracking-tight">AI Integration</h1>
         <p class="text-lg text-muted-foreground mt-2">
-          Connect any AI assistant to a hosted MCP server that knows every Volt UI component,
-          variant, theme, and CLI command — no local setup required.
+          Volt UI gives AI assistants three ways to understand and use the component library
+          correctly: a local skill, a hosted MCP server, and a prompt reference.
         </p>
       </div>
 
-      <!-- What is MCP -->
-      <div class="rounded-lg border border-border bg-muted/30 p-4">
-        <div class="flex items-start gap-3">
-          <lmn-sparkles [size]="20" class="text-primary mt-0.5 shrink-0" />
-          <div>
-            <h3 class="font-semibold">How it works</h3>
-            <p class="text-sm text-muted-foreground mt-1">
-              The Volt UI MCP server runs on Cloudflare Pages at
-              <code class="bg-muted px-1 rounded">{{ mcpUrl }}</code
-              >. Point your AI agent at that URL — it exposes tools to list components, get usage
-              examples, query the theme system, and generate CLI commands.
-            </p>
-          </div>
+      <!-- Three options -->
+      <div class="space-y-4">
+        <h2 class="text-2xl font-semibold tracking-tight border-b border-border/50 pb-2">
+          Choose your integration
+        </h2>
+
+        <div class="grid gap-4">
+          <a
+            routerLink="/docs/ai-skill"
+            class="group flex items-start gap-4 p-4 rounded-lg border border-border hover:border-primary/50 transition-colors"
+          >
+            <div
+              class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary"
+            >
+              <span class="font-bold">1</span>
+            </div>
+            <div>
+              <h3 class="font-semibold group-hover:text-primary">Local Skill</h3>
+              <p class="text-sm text-muted-foreground mt-1">
+                Best for OpenCode / Claude Code users. The skill file is auto-discovered in your
+                workspace and teaches the agent Volt UI conventions, selectors, and the component
+                catalog.
+              </p>
+              <p class="text-sm text-primary mt-2">Learn more →</p>
+            </div>
+          </a>
+
+          <a
+            routerLink="/docs/ai-mcp"
+            class="group flex items-start gap-4 p-4 rounded-lg border border-border hover:border-primary/50 transition-colors"
+          >
+            <div
+              class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary"
+            >
+              <span class="font-bold">2</span>
+            </div>
+            <div>
+              <h3 class="font-semibold group-hover:text-primary">MCP Server</h3>
+              <p class="text-sm text-muted-foreground mt-1">
+                Best for Claude, Cursor, Windsurf, and any MCP-native agent. The hosted server at
+                <code class="bg-muted px-1 rounded">{{ mcpUrl }}</code>
+                exposes tools to query components, examples, themes, and CLI commands on demand.
+              </p>
+              <p class="text-sm text-primary mt-2">Learn more →</p>
+            </div>
+          </a>
+
+          <a
+            routerLink="/docs/ai-prompt"
+            class="group flex items-start gap-4 p-4 rounded-lg border border-border hover:border-primary/50 transition-colors"
+          >
+            <div
+              class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary"
+            >
+              <span class="font-bold">3</span>
+            </div>
+            <div>
+              <h3 class="font-semibold group-hover:text-primary">Prompt Reference</h3>
+              <p class="text-sm text-muted-foreground mt-1">
+                Best for web-based LLM chats or agents without MCP/skill support. Paste the contents
+                of <code class="bg-muted px-1 rounded">VOLT_UI_PROMPT.md</code> into any chat for a
+                complete usage guide.
+              </p>
+              <p class="text-sm text-primary mt-2">Learn more →</p>
+            </div>
+          </a>
         </div>
       </div>
 
-      <!-- Quick Setup -->
+      <!-- Quick start -->
       <div class="space-y-4">
         <h2 class="text-2xl font-semibold tracking-tight border-b border-border/50 pb-2">
-          Quick Setup
+          Quick start (MCP)
         </h2>
         <p class="text-muted-foreground">
-          Run the interactive installer from your project directory:
+          If you want the fastest path with Claude, Cursor, or Windsurf:
         </p>
         <div class="bg-[#1e1e1e] rounded-lg p-4 font-mono text-sm text-zinc-300 overflow-x-auto">
           <code>npx volt-ui-mcp</code>
         </div>
         <p class="text-sm text-muted-foreground">
-          It asks which agent(s) to set up, then writes the right config files automatically. You
-          can also pass the agent directly:
+          The installer writes the right config files for your agent and adds Cursor rules / Copilot
+          instructions where applicable.
         </p>
-        <div
-          class="bg-[#1e1e1e] rounded-lg p-4 font-mono text-sm text-zinc-300 overflow-x-auto space-y-1"
-        >
-          <div>
-            <code><span class="text-zinc-500"># one agent</span></code>
-          </div>
-          <div><code>npx volt-ui-mcp claude</code></div>
-          <div><code>npx volt-ui-mcp cursor</code></div>
-          <div>
-            <code><span class="text-zinc-500"># multiple</span></code>
-          </div>
-          <div><code>npx volt-ui-mcp cursor copilot</code></div>
-        </div>
       </div>
 
-      <!-- Supported Agents -->
+      <!-- When to use what -->
       <div class="space-y-4">
         <h2 class="text-2xl font-semibold tracking-tight border-b border-border/50 pb-2">
-          Supported Agents
+          When to use what
         </h2>
-        <div class="grid gap-4 sm:grid-cols-2">
-          <!-- Claude -->
-          <div class="rounded-lg border border-border p-4 space-y-3">
-            <div class="flex items-center gap-2">
-              <lmn-sparkles [size]="20" class="text-orange-500" />
-              <h3 class="font-semibold">Claude</h3>
-              <span
-                class="ml-auto text-xs bg-green-500/10 text-green-600 px-2 py-0.5 rounded-full font-medium"
-                >MCP native</span
-              >
-            </div>
-            <p class="text-sm text-muted-foreground">
-              Claude Desktop and Claude Code — full tool access via the hosted MCP server.
-            </p>
-            <div class="bg-[#1e1e1e] rounded p-2 font-mono text-xs text-zinc-300 overflow-x-auto">
-              <code>npx volt-ui-mcp claude</code>
-            </div>
-            <p class="text-xs text-muted-foreground">
-              Writes <code class="bg-muted px-1 rounded">.claude/mcp.json</code> and patches the
-              Claude Desktop global config if found.
-            </p>
-          </div>
-
-          <!-- Cursor -->
-          <div class="rounded-lg border border-border p-4 space-y-3">
-            <div class="flex items-center gap-2">
-              <lmn-list [size]="20" class="text-blue-500" />
-              <h3 class="font-semibold">Cursor</h3>
-              <span
-                class="ml-auto text-xs bg-green-500/10 text-green-600 px-2 py-0.5 rounded-full font-medium"
-                >MCP native</span
-              >
-            </div>
-            <p class="text-sm text-muted-foreground">
-              Full MCP support plus a <code class="bg-muted px-1 rounded">.cursorrules</code> file
-              with component context for inline suggestions.
-            </p>
-            <div class="bg-[#1e1e1e] rounded p-2 font-mono text-xs text-zinc-300 overflow-x-auto">
-              <code>npx volt-ui-mcp cursor</code>
-            </div>
-            <p class="text-xs text-muted-foreground">
-              Writes <code class="bg-muted px-1 rounded">.cursor/mcp.json</code> and
-              <code class="bg-muted px-1 rounded">.cursorrules</code>.
-            </p>
-          </div>
-
-          <!-- Windsurf -->
-          <div class="rounded-lg border border-border p-4 space-y-3">
-            <div class="flex items-center gap-2">
-              <lmn-sparkles [size]="20" class="text-cyan-500" />
-              <h3 class="font-semibold">Windsurf</h3>
-              <span
-                class="ml-auto text-xs bg-green-500/10 text-green-600 px-2 py-0.5 rounded-full font-medium"
-                >MCP native</span
-              >
-            </div>
-            <p class="text-sm text-muted-foreground">
-              Codeium's Windsurf editor with native MCP support.
-            </p>
-            <div class="bg-[#1e1e1e] rounded p-2 font-mono text-xs text-zinc-300 overflow-x-auto">
-              <code>npx volt-ui-mcp windsurf</code>
-            </div>
-            <p class="text-xs text-muted-foreground">
-              Writes <code class="bg-muted px-1 rounded">.codeium/windsurf/mcp_config.json</code>.
-            </p>
-          </div>
-
-          <!-- Copilot -->
-          <div class="rounded-lg border border-border p-4 space-y-3">
-            <div class="flex items-center gap-2">
-              <lmn-sparkles [size]="20" class="text-purple-500" />
-              <h3 class="font-semibold">GitHub Copilot</h3>
-              <span
-                class="ml-auto text-xs bg-muted text-muted-foreground px-2 py-0.5 rounded-full font-medium"
-                >instructions</span
-              >
-            </div>
-            <p class="text-sm text-muted-foreground">
-              Copilot doesn't support MCP HTTP yet — the installer writes a Copilot instructions
-              file and VS Code snippets instead.
-            </p>
-            <div class="bg-[#1e1e1e] rounded p-2 font-mono text-xs text-zinc-300 overflow-x-auto">
-              <code>npx volt-ui-mcp copilot</code>
-            </div>
-            <p class="text-xs text-muted-foreground">
-              Writes <code class="bg-muted px-1 rounded">.github/copilot-instructions.md</code> and
-              <code class="bg-muted px-1 rounded">.vscode/volt-snippets.code-snippets</code>.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Manual config -->
-      <div class="space-y-4">
-        <h2 class="text-2xl font-semibold tracking-tight border-b border-border/50 pb-2">
-          Manual Configuration
-        </h2>
-        <p class="text-muted-foreground text-sm">
-          For MCP-native agents, add this entry to your config file:
-        </p>
-        <div class="bg-[#1e1e1e] rounded-lg p-4 font-mono text-sm text-zinc-300 overflow-x-auto">
-          <pre>{{ manualConfig }}</pre>
-        </div>
-        <p class="text-sm text-muted-foreground">Config file locations:</p>
-        <ul class="text-sm text-muted-foreground space-y-1 ml-4 list-disc">
-          <li>
-            <strong>Claude Desktop</strong> —
-            <code class="bg-muted px-1 rounded"
-              >~/Library/Application Support/Claude/claude_desktop_config.json</code
-            >
-          </li>
-          <li>
-            <strong>Claude Code</strong> —
-            <code class="bg-muted px-1 rounded">.claude/mcp.json</code> in your project
-          </li>
-          <li>
-            <strong>Cursor</strong> — <code class="bg-muted px-1 rounded">.cursor/mcp.json</code> in
-            your project
-          </li>
-          <li>
-            <strong>Windsurf</strong> —
-            <code class="bg-muted px-1 rounded">.codeium/windsurf/mcp_config.json</code> in your
-            project
-          </li>
-        </ul>
-      </div>
-
-      <!-- What AI Understands -->
-      <div class="space-y-4">
-        <h2 class="text-2xl font-semibold tracking-tight border-b border-border/50 pb-2">
-          What AI understands
-        </h2>
-        <ul class="space-y-2 text-muted-foreground">
-          <li class="flex items-start gap-2">
-            <lmn-check class="w-[18px] h-[18px] text-green-500 mt-0.5 shrink-0" />
-            <span>
-              <strong>All components</strong> — button, card, input, tabs, accordion, select, and
-              more
-            </span>
-          </li>
-          <li class="flex items-start gap-2">
-            <lmn-check class="w-[18px] h-[18px] text-green-500 mt-0.5 shrink-0" />
-            <span>
-              <strong>Correct selectors</strong> —
-              <code class="bg-muted px-1 rounded">ui-button</code>,
-              <code class="bg-muted px-1 rounded">ui-card</code>,
-              <code class="bg-muted px-1 rounded">ui-form-field</code> and all sub-components
-            </span>
-          </li>
-          <li class="flex items-start gap-2">
-            <lmn-check class="w-[18px] h-[18px] text-green-500 mt-0.5 shrink-0" />
-            <span>
-              <strong>Variants &amp; inputs</strong> — solid, outline, ghost, destructive + sizes
-            </span>
-          </li>
-          <li class="flex items-start gap-2">
-            <lmn-check class="w-[18px] h-[18px] text-green-500 mt-0.5 shrink-0" />
-            <span>
-              <strong>Theme system</strong> — 5 colors × 5 styles,
-              <code class="bg-muted px-1 rounded">provideVoltTheme</code> and
-              <code class="bg-muted px-1 rounded">applyVoltTheme</code>
-            </span>
-          </li>
-          <li class="flex items-start gap-2">
-            <lmn-check class="w-[18px] h-[18px] text-green-500 mt-0.5 shrink-0" />
-            <span>
-              <strong>CLI commands</strong> —
-              <code class="bg-muted px-1 rounded">npx &#64;voltui/cli add</code>,
-              <code class="bg-muted px-1 rounded">npx &#64;voltui/cli init</code>,
-              <code class="bg-muted px-1 rounded">npx &#64;voltui/cli list</code>
-            </span>
-          </li>
-          <li class="flex items-start gap-2">
-            <lmn-check class="w-[18px] h-[18px] text-green-500 mt-0.5 shrink-0" />
-            <span>
-              <strong>Angular patterns</strong> — standalone components, zoneless signals, OnPush,
-              CVA variants, ng-primitives host directives
-            </span>
-          </li>
-        </ul>
-      </div>
-
-      <!-- Example Prompts -->
-      <div class="space-y-4">
-        <h2 class="text-2xl font-semibold tracking-tight border-b border-border/50 pb-2">
-          Example prompts
-        </h2>
-        <p class="text-muted-foreground">After setup, try asking your AI assistant:</p>
-        <div class="space-y-2">
-          @for (prompt of examplePrompts; track prompt) {
-            <div class="rounded-lg border border-border p-3 text-sm text-muted-foreground">
-              "{{ prompt }}"
-            </div>
-          }
-        </div>
-      </div>
-
-      <!-- API reference -->
-      <div class="space-y-4">
-        <h2 class="text-2xl font-semibold tracking-tight border-b border-border/50 pb-2">
-          API reference
-        </h2>
-        <div class="grid gap-3">
-          <a
-            [href]="mcpUrl"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="flex items-center justify-between rounded-lg border border-border p-4 hover:bg-muted/50 transition-colors"
-          >
-            <div>
-              <h3 class="font-semibold">MCP Server</h3>
-              <p class="text-sm text-muted-foreground">
-                <code class="bg-muted px-1 rounded">GET {{ mcpUrl }}</code> — server info &amp; tool
-                list
-              </p>
-            </div>
-            <lmn-external-link [size]="20" class="text-muted-foreground shrink-0" />
-          </a>
-
-          <a
-            [href]="setupUrl"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="flex items-center justify-between rounded-lg border border-border p-4 hover:bg-muted/50 transition-colors"
-          >
-            <div>
-              <h3 class="font-semibold">Setup configs</h3>
-              <p class="text-sm text-muted-foreground">
-                <code class="bg-muted px-1 rounded">GET {{ setupUrl }}?agent=claude</code> — exact
-                files to write per agent
-              </p>
-            </div>
-            <lmn-external-link [size]="20" class="text-muted-foreground shrink-0" />
-          </a>
+        <div class="p-4 rounded-lg border border-border bg-muted/30">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="text-left text-muted-foreground border-b border-border">
+                <th class="pb-2 font-medium">Situation</th>
+                <th class="pb-2 font-medium">Recommended tool</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-border/50">
+                <td class="py-2">You use Claude Code or OpenCode</td>
+                <td class="py-2">
+                  <a routerLink="/docs/ai-skill" class="text-primary hover:underline"
+                    >Local Skill</a
+                  >
+                </td>
+              </tr>
+              <tr class="border-b border-border/50">
+                <td class="py-2">You use Claude Desktop, Cursor, or Windsurf</td>
+                <td class="py-2">
+                  <a routerLink="/docs/ai-mcp" class="text-primary hover:underline">MCP Server</a>
+                </td>
+              </tr>
+              <tr class="border-b border-border/50">
+                <td class="py-2">You use GitHub Copilot in VS Code</td>
+                <td class="py-2">
+                  <a routerLink="/docs/ai-mcp" class="text-primary hover:underline">MCP Server</a>
+                  (instructions + snippets)
+                </td>
+              </tr>
+              <tr>
+                <td class="py-2">You use a web chat (ChatGPT, Gemini, etc.)</td>
+                <td class="py-2">
+                  <a routerLink="/docs/ai-prompt" class="text-primary hover:underline"
+                    >Prompt Reference</a
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -310,19 +156,4 @@ const MCP_URL = 'https://volt-ui.pages.dev/api/mcp';
 })
 export default class McpDocsPage {
   readonly mcpUrl = MCP_URL;
-  readonly setupUrl = `${MCP_URL}/setup`;
-
-  readonly manualConfig = JSON.stringify(
-    { mcpServers: { 'volt-ui': { type: 'url', url: MCP_URL } } },
-    null,
-    2
-  );
-
-  readonly examplePrompts = [
-    'Create a login form with Volt UI card, form-field, input, and button',
-    'Add a settings page with Volt UI tabs for Account and Security sections',
-    'Build a navigation header using Volt UI navigation-menu with dropdown items',
-    'Create a data table with Volt UI badge for status and avatar for user column',
-    'Apply the ember color with brutal style to this app using provideVoltTheme',
-  ];
 }

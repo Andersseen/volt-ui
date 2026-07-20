@@ -128,7 +128,7 @@ See [COMPONENT_STATUS.md](./COMPONENT_STATUS.md) for the current status table co
 
 ## Stability / Roadmap To v1
 
-Current status: `0.4.0`, pre-v1 hardening.
+Current status: `0.6.0`, pre-v1 hardening.
 
 Release guidance:
 
@@ -175,5 +175,13 @@ Regenerate the CLI manifest after component source changes:
 ```bash
 pnpm manifest
 ```
+
+## AI tools for consumers
+
+Volt UI ships with three complementary AI context tools so other projects can use the components correctly:
+
+- **Local skill** — `.agents/skills/volt-ui/SKILL.md` is auto-discovered by OpenCode/Claude Code in any workspace that copies Volt UI components.
+- **MCP server** — `https://volt-ui.pages.dev/api/mcp` exposes `list_components`, `get_component`, `get_usage_example`, `get_theme_info`, `get_project_info`, and `generate_cli_command`. Install locally with `npx volt-ui-mcp`.
+- **Prompt reference** — paste `VOLT_UI_PROMPT.md` into any LLM chat for a complete usage guide and component catalog.
 
 Live docs: https://volt-ui.pages.dev
