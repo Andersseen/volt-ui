@@ -29,10 +29,12 @@ description: >
 
 ## Naming conventions
 
-| Context        | Selector                                       | Class name | Import path                        |
-| -------------- | ---------------------------------------------- | ---------- | ---------------------------------- |
-| Library source | `volt-*` (component) / `[voltXxx]` (directive) | `VoltXxx`  | `'volt'` or `'@voltui/components'` |
-| After CLI copy | `ui-*` (component) / `[uiXxx]` (directive)     | `UiXxx`    | `'./ui/<component>'`               |
+| Context        | Selector                                       | Class name | Import path            |
+| -------------- | ---------------------------------------------- | ---------- | ---------------------- |
+| Library source | `volt-*` (component) / `[voltXxx]` (directive) | `VoltXxx`  | `'@voltui/components'` |
+| After CLI copy | `ui-*` (component) / `[uiXxx]` (directive)     | `UiXxx`    | `'./ui/<component>'`   |
+
+Note: `'volt'` is only a workspace-internal path alias used inside the volt-ui monorepo itself (mapped in `tsconfig`) — it is never available in a consumer project.
 
 Always prefer the CLI prefix (`ui-*` / `UiXxx`) when generating code for a consumer project unless the user explicitly imports from the npm package.
 
@@ -225,15 +227,15 @@ accepted = new FormControl(false, { nonNullable: true });
   - Tools: `list_components`, `get_component`, `get_usage_example`, `get_theme_info`, `get_project_info`, `generate_cli_command`.
   - Resources: `component://<name>`, `theme://info`, `project://info`.
   - Prompts: `generate-volt-ui-component`, `volt-ui-troubleshooting`.
-- **Local setup**: `npx volt-ui-mcp` writes `.claude/mcp.json`, `.cursor/mcp.json`, etc.
-- **Local skill**: this file is auto-discovered by OpenCode / Claude Code in consumer projects.
+- **Local setup**: `npx volt-ui-mcp claude` writes the project-level MCP config to `.mcp.json` (Claude Code's `http` transport) and installs this skill at `.claude/skills/volt-ui/SKILL.md` in the consumer project. Other targets (`cursor`, `windsurf`, `copilot`, `vscode`) write their own MCP/rules/snippet files.
+- **Local skill**: this file is not auto-discovered on its own — it must be installed into a location the agent scans (`.claude/skills/volt-ui/SKILL.md` for Claude Code, `.agents/skills/volt-ui/SKILL.md` for OpenCode) via `npx volt-ui-mcp` or by copying it manually.
 - **CLI**: `npx @voltui/cli list` shows available components; `npx @voltui/cli add <name>` copies source.
 
 ## Rules for generating Volt UI code
 
 1. Prefer standalone components with signal inputs; avoid NgModules.
 2. Use OnPush change detection in new components that extend Volt UI.
-3. Import copied components from `'./ui/<component>'` (or the local barrel), not from `'volt'`.
+3. Import copied components from `'./ui/<component>'` (or the local barrel), not from `'@voltui/components'`, unless the consumer explicitly uses the npm package workflow.
 4. Use semantic Tailwind utilities (`bg-primary`, `text-foreground`, `rounded-md`) instead of hard-coded `var()` utilities.
 5. Boolean inputs must use `booleanAttribute`; number inputs should use `numberAttribute` when appropriate.
 6. For overlays, always use the attribute-directive trigger + `<ng-template>` pattern.

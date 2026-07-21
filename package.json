@@ -3,10 +3,10 @@
   "version": "0.6.0",
   "bin": {
     "volt": "./cli/bin/volt",
-    "volt-ui-mcp": "./cli/setup-mcp.js"
+    "volt-ui-mcp": "./cli/mcp/setup-mcp.js"
   },
   "scripts": {
-    "setup:mcp": "node cli/setup-mcp.js",
+    "setup:mcp": "node cli/mcp/setup-mcp.js",
     "start": "vite",
     "dev": "vite",
     "predev": "node cli/generate-manifest.js",
@@ -27,7 +27,7 @@
     "test:e2e:ci": "pnpm build && E2E_SERVER=preview E2E_PORT=5174 playwright test --project=chromium",
     "test:e2e:consumer": "pnpm build:lib && playwright test -c playwright.consumer.config.ts",
     "test:e2e:ui": "playwright test --ui",
-    "test:all": "pnpm lint && pnpm typecheck && pnpm test:run && pnpm build:lib && pnpm test:e2e:ci",
+    "test:all": "pnpm lint && pnpm typecheck && pnpm check:ai-docs && pnpm test:run && pnpm build:lib && pnpm test:e2e:ci",
     "release:check": "pnpm lint && pnpm typecheck && pnpm test:run && pnpm pack:lib && pnpm pack:cli",
     "release:minor": "pnpm release:check",
     "lint": "eslint . --ext .ts,.html",
@@ -45,7 +45,8 @@
     "publish:lib": "ng build volt && cd dist/volt && npm publish --access public",
     "publish:cli": "cd cli && node prepare-package.js && npm --cache ../.npm-cache publish --access public && node prepare-package.js --clean",
     "prepare": "husky",
-    "manifest": "node cli/generate-manifest.js"
+    "manifest": "node cli/generate-manifest.js",
+    "check:ai-docs": "node cli/generate-manifest.js && node cli/check-ai-docs-sync.js"
   },
   "lint-staged": {
     "*.{ts,html}": [

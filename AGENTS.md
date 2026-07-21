@@ -89,15 +89,18 @@ pnpm test:all
 
 ## AI tools for consumers
 
-The repo provides three complementary ways to give AI assistants context about Volt UI:
+The repo provides three complementary ways to give AI assistants context about Volt UI. None of these are auto-discovered by a consumer project on their own — they must be installed via `npx volt-ui-mcp <agent>` (or copied manually):
 
-1. **Local skill** — `.agents/skills/volt-ui/SKILL.md` is picked up by OpenCode/Claude Code and gives agents the naming conventions, component catalog, theme system, and integration rules when working in consumer projects.
-2. **MCP server** — `src/server/routes/mcp.ts` exposes JSON-RPC tools (`list_components`, `get_component`, `get_usage_example`, `get_theme_info`, `get_project_info`, `generate_cli_command`). The production endpoint is `https://volt-ui.pages.dev/api/mcp`. Use `npx volt-ui-mcp` to install the config in `.claude/mcp.json`, `.cursor/mcp.json`, etc.
+1. **Skill** — `.agents/skills/volt-ui/SKILL.md` is the source of truth for the skill content. `npx volt-ui-mcp claude` installs an inlined copy (`VOLT_UI_SKILL` in `cli/mcp/setup-mcp.js`) into the consumer's `.claude/skills/volt-ui/SKILL.md`, where Claude Code auto-discovers it. For OpenCode, copy the same file to `.agents/skills/volt-ui/SKILL.md` in the consumer project.
+2. **MCP server** — `src/server/routes/mcp.ts` is a spec-compliant Streamable HTTP MCP server (tools: `list_components`, `get_component`, `get_usage_example`, `get_theme_info`, `get_project_info`, `generate_cli_command`; resources: `component://<name>`, `theme://info`, `project://info`; prompts: `generate-volt-ui-component`, `volt-ui-troubleshooting`). Production endpoint: `https://volt-ui.pages.dev/api/mcp`. `npx volt-ui-mcp claude` writes it to `.mcp.json` at the consumer's repo root (Claude Code's project-level MCP config, `"type": "http"`); `cursor`/`windsurf` targets write their own client-specific config. Claude Desktop does not support remote MCP servers via `claude_desktop_config.json` — add them through Settings → Connectors instead.
 3. **Prompt reference** — `VOLT_UI_PROMPT.md` is a single-file prompt that can be pasted into any LLM chat to get correct selectors, examples, and rules for Volt UI components.
 
-When updating component APIs, selectors, or examples, keep all three in sync:
+The single installer script lives at `cli/mcp/setup-mcp.js` (published as `volt-ui-mcp`; the root `package.json` bin/`setup:mcp` script point there too — don't recreate a second copy).
+
+When updating component APIs, selectors, or examples, keep all of these in sync (run `pnpm check:ai-docs` to catch component list drift automatically):
 
 - `.agents/skills/volt-ui/SKILL.md`
-- `src/server/routes/mcp.ts` (and `cli/setup-mcp.js` / `cli/mcp/setup-mcp.js`)
+- `cli/mcp/setup-mcp.js` (`VOLT_UI_SKILL`, `CURSOR_RULES`, `COPILOT_INSTRUCTIONS`, `VSCODE_SNIPPETS`)
+- `src/server/routes/mcp.ts` and `src/server/routes/mcp/setup.ts` (same constants, mirrored for the hosted `/api/mcp/setup` endpoint)
 - `VOLT_UI_PROMPT.md`
 - `src/app/lib/snippets/usage.ts`

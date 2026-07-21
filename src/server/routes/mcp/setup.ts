@@ -33,7 +33,7 @@ Volt UI is an Angular component library inspired by shadcn/ui, built on top of n
 | CLI output (user project) | \`ui-*\` (component) / \`[uiXxx]\` (directive) | \`Ui*\` |
 
 ## Components
-button · badge · card · input · textarea · checkbox · radio · switch · toggle ·
+button · badge · card · input · autofill · search · textarea · checkbox · radio · switch · toggle ·
 select · tabs · accordion · avatar · separator · tooltip · navigation-menu · form-field ·
 dialog · popover · dropdown-menu · slider · progress · breadcrumbs · sidebar ·
 toggle-group · meter · pagination · toast · input-otp · file-upload · combobox ·
@@ -117,6 +117,7 @@ You are working with **Volt UI**, an Angular v21 component library (shadcn/ui-in
 |-----------|--------|-----------|-------|
 | Button | \`./ui/button\` | \`ui-button\` | Variants: solid, outline, ghost, link, destructive |
 | Badge | \`./ui/badge\` | \`ui-badge\` | Variants: default, secondary, outline, destructive |
+| Autofill | \`./ui/autofill\` | \`[uiAutofill]\` directive | Emits \`autofillChange\` |
 | Card | \`./ui/card\` | \`ui-card\` + header/title/description/content/footer | Presentational |
 | Input | \`./ui/input\` | \`ui-input\` | CVA |
 | Textarea | \`./ui/textarea\` | \`ui-textarea\` | CVA |
@@ -479,25 +480,209 @@ interface AgentSetup {
   notes?: string[];
 }
 
+const VOLT_UI_SKILL = `---
+name: volt-ui
+description: >
+  Understand and integrate Volt UI components into Angular projects.
+  Volt UI is an Angular component library inspired by shadcn/ui, built on
+  ng-primitives, Tailwind CSS v4, standalone signals components and CVA.
+  Use when the project consumes @voltui/components, @voltui/cli, or copied
+  Volt UI source under src/app/ui.
+---
+
+# Volt UI — AI Integration Skill
+
+## When to use this skill
+
+- The user is adding, editing or debugging Volt UI components in an Angular app.
+- You see imports from \`'@voltui/components'\`, \`'./ui/button'\`, etc.
+- You need to generate markup, fix selectors, wire Reactive Forms, or theme the app.
+- The user asks about available components, CLI commands, or MCP tools.
+
+## What Volt UI is
+
+- **Angular 21**, zoneless, standalone components, OnPush, signals (\`input()\`, \`output()\`, \`model()\`).
+- **Tailwind CSS v4** with semantic tokens (\`bg-primary\`, \`text-foreground\`, \`rounded-md\`).
+- **ng-primitives** provides accessible behavior (keyboard, focus, overlays, CVA).
+- **class-variance-authority (CVA)** drives component variants.
+- **Two consumption modes**:
+  1. **CLI / source-ownership (recommended)**: \`npx @voltui/cli add button\`. Files are copied into the consumer project (default \`src/app/ui\`) and become editable local code.
+  2. **NPM package**: \`npm install @voltui/components\` for shared themes/utilities.
+
+## Naming conventions
+
+| Context        | Selector                                       | Class name | Import path                        |
+| -------------- | ----------------------------------------------- | ---------- | ----------------------------------- |
+| Library source | \`volt-*\` (component) / \`[voltXxx]\` (directive) | \`VoltXxx\`  | \`'@voltui/components'\`              |
+| After CLI copy | \`ui-*\` (component) / \`[uiXxx]\` (directive)     | \`UiXxx\`    | \`'./ui/<component>'\`                |
+
+Always prefer the CLI prefix (\`ui-*\` / \`UiXxx\`) when generating code for this project unless it explicitly imports from the npm package.
+
+## Adding components to this project
+
+\`\`\`bash
+npx @voltui/cli init              # scaffolds src/app/ui
+npx @voltui/cli add button card form-field input
+npx @voltui/cli add dialog ./src/app/shared/ui --dry-run
+\`\`\`
+
+Runtime dependencies (installed once):
+
+\`\`\`bash
+npm install ng-primitives class-variance-authority clsx tailwind-merge
+\`\`\`
+
+## Theme setup
+
+In the app's global CSS:
+
+\`\`\`css
+@import 'tailwindcss';
+@import '@voltui/components/themes.css';
+\`\`\`
+
+In \`app.config.ts\`:
+
+\`\`\`ts
+import { provideVoltTheme } from '@voltui/components';
+
+bootstrapApplication(AppComponent, {
+  providers: [provideVoltTheme({ color: 'volt', style: 'sharp', dark: false })],
+});
+\`\`\`
+
+Color presets: \`volt\`, \`ember\`, \`sage\`, \`dusk\`, \`glacier\`.
+Style presets: \`sharp\`, \`soft\`, \`brutal\`, \`ghost\`, \`retro\`.
+
+## Component / directive selector rules
+
+- Element selectors are used for presentational containers: \`<ui-card>\`, \`<ui-button>\`, \`<ui-input>\`.
+- Attribute directives are used when the primitive is applied to an existing host element:
+  - Dialog trigger: \`<button [uiDialog]="tpl">\`
+  - Drawer trigger: \`<button [uiDrawer]="tpl">\`
+  - Popover trigger: \`<button uiPopover [uiPopover]="tpl">\`
+  - Tooltip trigger: \`<button uiTooltip [uiTooltip]="tpl">\`
+  - Dropdown trigger: \`<button [uiDropdownMenu]="tpl">\`
+  - Avatar image: \`<img uiAvatarImage>\`
+  - Navigation link: \`<a uiNavigationMenuLink>\`
+- Overlays (dialog, drawer, popover, tooltip, dropdown-menu) are declared inside an \`<ng-template>\` and referenced by the trigger.
+
+## Reactive Forms
+
+Most CVA components expose \`formControl\` directly:
+
+\`\`\`ts
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { UiInput, UiCheckbox, UiSwitch, UiRadioGroup, UiRadioItem } from './ui';
+
+email = new FormControl('', { nonNullable: true });
+accepted = new FormControl(false, { nonNullable: true });
+\`\`\`
+
+\`\`\`html
+<ui-form-field>
+  <ui-form-field-label>Email</ui-form-field-label>
+  <ui-input [formControl]="email" type="email" />
+  <ui-form-field-hint>We'll only use this for account updates.</ui-form-field-hint>
+</ui-form-field>
+
+<ui-checkbox [formControl]="accepted">Accept terms</ui-checkbox>
+\`\`\`
+
+## Common patterns
+
+### Card
+
+\`\`\`html
+<ui-card>
+  <ui-card-header>
+    <ui-card-title>Title</ui-card-title>
+    <ui-card-description>Description</ui-card-description>
+  </ui-card-header>
+  <ui-card-content>Content</ui-card-content>
+  <ui-card-footer>
+    <ui-button variant="outline">Cancel</ui-button>
+    <ui-button>Save</ui-button>
+  </ui-card-footer>
+</ui-card>
+\`\`\`
+
+### Dialog
+
+\`\`\`html
+<button [uiDialog]="dialogTpl">Open</button>
+<ng-template #dialogTpl let-close="close">
+  <div uiDialogOverlay></div>
+  <div uiDialogContent>
+    <h2 uiDialogTitle>Confirm</h2>
+    <p uiDialogDescription>Are you sure?</p>
+    <ui-button (click)="close()">Confirm</ui-button>
+  </div>
+</ng-template>
+\`\`\`
+
+### Tabs
+
+\`\`\`html
+<ui-tabs [(value)]="activeTab">
+  <ui-tabs-list>
+    <ui-tabs-trigger value="account">Account</ui-tabs-trigger>
+    <ui-tabs-trigger value="password">Password</ui-tabs-trigger>
+  </ui-tabs-list>
+  <ui-tabs-content value="account">Account settings.</ui-tabs-content>
+  <ui-tabs-content value="password">Password settings.</ui-tabs-content>
+</ui-tabs>
+\`\`\`
+
+## AI tools integration
+
+- **MCP server**: \`${MCP_URL}\` is a spec-compliant Streamable HTTP MCP server, already configured in this project's \`.mcp.json\` by \`npx volt-ui-mcp\`. It exposes tools, resources, and prompts:
+  - Tools: \`list_components\`, \`get_component\`, \`get_usage_example\`, \`get_theme_info\`, \`get_project_info\`, \`generate_cli_command\`.
+  - Resources: \`component://<name>\`, \`theme://info\`, \`project://info\`.
+  - Prompts: \`generate-volt-ui-component\`, \`volt-ui-troubleshooting\`.
+- **CLI**: \`npx @voltui/cli list\` shows available components; \`npx @voltui/cli add <name>\` copies source.
+- Prefer calling the MCP \`get_component\` tool over guessing inputs — this file lists the common patterns, but the MCP server always reflects the current component metadata.
+
+## Rules for generating Volt UI code
+
+1. Prefer standalone components with signal inputs; avoid NgModules.
+2. Use OnPush change detection in new components that extend Volt UI.
+3. Import copied components from \`'./ui/<component>'\` (or the local barrel), not from \`'@voltui/components'\`, unless this project explicitly uses the npm package workflow.
+4. Use semantic Tailwind utilities (\`bg-primary\`, \`text-foreground\`, \`rounded-md\`) instead of hard-coded \`var()\` utilities.
+5. Boolean inputs must use \`booleanAttribute\`; number inputs should use \`numberAttribute\` when appropriate.
+6. For overlays, always use the attribute-directive trigger + \`<ng-template>\` pattern.
+7. Do not invent inputs. If unsure, call the MCP \`get_component\` tool.
+`;
+
+// Cursor / Windsurf accept a bare `url` entry.
 const MCP_ENTRY = { type: 'url', url: MCP_URL };
+// Claude Code's project-level `.mcp.json` uses the `http` transport type.
+const MCP_ENTRY_CLAUDE = { type: 'http', url: MCP_URL };
 
 const agentSetups: Record<string, AgentSetup> = {
   claude: {
-    label: 'Claude Desktop / Claude Code',
+    label: 'Claude Code',
     description:
-      'Connects Claude to the Volt UI MCP server so it can query components, examples, and theme info.',
+      'Connects Claude Code to the Volt UI MCP server and installs the Volt UI skill so it can query components, examples, and theme info.',
     mcpNative: true,
     files: [
       {
-        path: '.claude/mcp.json',
-        description: 'Claude Code project MCP config (merge into existing file if it exists)',
-        content: { mcpServers: { 'volt-ui': MCP_ENTRY } },
+        path: '.mcp.json',
+        description:
+          'Claude Code project-level MCP config, read from the repo root (merge into existing file if it exists)',
+        content: { mcpServers: { 'volt-ui': MCP_ENTRY_CLAUDE } },
         format: 'json',
+      },
+      {
+        path: '.claude/skills/volt-ui/SKILL.md',
+        description: 'Volt UI skill, auto-discovered by Claude Code from .claude/skills/<name>/',
+        content: VOLT_UI_SKILL,
+        format: 'text',
       },
     ],
     notes: [
-      'For Claude Desktop: merge into ~/Library/Application Support/Claude/claude_desktop_config.json (macOS) or %APPDATA%/Claude/claude_desktop_config.json (Windows)',
-      'Restart Claude after adding the config.',
+      'Restart Claude Code for the MCP server and skill to load.',
+      'Claude Desktop: remote MCP servers are added via Settings -> Connectors, not by editing claude_desktop_config.json.',
     ],
   },
 
