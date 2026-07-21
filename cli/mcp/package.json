@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "description": "Setup Volt UI MCP server for Claude, Cursor, Windsurf, and GitHub Copilot",
   "bin": {
-    "volt-ui-mcp": "./setup-mcp.js"
+    "volt-ui-mcp": "setup-mcp.js"
   },
   "files": [
     "setup-mcp.js"
