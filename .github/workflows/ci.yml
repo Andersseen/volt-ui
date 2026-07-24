@@ -7,13 +7,15 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  build-and-test:
+  verify:
+    name: Verify · lint · typecheck · test · build · e2e
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -64,3 +66,42 @@ jobs:
           name: build-files
           path: dist/analog/public
           retention-days: 1
+
+  deploy:
+    name: Deploy to Cloudflare Pages
+    needs: verify
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    environment:
+      name: production
+      url: https://volt-ui.andersseen.dev
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build library
+        run: pnpm build:lib
+
+      - name: Build application
+        run: pnpm build
+
+      - name: Deploy to Cloudflare Pages
+        run: pnpm exec wrangler pages deploy dist/analog/public --project-name=volt-ui --branch=main
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
