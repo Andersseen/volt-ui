@@ -1,41 +1,85 @@
-# Volt UI
+<div align="center">
 
-Volt UI is an independent Angular UI project inspired by shadcn/ui. It provides copyable, editable Angular components built with standalone components, signals, Tailwind CSS v4, CVA, and [ng-primitives](https://ng-primitives.dev).
+<a href="https://volt-ui.andersseen.dev">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./docs/hero-dark.png" />
+    <source media="(prefers-color-scheme: light)" srcset="./docs/hero-light.png" />
+    <img alt="Volt UI — Modern UI building blocks for Angular" src="./docs/hero-light.png" width="840" />
+  </picture>
+</a>
 
-> Naming note: this project is not affiliated with PrimeVue Volt UI. Volt UI here means an independent Angular implementation for the `@voltui` packages and CLI.
+<h1>⚡ Volt UI</h1>
 
-## What Is Volt UI?
+### Modern UI building blocks for Angular
 
-Volt UI is primarily a source-ownership workflow for Angular apps:
+Copy-and-own Angular components built on **signals**, **Tailwind CSS v4**, **CVA**,<br/>
+and [ng-primitives](https://ng-primitives.dev) — accessible, themeable, and yours to edit.
 
-- Use the CLI to copy component source into your project.
-- The copied files become your code.
-- Customize markup, styles, behavior, and variants locally.
-- Use the npm package only when you want shared themes, utilities, or advanced package consumption.
+<br/>
 
-This is intentionally closer to shadcn/ui than to a closed component library.
+[![npm — components](https://img.shields.io/npm/v/@voltui/components?style=for-the-badge&logo=npm&logoColor=white&label=components&color=6366F1)](https://www.npmjs.com/package/@voltui/components)
+[![npm — cli](https://img.shields.io/npm/v/@voltui/cli?style=for-the-badge&logo=npm&logoColor=white&label=cli&color=6366F1)](https://www.npmjs.com/package/@voltui/cli)
+[![Angular 21](https://img.shields.io/badge/Angular-21-DD0031?style=for-the-badge&logo=angular&logoColor=white)](https://angular.dev)
+[![Tailwind v4](https://img.shields.io/badge/Tailwind-v4-38BDF8?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
 
-## Why This Exists
+[![Components](https://img.shields.io/badge/components-40-8B5CF6?style=for-the-badge)](https://volt-ui.andersseen.dev/docs/components)
+[![CI](https://img.shields.io/github/actions/workflow/status/Andersseen/volt-ui/ci.yml?style=for-the-badge&logo=githubactions&logoColor=white&label=CI&branch=main)](https://github.com/Andersseen/volt-ui/actions/workflows/ci.yml)
+[![License MIT](https://img.shields.io/badge/license-MIT-22C55E?style=for-the-badge)](./LICENSE)
+[![Stars](https://img.shields.io/github/stars/Andersseen/volt-ui?style=for-the-badge&logo=github&logoColor=white&color=F59E0B)](https://github.com/Andersseen/volt-ui/stargazers)
 
-Angular has strong headless and enterprise UI options, but fewer projects focused on the shadcn-style "copy the component and own it" workflow. Volt UI fills that space with Angular 21 patterns: standalone components, OnPush, signals, zoneless compatibility, ng-primitives accessibility behavior, and Tailwind v4 tokens.
+<br/>
 
-## Recommended Usage With CLI
+**[🌐 Live Docs](https://volt-ui.andersseen.dev)** · **[📦 Components](https://volt-ui.andersseen.dev/docs/components)** · **[🎨 Theme Builder](https://volt-ui.andersseen.dev/create-theme)** · **[🤖 AI / MCP](https://volt-ui.andersseen.dev/api/mcp)** · **[📖 Docs](https://volt-ui.andersseen.dev/docs/introduction)**
 
-Initialize a local UI folder:
+</div>
 
-```bash
-npx @voltui/cli init
-```
+---
 
-Add components:
+## 💡 What is Volt UI?
+
+Volt UI is an independent Angular component library **inspired by [shadcn/ui](https://ui.shadcn.com)** — not a closed, versioned dependency you install and hope stays out of your way, but a **source-ownership workflow**:
 
 ```bash
 npx @voltui/cli add button
-npx @voltui/cli add card
-npx @voltui/cli add dialog
 ```
 
-Use copied components from your app:
+- 📥 The CLI **copies the component source** into your project.
+- ✍️ The copied files **become your code** — edit markup, styles, behavior, variants.
+- 🎨 Restyle through **Tailwind v4 tokens** instead of fighting a theming API.
+- 📦 Reach for the npm package **only** when you deliberately want shared themes/utilities.
+
+> **Why it exists** — Angular has strong headless and enterprise UI options, but few focused on the shadcn-style _"copy the component and own it"_ workflow. Volt UI fills that gap with modern Angular 21 patterns: standalone components, `OnPush`, signals, zoneless compatibility, `ng-primitives` accessibility behavior, and Tailwind v4 tokens.
+
+> _Naming note: this project is not affiliated with PrimeVue Volt UI. Here, Volt UI is an independent Angular implementation for the `@voltui` packages and CLI._
+
+---
+
+## ✨ Highlights
+
+|                                |                                                                                             |
+| ------------------------------ | ------------------------------------------------------------------------------------------- |
+| ⚡ **Copy, don't couple**      | CLI copies source into your app — no lock-in, no black-box updates.                         |
+| ♿ **Accessible by default**   | Keyboard, focus, and ARIA behavior delegated to [ng-primitives](https://ng-primitives.dev). |
+| 🎨 **25 theme combinations**   | 5 color × 5 style presets, plus dark mode, driven by Tailwind v4 tokens.                    |
+| 🧩 **40 components**           | Forms, overlays, navigation, data display — see the [full catalog](#-component-catalog).    |
+| 🛰️ **Zoneless & signal-first** | `input()` / `output()` / `model()` / `computed()`, `OnPush` everywhere.                     |
+| 🤖 **AI-ready**                | Ships an MCP server, a skill, and a prompt reference so assistants use it correctly.        |
+
+---
+
+## 🚀 Quick Start
+
+Initialize a local UI folder, then add components:
+
+```bash
+# Scaffold ./src/app/ui
+npx @voltui/cli init
+
+# Add components (dependencies are copied automatically)
+npx @voltui/cli add button card dialog
+```
+
+Use the copied components from your app:
 
 ```ts
 import { UiButton } from './ui/button';
@@ -48,41 +92,109 @@ import { UiButton } from './ui/button';
 export class ExampleComponent {}
 ```
 
-CLI behavior:
+<details>
+<summary><b>🛠️ CLI behavior & flags</b></summary>
+
+<br/>
 
 - Copies from `projects/volt/src/lib` into `src/app/ui` by default.
-- Transforms `Volt*` to `Ui*` and `volt-*` to `ui-*`.
-- Copies local component dependencies automatically.
+- Transforms `Volt*` → `Ui*` and `volt-*` → `ui-*`.
+- Detects and copies local component dependencies automatically.
 - Refuses to overwrite existing files unless `--force` is passed.
-- Supports `--dry-run` to preview files before writing.
-- Supports `[target-dir]` when you want another destination.
-- Supports `--install` to install runtime dependencies.
-
-Example:
+- `--dry-run` previews files before writing.
+- `[target-dir]` sets an alternate destination.
+- `--install` installs the required runtime dependencies.
 
 ```bash
 npx @voltui/cli add button card ./src/app/shared/ui --dry-run
 npx @voltui/cli add button card ./src/app/shared/ui --force --install
 ```
 
-## Optional Package Usage
+Copied components need these runtime dependencies in the target app:
 
-The `@voltui/components` package exists for themes, utilities, and advanced consumers who deliberately want package-owned imports. It is not the recommended default for app teams who want source ownership.
+```bash
+npm install ng-primitives class-variance-authority clsx tailwind-merge
+```
+
+</details>
+
+---
+
+## 🎨 Theme System
+
+Themes are CSS custom properties mapped into Tailwind v4 via `@theme inline`. Components use **semantic utilities** (`bg-primary`, `text-foreground`, `rounded-md`, `shadow-sm`) instead of hard-coded `var()` utilities — so a preset swap restyles everything.
+
+<table>
+<tr>
+<td valign="top" width="50%">
+
+**🌈 Color presets**
+
+- `volt`
+- `ember`
+- `sage`
+- `dusk`
+- `glacier`
+
+</td>
+<td valign="top" width="50%">
+
+**🖌️ Style presets**
+
+- `sharp`
+- `soft`
+- `brutal`
+- `ghost`
+- `retro`
+
+</td>
+</tr>
+</table>
+
+> 🎛️ Mix and match live in the **[Theme Builder →](https://volt-ui.andersseen.dev/create-theme)**
+
+---
+
+## 🧩 Component Catalog
+
+**40 components** across every common surface. Each is labeled `stable`, `beta`, or `experimental` in the docs — see **[COMPONENT_STATUS.md](./COMPONENT_STATUS.md)**.
+
+<details open>
+<summary><b>Browse all components</b></summary>
+
+<br/>
+
+| Category             | Components                                                                                                                                                                                                             |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Forms & inputs**   | `input` · `textarea` · `checkbox` · `radio` · `select` · `combobox` · `listbox` · `switch` · `slider` · `toggle` · `toggle-group` · `input-otp` · `form-field` · `autofill` · `file-upload` · `date-picker` · `search` |
+| **Actions**          | `button` · `toolbar`                                                                                                                                                                                                   |
+| **Overlays**         | `dialog` · `drawer` · `popover` · `tooltip` · `dropdown-menu` · `toast`                                                                                                                                                |
+| **Navigation**       | `navigation-menu` · `breadcrumbs` · `pagination` · `tabs` · `accordion`                                                                                                                                                |
+| **Data display**     | `table` · `avatar` · `badge` · `card` · `meter` · `progress` · `skeleton` · `separator`                                                                                                                                |
+| **Layout & utility** | `resizable` · `sidebar` · `theme`                                                                                                                                                                                      |
+
+</details>
+
+---
+
+## 📦 Optional Package Usage
+
+The `@voltui/components` package exists for themes, utilities, and advanced consumers who deliberately want package-owned imports. It is **not** the default for teams who want source ownership.
 
 ```bash
 npm install @voltui/components
 ```
 
-Import themes once:
+Import themes once — that single line is all Tailwind v4 needs:
 
 ```css
 @import 'tailwindcss';
 @import '@voltui/components/themes.css';
 ```
 
-That single import is all Tailwind v4 needs. The theme CSS self-registers the compiled component bundle as a `@source`, so every utility class the components use is generated automatically — no `@source '../node_modules/...'` line to maintain. It also aligns Tailwind's `dark:` variant with the `.dark` class that Volt's theme system toggles, so your own `dark:` utilities follow the theme. (Override that variant in your own CSS if you prefer `prefers-color-scheme`.)
+The theme CSS self-registers the compiled component bundle as a `@source`, so every utility class the components use is generated automatically. It also aligns Tailwind's `dark:` variant with the `.dark` class Volt toggles.
 
-Provide a theme:
+Provide a theme at bootstrap:
 
 ```ts
 import { provideVoltTheme } from '@voltui/components';
@@ -92,96 +204,59 @@ bootstrapApplication(AppComponent, {
 });
 ```
 
-Copied components require these runtime dependencies in the target app:
+---
+
+## 🤖 AI Tools for Consumers
+
+Volt UI ships three complementary ways to give AI assistants correct context:
+
+| Tool                    | What it is                                                                                           | Install                                              |
+| ----------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| 🧠 **Skill**            | Auto-discovered by Claude Code / OpenCode in a workspace                                             | `npx volt-ui-mcp claude`                             |
+| 🛰️ **MCP server**       | `list_components`, `get_component`, `get_usage_example`, `get_theme_info`, `generate_cli_command`, … | [`/api/mcp`](https://volt-ui.andersseen.dev/api/mcp) |
+| 📋 **Prompt reference** | Single file to paste into any LLM chat                                                               | [`VOLT_UI_PROMPT.md`](./VOLT_UI_PROMPT.md)           |
+
+---
+
+## 📈 Stability & Roadmap
+
+Current status: **`0.6.0` — pre-v1 hardening.**
+
+- **Stable** — recommended for early adoption.
+- **Beta** — usable; may still gain forms / keyboard / a11y / edge-case coverage.
+- **Experimental** — published for feedback; may change before v1.
+
+All components remain available through the package and CLI; the status label communicates **confidence, not availability**. While pre-v1, minor releases may include breaking changes to component APIs, selectors, class composition, theme tokens, and CLI output — always called out in release notes. After v1, breaking changes move to majors.
+
+Full status table: **[COMPONENT_STATUS.md](./COMPONENT_STATUS.md)**.
+
+---
+
+## 🛠️ Development
 
 ```bash
-npm install ng-primitives class-variance-authority clsx tailwind-merge
+pnpm install        # install dependencies
+pnpm dev            # docs app (AnalogJS + Vite)
+pnpm typecheck      # type check
+pnpm lint           # lint
+pnpm test:run       # unit tests (Vitest)
+pnpm build:lib      # build the Angular library
+pnpm test:e2e:ci    # Playwright e2e
+pnpm manifest       # regenerate the CLI manifest after component changes
 ```
 
-## Theme System
+CI and deployment run through a **single pipeline** (`.github/workflows/ci.yml`): every PR runs lint · typecheck · test · build · e2e, and a merge to `main` deploys the docs to **Cloudflare Pages**.
 
-Themes are CSS custom properties mapped into Tailwind v4 via `@theme inline`.
+See [CONTRIBUTING.md](./CONTRIBUTING.md) and [AGENTS.md](./AGENTS.md) for conventions.
 
-Color presets:
+---
 
-- `volt`
-- `ember`
-- `sage`
-- `dusk`
-- `glacier`
+<div align="center">
 
-Style presets:
+Built with ⚡ by [Andersseen](https://github.com/Andersseen) · [MIT License](./LICENSE)
 
-- `sharp`
-- `soft`
-- `brutal`
-- `ghost`
-- `retro`
+**[🌐 volt-ui.andersseen.dev](https://volt-ui.andersseen.dev)**
 
-Components should use semantic Tailwind utilities such as `bg-primary`, `text-foreground`, `rounded-md`, and `shadow-sm`, rather than hard-coded `var()` utilities in component templates.
+<sub><a href="#-volt-ui">↑ Back to top</a></sub>
 
-## Components Status
-
-Volt UI is in pre-v1 hardening. The docs label every component as `stable`, `beta`, or `experimental` so teams can adopt the reliable core while still trying newer primitives.
-
-See [COMPONENT_STATUS.md](./COMPONENT_STATUS.md) for the current status table covering forms, keyboard support, overlay/focus behavior, docs, and tests.
-
-## Stability / Roadmap To v1
-
-Current status: `0.6.0`, pre-v1 hardening.
-
-Release guidance:
-
-- **Stable** components are recommended for early adoption.
-- **Beta** components are usable, but may still gain more forms, keyboard, accessibility, or edge-case coverage.
-- **Experimental** components are published for feedback and may change before v1.
-- All components remain available through the package and CLI; the status label communicates confidence, not availability.
-
-Before v1, the project needs:
-
-- Hardened CLI source-copy workflow with overwrite protection and dependency copying.
-- Reactive Forms coverage for all CVA components.
-- E2E coverage for overlay open/close, Escape, focus return, and keyboard paths.
-- Clear component status labels in docs.
-- Stable theme token names and preset behavior.
-- Better docs for source ownership, customization, and migration.
-
-Stable means:
-
-- Public inputs/outputs/selectors are documented.
-- Component has meaningful unit tests.
-- Forms and keyboard behavior are tested where applicable.
-- Copied source is usable without private repo assumptions.
-- Known accessibility and focus behavior is documented.
-
-While Volt UI remains pre-v1, minor releases may still include breaking changes to component APIs, selectors, CSS class composition, theme tokens, generated CLI output, and manifest metadata. Breaking changes should be called out in release notes and kept focused. After v1, breaking changes should move to majors.
-
-## Development
-
-```bash
-pnpm install
-pnpm dev
-pnpm release:check
-pnpm release:minor
-pnpm typecheck
-pnpm lint
-pnpm test:run
-pnpm build:lib
-pnpm test:e2e:ci
-```
-
-Regenerate the CLI manifest after component source changes:
-
-```bash
-pnpm manifest
-```
-
-## AI tools for consumers
-
-Volt UI ships with three complementary AI context tools so other projects can use the components correctly:
-
-- **Local skill** — `.agents/skills/volt-ui/SKILL.md` is auto-discovered by OpenCode/Claude Code in any workspace that copies Volt UI components.
-- **MCP server** — `https://volt-ui.pages.dev/api/mcp` exposes `list_components`, `get_component`, `get_usage_example`, `get_theme_info`, `get_project_info`, and `generate_cli_command`. Install locally with `npx volt-ui-mcp`.
-- **Prompt reference** — paste `VOLT_UI_PROMPT.md` into any LLM chat for a complete usage guide and component catalog.
-
-Live docs: https://volt-ui.pages.dev
+</div>
