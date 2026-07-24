@@ -36,24 +36,53 @@
       "Bash(find projects/volt/src/lib/components/button -type f; echo \"---\"; sed -n '1,40p' projects/volt/src/lib/components/button/*.ts 2>/dev/null | head -60)",
       "Bash(npx vitest *)",
       "Bash(pnpm build:lib)",
-      "Bash(npx vite *)"
+      "Bash(npx vite *)",
+      "Bash(pnpm lint)",
+      "Bash(pnpm typecheck)",
+      "Bash(pnpm test:run)",
+      "Bash(pnpm manifest)",
+      "Bash(pnpm check:ai-docs)",
+      "Bash(pnpm vitest --run:*)"
+    ],
+    "deny": [
+      "Edit(./dist/**)",
+      "Write(./dist/**)",
+      "Edit(./coverage/**)",
+      "Write(./coverage/**)",
+      "Edit(./playwright-report/**)",
+      "Write(./playwright-report/**)",
+      "Edit(./test-results/**)",
+      "Write(./test-results/**)",
+      "Edit(./public/manifest.json)",
+      "Write(./public/manifest.json)",
+      "Edit(./pnpm-lock.yaml)",
+      "Write(./pnpm-lock.yaml)"
     ],
     "additionalDirectories": [
       "/Users/andriipap/Andersseen/Web/Projects/volt-ui/projects/volt/src/lib/components/button"
     ]
   },
-  "mcpServers": {
-    "ngp-mcp": {
-      "command": "npx",
-      "args": ["-y", "@ng-primitives/mcp"]
-    },
-    "angular-cli": {
-      "command": "npx",
-      "args": ["-y", "@angular/cli", "mcp"]
-    },
-    "volt-ui": {
-      "command": "npx",
-      "args": ["-y", "volt-ui-mcp"]
-    }
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/ripple-check.mjs\""
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/ai-docs-gate.mjs\""
+          }
+        ]
+      }
+    ]
   }
 }

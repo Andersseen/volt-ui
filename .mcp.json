@@ -1,0 +1,28 @@
+{
+  "mcpServers": {
+    "ngp-mcp": {
+      "command": "npx",
+      "args": ["--no-install", "ngp-mcp"]
+    },
+    "angular-cli": {
+      "command": "npx",
+      "args": ["--no-install", "ng", "mcp"]
+    },
+    "volt-ui": {
+      "type": "http",
+      "url": "https://volt-ui.pages.dev/api/mcp"
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest", "--browser", "chromium"]
+    },
+    "chrome-devtools": {
+      "command": "npx",
+      "args": ["-y", "chrome-devtools-mcp@latest"]
+    },
+    "github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/"
+    }
+  }
+}
