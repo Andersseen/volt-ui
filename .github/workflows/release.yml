@@ -1,0 +1,69 @@
+name: Release
+
+# Fires when a package version changes on main (a deliberate "release" commit),
+# or on demand. It publishes only the packages whose version is new on npm and
+# creates a GitHub Release for each, so releases appear in the repo sidebar.
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - projects/volt/package.json
+      - cli/package.json
+      - cli/mcp/package.json
+  workflow_dispatch:
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: write # create git tags + GitHub Releases
+
+jobs:
+  release:
+    name: Publish changed packages
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # full history so release notes can diff from the last tag
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Authenticate to npm
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > "$HOME/.npmrc"
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Run unit tests
+        run: pnpm test --run
+
+      - name: Build library
+        run: pnpm build:lib
+
+      - name: Publish new versions & create releases
+        run: node scripts/release.mjs
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
