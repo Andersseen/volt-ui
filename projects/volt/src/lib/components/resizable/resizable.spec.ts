@@ -25,13 +25,19 @@ describe('resizable components', () => {
     const handle = screen.getByRole('separator', { name: 'Resize panels' });
     expect(group).toHaveClass('flex-row', 'custom-group');
     expect(handle).toHaveAttribute('tabindex', '0');
+    expect(handle).toHaveAttribute('aria-orientation', 'horizontal');
+    expect(handle).toHaveAttribute('aria-valuenow', '0');
     expect(screen.getByText('First')).toBeInTheDocument();
 
     fixture.componentInstance.orientation.set('vertical');
     await fixture.whenStable();
     expect(group).toHaveClass('flex-col');
 
-    fireEvent.keyDown(handle, { key: 'ArrowDown' });
+    fireEvent.keyDown(handle, { key: 'ArrowRight' });
     expect(handle).toBeInTheDocument();
+
+    fireEvent.keyDown(handle, { key: 'ArrowRight' });
+    fixture.detectChanges();
+    expect(handle).toHaveAttribute('aria-valuenow', '10');
   });
 });

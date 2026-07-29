@@ -157,7 +157,8 @@ Themes are CSS custom properties mapped into Tailwind v4 via `@theme inline`. Co
 
 ## 🧩 Component Catalog
 
-**40 components** across every common surface. Each is labeled `stable`, `beta`, or `experimental` in the docs — see **[COMPONENT_STATUS.md](./COMPONENT_STATUS.md)**.
+**40 components** across every common surface. The v1 surface is now fixed and every
+component is labeled `stable` or `beta` — see **[COMPONENT_STATUS.md](./COMPONENT_STATUS.md)**.
 
 <details open>
 <summary><b>Browse all components</b></summary>
@@ -220,7 +221,7 @@ Volt UI ships three complementary ways to give AI assistants correct context:
 
 ## 📈 Stability & Roadmap
 
-Current status: **`0.6.0` — pre-v1 hardening.**
+Current status: **`0.7.0` — composite hardening and fixed v1 surface.**
 
 - **Stable** — recommended for early adoption.
 - **Beta** — usable; may still gain forms / keyboard / a11y / edge-case coverage.
@@ -232,7 +233,7 @@ Full status table: **[COMPONENT_STATUS.md](./COMPONENT_STATUS.md)**.
 
 ### Compatibility policy
 
-The current `0.6.x` line targets Angular `^21.2` and Node 20 or newer. During
+The current `0.7.x` line targets Angular `^21.2` and Node 20 or newer. During
 pre-v1, Volt UI supports the latest declared Angular major only; widening that
 range requires consumer-fixture verification and is never assumed from a
 successful build. After v1, the project will document each supported Angular

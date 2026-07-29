@@ -7,6 +7,7 @@ import {
   inject,
   HostListener,
   output,
+  signal,
 } from '@angular/core';
 
 @Component({
@@ -24,6 +25,8 @@ import {
     role: 'separator',
     tabindex: '0',
     '[attr.aria-orientation]': 'orientation()',
+    '[attr.aria-valuemin]': '0',
+    '[attr.aria-valuenow]': 'currentSize()',
   },
   template: `
     @if (orientation() === 'horizontal') {
@@ -36,6 +39,7 @@ import {
 export class VoltResizableHandle {
   readonly orientation = input<'horizontal' | 'vertical'>('horizontal');
   readonly resizing = output<boolean>();
+  protected readonly currentSize = signal(0);
 
   private readonly elementRef = inject(ElementRef<HTMLElement>);
   private readonly renderer = inject(Renderer2);
@@ -61,6 +65,7 @@ export class VoltResizableHandle {
       this.startY = event.clientY;
       this.startSize = this.prevElement?.getBoundingClientRect().height ?? 0;
     }
+    this.currentSize.set(Math.round(this.startSize));
 
     const moveUnlistener = this.renderer.listen('document', 'mousemove', (e: MouseEvent) =>
       this.onMouseMove(e)
@@ -89,6 +94,7 @@ export class VoltResizableHandle {
     const newSize = Math.max(0, currentSize + (increase ? 10 : -10));
     this.renderer.setStyle(previous, horizontal ? 'width' : 'height', `${newSize}px`);
     this.renderer.setStyle(previous, 'flex', 'none');
+    this.currentSize.set(Math.round(newSize));
   }
 
   private onMouseMove(event: MouseEvent): void {
@@ -106,5 +112,6 @@ export class VoltResizableHandle {
       this.renderer.setStyle(this.prevElement, 'height', `${newSize}px`);
       this.renderer.setStyle(this.prevElement, 'flex', 'none');
     }
+    this.currentSize.set(Math.round(newSize));
   }
 }

@@ -5,6 +5,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.0] - 2026-07-29
+
+### Added
+
+- Added full-source coverage enforcement with ratcheted thresholds and made coverage part
+  of CI and the release gate.
+- Added behavior tests for date-picker, file-upload, listbox, navigation-menu, resizable,
+  table and sidebar; the suite now covers every component family in the v1 surface.
+- Added Reactive Forms support to listbox and input-OTP while retaining their existing
+  model-binding APIs.
+- Added Reactive Forms, disabled, touched, filtering and selection coverage for combobox.
+- Added keyboard resizing and ARIA value semantics to resizable separators.
+- Added security, contribution, pull-request, issue and dependency-update policies.
+
+### Changed
+
+- Fixed the v1 component surface: all 40 components are now either stable or beta, with no
+  experimental entries remaining.
+- Updated usage snippets to recommend Reactive Forms for combobox, date-picker, input-OTP
+  and listbox.
+- CI and automated releases now verify AI-doc synchronization, coverage, all publishable
+  tarballs, docs E2E and the packaged consumer fixture before publishing.
+- Added complete npm metadata for the components, CLI and MCP installer packages.
+- Bumped the root package, `@voltui/components` and `@voltui/cli` to `0.7.0`.
+
+### Fixed
+
+- Added ARIA table, row-group, row, header and cell semantics to custom table elements.
+- Propagated native and ARIA disabled state through file-upload, listbox and input-OTP.
+- Corrected stale stability metadata in the docs application.
+- Replaced outdated testing and contributing instructions with the current repository
+  paths and quality gates.
+
 ## [0.6.0] - 2026-07-04
 
 ### Added

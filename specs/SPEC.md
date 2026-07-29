@@ -60,6 +60,7 @@ runtime utilities; the CLI copies component source into the consumer's project.
 | ------- | ----------------------------------- | ------------------------------ |
 | 0.5.0   | Form controls hardening             | [plans/v0.5.md](plans/v0.5.md) |
 | 0.6.0   | Overlay hardening                   | [plans/v0.6.md](plans/v0.6.md) |
+| 0.7.0   | Composite hardening + v1 surface    | [plans/v0.7.md](plans/v0.7.md) |
 | 0.7.0   | Composite components                | [plans/v0.7.md](plans/v0.7.md) |
 | 0.8.0   | Theme system & docs completeness    | [plans/v0.8.md](plans/v0.8.md) |
 | 0.9.0   | CLI, distribution & API freeze (RC) | [plans/v0.9.md](plans/v0.9.md) |

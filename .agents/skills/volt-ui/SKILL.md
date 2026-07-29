@@ -118,7 +118,7 @@ Style presets: `sharp`, `soft`, `brutal`, `ghost`, `retro`.
 | Toolbar       | `./ui/toolbar`       | `<ui-toolbar>`                                                                                                                                   | Component        | `orientation`                                  |
 | Tooltip       | `./ui/tooltip`       | `[uiTooltip]`, `<ui-tooltip-content>`                                                                                                            | Mixed            | `placement`, `delay`, `closeDelay`, `disabled` |
 
-### Experimental components
+### Additional beta components
 
 | Component       | Import (CLI)           | Selector                                                                             | Type             | Key inputs                             |
 | --------------- | ---------------------- | ------------------------------------------------------------------------------------ | ---------------- | -------------------------------------- |

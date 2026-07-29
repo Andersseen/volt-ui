@@ -119,5 +119,5 @@ See [COMPONENT_STATUS.md](./COMPONENT_STATUS.md) for the current component list 
 
 - Copied components are yours to maintain.
 - Re-running `volt add` over an edited component requires `--force`; review the diff before doing that.
-- Prefer `--dry-run` when adding experimental or dependency-heavy components.
+- Prefer `--dry-run` when adding beta or dependency-heavy components.
 - Regenerate the manifest with `pnpm manifest` after changing component source in this repo.
