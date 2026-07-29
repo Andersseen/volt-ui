@@ -106,8 +106,8 @@ importers:
         specifier: ^10.0.1
         version: 10.0.1(eslint@10.2.0(jiti@2.6.1))
       '@ng-primitives/mcp':
-        specifier: ^0.110.2
-        version: 0.110.2
+        specifier: ^0.128.3
+        version: 0.128.3
       '@playwright/test':
         specifier: ^1.60.0
         version: 1.60.0
@@ -430,6 +430,7 @@ packages:
   '@angular/animations@21.2.2':
     resolution: {integrity: sha512-h+BKgBDI04Euu+SfEuvOOT/oFO31yg/DgFLvOBFTxab9dWoaeR3j4JsjMUTRJ+HmvAeo1jUm1F5vUf2Bn63Q+A==}
     engines: {node: ^20.19.0 || ^22.12.0 || >=24.0.0}
+    deprecated: '@angular/animations is deprecated. Use `animate.enter` and `animate.leave` instead. For more information see: https://v22.angular.dev/guide/animations.'
     peerDependencies:
       '@angular/core': 21.2.2
 
@@ -1693,8 +1694,8 @@ packages:
   '@napi-rs/wasm-runtime@1.1.1':
     resolution: {integrity: sha512-p64ah1M1ld8xjWv3qbvFwHiFVWrq1yFvV4f7w+mzaqiR4IlSgkqhcRdHwsGgomwzBH51sRY4NEowLxnaBjcW/A==}
 
-  '@ng-primitives/mcp@0.110.2':
-    resolution: {integrity: sha512-srsG3ZWRQIfuTo3op5RGVZzaPE/g/e61giWK5F6y718n1fSVkPQDtgNMNQ4BCaOyA6M4FaMM4w7s0Fs161CKgw==}
+  '@ng-primitives/mcp@0.128.3':
+    resolution: {integrity: sha512-00w51edSM8K3EUz4Wnwjv67Vf3/1U/0HcOrBWhbz/bubmxKbUZWDfnUa4pGSVSfhDYsHI1kQHHc2yZpw2nZJwQ==}
     hasBin: true
 
   '@nodelib/fs.scandir@2.1.5':
@@ -3971,8 +3972,8 @@ packages:
   js-tokens@9.0.1:
     resolution: {integrity: sha512-mxa9E9ITFOt0ban3j6L5MpjwegGz6lBQmM1IJkWeBZGcMxto50+eWdjC/52xDbS2vy0k7vIMK0Fe2wfL9OQSpQ==}
 
-  js-yaml@3.14.2:
-    resolution: {integrity: sha512-PMSmkqxr106Xa156c2M265Z+FTrPl+oxd/rgOQy2tijQeK5TxQ43psO1ZCwhVOSdnn+RzkzlRz/eY4BgJBYVpg==}
+  js-yaml@3.15.0:
+    resolution: {integrity: sha512-ttBQIIQPDeLjpPOohtUdXuXUVoA2uIB6fEH9HyJ7234s5mBJ5wTx20njxplLZQgLaOfpmPQA7X2t5AX6tIPbog==}
     hasBin: true
 
   js-yaml@4.1.1:
@@ -7080,7 +7081,7 @@ snapshots:
       '@tybys/wasm-util': 0.10.1
     optional: true
 
-  '@ng-primitives/mcp@0.110.2':
+  '@ng-primitives/mcp@0.128.3':
     dependencies:
       '@modelcontextprotocol/sdk': 1.29.0(zod@4.4.3)
       tslib: 2.8.1
@@ -8881,7 +8882,7 @@ snapshots:
 
   front-matter@4.0.2:
     dependencies:
-      js-yaml: 3.14.2
+      js-yaml: 3.15.0
 
   fs-minipass@3.0.3:
     dependencies:
@@ -9191,7 +9192,7 @@ snapshots:
 
   js-tokens@9.0.1: {}
 
-  js-yaml@3.14.2:
+  js-yaml@3.15.0:
     dependencies:
       argparse: 1.0.10
       esprima: 4.0.1
