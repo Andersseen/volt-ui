@@ -1,19 +1,31 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { LmnGithubIcon } from 'lumen-icons';
 
 @Component({
   selector: 'app-footer',
-  imports: [LmnGithubIcon],
+  imports: [RouterLink, LmnGithubIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <footer
-      class="mt-20 py-8 border-t border-border/40 bg-background/50 backdrop-blur-sm relative z-10"
-    >
+    <footer class="border-t border-border/50 bg-muted/15 py-10 relative z-10">
       <div
-        class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground"
+        class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row justify-between items-center gap-5 text-sm text-muted-foreground"
       >
-        <div>&copy; {{ currentYear }} Volt UI. All rights reserved.</div>
-        <div class="flex items-center gap-4">
+        <div class="flex items-center gap-3">
+          <img src="favicon.svg" alt="" class="h-7 w-7 rounded-lg" />
+          <div>
+            <p class="font-medium text-foreground">Volt UI</p>
+            <p class="text-xs">Angular components you own.</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-5">
+          <a routerLink="/docs/introduction" class="hover:text-foreground transition-colors"
+            >Docs</a
+          >
+          <a routerLink="/docs/components" class="hover:text-foreground transition-colors"
+            >Components</a
+          >
+          <span class="hidden sm:inline">&copy; {{ currentYear }}</span>
           <a
             href="https://github.com/Andersseen/volt-ui"
             target="_blank"

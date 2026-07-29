@@ -321,22 +321,48 @@ function indent(lines: string[]): string {
     VoltTabsTrigger,
   ],
   template: `
-    <div class="space-y-8">
-      <div class="max-w-3xl">
-        <div class="flex items-center gap-2">
-          <volt-badge variant="secondary">Builder</volt-badge>
-          <span class="text-sm text-muted-foreground">Export-ready CSS variables</span>
+    <main class="relative z-10 overflow-hidden pb-24">
+      <section class="relative border-b border-border/50">
+        <div class="theme-grid pointer-events-none absolute inset-0 -z-10"></div>
+        <div
+          class="pointer-events-none absolute -top-24 left-1/3 -z-10 h-72 w-72 rounded-full bg-primary/15 blur-[100px]"
+        ></div>
+        <div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20">
+          <div class="max-w-3xl">
+            <div class="flex flex-wrap items-center gap-2">
+              <volt-badge
+                variant="outline"
+                class="rounded-full border-primary/25 bg-background/75 text-primary backdrop-blur"
+                >Theme studio</volt-badge
+              >
+              <span class="text-sm text-muted-foreground">Export-ready CSS variables</span>
+            </div>
+            <h1 class="mt-5 text-4xl font-semibold tracking-tight text-foreground sm:text-6xl">
+              Design your system.
+            </h1>
+            <p class="mt-5 max-w-2xl text-lg leading-8 text-muted-foreground">
+              Tune every semantic token, compare light and dark modes, and export a production-ready
+              Volt UI theme without leaving the browser.
+            </p>
+          </div>
         </div>
-        <h1 class="mt-3 text-3xl font-bold tracking-tight text-foreground">Create Theme</h1>
-        <p class="mt-2 text-lg text-muted-foreground">
-          Shape a custom Volt UI theme with live controls, preview it against real components, and
-          copy the generated CSS into your app.
-        </p>
-      </div>
+      </section>
 
-      <div class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_420px]">
+      <section
+        class="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[minmax(0,1fr)_430px] lg:py-14"
+      >
         <div class="space-y-6">
-          <volt-card>
+          <div class="flex items-end justify-between gap-4">
+            <div>
+              <p class="text-xs font-medium uppercase tracking-[0.18em] text-primary">Editor</p>
+              <h2 class="mt-2 text-2xl font-semibold tracking-tight">Theme foundations</h2>
+            </div>
+            <span class="hidden text-xs text-muted-foreground sm:block"
+              >Changes preview instantly</span
+            >
+          </div>
+
+          <volt-card class="studio-card border-border/70 bg-surface/80 shadow-sm backdrop-blur">
             <volt-card-header>
               <volt-card-title>Theme Setup</volt-card-title>
               <volt-card-description
@@ -346,8 +372,11 @@ function indent(lines: string[]): string {
             <volt-card-content>
               <div class="grid gap-4 sm:grid-cols-2">
                 <div class="space-y-2">
-                  <span class="text-sm font-medium text-foreground">Theme name</span>
+                  <label for="theme-name" class="text-sm font-medium text-foreground"
+                    >Theme name</label
+                  >
                   <volt-input
+                    id="theme-name"
                     [value]="theme().name"
                     (valueChange)="setName($event)"
                     placeholder="acme-ocean"
@@ -369,7 +398,7 @@ function indent(lines: string[]): string {
             </volt-card-content>
           </volt-card>
 
-          <volt-card>
+          <volt-card class="studio-card border-border/70 bg-surface/80 shadow-sm backdrop-blur">
             <volt-card-header>
               <volt-card-title>Color Tokens</volt-card-title>
               <volt-card-description
@@ -388,7 +417,7 @@ function indent(lines: string[]): string {
                     <div class="grid gap-3 sm:grid-cols-2">
                       @for (field of colorFields; track field.key) {
                         <div
-                          class="flex items-center gap-3 rounded-lg border border-border bg-background p-3"
+                          class="token-row flex items-center gap-3 rounded-xl border border-border/70 bg-background/70 p-3"
                         >
                           <span
                             class="h-10 w-10 shrink-0 overflow-hidden rounded-md border border-border bg-muted"
@@ -421,7 +450,7 @@ function indent(lines: string[]): string {
             </volt-card-content>
           </volt-card>
 
-          <volt-card>
+          <volt-card class="studio-card border-border/70 bg-surface/80 shadow-sm backdrop-blur">
             <volt-card-header>
               <volt-card-title>Shape & Feel</volt-card-title>
               <volt-card-description
@@ -491,7 +520,7 @@ function indent(lines: string[]): string {
             </volt-card-content>
           </volt-card>
 
-          <volt-card>
+          <volt-card class="studio-card border-border/70 bg-surface/80 shadow-sm backdrop-blur">
             <volt-card-header>
               <div class="flex items-center justify-between gap-3">
                 <div>
@@ -505,35 +534,50 @@ function indent(lines: string[]): string {
             </volt-card-header>
             <volt-card-content>
               <pre
-                class="max-h-[420px] overflow-auto rounded-lg border border-border bg-muted/30 p-4 text-xs leading-relaxed text-foreground"
+                class="max-h-[420px] overflow-auto rounded-xl border border-border/70 bg-foreground p-5 text-xs leading-relaxed text-background shadow-inner"
               ><code>{{ generatedCss() }}</code></pre>
             </volt-card-content>
           </volt-card>
         </div>
 
-        <aside class="lg:sticky lg:top-24 lg:self-start">
+        <aside class="lg:sticky lg:top-20 lg:self-start">
           <div class="space-y-4">
             <div class="flex items-center justify-between gap-3">
               <div>
-                <h2 class="text-xl font-semibold text-foreground">Live Preview</h2>
-                <p class="text-sm text-muted-foreground">
-                  Scoped preview. Your docs theme stays untouched.
-                </p>
+                <p class="text-xs font-medium uppercase tracking-[0.18em] text-primary">Canvas</p>
+                <h2 class="mt-2 text-2xl font-semibold tracking-tight text-foreground">
+                  Live preview
+                </h2>
+                <p class="text-sm text-muted-foreground">Scoped safely from the docs theme.</p>
               </div>
               <div class="flex items-center gap-2 text-sm text-muted-foreground">
-                Dark
-                <volt-switch [checked]="previewDark()" (checkedChange)="setPreviewDark($event)" />
+                <label for="theme-preview-dark">Dark</label>
+                <volt-switch
+                  id="theme-preview-dark"
+                  [checked]="previewDark()"
+                  (checkedChange)="setPreviewDark($event)"
+                />
               </div>
             </div>
 
-            <div class="overflow-hidden rounded-lg border border-border bg-muted/20">
-              <div class="border-b border-border bg-muted/40 px-4 py-3">
-                <span class="text-sm font-medium text-foreground">Preview</span>
+            <div
+              class="preview-shell overflow-hidden rounded-2xl border border-border/70 bg-surface/75 shadow-2xl shadow-black/10 backdrop-blur"
+            >
+              <div
+                class="flex items-center justify-between border-b border-border/60 bg-muted/35 px-4 py-3"
+              >
+                <div class="flex items-center gap-1.5" aria-hidden="true">
+                  <span class="h-2.5 w-2.5 rounded-full bg-destructive/70"></span>
+                  <span class="h-2.5 w-2.5 rounded-full bg-warning/80"></span>
+                  <span class="h-2.5 w-2.5 rounded-full bg-success/70"></span>
+                </div>
+                <span class="font-mono text-[10px] text-muted-foreground">theme-preview.css</span>
+                <volt-badge variant="secondary" class="text-[10px]">Live</volt-badge>
               </div>
 
-              <div class="h-[680px] overflow-auto p-4">
+              <div class="h-[680px] overflow-auto p-3 sm:p-4">
                 <div
-                  class="overflow-hidden rounded-xl border border-border shadow-lg"
+                  class="overflow-hidden rounded-xl border border-border shadow-lg transition-colors duration-300"
                   [ngStyle]="previewStyle()"
                 >
                   <div class="min-h-[620px] bg-background p-5 text-foreground">
@@ -626,8 +670,69 @@ function indent(lines: string[]): string {
             </div>
           </div>
         </aside>
-      </div>
-    </div>
+      </section>
+    </main>
+  `,
+  styles: `
+    .theme-grid {
+      background-image:
+        linear-gradient(
+          to right,
+          color-mix(in oklch, var(--border) 55%, transparent) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          to bottom,
+          color-mix(in oklch, var(--border) 55%, transparent) 1px,
+          transparent 1px
+        );
+      background-size: 48px 48px;
+      mask-image: linear-gradient(to right, black, transparent 85%);
+    }
+
+    .studio-card,
+    .token-row {
+      transition:
+        border-color 180ms ease,
+        box-shadow 180ms ease,
+        transform 180ms ease;
+    }
+
+    .studio-card:hover {
+      border-color: color-mix(in oklch, var(--primary) 22%, var(--border));
+    }
+
+    .token-row:hover {
+      border-color: color-mix(in oklch, var(--primary) 32%, var(--border));
+      box-shadow: 0 10px 25px -22px var(--primary);
+      transform: translateY(-1px);
+    }
+
+    .preview-shell {
+      animation: preview-enter 550ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    @keyframes preview-enter {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .preview-shell {
+        animation: none;
+      }
+
+      .studio-card,
+      .token-row {
+        transition: none;
+      }
+    }
   `,
 })
 export default class CreateThemePage {
