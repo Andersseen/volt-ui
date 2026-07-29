@@ -13,7 +13,7 @@ importers:
         version: 2.6.1(e80ea6dd8df40211ba45cd5baf611ae4)
       '@analogjs/platform':
         specifier: ^2.6.1
-        version: 2.6.1(@angular/build@21.2.15(6f78b0d904f016c0d41582c75b96a5a0))(marked-gfm-heading-id@4.1.4(marked@15.0.12))(marked-highlight@2.2.4(marked@15.0.12))(marked-mangle@1.1.13(marked@15.0.12))(marked@15.0.12)(prismjs@1.30.0)(rolldown@1.0.0-rc.4)(vite@7.3.1(@types/node@25.9.3)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.3)(terser@5.46.1)(yaml@2.8.3))
+        version: 2.6.1(@angular/build@21.2.15(ddef664915e484257da6e322e7b56e7d))(marked-gfm-heading-id@4.1.4(marked@15.0.12))(marked-highlight@2.2.4(marked@15.0.12))(marked-mangle@1.1.13(marked@15.0.12))(marked@15.0.12)(prismjs@1.30.0)(rolldown@1.0.0-rc.4)(vite@7.3.1(@types/node@25.9.3)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.3)(terser@5.46.1)(yaml@2.8.3))
       '@analogjs/router':
         specifier: ^2.6.1
         version: 2.6.1(@analogjs/content@2.6.1(e80ea6dd8df40211ba45cd5baf611ae4))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/router@21.2.17(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.17(@angular/animations@21.2.2(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2))
@@ -69,8 +69,8 @@ importers:
         specifier: ^3.5.0
         version: 3.5.0
       tailwindcss:
-        specifier: ^4.3.0
-        version: 4.3.0
+        specifier: ^4.3.3
+        version: 4.3.3
       tslib:
         specifier: ^2.3.0
         version: 2.8.1
@@ -80,7 +80,7 @@ importers:
     devDependencies:
       '@analogjs/vite-plugin-angular':
         specifier: ^2.6.1
-        version: 2.6.1(@angular/build@21.2.15(6f78b0d904f016c0d41582c75b96a5a0))(vite@7.3.1(@types/node@25.9.3)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.3)(terser@5.46.1)(yaml@2.8.3))
+        version: 2.6.1(@angular/build@21.2.15(ddef664915e484257da6e322e7b56e7d))(vite@7.3.1(@types/node@25.9.3)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.3)(terser@5.46.1)(yaml@2.8.3))
       '@angular-eslint/eslint-plugin':
         specifier: ^21.3.1
         version: 21.3.1(@typescript-eslint/utils@8.58.0(eslint@10.2.0(jiti@2.6.1))(typescript@5.9.3))(eslint@10.2.0(jiti@2.6.1))(typescript@5.9.3)
@@ -95,7 +95,7 @@ importers:
         version: 21.3.1(@typescript-eslint/utils@8.58.0(eslint@10.2.0(jiti@2.6.1))(typescript@5.9.3))(eslint@10.2.0(jiti@2.6.1))(typescript@5.9.3)
       '@angular/build':
         specifier: ^21.2.2
-        version: 21.2.15(6f78b0d904f016c0d41582c75b96a5a0)
+        version: 21.2.15(ddef664915e484257da6e322e7b56e7d)
       '@angular/cli':
         specifier: ^21.2.2
         version: 21.2.15(@types/node@25.9.3)(chokidar@5.0.0)
@@ -164,7 +164,7 @@ importers:
         version: 16.4.0
       ng-packagr:
         specifier: ^21.2.0
-        version: 21.2.0(@angular/compiler-cli@21.2.17(@angular/compiler@21.2.17)(typescript@5.9.3))(tailwindcss@4.3.0)(tslib@2.8.1)(typescript@5.9.3)
+        version: 21.2.0(@angular/compiler-cli@21.2.17(@angular/compiler@21.2.17)(typescript@5.9.3))(tailwindcss@4.3.3)(tslib@2.8.1)(typescript@5.9.3)
       playwright:
         specifier: ^1.60.0
         version: 1.60.0
@@ -176,7 +176,7 @@ importers:
         version: 3.8.4
       tailwindcss-animate:
         specifier: ^1.0.7
-        version: 1.0.7(tailwindcss@4.3.0)
+        version: 1.0.7(tailwindcss@4.3.3)
       typescript:
         specifier: ~5.9.2
         version: 5.9.3
@@ -430,6 +430,7 @@ packages:
   '@angular/animations@21.2.2':
     resolution: {integrity: sha512-h+BKgBDI04Euu+SfEuvOOT/oFO31yg/DgFLvOBFTxab9dWoaeR3j4JsjMUTRJ+HmvAeo1jUm1F5vUf2Bn63Q+A==}
     engines: {node: ^20.19.0 || ^22.12.0 || >=24.0.0}
+    deprecated: '@angular/animations is deprecated. Use `animate.enter` and `animate.leave` instead. For more information see: https://v22.angular.dev/guide/animations.'
     peerDependencies:
       '@angular/core': 21.2.2
 
@@ -3971,8 +3972,8 @@ packages:
   js-tokens@9.0.1:
     resolution: {integrity: sha512-mxa9E9ITFOt0ban3j6L5MpjwegGz6lBQmM1IJkWeBZGcMxto50+eWdjC/52xDbS2vy0k7vIMK0Fe2wfL9OQSpQ==}
 
-  js-yaml@3.14.2:
-    resolution: {integrity: sha512-PMSmkqxr106Xa156c2M265Z+FTrPl+oxd/rgOQy2tijQeK5TxQ43psO1ZCwhVOSdnn+RzkzlRz/eY4BgJBYVpg==}
+  js-yaml@3.15.0:
+    resolution: {integrity: sha512-ttBQIIQPDeLjpPOohtUdXuXUVoA2uIB6fEH9HyJ7234s5mBJ5wTx20njxplLZQgLaOfpmPQA7X2t5AX6tIPbog==}
     hasBin: true
 
   js-yaml@4.1.1:
@@ -5123,6 +5124,9 @@ packages:
   tailwindcss@4.3.0:
     resolution: {integrity: sha512-y6nxMGB1nMW9R6k96e5gdIFzcfL/gTJRNaqGes1YvkLnPVXzWgbqFF2yLC0T8G774n24cx3Pe8XrKoniCOAH+Q==}
 
+  tailwindcss@4.3.3:
+    resolution: {integrity: sha512-gOhV3P7ufE62QDGg1zVaTgCR+EtPv92k2nIhVcVKcLmxT1sUBsQGhnZj175j+MqRt4zLF7ic+sCYjfhxMxj7YQ==}
+
   tapable@2.3.3:
     resolution: {integrity: sha512-uxc/zpqFg6x7C8vOE7lh6Lbda8eEL9zmVm/PLeTPBRhh1xCgdWaQ+J1CUieGpIfm2HdtsUpRv+HshiasBMcc6A==}
     engines: {node: '>=6'}
@@ -5808,9 +5812,9 @@ snapshots:
       rxjs: 7.8.2
       tslib: 2.8.1
 
-  '@analogjs/platform@2.6.1(@angular/build@21.2.15(6f78b0d904f016c0d41582c75b96a5a0))(marked-gfm-heading-id@4.1.4(marked@15.0.12))(marked-highlight@2.2.4(marked@15.0.12))(marked-mangle@1.1.13(marked@15.0.12))(marked@15.0.12)(prismjs@1.30.0)(rolldown@1.0.0-rc.4)(vite@7.3.1(@types/node@25.9.3)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.3)(terser@5.46.1)(yaml@2.8.3))':
+  '@analogjs/platform@2.6.1(@angular/build@21.2.15(ddef664915e484257da6e322e7b56e7d))(marked-gfm-heading-id@4.1.4(marked@15.0.12))(marked-highlight@2.2.4(marked@15.0.12))(marked-mangle@1.1.13(marked@15.0.12))(marked@15.0.12)(prismjs@1.30.0)(rolldown@1.0.0-rc.4)(vite@7.3.1(@types/node@25.9.3)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.3)(terser@5.46.1)(yaml@2.8.3))':
     dependencies:
-      '@analogjs/vite-plugin-angular': 2.6.1(@angular/build@21.2.15(6f78b0d904f016c0d41582c75b96a5a0))(vite@7.3.1(@types/node@25.9.3)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.3)(terser@5.46.1)(yaml@2.8.3))
+      '@analogjs/vite-plugin-angular': 2.6.1(@angular/build@21.2.15(ddef664915e484257da6e322e7b56e7d))(vite@7.3.1(@types/node@25.9.3)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.3)(terser@5.46.1)(yaml@2.8.3))
       '@analogjs/vite-plugin-nitro': 2.6.1(rolldown@1.0.0-rc.4)
       marked: 15.0.12
       marked-gfm-heading-id: 4.1.4(marked@15.0.12)
@@ -5862,7 +5866,7 @@ snapshots:
       '@angular/router': 21.2.17(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.17(@angular/animations@21.2.2(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       tslib: 2.8.1
 
-  '@analogjs/vite-plugin-angular@2.6.1(@angular/build@21.2.15(6f78b0d904f016c0d41582c75b96a5a0))(vite@7.3.1(@types/node@25.9.3)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.3)(terser@5.46.1)(yaml@2.8.3))':
+  '@analogjs/vite-plugin-angular@2.6.1(@angular/build@21.2.15(ddef664915e484257da6e322e7b56e7d))(vite@7.3.1(@types/node@25.9.3)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.3)(terser@5.46.1)(yaml@2.8.3))':
     dependencies:
       magic-string: 0.30.21
       obug: 2.1.1
@@ -5870,7 +5874,7 @@ snapshots:
       tinyglobby: 0.2.15
       ts-morph: 21.0.1
     optionalDependencies:
-      '@angular/build': 21.2.15(6f78b0d904f016c0d41582c75b96a5a0)
+      '@angular/build': 21.2.15(ddef664915e484257da6e322e7b56e7d)
       vite: 7.3.1(@types/node@25.9.3)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.3)(terser@5.46.1)(yaml@2.8.3)
 
   '@analogjs/vite-plugin-nitro@2.6.1(rolldown@1.0.0-rc.4)':
@@ -6038,7 +6042,7 @@ snapshots:
       '@angular/core': 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       tslib: 2.8.1
 
-  '@angular/build@21.2.15(6f78b0d904f016c0d41582c75b96a5a0)':
+  '@angular/build@21.2.15(ddef664915e484257da6e322e7b56e7d)':
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@angular-devkit/architect': 0.2102.15(chokidar@5.0.0)
@@ -6077,9 +6081,9 @@ snapshots:
       '@angular/platform-server': 21.2.17(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/compiler@21.2.17)(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.17(@angular/animations@21.2.2(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       less: 4.5.1
       lmdb: 3.5.1
-      ng-packagr: 21.2.0(@angular/compiler-cli@21.2.17(@angular/compiler@21.2.17)(typescript@5.9.3))(tailwindcss@4.3.0)(tslib@2.8.1)(typescript@5.9.3)
+      ng-packagr: 21.2.0(@angular/compiler-cli@21.2.17(@angular/compiler@21.2.17)(typescript@5.9.3))(tailwindcss@4.3.3)(tslib@2.8.1)(typescript@5.9.3)
       postcss: 8.5.15
-      tailwindcss: 4.3.0
+      tailwindcss: 4.3.3
       vitest: 4.1.8(@types/node@25.9.3)(@vitest/coverage-v8@4.1.8)(jsdom@28.1.0)(vite@7.3.1(@types/node@25.9.3)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.3)(terser@5.46.1)(yaml@2.8.3))
     transitivePeerDependencies:
       - '@types/node'
@@ -8881,7 +8885,7 @@ snapshots:
 
   front-matter@4.0.2:
     dependencies:
-      js-yaml: 3.14.2
+      js-yaml: 3.15.0
 
   fs-minipass@3.0.3:
     dependencies:
@@ -9191,7 +9195,7 @@ snapshots:
 
   js-tokens@9.0.1: {}
 
-  js-yaml@3.14.2:
+  js-yaml@3.15.0:
     dependencies:
       argparse: 1.0.10
       esprima: 4.0.1
@@ -9616,7 +9620,7 @@ snapshots:
 
   negotiator@1.0.0: {}
 
-  ng-packagr@21.2.0(@angular/compiler-cli@21.2.17(@angular/compiler@21.2.17)(typescript@5.9.3))(tailwindcss@4.3.0)(tslib@2.8.1)(typescript@5.9.3):
+  ng-packagr@21.2.0(@angular/compiler-cli@21.2.17(@angular/compiler@21.2.17)(typescript@5.9.3))(tailwindcss@4.3.3)(tslib@2.8.1)(typescript@5.9.3):
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@angular/compiler-cli': 21.2.17(@angular/compiler@21.2.17)(typescript@5.9.3)
@@ -9644,7 +9648,7 @@ snapshots:
       typescript: 5.9.3
     optionalDependencies:
       rollup: 4.59.0
-      tailwindcss: 4.3.0
+      tailwindcss: 4.3.3
 
   ng-primitives@0.110.2(77527d70b85ef326958787babe68935e):
     dependencies:
@@ -10607,11 +10611,13 @@ snapshots:
 
   tailwind-merge@3.5.0: {}
 
-  tailwindcss-animate@1.0.7(tailwindcss@4.3.0):
+  tailwindcss-animate@1.0.7(tailwindcss@4.3.3):
     dependencies:
-      tailwindcss: 4.3.0
+      tailwindcss: 4.3.3
 
   tailwindcss@4.3.0: {}
+
+  tailwindcss@4.3.3: {}
 
   tapable@2.3.3: {}
 
