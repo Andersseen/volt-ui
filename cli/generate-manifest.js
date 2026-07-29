@@ -17,7 +17,7 @@ const COMPONENT_METADATA = {
     group: 'Forms',
     label: 'Autofill',
     description: 'Browser autofill detection',
-    stability: 'experimental',
+    stability: 'beta',
   },
   avatar: {
     group: 'Display',
@@ -59,13 +59,13 @@ const COMPONENT_METADATA = {
     group: 'Forms',
     label: 'Combobox',
     description: 'Searchable select',
-    stability: 'experimental',
+    stability: 'beta',
   },
   'date-picker': {
     group: 'Controls',
     label: 'Date Picker',
     description: 'Calendar input',
-    stability: 'experimental',
+    stability: 'beta',
   },
   dialog: {
     group: 'Overlays',
@@ -89,7 +89,7 @@ const COMPONENT_METADATA = {
     group: 'Forms',
     label: 'File Upload',
     description: 'Upload controls',
-    stability: 'experimental',
+    stability: 'beta',
   },
   'form-field': {
     group: 'Forms',
@@ -113,7 +113,7 @@ const COMPONENT_METADATA = {
     group: 'Controls',
     label: 'Listbox',
     description: 'Selection list',
-    stability: 'experimental',
+    stability: 'beta',
   },
   meter: {
     group: 'Display',
@@ -125,7 +125,7 @@ const COMPONENT_METADATA = {
     group: 'Navigation',
     label: 'Navigation Menu',
     description: 'Navbar with dropdowns',
-    stability: 'experimental',
+    stability: 'beta',
   },
   pagination: {
     group: 'Controls',
@@ -155,7 +155,7 @@ const COMPONENT_METADATA = {
     group: 'Layout',
     label: 'Resizable',
     description: 'Resizable panels',
-    stability: 'experimental',
+    stability: 'beta',
   },
   search: {
     group: 'Forms',
@@ -179,7 +179,7 @@ const COMPONENT_METADATA = {
     group: 'Layout',
     label: 'Sidebar',
     description: 'Application sidebar layout',
-    stability: 'experimental',
+    stability: 'beta',
   },
   skeleton: {
     group: 'Display',
@@ -221,7 +221,7 @@ const COMPONENT_METADATA = {
     group: 'Theming',
     label: 'Theme',
     description: 'Document-level theme provider',
-    stability: 'experimental',
+    stability: 'beta',
   },
   toast: {
     group: 'Overlays',

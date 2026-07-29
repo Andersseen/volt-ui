@@ -55,11 +55,23 @@ jobs:
       - name: Typecheck
         run: pnpm typecheck
 
-      - name: Run unit tests
-        run: pnpm test --run
+      - name: Check generated AI and component documentation
+        run: pnpm check:ai-docs
+
+      - name: Run unit tests with enforced coverage
+        run: pnpm test:coverage
 
       - name: Build library
         run: pnpm build:lib
+
+      - name: Validate all publishable packages
+        run: pnpm pack:lib && pnpm pack:cli && pnpm pack:mcp
+
+      - name: Install Playwright Chromium
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Run docs and consumer end-to-end tests
+        run: pnpm test:e2e:ci && pnpm test:e2e:consumer
 
       - name: Publish new versions & create releases
         run: node scripts/release.mjs

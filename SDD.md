@@ -377,7 +377,8 @@ The following items are considered blockers or strong requirements for a v1.0.0 
 
 - `stable candidate` components should avoid casual breaking changes, but may still change before v1 when accessibility, forms integration, or CLI copy behavior requires it.
 - `beta` components may change inputs, outputs, markup, generated class composition, or dependency structure in minor `0.x` releases.
-- `experimental` components may change more freely before v1, especially overlays, composite inputs, date/file workflows, navigation-menu, and resizable.
+- The v1 surface is fixed as of 0.7; beta components may still receive compatible
+  hardening before v1, while removals require an explicit release note.
 - Breaking changes in `0.x` releases should be documented in release notes and kept focused.
 - After v1, breaking changes should move to major releases.
 - A component is considered stable only when its public API is documented, source-copy output is usable, forms/keyboard behavior is tested where applicable, and known accessibility caveats are documented.
@@ -422,7 +423,7 @@ The following items are considered blockers or strong requirements for a v1.0.0 
 ### 12.7 API stability
 
 - Freeze public input/output names and selector conventions.
-- Mark experimental components explicitly if they are not v1-ready.
+- Keep non-v1 ideas out of the published surface until they have their own post-v1 plan.
 - Publish a v1 migration guide from the alpha versions.
 
 ---

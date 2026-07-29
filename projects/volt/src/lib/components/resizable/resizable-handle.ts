@@ -7,6 +7,7 @@ import {
   inject,
   HostListener,
   output,
+  signal,
 } from '@angular/core';
 
 @Component({
@@ -21,6 +22,11 @@ import {
     '[class.w-full]': "orientation() === 'vertical'",
     '[class.cursor-col-resize]': "orientation() === 'horizontal'",
     '[class.cursor-row-resize]': "orientation() === 'vertical'",
+    role: 'separator',
+    tabindex: '0',
+    '[attr.aria-orientation]': 'orientation()',
+    '[attr.aria-valuemin]': '0',
+    '[attr.aria-valuenow]': 'currentSize()',
   },
   template: `
     @if (orientation() === 'horizontal') {
@@ -33,6 +39,7 @@ import {
 export class VoltResizableHandle {
   readonly orientation = input<'horizontal' | 'vertical'>('horizontal');
   readonly resizing = output<boolean>();
+  protected readonly currentSize = signal(0);
 
   private readonly elementRef = inject(ElementRef<HTMLElement>);
   private readonly renderer = inject(Renderer2);
@@ -58,6 +65,7 @@ export class VoltResizableHandle {
       this.startY = event.clientY;
       this.startSize = this.prevElement?.getBoundingClientRect().height ?? 0;
     }
+    this.currentSize.set(Math.round(this.startSize));
 
     const moveUnlistener = this.renderer.listen('document', 'mousemove', (e: MouseEvent) =>
       this.onMouseMove(e)
@@ -68,6 +76,25 @@ export class VoltResizableHandle {
       moveUnlistener();
       upUnlistener();
     });
+  }
+
+  @HostListener('keydown', ['$event'])
+  onKeyDown(event: KeyboardEvent): void {
+    const horizontal = this.orientation() === 'horizontal';
+    const decrease = horizontal ? event.key === 'ArrowLeft' : event.key === 'ArrowUp';
+    const increase = horizontal ? event.key === 'ArrowRight' : event.key === 'ArrowDown';
+    if (!decrease && !increase) return;
+
+    event.preventDefault();
+    const previous = this.elementRef.nativeElement.previousElementSibling as HTMLElement | null;
+    if (!previous) return;
+
+    const rect = previous.getBoundingClientRect();
+    const currentSize = horizontal ? rect.width : rect.height;
+    const newSize = Math.max(0, currentSize + (increase ? 10 : -10));
+    this.renderer.setStyle(previous, horizontal ? 'width' : 'height', `${newSize}px`);
+    this.renderer.setStyle(previous, 'flex', 'none');
+    this.currentSize.set(Math.round(newSize));
   }
 
   private onMouseMove(event: MouseEvent): void {
@@ -85,5 +112,6 @@ export class VoltResizableHandle {
       this.renderer.setStyle(this.prevElement, 'height', `${newSize}px`);
       this.renderer.setStyle(this.prevElement, 'flex', 'none');
     }
+    this.currentSize.set(Math.round(newSize));
   }
 }

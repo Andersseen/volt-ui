@@ -604,17 +604,18 @@ export class MyComponent {
   }
 }`;
 
-export const INPUT_OTP_USAGE = `import { Component, signal } from '@angular/core';
+export const INPUT_OTP_USAGE = `import { Component } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { VoltInputOtp } from 'volt';
 
 @Component({
-  imports: [VoltInputOtp],
+  imports: [ReactiveFormsModule, VoltInputOtp],
   template: \`
-    <volt-input-otp [(value)]="code" [length]="6" />
+    <volt-input-otp [formControl]="code" [length]="6" />
   \`,
 })
 export class MyComponent {
-  code = signal('');
+  code = new FormControl('', { nonNullable: true });
 }`;
 
 export const FILE_UPLOAD_USAGE = `import { Component } from '@angular/core';
@@ -630,42 +631,45 @@ import { VoltFileDropzone } from 'volt';
 })
 export class MyComponent {}`;
 
-export const COMBOBOX_USAGE = `import { Component, signal } from '@angular/core';
+export const COMBOBOX_USAGE = `import { Component } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { VoltCombobox } from 'volt';
 
 @Component({
-  imports: [VoltCombobox],
+  imports: [ReactiveFormsModule, VoltCombobox],
   template: \`
-    <volt-combobox [(value)]="framework" [items]="frameworks">
+    <volt-combobox [formControl]="framework" [items]="frameworks">
       <ng-template let-item>{{ item }}</ng-template>
     </volt-combobox>
   \`,
 })
 export class MyComponent {
-  framework = signal('');
+  framework = new FormControl<string | null>(null);
   frameworks = ['Angular', 'React', 'Vue', 'Svelte'];
 }`;
 
-export const DATE_PICKER_USAGE = `import { Component, signal } from '@angular/core';
+export const DATE_PICKER_USAGE = `import { Component } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { VoltDatePicker } from 'volt';
 
 @Component({
-  imports: [VoltDatePicker],
+  imports: [ReactiveFormsModule, VoltDatePicker],
   template: \`
-    <volt-date-picker [(date)]="date" />
+    <volt-date-picker [formControl]="date" />
   \`,
 })
 export class MyComponent {
-  date = signal<Date | undefined>(new Date());
+  date = new FormControl<Date | null>(new Date());
 }`;
 
-export const LISTBOX_USAGE = `import { Component, signal } from '@angular/core';
+export const LISTBOX_USAGE = `import { Component } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { VoltListbox, VoltListboxOption } from 'volt';
 
 @Component({
-  imports: [VoltListbox, VoltListboxOption],
+  imports: [ReactiveFormsModule, VoltListbox, VoltListboxOption],
   template: \`
-    <volt-listbox [(value)]="selected">
+    <volt-listbox [formControl]="selected">
       <volt-listbox-option value="angular">Angular</volt-listbox-option>
       <volt-listbox-option value="react">React</volt-listbox-option>
       <volt-listbox-option value="vue">Vue</volt-listbox-option>
@@ -673,7 +677,7 @@ import { VoltListbox, VoltListboxOption } from 'volt';
   \`,
 })
 export class MyComponent {
-  selected = signal(['angular']);
+  selected = new FormControl(['angular'], { nonNullable: true });
 }`;
 
 export const TOOLBAR_USAGE = `import { Component } from '@angular/core';

@@ -157,7 +157,8 @@ Themes are CSS custom properties mapped into Tailwind v4 via `@theme inline`. Co
 
 ## 🧩 Component Catalog
 
-**40 components** across every common surface. Each is labeled `stable`, `beta`, or `experimental` in the docs — see **[COMPONENT_STATUS.md](./COMPONENT_STATUS.md)**.
+**40 components** across every common surface. The v1 surface is now fixed and every
+component is labeled `stable` or `beta` — see **[COMPONENT_STATUS.md](./COMPONENT_STATUS.md)**.
 
 <details open>
 <summary><b>Browse all components</b></summary>
@@ -220,7 +221,7 @@ Volt UI ships three complementary ways to give AI assistants correct context:
 
 ## 📈 Stability & Roadmap
 
-Current status: **`0.6.0` — pre-v1 hardening.**
+Current status: **`0.7.0` — composite hardening and fixed v1 surface.**
 
 - **Stable** — recommended for early adoption.
 - **Beta** — usable; may still gain forms / keyboard / a11y / edge-case coverage.
@@ -229,6 +230,18 @@ Current status: **`0.6.0` — pre-v1 hardening.**
 All components remain available through the package and CLI; the status label communicates **confidence, not availability**. While pre-v1, minor releases may include breaking changes to component APIs, selectors, class composition, theme tokens, and CLI output — always called out in release notes. After v1, breaking changes move to majors.
 
 Full status table: **[COMPONENT_STATUS.md](./COMPONENT_STATUS.md)**.
+
+### Compatibility policy
+
+The current `0.7.x` line targets Angular `^21.2` and Node 20 or newer. During
+pre-v1, Volt UI supports the latest declared Angular major only; widening that
+range requires consumer-fixture verification and is never assumed from a
+successful build. After v1, the project will document each supported Angular
+major and provide migrations or release notes before dropping one.
+
+Coverage is measured against the complete library source, CLI core and hosted
+MCP route. Every component family requires a real behavior spec, while overlays
+and keyboard workflows are additionally exercised in Playwright.
 
 ---
 

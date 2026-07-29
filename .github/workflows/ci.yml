@@ -42,14 +42,23 @@ jobs:
       - name: Typecheck
         run: pnpm typecheck
 
-      - name: Run unit tests
-        run: pnpm test --run
+      - name: Check generated AI and component documentation
+        run: pnpm check:ai-docs
+
+      - name: Run unit tests with enforced coverage
+        run: pnpm test:coverage
 
       - name: Build library
         run: pnpm build:lib
 
       - name: Check CLI package
         run: pnpm pack:cli
+
+      - name: Check library package
+        run: pnpm pack:lib
+
+      - name: Check MCP installer package
+        run: pnpm pack:mcp
 
       - name: Install Playwright Chromium
         run: pnpm exec playwright install --with-deps chromium

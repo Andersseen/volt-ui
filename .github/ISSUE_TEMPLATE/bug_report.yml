@@ -1,0 +1,42 @@
+name: Bug report
+description: Report reproducible incorrect behavior in Volt UI.
+title: '[Bug]: '
+labels: ['bug']
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What happened, and what did you expect?
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Volt UI version
+      placeholder: '@voltui/components 0.6.0 or @voltui/cli 0.6.0'
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Provide a repository, StackBlitz, or exact steps.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Angular, Node, browser, package manager and operating system versions.
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I searched existing issues.
+          required: true
+        - label: This is not a private security report.
+          required: true

@@ -1,6 +1,6 @@
 {
   "name": "volt-ui",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "bin": {
     "volt": "./cli/bin/volt",
     "volt-ui-mcp": "./cli/mcp/setup-mcp.js"
@@ -27,8 +27,8 @@
     "test:e2e:ci": "pnpm build && E2E_SERVER=preview E2E_PORT=5174 playwright test --project=chromium",
     "test:e2e:consumer": "pnpm build:lib && playwright test -c playwright.consumer.config.ts",
     "test:e2e:ui": "playwright test --ui",
-    "test:all": "pnpm lint && pnpm typecheck && pnpm check:ai-docs && pnpm test:run && pnpm build:lib && pnpm test:e2e:ci",
-    "release:check": "pnpm lint && pnpm typecheck && pnpm test:run && pnpm pack:lib && pnpm pack:cli && pnpm pack:mcp",
+    "test:all": "pnpm lint && pnpm typecheck && pnpm check:ai-docs && pnpm test:coverage && pnpm build:lib && pnpm test:e2e:ci && pnpm test:e2e:consumer",
+    "release:check": "pnpm lint && pnpm typecheck && pnpm check:ai-docs && pnpm test:coverage && pnpm pack:lib && pnpm pack:cli && pnpm pack:mcp",
     "release:minor": "pnpm release:check",
     "lint": "eslint . --ext .ts,.html",
     "lint:fix": "eslint . --ext .ts,.html --fix",

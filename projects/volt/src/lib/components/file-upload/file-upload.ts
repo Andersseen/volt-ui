@@ -4,6 +4,10 @@ import { NgpFileUpload } from 'ng-primitives/file-upload';
 @Directive({
   selector: '[voltFileUpload]',
   standalone: true,
+  host: {
+    '[attr.disabled]': 'disabled() ? "" : null',
+    '[attr.aria-disabled]': 'disabled()',
+  },
   hostDirectives: [
     {
       directive: NgpFileUpload,

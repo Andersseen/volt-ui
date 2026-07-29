@@ -1,4 +1,5 @@
 import { Component, model } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/angular';
 import userEvent from '@testing-library/user-event';
@@ -15,6 +16,15 @@ import { VoltCombobox } from './combobox';
 })
 class ComboboxTestWrapper {
   readonly value = model<string | undefined>(undefined);
+  readonly frameworks = ['Angular', 'React', 'Vue', 'Svelte'];
+}
+
+@Component({
+  imports: [ReactiveFormsModule, VoltCombobox],
+  template: `<volt-combobox [formControl]="control" [items]="frameworks" label="Framework" />`,
+})
+class ComboboxFormsWrapper {
+  readonly control = new FormControl<string | null>('Angular');
   readonly frameworks = ['Angular', 'React', 'Vue', 'Svelte'];
 }
 
@@ -78,5 +88,28 @@ describe('VoltCombobox', () => {
     fixture.detectChanges();
 
     expect(input).toHaveValue('');
+  });
+
+  it('supports the Reactive Forms value, touched and disabled contracts', async () => {
+    const { fixture } = await render(ComboboxFormsWrapper);
+    const input = screen.getByRole('combobox', { name: 'Framework' });
+
+    expect(input).toHaveValue('Angular');
+    fixture.componentInstance.control.setValue('Svelte');
+    await fixture.whenStable();
+    expect(input).toHaveValue('Svelte');
+
+    await userEvent.click(input);
+    await userEvent.clear(input);
+    await userEvent.type(input, 'Vue');
+    await userEvent.click(screen.getByRole('option', { name: 'Vue' }));
+    expect(fixture.componentInstance.control.value).toBe('Vue');
+
+    await userEvent.tab();
+    expect(fixture.componentInstance.control.touched).toBe(true);
+
+    fixture.componentInstance.control.disable();
+    await fixture.whenStable();
+    expect(input).toBeDisabled();
   });
 });

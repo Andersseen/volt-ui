@@ -5,6 +5,7 @@ import { ChangeDetectionStrategy, Component, input, computed } from '@angular/co
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[class]': 'classes()',
+    role: 'cell',
   },
   template: `<ng-content />`,
 })

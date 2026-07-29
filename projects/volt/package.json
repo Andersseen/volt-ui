@@ -1,6 +1,25 @@
 {
   "name": "@voltui/components",
-  "version": "0.6.0",
+  "version": "0.7.0",
+  "description": "Copy-and-own Angular components built with signals, Tailwind CSS v4 and ng-primitives.",
+  "license": "MIT",
+  "homepage": "https://volt-ui.andersseen.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Andersseen/volt-ui.git",
+    "directory": "projects/volt"
+  },
+  "bugs": {
+    "url": "https://github.com/Andersseen/volt-ui/issues"
+  },
+  "keywords": [
+    "angular",
+    "components",
+    "signals",
+    "tailwindcss",
+    "accessible",
+    "shadcn"
+  ],
   "peerDependencies": {
     "@angular/common": "^21.2.0",
     "@angular/core": "^21.2.0",

@@ -129,7 +129,7 @@ Components use semantic Tailwind utilities; do not write `bg-[var(--primary)]`.
 | Toolbar       | `./ui/toolbar`       | `<ui-toolbar>`                                                                                                                                          | `orientation`.                                                          |
 | Tooltip       | `./ui/tooltip`       | `[uiTooltip]`, `<ui-tooltip-content>`                                                                                                                   | Trigger references content template.                                    |
 
-### Experimental components
+### Additional beta components
 
 | Component       | Import                 | Selectors                                                                                                        | Notes                                          |
 | --------------- | ---------------------- | ---------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
