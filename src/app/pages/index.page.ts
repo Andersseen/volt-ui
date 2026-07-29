@@ -123,6 +123,9 @@ import {
               [attr.aria-label]="copied() ? 'Command copied' : 'Copy install command'"
               (click)="copyInstallCommand()"
             >
+              <span class="sr-only">
+                {{ copied() ? 'Command copied' : 'Copy install command' }}
+              </span>
               @if (copied()) {
                 <lmn-check [size]="16" class="text-success" />
               } @else {

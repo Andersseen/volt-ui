@@ -35,6 +35,7 @@ let nextSwitchId = 0;
       [id]="id()"
       [ngpSwitchChecked]="checked()"
       [ngpSwitchDisabled]="isDisabled()"
+      [attr.aria-label]="ariaLabel() || null"
       [attr.aria-invalid]="formControlState.invalid() ? 'true' : null"
       (ngpSwitchCheckedChange)="onCheckedChange($event)"
       (blur)="onTouched()"
@@ -51,6 +52,7 @@ export class VoltSwitch implements ControlValueAccessor {
   protected readonly formControlState = injectFormControlState();
 
   readonly id = input(`volt-switch-${++nextSwitchId}`);
+  readonly ariaLabel = input('');
   readonly checked = model(false);
   readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
 

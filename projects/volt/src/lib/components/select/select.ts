@@ -34,6 +34,7 @@ import { injectFormControlState } from '../../form-control-state';
       [ngpSelectValue]="value()"
       [ngpSelectDisabled]="isDisabled()"
       [ngpSelectMultiple]="multiple()"
+      [attr.aria-label]="ariaLabel() || null"
       [attr.aria-invalid]="formControlState.invalid() ? 'true' : null"
       (ngpSelectValueChange)="onValueChange($event)"
       (blur)="onTouched()"
@@ -71,6 +72,7 @@ export class VoltSelect implements ControlValueAccessor {
   protected readonly formControlState = injectFormControlState();
 
   readonly placeholder = input('Select an option');
+  readonly ariaLabel = input('');
   readonly value = model<unknown>(undefined);
   readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly multiple = input<boolean, unknown>(false, { transform: booleanAttribute });

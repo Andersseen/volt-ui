@@ -11,7 +11,7 @@ import { VoltSelectItem } from './select-item';
   selector: 'app-select-test-wrapper',
   imports: [VoltSelect, VoltSelectContent, VoltSelectItem],
   template: `
-    <volt-select [(value)]="value" placeholder="Choose an option">
+    <volt-select [(value)]="value" ariaLabel="Example choice" placeholder="Choose an option">
       <volt-select-content>
         <volt-select-item value="a">Option A</volt-select-item>
         <volt-select-item value="b">Option B</volt-select-item>
@@ -27,7 +27,9 @@ describe('VoltSelect', () => {
   it('should render the select trigger with placeholder', async () => {
     await render(SelectTestWrapper);
 
-    expect(screen.getByRole('combobox')).toHaveTextContent('Choose an option');
+    expect(screen.getByRole('combobox', { name: 'Example choice' })).toHaveTextContent(
+      'Choose an option'
+    );
   });
 
   it('should reflect the selected value', async () => {

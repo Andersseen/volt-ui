@@ -10,6 +10,8 @@
     "test-setup.ts",
     "src/**/*.d.ts",
     "src/**/*.spec.ts",
+    "src/app/components/**/*.ts",
+    "src/app/services/**/*.ts",
     "projects/volt/src/**/*.spec.ts",
     "projects/volt/src/**/*.ts"
   ]

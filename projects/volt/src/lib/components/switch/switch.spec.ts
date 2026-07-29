@@ -8,7 +8,9 @@ import { VoltSwitch } from './switch';
 @Component({
   selector: 'app-switch-test-wrapper',
   imports: [VoltSwitch],
-  template: `<volt-switch [checked]="checked()" [disabled]="disabled()">Label</volt-switch>`,
+  template: `
+    <volt-switch [checked]="checked()" [disabled]="disabled()" ariaLabel="Notifications" />
+  `,
 })
 class SwitchTestWrapper {
   readonly checked = model(false);
@@ -19,7 +21,7 @@ describe('VoltSwitch', () => {
   it('should render as an unchecked switch by default', async () => {
     await render(SwitchTestWrapper);
 
-    const switchButton = screen.getByRole('switch');
+    const switchButton = screen.getByRole('switch', { name: 'Notifications' });
     expect(switchButton).toHaveAttribute('aria-checked', 'false');
   });
 

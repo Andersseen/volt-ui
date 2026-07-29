@@ -12,8 +12,8 @@ test.describe('Theme studio', () => {
     await expect(page.getByText(":root[data-color='northern-lights']")).toBeVisible();
     await expect(page.getByRole('heading', { name: 'northern-lights' })).toBeVisible();
 
-    await page.getByRole('switch', { name: 'Dark' }).click();
-    await expect(page.getByRole('switch', { name: 'Dark' })).toBeChecked();
+    await page.getByRole('switch', { name: 'Dark preview' }).click();
+    await expect(page.getByRole('switch', { name: 'Dark preview' })).toBeChecked();
   });
 
   test('fits the editor and preview within a mobile viewport', async ({ page }) => {

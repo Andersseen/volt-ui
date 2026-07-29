@@ -10,7 +10,7 @@ test.describe('Button Demo Page', () => {
   });
 
   test('should have working navigation', async ({ page }) => {
-    await page.getByRole('link', { name: 'Components', exact: true }).click();
+    await page.locator('header').getByRole('link', { name: 'Components', exact: true }).click();
     await expect(page).toHaveURL('/docs/components');
   });
 

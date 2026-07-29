@@ -13,6 +13,7 @@ import { VoltInput } from './input';
       [id]="id()"
       [type]="type()"
       [placeholder]="placeholder()"
+      [ariaLabel]="ariaLabel()"
       [disabled]="disabled()"
       [(value)]="value"
     />
@@ -22,6 +23,7 @@ class InputTestWrapper {
   readonly id = input('email');
   readonly type = input('text');
   readonly placeholder = input('Enter value');
+  readonly ariaLabel = input('');
   readonly disabled = input(false);
   readonly value = model('');
 }
@@ -33,6 +35,12 @@ describe('VoltInput', () => {
     const input = screen.getByPlaceholderText('Enter value');
     expect(input).toBeInTheDocument();
     expect(input).toHaveAttribute('type', 'text');
+  });
+
+  it('forwards an accessible label to the native input', async () => {
+    await render(InputTestWrapper, { componentInputs: { ariaLabel: 'Email address' } });
+
+    expect(screen.getByRole('textbox', { name: 'Email address' })).toBeInTheDocument();
   });
 
   it('should reflect the value input', async () => {

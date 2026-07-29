@@ -25,7 +25,15 @@ export default defineConfig({
     include: ['src/**/*.spec.ts', 'projects/volt/src/**/*.spec.ts', 'cli/**/*.spec.js'],
     coverage: {
       reporter: ['text', 'html', 'lcov'],
-      include: ['projects/volt/src/lib/**/*.ts', 'src/server/routes/mcp.ts', 'cli/lib/**/*.js'],
+      include: [
+        'projects/volt/src/lib/**/*.ts',
+        'src/server/routes/mcp.ts',
+        'cli/lib/**/*.js',
+        'src/app/components/**/*.ts',
+        'src/app/services/**/*.ts',
+        'src/app/pages/index.page.ts',
+        'src/app/pages/create-theme.page.ts',
+      ],
       exclude: [
         'node_modules/',
         'dist/',
@@ -34,6 +42,7 @@ export default defineConfig({
         '**/*.spec.ts',
         '**/index.ts',
         '**/variants.ts',
+        'src/app/lib/snippets/**',
       ],
       thresholds: {
         statements: 75,

@@ -34,6 +34,7 @@ import { injectFormControlState } from '../../form-control-state';
       [name]="name()"
       [placeholder]="placeholder()"
       [autocomplete]="autocomplete()"
+      [attr.aria-label]="ariaLabel() || null"
       [readonly]="readonly()"
       [required]="required()"
       [disabled]="isDisabled()"
@@ -53,6 +54,7 @@ export class VoltInput implements ControlValueAccessor {
   readonly name = input('');
   readonly placeholder = input('');
   readonly autocomplete = input('');
+  readonly ariaLabel = input('');
   readonly value = model('');
 
   readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });

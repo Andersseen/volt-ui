@@ -377,6 +377,7 @@ function indent(lines: string[]): string {
                   >
                   <volt-input
                     id="theme-name"
+                    ariaLabel="Theme name"
                     [value]="theme().name"
                     (valueChange)="setName($event)"
                     placeholder="acme-ocean"
@@ -385,7 +386,11 @@ function indent(lines: string[]): string {
 
                 <div class="space-y-2">
                   <span class="text-sm font-medium text-foreground">Start from</span>
-                  <volt-select [(value)]="presetValue" placeholder="Choose preset">
+                  <volt-select
+                    [(value)]="presetValue"
+                    ariaLabel="Starting preset"
+                    placeholder="Choose preset"
+                  >
                     <volt-select-content>
                       <volt-select-label>Presets</volt-select-label>
                       <volt-select-item value="glacier">Glacier</volt-select-item>
@@ -554,6 +559,7 @@ function indent(lines: string[]): string {
                 <label for="theme-preview-dark">Dark</label>
                 <volt-switch
                   id="theme-preview-dark"
+                  ariaLabel="Dark preview"
                   [checked]="previewDark()"
                   (checkedChange)="setPreviewDark($event)"
                 />
