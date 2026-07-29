@@ -103,7 +103,7 @@
     "@ng-primitives/mcp": "^0.110.2",
     "@playwright/test": "^1.60.0",
     "@tailwindcss/postcss": "^4.3.0",
-    "@tailwindcss/vite": "^4.3.0",
+    "@tailwindcss/vite": "^4.3.3",
     "@testing-library/angular": "^19.2.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/user-event": "^14.6.1",
