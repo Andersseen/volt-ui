@@ -21,6 +21,9 @@ import {
     '[class.w-full]': "orientation() === 'vertical'",
     '[class.cursor-col-resize]': "orientation() === 'horizontal'",
     '[class.cursor-row-resize]': "orientation() === 'vertical'",
+    role: 'separator',
+    tabindex: '0',
+    '[attr.aria-orientation]': 'orientation()',
   },
   template: `
     @if (orientation() === 'horizontal') {
@@ -68,6 +71,24 @@ export class VoltResizableHandle {
       moveUnlistener();
       upUnlistener();
     });
+  }
+
+  @HostListener('keydown', ['$event'])
+  onKeyDown(event: KeyboardEvent): void {
+    const horizontal = this.orientation() === 'horizontal';
+    const decrease = horizontal ? event.key === 'ArrowLeft' : event.key === 'ArrowUp';
+    const increase = horizontal ? event.key === 'ArrowRight' : event.key === 'ArrowDown';
+    if (!decrease && !increase) return;
+
+    event.preventDefault();
+    const previous = this.elementRef.nativeElement.previousElementSibling as HTMLElement | null;
+    if (!previous) return;
+
+    const rect = previous.getBoundingClientRect();
+    const currentSize = horizontal ? rect.width : rect.height;
+    const newSize = Math.max(0, currentSize + (increase ? 10 : -10));
+    this.renderer.setStyle(previous, horizontal ? 'width' : 'height', `${newSize}px`);
+    this.renderer.setStyle(previous, 'flex', 'none');
   }
 
   private onMouseMove(event: MouseEvent): void {

@@ -230,6 +230,18 @@ All components remain available through the package and CLI; the status label co
 
 Full status table: **[COMPONENT_STATUS.md](./COMPONENT_STATUS.md)**.
 
+### Compatibility policy
+
+The current `0.6.x` line targets Angular `^21.2` and Node 20 or newer. During
+pre-v1, Volt UI supports the latest declared Angular major only; widening that
+range requires consumer-fixture verification and is never assumed from a
+successful build. After v1, the project will document each supported Angular
+major and provide migrations or release notes before dropping one.
+
+Coverage is measured against the complete library source, CLI core and hosted
+MCP route. Every component family requires a real behavior spec, while overlays
+and keyboard workflows are additionally exercised in Playwright.
+
 ---
 
 ## 🛠️ Development

@@ -25,7 +25,22 @@ export default defineConfig({
     include: ['src/**/*.spec.ts', 'projects/volt/src/**/*.spec.ts', 'cli/**/*.spec.js'],
     coverage: {
       reporter: ['text', 'html', 'lcov'],
-      exclude: ['node_modules/', 'dist/', '.angular/', '**/*.d.ts'],
+      include: ['projects/volt/src/lib/**/*.ts', 'src/server/routes/mcp.ts', 'cli/lib/**/*.js'],
+      exclude: [
+        'node_modules/',
+        'dist/',
+        '.angular/',
+        '**/*.d.ts',
+        '**/*.spec.ts',
+        '**/index.ts',
+        '**/variants.ts',
+      ],
+      thresholds: {
+        statements: 75,
+        branches: 55,
+        functions: 75,
+        lines: 75,
+      },
     },
   },
 });

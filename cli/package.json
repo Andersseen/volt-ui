@@ -2,6 +2,15 @@
   "name": "@voltui/cli",
   "version": "0.6.0",
   "description": "CLI for adding Volt UI components to your project",
+  "homepage": "https://volt-ui.andersseen.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Andersseen/volt-ui.git",
+    "directory": "cli"
+  },
+  "bugs": {
+    "url": "https://github.com/Andersseen/volt-ui/issues"
+  },
   "bin": {
     "volt": "./bin/volt"
   },
@@ -23,6 +32,6 @@
     "components",
     "cli"
   ],
-  "author": "",
+  "author": "Andersseen",
   "license": "MIT"
 }

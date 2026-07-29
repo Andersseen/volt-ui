@@ -1,136 +1,43 @@
-# Testing Configuration Summary
+# Testing Volt UI
 
-## ✅ Completed Setup
+Volt UI uses Vitest and Testing Library for component contracts, and Playwright for
+browser, overlay, keyboard, docs and real-consumer coverage.
 
-### Dependencies Installed
-
-- **Vitest 4.1.2** - Test runner
-- **@testing-library/angular 19.2.1** - Angular testing utilities
-- **@testing-library/jest-dom 6.9.1** - DOM matchers
-- **@testing-library/user-event 14.6.1** - User interaction simulation
-- **@analogjs/vite-plugin-angular 2.3.1** - Angular support for Vitest
-- **@vitest/coverage-v8** - Coverage reporting
-
-### Scripts Added to package.json
+## Commands
 
 ```bash
-pnpm test              # Run tests in watch mode
-pnpm test:coverage     # Run tests with coverage report
-pnpm test:ui          # Run tests with UI
+pnpm test:run          # all unit and integration specs once
+pnpm test:coverage     # full-source coverage with enforced thresholds
+pnpm test:e2e:ci       # production docs build and browser tests
+pnpm test:e2e:consumer # packaged library in a consumer fixture
+pnpm test:all          # the complete local CI pipeline
 ```
 
-### Configuration Files
+Coverage includes all TypeScript implementation files under
+`projects/volt/src/lib`, the CLI core and the hosted MCP route. Files without a
+test are therefore counted as uncovered. The thresholds in `vitest.config.ts`
+are a floor, not a target; increases should be ratcheted upward and never lowered
+to make a change pass.
 
-- **vitest.config.ts** - Vitest configuration with Angular plugin
-- **src/test-setup.ts** - Test environment setup with mocks
+## Required component contracts
 
-### Test Files Created (15 tests total)
+Every component family must have a colocated `*.spec.ts`. Test observable
+behavior rather than source strings:
 
-All tests are located in `src/` directory:
+- rendering, projected content and consumer classes;
+- signal inputs, outputs and model updates;
+- boolean/number input transforms;
+- disabled and error states;
+- Reactive Forms `writeValue`, change, touched and disabled behavior for CVAs;
+- native or ARIA semantics;
+- keyboard navigation, Escape and focus behavior where applicable.
 
-1. **src/app/sanity.spec.ts** (2 tests) - Basic sanity checks ✅
-2. **src/app/app.spec.ts** (2 tests) - App component tests ✅
-3. **src/app/components/button/button.spec.ts** (4 tests) - Button component tests ✅
-4. **src/app/components/checkbox/checkbox.spec.ts** (3 tests) - Checkbox tests ✅
-5. **src/app/components/switch/switch.spec.ts** (3 tests) - Switch tests ✅
-6. **src/app/components/volt/volt.spec.ts** (1 test) - Library export tests ✅
+Overlay and browser-only behavior belongs in Playwright. Source-copy and package
+behavior belongs in the consumer fixture.
 
-## 📊 Current Test Status
+## Definition of done
 
-```
-✅ 6 test files passing
-✅ 15 tests passing
-✅ Coverage reporting enabled (v8 provider)
-```
-
-## 🚀 Usage
-
-### Run all tests
-
-```bash
-pnpm test --run
-```
-
-### Run tests in watch mode (development)
-
-```bash
-pnpm test
-```
-
-### Run tests with coverage
-
-```bash
-pnpm test:coverage
-```
-
-### Run specific test file
-
-```bash
-pnpm test --run src/app/components/button/button.spec.ts
-```
-
-## 📝 Important Notes
-
-### Test Location
-
-- ✅ Tests work in `src/` directory
-- ❌ Tests in `projects/` directory are excluded
-- The Angular plugin only processes files in `src/` correctly
-
-### Current Test Type
-
-The current tests are **basic unit tests** that test:
-
-- Default values
-- Component logic
-- State management
-
-They do **NOT** use Angular TestBed (which requires additional configuration).
-
-## 🔧 Troubleshooting
-
-**"No test suite found" error:**
-
-- Ensure test files are in `src/` directory
-- Verify imports: `import { describe, it, expect } from 'vitest'`
-- Check that test files have proper structure with `describe` and `it`
-
-**Coverage shows 0%:**
-
-- This is expected for basic unit tests
-- Full coverage requires testing actual component implementations
-
-## 🎯 Next Steps (Optional)
-
-To add full Angular component testing:
-
-1. Initialize TestBed in test-setup.ts
-2. Import Angular testing modules
-3. Use ComponentFixture for component testing
-4. Add DOM interaction tests with Testing Library
-
-Example:
-
-```typescript
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { VoltButton } from './button';
-
-describe('VoltButton', () => {
-  let component: VoltButton;
-  let fixture: ComponentFixture<VoltButton>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [VoltButton],
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(VoltButton);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
-```
+A component change is complete only when lint, typecheck, coverage, library
+packaging, AI-doc synchronization and the relevant E2E suites pass. New public
+APIs must also update the docs, snippets, manifest and AI references listed in
+`AGENTS.md`.

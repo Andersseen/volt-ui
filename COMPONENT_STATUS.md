@@ -29,22 +29,22 @@ Volt UI is pre-v1. Status labels describe the current confidence level for the c
 | card            | stable       | n/a                      | n/a                             | n/a                                      | yes  | unit + e2e docs          |
 | checkbox        | stable       | full CVA contract        | via ng-primitives               | focus-visible styles                     | yes  | unit                     |
 | combobox        | experimental | local value API          | partial                         | dropdown focus needs more hardening      | yes  | unit                     |
-| date-picker     | experimental | local value API          | partial                         | calendar focus needs more hardening      | yes  | limited                  |
+| date-picker     | experimental | Reactive Forms CVA       | partial                         | calendar focus needs more hardening      | yes  | unit                     |
 | dialog          | beta         | n/a                      | Escape covered in e2e           | focus trap/return, outside click covered | yes  | unit + e2e               |
 | drawer          | beta         | n/a                      | Escape covered in e2e           | focus trap/return, outside click covered | yes  | unit + e2e               |
 | dropdown-menu   | beta         | n/a                      | Arrow/Home/End/Enter covered    | Escape, outside click, focus covered     | yes  | unit + e2e               |
-| file-upload     | experimental | n/a                      | native input behavior           | drag/drop needs more coverage            | yes  | limited                  |
+| file-upload     | experimental | n/a                      | native input behavior           | drag/drop needs more coverage            | yes  | unit                     |
 | form-field      | stable       | projected-control wiring | label/description semantics     | n/a                                      | yes  | unit                     |
 | input           | stable       | full CVA contract        | native input                    | focus-visible styles                     | yes  | unit + e2e docs          |
 | input-otp       | beta         | local value API          | partial                         | focus movement needs more coverage       | yes  | unit                     |
-| listbox         | experimental | local value API          | via ng-primitives               | active option focus needs more coverage  | yes  | limited                  |
+| listbox         | experimental | local value API          | via ng-primitives               | active option focus needs more coverage  | yes  | unit                     |
 | meter           | stable       | n/a                      | n/a                             | n/a                                      | yes  | unit + e2e consumer      |
-| navigation-menu | experimental | n/a                      | partial                         | nested menu focus needs hardening        | yes  | limited                  |
+| navigation-menu | experimental | n/a                      | partial                         | nested menu focus needs hardening        | yes  | unit                     |
 | pagination      | beta         | n/a                      | native buttons/links            | focus-visible styles                     | yes  | unit                     |
 | popover         | beta         | n/a                      | Escape covered in e2e           | open/close/position covered              | yes  | unit + e2e               |
 | progress        | stable       | n/a                      | n/a                             | n/a                                      | yes  | unit + e2e consumer      |
 | radio           | stable       | full CVA contract        | via ng-primitives               | focus-visible styles                     | yes  | unit                     |
-| resizable       | experimental | n/a                      | pointer-first                   | resize focus/keyboard needs hardening    | yes  | limited                  |
+| resizable       | experimental | n/a                      | arrow keys and pointer          | min/max and announcements need hardening | yes  | unit                     |
 | search          | beta         | structural wrapper       | native input                    | focus-visible styles                     | yes  | unit                     |
 | select          | beta         | full CVA contract        | partial                         | listbox Escape covered in e2e            | yes  | unit + e2e               |
 | separator       | stable       | n/a                      | n/a                             | n/a                                      | yes  | unit + e2e consumer      |
@@ -52,7 +52,7 @@ Volt UI is pre-v1. Status labels describe the current confidence level for the c
 | skeleton        | stable       | n/a                      | n/a                             | n/a                                      | yes  | unit                     |
 | slider          | stable       | full CVA contract        | via ng-primitives               | focus-visible styles                     | yes  | unit + e2e consumer      |
 | switch          | stable       | full CVA contract        | via ng-primitives               | focus-visible styles                     | yes  | unit + e2e consumer      |
-| table           | beta         | n/a                      | semantic table                  | n/a                                      | yes  | limited                  |
+| table           | beta         | n/a                      | ARIA table semantics            | n/a                                      | yes  | unit                     |
 | tabs            | beta         | n/a                      | via ng-primitives               | tab focus behavior via primitive         | yes  | unit + e2e consumer      |
 | textarea        | stable       | full CVA contract        | native textarea                 | focus-visible styles                     | yes  | unit                     |
 | theme           | experimental | n/a                      | n/a                             | document-level theme state               | yes  | limited                  |

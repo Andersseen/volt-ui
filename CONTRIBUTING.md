@@ -1,62 +1,49 @@
 # Contributing to Volt UI
 
-Thank you for your interest in contributing! This document provides guidelines for contributing to Volt UI.
+Thanks for helping improve Volt UI. Bug fixes, accessibility improvements,
+tests and documentation are especially welcome during pre-v1 hardening.
 
-## Development Setup
+## Setup
 
-1. Fork and clone the repository
-2. Install dependencies: `pnpm install`
-3. Run dev server: `pnpm dev`
+1. Fork and clone the repository.
+2. Install Node 22 and pnpm 10.
+3. Run `pnpm install`.
+4. Run `pnpm dev` for the docs application.
 
-## Code Style
+## Before opening a pull request
 
-- Use ESLint and Prettier (auto-format on save)
-- Follow Angular style guide
-- Use conventional commits
-
-## Adding a Component
-
-1. Create component in `projects/volt/src/lib/[component-name]/`
-2. Add export to `public-api.ts`
-3. Create demo page in `src/app/pages/docs/components/`
-4. Add tests (minimum 70% coverage)
-5. Update documentation
-
-## Commit Convention
-
-We follow the [Conventional Commits](https://www.conventionalcommits.org/) specification:
-
-- `feat:` - A new feature
-- `fix:` - A bug fix
-- `docs:` - Documentation only changes
-- `style:` - Changes that don't affect code meaning (formatting, semicolons, etc.)
-- `refactor:` - Code changes that neither fix bugs nor add features
-- `perf:` - Performance improvements
-- `test:` - Adding or correcting tests
-- `chore:` - Changes to build process or auxiliary tools
-
-Examples:
-
-```
-feat: add new component
-fix: resolve button disabled state
-docs: update README
-test: add coverage for checkbox
-refactor: simplify dialog logic
+```bash
+pnpm lint
+pnpm typecheck
+pnpm check:ai-docs
+pnpm test:coverage
+pnpm build:lib
+pnpm test:e2e:ci
+pnpm test:e2e:consumer
 ```
 
-## Pull Request Process
+`pnpm test:all` runs the same complete verification locally.
 
-1. Ensure all tests pass: `pnpm test --run`
-2. Ensure lint passes: `pnpm lint`
-3. Update CHANGELOG.md if applicable
-4. Create PR with clear description of changes
-5. Link any related issues
+## Components
 
-## Code of Conduct
+1. Add or edit source under `projects/volt/src/lib/components/<name>/`.
+2. Export new public APIs from `projects/volt/src/public-api.ts`.
+3. Add a real colocated `*.spec.ts` using Testing Library or TestBed.
+4. Update the docs page under
+   `src/app/pages/(components-docs)/docs/components/`.
+5. Update snippets and AI references required by `AGENTS.md`.
+6. Run `pnpm manifest` after component source changes.
 
-Please read and follow our [Code of Conduct](CODE_OF_CONDUCT.md).
+Use standalone components, `OnPush`, signal APIs and semantic Tailwind utilities.
+Boolean inputs must use `booleanAttribute`. Accessibility and keyboard contracts
+are part of the component API, not optional polish.
 
-## Questions?
+## Commits and pull requests
 
-Feel free to open an issue for discussion before starting work on major changes.
+Use Conventional Commits (`feat:`, `fix:`, `docs:`, `test:`, `refactor:`,
+`chore:`). Keep pull requests focused, describe the user-visible behavior and
+include tests for regressions. Update `CHANGELOG.md` for notable user-facing
+changes.
+
+By participating, you agree to follow [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md).
+Security reports must follow [SECURITY.md](./SECURITY.md), not public issues.
