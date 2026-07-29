@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js';
-import { createMcpServer } from './mcp';
+import { createMcpServer } from '../routes/mcp';
 
 describe('Volt UI MCP Server', () => {
   let client: Client;
