@@ -2,7 +2,9 @@ import {
   type EnvironmentProviders,
   makeEnvironmentProviders,
   provideEnvironmentInitializer,
+  inject,
 } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 
 export type VoltThemeColor = 'volt' | 'ember' | 'sage' | 'dusk' | 'glacier';
 export type VoltThemeStyle = 'sharp' | 'soft' | 'brutal' | 'ghost' | 'retro';
@@ -46,7 +48,12 @@ export function applyVoltTheme(options: VoltThemeOptions = {}, doc?: Document): 
 export function provideVoltTheme(options: VoltThemeOptions = {}): EnvironmentProviders {
   return makeEnvironmentProviders([
     provideEnvironmentInitializer(() => {
-      applyVoltTheme(options);
+      // Reads the platform-provided Document (the domino-backed document on
+      // the server, the real one in the browser) instead of the global
+      // `document`, which is undefined during SSR — without this, an SSR
+      // app never gets data-color/data-style/.dark in the server-rendered
+      // HTML, causing a themed-then-unthemed flash before hydration.
+      applyVoltTheme(options, inject(DOCUMENT));
     }),
   ]);
 }

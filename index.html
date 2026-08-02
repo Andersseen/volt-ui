@@ -4,6 +4,31 @@
     <meta charset="utf-8" />
     <title>Volt UI</title>
     <base href="/" />
+    <script>
+      // Applies the visitor's saved theme before first paint so there is no
+      // flash of the default (volt/sharp/light) theme while Angular loads.
+      // This mirrors src/app/components/theme-switcher.ts's localStorage
+      // keys; keep both in sync if those keys ever change. Runs unguarded
+      // because it only ever executes in the browser (a raw <script> tag
+      // is never evaluated by Angular's server renderer, just serialized).
+      (function () {
+        try {
+          var root = document.documentElement;
+          var color = localStorage.getItem('volt-color');
+          var style = localStorage.getItem('volt-style');
+          var dark = localStorage.getItem('volt-dark') === 'true';
+          if (color) root.setAttribute('data-color', color);
+          if (style) root.setAttribute('data-style', style);
+          if (dark) {
+            root.classList.add('dark');
+            root.style.colorScheme = 'dark';
+          }
+        } catch (e) {
+          // localStorage may be unavailable (private browsing, blocked
+          // storage) — fall back to the default theme, no worse than today.
+        }
+      })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
