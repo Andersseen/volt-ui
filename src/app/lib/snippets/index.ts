@@ -142,6 +142,12 @@ import tableHeadSource from '../../../../projects/volt/src/lib/components/table/
 import tableCellSource from '../../../../projects/volt/src/lib/components/table/table-cell.ts?raw';
 import tableCaptionSource from '../../../../projects/volt/src/lib/components/table/table-caption.ts?raw';
 
+import dialogSource from '../../../../projects/volt/src/lib/components/dialog/dialog.ts?raw';
+import dialogOverlaySource from '../../../../projects/volt/src/lib/components/dialog/dialog-overlay.ts?raw';
+import dialogContentSource from '../../../../projects/volt/src/lib/components/dialog/dialog-content.ts?raw';
+import dialogTitleSource from '../../../../projects/volt/src/lib/components/dialog/dialog-title.ts?raw';
+import dialogDescriptionSource from '../../../../projects/volt/src/lib/components/dialog/dialog-description.ts?raw';
+
 import drawerSource from '../../../../projects/volt/src/lib/components/drawer/drawer.ts?raw';
 import drawerOverlaySource from '../../../../projects/volt/src/lib/components/drawer/drawer-overlay.ts?raw';
 import drawerContentSource from '../../../../projects/volt/src/lib/components/drawer/drawer-content.ts?raw';
@@ -152,6 +158,9 @@ import drawerCloseSource from '../../../../projects/volt/src/lib/components/draw
 import resizableSource from '../../../../projects/volt/src/lib/components/resizable/resizable.ts?raw';
 import resizablePanelSource from '../../../../projects/volt/src/lib/components/resizable/resizable-panel.ts?raw';
 import resizableHandleSource from '../../../../projects/volt/src/lib/components/resizable/resizable-handle.ts?raw';
+
+import sidebarSource from '../../../../projects/volt/src/lib/layouts/sidebar/sidebar.ts?raw';
+import sidebarServiceSource from '../../../../projects/volt/src/lib/layouts/sidebar/sidebar.service.ts?raw';
 
 function join(...parts: [filename: string, source: string][]): string {
   return parts.map(([filename, source]) => `// ${filename}\n${source}`).join('\n\n');
@@ -350,6 +359,14 @@ export const TABLE_SNIPPET = join(
   ['table-caption.ts', tableCaptionSource]
 );
 
+export const DIALOG_SNIPPET = join(
+  ['dialog.ts', dialogSource],
+  ['dialog-overlay.ts', dialogOverlaySource],
+  ['dialog-content.ts', dialogContentSource],
+  ['dialog-title.ts', dialogTitleSource],
+  ['dialog-description.ts', dialogDescriptionSource]
+);
+
 export const DRAWER_SNIPPET = join(
   ['drawer.ts', drawerSource],
   ['drawer-overlay.ts', drawerOverlaySource],
@@ -363,4 +380,9 @@ export const RESIZABLE_SNIPPET = join(
   ['resizable.ts', resizableSource],
   ['resizable-panel.ts', resizablePanelSource],
   ['resizable-handle.ts', resizableHandleSource]
+);
+
+export const SIDEBAR_SNIPPET = join(
+  ['sidebar.ts', sidebarSource],
+  ['sidebar.service.ts', sidebarServiceSource]
 );

@@ -1,23 +1,26 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
-  NgpDialog,
-  NgpDialogDescription,
-  NgpDialogOverlay,
-  NgpDialogTitle,
-  NgpDialogTrigger,
-} from 'ng-primitives/dialog';
+  VoltDialog,
+  VoltDialogOverlay,
+  VoltDialogContent,
+  VoltDialogTitle,
+  VoltDialogDescription,
+  VoltButton,
+} from 'volt';
 import { CodePanel } from '../../../../components/code-panel';
+import { DIALOG_SNIPPET } from '../../../../lib/snippets';
 import { DIALOG_USAGE } from '../../../../lib/snippets/usage';
 
 @Component({
   selector: 'app-dialog-demo',
   standalone: true,
   imports: [
-    NgpDialog,
-    NgpDialogTrigger,
-    NgpDialogOverlay,
-    NgpDialogTitle,
-    NgpDialogDescription,
+    VoltDialog,
+    VoltDialogOverlay,
+    VoltDialogContent,
+    VoltDialogTitle,
+    VoltDialogDescription,
+    VoltButton,
     CodePanel,
   ],
   templateUrl: './dialog.component.html',
@@ -25,47 +28,5 @@ import { DIALOG_USAGE } from '../../../../lib/snippets/usage';
 })
 export default class DialogDemo {
   readonly dialogUsage = DIALOG_USAGE;
-  readonly dialogCode = `import { Directive } from '@angular/core';
-import { 
-  NgpDialogTrigger, 
-  NgpDialog, 
-  NgpDialogOverlay, 
-  NgpDialogTitle, 
-  NgpDialogDescription 
-} from 'ng-primitives/dialog';
-
-// Trigger
-@Directive({
-  selector: '[voltDialog]',
-  hostDirectives: [NgpDialogTrigger],
-})
-export class VoltDialog {}
-
-// Overlay
-@Directive({
-  selector: '[voltDialogOverlay]',
-  hostDirectives: [NgpDialogOverlay],
-})
-export class VoltDialogOverlay {}
-
-// Content
-@Directive({
-  selector: '[voltDialogContent]',
-  hostDirectives: [NgpDialog],
-})
-export class VoltDialogContent {}
-
-// Title
-@Directive({
-  selector: '[voltDialogTitle]',
-  hostDirectives: [NgpDialogTitle],
-})
-export class VoltDialogTitle {}
-
-// Description
-@Directive({
-  selector: '[voltDialogDescription]',
-  hostDirectives: [NgpDialogDescription],
-})
-export class VoltDialogDescription {}`;
+  readonly dialogCode = DIALOG_SNIPPET;
 }

@@ -8,27 +8,14 @@
 
   <app-code-panel title="Usage" [code]="dialogUsage" [tabbed]="true">
     <div class="flex flex-wrap gap-3 items-center justify-center p-8">
-      <button
-        [ngpDialogTrigger]="defaultDialogTpl"
-        class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
-      >
-        Open Dialog
-      </button>
+      <volt-button [voltDialog]="editProfileTpl">Open Dialog</volt-button>
 
-      <ng-template #defaultDialogTpl let-close="close">
-        <div
-          ngpDialogOverlay
-          class="fixed inset-0 bg-foreground/50 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
-        ></div>
-        <div
-          ngpDialog
-          class="fixed left-1/2 top-1/2 z-50 w-full max-w-lg -translate-x-1/2 -translate-y-1/2 rounded-lg border border-border bg-surface text-surface-foreground p-6 shadow-lg data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%]"
-        >
+      <ng-template #editProfileTpl let-close="close">
+        <div voltDialogOverlay></div>
+        <div voltDialogContent>
           <div class="flex flex-col space-y-1.5 text-center sm:text-left">
-            <h2 ngpDialogTitle class="text-lg font-semibold leading-none tracking-tight">
-              Edit Profile
-            </h2>
-            <p ngpDialogDescription class="text-sm text-muted-foreground">
+            <h2 voltDialogTitle>Edit Profile</h2>
+            <p voltDialogDescription>
               Make changes to your profile here. Click save when you're done.
             </p>
           </div>
@@ -51,18 +38,10 @@
             </div>
           </div>
           <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
-            <button
-              (click)="close()"
-              class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 mt-2 sm:mt-0"
-            >
+            <volt-button variant="outline" class="mt-2 sm:mt-0" (click)="close()">
               Cancel
-            </button>
-            <button
-              (click)="close()"
-              class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
-            >
-              Save changes
-            </button>
+            </volt-button>
+            <volt-button (click)="close()">Save changes</volt-button>
           </div>
         </div>
       </ng-template>

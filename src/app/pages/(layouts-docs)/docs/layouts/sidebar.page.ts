@@ -20,6 +20,9 @@ import {
   LmnSearchIcon,
   LmnSettingsIcon,
 } from 'lumen-icons';
+import { CodePanel } from '../../../../components/code-panel';
+import { SIDEBAR_SNIPPET } from '../../../../lib/snippets';
+import { SIDEBAR_USAGE } from '../../../../lib/snippets/usage';
 
 @Component({
   selector: 'app-sidebar-demo',
@@ -192,7 +195,7 @@ export class SidebarDemo {
 
 @Component({
   selector: 'app-docs-sidebar',
-  imports: [SidebarDemo],
+  imports: [SidebarDemo, CodePanel],
   template: `
     <div class="max-w-4xl mx-auto py-8 px-4 w-full h-full">
       <h1 class="text-3xl font-bold tracking-tight mb-2">Sidebar Layout</h1>
@@ -202,16 +205,24 @@ export class SidebarDemo {
 
       <app-sidebar-demo />
 
-      <!-- Installation / Code Instructions -->
-      <div class="mt-16 space-y-4">
-        <h2 class="text-xl font-bold tracking-tight">Installation</h2>
-        <p class="text-muted-foreground text-sm">
-          Para utilizar este Layout, copia el código que creamos en
-          <code>src/app/layout/sidebar/</code>. Este bloque incluye un servicio ligero con signals
-          para manejar el estado responsivo.
-        </p>
+      <div class="mt-16 space-y-6">
+        <app-code-panel
+          title="Usage"
+          [code]="sidebarUsage"
+          description="The live demo above is the full page-shell composition; this is the minimal shape."
+        />
+
+        <app-code-panel
+          title="Component Source"
+          [code]="sidebarCode"
+          cliCommand="npx @voltui/cli add sidebar"
+          description="Copy this code to your project. VoltSidebarService holds the collapsed/mobile-open state as signals; nothing else in the layout depends on Angular Router beyond routerLink."
+        />
       </div>
     </div>
   `,
 })
-export default class DocsSidebar {}
+export default class DocsSidebar {
+  readonly sidebarCode = SIDEBAR_SNIPPET;
+  readonly sidebarUsage = SIDEBAR_USAGE;
+}

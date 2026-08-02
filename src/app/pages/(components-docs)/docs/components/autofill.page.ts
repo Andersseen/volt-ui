@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { CodePanel } from '../../../../components/code-panel';
 import { AUTOFILL_SNIPPET } from '../../../../lib/snippets';
+import { AUTOFILL_USAGE } from '../../../../lib/snippets/usage';
 import { VoltAutofill } from 'volt';
 
 @Component({
@@ -41,22 +42,5 @@ import { VoltAutofill } from 'volt';
 export default class AutofillPage {
   readonly autofilled = signal(false);
   readonly sourceCode = AUTOFILL_SNIPPET;
-  readonly usageCode = `import { Component, signal } from '@angular/core';
-import { VoltAutofill } from 'volt';
-
-@Component({
-  imports: [VoltAutofill],
-  template: \`
-    <input
-      voltAutofill
-      type="email"
-      autocomplete="email"
-      placeholder="Email address"
-      (autofillChange)="autofilled.set($event)"
-    />
-  \`,
-})
-export class MyComponent {
-  autofilled = signal(false);
-}`;
+  readonly usageCode = AUTOFILL_USAGE;
 }
