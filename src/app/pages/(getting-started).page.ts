@@ -23,6 +23,8 @@ export default class DocsLayout {
       links: [
         { path: '/docs/introduction', label: 'Introduction' },
         { path: '/docs/themes', label: 'Themes' },
+        { path: '/docs/customization', label: 'Customization' },
+        { path: '/docs/migration-notes', label: 'Migration Notes' },
       ],
     },
     {
