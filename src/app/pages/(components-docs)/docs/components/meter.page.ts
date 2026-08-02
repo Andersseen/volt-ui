@@ -1,13 +1,15 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { VoltMeter, VoltMeterTrack, VoltMeterIndicator } from 'volt';
 import { CodePanel } from '../../../../components/code-panel';
+import { ApiReference } from '../../../../components/api-reference';
 import { METER_SNIPPET } from '../../../../lib/snippets';
 import { METER_USAGE } from '../../../../lib/snippets/usage';
+import { METER_API } from '../../../../lib/api-reference.generated';
 
 @Component({
   selector: 'app-meter-demo',
   standalone: true,
-  imports: [VoltMeter, VoltMeterTrack, VoltMeterIndicator, CodePanel],
+  imports: [VoltMeter, VoltMeterTrack, VoltMeterIndicator, CodePanel, ApiReference],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="space-y-6">
@@ -32,6 +34,12 @@ import { METER_USAGE } from '../../../../lib/snippets/usage';
           </div>
         </div>
       </app-code-panel>
+      <!-- API Reference -->
+      <div class="space-y-3">
+        <h3 class="text-lg font-semibold">API Reference</h3>
+        <app-api-reference [data]="meterApi" />
+      </div>
+
       <app-code-panel
         title="Component Source"
         [code]="code"
@@ -42,6 +50,7 @@ import { METER_USAGE } from '../../../../lib/snippets/usage';
   `,
 })
 export default class MeterDemo {
+  readonly meterApi = METER_API;
   readonly code = METER_SNIPPET;
   readonly usage = METER_USAGE;
 }

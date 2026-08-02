@@ -1,13 +1,15 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { VoltInputOtp } from 'volt';
 import { CodePanel } from '../../../../components/code-panel';
+import { ApiReference } from '../../../../components/api-reference';
 import { INPUT_OTP_SNIPPET } from '../../../../lib/snippets';
 import { INPUT_OTP_USAGE } from '../../../../lib/snippets/usage';
+import { INPUT_OTP_API } from '../../../../lib/api-reference.generated';
 
 @Component({
   selector: 'app-input-otp-demo',
   standalone: true,
-  imports: [VoltInputOtp, CodePanel],
+  imports: [VoltInputOtp, CodePanel, ApiReference],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="space-y-6">
@@ -26,6 +28,12 @@ import { INPUT_OTP_USAGE } from '../../../../lib/snippets/usage';
           <p class="text-sm text-muted-foreground">Code: {{ codeValue() || 'empty' }}</p>
         </div>
       </app-code-panel>
+      <!-- API Reference -->
+      <div class="space-y-3">
+        <h3 class="text-lg font-semibold">API Reference</h3>
+        <app-api-reference [data]="inputOtpApi" />
+      </div>
+
       <app-code-panel
         title="Component Source"
         [code]="code"
@@ -36,6 +44,7 @@ import { INPUT_OTP_USAGE } from '../../../../lib/snippets/usage';
   `,
 })
 export default class InputOtpDemo {
+  readonly inputOtpApi = INPUT_OTP_API;
   readonly code = INPUT_OTP_SNIPPET;
   readonly usage = INPUT_OTP_USAGE;
   readonly codeValue = signal('');

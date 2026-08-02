@@ -7,8 +7,10 @@ import {
   VoltDatePickerPreviousMonth,
 } from 'volt';
 import { CodePanel } from '../../../../components/code-panel';
+import { ApiReference } from '../../../../components/api-reference';
 import { DATE_PICKER_SNIPPET } from '../../../../lib/snippets';
 import { DATE_PICKER_USAGE } from '../../../../lib/snippets/usage';
+import { DATE_PICKER_API } from '../../../../lib/api-reference.generated';
 
 @Component({
   selector: 'app-date-picker-demo',
@@ -20,6 +22,7 @@ import { DATE_PICKER_USAGE } from '../../../../lib/snippets/usage';
     VoltDatePickerNextMonth,
     VoltDatePickerPreviousMonth,
     CodePanel,
+    ApiReference,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -64,6 +67,12 @@ import { DATE_PICKER_USAGE } from '../../../../lib/snippets/usage';
           </volt-date-picker>
         </div>
       </app-code-panel>
+      <!-- API Reference -->
+      <div class="space-y-3">
+        <h3 class="text-lg font-semibold">API Reference</h3>
+        <app-api-reference [data]="datePickerApi" />
+      </div>
+
       <app-code-panel
         title="Component Source"
         [code]="code"
@@ -74,6 +83,7 @@ import { DATE_PICKER_USAGE } from '../../../../lib/snippets/usage';
   `,
 })
 export default class DatePickerDemo {
+  readonly datePickerApi = DATE_PICKER_API;
   readonly code = DATE_PICKER_SNIPPET;
   readonly usage = DATE_PICKER_USAGE;
   readonly date = signal<Date | undefined>(new Date(2026, 4, 14));

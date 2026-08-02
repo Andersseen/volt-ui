@@ -6,8 +6,10 @@ import {
   VoltPaginationNext,
 } from 'volt';
 import { CodePanel } from '../../../../components/code-panel';
+import { ApiReference } from '../../../../components/api-reference';
 import { PAGINATION_SNIPPET } from '../../../../lib/snippets';
 import { PAGINATION_USAGE } from '../../../../lib/snippets/usage';
+import { PAGINATION_API } from '../../../../lib/api-reference.generated';
 
 @Component({
   selector: 'app-pagination-demo',
@@ -18,6 +20,7 @@ import { PAGINATION_USAGE } from '../../../../lib/snippets/usage';
     VoltPaginationButton,
     VoltPaginationNext,
     CodePanel,
+    ApiReference,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -42,6 +45,12 @@ import { PAGINATION_USAGE } from '../../../../lib/snippets/usage';
           </volt-pagination>
         </div>
       </app-code-panel>
+      <!-- API Reference -->
+      <div class="space-y-3">
+        <h3 class="text-lg font-semibold">API Reference</h3>
+        <app-api-reference [data]="paginationApi" />
+      </div>
+
       <app-code-panel
         title="Component Source"
         [code]="code"
@@ -52,6 +61,7 @@ import { PAGINATION_USAGE } from '../../../../lib/snippets/usage';
   `,
 })
 export default class PaginationDemo {
+  readonly paginationApi = PAGINATION_API;
   readonly code = PAGINATION_SNIPPET;
   readonly usage = PAGINATION_USAGE;
   readonly page = signal(2);

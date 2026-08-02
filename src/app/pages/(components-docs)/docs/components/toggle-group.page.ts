@@ -1,13 +1,15 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { VoltToggleGroup, VoltToggleGroupItem } from 'volt';
 import { CodePanel } from '../../../../components/code-panel';
+import { ApiReference } from '../../../../components/api-reference';
 import { TOGGLE_GROUP_SNIPPET } from '../../../../lib/snippets';
 import { TOGGLE_GROUP_USAGE } from '../../../../lib/snippets/usage';
+import { TOGGLE_GROUP_API } from '../../../../lib/api-reference.generated';
 
 @Component({
   selector: 'app-toggle-group-demo',
   standalone: true,
-  imports: [VoltToggleGroup, VoltToggleGroupItem, CodePanel],
+  imports: [VoltToggleGroup, VoltToggleGroupItem, CodePanel, ApiReference],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="space-y-6">
@@ -29,6 +31,12 @@ import { TOGGLE_GROUP_USAGE } from '../../../../lib/snippets/usage';
           </volt-toggle-group>
         </div>
       </app-code-panel>
+      <!-- API Reference -->
+      <div class="space-y-3">
+        <h3 class="text-lg font-semibold">API Reference</h3>
+        <app-api-reference [data]="toggleGroupApi" />
+      </div>
+
       <app-code-panel
         title="Component Source"
         [code]="code"
@@ -39,6 +47,7 @@ import { TOGGLE_GROUP_USAGE } from '../../../../lib/snippets/usage';
   `,
 })
 export default class ToggleGroupDemo {
+  readonly toggleGroupApi = TOGGLE_GROUP_API;
   readonly code = TOGGLE_GROUP_SNIPPET;
   readonly usage = TOGGLE_GROUP_USAGE;
   readonly value = signal(['bold']);

@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CodePanel } from '../../../../components/code-panel';
 import { SEARCH_SNIPPET } from '../../../../lib/snippets';
+import { SEARCH_USAGE } from '../../../../lib/snippets/usage';
 import { VoltInput, VoltSearch, VoltSearchClear } from 'volt';
 
 @Component({
@@ -33,17 +34,5 @@ import { VoltInput, VoltSearch, VoltSearchClear } from 'volt';
 })
 export default class SearchPage {
   readonly sourceCode = SEARCH_SNIPPET;
-  readonly usageCode = `import { Component } from '@angular/core';
-import { VoltInput, VoltSearch, VoltSearchClear } from 'volt';
-
-@Component({
-  imports: [VoltInput, VoltSearch, VoltSearchClear],
-  template: \`
-    <volt-search class="flex items-center gap-2">
-      <volt-input type="search" placeholder="Search..." />
-      <volt-search-clear>Clear</volt-search-clear>
-    </volt-search>
-  \`,
-})
-export class MyComponent {}`;
+  readonly usageCode = SEARCH_USAGE;
 }

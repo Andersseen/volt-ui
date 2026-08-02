@@ -804,3 +804,77 @@ import { VoltResizable, VoltResizablePanel, VoltResizableHandle } from 'volt';
   \`,
 })
 export class MyComponent {}`;
+
+export const SEARCH_USAGE = `import { Component } from '@angular/core';
+import { VoltInput, VoltSearch, VoltSearchClear } from 'volt';
+
+@Component({
+  imports: [VoltInput, VoltSearch, VoltSearchClear],
+  template: \`
+    <volt-search class="flex items-center gap-2">
+      <volt-input type="search" placeholder="Search..." />
+      <volt-search-clear>Clear</volt-search-clear>
+    </volt-search>
+  \`,
+})
+export class MyComponent {}`;
+
+export const AUTOFILL_USAGE = `import { Component, signal } from '@angular/core';
+import { VoltAutofill } from 'volt';
+
+@Component({
+  imports: [VoltAutofill],
+  template: \`
+    <input
+      voltAutofill
+      type="email"
+      autocomplete="email"
+      placeholder="Email address"
+      (autofillChange)="autofilled.set($event)"
+    />
+  \`,
+})
+export class MyComponent {
+  autofilled = signal(false);
+}`;
+
+export const SIDEBAR_USAGE = `import { Component, inject } from '@angular/core';
+import {
+  VoltSidebar,
+  VoltSidebarHeader,
+  VoltSidebarContent,
+  VoltSidebarGroup,
+  VoltSidebarItem,
+  VoltSidebarFooter,
+  VoltSidebarService,
+} from 'volt';
+
+@Component({
+  imports: [
+    VoltSidebar,
+    VoltSidebarHeader,
+    VoltSidebarContent,
+    VoltSidebarGroup,
+    VoltSidebarItem,
+    VoltSidebarFooter,
+  ],
+  template: \`
+    <volt-sidebar>
+      <volt-sidebar-header>My App</volt-sidebar-header>
+
+      <volt-sidebar-content>
+        <volt-sidebar-group label="Main">
+          <volt-sidebar-item routerLink="/" label="Home" [exact]="true" />
+          <volt-sidebar-item routerLink="/settings" label="Settings" />
+        </volt-sidebar-group>
+      </volt-sidebar-content>
+
+      <volt-sidebar-footer>
+        <button (click)="sidebarService.toggleCollapse()">Toggle</button>
+      </volt-sidebar-footer>
+    </volt-sidebar>
+  \`,
+})
+export class MyComponent {
+  protected readonly sidebarService = inject(VoltSidebarService);
+}`;

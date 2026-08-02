@@ -15,8 +15,10 @@ import {
   VoltTabsTrigger,
 } from 'volt';
 import { CodePanel } from '../../../../components/code-panel';
+import { ApiReference } from '../../../../components/api-reference';
 import { TABS_SNIPPET } from '../../../../lib/snippets';
 import { TABS_USAGE } from '../../../../lib/snippets/usage';
+import { TABS_API } from '../../../../lib/api-reference.generated';
 
 @Component({
   selector: 'app-tabs-demo',
@@ -36,11 +38,13 @@ import { TABS_USAGE } from '../../../../lib/snippets/usage';
     VoltCardContent,
     VoltCardFooter,
     CodePanel,
+    ApiReference,
   ],
   templateUrl: './tabs.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class TabsDemo {
+  readonly tabsApi = TABS_API;
   readonly tabsCode = TABS_SNIPPET;
   readonly tabsUsage = TABS_USAGE;
 }

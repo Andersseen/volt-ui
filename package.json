@@ -1,6 +1,6 @@
 {
   "name": "volt-ui",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "bin": {
     "volt": "./cli/bin/volt",
     "volt-ui-mcp": "./cli/mcp/setup-mcp.js"
@@ -49,7 +49,10 @@
     "publish:mcp": "cd cli/mcp && npm publish --access public",
     "prepare": "husky",
     "manifest": "node cli/generate-manifest.js",
-    "check:ai-docs": "node cli/generate-manifest.js && node cli/check-ai-docs-sync.js"
+    "check:ai-docs": "node cli/generate-manifest.js && node cli/check-ai-docs-sync.js",
+    "generate:api-reference": "node scripts/generate-api-reference.mjs",
+    "check:docs-completeness": "node scripts/docs-completeness-check.mjs",
+    "check:contrast": "node scripts/contrast-audit.mjs"
   },
   "lint-staged": {
     "*.{ts,html}": [
@@ -67,7 +70,6 @@
     "pnpm": ">=9.0.0"
   },
   "dependencies": {
-    "@analogjs/content": "^2.6.1",
     "@analogjs/platform": "^2.6.1",
     "@analogjs/router": "^2.6.1",
     "@angular/animations": "^21.2.2",
@@ -83,7 +85,6 @@
     "@modelcontextprotocol/sdk": "^1.29.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "front-matter": "^4.0.2",
     "lumen-icons": "^0.1.0",
     "ng-primitives": "0.110.2",
     "rxjs": "~7.8.0",

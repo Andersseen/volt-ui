@@ -67,7 +67,7 @@ import {
             class="reveal-up rounded-full border-primary/25 bg-background/80 px-3.5 py-1.5 text-primary shadow-sm backdrop-blur"
           >
             <span class="mr-2 inline-flex h-1.5 w-1.5 rounded-full bg-primary"></span>
-            Volt UI 0.7 · Built for Angular 21
+            Volt UI 0.8 · Built for Angular 21
           </volt-badge>
 
           <h1

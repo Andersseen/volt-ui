@@ -43,6 +43,7 @@ __screenshots__/
 # Playwright
 test-results/
 playwright-report/
+.playwright-mcp/
 
 # Generated component manifest
 public/manifest.json

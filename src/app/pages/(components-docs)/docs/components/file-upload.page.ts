@@ -1,13 +1,15 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { VoltFileDropzone, VoltFileUpload, VoltButton } from 'volt';
 import { CodePanel } from '../../../../components/code-panel';
+import { ApiReference } from '../../../../components/api-reference';
 import { FILE_UPLOAD_SNIPPET } from '../../../../lib/snippets';
 import { FILE_UPLOAD_USAGE } from '../../../../lib/snippets/usage';
+import { FILE_UPLOAD_API } from '../../../../lib/api-reference.generated';
 
 @Component({
   selector: 'app-file-upload-demo',
   standalone: true,
-  imports: [VoltFileDropzone, VoltFileUpload, VoltButton, CodePanel],
+  imports: [VoltFileDropzone, VoltFileUpload, VoltButton, CodePanel, ApiReference],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="space-y-6">
@@ -32,6 +34,12 @@ import { FILE_UPLOAD_USAGE } from '../../../../lib/snippets/usage';
           </div>
         </div>
       </app-code-panel>
+      <!-- API Reference -->
+      <div class="space-y-3">
+        <h3 class="text-lg font-semibold">API Reference</h3>
+        <app-api-reference [data]="fileUploadApi" />
+      </div>
+
       <app-code-panel
         title="Component Source"
         [code]="code"
@@ -42,6 +50,7 @@ import { FILE_UPLOAD_USAGE } from '../../../../lib/snippets/usage';
   `,
 })
 export default class FileUploadDemo {
+  readonly fileUploadApi = FILE_UPLOAD_API;
   readonly code = FILE_UPLOAD_SNIPPET;
   readonly usage = FILE_UPLOAD_USAGE;
   readonly fileLabel = signal('No files selected');

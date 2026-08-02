@@ -8,13 +8,23 @@ import {
   VoltToastTitle,
 } from 'volt';
 import { CodePanel } from '../../../../components/code-panel';
+import { ApiReference } from '../../../../components/api-reference';
 import { TOAST_SNIPPET } from '../../../../lib/snippets';
 import { TOAST_USAGE } from '../../../../lib/snippets/usage';
+import { TOAST_API } from '../../../../lib/api-reference.generated';
 
 @Component({
   selector: 'app-toast-demo',
   standalone: true,
-  imports: [VoltButton, VoltToast, VoltToastTitle, VoltToastDescription, VoltToastClose, CodePanel],
+  imports: [
+    VoltButton,
+    VoltToast,
+    VoltToastTitle,
+    VoltToastDescription,
+    VoltToastClose,
+    CodePanel,
+    ApiReference,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="space-y-6">
@@ -42,6 +52,12 @@ import { TOAST_USAGE } from '../../../../lib/snippets/usage';
           </ng-template>
         </div>
       </app-code-panel>
+      <!-- API Reference -->
+      <div class="space-y-3">
+        <h3 class="text-lg font-semibold">API Reference</h3>
+        <app-api-reference [data]="toastApi" />
+      </div>
+
       <app-code-panel
         title="Component Source"
         [code]="code"
@@ -52,6 +68,7 @@ import { TOAST_USAGE } from '../../../../lib/snippets/usage';
   `,
 })
 export default class ToastDemo {
+  readonly toastApi = TOAST_API;
   readonly code = TOAST_SNIPPET;
   readonly usage = TOAST_USAGE;
   @ViewChild('toastTemplate', { read: TemplateRef }) private toastTemplate?: TemplateRef<void>;

@@ -1,5 +1,7 @@
 import { describe, it, expect, afterEach } from 'vitest';
-import { applyVoltTheme } from './theme';
+import { TestBed } from '@angular/core/testing';
+import { DOCUMENT } from '@angular/common';
+import { applyVoltTheme, provideVoltTheme } from './theme';
 
 function createTestDocument(): Document {
   return document.implementation.createHTMLDocument('test');
@@ -60,5 +62,33 @@ describe('applyVoltTheme', () => {
     document.documentElement.classList.remove('dark');
     document.documentElement.removeAttribute('data-color');
     document.documentElement.removeAttribute('data-style');
+  });
+});
+
+describe('provideVoltTheme', () => {
+  it('applies the theme to the injected DOCUMENT, not the global document', () => {
+    // Regression test for the SSR flash bug: platform-server injects its own
+    // Document implementation distinct from the global `document` (which is
+    // undefined on the server). Overriding DOCUMENT here with a document
+    // that is provably NOT globalThis.document reproduces that shape — if
+    // provideVoltTheme ever goes back to reading the global `document`
+    // instead of `inject(DOCUMENT)`, this fails because `ssrDoc` stays
+    // untouched while the real `document` (asserted absent here) would have
+    // been the one mutated.
+    const ssrDoc = createTestDocument();
+    expect(ssrDoc).not.toBe(document);
+
+    TestBed.configureTestingModule({
+      providers: [
+        { provide: DOCUMENT, useValue: ssrDoc },
+        provideVoltTheme({ color: 'ember', style: 'brutal', dark: true }),
+      ],
+    });
+    TestBed.inject(DOCUMENT);
+
+    expect(ssrDoc.documentElement.getAttribute('data-color')).toBe('ember');
+    expect(ssrDoc.documentElement.getAttribute('data-style')).toBe('brutal');
+    expect(ssrDoc.documentElement.classList.contains('dark')).toBe(true);
+    expect(document.documentElement.getAttribute('data-color')).not.toBe('ember');
   });
 });

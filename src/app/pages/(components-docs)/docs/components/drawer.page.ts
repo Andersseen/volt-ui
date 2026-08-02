@@ -10,9 +10,11 @@ import {
   VoltSwitch,
 } from 'volt';
 import { CodePanel } from '../../../../components/code-panel';
+import { ApiReference } from '../../../../components/api-reference';
 import { LmnXIcon } from 'lumen-icons';
 import { DRAWER_SNIPPET } from '../../../../lib/snippets';
 import { DRAWER_USAGE } from '../../../../lib/snippets/usage';
+import { DRAWER_API } from '../../../../lib/api-reference.generated';
 
 @Component({
   selector: 'app-drawer-demo',
@@ -28,11 +30,13 @@ import { DRAWER_USAGE } from '../../../../lib/snippets/usage';
     VoltSwitch,
     CodePanel,
     LmnXIcon,
+    ApiReference,
   ],
   templateUrl: './drawer.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class DrawerDemo {
+  readonly drawerApi = DRAWER_API;
   readonly drawerCode = DRAWER_SNIPPET;
   readonly drawerUsage = DRAWER_USAGE;
   readonly darkMode = signal(false);
