@@ -92,6 +92,34 @@ function splitTopLevel(str) {
   return parts;
 }
 
+// Like splitTopLevel, but also tracks angle-bracket depth — needed for
+// splitting a raw generic string (e.g. from `input<T, U>`), which can
+// itself contain commas nested inside a function type
+// (`(a: unknown, b: unknown) => boolean`) or a nested generic (`Map<K, V>`).
+function splitGenericTopLevel(str) {
+  const parts = [];
+  let depth = 0;
+  let current = '';
+  for (let i = 0; i < str.length; i++) {
+    const ch = str[i];
+    if (ch === '=' && str[i + 1] === '>') {
+      current += '=>';
+      i++; // the arrow's '>' is not a generic close
+      continue;
+    }
+    if ('[{(<'.includes(ch)) depth++;
+    if (']})>'.includes(ch)) depth--;
+    if (ch === ',' && depth === 0) {
+      parts.push(current);
+      current = '';
+    } else {
+      current += ch;
+    }
+  }
+  if (current.trim()) parts.push(current);
+  return parts;
+}
+
 function extractSignals(src) {
   const inputs = [];
   const outputs = [];
@@ -105,6 +133,10 @@ function extractSignals(src) {
       let depth = 0;
       const start = cursor + 1;
       for (let i = cursor; i < src.length; i++) {
+        if (src[i] === '=' && src[i + 1] === '>') {
+          i++; // skip the arrow token's '>' — it is not a generic close
+          continue;
+        }
         if (src[i] === '<') depth++;
         else if (src[i] === '>') {
           depth--;
@@ -121,7 +153,7 @@ function extractSignals(src) {
     const args = splitTopLevel(body).map(s => s.trim());
     const [defaultRaw, optionsRaw] = args;
     const transformMatch = optionsRaw?.match(/transform:\s*(\w+)/);
-    const type = generic ? generic.split(',')[0].trim() : inferTypeFromLiteral(defaultRaw);
+    const type = generic ? splitGenericTopLevel(generic)[0].trim() : inferTypeFromLiteral(defaultRaw);
 
     if (kind === 'input') {
       inputs.push({
