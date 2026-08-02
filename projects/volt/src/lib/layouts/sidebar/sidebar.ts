@@ -125,7 +125,8 @@ export class VoltSidebarGroup {
         [voltTooltip]="label()"
         placement="right"
         [routerLink]="routerLink()"
-        routerLinkActive="bg-accent text-accent-foreground font-medium"
+        [queryParams]="queryParams()"
+        routerLinkActive="bg-accent text-accent-foreground font-medium active"
         [routerLinkActiveOptions]="{ exact: exact() }"
         class="flex h-10 w-full items-center justify-center rounded-md text-muted-foreground transition-colors hover:text-foreground hover:bg-accent/50 group relative"
         (click)="sidebarService.setMobileOpen(false)"
@@ -138,6 +139,7 @@ export class VoltSidebarGroup {
     } @else {
       <a
         [routerLink]="routerLink()"
+        [queryParams]="queryParams()"
         routerLinkActive="bg-accent text-accent-foreground font-medium active"
         [routerLinkActiveOptions]="{ exact: exact() }"
         class="flex h-10 w-full items-center gap-3 rounded-md px-3 text-sm text-muted-foreground transition-colors hover:text-foreground hover:bg-accent/50 group relative"
@@ -152,6 +154,7 @@ export class VoltSidebarGroup {
 })
 export class VoltSidebarItem {
   readonly routerLink = input.required<string>();
+  readonly queryParams = input<Record<string, string> | undefined>(undefined);
   readonly label = input.required<string>();
   readonly exact = input<boolean, unknown>(false, { transform: booleanAttribute });
 

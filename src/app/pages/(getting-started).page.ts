@@ -9,7 +9,7 @@ import type { DocsSidebarGroup } from '../components/docs-sidebar-nav';
   imports: [RouterOutlet, DocsPageShell],
   template: `
     <app-docs-page-shell
-      title="Getting Started"
+      [title]="'Getting Started'"
       browseLabel="Browse Documentation"
       [groups]="groups"
     >

@@ -103,7 +103,11 @@ import {
             >
               <lmn-home slot="icon" class="h-4 w-4" />
             </volt-sidebar-item>
-            <volt-sidebar-item routerLink="/docs/layouts/admin-dashboard" label="Analytics">
+            <volt-sidebar-item
+              routerLink="/docs/layouts/admin-dashboard"
+              [queryParams]="{ tab: 'analytics' }"
+              label="Analytics"
+            >
               <lmn-grid slot="icon" class="h-4 w-4" />
             </volt-sidebar-item>
           </volt-sidebar-group>
@@ -113,10 +117,18 @@ import {
           </div>
 
           <volt-sidebar-group label="Management">
-            <volt-sidebar-item routerLink="/docs/layouts/admin-dashboard" label="Users">
+            <volt-sidebar-item
+              routerLink="/docs/layouts/admin-dashboard"
+              [queryParams]="{ tab: 'users' }"
+              label="Users"
+            >
               <lmn-avatar slot="icon" class="h-4 w-4" />
             </volt-sidebar-item>
-            <volt-sidebar-item routerLink="/docs/layouts/admin-dashboard" label="Messages">
+            <volt-sidebar-item
+              routerLink="/docs/layouts/admin-dashboard"
+              [queryParams]="{ tab: 'messages' }"
+              label="Messages"
+            >
               <lmn-mail slot="icon" class="h-4 w-4" />
               <div
                 slot="trailing"
@@ -125,7 +137,11 @@ import {
                 12
               </div>
             </volt-sidebar-item>
-            <volt-sidebar-item routerLink="/docs/layouts/admin-dashboard" label="Settings">
+            <volt-sidebar-item
+              routerLink="/docs/layouts/admin-dashboard"
+              [queryParams]="{ tab: 'settings' }"
+              label="Settings"
+            >
               <lmn-settings slot="icon" class="h-4 w-4" />
             </volt-sidebar-item>
           </volt-sidebar-group>

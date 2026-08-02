@@ -5,6 +5,70 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.1] - 2026-08-02
+
+### Fixed
+
+- **Select dropdown mispositioning**: `volt-select-content` never bound `width:
+var(--ngp-select-width)` (the CSS variable ng-primitives exposes so the dropdown can
+  match the trigger's width — the sibling `combobox-dropdown` already does this
+  correctly). Without it, the panel sized itself to its content (~128px) instead of the
+  trigger's width, and floating-ui's default center-aligned `bottom` placement then
+  anchored the panel's left edge to the trigger's horizontal center, pushing most of the
+  panel outside the trigger's bounds. Fixed by binding the width (matching Combobox's
+  pattern) and switching `NgpSelect`'s placement to `bottom-start`, which aligns by the
+  trigger's left edge and doesn't depend on measuring the floating panel's width at all.
+- **`VoltBadge` silently dropping custom classes**: the component computed its host
+  `[class]` purely from `badgeVariants({variant})`, never merging in a caller-provided
+  `class` attribute through `cn()`/`twMerge` (every other component with variants —
+  `Button`, `Table*`, `Dialog`, etc. — does). A custom override like `text-background`
+  ended up sitting in the DOM next to the variant's own `text-foreground` with no
+  dedup; whichever utility Tailwind happened to generate later in the stylesheet won,
+  independent of the caller's intent. Added a `class` input merged via `cn()`, matching
+  the rest of the library.
+- **Self-referential layout demos showing every sidebar item as "active"**: the Sidebar
+  Layout and Admin Dashboard demo pages point every nav item at the same literal route
+  (they're single-page mockups), so Angular's `routerLinkActive` matched all of them
+  regardless of the `exact` input — every item rendered with the active/highlighted
+  style simultaneously. Added a `queryParams` input to `VoltSidebarItem` (forwarded to
+  `[queryParams]`, which Angular resolves as real query parameters, unlike embedding
+  `?query=` directly in the `routerLink` string) and gave each non-current demo item a
+  distinguishing value, so only the current item matches.
+- **Tabs active indicator invisible in dark mode**: `data-[state=active]` used
+  `bg-background`, which is _darker_ than the tab list's own `bg-muted` in the dark
+  palette (background 0.05 vs muted 0.15 lightness) — the "active" tab rendered as a
+  recessed patch rather than a raised one, distinguishable only by text color. Added a
+  `border-input` border to the active state, which reliably contrasts against both the
+  fill and the list background in every preset and mode.
+- **Docs pages leaking a native browser tooltip across the whole content area**: the
+  three docs shells (`Layouts`, `Components`, `Getting Started`) passed their `title` as
+  a plain string attribute (`title="Layouts"`) to `<app-docs-page-shell>`. Angular
+  applies a static string attribute to a matching component input _and_ leaves it as a
+  literal DOM attribute — since `title` is a global HTML attribute, this made the
+  browser show a native tooltip reading "Layouts"/"Components"/"Getting Started"
+  anywhere you hovered inside that shell (nav sidebar and the entire demo/content pane),
+  landing wherever the cursor happened to be. Switched to property binding
+  (`[title]="'Layouts'"`), which binds only the component input.
+- **Landing CTA section always inverting relative to the site theme**: the "Copy
+  components into your project" section used `bg-foreground text-background`
+  unconditionally, so in dark mode — where `--foreground` is light — it rendered as a
+  bright section in the middle of an otherwise dark page, defeating the point of dark
+  mode. Switched to `bg-muted`/`text-foreground`/`text-muted-foreground`, which respects
+  whichever theme is active like the rest of the page. The terminal mockup inside it
+  (intentionally always dark, `bg-black/40`) had its own text colored via
+  `text-background/*`, which depended on the same inversion; changed to fixed
+  `text-white/*` values since the terminal's background no longer flips with it.
+- **Hero heading crowding descenders**: `tracking-[-0.055em]` and `leading-[0.98]` on
+  the display heading were tight enough to crowd descenders (the 'y' in "you") against
+  the line above at large viewport widths. Loosened to `tracking-[-0.02em]` /
+  `leading-[1.05]`. Also added the `-webkit-background-clip`/`-webkit-text-fill-color`
+  pair to the animated gradient-text style, which some WebKit versions require for
+  `background-clip: text` to render at all during a `background-position` animation.
+
+### Changed
+
+- Bumped the root package, `@voltui/components`, and `@voltui/cli` to `0.8.1`.
+
 ## [0.8.0] - 2026-08-02
 
 ### Added
