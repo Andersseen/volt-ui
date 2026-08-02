@@ -5,6 +5,77 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.0] - 2026-08-02
+
+### Added
+
+- Added `scripts/contrast-audit.mjs`: computes real WCAG contrast ratios (oklch -> linear
+  sRGB -> relative luminance) for every semantic color pair across all 5 color presets x
+  light/dark. `pnpm check:contrast` runs it; wired as a repeatable check, not a one-off.
+- Added `scripts/docs-completeness-check.mjs` (`pnpm check:docs-completeness`): compares
+  `public-api.ts` exports against source snippets, usage snippets, and demo pages.
+- Added `scripts/generate-api-reference.mjs` (`pnpm generate:api-reference`): generates
+  `src/app/lib/api-reference.generated.ts` from the actual component source (inputs,
+  outputs, CVA variants) instead of hand-written tables that would drift.
+- Added an **API Reference** section (inputs/outputs/variants) to every component demo
+  page and the sidebar layout page, rendered by a new shared `<app-api-reference>`
+  component.
+- Added `/docs/customization`: editing a copied component, extending CVA variants,
+  overriding classes with `cn()`, and when to reach for a theme preset instead.
+- Added `/docs/migration-notes`: 0.x changes that actually require touching template
+  code, sourced from this changelog.
+- Added a Runtime API section, a Dark Mode Strategy section, and copy-paste templates
+  for custom color and style presets to `/docs/themes`.
+- Added `e2e/theme-presets.spec.ts`: drives the real header color/style pickers and
+  dark-mode toggle on a live page and asserts computed tokens change.
+
+### Fixed
+
+- **Contrast**: fixed 67 color pairs across every preset that failed WCAG AA — buttons
+  and status surfaces as low as 2.4:1 against their foreground text, and every preset's
+  form-field border (`--input`) at ~1.1-1.4:1 against the page background (SC 1.4.11).
+  Every fix is a hue/chroma-preserving lightness adjustment; brand identity is
+  unchanged. All 130 checks (5 colors x light/dark x 13 pairs) now pass.
+- **Theme drift**: `src/styles.css` carried a ~370-line hand-duplicated fork of every
+  color and style preset, completely disconnected from
+  `projects/volt/src/themes/` — the actual root cause of why the contrast bugs were
+  invisible in the deployed docs site even after a library-side fix. Replaced it with
+  `@import` of the same source files `@voltui/components/themes.css` ships.
+- **SSR theme flash**: `provideVoltTheme()` read the global `document`, which is
+  undefined during SSR, so its environment initializer silently no-op'd on the server.
+  SSR consumers got default-theme HTML that flashed to their configured theme on
+  hydration. Fixed by reading Angular's `DOCUMENT` injection token instead.
+- **Docs-app theme flash**: the docs app's own saved theme (localStorage) was only
+  applied from a component constructor, well after first paint. Added a synchronous
+  inline script in `index.html`'s `<head>`, before any stylesheet, that applies it
+  before the browser paints anything.
+- Fixed the dialog demo page, which rendered raw `ng-primitives/dialog` directives with
+  hand-duplicated Tailwind classes instead of the real `VoltDialog*` components, and
+  showed a fabricated "Component Source" stub missing the real host classes entirely
+  (no backdrop styling, no animation classes). Rewritten to use the real components,
+  mirroring the (correct) drawer demo.
+  - Added `DIALOG_SNIPPET`, `SIDEBAR_SNIPPET`/`SIDEBAR_USAGE`.
+  - Moved `search`/`autofill`'s existing inline usage examples into the shared
+    `snippets/usage.ts` convention every other component follows.
+- Fixed the sidebar layout page's "Installation" section, which was an unfinished
+  placeholder in Spanish pointing at a source path that doesn't exist
+  (`src/app/layout/sidebar/`); replaced with proper Usage/Component Source panels.
+- Fixed README.md's component count (said 40 in three places; the catalog table below
+  it, and `public-api.ts`, both say 41).
+- Fixed `scripts/generate-api-reference.mjs` truncating function-typed inputs
+  (combobox's `compareWith`, `scrollToOption`, `itemLabel`, `trackByFn`) at nested
+  commas and `=>` arrows in their type signatures.
+
+### Changed
+
+- Bumped the root package, `@voltui/components`, and `@voltui/cli` to `0.8.0`.
+- Removed `test_tooltip.js`, `test_playwright.js`, `update.js` from the repo root
+  (unrunnable/dead one-off scripts from early scaffolding).
+- Moved `ANALOGJS_USAGE.md` and `ANGULAR_USAGE.md` into `docs/`.
+- Dropped `@analogjs/content` and `front-matter` as direct dependencies — both are
+  already transitive dependencies of `@analogjs/router`/`@analogjs/platform` and
+  nothing imports them directly.
+
 ## [0.7.0] - 2026-07-29
 
 ### Added

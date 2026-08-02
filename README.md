@@ -221,7 +221,7 @@ Volt UI ships three complementary ways to give AI assistants correct context:
 
 ## 📈 Stability & Roadmap
 
-Current status: **`0.7.0` — composite hardening and fixed v1 surface.**
+Current status: **`0.8.0` — theme system audited to WCAG AA, docs completeness sweep.**
 
 - **Stable** — recommended for early adoption.
 - **Beta** — usable; may still gain forms / keyboard / a11y / edge-case coverage.
@@ -233,7 +233,7 @@ Full status table: **[COMPONENT_STATUS.md](./COMPONENT_STATUS.md)**.
 
 ### Compatibility policy
 
-The current `0.7.x` line targets Angular `^21.2` and Node 20 or newer. During
+The current `0.8.x` line targets Angular `^21.2` and Node 20 or newer. During
 pre-v1, Volt UI supports the latest declared Angular major only; widening that
 range requires consumer-fixture verification and is never assumed from a
 successful build. After v1, the project will document each supported Angular
