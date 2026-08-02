@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@analogjs/content':
-        specifier: ^2.6.1
-        version: 2.6.1(e80ea6dd8df40211ba45cd5baf611ae4)
       '@analogjs/platform':
         specifier: ^2.6.1
         version: 2.6.1(@angular/build@21.2.15(6f78b0d904f016c0d41582c75b96a5a0))(marked-gfm-heading-id@4.1.4(marked@15.0.12))(marked-highlight@2.2.4(marked@15.0.12))(marked-mangle@1.1.13(marked@15.0.12))(marked@15.0.12)(prismjs@1.30.0)(rolldown@1.0.0-rc.4)(vite@7.3.1(@types/node@25.9.3)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.3)(terser@5.46.1)(yaml@2.8.3))
@@ -56,9 +53,6 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
-      front-matter:
-        specifier: ^4.0.2
-        version: 4.0.2
       lumen-icons:
         specifier: ^0.1.0
         version: 0.1.0(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
