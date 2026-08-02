@@ -49,7 +49,10 @@
     "publish:mcp": "cd cli/mcp && npm publish --access public",
     "prepare": "husky",
     "manifest": "node cli/generate-manifest.js",
-    "check:ai-docs": "node cli/generate-manifest.js && node cli/check-ai-docs-sync.js"
+    "check:ai-docs": "node cli/generate-manifest.js && node cli/check-ai-docs-sync.js",
+    "generate:api-reference": "node scripts/generate-api-reference.mjs",
+    "check:docs-completeness": "node scripts/docs-completeness-check.mjs",
+    "check:contrast": "node scripts/contrast-audit.mjs"
   },
   "lint-staged": {
     "*.{ts,html}": [

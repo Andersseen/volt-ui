@@ -1,13 +1,22 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { VoltListbox, VoltListboxHeader, VoltListboxOption, VoltListboxSection } from 'volt';
 import { CodePanel } from '../../../../components/code-panel';
+import { ApiReference } from '../../../../components/api-reference';
 import { LISTBOX_SNIPPET } from '../../../../lib/snippets';
 import { LISTBOX_USAGE } from '../../../../lib/snippets/usage';
+import { LISTBOX_API } from '../../../../lib/api-reference.generated';
 
 @Component({
   selector: 'app-listbox-demo',
   standalone: true,
-  imports: [VoltListbox, VoltListboxHeader, VoltListboxOption, VoltListboxSection, CodePanel],
+  imports: [
+    VoltListbox,
+    VoltListboxHeader,
+    VoltListboxOption,
+    VoltListboxSection,
+    CodePanel,
+    ApiReference,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="space-y-6">
@@ -32,6 +41,12 @@ import { LISTBOX_USAGE } from '../../../../lib/snippets/usage';
           </volt-listbox>
         </div>
       </app-code-panel>
+      <!-- API Reference -->
+      <div class="space-y-3">
+        <h3 class="text-lg font-semibold">API Reference</h3>
+        <app-api-reference [data]="listboxApi" />
+      </div>
+
       <app-code-panel
         title="Component Source"
         [code]="code"
@@ -42,6 +57,7 @@ import { LISTBOX_USAGE } from '../../../../lib/snippets/usage';
   `,
 })
 export default class ListboxDemo {
+  readonly listboxApi = LISTBOX_API;
   readonly code = LISTBOX_SNIPPET;
   readonly usage = LISTBOX_USAGE;
   readonly selected = signal(['angular']);

@@ -20,7 +20,9 @@ import {
   LmnSearchIcon,
   LmnSettingsIcon,
 } from 'lumen-icons';
+import { ApiReference } from '../../../../components/api-reference';
 import { CodePanel } from '../../../../components/code-panel';
+import { SIDEBAR_API } from '../../../../lib/api-reference.generated';
 import { SIDEBAR_SNIPPET } from '../../../../lib/snippets';
 import { SIDEBAR_USAGE } from '../../../../lib/snippets/usage';
 
@@ -195,7 +197,7 @@ export class SidebarDemo {
 
 @Component({
   selector: 'app-docs-sidebar',
-  imports: [SidebarDemo, CodePanel],
+  imports: [SidebarDemo, CodePanel, ApiReference],
   template: `
     <div class="max-w-4xl mx-auto py-8 px-4 w-full h-full">
       <h1 class="text-3xl font-bold tracking-tight mb-2">Sidebar Layout</h1>
@@ -212,6 +214,11 @@ export class SidebarDemo {
           description="The live demo above is the full page-shell composition; this is the minimal shape."
         />
 
+        <div class="space-y-3">
+          <h3 class="text-lg font-semibold">API Reference</h3>
+          <app-api-reference [data]="sidebarApi" />
+        </div>
+
         <app-code-panel
           title="Component Source"
           [code]="sidebarCode"
@@ -223,6 +230,7 @@ export class SidebarDemo {
   `,
 })
 export default class DocsSidebar {
+  readonly sidebarApi = SIDEBAR_API;
   readonly sidebarCode = SIDEBAR_SNIPPET;
   readonly sidebarUsage = SIDEBAR_USAGE;
 }

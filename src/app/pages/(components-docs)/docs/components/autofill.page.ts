@@ -1,13 +1,15 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { CodePanel } from '../../../../components/code-panel';
+import { ApiReference } from '../../../../components/api-reference';
 import { AUTOFILL_SNIPPET } from '../../../../lib/snippets';
 import { AUTOFILL_USAGE } from '../../../../lib/snippets/usage';
+import { AUTOFILL_API } from '../../../../lib/api-reference.generated';
 import { VoltAutofill } from 'volt';
 
 @Component({
   selector: 'app-autofill-demo',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CodePanel, VoltAutofill],
+  imports: [CodePanel, VoltAutofill, ApiReference],
   template: `
     <div class="space-y-8">
       <div>
@@ -31,6 +33,12 @@ import { VoltAutofill } from 'volt';
         </div>
       </app-code-panel>
 
+      <!-- API Reference -->
+      <div class="space-y-3">
+        <h3 class="text-lg font-semibold">API Reference</h3>
+        <app-api-reference [data]="autofillApi" />
+      </div>
+
       <app-code-panel
         title="Directive Source"
         [code]="sourceCode"
@@ -40,6 +48,7 @@ import { VoltAutofill } from 'volt';
   `,
 })
 export default class AutofillPage {
+  readonly autofillApi = AUTOFILL_API;
   readonly autofilled = signal(false);
   readonly sourceCode = AUTOFILL_SNIPPET;
   readonly usageCode = AUTOFILL_USAGE;

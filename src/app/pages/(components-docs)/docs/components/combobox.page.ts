@@ -1,13 +1,15 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { VoltCombobox } from 'volt';
 import { CodePanel } from '../../../../components/code-panel';
+import { ApiReference } from '../../../../components/api-reference';
 import { COMBOBOX_SNIPPET } from '../../../../lib/snippets';
 import { COMBOBOX_USAGE } from '../../../../lib/snippets/usage';
+import { COMBOBOX_API } from '../../../../lib/api-reference.generated';
 
 @Component({
   selector: 'app-combobox-demo',
   standalone: true,
-  imports: [VoltCombobox, CodePanel],
+  imports: [VoltCombobox, CodePanel, ApiReference],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="space-y-6">
@@ -31,6 +33,12 @@ import { COMBOBOX_USAGE } from '../../../../lib/snippets/usage';
           </div>
         </div>
       </app-code-panel>
+      <!-- API Reference -->
+      <div class="space-y-3">
+        <h3 class="text-lg font-semibold">API Reference</h3>
+        <app-api-reference [data]="comboboxApi" />
+      </div>
+
       <app-code-panel
         title="Component Source"
         [code]="code"
@@ -41,6 +49,7 @@ import { COMBOBOX_USAGE } from '../../../../lib/snippets/usage';
   `,
 })
 export default class ComboboxDemo {
+  readonly comboboxApi = COMBOBOX_API;
   readonly code = COMBOBOX_SNIPPET;
   readonly usage = COMBOBOX_USAGE;
   readonly framework = signal('');

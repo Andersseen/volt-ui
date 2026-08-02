@@ -1,13 +1,15 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { VoltFormField, VoltLabel, VoltHint, VoltError, VoltInput } from 'volt';
 import { CodePanel } from '../../../../components/code-panel';
+import { ApiReference } from '../../../../components/api-reference';
 import { FORM_FIELD_SNIPPET } from '../../../../lib/snippets';
 import { FORM_FIELD_USAGE } from '../../../../lib/snippets/usage';
+import { FORM_FIELD_API } from '../../../../lib/api-reference.generated';
 
 @Component({
   selector: 'app-form-field-demo',
   standalone: true,
-  imports: [VoltFormField, VoltLabel, VoltHint, VoltError, VoltInput, CodePanel],
+  imports: [VoltFormField, VoltLabel, VoltHint, VoltError, VoltInput, CodePanel, ApiReference],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="space-y-6">
@@ -34,6 +36,12 @@ import { FORM_FIELD_USAGE } from '../../../../lib/snippets/usage';
           </div>
         </div>
       </app-code-panel>
+      <!-- API Reference -->
+      <div class="space-y-3">
+        <h3 class="text-lg font-semibold">API Reference</h3>
+        <app-api-reference [data]="formFieldApi" />
+      </div>
+
       <app-code-panel
         title="Component Source"
         [code]="code"
@@ -44,6 +52,7 @@ import { FORM_FIELD_USAGE } from '../../../../lib/snippets/usage';
   `,
 })
 export default class FormFieldDemo {
+  readonly formFieldApi = FORM_FIELD_API;
   readonly code = FORM_FIELD_SNIPPET;
   readonly usage = FORM_FIELD_USAGE;
 }

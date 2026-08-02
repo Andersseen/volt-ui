@@ -1,13 +1,15 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { VoltTextarea } from 'volt';
 import { CodePanel } from '../../../../components/code-panel';
+import { ApiReference } from '../../../../components/api-reference';
 import { TEXTAREA_SNIPPET } from '../../../../lib/snippets';
 import { TEXTAREA_USAGE } from '../../../../lib/snippets/usage';
+import { TEXTAREA_API } from '../../../../lib/api-reference.generated';
 
 @Component({
   selector: 'app-textarea-demo',
   standalone: true,
-  imports: [VoltTextarea, CodePanel],
+  imports: [VoltTextarea, CodePanel, ApiReference],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="space-y-6">
@@ -26,6 +28,12 @@ import { TEXTAREA_USAGE } from '../../../../lib/snippets/usage';
           </div>
         </div>
       </app-code-panel>
+      <!-- API Reference -->
+      <div class="space-y-3">
+        <h3 class="text-lg font-semibold">API Reference</h3>
+        <app-api-reference [data]="textareaApi" />
+      </div>
+
       <app-code-panel
         title="Component Source"
         [code]="code"
@@ -36,6 +44,7 @@ import { TEXTAREA_USAGE } from '../../../../lib/snippets/usage';
   `,
 })
 export default class TextareaDemo {
+  readonly textareaApi = TEXTAREA_API;
   readonly code = TEXTAREA_SNIPPET;
   readonly usage = TEXTAREA_USAGE;
   readonly message = signal('Write a short note...');
