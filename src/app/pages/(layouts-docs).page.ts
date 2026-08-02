@@ -9,7 +9,7 @@ import type { DocsSidebarGroup } from '../components/docs-sidebar-nav';
   imports: [RouterOutlet, DocsPageShell],
   template: `
     <app-docs-page-shell
-      title="Layouts"
+      [title]="'Layouts'"
       browseLabel="Browse Layouts"
       description="Copy-paste blocks. No install needed."
       [groups]="groups"

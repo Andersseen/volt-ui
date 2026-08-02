@@ -87,7 +87,10 @@ export const BADGE_API: ComponentApi = {
     {
       className: 'VoltBadge',
       selector: 'volt-badge',
-      inputs: [{ name: 'variant', type: "BadgeVariants['variant']", default: "'solid'" }],
+      inputs: [
+        { name: 'variant', type: "BadgeVariants['variant']", default: "'solid'" },
+        { name: 'class', type: 'string', default: "''" },
+      ],
       outputs: [],
     },
   ],
@@ -1223,6 +1226,7 @@ export const SIDEBAR_API: ComponentApi = {
       inputs: [
         { name: 'label', type: 'string' },
         { name: 'routerLink', type: 'string', required: true },
+        { name: 'queryParams', type: 'Record<string, string> | undefined', default: 'undefined' },
         { name: 'exact', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
       ],
       outputs: [],

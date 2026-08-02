@@ -31,6 +31,7 @@ import { injectFormControlState } from '../../form-control-state';
     <button
       ngpSelect
       type="button"
+      ngpSelectDropdownPlacement="bottom-start"
       [ngpSelectValue]="value()"
       [ngpSelectDisabled]="isDisabled()"
       [ngpSelectMultiple]="multiple()"

@@ -93,7 +93,11 @@ import { SIDEBAR_USAGE } from '../../../../lib/snippets/usage';
             <volt-sidebar-item routerLink="/docs/layouts/sidebar" [exact]="true" label="Dashboard">
               <lmn-home slot="icon" class="h-4 w-4" />
             </volt-sidebar-item>
-            <volt-sidebar-item routerLink="/docs/layouts/sidebar" label="Inbox">
+            <volt-sidebar-item
+              routerLink="/docs/layouts/sidebar"
+              [queryParams]="{ tab: 'inbox' }"
+              label="Inbox"
+            >
               <lmn-mail slot="icon" class="h-4 w-4" />
               <div
                 slot="trailing"
@@ -102,7 +106,11 @@ import { SIDEBAR_USAGE } from '../../../../lib/snippets/usage';
                 3
               </div>
             </volt-sidebar-item>
-            <volt-sidebar-item routerLink="/docs/layouts/sidebar" label="Components">
+            <volt-sidebar-item
+              routerLink="/docs/layouts/sidebar"
+              [queryParams]="{ tab: 'components' }"
+              label="Components"
+            >
               <lmn-grid slot="icon" class="h-4 w-4" />
             </volt-sidebar-item>
           </volt-sidebar-group>
@@ -113,13 +121,25 @@ import { SIDEBAR_USAGE } from '../../../../lib/snippets/usage';
 
           <!-- Secondary Group -->
           <volt-sidebar-group label="Configuration">
-            <volt-sidebar-item routerLink="/docs/layouts/sidebar" label="Profile">
+            <volt-sidebar-item
+              routerLink="/docs/layouts/sidebar"
+              [queryParams]="{ tab: 'profile' }"
+              label="Profile"
+            >
               <lmn-avatar slot="icon" class="h-4 w-4" />
             </volt-sidebar-item>
-            <volt-sidebar-item routerLink="/docs/layouts/sidebar" label="Settings">
+            <volt-sidebar-item
+              routerLink="/docs/layouts/sidebar"
+              [queryParams]="{ tab: 'settings' }"
+              label="Settings"
+            >
               <lmn-settings slot="icon" class="h-4 w-4" />
             </volt-sidebar-item>
-            <volt-sidebar-item routerLink="/docs/layouts/sidebar" label="Search">
+            <volt-sidebar-item
+              routerLink="/docs/layouts/sidebar"
+              [queryParams]="{ tab: 'search' }"
+              label="Search"
+            >
               <lmn-search slot="icon" class="h-4 w-4" />
             </volt-sidebar-item>
           </volt-sidebar-group>

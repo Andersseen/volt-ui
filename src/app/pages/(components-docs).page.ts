@@ -9,7 +9,7 @@ import { COMPONENT_GROUPS } from '../lib/component-metadata';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterOutlet, DocsPageShell],
   template: `
-    <app-docs-page-shell title="Components" browseLabel="Browse Components" [groups]="groups">
+    <app-docs-page-shell [title]="'Components'" browseLabel="Browse Components" [groups]="groups">
       <router-outlet />
     </app-docs-page-shell>
   `,

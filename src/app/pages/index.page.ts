@@ -71,7 +71,7 @@ import {
           </volt-badge>
 
           <h1
-            class="reveal-up reveal-delay-1 mt-7 text-balance text-5xl font-bold tracking-[-0.055em] sm:text-7xl lg:text-[5.5rem] lg:leading-[0.98]"
+            class="reveal-up reveal-delay-1 mt-7 text-balance text-5xl font-bold tracking-[-0.02em] sm:text-7xl lg:text-[5.5rem] lg:leading-[1.05]"
           >
             Angular components
             <span class="electric-text">you actually own.</span>
@@ -303,22 +303,19 @@ import {
         </div>
       </section>
 
-      <section class="border-y border-border/60 bg-foreground text-background">
+      <section class="border-y border-border/60 bg-muted">
         <div
           class="mx-auto grid max-w-6xl items-center gap-14 px-4 py-20 sm:px-6 lg:grid-cols-2 lg:py-28"
         >
           <div>
-            <volt-badge
-              variant="outline"
-              class="border-background/20 bg-background/10 text-background"
-            >
+            <volt-badge variant="outline">
               <lmn-zap [size]="12" class="mr-1.5" />
               One command. Your source.
             </volt-badge>
             <h2 class="mt-6 text-balance text-3xl font-semibold tracking-tight sm:text-5xl">
               Copy components into your project, not another black box.
             </h2>
-            <p class="mt-5 max-w-xl text-lg leading-8 text-background/65">
+            <p class="mt-5 max-w-xl text-lg leading-8 text-muted-foreground">
               The CLI resolves component dependencies, adapts selectors, and leaves readable Angular
               source in your repository.
             </p>
@@ -326,27 +323,25 @@ import {
               routerLink="/docs/introduction"
               variant="outline"
               size="lg"
-              class="mt-8 rounded-full border-background/20 bg-background text-foreground hover:bg-background/90"
+              class="mt-8 rounded-full"
             >
               Read the installation guide
               <lmn-arrow-right slot="trailing" [size]="16" />
             </volt-button>
           </div>
 
-          <div
-            class="overflow-hidden rounded-2xl border border-background/15 bg-black/40 shadow-2xl"
-          >
-            <div class="flex items-center gap-2 border-b border-background/10 px-4 py-3">
+          <div class="overflow-hidden rounded-2xl border border-white/15 bg-black/40 shadow-2xl">
+            <div class="flex items-center gap-2 border-b border-white/10 px-4 py-3">
               <span class="h-2.5 w-2.5 rounded-full bg-red-400"></span>
               <span class="h-2.5 w-2.5 rounded-full bg-amber-300"></span>
               <span class="h-2.5 w-2.5 rounded-full bg-emerald-400"></span>
-              <span class="ml-auto font-mono text-[10px] text-background/40">terminal</span>
+              <span class="ml-auto font-mono text-[10px] text-white/40">terminal</span>
             </div>
-            <div class="space-y-4 p-5 font-mono text-xs sm:p-7 sm:text-sm">
+            <div class="space-y-4 p-5 font-mono text-xs text-white sm:p-7 sm:text-sm">
               <p><span class="text-emerald-400">➜</span> npx &#64;voltui/cli init</p>
-              <p class="text-background/50">✓ Tailwind tokens configured</p>
+              <p class="text-white/50">✓ Tailwind tokens configured</p>
               <p><span class="text-emerald-400">➜</span> npx &#64;voltui/cli add dialog</p>
-              <div class="space-y-1 border-l border-background/15 pl-4 text-background/55">
+              <div class="space-y-1 border-l border-white/15 pl-4 text-white/55">
                 <p>create src/app/ui/dialog/dialog.ts</p>
                 <p>create src/app/ui/button/button.ts</p>
                 <p>update src/app/ui/index.ts</p>
@@ -424,6 +419,8 @@ import {
       background: linear-gradient(115deg, var(--primary), oklch(0.72 0.18 300), var(--primary));
       background-size: 200% auto;
       background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
       animation: electric-shift 7s linear infinite;
     }
 
