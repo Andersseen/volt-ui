@@ -11,7 +11,7 @@
     "dev": "vite",
     "predev": "node cli/generate-manifest.js",
     "build": "vite build",
-    "postbuild": "node scripts/check-server-bundle.mjs",
+    "postbuild": "node scripts/prepare-cloudflare-pages-output.mjs && node scripts/check-server-bundle.mjs",
     "prebuild": "node cli/generate-manifest.js",
     "build:prod": "vite build",
     "watch": "vite build --watch",
