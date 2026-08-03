@@ -14,8 +14,12 @@
       class="p-8 border border-border rounded-lg bg-card/30 flex items-center justify-center min-h-[300px]"
     >
       <div class="w-full max-w-sm space-y-4">
-        <volt-progress [value]="value()" />
-        <p class="text-sm text-muted-foreground text-center">{{ value() }}% complete</p>
+        <volt-progress [value]="value()">
+          <div class="mb-2 flex items-center justify-between gap-3">
+            <volt-progress-label>Upload progress</volt-progress-label>
+            <volt-progress-value>{{ value() }}% complete</volt-progress-value>
+          </div>
+        </volt-progress>
       </div>
     </div>
   </app-code-panel>

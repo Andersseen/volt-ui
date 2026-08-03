@@ -333,12 +333,17 @@ import { VoltButton } from 'volt';
 export class MyComponent {}`;
 
 export const PROGRESS_USAGE = `import { Component, signal } from '@angular/core';
-import { VoltProgress } from 'volt';
+import { VoltProgress, VoltProgressLabel, VoltProgressValue } from 'volt';
 
 @Component({
-  imports: [VoltProgress],
+  imports: [VoltProgress, VoltProgressLabel, VoltProgressValue],
   template: \`
-    <volt-progress [value]="progress()" />
+    <volt-progress [value]="progress()">
+      <div class="mb-2 flex items-center justify-between gap-3">
+        <volt-progress-label>Upload progress</volt-progress-label>
+        <volt-progress-value>{{ progress() }}% complete</volt-progress-value>
+      </div>
+    </volt-progress>
   \`,
 })
 export class MyComponent {
@@ -528,12 +533,16 @@ export class MyComponent {
 }`;
 
 export const METER_USAGE = `import { Component } from '@angular/core';
-import { VoltMeter, VoltMeterTrack, VoltMeterIndicator } from 'volt';
+import { VoltMeter, VoltMeterTrack, VoltMeterIndicator, VoltMeterLabel, VoltMeterValue } from 'volt';
 
 @Component({
-  imports: [VoltMeter, VoltMeterTrack, VoltMeterIndicator],
+  imports: [VoltMeter, VoltMeterTrack, VoltMeterIndicator, VoltMeterLabel, VoltMeterValue],
   template: \`
     <volt-meter [value]="72">
+      <div class="mb-2 flex items-center justify-between gap-3">
+        <volt-meter-label>Capacity</volt-meter-label>
+        <volt-meter-value>72 of 100 capacity</volt-meter-value>
+      </div>
       <volt-meter-track>
         <volt-meter-indicator />
       </volt-meter-track>

@@ -1,5 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { VoltMeter, VoltMeterTrack, VoltMeterIndicator } from 'volt';
+import {
+  VoltMeter,
+  VoltMeterIndicator,
+  VoltMeterLabel,
+  VoltMeterTrack,
+  VoltMeterValue,
+} from 'volt';
 import { CodePanel } from '../../../../components/code-panel';
 import { ApiReference } from '../../../../components/api-reference';
 import { METER_SNIPPET } from '../../../../lib/snippets';
@@ -9,7 +15,15 @@ import { METER_API } from '../../../../lib/api-reference.generated';
 @Component({
   selector: 'app-meter-demo',
   standalone: true,
-  imports: [VoltMeter, VoltMeterTrack, VoltMeterIndicator, CodePanel, ApiReference],
+  imports: [
+    VoltMeter,
+    VoltMeterTrack,
+    VoltMeterIndicator,
+    VoltMeterLabel,
+    VoltMeterValue,
+    CodePanel,
+    ApiReference,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="space-y-6">
@@ -26,11 +40,14 @@ import { METER_API } from '../../../../lib/api-reference.generated';
         >
           <div class="w-full max-w-sm space-y-3">
             <volt-meter [value]="72">
+              <div class="mb-2 flex items-center justify-between gap-3">
+                <volt-meter-label>Capacity</volt-meter-label>
+                <volt-meter-value>72 of 100 capacity</volt-meter-value>
+              </div>
               <volt-meter-track>
                 <volt-meter-indicator />
               </volt-meter-track>
             </volt-meter>
-            <p class="text-sm text-muted-foreground text-center">72 of 100 capacity</p>
           </div>
         </div>
       </app-code-panel>
