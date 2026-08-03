@@ -6,6 +6,7 @@ import {
   forwardRef,
   input,
   model,
+  numberAttribute,
   signal,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -53,7 +54,7 @@ export class VoltTextarea implements ControlValueAccessor {
   readonly size = input<TextareaVariants['size']>('md');
   readonly state = input<TextareaVariants['state']>('default');
   readonly resize = input<'none' | 'vertical' | 'horizontal' | 'both'>('vertical');
-  readonly rows = input<number>(3);
+  readonly rows = input<number, number>(3, { transform: numberAttribute });
   readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly readonly = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly required = input<boolean, unknown>(false, { transform: booleanAttribute });

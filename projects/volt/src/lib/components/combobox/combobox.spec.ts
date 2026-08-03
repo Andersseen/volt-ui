@@ -28,6 +28,35 @@ class ComboboxFormsWrapper {
   readonly frameworks = ['Angular', 'React', 'Vue', 'Svelte'];
 }
 
+interface FrameworkOption {
+  id: string;
+  label: string;
+}
+
+@Component({
+  imports: [VoltCombobox],
+  template: `
+    <volt-combobox
+      [(value)]="value"
+      [items]="frameworks"
+      [multiple]="true"
+      [itemLabel]="itemLabel"
+    />
+  `,
+})
+class ComboboxMultipleObjectWrapper {
+  readonly value = model<FrameworkOption[]>([
+    { id: 'angular', label: 'Angular' },
+    { id: 'vue', label: 'Vue' },
+  ]);
+  readonly frameworks: FrameworkOption[] = [
+    { id: 'angular', label: 'Angular' },
+    { id: 'react', label: 'React' },
+    { id: 'vue', label: 'Vue' },
+  ];
+  readonly itemLabel = (item: unknown) => (item as FrameworkOption).label;
+}
+
 describe('VoltCombobox', () => {
   it('should render the input with the placeholder', async () => {
     await render(ComboboxTestWrapper);
@@ -41,6 +70,12 @@ describe('VoltCombobox', () => {
     });
 
     expect(screen.getByRole('combobox')).toHaveValue('Angular');
+  });
+
+  it('should display labels for multiple object values', async () => {
+    await render(ComboboxMultipleObjectWrapper);
+
+    expect(screen.getByRole('combobox')).toHaveValue('Angular, Vue');
   });
 
   it('should open the dropdown and render all options on focus', async () => {

@@ -26,7 +26,8 @@ describe('resizable components', () => {
     expect(group).toHaveClass('flex-row', 'custom-group');
     expect(handle).toHaveAttribute('tabindex', '0');
     expect(handle).toHaveAttribute('aria-orientation', 'horizontal');
-    expect(handle).toHaveAttribute('aria-valuenow', '0');
+    expect(handle).toHaveAttribute('aria-valuemax', '100');
+    expect(handle).toHaveAttribute('aria-valuenow', '50');
     expect(screen.getByText('First')).toBeInTheDocument();
 
     fixture.componentInstance.orientation.set('vertical');
@@ -38,6 +39,19 @@ describe('resizable components', () => {
 
     fireEvent.keyDown(handle, { key: 'ArrowRight' });
     fixture.detectChanges();
-    expect(handle).toHaveAttribute('aria-valuenow', '10');
+    expect(handle).toHaveAttribute('aria-valuenow', '70');
+  });
+
+  it('should resize with pointer events', async () => {
+    const { container } = await render(ResizableFixture);
+
+    const handle = screen.getByRole('separator', { name: 'Resize panels' });
+    const firstPanel = container.querySelector('volt-resizable-panel');
+    fireEvent.pointerDown(handle, { clientX: 10, pointerId: 1 });
+    fireEvent.pointerMove(document, { clientX: 30, pointerId: 1 });
+    fireEvent.pointerUp(document, { pointerId: 1 });
+
+    expect(firstPanel).toHaveStyle({ width: '70px' });
+    expect(handle).toHaveAttribute('aria-valuenow', '70');
   });
 });

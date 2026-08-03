@@ -37,7 +37,7 @@ import {
 class SidebarFixture {}
 
 describe('sidebar layout', () => {
-  it('render its landmark and close the mobile drawer from the backdrop', async () => {
+  it('render its landmark and close the mobile drawer from the backdrop and Escape', async () => {
     const { fixture } = await render(SidebarFixture, {
       providers: [provideRouter([])],
     });
@@ -49,8 +49,13 @@ describe('sidebar layout', () => {
 
     service.setMobileOpen(true);
     await fixture.whenStable();
-    const backdrop = screen.getByRole('button', { name: 'Close sidebar', hidden: true });
+    const backdrop = fixture.nativeElement.querySelector('[aria-label="Close sidebar"]');
     fireEvent.click(backdrop);
+    expect(service.isMobileOpen()).toBe(false);
+
+    service.setMobileOpen(true);
+    await fixture.whenStable();
+    fireEvent.keyDown(document, { key: 'Escape' });
     expect(service.isMobileOpen()).toBe(false);
   });
 

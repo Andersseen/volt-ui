@@ -27,6 +27,7 @@ describe('VoltInputOtp', () => {
 
     const hiddenInput = container.querySelector('input[ngpInputOtpInput]');
     expect(hiddenInput).toBeInTheDocument();
+    expect(hiddenInput).toHaveAccessibleName('One-time password');
 
     const slots = container.querySelectorAll('volt-input-otp-slot');
     expect(slots.length).toBe(6);

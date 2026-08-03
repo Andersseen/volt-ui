@@ -107,8 +107,10 @@ Components use semantic Tailwind utilities; do not write `bg-[var(--primary)]`.
 | Toggle Group | `./ui/toggle-group` | `<ui-toggle-group>`, `<ui-toggle-group-item>`                                                                                                   | CVA. `value`, `type`, `orientation`.                                                           |
 | Avatar       | `./ui/avatar`       | `<ui-avatar>`, `<img uiAvatarImage>`, `<ui-avatar-fallback>`                                                                                    | Image is an attribute directive on `<img>`.                                                    |
 | Breadcrumbs  | `./ui/breadcrumbs`  | `<ui-breadcrumbs>`, `<ui-breadcrumb-list>`, `<ui-breadcrumb-item>`, `<ui-breadcrumb-link>`, `<ui-breadcrumb-page>`, `<ui-breadcrumb-separator>` | Note singular `breadcrumb` in sub-selectors.                                                   |
-| Meter        | `./ui/meter`        | `<ui-meter>`, `<ui-meter-track>`, `<ui-meter-indicator>`                                                                                        | `value`, `min`, `max`.                                                                         |
-| Progress     | `./ui/progress`     | `<ui-progress>`                                                                                                                                 | `value`, `max`.                                                                                |
+| Meter        | `./ui/meter`        | `<ui-meter>`, `<ui-meter-label>`, `<ui-meter-value>`, `<ui-meter-track>`, `<ui-meter-indicator>`                                                | `value`, `min`, `max`.                                                                         |
+| Progress     | `./ui/progress`     | `<ui-progress>`, `<ui-progress-label>`, `<ui-progress-value>`                                                                                   | `value`, `min`, `max`, `valueLabel`.                                                           |
+
+Known upstream caveats in `ng-primitives`: meter currently exposes `aria-valuenow` as a percentage for non-0..100 ranges, and progress currently reports `aria-valuemin="0"` even when `min` is customized.
 
 ### Beta components
 
@@ -126,7 +128,7 @@ Components use semantic Tailwind utilities; do not write `bg-[var(--primary)]`.
 | Table         | `./ui/table`         | `<ui-table>`, `<ui-table-header>`, `<ui-table-body>`, `<ui-table-footer>`, `<ui-table-row>`, `<ui-table-head>`, `<ui-table-cell>`, `<ui-table-caption>` | Semantic table.                                                         |
 | Tabs          | `./ui/tabs`          | `<ui-tabs>`, `<ui-tabs-list>`, `<ui-tabs-trigger>`, `<ui-tabs-content>`                                                                                 | Use `value` model, not `defaultValue`.                                  |
 | Toast         | `./ui/toast`         | `<ui-toast>`, `<ui-toast-title>`, `<ui-toast-description>`, `<ui-toast-close>`                                                                          | Use with `NgpToastManager`.                                             |
-| Toolbar       | `./ui/toolbar`       | `<ui-toolbar>`                                                                                                                                          | `orientation`.                                                          |
+| Toolbar       | `./ui/toolbar`       | `<ui-toolbar>`, `<button uiToolbarButton>`                                                                                                              | `orientation`.                                                          |
 | Tooltip       | `./ui/tooltip`       | `[uiTooltip]`, `<ui-tooltip-content>`                                                                                                                   | Trigger references content template.                                    |
 
 ### Additional beta components

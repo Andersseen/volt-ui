@@ -1,5 +1,9 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
 import {
+  NgpDatePickerCellRender,
+  NgpDatePickerRowRender,
+  VoltDatePickerCell,
+  VoltDatePickerDateButton,
   VoltDatePicker,
   VoltDatePickerGrid,
   VoltDatePickerLabel,
@@ -17,10 +21,14 @@ import { DATE_PICKER_API } from '../../../../lib/api-reference.generated';
   standalone: true,
   imports: [
     VoltDatePicker,
+    VoltDatePickerCell,
+    VoltDatePickerDateButton,
     VoltDatePickerGrid,
     VoltDatePickerLabel,
     VoltDatePickerNextMonth,
     VoltDatePickerPreviousMonth,
+    NgpDatePickerCellRender,
+    NgpDatePickerRowRender,
     CodePanel,
     ApiReference,
   ],
@@ -38,11 +46,13 @@ import { DATE_PICKER_API } from '../../../../lib/api-reference.generated';
         <div
           class="p-8 border border-border rounded-lg bg-card/30 flex items-center justify-center"
         >
-          <volt-date-picker [(date)]="date">
+          <volt-date-picker [(date)]="date" [(focusedDate)]="focusedDate">
             <div class="flex items-center justify-between">
-              <volt-date-picker-previous-month>‹</volt-date-picker-previous-month>
-              <volt-date-picker-label>May 2026</volt-date-picker-label>
-              <volt-date-picker-next-month>›</volt-date-picker-next-month>
+              <volt-date-picker-previous-month aria-label="Previous month">
+                ‹
+              </volt-date-picker-previous-month>
+              <volt-date-picker-label>{{ label() }}</volt-date-picker-label>
+              <volt-date-picker-next-month aria-label="Next month"> › </volt-date-picker-next-month>
             </div>
             <volt-date-picker-grid>
               <div class="grid grid-cols-7 gap-1 text-center text-xs text-muted-foreground">
@@ -50,18 +60,12 @@ import { DATE_PICKER_API } from '../../../../lib/api-reference.generated';
                   <span class="py-1">{{ day }}</span>
                 }
               </div>
-              <div class="grid grid-cols-7 gap-1">
-                @for (day of days; track $index) {
-                  <button
-                    type="button"
-                    class="size-9 rounded-[var(--radius-sm)] text-sm hover:bg-accent hover:text-accent-foreground"
-                    [class.bg-primary]="day === 14"
-                    [class.text-primary-foreground]="day === 14"
-                    [class.text-muted-foreground]="!day"
-                  >
-                    {{ day || '' }}
-                  </button>
-                }
+              <div *ngpDatePickerRowRender class="grid grid-cols-7 gap-1">
+                <volt-date-picker-cell *ngpDatePickerCellRender="let day">
+                  <volt-date-picker-date-button>
+                    {{ day.getDate() }}
+                  </volt-date-picker-date-button>
+                </volt-date-picker-cell>
               </div>
             </volt-date-picker-grid>
           </volt-date-picker>
@@ -87,9 +91,12 @@ export default class DatePickerDemo {
   readonly code = DATE_PICKER_SNIPPET;
   readonly usage = DATE_PICKER_USAGE;
   readonly date = signal<Date | undefined>(new Date(2026, 4, 14));
+  readonly focusedDate = signal<Date>(new Date(2026, 4, 14));
+  readonly label = computed(() =>
+    this.focusedDate().toLocaleString('en-US', {
+      month: 'long',
+      year: 'numeric',
+    })
+  );
   readonly weekDays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
-  readonly days = [
-    0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
-    23, 24, 25, 26, 27, 28, 29, 30, 31,
-  ];
 }

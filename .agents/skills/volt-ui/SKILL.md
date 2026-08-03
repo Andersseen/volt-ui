@@ -96,8 +96,10 @@ Style presets: `sharp`, `soft`, `brutal`, `ghost`, `retro`.
 | Toggle Group | `./ui/toggle-group` | `<ui-toggle-group>`, `<ui-toggle-group-item>`                                                                                                   | Components (CVA) | `value`, `type`, `orientation`         |
 | Avatar       | `./ui/avatar`       | `<ui-avatar>`, `<img uiAvatarImage>`, `<ui-avatar-fallback>`                                                                                    | Mixed            | `src`, `alt`, `delayMs`                |
 | Breadcrumbs  | `./ui/breadcrumbs`  | `<ui-breadcrumbs>`, `<ui-breadcrumb-list>`, `<ui-breadcrumb-item>`, `<ui-breadcrumb-link>`, `<ui-breadcrumb-page>`, `<ui-breadcrumb-separator>` | Components       | `href` on link                         |
-| Meter        | `./ui/meter`        | `<ui-meter>`, `<ui-meter-track>`, `<ui-meter-indicator>`                                                                                        | Components       | `value`, `min`, `max`                  |
-| Progress     | `./ui/progress`     | `<ui-progress>`                                                                                                                                 | Component        | `value`, `max`                         |
+| Meter        | `./ui/meter`        | `<ui-meter>`, `<ui-meter-label>`, `<ui-meter-value>`, `<ui-meter-track>`, `<ui-meter-indicator>`                                                | Components       | `value`, `min`, `max`                  |
+| Progress     | `./ui/progress`     | `<ui-progress>`, `<ui-progress-label>`, `<ui-progress-value>`                                                                                   | Components       | `value`, `min`, `max`, `valueLabel`    |
+
+Known upstream caveats in `ng-primitives`: meter currently exposes `aria-valuenow` as a percentage for non-0..100 ranges, and progress currently reports `aria-valuemin="0"` even when `min` is customized.
 
 ### Beta components
 
@@ -115,7 +117,7 @@ Style presets: `sharp`, `soft`, `brutal`, `ghost`, `retro`.
 | Table         | `./ui/table`         | `<ui-table>` + header/body/row/head/cell/caption/footer                                                                                          | Components       | —                                              |
 | Tabs          | `./ui/tabs`          | `<ui-tabs>`, `<ui-tabs-list>`, `<ui-tabs-trigger>`, `<ui-tabs-content>`                                                                          | Components       | `value` (model), `orientation`                 |
 | Toast         | `./ui/toast`         | `<ui-toast>`, `<ui-toast-title>`, `<ui-toast-description>`, `<ui-toast-close>`                                                                   | Components       | `variant`                                      |
-| Toolbar       | `./ui/toolbar`       | `<ui-toolbar>`                                                                                                                                   | Component        | `orientation`                                  |
+| Toolbar       | `./ui/toolbar`       | `<ui-toolbar>`, `<button uiToolbarButton>`                                                                                                       | Components       | `orientation`                                  |
 | Tooltip       | `./ui/tooltip`       | `[uiTooltip]`, `<ui-tooltip-content>`                                                                                                            | Mixed            | `placement`, `delay`, `closeDelay`, `disabled` |
 
 ### Additional beta components

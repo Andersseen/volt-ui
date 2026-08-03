@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.3] - 2026-08-03
+
+### Fixed
+
+- Resolved v1 library readiness blockers across form controls, overlays and primitives:
+  custom class merging, textarea auto-resize, search clear states, disabled styling,
+  drawer escape handling, combobox/select object labels, OTP slot focus styles,
+  resizable handle ARIA/pointer support, and SSR-safe date picker focused dates.
+- Added accessible `meter` and `progress` label/value wrappers and documented the
+  remaining upstream `ng-primitives` ARIA caveats for non-default ranges.
+- Added regression coverage for the component behavior fixed in this patch.
+
+### Changed
+
+- Bumped the root package, `@voltui/components`, and `@voltui/cli` to `0.8.3`.
+
 ## [0.8.1] - 2026-08-02
 
 ### Fixed

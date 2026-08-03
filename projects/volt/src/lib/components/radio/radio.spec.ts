@@ -27,6 +27,7 @@ describe('VoltRadio', () => {
 
     const radios = screen.getAllByRole('radio');
     expect(radios).toHaveLength(2);
+    expect(screen.getByRole('radio', { name: 'Option A' })).toBe(radios[0]);
   });
 
   it('should select a radio item on click', async () => {
@@ -178,5 +179,28 @@ describe('VoltRadio', () => {
     await user.click(radios[1]);
 
     expect(fixture.componentInstance.value).toBe('b');
+  });
+
+  it('should emit valueChange once per selection', async () => {
+    const user = userEvent.setup();
+
+    @Component({
+      selector: 'app-radio-output-wrapper',
+      imports: [VoltRadioGroup, VoltRadioItem],
+      template: `
+        <volt-radio-group (valueChange)="changes.push($event)">
+          <volt-radio-item value="a">Option A</volt-radio-item>
+          <volt-radio-item value="b">Option B</volt-radio-item>
+        </volt-radio-group>
+      `,
+    })
+    class RadioOutputWrapper {
+      changes: (string | null)[] = [];
+    }
+
+    const { fixture } = await render(RadioOutputWrapper);
+    await user.click(screen.getByRole('radio', { name: 'Option A' }));
+
+    expect(fixture.componentInstance.changes).toEqual(['a']);
   });
 });

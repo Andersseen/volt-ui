@@ -23,6 +23,28 @@ class SelectTestWrapper {
   readonly value = model<string | undefined>(undefined);
 }
 
+@Component({
+  selector: 'app-select-multiple-test-wrapper',
+  imports: [VoltSelect, VoltSelectContent, VoltSelectItem],
+  template: `
+    <volt-select
+      [(value)]="value"
+      [multiple]="true"
+      [displayWith]="displayWith"
+      ariaLabel="Frameworks"
+    >
+      <volt-select-content>
+        <volt-select-item value="angular">Angular</volt-select-item>
+        <volt-select-item value="vue">Vue</volt-select-item>
+      </volt-select-content>
+    </volt-select>
+  `,
+})
+class SelectMultipleTestWrapper {
+  readonly value = model<string[]>(['angular', 'vue']);
+  readonly displayWith = (value: unknown) => String(value).toUpperCase();
+}
+
 describe('VoltSelect', () => {
   it('should render the select trigger with placeholder', async () => {
     await render(SelectTestWrapper);
@@ -38,6 +60,12 @@ describe('VoltSelect', () => {
     });
 
     expect(screen.getByRole('combobox')).toHaveTextContent('b');
+  });
+
+  it('should render multiple selected values with displayWith labels', async () => {
+    await render(SelectMultipleTestWrapper);
+
+    expect(screen.getByRole('combobox', { name: 'Frameworks' })).toHaveTextContent('ANGULAR, VUE');
   });
 
   it('should work with reactive forms', async () => {

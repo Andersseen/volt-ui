@@ -1,15 +1,18 @@
 import { booleanAttribute, ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { NgpSubmenuTrigger } from 'ng-primitives/menu';
+import { NgpMenuItem, NgpSubmenuTrigger } from 'ng-primitives/menu';
 import type { NgpMenuPlacement } from 'ng-primitives/menu';
 import type { NgpOverlayContent } from 'ng-primitives/portal';
 
 @Component({
   selector: 'volt-dropdown-menu-submenu-trigger',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgpSubmenuTrigger],
+  imports: [NgpMenuItem, NgpSubmenuTrigger],
   template: `
     <button
       type="button"
+      role="menuitem"
+      ngpMenuItem
+      [ngpMenuItemDisabled]="disabled()"
       [ngpSubmenuTrigger]="submenu()"
       [ngpSubmenuTriggerPlacement]="placement()"
       [ngpSubmenuTriggerOffset]="offset()"

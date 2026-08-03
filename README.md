@@ -221,7 +221,7 @@ Volt UI ships three complementary ways to give AI assistants correct context:
 
 ## 📈 Stability & Roadmap
 
-Current status: **`0.8.1` — Select dropdown positioning fix and component bug-fix patch.**
+Current status: **`0.8.3` — v1 library readiness and accessibility patch.**
 
 - **Stable** — recommended for early adoption.
 - **Beta** — usable; may still gain forms / keyboard / a11y / edge-case coverage.

@@ -405,12 +405,19 @@ const components: Record<string, ComponentMeta> = {
     name: 'Progress',
     description: 'Progress bar with track and indicator',
     dependencies: ['ng-primitives/progress'],
-    subComponents: ['progress-track', 'progress-indicator'],
+    subComponents: ['progress-label', 'progress-value', 'progress-track', 'progress-indicator'],
     inputs: [
       { name: 'value', type: 'number', default: 0 },
+      { name: 'min', type: 'number', default: 0 },
       { name: 'max', type: 'number', default: 100 },
+      { name: 'valueLabel', type: '(value: number, max: number) => string' },
     ],
-    examples: ['<ui-progress [value]="60" [max]="100" />'],
+    examples: [
+      `<ui-progress [value]="60" [max]="100">
+  <ui-progress-label>Loading</ui-progress-label>
+  <ui-progress-value>60%</ui-progress-value>
+</ui-progress>`,
+    ],
   },
   breadcrumbs: {
     name: 'Breadcrumbs',
@@ -483,14 +490,18 @@ const components: Record<string, ComponentMeta> = {
     name: 'Meter',
     description: 'Meter component for displaying a value within a known range',
     dependencies: ['ng-primitives/meter'],
-    subComponents: ['meter-track', 'meter-indicator'],
+    subComponents: ['meter-label', 'meter-value', 'meter-track', 'meter-indicator'],
     inputs: [
       { name: 'value', type: 'number', default: 0 },
       { name: 'min', type: 'number', default: 0 },
       { name: 'max', type: 'number', default: 100 },
     ],
     examples: [
-      '<ui-meter [value]="75" [max]="100"><ui-meter-track><ui-meter-indicator /></ui-meter-track></ui-meter>',
+      `<ui-meter [value]="75" [max]="100">
+  <ui-meter-label>Storage</ui-meter-label>
+  <ui-meter-value>75%</ui-meter-value>
+  <ui-meter-track><ui-meter-indicator /></ui-meter-track>
+</ui-meter>`,
     ],
   },
   pagination: {
@@ -622,13 +633,19 @@ const components: Record<string, ComponentMeta> = {
       },
     ],
     examples: [
-      `<ui-date-picker [(date)]="selectedDate">
+      `<ui-date-picker [(date)]="selectedDate" [(focusedDate)]="focusedDate">
   <div class="flex items-center justify-between">
-    <ui-date-picker-previous-month>Prev</ui-date-picker-previous-month>
-    <ui-date-picker-label />
-    <ui-date-picker-next-month>Next</ui-date-picker-next-month>
+    <ui-date-picker-previous-month aria-label="Previous month">Prev</ui-date-picker-previous-month>
+    <ui-date-picker-label>{{ monthLabel() }}</ui-date-picker-label>
+    <ui-date-picker-next-month aria-label="Next month">Next</ui-date-picker-next-month>
   </div>
-  <ui-date-picker-grid>...</ui-date-picker-grid>
+  <ui-date-picker-grid>
+    <div *ngpDatePickerRowRender class="grid grid-cols-7 gap-1">
+      <ui-date-picker-cell *ngpDatePickerCellRender="let day">
+        <ui-date-picker-date-button>{{ day.getDate() }}</ui-date-picker-date-button>
+      </ui-date-picker-cell>
+    </div>
+  </ui-date-picker-grid>
 </ui-date-picker>`,
       `<ui-date-range-picker [(startDate)]="start" [(endDate)]="end">...</ui-date-range-picker>`,
     ],
@@ -664,9 +681,9 @@ const components: Record<string, ComponentMeta> = {
     ],
     examples: [
       `<ui-toolbar>
-  <ui-toggle>Bold</ui-toggle>
-  <ui-toggle>Italic</ui-toggle>
-  <ui-button size="icon">Save</ui-button>
+  <button uiToolbarButton>Bold</button>
+  <button uiToolbarButton>Italic</button>
+  <button uiToolbarButton>Save</button>
 </ui-toolbar>`,
     ],
   },

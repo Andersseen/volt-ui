@@ -1,11 +1,14 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
-  input,
+  computed,
   ElementRef,
+  HostListener,
   Renderer2,
   inject,
-  HostListener,
+  input,
+  numberAttribute,
   output,
   signal,
 } from '@angular/core';
@@ -26,6 +29,7 @@ import {
     tabindex: '0',
     '[attr.aria-orientation]': 'orientation()',
     '[attr.aria-valuemin]': '0',
+    '[attr.aria-valuemax]': 'ariaValueMax()',
     '[attr.aria-valuenow]': 'currentSize()',
   },
   template: `
@@ -36,10 +40,16 @@ import {
     }
   `,
 })
-export class VoltResizableHandle {
+export class VoltResizableHandle implements AfterViewInit {
   readonly orientation = input<'horizontal' | 'vertical'>('horizontal');
+  readonly maxSize = input<number | undefined, unknown>(undefined, {
+    transform: value =>
+      value === undefined || value === null || value === '' ? undefined : numberAttribute(value),
+  });
   readonly resizing = output<boolean>();
-  protected readonly currentSize = signal(0);
+  protected readonly currentSize = signal(50);
+  protected readonly measuredMaxSize = signal(100);
+  protected readonly ariaValueMax = computed(() => this.maxSize() ?? this.measuredMaxSize());
 
   private readonly elementRef = inject(ElementRef<HTMLElement>);
   private readonly renderer = inject(Renderer2);
@@ -49,33 +59,38 @@ export class VoltResizableHandle {
   private prevElement: HTMLElement | null = null;
   private isResizing = false;
 
-  @HostListener('mousedown', ['$event'])
-  onMouseDown(event: MouseEvent): void {
+  ngAfterViewInit(): void {
+    this.syncMeasurements();
+  }
+
+  @HostListener('pointerdown', ['$event'])
+  onPointerDown(event: PointerEvent): void {
     event.preventDefault();
     this.isResizing = true;
     this.resizing.emit(true);
 
-    const el = this.elementRef.nativeElement;
-    this.prevElement = el.previousElementSibling as HTMLElement;
+    this.elementRef.nativeElement.setPointerCapture?.(event.pointerId);
+    this.syncMeasurements();
 
     if (this.orientation() === 'horizontal') {
       this.startX = event.clientX;
-      this.startSize = this.prevElement?.getBoundingClientRect().width ?? 0;
     } else {
       this.startY = event.clientY;
-      this.startSize = this.prevElement?.getBoundingClientRect().height ?? 0;
     }
-    this.currentSize.set(Math.round(this.startSize));
+    this.startSize = this.currentSize();
 
-    const moveUnlistener = this.renderer.listen('document', 'mousemove', (e: MouseEvent) =>
-      this.onMouseMove(e)
+    const moveUnlistener = this.renderer.listen('document', 'pointermove', (e: PointerEvent) =>
+      this.onPointerMove(e)
     );
-    const upUnlistener = this.renderer.listen('document', 'mouseup', () => {
+    const stopResizing = () => {
       this.isResizing = false;
       this.resizing.emit(false);
       moveUnlistener();
       upUnlistener();
-    });
+      cancelUnlistener();
+    };
+    const upUnlistener = this.renderer.listen('document', 'pointerup', stopResizing);
+    const cancelUnlistener = this.renderer.listen('document', 'pointercancel', stopResizing);
   }
 
   @HostListener('keydown', ['$event'])
@@ -86,32 +101,59 @@ export class VoltResizableHandle {
     if (!decrease && !increase) return;
 
     event.preventDefault();
-    const previous = this.elementRef.nativeElement.previousElementSibling as HTMLElement | null;
-    if (!previous) return;
+    this.syncMeasurements();
+    if (!this.prevElement) return;
 
-    const rect = previous.getBoundingClientRect();
-    const currentSize = horizontal ? rect.width : rect.height;
-    const newSize = Math.max(0, currentSize + (increase ? 10 : -10));
-    this.renderer.setStyle(previous, horizontal ? 'width' : 'height', `${newSize}px`);
-    this.renderer.setStyle(previous, 'flex', 'none');
-    this.currentSize.set(Math.round(newSize));
+    const nextSize = this.clampSize(this.currentSize() + (increase ? 10 : -10));
+    this.setPreviousSize(nextSize);
   }
 
-  private onMouseMove(event: MouseEvent): void {
+  private onPointerMove(event: PointerEvent): void {
     if (!this.isResizing || !this.prevElement) return;
 
-    let newSize: number;
-    if (this.orientation() === 'horizontal') {
-      const delta = event.clientX - this.startX;
-      newSize = this.startSize + delta;
-      this.renderer.setStyle(this.prevElement, 'width', `${newSize}px`);
-      this.renderer.setStyle(this.prevElement, 'flex', 'none');
-    } else {
-      const delta = event.clientY - this.startY;
-      newSize = this.startSize + delta;
-      this.renderer.setStyle(this.prevElement, 'height', `${newSize}px`);
-      this.renderer.setStyle(this.prevElement, 'flex', 'none');
+    const delta =
+      this.orientation() === 'horizontal'
+        ? event.clientX - this.startX
+        : event.clientY - this.startY;
+    const newSize = this.clampSize(this.startSize + delta);
+    this.setPreviousSize(newSize);
+  }
+
+  private syncMeasurements(): void {
+    const el = this.elementRef.nativeElement;
+    this.prevElement = el.previousElementSibling as HTMLElement | null;
+    const parentElement = el.parentElement;
+
+    const parentRect = parentElement?.getBoundingClientRect();
+    const measuredMax =
+      this.orientation() === 'horizontal' ? (parentRect?.width ?? 0) : (parentRect?.height ?? 0);
+    if (measuredMax > 0) {
+      this.measuredMaxSize.set(Math.round(measuredMax));
     }
-    this.currentSize.set(Math.round(newSize));
+
+    const previousRect = this.prevElement?.getBoundingClientRect();
+    const measuredCurrent =
+      this.orientation() === 'horizontal'
+        ? (previousRect?.width ?? 0)
+        : (previousRect?.height ?? 0);
+    if (measuredCurrent > 0) {
+      this.currentSize.set(Math.round(measuredCurrent));
+    }
+  }
+
+  private setPreviousSize(size: number): void {
+    if (!this.prevElement) return;
+
+    if (this.orientation() === 'horizontal') {
+      this.renderer.setStyle(this.prevElement, 'width', `${size}px`);
+    } else {
+      this.renderer.setStyle(this.prevElement, 'height', `${size}px`);
+    }
+    this.renderer.setStyle(this.prevElement, 'flex', 'none');
+    this.currentSize.set(Math.round(size));
+  }
+
+  private clampSize(size: number): number {
+    return Math.max(0, Math.min(size, this.ariaValueMax()));
   }
 }

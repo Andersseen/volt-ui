@@ -210,4 +210,27 @@ describe('VoltToggleGroup', () => {
 
     expect(fixture.componentInstance.value).toEqual(['italic']);
   });
+
+  it('should emit valueChange once per selection', async () => {
+    const user = userEvent.setup();
+
+    @Component({
+      selector: 'app-toggle-group-output-wrapper',
+      imports: [VoltToggleGroup, VoltToggleGroupItem],
+      template: `
+        <volt-toggle-group (valueChange)="changes.push($event)">
+          <volt-toggle-group-item value="bold">Bold</volt-toggle-group-item>
+          <volt-toggle-group-item value="italic">Italic</volt-toggle-group-item>
+        </volt-toggle-group>
+      `,
+    })
+    class ToggleGroupOutputWrapper {
+      changes: string[][] = [];
+    }
+
+    const { fixture } = await render(ToggleGroupOutputWrapper);
+    await user.click(screen.getByRole('radio', { name: /Bold/i }));
+
+    expect(fixture.componentInstance.changes).toEqual([['bold']]);
+  });
 });

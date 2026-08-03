@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   forwardRef,
   inject,
   input,
@@ -10,7 +11,7 @@ import {
   signal,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { NgpListbox, provideListboxState } from 'ng-primitives/listbox';
+import { injectListboxState, NgpListbox, provideListboxState } from 'ng-primitives/listbox';
 import type { NgpSelectionMode } from 'ng-primitives/common';
 import { injectFormControlState } from '../../form-control-state';
 
@@ -32,7 +33,7 @@ import { injectFormControlState } from '../../form-control-state';
         'id',
         'ngpListboxMode: mode',
         'ngpListboxValue: value',
-        'ngpListboxDisabled: isDisabled',
+        'ngpListboxDisabled: disabled',
         'ngpListboxCompareWith: compareWith',
       ],
       outputs: ['ngpListboxValueChange: valueChange'],
@@ -50,6 +51,7 @@ import { injectFormControlState } from '../../form-control-state';
 })
 export class VoltListbox<T = unknown> implements ControlValueAccessor {
   private readonly listbox = inject<NgpListbox<T>>(NgpListbox);
+  private readonly listboxState = injectListboxState<NgpListbox<T>>();
   protected readonly formControlState = injectFormControlState();
 
   readonly id = input<string>();
@@ -65,6 +67,10 @@ export class VoltListbox<T = unknown> implements ControlValueAccessor {
   protected onTouched: () => void = () => {};
 
   constructor() {
+    effect(() => {
+      this.listboxState()?.disabled.set(this.isDisabled());
+    });
+
     this.listbox.valueChange.subscribe(value => {
       this.value.set(value);
       this.onChange(value);

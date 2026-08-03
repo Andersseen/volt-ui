@@ -218,13 +218,13 @@ You are working with **Volt UI**, an Angular v21 component library (shadcn/ui-in
 | Breadcrumbs | \`./ui/breadcrumbs\` | \`ui-breadcrumbs\` + singular \`breadcrumb-*\` sub-components | |
 | Separator | \`./ui/separator\` | \`ui-separator\` | \`orientation\` |
 | Skeleton | \`./ui/skeleton\` | \`ui-skeleton\` | \`variant\`, \`width\`, \`height\` |
-| Meter | \`./ui/meter\` | \`ui-meter\` + track/indicator | |
-| Progress | \`./ui/progress\` | \`ui-progress\` | |
+| Meter | \`./ui/meter\` | \`ui-meter\` + label/value/track/indicator | |
+| Progress | \`./ui/progress\` | \`ui-progress\` + label/value | |
 | Slider | \`./ui/slider\` | \`ui-slider\` | CVA |
 | Form Field | \`./ui/form-field\` | \`ui-form-field\` + label/hint/error | |
 | Pagination | \`./ui/pagination\` | \`ui-pagination\` + first/previous/next/last/button | |
 | Table | \`./ui/table\` | \`ui-table\` + header/body/footer/row/head/cell/caption | |
-| Toolbar | \`./ui/toolbar\` | \`ui-toolbar\` | |
+| Toolbar | \`./ui/toolbar\` | \`ui-toolbar\`, \`button[uiToolbarButton]\` | |
 | Search | \`./ui/search\` | \`ui-search\`, \`ui-search-clear\` | |
 | Input OTP | \`./ui/input-otp\` | \`ui-input-otp\`, \`ui-input-otp-slot\` | |
 | Combobox | \`./ui/combobox\` | \`ui-combobox\` + input/button/dropdown/option | |
@@ -241,6 +241,8 @@ You are working with **Volt UI**, an Angular v21 component library (shadcn/ui-in
 | Tooltip | \`./ui/tooltip\` | \`[uiTooltip]\`, \`ui-tooltip-content\` | Template-based overlay |
 | Dropdown Menu | \`./ui/dropdown-menu\` | \`[uiDropdownMenu]\`, \`ui-dropdown-menu\` + item/label/separator | Template-based overlay |
 | Toast | \`./ui/toast\` | \`ui-toast\` + title/description/close | Use \`NgpToastManager\` |
+
+Known upstream caveats in \`ng-primitives\`: meter currently exposes \`aria-valuenow\` as a percentage for non-0..100 ranges, and progress currently reports \`aria-valuemin="0"\` even when \`min\` is customized.
 
 ## Overlay pattern
 Overlays are never used as element selectors. Use an attribute-directive trigger that references an \`<ng-template>\`:
@@ -664,7 +666,12 @@ const VSCODE_SNIPPETS = {
   'Volt UI Progress': {
     prefix: ['volt-progress', 'ui-progress'],
     description: 'Volt UI Progress',
-    body: ['<ui-progress [value]="${1:60}" [max]="${2:100}" />'],
+    body: [
+      '<ui-progress [value]="${1:60}" [max]="${2:100}">',
+      '  <ui-progress-label>${3:Loading}</ui-progress-label>',
+      '  <ui-progress-value>${1:60}%</ui-progress-value>',
+      '</ui-progress>',
+    ],
   },
   'Volt UI Skeleton': {
     prefix: ['volt-skeleton', 'ui-skeleton'],

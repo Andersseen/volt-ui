@@ -49,6 +49,8 @@ describe('listbox components', () => {
     expect(react).toHaveAttribute('aria-disabled', 'true');
     await user.click(angular);
     expect(fixture.componentInstance.value()).toContain('angular');
+    expect(angular).toHaveAttribute('aria-selected', 'true');
+    expect(angular).toHaveAttribute('data-selected');
   });
 
   it('supports Reactive Forms value, touched, invalid and disabled contracts', async () => {
@@ -66,6 +68,7 @@ describe('listbox components', () => {
     fixture.componentInstance.control.disable();
     await fixture.whenStable();
     expect(listbox).toHaveAttribute('data-disabled');
+    expect(listbox).toHaveAttribute('tabindex', '-1');
   });
 
   it('supports active-option keyboard selection', async () => {

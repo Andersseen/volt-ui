@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
-import { VoltProgress } from 'volt';
+import { VoltProgress, VoltProgressLabel, VoltProgressValue } from 'volt';
 import { CodePanel } from '../../../../components/code-panel';
 import { ApiReference } from '../../../../components/api-reference';
 import { PROGRESS_SNIPPET } from '../../../../lib/snippets';
@@ -9,7 +9,7 @@ import { PROGRESS_API } from '../../../../lib/api-reference.generated';
 @Component({
   selector: 'app-progress-demo',
   standalone: true,
-  imports: [VoltProgress, CodePanel, ApiReference],
+  imports: [VoltProgress, VoltProgressLabel, VoltProgressValue, CodePanel, ApiReference],
   templateUrl: './progress.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

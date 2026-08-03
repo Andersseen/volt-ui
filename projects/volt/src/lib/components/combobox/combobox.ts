@@ -172,7 +172,7 @@ export class VoltCombobox implements ControlValueAccessor {
   constructor() {
     effect(() => {
       const value = this.value();
-      const label = value === undefined || value === null ? '' : this.itemLabel()(value);
+      const label = this.getValueLabel(value);
       this.filter.set(label);
 
       const input = this.inputRef();
@@ -221,12 +221,24 @@ export class VoltCombobox implements ControlValueAccessor {
 
   private syncFilterWithValue(): void {
     const value = this.value();
-    const label = value === undefined || value === null ? '' : this.itemLabel()(value);
+    const label = this.getValueLabel(value);
     this.filter.set(label);
 
     const input = this.inputRef();
     if (input) {
       input.nativeElement.value = label;
     }
+  }
+
+  private getValueLabel(value: unknown): string {
+    if (value === undefined || value === null) {
+      return '';
+    }
+
+    if (Array.isArray(value)) {
+      return value.map(item => this.itemLabel()(item)).join(', ');
+    }
+
+    return this.itemLabel()(value);
   }
 }
