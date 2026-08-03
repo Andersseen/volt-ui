@@ -8,13 +8,10 @@ import {
   model,
   numberAttribute,
   signal,
-  TemplateRef,
-  contentChild,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { injectInputOtpState, NgpInputOtp, provideInputOtpState } from 'ng-primitives/input-otp';
 import { VoltInputOtpSlot } from './input-otp-slot';
-import { NgTemplateOutlet } from '@angular/common';
 import { injectFormControlState } from '../../form-control-state';
 
 @Component({
@@ -28,7 +25,7 @@ import { injectFormControlState } from '../../form-control-state';
       multi: true,
     },
   ],
-  imports: [VoltInputOtpSlot, NgTemplateOutlet],
+  imports: [VoltInputOtpSlot],
   host: {
     class: 'flex items-center gap-2',
     '[attr.aria-invalid]': 'formControlState.invalid() ? "true" : null',
@@ -57,16 +54,8 @@ import { injectFormControlState } from '../../form-control-state';
       class="sr-only"
     />
     @for (slot of slots(); track $index) {
-      <volt-input-otp-slot>
-        <ng-container
-          *ngTemplateOutlet="slotTemplate() || defaultSlot; context: { $implicit: slot }"
-        />
-      </volt-input-otp-slot>
+      <volt-input-otp-slot />
     }
-
-    <ng-template #defaultSlot let-slot>
-      <span>{{ slot.char || slot.placeholder }}</span>
-    </ng-template>
   `,
 })
 export class VoltInputOtp implements ControlValueAccessor {
@@ -82,7 +71,6 @@ export class VoltInputOtp implements ControlValueAccessor {
   readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly ariaLabel = input<string>('One-time password');
   readonly placeholder = input<string>('○');
-  readonly slotTemplate = contentChild<TemplateRef<unknown>>('slotTemplate');
   private readonly controlDisabled = signal(false);
   readonly isDisabled = computed(() => this.disabled() || this.controlDisabled());
 
@@ -99,7 +87,6 @@ export class VoltInputOtp implements ControlValueAccessor {
   protected readonly slots = () =>
     Array.from({ length: this.length() }, (_, i) => ({
       index: i,
-      char: '',
       placeholder: this.placeholder(),
     }));
 

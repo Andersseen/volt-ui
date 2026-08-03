@@ -261,12 +261,11 @@ export const DATE_PICKER_API: ComponentApi = {
         { name: 'dateDisabled', type: '(date: Date) => boolean', default: '() => false' },
         { name: 'firstDayOfWeek', type: 'VoltDatePickerFirstDayOfWeek', default: '7' },
         { name: 'date', type: 'Date | undefined' },
-        { name: 'focusedDate', type: 'Date', default: 'new Date()' },
-        { name: 'isDisabled', type: 'unknown' },
+        { name: 'focusedDate', type: 'Date | undefined' },
       ],
       outputs: [
         { name: 'dateChange', type: 'Date | undefined' },
-        { name: 'focusedDateChange', type: 'Date' },
+        { name: 'focusedDateChange', type: 'Date | undefined' },
       ],
     },
     {
@@ -280,12 +279,12 @@ export const DATE_PICKER_API: ComponentApi = {
         { name: 'firstDayOfWeek', type: 'VoltDatePickerFirstDayOfWeek', default: '7' },
         { name: 'startDate', type: 'Date | undefined' },
         { name: 'endDate', type: 'Date | undefined' },
-        { name: 'focusedDate', type: 'Date', default: 'new Date()' },
+        { name: 'focusedDate', type: 'Date | undefined' },
       ],
       outputs: [
         { name: 'startDateChange', type: 'Date | undefined' },
         { name: 'endDateChange', type: 'Date | undefined' },
-        { name: 'focusedDateChange', type: 'Date' },
+        { name: 'focusedDateChange', type: 'Date | undefined' },
       ],
     },
   ],
@@ -345,7 +344,10 @@ export const DRAWER_API: ComponentApi = {
     {
       className: 'VoltDrawer',
       selector: '[voltDrawer]',
-      inputs: [{ name: 'voltDrawer', type: 'unknown' }],
+      inputs: [
+        { name: 'closeOnEscape', type: 'boolean', default: 'true', transform: 'booleanAttribute' },
+        { name: 'voltDrawer', type: 'unknown' },
+      ],
       outputs: [{ name: 'closed', type: 'unknown' }],
     },
   ],
@@ -492,6 +494,7 @@ export const INPUT_OTP_API: ComponentApi = {
           default: "'numeric'",
         },
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
+        { name: 'ariaLabel', type: 'string', default: "'One-time password'" },
         { name: 'placeholder', type: 'string', default: "'○'" },
         { name: 'isDisabled', type: 'unknown' },
       ],
@@ -532,7 +535,6 @@ export const LISTBOX_API: ComponentApi = {
         { name: 'value', type: 'T[]', default: '[]' },
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
         { name: 'compareWith', type: '(a: T, b: T) => boolean', default: '(a, b) => a === b' },
-        { name: 'isDisabled', type: 'unknown' },
       ],
       outputs: [{ name: 'valueChange', type: 'T[]' }],
     },
@@ -542,6 +544,12 @@ export const LISTBOX_API: ComponentApi = {
 
 export const METER_API: ComponentApi = {
   directives: [
+    {
+      className: 'VoltMeterLabel',
+      selector: 'volt-meter-label',
+      inputs: [{ name: 'id', type: 'unknown' }],
+      outputs: [],
+    },
     {
       className: 'VoltMeter',
       selector: 'volt-meter',
@@ -601,7 +609,7 @@ export const NAVIGATION_MENU_API: ComponentApi = {
       className: 'VoltNavigationMenuTrigger',
       selector: 'volt-navigation-menu-trigger',
       inputs: [
-        { name: 'content', type: 'TemplateRef<unknown>', required: true },
+        { name: 'content', type: 'NgpOverlayContent<unknown>', required: true },
         { name: 'placement', type: 'NavigationMenuPlacement', default: "'bottom-start'" },
         { name: 'offset', type: 'number', default: '4' },
         { name: 'flip', type: 'boolean', default: 'true', transform: 'booleanAttribute' },
@@ -743,12 +751,23 @@ export const POPOVER_API: ComponentApi = {
 export const PROGRESS_API: ComponentApi = {
   directives: [
     {
+      className: 'VoltProgressLabel',
+      selector: 'volt-progress-label',
+      inputs: [{ name: 'id', type: 'unknown' }],
+      outputs: [],
+    },
+    {
       className: 'VoltProgress',
       selector: 'volt-progress',
       inputs: [
         { name: 'value', type: 'number | null', default: 'null', transform: 'numberAttribute' },
         { name: 'min', type: 'number', default: '0', transform: 'numberAttribute' },
         { name: 'max', type: 'number', default: '100', transform: 'numberAttribute' },
+        {
+          name: 'valueLabel',
+          type: '(value: number, max: number) => string',
+          default: '(value, max) => `${Math.round((value / max) * 100)}%`',
+        },
       ],
       outputs: [],
     },
@@ -772,7 +791,7 @@ export const RADIO_API: ComponentApi = {
           default: 'Object.is',
         },
       ],
-      outputs: [{ name: 'valueChange', type: 'string | null' }],
+      outputs: [{ name: 'valueChange', type: 'unknown' }],
     },
     {
       className: 'VoltRadioItem',
@@ -792,7 +811,10 @@ export const RESIZABLE_API: ComponentApi = {
     {
       className: 'VoltResizableHandle',
       selector: 'volt-resizable-handle',
-      inputs: [{ name: 'orientation', type: "'horizontal' | 'vertical'", default: "'horizontal'" }],
+      inputs: [
+        { name: 'orientation', type: "'horizontal' | 'vertical'", default: "'horizontal'" },
+        { name: 'maxSize', type: 'number | undefined', default: 'undefined', transform: 'value' },
+      ],
       outputs: [{ name: 'resizing', type: 'boolean' }],
     },
     {
@@ -844,6 +866,21 @@ export const SELECT_API: ComponentApi = {
         { name: 'value', type: 'unknown', default: 'undefined' },
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
         { name: 'multiple', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
+        { name: 'compareWith', type: '(a: unknown, b: unknown) => boolean', default: 'Object.is' },
+        { name: 'dropdownPlacement', type: 'Placement', default: "'bottom-start'" },
+        { name: 'container', type: 'string | HTMLElement | null', default: "'body'" },
+        { name: 'flip', type: 'NgpFlipInput', default: 'true' },
+        {
+          name: 'scrollToOption',
+          type: '((index: number) => void) | undefined',
+          default: 'undefined',
+        },
+        { name: 'allOptions', type: 'unknown[] | undefined', default: 'undefined' },
+        {
+          name: 'displayWith',
+          type: '(value: unknown) => string',
+          default: 'value => String(value)',
+        },
       ],
       outputs: [{ name: 'valueChange', type: 'unknown' }],
     },
@@ -1022,7 +1059,7 @@ export const TEXTAREA_API: ComponentApi = {
           type: "'none' | 'vertical' | 'horizontal' | 'both'",
           default: "'vertical'",
         },
-        { name: 'rows', type: 'number', default: '3' },
+        { name: 'rows', type: 'number', default: '3', transform: 'numberAttribute' },
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
         { name: 'readonly', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
         { name: 'required', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
@@ -1141,7 +1178,7 @@ export const TOGGLE_GROUP_API: ComponentApi = {
           transform: 'booleanAttribute',
         },
       ],
-      outputs: [{ name: 'valueChange', type: 'string[]' }],
+      outputs: [{ name: 'valueChange', type: 'unknown' }],
     },
   ],
   variants: [
@@ -1157,15 +1194,15 @@ export const TOGGLE_GROUP_API: ComponentApi = {
 export const TOOLBAR_API: ComponentApi = {
   directives: [
     {
-      className: 'VoltToolbar',
-      selector: 'volt-toolbar',
-      inputs: [{ name: 'orientation', type: 'NgpOrientation', default: "'horizontal'" }],
+      className: 'VoltToolbarButton',
+      selector: '[voltToolbarButton]',
+      inputs: [{ name: 'disabled', type: 'unknown' }],
       outputs: [],
     },
     {
-      className: 'VoltToolbarButton',
-      selector: 'button[voltToolbarButton]',
-      inputs: [{ name: 'disabled', type: 'boolean', default: 'false' }],
+      className: 'VoltToolbar',
+      selector: 'volt-toolbar',
+      inputs: [{ name: 'orientation', type: 'NgpOrientation', default: "'horizontal'" }],
       outputs: [],
     },
   ],

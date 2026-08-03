@@ -22,7 +22,7 @@ import { injectRadioGroupState, NgpRadioItem, NgpRadioIndicator } from 'ng-primi
       [ngpRadioItemValue]="value()"
       [ngpRadioItemDisabled]="isDisabled()"
       [attr.aria-labelledby]="labelId"
-      class="peer relative flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center rounded-full border border-border bg-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[checked]:border-primary"
+      class="peer relative flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center rounded-full border border-border bg-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50 data-[checked]:border-primary"
     >
       <span ngpRadioIndicator class="items-center justify-center hidden data-[checked]:flex">
         <span class="h-2.5 w-2.5 rounded-full bg-primary"></span>
@@ -30,7 +30,7 @@ import { injectRadioGroupState, NgpRadioItem, NgpRadioIndicator } from 'ng-primi
     </button>
     <span
       [id]="labelId"
-      class="text-sm font-medium leading-none text-foreground peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+      class="text-sm font-medium leading-none text-foreground peer-data-[disabled]:cursor-not-allowed peer-data-[disabled]:opacity-70 cursor-pointer"
     >
       <ng-content />
     </span>

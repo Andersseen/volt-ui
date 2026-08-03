@@ -11,12 +11,14 @@ import { VoltTextarea } from './textarea';
   template: `<volt-textarea
     [placeholder]="placeholder()"
     [state]="state()"
+    [rows]="rows()"
     [disabled]="disabled()"
   />`,
 })
 class TextareaTestWrapper {
   readonly placeholder = input('Type here...');
   readonly state = input<'default' | 'error'>('default');
+  readonly rows = input<number | string>(3);
   readonly disabled = input(false);
 }
 
@@ -46,6 +48,14 @@ describe('VoltTextarea', () => {
 
     const textarea = screen.getByPlaceholderText('Type here...');
     expect(textarea).toBeDisabled();
+  });
+
+  it('should coerce string rows input to a number attribute', async () => {
+    const { container } = await render(TextareaTestWrapper, {
+      componentInputs: { rows: '5' },
+    });
+
+    expect(container.querySelector('textarea')).toHaveAttribute('rows', '5');
   });
 
   it('should work with reactive forms', async () => {

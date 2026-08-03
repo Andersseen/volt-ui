@@ -41,5 +41,5 @@ export class VoltDateRangePicker {
   readonly firstDayOfWeek = input<VoltDatePickerFirstDayOfWeek>(7);
   readonly startDate = model<Date | undefined>();
   readonly endDate = model<Date | undefined>();
-  readonly focusedDate = model<Date>(new Date());
+  readonly focusedDate = model<Date | undefined>();
 }

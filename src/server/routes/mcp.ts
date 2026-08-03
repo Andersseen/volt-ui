@@ -405,12 +405,19 @@ const components: Record<string, ComponentMeta> = {
     name: 'Progress',
     description: 'Progress bar with track and indicator',
     dependencies: ['ng-primitives/progress'],
-    subComponents: ['progress-track', 'progress-indicator'],
+    subComponents: ['progress-label', 'progress-value', 'progress-track', 'progress-indicator'],
     inputs: [
       { name: 'value', type: 'number', default: 0 },
+      { name: 'min', type: 'number', default: 0 },
       { name: 'max', type: 'number', default: 100 },
+      { name: 'valueLabel', type: '(value: number, max: number) => string' },
     ],
-    examples: ['<ui-progress [value]="60" [max]="100" />'],
+    examples: [
+      `<ui-progress [value]="60" [max]="100">
+  <ui-progress-label>Loading</ui-progress-label>
+  <ui-progress-value>60%</ui-progress-value>
+</ui-progress>`,
+    ],
   },
   breadcrumbs: {
     name: 'Breadcrumbs',
@@ -483,14 +490,18 @@ const components: Record<string, ComponentMeta> = {
     name: 'Meter',
     description: 'Meter component for displaying a value within a known range',
     dependencies: ['ng-primitives/meter'],
-    subComponents: ['meter-track', 'meter-indicator'],
+    subComponents: ['meter-label', 'meter-value', 'meter-track', 'meter-indicator'],
     inputs: [
       { name: 'value', type: 'number', default: 0 },
       { name: 'min', type: 'number', default: 0 },
       { name: 'max', type: 'number', default: 100 },
     ],
     examples: [
-      '<ui-meter [value]="75" [max]="100"><ui-meter-track><ui-meter-indicator /></ui-meter-track></ui-meter>',
+      `<ui-meter [value]="75" [max]="100">
+  <ui-meter-label>Storage</ui-meter-label>
+  <ui-meter-value>75%</ui-meter-value>
+  <ui-meter-track><ui-meter-indicator /></ui-meter-track>
+</ui-meter>`,
     ],
   },
   pagination: {

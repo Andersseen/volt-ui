@@ -64,7 +64,7 @@ export class VoltDatePicker implements ControlValueAccessor {
   readonly dateDisabled = input<(date: Date) => boolean>(() => false);
   readonly firstDayOfWeek = input<VoltDatePickerFirstDayOfWeek>(7);
   readonly date = model<Date | undefined>();
-  readonly focusedDate = model<Date>(new Date());
+  readonly focusedDate = model<Date | undefined>();
 
   private readonly controlDisabled = signal(false);
   protected readonly isDisabled = computed(() => this.disabled() || this.controlDisabled());

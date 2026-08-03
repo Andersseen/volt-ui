@@ -8,6 +8,8 @@ import checkboxSource from '../../../../projects/volt/src/lib/components/checkbo
 import inputSource from '../../../../projects/volt/src/lib/components/input/input.ts?raw';
 import autofillSource from '../../../../projects/volt/src/lib/components/autofill/autofill.ts?raw';
 import progressSource from '../../../../projects/volt/src/lib/components/progress/progress.ts?raw';
+import progressLabelSource from '../../../../projects/volt/src/lib/components/progress/progress-label.ts?raw';
+import progressValueSource from '../../../../projects/volt/src/lib/components/progress/progress-value.ts?raw';
 import searchSource from '../../../../projects/volt/src/lib/components/search/search.ts?raw';
 import searchClearSource from '../../../../projects/volt/src/lib/components/search/search-clear.ts?raw';
 import separatorSource from '../../../../projects/volt/src/lib/components/separator/separator.ts?raw';
@@ -112,6 +114,8 @@ import listboxTriggerSource from '../../../../projects/volt/src/lib/components/l
 import meterSource from '../../../../projects/volt/src/lib/components/meter/meter.ts?raw';
 import meterTrackSource from '../../../../projects/volt/src/lib/components/meter/meter-track.ts?raw';
 import meterIndicatorSource from '../../../../projects/volt/src/lib/components/meter/meter-indicator.ts?raw';
+import meterLabelSource from '../../../../projects/volt/src/lib/components/meter/meter-label.ts?raw';
+import meterValueSource from '../../../../projects/volt/src/lib/components/meter/meter-value.ts?raw';
 
 import paginationSource from '../../../../projects/volt/src/lib/components/pagination/pagination.ts?raw';
 import paginationVariantsSource from '../../../../projects/volt/src/lib/components/pagination/variants.ts?raw';
@@ -176,7 +180,11 @@ export const CARD_SNIPPET = cardSource;
 export const CHECKBOX_SNIPPET = checkboxSource;
 export const INPUT_SNIPPET = inputSource;
 export const AUTOFILL_SNIPPET = autofillSource;
-export const PROGRESS_SNIPPET = progressSource;
+export const PROGRESS_SNIPPET = join(
+  ['progress.ts', progressSource],
+  ['progress-label.ts', progressLabelSource],
+  ['progress-value.ts', progressValueSource]
+);
 export const SEARCH_SNIPPET = join(
   ['search.ts', searchSource],
   ['search-clear.ts', searchClearSource]
@@ -320,7 +328,9 @@ export const LISTBOX_SNIPPET = join(
 export const METER_SNIPPET = join(
   ['meter.ts', meterSource],
   ['meter-track.ts', meterTrackSource],
-  ['meter-indicator.ts', meterIndicatorSource]
+  ['meter-indicator.ts', meterIndicatorSource],
+  ['meter-label.ts', meterLabelSource],
+  ['meter-value.ts', meterValueSource]
 );
 
 export const PAGINATION_SNIPPET = join(

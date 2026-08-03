@@ -9,7 +9,9 @@ import {
   signal,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import type { Placement } from '@floating-ui/dom';
 import { NgpSelect, NgpSelectPortal, provideSelectState } from 'ng-primitives/select';
+import type { NgpFlipInput } from 'ng-primitives/portal';
 import { injectFormControlState } from '../../form-control-state';
 
 @Component({
@@ -31,10 +33,15 @@ import { injectFormControlState } from '../../form-control-state';
     <button
       ngpSelect
       type="button"
-      ngpSelectDropdownPlacement="bottom-start"
+      [ngpSelectDropdownPlacement]="dropdownPlacement()"
       [ngpSelectValue]="value()"
       [ngpSelectDisabled]="isDisabled()"
       [ngpSelectMultiple]="multiple()"
+      [ngpSelectCompareWith]="compareWith()"
+      [ngpSelectDropdownContainer]="container()"
+      [ngpSelectDropdownFlip]="flip()"
+      [ngpSelectScrollToOption]="scrollToOption()"
+      [ngpSelectOptions]="allOptions()"
       [attr.aria-label]="ariaLabel() || null"
       [attr.aria-invalid]="formControlState.invalid() ? 'true' : null"
       (ngpSelectValueChange)="onValueChange($event)"
@@ -43,7 +50,7 @@ import { injectFormControlState } from '../../form-control-state';
     >
       <span class="block text-left truncate flex-1 pointer-events-none">
         @if (value(); as selected) {
-          {{ selected }}
+          {{ displayValue(selected) }}
         } @else {
           <span class="text-muted-foreground">{{ placeholder() }}</span>
         }
@@ -77,6 +84,20 @@ export class VoltSelect implements ControlValueAccessor {
   readonly value = model<unknown>(undefined);
   readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly multiple = input<boolean, unknown>(false, { transform: booleanAttribute });
+  readonly compareWith = input<(a: unknown, b: unknown) => boolean>(Object.is);
+  readonly dropdownPlacement = input<Placement>('bottom-start');
+  readonly container = input<string | HTMLElement | null>('body');
+  readonly flip = input<NgpFlipInput, NgpFlipInput>(true, {
+    transform: (value: NgpFlipInput) => {
+      if (typeof value === 'string') {
+        return value === 'true';
+      }
+      return value;
+    },
+  });
+  readonly scrollToOption = input<((index: number) => void) | undefined>(undefined);
+  readonly allOptions = input<unknown[] | undefined>(undefined);
+  readonly displayWith = input<(value: unknown) => string>(value => String(value));
 
   private readonly controlDisabled = signal(false);
   protected readonly isDisabled = computed(() => this.disabled() || this.controlDisabled());
@@ -87,6 +108,14 @@ export class VoltSelect implements ControlValueAccessor {
   protected onValueChange(value: unknown): void {
     this.value.set(value);
     this.onChange(value);
+  }
+
+  protected displayValue(value: unknown): string {
+    if (Array.isArray(value)) {
+      return value.map(item => this.displayWith()(item)).join(', ');
+    }
+
+    return this.displayWith()(value);
   }
 
   writeValue(value: unknown): void {
