@@ -339,10 +339,8 @@ import { VoltProgress, VoltProgressLabel, VoltProgressValue } from 'volt';
   imports: [VoltProgress, VoltProgressLabel, VoltProgressValue],
   template: \`
     <volt-progress [value]="progress()">
-      <div class="mb-2 flex items-center justify-between gap-3">
-        <volt-progress-label>Upload progress</volt-progress-label>
-        <volt-progress-value>{{ progress() }}% complete</volt-progress-value>
-      </div>
+      <volt-progress-label>Upload progress</volt-progress-label>
+      <volt-progress-value>{{ progress() }}% complete</volt-progress-value>
     </volt-progress>
   \`,
 })

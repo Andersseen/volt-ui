@@ -15,10 +15,8 @@
     >
       <div class="w-full max-w-sm space-y-4">
         <volt-progress [value]="value()">
-          <div class="mb-2 flex items-center justify-between gap-3">
-            <volt-progress-label>Upload progress</volt-progress-label>
-            <volt-progress-value>{{ value() }}% complete</volt-progress-value>
-          </div>
+          <volt-progress-label>Upload progress</volt-progress-label>
+          <volt-progress-value>{{ value() }}% complete</volt-progress-value>
         </volt-progress>
       </div>
     </div>
