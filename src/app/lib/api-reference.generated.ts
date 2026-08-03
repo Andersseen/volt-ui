@@ -1162,6 +1162,12 @@ export const TOOLBAR_API: ComponentApi = {
       inputs: [{ name: 'orientation', type: 'NgpOrientation', default: "'horizontal'" }],
       outputs: [],
     },
+    {
+      className: 'VoltToolbarButton',
+      selector: 'button[voltToolbarButton]',
+      inputs: [{ name: 'disabled', type: 'boolean', default: 'false' }],
+      outputs: [],
+    },
   ],
   variants: undefined,
 };

@@ -50,7 +50,12 @@ import { injectFormControlState } from '../../form-control-state';
     },
   ],
   template: `
-    <input ngpInputOtpInput [disabled]="isDisabled()" class="sr-only" />
+    <input
+      ngpInputOtpInput
+      [disabled]="isDisabled()"
+      [attr.aria-label]="ariaLabel()"
+      class="sr-only"
+    />
     @for (slot of slots(); track $index) {
       <volt-input-otp-slot>
         <ng-container
@@ -75,6 +80,7 @@ export class VoltInputOtp implements ControlValueAccessor {
     'numeric'
   );
   readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
+  readonly ariaLabel = input<string>('One-time password');
   readonly placeholder = input<string>('○');
   readonly slotTemplate = contentChild<TemplateRef<unknown>>('slotTemplate');
   private readonly controlDisabled = signal(false);

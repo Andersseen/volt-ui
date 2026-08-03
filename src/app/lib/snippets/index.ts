@@ -18,6 +18,7 @@ import textareaVariantsSource from '../../../../projects/volt/src/lib/components
 import toggleSource from '../../../../projects/volt/src/lib/components/toggle/toggle.ts?raw';
 import toggleVariantsSource from '../../../../projects/volt/src/lib/components/toggle/variants.ts?raw';
 import toolbarSource from '../../../../projects/volt/src/lib/components/toolbar/toolbar.ts?raw';
+import toolbarButtonSource from '../../../../projects/volt/src/lib/components/toolbar/toolbar-button.ts?raw';
 
 // Multi-file components
 import accordionSource from '../../../../projects/volt/src/lib/components/accordion/accordion.ts?raw';
@@ -191,7 +192,10 @@ export const TOGGLE_SNIPPET = join(
   ['toggle.ts', toggleSource],
   ['variants.ts', toggleVariantsSource]
 );
-export const TOOLBAR_SNIPPET = toolbarSource;
+export const TOOLBAR_SNIPPET = join(
+  ['toolbar.ts', toolbarSource],
+  ['toolbar-button.ts', toolbarButtonSource]
+);
 
 export const ACCORDION_SNIPPET = join(
   ['accordion.ts', accordionSource],

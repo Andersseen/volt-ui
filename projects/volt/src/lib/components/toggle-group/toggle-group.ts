@@ -6,7 +6,6 @@ import {
   effect,
   forwardRef,
   input,
-  model,
   signal,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -52,7 +51,7 @@ export class VoltToggleGroup implements ControlValueAccessor {
   private readonly state = injectToggleGroupState();
   protected readonly formControlState = injectFormControlState();
 
-  readonly value = model<string[]>([]);
+  readonly value = input<string[]>([]);
   readonly type = input<'single' | 'multiple'>('single');
   readonly orientation = input<'horizontal' | 'vertical'>('horizontal');
   readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
@@ -69,20 +68,14 @@ export class VoltToggleGroup implements ControlValueAccessor {
       this.state().setDisabled(this.isDisabled());
     });
 
-    effect(() => {
-      this.state().setValue(this.value());
-    });
-
     this.state().valueChange.subscribe(value => {
-      this.value.set(value);
       this.onChange(value);
     });
   }
 
   writeValue(value: string[] | null | undefined): void {
     const nextValue = value ?? [];
-    this.value.set(nextValue);
-    this.state().setValue(nextValue);
+    this.state().value.set(nextValue);
   }
 
   registerOnChange(fn: (value: string[]) => void): void {

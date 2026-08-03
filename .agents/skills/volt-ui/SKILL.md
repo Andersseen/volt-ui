@@ -115,7 +115,7 @@ Style presets: `sharp`, `soft`, `brutal`, `ghost`, `retro`.
 | Table         | `./ui/table`         | `<ui-table>` + header/body/row/head/cell/caption/footer                                                                                          | Components       | —                                              |
 | Tabs          | `./ui/tabs`          | `<ui-tabs>`, `<ui-tabs-list>`, `<ui-tabs-trigger>`, `<ui-tabs-content>`                                                                          | Components       | `value` (model), `orientation`                 |
 | Toast         | `./ui/toast`         | `<ui-toast>`, `<ui-toast-title>`, `<ui-toast-description>`, `<ui-toast-close>`                                                                   | Components       | `variant`                                      |
-| Toolbar       | `./ui/toolbar`       | `<ui-toolbar>`                                                                                                                                   | Component        | `orientation`                                  |
+| Toolbar       | `./ui/toolbar`       | `<ui-toolbar>`, `<button uiToolbarButton>`                                                                                                       | Components       | `orientation`                                  |
 | Tooltip       | `./ui/tooltip`       | `[uiTooltip]`, `<ui-tooltip-content>`                                                                                                            | Mixed            | `placement`, `delay`, `closeDelay`, `disabled` |
 
 ### Additional beta components

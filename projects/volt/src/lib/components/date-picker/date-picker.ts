@@ -10,7 +10,11 @@ import {
   signal,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { NgpDatePicker, provideDatePickerConfig } from 'ng-primitives/date-picker';
+import {
+  injectDatePickerState,
+  NgpDatePicker,
+  provideDatePickerConfig,
+} from 'ng-primitives/date-picker';
 import { NgpNativeDateAdapter, provideDateAdapter } from 'ng-primitives/date-time';
 
 export type VoltDatePickerFirstDayOfWeek = 1 | 2 | 3 | 4 | 5 | 6 | 7;
@@ -33,7 +37,7 @@ export type VoltDatePickerFirstDayOfWeek = 1 | 2 | 3 | 4 | 5 | 6 | 7;
       inputs: [
         'ngpDatePickerMin: min',
         'ngpDatePickerMax: max',
-        'ngpDatePickerDisabled: isDisabled',
+        'ngpDatePickerDisabled: disabled',
         'ngpDatePickerDateDisabled: dateDisabled',
         'ngpDatePickerFirstDayOfWeek: firstDayOfWeek',
         'ngpDatePickerDate: date',
@@ -52,6 +56,8 @@ export type VoltDatePickerFirstDayOfWeek = 1 | 2 | 3 | 4 | 5 | 6 | 7;
   template: `<ng-content />`,
 })
 export class VoltDatePicker implements ControlValueAccessor {
+  private readonly datePickerState = injectDatePickerState<Date>();
+
   readonly min = input<Date>();
   readonly max = input<Date>();
   readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
@@ -67,6 +73,10 @@ export class VoltDatePicker implements ControlValueAccessor {
   private onTouched: () => void = () => {};
 
   constructor() {
+    effect(() => {
+      this.datePickerState().disabled.set(this.isDisabled());
+    });
+
     effect(() => {
       const value = this.date();
       this.onChange(value);

@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  inject,
   input,
 } from '@angular/core';
 import { NgpListboxOption } from 'ng-primitives/listbox';
@@ -18,15 +19,14 @@ import { listboxOptionVariants, type ListboxOptionVariants } from './variants';
     },
   ],
   host: {
-    class: 'contents',
+    '[class]': 'classes()',
+    '[attr.aria-selected]': 'listboxOption.selected() ? "true" : "false"',
   },
-  template: `
-    <div [class]="classes()">
-      <ng-content />
-    </div>
-  `,
+  template: `<ng-content />`,
 })
 export class VoltListboxOption<T = unknown> {
+  protected readonly listboxOption = inject<NgpListboxOption<T>>(NgpListboxOption);
+
   readonly id = input<string>();
   readonly value = input.required<T>();
   readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });

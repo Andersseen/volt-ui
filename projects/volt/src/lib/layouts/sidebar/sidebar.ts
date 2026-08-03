@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject, input, booleanAttribute } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  HostListener,
+  inject,
+  input,
+  booleanAttribute,
+} from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { VoltSidebarService } from './sidebar.service';
 import { VoltTooltip } from '../../components/tooltip';
@@ -14,11 +21,9 @@ import { VoltTooltip } from '../../components/tooltip';
     @if (sidebarService.isMobileOpen()) {
       <div
         class="fixed inset-0 z-40 bg-background/80 backdrop-blur-sm transition-opacity md:hidden"
-        role="button"
-        tabindex="-1"
+        aria-hidden="true"
         aria-label="Close sidebar"
         (click)="sidebarService.setMobileOpen(false)"
-        (keydown.escape)="sidebarService.setMobileOpen(false)"
       ></div>
     }
 
@@ -27,6 +32,8 @@ import { VoltTooltip } from '../../components/tooltip';
       [class]="sidebarService.isCollapsed() ? 'w-16' : 'w-72'"
       [class.translate-x-0]="sidebarService.isMobileOpen()"
       [class.-translate-x-full]="!sidebarService.isMobileOpen()"
+      [attr.role]="sidebarService.isMobileOpen() ? 'dialog' : null"
+      [attr.aria-modal]="sidebarService.isMobileOpen() ? 'true' : null"
     >
       <ng-content />
     </aside>
@@ -34,6 +41,13 @@ import { VoltTooltip } from '../../components/tooltip';
 })
 export class VoltSidebar {
   protected readonly sidebarService = inject(VoltSidebarService);
+
+  @HostListener('document:keydown.escape')
+  protected closeMobileSidebar(): void {
+    if (this.sidebarService.isMobileOpen()) {
+      this.sidebarService.setMobileOpen(false);
+    }
+  }
 }
 
 // ==========================================

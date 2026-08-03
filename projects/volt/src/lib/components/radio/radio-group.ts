@@ -6,7 +6,6 @@ import {
   effect,
   forwardRef,
   input,
-  model,
   signal,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -54,7 +53,7 @@ export class VoltRadioGroup implements ControlValueAccessor {
 
   readonly id = input<string>();
   readonly orientation = input<NgpOrientation>('vertical');
-  readonly value = model<string | null>(null);
+  readonly value = input<string | null>(null);
   readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly compareWith = input<(a: string | null, b: string | null) => boolean>(Object.is);
 
@@ -73,7 +72,6 @@ export class VoltRadioGroup implements ControlValueAccessor {
 
     effect(() => {
       const value = this.state().value();
-      this.value.set(value);
 
       if (this.isWritingValue) {
         return;
@@ -90,7 +88,6 @@ export class VoltRadioGroup implements ControlValueAccessor {
   writeValue(value: string | null | undefined): void {
     const nextValue = value ?? null;
     this.isWritingValue = true;
-    this.value.set(nextValue);
     this.state().value.set(nextValue);
     this.isWritingValue = false;
   }

@@ -126,7 +126,7 @@ Components use semantic Tailwind utilities; do not write `bg-[var(--primary)]`.
 | Table         | `./ui/table`         | `<ui-table>`, `<ui-table-header>`, `<ui-table-body>`, `<ui-table-footer>`, `<ui-table-row>`, `<ui-table-head>`, `<ui-table-cell>`, `<ui-table-caption>` | Semantic table.                                                         |
 | Tabs          | `./ui/tabs`          | `<ui-tabs>`, `<ui-tabs-list>`, `<ui-tabs-trigger>`, `<ui-tabs-content>`                                                                                 | Use `value` model, not `defaultValue`.                                  |
 | Toast         | `./ui/toast`         | `<ui-toast>`, `<ui-toast-title>`, `<ui-toast-description>`, `<ui-toast-close>`                                                                          | Use with `NgpToastManager`.                                             |
-| Toolbar       | `./ui/toolbar`       | `<ui-toolbar>`                                                                                                                                          | `orientation`.                                                          |
+| Toolbar       | `./ui/toolbar`       | `<ui-toolbar>`, `<button uiToolbarButton>`                                                                                                              | `orientation`.                                                          |
 | Tooltip       | `./ui/tooltip`       | `[uiTooltip]`, `<ui-tooltip-content>`                                                                                                                   | Trigger references content template.                                    |
 
 ### Additional beta components

@@ -648,18 +648,72 @@ export class MyComponent {
   frameworks = ['Angular', 'React', 'Vue', 'Svelte'];
 }`;
 
-export const DATE_PICKER_USAGE = `import { Component } from '@angular/core';
+export const DATE_PICKER_USAGE = `import { Component, computed, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { VoltDatePicker } from 'volt';
+import {
+  NgpDatePickerCellRender,
+  NgpDatePickerRowRender,
+  VoltDatePicker,
+  VoltDatePickerCell,
+  VoltDatePickerDateButton,
+  VoltDatePickerGrid,
+  VoltDatePickerLabel,
+  VoltDatePickerNextMonth,
+  VoltDatePickerPreviousMonth,
+} from 'volt';
 
 @Component({
-  imports: [ReactiveFormsModule, VoltDatePicker],
+  imports: [
+    ReactiveFormsModule,
+    VoltDatePicker,
+    VoltDatePickerCell,
+    VoltDatePickerDateButton,
+    VoltDatePickerGrid,
+    VoltDatePickerLabel,
+    VoltDatePickerNextMonth,
+    VoltDatePickerPreviousMonth,
+    NgpDatePickerCellRender,
+    NgpDatePickerRowRender,
+  ],
   template: \`
-    <volt-date-picker [formControl]="date" />
+    <volt-date-picker [formControl]="date" [(focusedDate)]="focusedDate">
+      <div class="flex items-center justify-between">
+        <volt-date-picker-previous-month aria-label="Previous month">
+          ‹
+        </volt-date-picker-previous-month>
+        <volt-date-picker-label>{{ label() }}</volt-date-picker-label>
+        <volt-date-picker-next-month aria-label="Next month">
+          ›
+        </volt-date-picker-next-month>
+      </div>
+
+      <volt-date-picker-grid>
+        <div class="grid grid-cols-7 gap-1 text-center text-xs text-muted-foreground">
+          @for (day of weekDays; track day) {
+            <span class="py-1">{{ day }}</span>
+          }
+        </div>
+        <div *ngpDatePickerRowRender class="grid grid-cols-7 gap-1">
+          <volt-date-picker-cell *ngpDatePickerCellRender="let day">
+            <volt-date-picker-date-button>
+              {{ day.getDate() }}
+            </volt-date-picker-date-button>
+          </volt-date-picker-cell>
+        </div>
+      </volt-date-picker-grid>
+    </volt-date-picker>
   \`,
 })
 export class MyComponent {
   date = new FormControl<Date | null>(new Date());
+  focusedDate = signal(new Date());
+  weekDays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+  label = computed(() =>
+    this.focusedDate().toLocaleString('en-US', {
+      month: 'long',
+      year: 'numeric',
+    })
+  );
 }`;
 
 export const LISTBOX_USAGE = `import { Component } from '@angular/core';
@@ -681,15 +735,15 @@ export class MyComponent {
 }`;
 
 export const TOOLBAR_USAGE = `import { Component } from '@angular/core';
-import { VoltToolbar, VoltToggle, VoltButton } from 'volt';
+import { VoltToolbar, VoltToolbarButton } from 'volt';
 
 @Component({
-  imports: [VoltToolbar, VoltToggle, VoltButton],
+  imports: [VoltToolbar, VoltToolbarButton],
   template: \`
     <volt-toolbar>
-      <volt-toggle>Bold</volt-toggle>
-      <volt-toggle>Italic</volt-toggle>
-      <volt-button size="sm" variant="outline">Save</volt-button>
+      <button voltToolbarButton>Bold</button>
+      <button voltToolbarButton>Italic</button>
+      <button voltToolbarButton>Save</button>
     </volt-toolbar>
   \`,
 })

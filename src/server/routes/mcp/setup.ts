@@ -139,7 +139,7 @@ You are working with **Volt UI**, an Angular v21 component library (shadcn/ui-in
 | Form Field | \`./ui/form-field\` | \`ui-form-field\` + label/hint/error | |
 | Pagination | \`./ui/pagination\` | \`ui-pagination\` + first/previous/next/last/button | |
 | Table | \`./ui/table\` | \`ui-table\` + header/body/footer/row/head/cell/caption | |
-| Toolbar | \`./ui/toolbar\` | \`ui-toolbar\` | |
+| Toolbar | \`./ui/toolbar\` | \`ui-toolbar\`, \`button[uiToolbarButton]\` | |
 | Search | \`./ui/search\` | \`ui-search\`, \`ui-search-clear\` | |
 | Input OTP | \`./ui/input-otp\` | \`ui-input-otp\`, \`ui-input-otp-slot\` | |
 | Combobox | \`./ui/combobox\` | \`ui-combobox\` + input/button/dropdown/option | |

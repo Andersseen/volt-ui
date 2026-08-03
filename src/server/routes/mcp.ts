@@ -622,13 +622,19 @@ const components: Record<string, ComponentMeta> = {
       },
     ],
     examples: [
-      `<ui-date-picker [(date)]="selectedDate">
+      `<ui-date-picker [(date)]="selectedDate" [(focusedDate)]="focusedDate">
   <div class="flex items-center justify-between">
-    <ui-date-picker-previous-month>Prev</ui-date-picker-previous-month>
-    <ui-date-picker-label />
-    <ui-date-picker-next-month>Next</ui-date-picker-next-month>
+    <ui-date-picker-previous-month aria-label="Previous month">Prev</ui-date-picker-previous-month>
+    <ui-date-picker-label>{{ monthLabel() }}</ui-date-picker-label>
+    <ui-date-picker-next-month aria-label="Next month">Next</ui-date-picker-next-month>
   </div>
-  <ui-date-picker-grid>...</ui-date-picker-grid>
+  <ui-date-picker-grid>
+    <div *ngpDatePickerRowRender class="grid grid-cols-7 gap-1">
+      <ui-date-picker-cell *ngpDatePickerCellRender="let day">
+        <ui-date-picker-date-button>{{ day.getDate() }}</ui-date-picker-date-button>
+      </ui-date-picker-cell>
+    </div>
+  </ui-date-picker-grid>
 </ui-date-picker>`,
       `<ui-date-range-picker [(startDate)]="start" [(endDate)]="end">...</ui-date-range-picker>`,
     ],
@@ -664,9 +670,9 @@ const components: Record<string, ComponentMeta> = {
     ],
     examples: [
       `<ui-toolbar>
-  <ui-toggle>Bold</ui-toggle>
-  <ui-toggle>Italic</ui-toggle>
-  <ui-button size="icon">Save</ui-button>
+  <button uiToolbarButton>Bold</button>
+  <button uiToolbarButton>Italic</button>
+  <button uiToolbarButton>Save</button>
 </ui-toolbar>`,
     ],
   },
