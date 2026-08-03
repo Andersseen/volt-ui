@@ -1,16 +1,12 @@
 name: Release
 
-# Fires when a package version changes on main (a deliberate "release" commit),
-# or on demand. It publishes only the packages whose version is new on npm and
-# creates a GitHub Release for each, so releases appear in the repo sidebar.
+# Fires on every main push, or on demand. The release script is idempotent: it
+# publishes only packages whose local version is new on npm and creates a GitHub
+# Release for each, so releases appear in the repo sidebar.
 on:
   push:
     branches:
       - main
-    paths:
-      - projects/volt/package.json
-      - cli/package.json
-      - cli/mcp/package.json
   workflow_dispatch:
 
 concurrency:
