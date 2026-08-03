@@ -7,12 +7,12 @@ test.describe('Official landing page', () => {
 
   test('communicates the product and exposes the primary journeys', async ({ page }) => {
     await expect(
-      page.getByRole('heading', { name: 'Angular components you actually own.' })
+      page.getByRole('heading', { name: 'Ship Angular interfaces from components you can own.' })
     ).toBeVisible();
     await expect(page.getByText('npx @voltui/cli add button dialog form-field')).toBeVisible();
-    await expect(page.getByText('Live components')).toBeVisible();
+    await expect(page.getByText('Release confidence')).toBeVisible();
     await expect(page.getByRole('button', { name: 'Start building' })).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Explore components' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Browse components' }).first()).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Own the source' })).toBeVisible();
   });
 
@@ -21,7 +21,7 @@ test.describe('Official landing page', () => {
     await page.reload();
 
     await expect(
-      page.getByRole('heading', { name: 'Angular components you actually own.' })
+      page.getByRole('heading', { name: 'Ship Angular interfaces from components you can own.' })
     ).toBeVisible();
     await expect(page.getByRole('button', { name: 'Start building' })).toBeVisible();
 
