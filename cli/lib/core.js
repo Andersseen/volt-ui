@@ -30,6 +30,13 @@ const RUNTIME_DEPENDENCIES = [
   'tailwind-merge',
 ];
 
+// Files living directly in projects/volt/src/lib (not under components/ or layouts/)
+// that some components import via a relative path, e.g. `from '../../utils'`. The
+// manifest's dependency detector only resolves components/layouts imports, so these are
+// tracked and copied separately, flat into the target dir (sibling to each component's
+// own subfolder), since that's what the rewritten `../utils` import path expects.
+const SHARED_LIB_FILES = ['utils.ts', 'form-control-state.ts'];
+
 // ---------------------------------------------------------------------------
 // Package manager detection
 // ---------------------------------------------------------------------------
@@ -102,7 +109,83 @@ function transformContent(content) {
   content = content.replace(/from\s+['"]volt['"]/g, "from './index'");
   content = content.replace(/from\s+['"]\.\.\/index['"]/g, "from '../index'");
 
+  // Cross-component imports written as a relative path into components/ or layouts/
+  // (e.g. `../../components/tooltip`) instead of the 'volt' barrel. The CLI always
+  // copies components flat as siblings under targetDir, so the category segment is
+  // dropped and any depth of `../` collapses to a single one.
+  content = content.replace(
+    /from\s+(['"])(?:\.\.\/)+(?:components|layouts)\/([^'"]+)\1/g,
+    "from '../$2'"
+  );
+
+  // Shared lib-root files (utils.ts, form-control-state.ts) are copied flat into the
+  // target dir, one level up from each component's own subfolder, regardless of how
+  // deeply nested the import was in the original source.
+  for (const sharedFile of SHARED_LIB_FILES) {
+    const baseName = sharedFile.replace(/\.ts$/, '');
+    const importPattern = new RegExp(`from\\s+(['"])(?:\\.\\./)+${baseName}\\1`, 'g');
+    content = content.replace(importPattern, `from '../${baseName}'`);
+  }
+
   return content;
+}
+
+// ---------------------------------------------------------------------------
+// Shared lib-root file dependencies (utils.ts, form-control-state.ts)
+// ---------------------------------------------------------------------------
+
+function detectSharedFileDependencies(componentNames, manifest) {
+  const { componentsRoot } = resolveRegistryPaths();
+  const shared = new Set();
+
+  for (const name of componentNames) {
+    const component = findComponentInManifest(name, manifest);
+    if (!component) continue;
+
+    for (const file of component.files) {
+      const sourcePath = path.join(componentsRoot, file);
+      if (!fs.existsSync(sourcePath)) continue;
+      const content = fs.readFileSync(sourcePath, 'utf-8');
+
+      for (const sharedFile of SHARED_LIB_FILES) {
+        const baseName = sharedFile.replace(/\.ts$/, '');
+        const importPattern = new RegExp(`from\\s+['"](?:\\.\\./)+${baseName}['"]`);
+        if (importPattern.test(content)) {
+          shared.add(sharedFile);
+        }
+      }
+    }
+  }
+
+  return Array.from(shared);
+}
+
+// Shared files are reused across multiple `add` calls (e.g. `add button` then
+// `add badge` both need utils.ts), so they're idempotent: skip silently if already
+// present rather than requiring --force like a normal component file would.
+function copySharedFileIfNeeded(sharedFile, targetDir, options = {}) {
+  const { componentsRoot } = resolveRegistryPaths();
+  const sourcePath = path.join(componentsRoot, sharedFile);
+  const targetPath = path.join(targetDir, sharedFile);
+
+  if (options.dryRun) {
+    return targetPath;
+  }
+
+  if (fs.existsSync(targetPath) && !options.force) {
+    return targetPath;
+  }
+
+  if (!fs.existsSync(sourcePath)) {
+    throw new Error(`Source file not found: ${sourcePath}`);
+  }
+
+  if (!fs.existsSync(targetDir)) {
+    fs.mkdirSync(targetDir, { recursive: true });
+  }
+
+  fs.copyFileSync(sourcePath, targetPath);
+  return targetPath;
 }
 
 // ---------------------------------------------------------------------------
@@ -272,10 +355,15 @@ function copyComponent(componentName, targetDir, manifest, options = {}) {
 
   assertCanWriteFiles(plannedFiles, options);
 
+  const sharedFiles = detectSharedFileDependencies(componentNames, manifest);
+
   if (!options.dryRun) {
     copySingleComponent(componentName, targetDir, manifest, options);
     for (const dep of dependencies) {
       copySingleComponent(dep, targetDir, manifest, options);
+    }
+    for (const sharedFile of sharedFiles) {
+      copySharedFileIfNeeded(sharedFile, targetDir, options);
     }
   }
 
@@ -294,7 +382,11 @@ function copyComponent(componentName, targetDir, manifest, options = {}) {
     className: `Ui${capitalize(componentName.replace(/-/g, ' ')).replace(/\s/g, '')}`,
     targetDir,
     dependencies,
-    files: plannedFiles.map(file => file.targetPath),
+    files: [
+      ...plannedFiles.map(file => file.targetPath),
+      ...sharedFiles.map(sharedFile => path.join(targetDir, sharedFile)),
+    ],
+    sharedFiles,
     dryRun: !!options.dryRun,
     force: !!options.force,
     installCommand: installCmd,
@@ -317,6 +409,65 @@ export {};
   return targetDir;
 }
 
+// ---------------------------------------------------------------------------
+// Tailwind v4 setup detection (guidance only, never blocks `volt init`)
+// ---------------------------------------------------------------------------
+
+const STYLESHEET_CANDIDATES = [
+  'src/styles.css',
+  'src/style.css',
+  'src/index.css',
+  'src/app/styles.css',
+  'styles.css',
+];
+
+function detectTailwindSetup(projectRoot = process.cwd()) {
+  const packageJsonPath = path.join(projectRoot, 'package.json');
+  let hasTailwindDependency = false;
+
+  if (fs.existsSync(packageJsonPath)) {
+    try {
+      const pkg = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
+      const deps = { ...pkg.dependencies, ...pkg.devDependencies };
+      hasTailwindDependency = Boolean(deps['tailwindcss']);
+    } catch {
+      hasTailwindDependency = false;
+    }
+  }
+
+  const stylesheetPath = STYLESHEET_CANDIDATES.map(candidate =>
+    path.join(projectRoot, candidate)
+  ).find(candidatePath => fs.existsSync(candidatePath));
+
+  const hasTailwindImport = Boolean(
+    stylesheetPath && /@import\s+['"]tailwindcss['"]/.test(fs.readFileSync(stylesheetPath, 'utf-8'))
+  );
+
+  return {
+    hasTailwindDependency,
+    hasTailwindImport,
+    stylesheetPath: stylesheetPath || null,
+    configured: hasTailwindDependency && hasTailwindImport,
+  };
+}
+
+function formatTailwindGuidance(tailwind) {
+  const lines = [
+    '⚠️  Tailwind CSS v4 does not look configured in this project.',
+    '   Volt UI components rely on Tailwind utility classes to render correctly.',
+  ];
+
+  if (!tailwind.hasTailwindDependency) {
+    lines.push('   - Install it: pnpm add -D tailwindcss @tailwindcss/vite');
+  }
+  if (!tailwind.hasTailwindImport) {
+    lines.push("   - Add `@import 'tailwindcss';` to your global stylesheet (e.g. src/styles.css)");
+  }
+  lines.push('   Setup guide: https://tailwindcss.com/docs/installation/framework-guides');
+
+  return lines.join('\n');
+}
+
 module.exports = {
   getLocalManifest,
   loadManifest,
@@ -329,4 +480,8 @@ module.exports = {
   detectPackageManager,
   installCommand,
   RUNTIME_DEPENDENCIES,
+  SHARED_LIB_FILES,
+  detectSharedFileDependencies,
+  detectTailwindSetup,
+  formatTailwindGuidance,
 };

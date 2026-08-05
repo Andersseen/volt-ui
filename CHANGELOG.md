@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+
+- **CLI: shared library files never copied for `volt add`**: `utils.ts` and
+  `form-control-state.ts` (imported by 14 of 41 components, including `button`,
+  `checkbox`, `input`, `select`, and `switch`) were never tracked as dependencies,
+  copied, or import-rewritten by `volt add`, so consumers received component files that
+  imported a path that didn't exist in their project. The CLI now detects and copies
+  these shared files and rewrites their import paths.
+- **CLI: `sidebar`'s relative import to `tooltip` never rewritten**: `volt add sidebar`
+  correctly copied its `tooltip` dependency but left the copied file's import pointing
+  at the original `../../components/tooltip` source path instead of the sibling
+  directory the CLI actually creates. Cross-component relative imports are now
+  collapsed to the CLI's flat layout.
+- Added a new CLI-driven consumer fixture (`e2e/consumer-cli/`, `pnpm
+test:e2e:consumer-cli`) that runs `volt init` + `volt add` for every component and
+  builds the result, catching the two issues above; wired into CI alongside the
+  existing npm-import consumer fixture.
+- `volt init` now prints Tailwind CSS v4 setup guidance when it doesn't detect
+  `tailwindcss` configured in the target project.
+
 ## [0.8.3] - 2026-08-03
 
 ### Fixed

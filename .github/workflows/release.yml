@@ -67,7 +67,7 @@ jobs:
         run: pnpm exec playwright install --with-deps chromium
 
       - name: Run docs and consumer end-to-end tests
-        run: pnpm test:e2e:ci && pnpm test:e2e:consumer
+        run: pnpm test:e2e:ci && pnpm test:e2e:consumer && pnpm test:e2e:consumer-cli
 
       - name: Publish new versions & create releases
         run: node scripts/release.mjs
