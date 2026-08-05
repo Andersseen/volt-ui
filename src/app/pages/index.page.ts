@@ -523,7 +523,7 @@ export default class Home {
 
   protected readonly showcaseStats = [
     { value: '41', label: 'components' },
-    { value: '241', label: 'tests passing' },
+    { value: '264', label: 'tests passing' },
     { value: '25', label: 'theme combos' },
   ];
 
@@ -536,7 +536,7 @@ export default class Home {
 
   protected readonly proofPoints = [
     { value: '41', label: 'documented components' },
-    { value: '241', label: 'automated tests' },
+    { value: '264', label: 'automated tests' },
     { value: '0', label: 'NgModules required' },
     { value: '100%', label: 'source ownership' },
   ];

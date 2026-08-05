@@ -115,6 +115,13 @@ export const COMPONENT_GROUPS: ComponentMetadataGroup[] = [
         description: 'Range input',
         stability: 'beta',
       },
+      {
+        name: 'range-slider',
+        label: 'Range Slider',
+        path: '/docs/components/range-slider',
+        description: 'Dual-thumb range selection',
+        stability: 'beta',
+      },
     ],
   },
   {

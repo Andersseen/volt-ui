@@ -7,7 +7,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Range Slider** (`range-slider`): dual-thumb slider for selecting a `[low, high]`
+  value pair, built on `ng-primitives/slider`'s `NgpRangeSlider`. Reactive Forms and
+  template-driven forms support via `ControlValueAccessor`.
+- **Native Select** (`select/native-select.ts`, `VoltNativeSelect`) is now a documented,
+  tested part of the public surface: a lightweight alternative to `volt-select` that
+  applies to a real `<select>` element (`<select voltNativeSelect>`).
+
 ### Fixed
+
+- **`VoltNativeSelect` had no forms support at all**: it wrapped a `<select>` inside its
+  own component template, which prevents Angular's built-in native-select
+  `ControlValueAccessor` from ever attaching — `[formControl]`/`[(ngModel)]` silently did
+  nothing. Rewritten to match `ng-primitives`' own reference pattern: an attribute
+  selector (`select[voltNativeSelect]`) applied directly to the native `<select>`, using
+  a `@Directive` instead of a `@Component` (no template/view needed, consistent with
+  `combobox-input.ts`/`avatar-image.ts`). Forms support now works for free via Angular's
+  built-in accessor. Existed in source and was copied by `volt add select` before this
+  fix, but was never exported, documented, or tested.
+- **`VoltDropdownMenuItem` had no `disabled` input**: `hostDirectives: [NgpMenuItem]` had
+  no `inputs` mapping, so `ngpMenuItemDisabled` was unreachable — a menu item could never
+  be marked disabled. Added the input and guarded the component's own
+  Enter/Space-to-click keyboard handling against it.
+- **`VoltInputOtp`'s `disabled` input never reached the `NgpInputOtp` primitive**: the
+  `hostDirectives` alias forwarded to a dead `isDisabled` binding that nothing ever set
+  (the class's own same-named field is a `computed()`, not bindable). The native
+  `<input>` was still correctly disabled through a separate binding, but the primitive's
+  own disabled state (and therefore the OTP slots' click-to-focus guard) never engaged.
+  Fixed the alias to `disabled`, matching the working pattern already used by
+  `slider`/`radio-group`/`toggle-group`.
+- Homepage test-count stat (`241`) was stale; updated to the current suite size (`264`).
 
 - **CLI: shared library files never copied for `volt add`**: `utils.ts` and
   `form-control-state.ts` (imported by 14 of 41 components, including `button`,

@@ -1,0 +1,45 @@
+<div class="space-y-6">
+  <div>
+    <h1 class="text-3xl font-bold tracking-tight text-foreground">Range Slider</h1>
+    <p class="text-base text-muted-foreground mt-2">
+      An input where the user selects a range of values between two thumbs.
+    </p>
+  </div>
+
+  <div class="w-full h-px bg-border"></div>
+
+  <!-- Usage Example -->
+  <app-code-panel title="Usage" [code]="rangeSliderUsage" [tabbed]="true">
+    <div
+      class="p-8 border border-border rounded-lg bg-card/30 flex items-center justify-center min-h-[300px]"
+    >
+      <div class="w-full max-w-sm space-y-4">
+        <volt-range-slider
+          [low]="low()"
+          [high]="high()"
+          (lowChange)="low.set($event)"
+          (highChange)="high.set($event)"
+          [min]="0"
+          [max]="100"
+          [step]="1"
+          ariaLabelLow="Minimum value"
+          ariaLabelHigh="Maximum value"
+        />
+        <p class="text-sm text-muted-foreground text-center">Range: {{ low() }} - {{ high() }}</p>
+      </div>
+    </div>
+  </app-code-panel>
+
+  <!-- API Reference -->
+  <div class="space-y-3">
+    <h3 class="text-lg font-semibold">API Reference</h3>
+    <app-api-reference [data]="rangeSliderApi" />
+  </div>
+
+  <app-code-panel
+    title="Component Source"
+    [code]="rangeSliderCode"
+    cliCommand="npx @voltui/cli add range-slider"
+    description="Copy this code to your project. The component uses ng-primitives/slider."
+  />
+</div>

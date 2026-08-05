@@ -18,7 +18,7 @@ describe('official landing page', () => {
       })
     ).toBeInTheDocument();
     expect(screen.getAllByText('41').length).toBeGreaterThanOrEqual(1);
-    expect(screen.getAllByText('241').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText('264').length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText('100%')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Start building' })).toBeInTheDocument();
     expect(screen.getAllByText('Browse components').length).toBeGreaterThanOrEqual(1);

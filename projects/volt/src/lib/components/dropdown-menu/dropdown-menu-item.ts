@@ -1,10 +1,17 @@
-import { ChangeDetectionStrategy, Component, ElementRef, inject } from '@angular/core';
+import {
+  booleanAttribute,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  inject,
+  input,
+} from '@angular/core';
 import { NgpMenuItem } from 'ng-primitives/menu';
 
 @Component({
   selector: 'volt-dropdown-menu-item',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [NgpMenuItem],
+  hostDirectives: [{ directive: NgpMenuItem, inputs: ['ngpMenuItemDisabled: disabled'] }],
   host: {
     role: 'menuitem',
     class:
@@ -17,7 +24,10 @@ import { NgpMenuItem } from 'ng-primitives/menu';
 export class VoltDropdownMenuItem {
   private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
 
+  readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
+
   protected activate(): void {
+    if (this.disabled()) return;
     this.elementRef.nativeElement.click();
   }
 }

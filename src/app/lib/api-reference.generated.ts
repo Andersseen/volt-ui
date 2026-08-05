@@ -357,6 +357,14 @@ export const DRAWER_API: ComponentApi = {
 export const DROPDOWN_MENU_API: ComponentApi = {
   directives: [
     {
+      className: 'VoltDropdownMenuItem',
+      selector: 'volt-dropdown-menu-item',
+      inputs: [
+        { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
+      ],
+      outputs: [],
+    },
+    {
       className: 'VoltDropdownMenuSubmenuTrigger',
       selector: 'volt-dropdown-menu-submenu-trigger',
       inputs: [
@@ -496,7 +504,6 @@ export const INPUT_OTP_API: ComponentApi = {
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
         { name: 'ariaLabel', type: 'string', default: "'One-time password'" },
         { name: 'placeholder', type: 'string', default: "'○'" },
-        { name: 'isDisabled', type: 'unknown' },
       ],
       outputs: [
         { name: 'valueChange', type: 'string' },
@@ -806,6 +813,31 @@ export const RADIO_API: ComponentApi = {
   variants: undefined,
 };
 
+export const RANGE_SLIDER_API: ComponentApi = {
+  directives: [
+    {
+      className: 'VoltRangeSlider',
+      selector: 'volt-range-slider',
+      inputs: [
+        { name: 'low', type: 'number', default: '0', transform: 'numberAttribute' },
+        { name: 'high', type: 'number', default: '100', transform: 'numberAttribute' },
+        { name: 'min', type: 'number', default: '0', transform: 'numberAttribute' },
+        { name: 'max', type: 'number', default: '100', transform: 'numberAttribute' },
+        { name: 'step', type: 'number', default: '1', transform: 'numberAttribute' },
+        { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
+        { name: 'orientation', type: 'NgpOrientation', default: "'horizontal'" },
+        { name: 'ariaLabelLow', type: 'string' },
+        { name: 'ariaLabelHigh', type: 'string' },
+      ],
+      outputs: [
+        { name: 'lowChange', type: 'number' },
+        { name: 'highChange', type: 'number' },
+      ],
+    },
+  ],
+  variants: undefined,
+};
+
 export const RESIZABLE_API: ComponentApi = {
   directives: [
     {
@@ -840,10 +872,8 @@ export const SELECT_API: ComponentApi = {
   directives: [
     {
       className: 'VoltNativeSelect',
-      selector: 'volt-native-select',
+      selector: 'select[voltNativeSelect]',
       inputs: [
-        { name: 'id', type: 'string', default: "''" },
-        { name: 'name', type: 'string', default: "''" },
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
       ],
       outputs: [],
