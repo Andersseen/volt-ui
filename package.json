@@ -103,7 +103,7 @@
     "@angular/cli": "^21.2.2",
     "@angular/compiler-cli": "^21.2.2",
     "@eslint/js": "^10.0.1",
-    "@ng-primitives/mcp": "^0.110.2",
+    "@ng-primitives/mcp": "^0.128.6",
     "@playwright/test": "^1.60.0",
     "@tailwindcss/postcss": "^4.3.0",
     "@tailwindcss/vite": "^4.3.0",
