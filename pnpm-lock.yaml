@@ -10,7 +10,7 @@ importers:
     dependencies:
       '@analogjs/platform':
         specifier: ^2.6.1
-        version: 2.6.1(@angular/build@21.2.15(6f78b0d904f016c0d41582c75b96a5a0))(marked-gfm-heading-id@4.1.4(marked@15.0.12))(marked-highlight@2.2.4(marked@15.0.12))(marked-mangle@1.1.13(marked@15.0.12))(marked@15.0.12)(prismjs@1.30.0)(rolldown@1.0.0-rc.4)(vite@7.3.1(@types/node@25.9.3)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.3)(terser@5.46.1)(yaml@2.8.3))
+        version: 2.6.1(@angular/build@21.2.15(6f78b0d904f016c0d41582c75b96a5a0))(@emnapi/core@1.8.1)(@emnapi/runtime@1.8.1)(marked-gfm-heading-id@4.1.4(marked@15.0.12))(marked-highlight@2.2.4(marked@15.0.12))(marked-mangle@1.1.13(marked@15.0.12))(marked@15.0.12)(prismjs@1.30.0)(rolldown@1.0.0-rc.4)(vite@7.3.1(@types/node@25.9.3)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.3)(terser@5.46.1)(yaml@2.8.3))
       '@analogjs/router':
         specifier: ^2.6.1
         version: 2.6.1(@analogjs/content@2.6.1(e80ea6dd8df40211ba45cd5baf611ae4))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/router@21.2.17(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.17(@angular/animations@21.2.2(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2))
@@ -76,8 +76,8 @@ importers:
         version: 4.4.3
     devDependencies:
       '@analogjs/vite-plugin-angular':
-        specifier: ^2.6.1
-        version: 2.6.1(@angular/build@21.2.15(6f78b0d904f016c0d41582c75b96a5a0))(vite@7.3.1(@types/node@25.9.3)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.3)(terser@5.46.1)(yaml@2.8.3))
+        specifier: ^2.6.4
+        version: 2.6.4(@angular/build@21.2.15(6f78b0d904f016c0d41582c75b96a5a0))(@emnapi/core@1.8.1)(@emnapi/runtime@1.8.1)(vite@7.3.1(@types/node@25.9.3)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.3)(terser@5.46.1)(yaml@2.8.3))
       '@angular-eslint/eslint-plugin':
         specifier: ^21.3.1
         version: 21.3.1(@typescript-eslint/utils@8.58.0(eslint@10.2.0(jiti@2.6.1))(typescript@5.9.3))(eslint@10.2.0(jiti@2.6.1))(typescript@5.9.3)
@@ -327,8 +327,8 @@ packages:
       '@angular/core': ^17.0.0 || ^18.0.0 || ^19.0.0 || ^20.0.0 || ^21.0.0 || ^22.0.0
       '@angular/router': ^17.0.0 || ^18.0.0 || ^19.0.0 || ^20.0.0 || ^21.0.0 || ^22.0.0
 
-  '@analogjs/vite-plugin-angular@2.6.1':
-    resolution: {integrity: sha512-YG0ZnjYMAmppaEYjO/EIsg6vX4/I8lzM0Jf4PLnSDwRPkcFzBaHYxgzD1qqHsUOKbnF0PvRwL9m1UmEtr8iDJg==}
+  '@analogjs/vite-plugin-angular@2.6.4':
+    resolution: {integrity: sha512-HK9XEhFMcF8WkSg2xKQIpC4S4nwkCRzodpXX6xo6AI7Wt6B2SpMyQBFtCHNRuQg0vi8XsJSYOPHiGouTqMJb5g==}
     peerDependencies:
       '@angular-devkit/build-angular': ^17.0.0 || ^18.0.0 || ^19.0.0 || ^20.0.0 || ^21.0.0 || ^22.0.0
       '@angular/build': ^18.0.0 || ^19.0.0 || ^20.0.0 || ^21.0.0 || ^22.0.0
@@ -427,6 +427,7 @@ packages:
   '@angular/animations@21.2.2':
     resolution: {integrity: sha512-h+BKgBDI04Euu+SfEuvOOT/oFO31yg/DgFLvOBFTxab9dWoaeR3j4JsjMUTRJ+HmvAeo1jUm1F5vUf2Bn63Q+A==}
     engines: {node: ^20.19.0 || ^22.12.0 || >=24.0.0}
+    deprecated: '@angular/animations is deprecated. Use `animate.enter` and `animate.leave` instead. For more information see: https://v22.angular.dev/guide/animations.'
     peerDependencies:
       '@angular/core': 21.2.2
 
@@ -1690,6 +1691,13 @@ packages:
   '@napi-rs/wasm-runtime@1.1.1':
     resolution: {integrity: sha512-p64ah1M1ld8xjWv3qbvFwHiFVWrq1yFvV4f7w+mzaqiR4IlSgkqhcRdHwsGgomwzBH51sRY4NEowLxnaBjcW/A==}
 
+  '@napi-rs/wasm-runtime@1.2.2':
+    resolution: {integrity: sha512-JfB4kuJQjaoHuCTseIINHtHWeJnvgEcxjwA5t/Y00ZgaOO1Crz3fjT/p8kT28zA/Caz7oiUMn3d6H2yOVCVwuw==}
+    engines: {node: ^20.19.0 || ^22.13.0 || >=23.5.0}
+    peerDependencies:
+      '@emnapi/core': ^1.7.1 || ^2.0.0-alpha.3
+      '@emnapi/runtime': ^1.7.1 || ^2.0.0-alpha.3
+
   '@ng-primitives/mcp@0.110.2':
     resolution: {integrity: sha512-srsG3ZWRQIfuTo3op5RGVZzaPE/g/e61giWK5F6y718n1fSVkPQDtgNMNQ4BCaOyA6M4FaMM4w7s0Fs161CKgw==}
     hasBin: true
@@ -2629,6 +2637,9 @@ packages:
   '@tybys/wasm-util@0.10.1':
     resolution: {integrity: sha512-9tTaPJLSiejZKx+Bmog4uSubteqTvFrVrURwkmHixBo0G4seD0zUxp98E1DzUBJxLQ3NPwXrGKDiVjwx/DpPsg==}
 
+  '@tybys/wasm-util@0.10.3':
+    resolution: {integrity: sha512-F3fo1MYrRJYL3zER0OUOmkutjr1Vp23m7OsSgp7nq4SP6OqX6C/56XFIPAl5bt3zaBRjmW7SGz3u/6LwFpYcOg==}
+
   '@types/aria-query@5.0.4':
     resolution: {integrity: sha512-rfT93uj5s0PRL7EzccGMs3brplhcrghnDoV26NqKhCAS1hVo+WdNsPvE/yb6ilfr5hi2MEk6d5EWJTKdxg8jVw==}
 
@@ -2982,12 +2993,16 @@ packages:
   boolbase@1.0.0:
     resolution: {integrity: sha512-JZOSA7Mo9sNGB8+UjSgzdLtokWAky1zbztM3WRLCbZ70/3cTANmQmOdR7y2g+J0e2WXywy1yS468tY+IruqEww==}
 
-  brace-expansion@2.0.3:
-    resolution: {integrity: sha512-MCV/fYJEbqx68aE58kv2cA/kiky1G8vux3OR6/jbS+jIMe/6fJWa0DTzJU7dqijOWYwHi1t29FlfYI9uytqlpA==}
+  brace-expansion@2.1.4:
+    resolution: {integrity: sha512-hGfVzPxthbf3+2yjg/RBs60cB0FhqBS/zvdV/4wn4/BmN0bNMMHPc4V/BbFieqf1TKAGGAHnY4eSjajCl0f2Xg==}
 
   brace-expansion@5.0.4:
     resolution: {integrity: sha512-h+DEnpVvxmfVefa4jFbCf5HdH5YMDXRsmKflpf1pILZWRFlTbJpxeU55nJl4Smt5HQaGzg1o6RHFPJaOqnmBDg==}
     engines: {node: 18 || 20 || >=22}
+
+  brace-expansion@5.0.9:
+    resolution: {integrity: sha512-ScQ4IuvIEF1TMlP7Zt+vjJ//9zlPb2SDcxWxM3bk8s6t6GGdJ7KO1dCcTidOPJKePW30LE/2cT7wCyPho9/Wxg==}
+    engines: {node: 20 || >=22}
 
   braces@3.0.3:
     resolution: {integrity: sha512-yQbXgO/OSZVD2IsiLlro+7Hf6Q18EJrKSEsdoMzKePKXct3gvD8oLcOQdIzGupr5Fj+EDe8gO/lxc1BzfMpxvA==}
@@ -3968,8 +3983,8 @@ packages:
   js-tokens@9.0.1:
     resolution: {integrity: sha512-mxa9E9ITFOt0ban3j6L5MpjwegGz6lBQmM1IJkWeBZGcMxto50+eWdjC/52xDbS2vy0k7vIMK0Fe2wfL9OQSpQ==}
 
-  js-yaml@3.14.2:
-    resolution: {integrity: sha512-PMSmkqxr106Xa156c2M265Z+FTrPl+oxd/rgOQy2tijQeK5TxQ43psO1ZCwhVOSdnn+RzkzlRz/eY4BgJBYVpg==}
+  js-yaml@3.15.1:
+    resolution: {integrity: sha512-S99WuO3HlhO3XN41EtYUNl9zzXjoJx7QvmipxsJVxtCBT0YHEFy+iOJhjSvrmV12nYhWpZaM8lPHkJm0yUMbag==}
     hasBin: true
 
   js-yaml@4.1.1:
@@ -4284,6 +4299,10 @@ packages:
     resolution: {integrity: sha512-oRjTw/97aTBN0RHbYCdtF1MQfvusSIBQM0IZEgzl6426+8jSC0nF1a/GmnVLpfB9yyr6g6FTqWqiZVbxrtaCIg==}
     engines: {node: 18 || 20 || >=22}
 
+  minimatch@10.2.6:
+    resolution: {integrity: sha512-vpLQEs+VLCr1nU0BXS07maYoFwlDAH0gngQuuttxIwutDFEMHq2blX+8vpgxDdK3J1PwjCJiep77OitTZ4Ll1A==}
+    engines: {node: 18 || 20 || >=22}
+
   minimatch@5.1.9:
     resolution: {integrity: sha512-7o1wEA2RyMP7Iu7GNba9vc0RWWGACJOCZBJX2GJWip0ikV+wcOsgVuY9uE8CPiyQhkGFSlhuSkZPavN7u1c2Fw==}
     engines: {node: '>=10'}
@@ -4501,6 +4520,10 @@ packages:
   obug@2.1.1:
     resolution: {integrity: sha512-uTqF9MuPraAQ+IsnPf366RG4cP9RtUi7MLO1N3KEc+wb0a6yKpeL0lmk2IB1jY5KHPAlTc6T/JRdC/YqxHNwkQ==}
 
+  obug@2.1.4:
+    resolution: {integrity: sha512-4a+OsYv9UktOJKE+l1A4OufDgdRF9PifWj+tJnHURo/P+WOxpG4GzUFL9qCalmWauao6ogiG+QvnCovwPoyAWA==}
+    engines: {node: '>=12.20.0'}
+
   ofetch@1.5.1:
     resolution: {integrity: sha512-2W4oUZlVaqAPAil6FUg/difl6YhqhUR7x2eZY4bQCko22UXg3hptq9KLQdqFClV+Wu85UX7hNtdGTngi/1BxcA==}
 
@@ -4624,6 +4647,10 @@ packages:
 
   picomatch@4.0.4:
     resolution: {integrity: sha512-QP88BAKvMam/3NxH6vj2o21R6MjxZUAd6nlwAS/pnGvN9IVLocLHxGYIzFhg6fUQ+5th6P4dv4eW9jX3DSIj7A==}
+    engines: {node: '>=12'}
+
+  picomatch@4.0.5:
+    resolution: {integrity: sha512-RvwwcruNjI1ncT5xRakeyS9Lf8lcItv34KD+aif+VH9kduAyfYBipGh12274xtenIPZ119/R9BdTBa8gAwSh0A==}
     engines: {node: '>=12'}
 
   pify@4.0.1:
@@ -5155,6 +5182,10 @@ packages:
 
   tinyglobby@0.2.15:
     resolution: {integrity: sha512-j2Zq4NyQYG5XMST4cbs02Ak8iJUdxRM0XI5QyxXuZOzKOINmWurp3smXu3y5wDcJrptwpSjgXHzIQxR0omXljQ==}
+    engines: {node: '>=12.0.0'}
+
+  tinyglobby@0.2.17:
+    resolution: {integrity: sha512-wXR/dYpcqKmfWpEdZjiKJOwCNFndD0DMnrW/cYjVGttEkBfVgcLFHoNrlj47mjOVic9yyNu65alsgF4NQyTa2g==}
     engines: {node: '>=12.0.0'}
 
   tinyrainbow@3.1.0:
@@ -5805,9 +5836,9 @@ snapshots:
       rxjs: 7.8.2
       tslib: 2.8.1
 
-  '@analogjs/platform@2.6.1(@angular/build@21.2.15(6f78b0d904f016c0d41582c75b96a5a0))(marked-gfm-heading-id@4.1.4(marked@15.0.12))(marked-highlight@2.2.4(marked@15.0.12))(marked-mangle@1.1.13(marked@15.0.12))(marked@15.0.12)(prismjs@1.30.0)(rolldown@1.0.0-rc.4)(vite@7.3.1(@types/node@25.9.3)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.3)(terser@5.46.1)(yaml@2.8.3))':
+  '@analogjs/platform@2.6.1(@angular/build@21.2.15(6f78b0d904f016c0d41582c75b96a5a0))(@emnapi/core@1.8.1)(@emnapi/runtime@1.8.1)(marked-gfm-heading-id@4.1.4(marked@15.0.12))(marked-highlight@2.2.4(marked@15.0.12))(marked-mangle@1.1.13(marked@15.0.12))(marked@15.0.12)(prismjs@1.30.0)(rolldown@1.0.0-rc.4)(vite@7.3.1(@types/node@25.9.3)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.3)(terser@5.46.1)(yaml@2.8.3))':
     dependencies:
-      '@analogjs/vite-plugin-angular': 2.6.1(@angular/build@21.2.15(6f78b0d904f016c0d41582c75b96a5a0))(vite@7.3.1(@types/node@25.9.3)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.3)(terser@5.46.1)(yaml@2.8.3))
+      '@analogjs/vite-plugin-angular': 2.6.4(@angular/build@21.2.15(6f78b0d904f016c0d41582c75b96a5a0))(@emnapi/core@1.8.1)(@emnapi/runtime@1.8.1)(vite@7.3.1(@types/node@25.9.3)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.3)(terser@5.46.1)(yaml@2.8.3))
       '@analogjs/vite-plugin-nitro': 2.6.1(rolldown@1.0.0-rc.4)
       marked: 15.0.12
       marked-gfm-heading-id: 4.1.4(marked@15.0.12)
@@ -5830,6 +5861,8 @@ snapshots:
       - '@capacitor/preferences'
       - '@deno/kv'
       - '@electric-sql/pglite'
+      - '@emnapi/core'
+      - '@emnapi/runtime'
       - '@libsql/client'
       - '@netlify/blobs'
       - '@planetscale/database'
@@ -5859,16 +5892,19 @@ snapshots:
       '@angular/router': 21.2.17(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.17(@angular/animations@21.2.2(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       tslib: 2.8.1
 
-  '@analogjs/vite-plugin-angular@2.6.1(@angular/build@21.2.15(6f78b0d904f016c0d41582c75b96a5a0))(vite@7.3.1(@types/node@25.9.3)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.3)(terser@5.46.1)(yaml@2.8.3))':
+  '@analogjs/vite-plugin-angular@2.6.4(@angular/build@21.2.15(6f78b0d904f016c0d41582c75b96a5a0))(@emnapi/core@1.8.1)(@emnapi/runtime@1.8.1)(vite@7.3.1(@types/node@25.9.3)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.3)(terser@5.46.1)(yaml@2.8.3))':
     dependencies:
       magic-string: 0.30.21
-      obug: 2.1.1
-      oxc-parser: 0.121.0
-      tinyglobby: 0.2.15
+      obug: 2.1.4
+      oxc-parser: 0.121.0(@emnapi/core@1.8.1)(@emnapi/runtime@1.8.1)
+      tinyglobby: 0.2.17
       ts-morph: 21.0.1
     optionalDependencies:
       '@angular/build': 21.2.15(6f78b0d904f016c0d41582c75b96a5a0)
       vite: 7.3.1(@types/node@25.9.3)(jiti@2.6.1)(less@4.5.1)(lightningcss@1.32.0)(sass@1.97.3)(terser@5.46.1)(yaml@2.8.3)
+    transitivePeerDependencies:
+      - '@emnapi/core'
+      - '@emnapi/runtime'
 
   '@analogjs/vite-plugin-nitro@2.6.1(rolldown@1.0.0-rc.4)':
     dependencies:
@@ -7077,6 +7113,13 @@ snapshots:
       '@tybys/wasm-util': 0.10.1
     optional: true
 
+  '@napi-rs/wasm-runtime@1.2.2(@emnapi/core@1.8.1)(@emnapi/runtime@1.8.1)':
+    dependencies:
+      '@emnapi/core': 1.8.1
+      '@emnapi/runtime': 1.8.1
+      '@tybys/wasm-util': 0.10.3
+    optional: true
+
   '@ng-primitives/mcp@0.110.2':
     dependencies:
       '@modelcontextprotocol/sdk': 1.29.0(zod@4.4.3)
@@ -7221,9 +7264,12 @@ snapshots:
   '@oxc-parser/binding-openharmony-arm64@0.121.0':
     optional: true
 
-  '@oxc-parser/binding-wasm32-wasi@0.121.0':
+  '@oxc-parser/binding-wasm32-wasi@0.121.0(@emnapi/core@1.8.1)(@emnapi/runtime@1.8.1)':
     dependencies:
-      '@napi-rs/wasm-runtime': 1.1.1
+      '@napi-rs/wasm-runtime': 1.2.2(@emnapi/core@1.8.1)(@emnapi/runtime@1.8.1)
+    transitivePeerDependencies:
+      - '@emnapi/core'
+      - '@emnapi/runtime'
     optional: true
 
   '@oxc-parser/binding-win32-arm64-msvc@0.121.0':
@@ -7272,7 +7318,7 @@ snapshots:
   '@parcel/watcher-wasm@2.5.6':
     dependencies:
       is-glob: 4.0.3
-      picomatch: 4.0.3
+      picomatch: 4.0.5
 
   '@parcel/watcher-win32-arm64@2.5.6':
     optional: true
@@ -7288,7 +7334,7 @@ snapshots:
       detect-libc: 2.1.2
       is-glob: 4.0.3
       node-addon-api: 7.1.1
-      picomatch: 4.0.4
+      picomatch: 4.0.5
     optionalDependencies:
       '@parcel/watcher-android-arm64': 2.5.6
       '@parcel/watcher-darwin-arm64': 2.5.6
@@ -7389,10 +7435,10 @@ snapshots:
       '@rollup/pluginutils': 5.3.0(rollup@4.60.1)
       commondir: 1.0.1
       estree-walker: 2.0.2
-      fdir: 6.5.0(picomatch@4.0.3)
+      fdir: 6.5.0(picomatch@4.0.5)
       is-reference: 1.2.1
       magic-string: 0.30.21
-      picomatch: 4.0.3
+      picomatch: 4.0.5
     optionalDependencies:
       rollup: 4.60.1
 
@@ -7445,7 +7491,7 @@ snapshots:
     dependencies:
       '@types/estree': 1.0.8
       estree-walker: 2.0.2
-      picomatch: 4.0.3
+      picomatch: 4.0.5
     optionalDependencies:
       rollup: 4.59.0
 
@@ -7453,7 +7499,7 @@ snapshots:
     dependencies:
       '@types/estree': 1.0.8
       estree-walker: 2.0.2
-      picomatch: 4.0.3
+      picomatch: 4.0.5
     optionalDependencies:
       rollup: 4.60.1
 
@@ -7782,9 +7828,14 @@ snapshots:
   '@tufjs/models@4.1.0':
     dependencies:
       '@tufjs/canonical-json': 2.0.0
-      minimatch: 10.2.4
+      minimatch: 10.2.6
 
   '@tybys/wasm-util@0.10.1':
+    dependencies:
+      tslib: 2.8.1
+    optional: true
+
+  '@tybys/wasm-util@0.10.3':
     dependencies:
       tslib: 2.8.1
     optional: true
@@ -7883,7 +7934,7 @@ snapshots:
       debug: 4.4.3
       minimatch: 10.2.4
       semver: 7.7.4
-      tinyglobby: 0.2.15
+      tinyglobby: 0.2.17
       ts-api-utils: 2.5.0(typescript@5.9.3)
       typescript: 5.9.3
     transitivePeerDependencies:
@@ -7917,7 +7968,7 @@ snapshots:
       glob: 13.0.6
       graceful-fs: 4.2.11
       node-gyp-build: 4.8.4
-      picomatch: 4.0.3
+      picomatch: 4.0.5
       resolve-from: 5.0.0
     transitivePeerDependencies:
       - encoding
@@ -8217,11 +8268,15 @@ snapshots:
 
   boolbase@1.0.0: {}
 
-  brace-expansion@2.0.3:
+  brace-expansion@2.1.4:
     dependencies:
       balanced-match: 1.0.2
 
   brace-expansion@5.0.4:
+    dependencies:
+      balanced-match: 4.0.4
+
+  brace-expansion@5.0.9:
     dependencies:
       balanced-match: 4.0.4
 
@@ -8827,6 +8882,10 @@ snapshots:
     optionalDependencies:
       picomatch: 4.0.4
 
+  fdir@6.5.0(picomatch@4.0.5):
+    optionalDependencies:
+      picomatch: 4.0.5
+
   file-entry-cache@8.0.0:
     dependencies:
       flat-cache: 4.0.1
@@ -8878,7 +8937,7 @@ snapshots:
 
   front-matter@4.0.2:
     dependencies:
-      js-yaml: 3.14.2
+      js-yaml: 3.15.1
 
   fs-minipass@3.0.3:
     dependencies:
@@ -8943,7 +9002,7 @@ snapshots:
 
   glob@13.0.6:
     dependencies:
-      minimatch: 10.2.4
+      minimatch: 10.2.6
       minipass: 7.1.3
       path-scurry: 2.0.2
 
@@ -9050,7 +9109,7 @@ snapshots:
 
   ignore-walk@8.0.0:
     dependencies:
-      minimatch: 10.2.4
+      minimatch: 10.2.6
 
   ignore@5.3.2: {}
 
@@ -9188,7 +9247,7 @@ snapshots:
 
   js-tokens@9.0.1: {}
 
-  js-yaml@3.14.2:
+  js-yaml@3.15.1:
     dependencies:
       argparse: 1.0.10
       esprima: 4.0.1
@@ -9527,13 +9586,17 @@ snapshots:
     dependencies:
       brace-expansion: 5.0.4
 
+  minimatch@10.2.6:
+    dependencies:
+      brace-expansion: 5.0.9
+
   minimatch@5.1.9:
     dependencies:
-      brace-expansion: 2.0.3
+      brace-expansion: 2.1.4
 
   minimatch@9.0.9:
     dependencies:
-      brace-expansion: 2.0.3
+      brace-expansion: 2.1.4
 
   minipass-collect@2.0.1:
     dependencies:
@@ -9789,7 +9852,7 @@ snapshots:
       proc-log: 6.1.0
       semver: 7.7.4
       tar: 7.5.11
-      tinyglobby: 0.2.15
+      tinyglobby: 0.2.17
       which: 6.0.1
     transitivePeerDependencies:
       - supports-color
@@ -9860,6 +9923,8 @@ snapshots:
 
   obug@2.1.1: {}
 
+  obug@2.1.4: {}
+
   ofetch@1.5.1:
     dependencies:
       destr: 2.0.5
@@ -9912,7 +9977,7 @@ snapshots:
   ordered-binary@1.6.1:
     optional: true
 
-  oxc-parser@0.121.0:
+  oxc-parser@0.121.0(@emnapi/core@1.8.1)(@emnapi/runtime@1.8.1):
     dependencies:
       '@oxc-project/types': 0.121.0
     optionalDependencies:
@@ -9932,10 +9997,13 @@ snapshots:
       '@oxc-parser/binding-linux-x64-gnu': 0.121.0
       '@oxc-parser/binding-linux-x64-musl': 0.121.0
       '@oxc-parser/binding-openharmony-arm64': 0.121.0
-      '@oxc-parser/binding-wasm32-wasi': 0.121.0
+      '@oxc-parser/binding-wasm32-wasi': 0.121.0(@emnapi/core@1.8.1)(@emnapi/runtime@1.8.1)
       '@oxc-parser/binding-win32-arm64-msvc': 0.121.0
       '@oxc-parser/binding-win32-ia32-msvc': 0.121.0
       '@oxc-parser/binding-win32-x64-msvc': 0.121.0
+    transitivePeerDependencies:
+      - '@emnapi/core'
+      - '@emnapi/runtime'
 
   p-limit@3.1.0:
     dependencies:
@@ -10024,6 +10092,8 @@ snapshots:
   picomatch@4.0.3: {}
 
   picomatch@4.0.4: {}
+
+  picomatch@4.0.5: {}
 
   pify@4.0.1:
     optional: true
@@ -10229,7 +10299,7 @@ snapshots:
   rollup-plugin-visualizer@7.0.1(rolldown@1.0.0-rc.4)(rollup@4.60.1):
     dependencies:
       open: 11.0.0
-      picomatch: 4.0.3
+      picomatch: 4.0.5
       source-map: 0.7.6
       yargs: 18.0.0
     optionalDependencies:
@@ -10662,6 +10732,11 @@ snapshots:
       fdir: 6.5.0(picomatch@4.0.3)
       picomatch: 4.0.3
 
+  tinyglobby@0.2.17:
+    dependencies:
+      fdir: 6.5.0(picomatch@4.0.5)
+      picomatch: 4.0.5
+
   tinyrainbow@3.1.0: {}
 
   tldts-core@7.0.25: {}
@@ -10768,11 +10843,11 @@ snapshots:
       magic-string: 0.30.21
       mlly: 1.8.2
       pathe: 2.0.3
-      picomatch: 4.0.3
+      picomatch: 4.0.5
       pkg-types: 2.3.0
       scule: 1.3.0
       strip-literal: 3.1.0
-      tinyglobby: 0.2.15
+      tinyglobby: 0.2.17
       unplugin: 3.0.0
       unplugin-utils: 0.3.1
 
@@ -10789,19 +10864,19 @@ snapshots:
   unplugin-utils@0.3.1:
     dependencies:
       pathe: 2.0.3
-      picomatch: 4.0.3
+      picomatch: 4.0.5
 
   unplugin@2.3.11:
     dependencies:
       '@jridgewell/remapping': 2.3.5
       acorn: 8.16.0
-      picomatch: 4.0.3
+      picomatch: 4.0.5
       webpack-virtual-modules: 0.6.2
 
   unplugin@3.0.0:
     dependencies:
       '@jridgewell/remapping': 2.3.5
-      picomatch: 4.0.3
+      picomatch: 4.0.5
       webpack-virtual-modules: 0.6.2
 
   unstorage@1.17.5(db0@0.3.4)(ioredis@5.10.1):
@@ -10884,7 +10959,7 @@ snapshots:
       picomatch: 4.0.4
       postcss: 8.5.15
       rollup: 4.60.1
-      tinyglobby: 0.2.15
+      tinyglobby: 0.2.17
     optionalDependencies:
       '@types/node': 25.9.3
       fsevents: 2.3.3

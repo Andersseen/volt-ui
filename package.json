@@ -94,7 +94,7 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@analogjs/vite-plugin-angular": "^2.6.1",
+    "@analogjs/vite-plugin-angular": "^2.6.4",
     "@angular-eslint/eslint-plugin": "^21.3.1",
     "@angular-eslint/eslint-plugin-template": "^21.3.1",
     "@angular-eslint/template-parser": "^21.3.1",
