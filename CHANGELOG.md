@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.8.4] - 2026-08-05
 
 ### Added
 
@@ -39,7 +39,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   Fixed the alias to `disabled`, matching the working pattern already used by
   `slider`/`radio-group`/`toggle-group`.
 - Homepage test-count stat (`241`) was stale; updated to the current suite size (`264`).
-
 - **CLI: shared library files never copied for `volt add`**: `utils.ts` and
   `form-control-state.ts` (imported by 14 of 41 components, including `button`,
   `checkbox`, `input`, `select`, and `switch`) were never tracked as dependencies,
@@ -51,12 +50,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   at the original `../../components/tooltip` source path instead of the sibling
   directory the CLI actually creates. Cross-component relative imports are now
   collapsed to the CLI's flat layout.
-- Added a new CLI-driven consumer fixture (`e2e/consumer-cli/`, `pnpm
-test:e2e:consumer-cli`) that runs `volt init` + `volt add` for every component and
-  builds the result, catching the two issues above; wired into CI alongside the
+- Added a new CLI-driven consumer fixture (`e2e/consumer-cli/`,
+  `pnpm test:e2e:consumer-cli`) that runs `volt init` + `volt add` for every component
+  and builds the result, catching the two issues above; wired into CI alongside the
   existing npm-import consumer fixture.
 - `volt init` now prints Tailwind CSS v4 setup guidance when it doesn't detect
   `tailwindcss` configured in the target project.
+
+### Changed
+
+- Bumped the root package, `@voltui/components`, and `@voltui/cli` to `0.8.4`.
 
 ## [0.8.3] - 2026-08-03
 
