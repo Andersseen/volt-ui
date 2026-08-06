@@ -65,6 +65,41 @@ complete list of breaking changes between 0.9.0 and 1.0.0.
   scene entirely from 900px to 1279px (there isn't reliably enough width between 900
   and 1280px for both the full-size headline and the collage). Verified clean at 1024,
   1279, 1280, 1366, and 1920px in both themes.
+- **The homepage hero's two lower decorative panels overlapped each other**, leaving the
+  "Workspace" card covering all but a ~30px strip of the "terminal" card at every desktop
+  width. Both were anchored independently to the bottom-right corner with hand-tuned
+  offsets and no layout relationship, so nothing kept them apart. Replaced the absolute
+  anchoring with a single flow-laid flex column (`.scene-stack`), which makes overlap
+  structurally impossible at any size, and dropped the decorative terminal panel — the
+  hero already shows a real, working `npx @voltui/cli add …` command bar two columns
+  over, so the fake one was duplicating the page's own message.
+- **The demo preview frame pinned width-constrained demos to the left edge** instead of
+  centering them, on every component page whose demo sets its own `max-w-*` (`search`,
+  `autofill`, `combobox`, `select`, and others). The frame's `justify-center` had no
+  effect because the content wrapper inside it was `w-full`. This is the misalignment
+  reported during 1.0 QA and previously recorded as "could not reproduce"; it was fully
+  deterministic, not a stale-HMR artifact. Now covered by an e2e assertion that the
+  gutters either side of a `max-w-md` demo stay equal.
+- Demo previews taller than 400px (`button`, `input`, `tabs`, `card`, `table`,
+  `date-picker`, `navigation-menu`) were centered inside a fixed-height scroll box, which
+  put the top of the demo above the scroll origin where it could not be reached. The
+  frame now grows with its content instead of scrolling internally.
+- **The landing hero overflowed the viewport on phones** and was silently clipped by
+  `overflow-hidden` on `<main>`: the hero column is a flex item, so it refused to shrink
+  below the install command's intrinsic width and the `truncate` on that command never
+  engaged. The existing mobile e2e test could not catch this because it only asserted the
+  document has no horizontal scroll — which the clipping guaranteed. Added `min-w-0`, and
+  extended the test to assert the command bar's far edge stays inside the viewport.
+- Same `min-width: auto` clipping fixed on the Create Theme page (the generated-CSS block
+  pushed the whole column past a phone screen) and in the `table` demo (its scroll
+  container was stretched instead of scrolling).
+- The `navigation-menu` demo's menu bar was clipped rather than scrollable at phone
+  widths; its dropdown content renders in a body-level portal, so the demo frame can
+  scroll horizontally without cutting the open panel.
+- The `chat` layout demo's conversation list squeezed the message pane off the edge of a
+  phone screen, and the `kanban` demo's avatar stack pushed its "New Task" button past the
+  frame. Both now collapse below `sm`, matching how the sidebar layout already goes
+  off-canvas at that width.
 
 ### Added
 
@@ -78,6 +113,23 @@ complete list of breaking changes between 0.9.0 and 1.0.0.
 
 ### Changed
 
+- **20 components moved from `beta` to `stable`**: `accordion`, `autofill`, `combobox`,
+  `dialog`, `drawer`, `dropdown-menu`, `listbox`, `native-select`, `pagination`,
+  `popover`, `range-slider`, `search`, `select`, `sidebar`, `table`, `tabs`, `theme`,
+  `toast`, `toolbar`, `tooltip`. No behavior changed — these had been carrying a `beta`
+  label whose stated reason ("needs more forms, keyboard or focus coverage") was already
+  satisfied: the form controls have full Reactive Forms value/disabled/touched specs, and
+  the overlays have Escape, outside-click, focus-return and positioning covered by the
+  Playwright consumer suite. Two rows in `COMPONENT_STATUS.md` that claimed gaps
+  contradicted by their own specs were corrected (`toolbar` has an arrow-key focus test;
+  `select` delegates keyboard handling to ng-primitives rather than partially
+  implementing it), and `range-slider` — listed in the release groups but missing from
+  the table entirely — now has a row.
+  The five components still `beta` each have a specific outstanding gap, now documented
+  in `COMPONENT_STATUS.md`: `date-picker` (calendar grid untested), `file-upload`
+  (drag/drop never exercised in a browser), `input-otp` (per-slot focus movement not
+  asserted), `navigation-menu` (nested submenus untested), `resizable` (keyboard arrow
+  resizing untested).
 - `SDD.md` §12 "Roadmap to v1" replaced with a permanent Stability Policy section; the
   roadmap's history now lives in this changelog's `[0.5.0]`–`[1.0.0]` entries instead of
   being duplicated.

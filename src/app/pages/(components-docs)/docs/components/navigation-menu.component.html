@@ -8,9 +8,10 @@
 
   <app-code-panel title="Usage" [code]="navigationMenuUsage" [tabbed]="true">
     <div
-      class="border rounded-xl border-border/50 p-6 md:p-10 flex items-center justify-center bg-background/50 relative overflow-hidden min-h-[400px]"
+      class="border rounded-xl border-border/50 p-6 md:p-10 flex items-center justify-center bg-background/50 relative min-h-[400px]"
     >
-      <div class="relative z-10 w-full max-w-4xl">
+      <!-- The menu bar is wider than a phone; scroll it rather than clip it. -->
+      <div class="relative z-10 w-full min-w-0 max-w-4xl overflow-x-auto">
         <volt-navigation-menu>
           <volt-navigation-menu-list>
             <!-- Getting Started Dropdown -->

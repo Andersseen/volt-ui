@@ -358,8 +358,11 @@ import {
               where applicable.
             </p>
             <div class="font-mono text-xs text-muted-foreground">
-              avatar, badge, breadcrumbs, button, card, checkbox, form-field, input, meter,
-              progress, radio, separator, skeleton, slider, switch, textarea, toggle, toggle-group
+              accordion, autofill, avatar, badge, breadcrumbs, button, card, checkbox, combobox,
+              dialog, drawer, dropdown-menu, form-field, input, listbox, meter, native-select,
+              pagination, popover, progress, radio, range-slider, search, select, separator,
+              sidebar, skeleton, slider, switch, table, tabs, textarea, theme, toast, toggle,
+              toggle-group, toolbar, tooltip
             </div>
           </div>
 
@@ -370,10 +373,7 @@ import {
               before moving to stable.
             </p>
             <div class="font-mono text-xs text-muted-foreground">
-              accordion, autofill, combobox, date-picker, dialog, drawer, dropdown-menu,
-              file-upload, input-otp, listbox, native-select, navigation-menu, pagination, popover,
-              range-slider, resizable, search, select, sidebar, table, tabs, theme, toast, toolbar,
-              tooltip
+              date-picker, file-upload, input-otp, navigation-menu, resizable
             </div>
           </div>
         </div>

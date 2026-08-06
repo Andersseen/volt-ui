@@ -72,13 +72,17 @@ import { CopyButton } from './copy-button';
           </volt-tabs-list>
 
           <volt-tabs-content value="preview">
+            <!-- Grid + min-height rather than a fixed height: short demos stay
+                 vertically centered, tall ones grow the box instead of hiding
+                 their overflow behind an inner scrollbar. -->
             <div
-              class="relative flex h-[400px] items-center justify-center overflow-auto rounded-lg border border-border bg-background/50 p-6"
+              class="grid min-h-[400px] w-full items-center overflow-x-auto rounded-lg border border-border bg-background/50 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] p-6"
             >
-              <div
-                class="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"
-              ></div>
-              <div class="relative z-10 w-full">
+              <!-- [&>*]:mx-auto centers demos that constrain their own width
+                   (max-w-md and friends) without shrinking full-width demos.
+                   min-w-0 stops a wide demo from stretching the whole frame on
+                   mobile — the demo's own scroll container handles it instead. -->
+              <div class="w-full min-w-0 [&>*]:mx-auto">
                 <ng-content />
               </div>
             </div>

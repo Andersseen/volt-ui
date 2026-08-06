@@ -351,7 +351,9 @@ function indent(lines: string[]): string {
       <section
         class="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[minmax(0,1fr)_430px] lg:py-14"
       >
-        <div class="space-y-6">
+        <!-- min-w-0: the generated-CSS <pre> is wider than a phone, and without this
+             the grid item refuses to shrink below it and overflows the page. -->
+        <div class="min-w-0 space-y-6">
           <div class="flex items-end justify-between gap-4">
             <div>
               <p class="text-xs font-medium uppercase tracking-[0.18em] text-primary">Editor</p>
@@ -545,7 +547,7 @@ function indent(lines: string[]): string {
           </volt-card>
         </div>
 
-        <aside class="lg:sticky lg:top-20 lg:self-start">
+        <aside class="min-w-0 lg:sticky lg:top-20 lg:self-start">
           <div class="space-y-4">
             <div class="flex items-center justify-between gap-3">
               <div>

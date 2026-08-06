@@ -29,5 +29,31 @@ test.describe('Official landing page', () => {
       () => document.documentElement.scrollWidth > document.documentElement.clientWidth
     );
     expect(hasHorizontalOverflow).toBe(false);
+
+    // The scrollWidth check above cannot see content that overflows and is then
+    // silently clipped by `overflow-hidden` on <main> — which is exactly how the
+    // hero column used to run past the right edge on a phone. Assert the far edge
+    // of the install command bar stays inside the viewport instead.
+    const copyCommand = page.getByRole('button', { name: 'Copy install command' });
+    const box = await copyCommand.boundingBox();
+    expect(box).not.toBeNull();
+    expect(box!.x + box!.width).toBeLessThanOrEqual(390);
+  });
+
+  test('centers a width-constrained component demo in its preview frame', async ({ page }) => {
+    await page.goto('/docs/components/search');
+
+    const frame = page.locator('.min-h-\\[400px\\]').first();
+    const demo = frame.locator('volt-search');
+    const frameBox = await frame.boundingBox();
+    const demoBox = await demo.boundingBox();
+    expect(frameBox).not.toBeNull();
+    expect(demoBox).not.toBeNull();
+
+    // Equal gutters either side: the demo constrains its own width (max-w-md), so
+    // it must be centered by the preview container rather than pinned left.
+    const leftGap = demoBox!.x - frameBox!.x;
+    const rightGap = frameBox!.x + frameBox!.width - (demoBox!.x + demoBox!.width);
+    expect(Math.abs(leftGap - rightGap)).toBeLessThanOrEqual(2);
   });
 });

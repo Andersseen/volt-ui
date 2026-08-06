@@ -134,7 +134,7 @@ export class KanbanColumn {
           <volt-badge variant="outline">Sprint 42</volt-badge>
         </div>
         <div class="flex items-center gap-2">
-          <div class="flex -space-x-2 mr-2">
+          <div class="hidden sm:flex -space-x-2 mr-2">
             <volt-avatar class="h-7 w-7 border-2 border-background">
               <img voltAvatarImage src="https://i.pravatar.cc/150?u=1" alt="JD" />
               <volt-avatar-fallback>JD</volt-avatar-fallback>
