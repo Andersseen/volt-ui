@@ -42,6 +42,18 @@ complete list of breaking changes between 0.9.0 and 1.0.0.
   `navigation-menu`, `resizable`, `sidebar`, `theme` — as "experimental," but
   `COMPONENT_STATUS.md` has had zero experimental components since well before this
   release; all nine are `beta`. Fixed the stale grouping on both pages.
+- **The live sidebar and components grid showed 7 components as `beta` that
+  `COMPONENT_STATUS.md` has listed as `stable` for a while**: `form-field`, `checkbox`,
+  `switch`, `radio`, `slider`, `toggle`, `toggle-group`. The site's
+  `component-metadata.ts` (a separate hand-maintained file) had drifted out of sync with
+  the actual source of truth — verified each of the seven has full
+  `ControlValueAccessor` + 145-236 lines of real spec coverage before relabeling. This
+  was the majority of what made the catalog look mostly-beta; it wasn't that these
+  components needed more hardening, the site just wasn't reflecting reality.
+- Four demo pages (Tabs' Account/Password example, and the Login, Sign Up, and Settings
+  layout demos) had `type="password"` inputs outside a `<form>`, which Chrome flags with
+  a DOM advisory since password managers rely on form boundaries. Wrapped each in a
+  `<form>` with submission prevented.
 
 ### Added
 
