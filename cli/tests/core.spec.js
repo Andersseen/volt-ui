@@ -55,6 +55,22 @@ describe('CLI Core', () => {
       expect(output).toContain("from '../thing'");
     });
 
+    it('should collapse a components/layouts-relative cross-component import to a flat sibling', () => {
+      const input = `import { VoltTooltip } from '../../components/tooltip';`;
+      const output = core.transformContent(input);
+      expect(output).toContain("from '../tooltip'");
+    });
+
+    it('should rewrite shared lib-root imports (utils, form-control-state) to a flat sibling', () => {
+      const input = `
+        import { cn } from '../../utils';
+        import { injectFormControlState } from '../../form-control-state';
+      `;
+      const output = core.transformContent(input);
+      expect(output).toContain("from '../utils'");
+      expect(output).toContain("from '../form-control-state'");
+    });
+
     it('should not replace non-selector volt strings', () => {
       const input = `const voltage = 12;`;
       const output = core.transformContent(input);
@@ -159,6 +175,45 @@ describe('CLI Core', () => {
       expect(existsSync(testDir)).toBe(true);
     });
 
+    it('should flag a project without tailwindcss as unconfigured and explain both gaps', () => {
+      const tailwind = core.detectTailwindSetup(testDir);
+      expect(tailwind.configured).toBe(false);
+      expect(tailwind.hasTailwindDependency).toBe(false);
+      expect(tailwind.hasTailwindImport).toBe(false);
+
+      const guidance = core.formatTailwindGuidance(tailwind);
+      expect(guidance).toContain('pnpm add -D tailwindcss');
+      expect(guidance).toContain("@import 'tailwindcss';");
+    });
+
+    it('should detect tailwindcss when the dependency and stylesheet import are both present', () => {
+      mkdirSync(join(testDir, 'src'), { recursive: true });
+      writeFileSync(
+        join(testDir, 'package.json'),
+        JSON.stringify({ devDependencies: { tailwindcss: '^4.0.0' } })
+      );
+      writeFileSync(join(testDir, 'src', 'styles.css'), `@import 'tailwindcss';\n`);
+
+      const tailwind = core.detectTailwindSetup(testDir);
+      expect(tailwind.configured).toBe(true);
+      expect(tailwind.hasTailwindDependency).toBe(true);
+      expect(tailwind.hasTailwindImport).toBe(true);
+    });
+
+    it('should flag a project with the dependency installed but no stylesheet import', () => {
+      mkdirSync(testDir, { recursive: true });
+      writeFileSync(join(testDir, 'package.json'), JSON.stringify({ dependencies: { tailwindcss: '^4.0.0' } }));
+
+      const tailwind = core.detectTailwindSetup(testDir);
+      expect(tailwind.hasTailwindDependency).toBe(true);
+      expect(tailwind.hasTailwindImport).toBe(false);
+      expect(tailwind.configured).toBe(false);
+
+      const guidance = core.formatTailwindGuidance(tailwind);
+      expect(guidance).not.toContain('pnpm add -D tailwindcss');
+      expect(guidance).toContain("@import 'tailwindcss';");
+    });
+
     it('should create an index.ts with the expected content', () => {
       core.initProject(testDir);
       const indexPath = join(testDir, 'index.ts');
@@ -225,6 +280,14 @@ describe('CLI Core', () => {
       expect(existsSync(tooltipDir)).toBe(true);
     });
 
+    it('should rewrite a cross-component relative import to the flat sibling layout', async () => {
+      await core.copyComponent('sidebar', testDir, manifest);
+
+      const content = readFileSync(join(testDir, 'sidebar', 'sidebar.ts'), 'utf-8');
+      expect(content).toContain("from '../tooltip'");
+      expect(content).not.toContain('components/tooltip');
+    });
+
     it('should not overwrite existing files without force', async () => {
       mkdirSync(join(testDir, 'button'), { recursive: true });
       writeFileSync(join(testDir, 'button', 'button.ts'), 'user-owned code');
@@ -264,6 +327,45 @@ describe('CLI Core', () => {
         expect(err.message).toContain('Component "nonexistent" not found');
       }
     });
+
+    it('should copy utils.ts flat and rewrite its import for components that need it', async () => {
+      const result = await core.copyComponent('button', testDir, manifest);
+      expect(result.sharedFiles).toContain('utils.ts');
+
+      const utilsPath = join(testDir, 'utils.ts');
+      expect(existsSync(utilsPath)).toBe(true);
+
+      const content = readFileSync(join(testDir, 'button', 'button.ts'), 'utf-8');
+      expect(content).toContain("from '../utils'");
+      expect(content).not.toContain("from '../../utils'");
+    });
+
+    it('should copy form-control-state.ts flat and rewrite its import for form components', async () => {
+      const result = await core.copyComponent('checkbox', testDir, manifest);
+      expect(result.sharedFiles).toContain('form-control-state.ts');
+
+      expect(existsSync(join(testDir, 'form-control-state.ts'))).toBe(true);
+
+      const content = readFileSync(join(testDir, 'checkbox', 'checkbox.ts'), 'utf-8');
+      expect(content).toContain("from '../form-control-state'");
+    });
+
+    it('should not fail re-adding a shared file when a prior add already copied it', async () => {
+      await core.copyComponent('button', testDir, manifest);
+      const utilsContent = readFileSync(join(testDir, 'utils.ts'), 'utf-8');
+
+      // badge also needs utils.ts; must not throw "Refusing to overwrite" for a
+      // file the user never owns directly.
+      expect(() => core.copyComponent('badge', testDir, manifest)).not.toThrow();
+      expect(readFileSync(join(testDir, 'utils.ts'), 'utf-8')).toBe(utilsContent);
+    });
+
+    it('should not copy shared files for components that do not need them', async () => {
+      const result = await core.copyComponent('card', testDir, manifest);
+      expect(result.sharedFiles).toEqual([]);
+      expect(existsSync(join(testDir, 'utils.ts'))).toBe(false);
+      expect(existsSync(join(testDir, 'form-control-state.ts'))).toBe(false);
+    });
   });
 
   describe('CLI integration', () => {
@@ -285,6 +387,15 @@ describe('CLI Core', () => {
       execSync(`node ${cliPath} init ${testDir}`, { cwd: repoRoot, stdio: 'pipe' });
       expect(existsSync(join(testDir, 'index.ts'))).toBe(true);
 
+      const output = execSync(`node ${cliPath} init ${testDir}`, {
+        cwd: repoRoot,
+        stdio: 'pipe',
+        encoding: 'utf-8',
+      });
+      // volt-ui's own repo (the CLI's cwd here) has Tailwind configured, so init
+      // shouldn't print setup guidance for it.
+      expect(output).not.toContain('Tailwind CSS v4 does not look configured');
+
       execSync(`node ${cliPath} add button ${testDir}`, { cwd: repoRoot, stdio: 'pipe' });
       expect(existsSync(join(testDir, 'button', 'button.ts'))).toBe(true);
 
@@ -294,6 +405,20 @@ describe('CLI Core', () => {
       const buttonContent = readFileSync(join(testDir, 'button', 'button.ts'), 'utf-8');
       expect(buttonContent).toContain("selector: 'ui-button'");
       expect(buttonContent).toContain('class UiButton');
+    });
+
+    it('should print Tailwind setup guidance when init runs in a project without it', () => {
+      mkdirSync(testDir, { recursive: true });
+
+      const output = execSync(`node ${cliPath} init ./ui`, {
+        cwd: testDir,
+        stdio: 'pipe',
+        encoding: 'utf-8',
+      });
+
+      expect(output).toContain('Tailwind CSS v4 does not look configured');
+      expect(output).toContain('pnpm add -D tailwindcss');
+      expect(existsSync(join(testDir, 'ui', 'index.ts'))).toBe(true);
     });
 
     it('should add multiple components in a single command', () => {

@@ -1,5 +1,7 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import {
+  VoltNativeSelect,
   VoltSelect,
   VoltSelectContent,
   VoltSelectItem,
@@ -9,7 +11,7 @@ import {
 import { CodePanel } from '../../../../components/code-panel';
 import { ApiReference } from '../../../../components/api-reference';
 import { SELECT_SNIPPET } from '../../../../lib/snippets';
-import { SELECT_USAGE } from '../../../../lib/snippets/usage';
+import { SELECT_USAGE, NATIVE_SELECT_USAGE } from '../../../../lib/snippets/usage';
 import { SELECT_API } from '../../../../lib/api-reference.generated';
 
 @Component({
@@ -21,6 +23,8 @@ import { SELECT_API } from '../../../../lib/api-reference.generated';
     VoltSelectItem,
     VoltSelectLabel,
     VoltSelectSeparator,
+    VoltNativeSelect,
+    ReactiveFormsModule,
     CodePanel,
     ApiReference,
   ],
@@ -32,4 +36,6 @@ export default class SelectDemo {
   selectedFruit = '';
   readonly selectCode = SELECT_SNIPPET;
   readonly selectUsage = SELECT_USAGE;
+  readonly nativeSelectUsage = NATIVE_SELECT_USAGE;
+  readonly nativeFruit = new FormControl('apple', { nonNullable: true });
 }

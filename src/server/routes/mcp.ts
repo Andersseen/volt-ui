@@ -401,6 +401,21 @@ const components: Record<string, ComponentMeta> = {
     ],
     examples: ['<ui-slider [min]="0" [max]="100" [(value)]="volume" />'],
   },
+  'range-slider': {
+    name: 'Range Slider',
+    description: 'Dual-thumb range slider for selecting a [low, high] value pair',
+    dependencies: ['ng-primitives/slider'],
+    subComponents: ['range-slider-track', 'range-slider-range', 'range-slider-thumb'],
+    inputs: [
+      { name: 'low', type: 'number', default: 0 },
+      { name: 'high', type: 'number', default: 100 },
+      { name: 'min', type: 'number', default: 0 },
+      { name: 'max', type: 'number', default: 100 },
+      { name: 'step', type: 'number', default: 1 },
+      { name: 'disabled', type: 'boolean', default: false },
+    ],
+    examples: ['<ui-range-slider [min]="0" [max]="500" [(low)]="min" [(high)]="max" />'],
+  },
   progress: {
     name: 'Progress',
     description: 'Progress bar with track and indicator',
@@ -833,6 +848,7 @@ const cvaComponents = new Set([
   'textarea',
   'toggle',
   'slider',
+  'range-slider',
   'toggle-group',
 ]);
 

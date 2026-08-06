@@ -37,6 +37,31 @@
     </div>
   </app-code-panel>
 
+  <!-- Native Select Example -->
+  <app-code-panel title="Native Select" [code]="nativeSelectUsage" [tabbed]="true">
+    <div class="space-y-4">
+      <div
+        class="p-12 flex justify-center items-center rounded-xl border bg-card/30 backdrop-blur-sm shadow-sm ring-1 ring-border/50"
+      >
+        <div class="w-full max-w-xs">
+          <select voltNativeSelect [formControl]="nativeFruit" aria-label="Fruit">
+            <option value="apple">Apple</option>
+            <option value="banana">Banana</option>
+            <option value="blueberry">Blueberry</option>
+          </select>
+        </div>
+      </div>
+      <p class="text-sm text-muted-foreground text-center">
+        Selected value: <span class="font-medium text-foreground">{{ nativeFruit.value }}</span>
+      </p>
+    </div>
+  </app-code-panel>
+  <p class="text-sm text-muted-foreground -mt-6">
+    A lighter alternative to <code>volt-select</code> for simple cases: it's the real native
+    <code>&lt;select&gt;</code> element (full mobile/native picker behavior, works with
+    <code>formControl</code>/<code>ngModel</code> for free), styled to match the theme.
+  </p>
+
   <!-- API Reference -->
   <div class="space-y-3">
     <h3 class="text-lg font-semibold">API Reference</h3>

@@ -37,6 +37,28 @@ import { VoltDropdownMenuTrigger } from './dropdown-menu-trigger';
 })
 class DropdownMenuTestWrapper {}
 
+@Component({
+  selector: 'app-dropdown-menu-disabled-wrapper',
+  imports: [VoltDropdownMenuTrigger, VoltDropdownMenu, VoltDropdownMenuItem],
+  template: `
+    <button type="button" [voltDropdownMenu]="menuTpl">Open menu</button>
+
+    <ng-template #menuTpl>
+      <volt-dropdown-menu>
+        <volt-dropdown-menu-item [disabled]="true" (click)="onDelete()">
+          Delete
+        </volt-dropdown-menu-item>
+      </volt-dropdown-menu>
+    </ng-template>
+  `,
+})
+class DropdownMenuDisabledWrapper {
+  activated = false;
+  onDelete(): void {
+    this.activated = true;
+  }
+}
+
 describe('VoltDropdownMenu', () => {
   it('should render menu and menuitem roles', async () => {
     const user = userEvent.setup();
@@ -48,5 +70,23 @@ describe('VoltDropdownMenu', () => {
     expect(screen.getByRole('menuitem', { name: 'Profile' })).toBeInTheDocument();
     expect(screen.getByRole('menuitem', { name: 'More' })).toBeInTheDocument();
     expect(screen.getByRole('menuitem', { name: 'Settings' })).toBeInTheDocument();
+  });
+
+  it('should mark a disabled item unavailable and not activate it via keyboard', async () => {
+    const user = userEvent.setup();
+    const { fixture } = await render(DropdownMenuDisabledWrapper);
+
+    await user.click(screen.getByRole('button', { name: 'Open menu' }));
+    await fixture.whenStable();
+    const item = screen.getByRole('menuitem', { name: 'Delete' });
+
+    expect(item).toHaveAttribute('data-disabled');
+
+    item.focus();
+    await user.keyboard('{Enter}');
+    expect(fixture.componentInstance.activated).toBe(false);
+
+    await user.keyboard(' ');
+    expect(fixture.componentInstance.activated).toBe(false);
   });
 });

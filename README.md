@@ -22,7 +22,7 @@ and [ng-primitives](https://ng-primitives.dev) — accessible, themeable, and yo
 [![Angular 21](https://img.shields.io/badge/Angular-21-DD0031?style=for-the-badge&logo=angular&logoColor=white)](https://angular.dev)
 [![Tailwind v4](https://img.shields.io/badge/Tailwind-v4-38BDF8?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
 
-[![Components](https://img.shields.io/badge/components-41-8B5CF6?style=for-the-badge)](https://volt-ui.andersseen.dev/docs/components)
+[![Components](https://img.shields.io/badge/components-42-8B5CF6?style=for-the-badge)](https://volt-ui.andersseen.dev/docs/components)
 [![CI](https://img.shields.io/github/actions/workflow/status/Andersseen/volt-ui/ci.yml?style=for-the-badge&logo=githubactions&logoColor=white&label=CI&branch=main)](https://github.com/Andersseen/volt-ui/actions/workflows/ci.yml)
 [![License MIT](https://img.shields.io/badge/license-MIT-22C55E?style=for-the-badge)](./LICENSE)
 [![Stars](https://img.shields.io/github/stars/Andersseen/volt-ui?style=for-the-badge&logo=github&logoColor=white&color=F59E0B)](https://github.com/Andersseen/volt-ui/stargazers)
@@ -61,7 +61,7 @@ npx @voltui/cli add button
 | ⚡ **Copy, don't couple**      | CLI copies source into your app — no lock-in, no black-box updates.                         |
 | ♿ **Accessible by default**   | Keyboard, focus, and ARIA behavior delegated to [ng-primitives](https://ng-primitives.dev). |
 | 🎨 **25 theme combinations**   | 5 color × 5 style presets, plus dark mode, driven by Tailwind v4 tokens.                    |
-| 🧩 **41 components**           | Forms, overlays, navigation, data display — see the [full catalog](#-component-catalog).    |
+| 🧩 **42 components**           | Forms, overlays, navigation, data display — see the [full catalog](#-component-catalog).    |
 | 🛰️ **Zoneless & signal-first** | `input()` / `output()` / `model()` / `computed()`, `OnPush` everywhere.                     |
 | 🤖 **AI-ready**                | Ships an MCP server, a skill, and a prompt reference so assistants use it correctly.        |
 
@@ -157,7 +157,7 @@ Themes are CSS custom properties mapped into Tailwind v4 via `@theme inline`. Co
 
 ## 🧩 Component Catalog
 
-**41 components** across every common surface. The v1 surface is now fixed and every
+**42 components** across every common surface. The v1 surface is now fixed and every
 component is labeled `stable` or `beta` — see **[COMPONENT_STATUS.md](./COMPONENT_STATUS.md)**.
 
 <details open>
@@ -221,19 +221,25 @@ Volt UI ships three complementary ways to give AI assistants correct context:
 
 ## 📈 Stability & Roadmap
 
-Current status: **`0.8.3` — v1 library readiness and accessibility patch.**
+Current status: **`0.9.0` — release candidate. The public API is frozen for 1.0.**
+
+Component inputs, outputs, and selectors will not change again before `1.0.0`, except
+for the removal of a small set of deprecated aliases — see
+**[MIGRATION.md](./MIGRATION.md)** for the full 0.x → 1.0 upgrade guide and
+**[specs/api-freeze-0.9.md](./specs/api-freeze-0.9.md)** for the complete frozen API
+reference.
 
 - **Stable** — recommended for early adoption.
 - **Beta** — usable; may still gain forms / keyboard / a11y / edge-case coverage.
 - **Experimental** — published for feedback; may change before v1.
 
-All components remain available through the package and CLI; the status label communicates **confidence, not availability**. While pre-v1, minor releases may include breaking changes to component APIs, selectors, class composition, theme tokens, and CLI output — always called out in release notes. After v1, breaking changes move to majors.
+All components remain available through the package and CLI; the status label communicates **confidence, not availability**. Now that the API is frozen, remaining pre-1.0 releases are limited to bug fixes and the deprecation removals documented in `MIGRATION.md` — no further breaking renames are planned. After v1, breaking changes move to majors.
 
 Full status table: **[COMPONENT_STATUS.md](./COMPONENT_STATUS.md)**.
 
 ### Compatibility policy
 
-The current `0.8.x` line targets Angular `^21.2` and Node 20 or newer. During
+The current `0.9.x` line targets Angular `^21.2` and Node 20 or newer. During
 pre-v1, Volt UI supports the latest declared Angular major only; widening that
 range requires consumer-fixture verification and is never assumed from a
 successful build. After v1, the project will document each supported Angular

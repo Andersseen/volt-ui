@@ -357,6 +357,14 @@ export const DRAWER_API: ComponentApi = {
 export const DROPDOWN_MENU_API: ComponentApi = {
   directives: [
     {
+      className: 'VoltDropdownMenuItem',
+      selector: 'volt-dropdown-menu-item',
+      inputs: [
+        { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
+      ],
+      outputs: [],
+    },
+    {
       className: 'VoltDropdownMenuSubmenuTrigger',
       selector: 'volt-dropdown-menu-submenu-trigger',
       inputs: [
@@ -417,6 +425,7 @@ export const FILE_UPLOAD_API: ComponentApi = {
       outputs: [
         { name: 'selected', type: 'FileList | null' },
         { name: 'rejected', type: 'void' },
+        { name: 'dragOverChange', type: 'boolean' },
         { name: 'dragOver', type: 'boolean' },
       ],
     },
@@ -434,6 +443,7 @@ export const FILE_UPLOAD_API: ComponentApi = {
         { name: 'selected', type: 'FileList | null' },
         { name: 'canceled', type: 'void' },
         { name: 'rejected', type: 'void' },
+        { name: 'dragOverChange', type: 'boolean' },
         { name: 'dragOver', type: 'boolean' },
       ],
     },
@@ -496,7 +506,6 @@ export const INPUT_OTP_API: ComponentApi = {
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
         { name: 'ariaLabel', type: 'string', default: "'One-time password'" },
         { name: 'placeholder', type: 'string', default: "'○'" },
-        { name: 'isDisabled', type: 'unknown' },
       ],
       outputs: [
         { name: 'valueChange', type: 'string' },
@@ -592,7 +601,7 @@ export const NAVIGATION_MENU_API: ComponentApi = {
     },
     {
       className: 'VoltNavigationMenuLink',
-      selector: 'a[volt-navigation-menu-link]',
+      selector: 'a[volt-navigation-menu-link], a[voltNavigationMenuLink]',
       inputs: [
         { name: 'active', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
@@ -688,13 +697,7 @@ export const PAGINATION_API: ComponentApi = {
       outputs: [{ name: 'pageChange', type: 'number' }],
     },
   ],
-  variants: [
-    {
-      name: 'variant',
-      options: ['default', 'hover', 'hover', 'outline', 'hover', 'hover'],
-      default: 'default',
-    },
-  ],
+  variants: [{ name: 'variant', options: ['default', 'outline'], default: 'default' }],
 };
 
 export const POPOVER_API: ComponentApi = {
@@ -806,6 +809,31 @@ export const RADIO_API: ComponentApi = {
   variants: undefined,
 };
 
+export const RANGE_SLIDER_API: ComponentApi = {
+  directives: [
+    {
+      className: 'VoltRangeSlider',
+      selector: 'volt-range-slider',
+      inputs: [
+        { name: 'low', type: 'number', default: '0', transform: 'numberAttribute' },
+        { name: 'high', type: 'number', default: '100', transform: 'numberAttribute' },
+        { name: 'min', type: 'number', default: '0', transform: 'numberAttribute' },
+        { name: 'max', type: 'number', default: '100', transform: 'numberAttribute' },
+        { name: 'step', type: 'number', default: '1', transform: 'numberAttribute' },
+        { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
+        { name: 'orientation', type: 'NgpOrientation', default: "'horizontal'" },
+        { name: 'ariaLabelLow', type: 'string' },
+        { name: 'ariaLabelHigh', type: 'string' },
+      ],
+      outputs: [
+        { name: 'lowChange', type: 'number' },
+        { name: 'highChange', type: 'number' },
+      ],
+    },
+  ],
+  variants: undefined,
+};
+
 export const RESIZABLE_API: ComponentApi = {
   directives: [
     {
@@ -815,7 +843,10 @@ export const RESIZABLE_API: ComponentApi = {
         { name: 'orientation', type: "'horizontal' | 'vertical'", default: "'horizontal'" },
         { name: 'maxSize', type: 'number | undefined', default: 'undefined', transform: 'value' },
       ],
-      outputs: [{ name: 'resizing', type: 'boolean' }],
+      outputs: [
+        { name: 'resizingChange', type: 'boolean' },
+        { name: 'resizing', type: 'boolean' },
+      ],
     },
     {
       className: 'VoltResizablePanel',
@@ -840,10 +871,8 @@ export const SELECT_API: ComponentApi = {
   directives: [
     {
       className: 'VoltNativeSelect',
-      selector: 'volt-native-select',
+      selector: 'select[voltNativeSelect]',
       inputs: [
-        { name: 'id', type: 'string', default: "''" },
-        { name: 'name', type: 'string', default: "''" },
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
       ],
       outputs: [],
@@ -1069,26 +1098,9 @@ export const TEXTAREA_API: ComponentApi = {
     },
   ],
   variants: [
-    {
-      name: 'variant',
-      options: [
-        'default',
-        'focus-visible',
-        'filled',
-        'focus-visible',
-        'focus-visible',
-        'ghost',
-        'focus-visible',
-        'focus-visible',
-      ],
-      default: 'default',
-    },
+    { name: 'variant', options: ['default', 'filled', 'ghost'], default: 'default' },
     { name: 'size', options: ['sm', 'md', 'lg'], default: 'md' },
-    {
-      name: 'state',
-      options: ['default', 'error', 'focus-visible', 'placeholder'],
-      default: 'default',
-    },
+    { name: 'state', options: ['default', 'error'], default: 'default' },
   ],
 };
 
@@ -1131,21 +1143,7 @@ export const TOGGLE_API: ComponentApi = {
     },
   ],
   variants: [
-    {
-      name: 'variant',
-      options: [
-        'default',
-        'outline',
-        'hover',
-        'hover',
-        'ghost',
-        'hover',
-        'hover',
-        'solid',
-        'hover',
-      ],
-      default: 'default',
-    },
+    { name: 'variant', options: ['default', 'outline', 'ghost', 'solid'], default: 'default' },
     { name: 'size', options: ['sm', 'md', 'lg', 'icon'], default: 'md' },
   ],
 };
@@ -1182,11 +1180,7 @@ export const TOGGLE_GROUP_API: ComponentApi = {
     },
   ],
   variants: [
-    {
-      name: 'variant',
-      options: ['default', 'hover', 'hover', 'outline', 'hover', 'hover'],
-      default: 'default',
-    },
+    { name: 'variant', options: ['default', 'outline'], default: 'default' },
     { name: 'size', options: ['sm', 'md', 'lg'], default: 'md' },
   ],
 };

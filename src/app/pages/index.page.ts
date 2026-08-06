@@ -66,7 +66,7 @@ import {
                   release board
                 </span>
               </div>
-              <span class="font-mono text-[10px] text-primary">v0.8.3</span>
+              <span class="font-mono text-[10px] text-primary">v0.9.0</span>
             </div>
             <div class="space-y-4 p-4">
               <div class="flex items-center justify-between gap-4">
@@ -160,7 +160,7 @@ import {
               class="reveal-up border-primary/30 bg-background/85 px-3 py-1.5 text-primary shadow-sm backdrop-blur"
             >
               <span class="mr-2 inline-flex h-1.5 w-1.5 rounded-full bg-success"></span>
-              Volt UI 0.8.3 for Angular 21
+              Volt UI 0.9.0 for Angular 21
             </volt-badge>
 
             <h1
@@ -522,8 +522,8 @@ export default class Home {
   protected readonly copied = signal(false);
 
   protected readonly showcaseStats = [
-    { value: '41', label: 'components' },
-    { value: '241', label: 'tests passing' },
+    { value: '42', label: 'components' },
+    { value: '268', label: 'tests passing' },
     { value: '25', label: 'theme combos' },
   ];
 
@@ -535,8 +535,8 @@ export default class Home {
   ];
 
   protected readonly proofPoints = [
-    { value: '41', label: 'documented components' },
-    { value: '241', label: 'automated tests' },
+    { value: '42', label: 'documented components' },
+    { value: '268', label: 'automated tests' },
     { value: '0', label: 'NgModules required' },
     { value: '100%', label: 'source ownership' },
   ];

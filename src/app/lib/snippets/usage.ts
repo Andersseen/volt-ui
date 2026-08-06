@@ -299,12 +299,12 @@ import {
         <volt-navigation-menu-item>
           <volt-navigation-menu-trigger>Getting Started</volt-navigation-menu-trigger>
           <volt-navigation-menu-content>
-            <a volt-navigation-menu-link href="/docs">Introduction</a>
-            <a volt-navigation-menu-link href="/docs/installation">Installation</a>
+            <a voltNavigationMenuLink href="/docs">Introduction</a>
+            <a voltNavigationMenuLink href="/docs/installation">Installation</a>
           </volt-navigation-menu-content>
         </volt-navigation-menu-item>
         <volt-navigation-menu-item>
-          <volt-navigation-menu-link href="/docs/components">Components</volt-navigation-menu-link>
+          <a voltNavigationMenuLink href="/docs/components">Components</a>
         </volt-navigation-menu-item>
       </volt-navigation-menu-list>
     </volt-navigation-menu>
@@ -442,6 +442,45 @@ import { VoltSlider } from 'volt';
 })
 export class MyComponent {
   volume = new FormControl(50, { nonNullable: true });
+}`;
+
+export const NATIVE_SELECT_USAGE = `import { Component } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { VoltNativeSelect } from 'volt';
+
+@Component({
+  imports: [ReactiveFormsModule, VoltNativeSelect],
+  template: \`
+    <select voltNativeSelect [formControl]="fruit" aria-label="Fruit">
+      <option value="apple">Apple</option>
+      <option value="banana">Banana</option>
+      <option value="blueberry">Blueberry</option>
+    </select>
+  \`,
+})
+export class MyComponent {
+  fruit = new FormControl('apple', { nonNullable: true });
+}`;
+
+export const RANGE_SLIDER_USAGE = `import { Component } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { VoltRangeSlider } from 'volt';
+
+@Component({
+  imports: [ReactiveFormsModule, VoltRangeSlider],
+  template: \`
+    <volt-range-slider
+      [formControl]="priceRange"
+      [min]="0"
+      [max]="500"
+      ariaLabelLow="Minimum price"
+      ariaLabelHigh="Maximum price"
+    />
+    <p>{{ priceRange.value[0] }} - {{ priceRange.value[1] }}</p>
+  \`,
+})
+export class MyComponent {
+  priceRange = new FormControl<[number, number]>([50, 300], { nonNullable: true });
 }`;
 
 export const TOGGLE_USAGE = `import { Component } from '@angular/core';

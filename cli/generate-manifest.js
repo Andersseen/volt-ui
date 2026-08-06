@@ -151,6 +151,12 @@ const COMPONENT_METADATA = {
     description: 'Single-select options',
     stability: 'stable',
   },
+  'range-slider': {
+    group: 'Forms',
+    label: 'Range Slider',
+    description: 'Dual-thumb range selection',
+    stability: 'beta',
+  },
   resizable: {
     group: 'Layout',
     label: 'Resizable',

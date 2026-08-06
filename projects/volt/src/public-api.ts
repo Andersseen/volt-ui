@@ -25,6 +25,7 @@ export * from './lib/components/popover';
 export * from './lib/components/dropdown-menu';
 export * from './lib/components/progress';
 export * from './lib/components/slider';
+export * from './lib/components/range-slider';
 export * from './lib/components/breadcrumbs';
 export * from './lib/components/toggle-group';
 export * from './lib/components/meter';

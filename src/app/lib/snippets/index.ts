@@ -14,6 +14,7 @@ import searchSource from '../../../../projects/volt/src/lib/components/search/se
 import searchClearSource from '../../../../projects/volt/src/lib/components/search/search-clear.ts?raw';
 import separatorSource from '../../../../projects/volt/src/lib/components/separator/separator.ts?raw';
 import sliderSource from '../../../../projects/volt/src/lib/components/slider/slider.ts?raw';
+import rangeSliderSource from '../../../../projects/volt/src/lib/components/range-slider/range-slider.ts?raw';
 import switchSource from '../../../../projects/volt/src/lib/components/switch/switch.ts?raw';
 import textareaSource from '../../../../projects/volt/src/lib/components/textarea/textarea.ts?raw';
 import textareaVariantsSource from '../../../../projects/volt/src/lib/components/textarea/variants.ts?raw';
@@ -191,6 +192,7 @@ export const SEARCH_SNIPPET = join(
 );
 export const SEPARATOR_SNIPPET = separatorSource;
 export const SLIDER_SNIPPET = sliderSource;
+export const RANGE_SLIDER_SNIPPET = rangeSliderSource;
 export const SWITCH_SNIPPET = switchSource;
 export const TEXTAREA_SNIPPET = join(
   ['textarea.ts', textareaSource],

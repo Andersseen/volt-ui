@@ -1,20 +1,15 @@
 import { defineConfig, devices } from '@playwright/test';
 
-const port = Number(process.env['E2E_PORT'] ?? 5174);
+const port = Number(process.env['E2E_CONSUMER_CLI_PORT'] ?? 5185);
 const baseURL = `http://127.0.0.1:${port}`;
-const serverMode = process.env['E2E_SERVER'] ?? 'dev';
-const webServerCommand =
-  serverMode === 'preview'
-    ? `pnpm exec vite preview --host 127.0.0.1 --port ${port} --strictPort`
-    : `pnpm dev -- --host 127.0.0.1 --port ${port}`;
 
 export default defineConfig({
   testDir: './e2e',
-  testIgnore: /consumer(-cli)?\.spec\.ts/,
-  fullyParallel: true,
+  testMatch: /consumer-cli\.spec\.ts/,
+  fullyParallel: false,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  workers: 1,
   reporter: 'html',
   use: {
     baseURL,
@@ -26,13 +21,9 @@ export default defineConfig({
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
   ],
   webServer: {
-    command: webServerCommand,
+    command: `pnpm exec vite --config e2e/consumer-cli/vite.config.ts --host 127.0.0.1 --port ${port} --strictPort`,
     url: baseURL,
     reuseExistingServer: process.env['PLAYWRIGHT_REUSE_SERVER'] === '1',
   },

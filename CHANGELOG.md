@@ -5,6 +5,122 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.0] - 2026-08-06
+
+**Release candidate for 1.0.** The public API is frozen as of this release: input,
+output, and selector names below will not change again before 1.0 except for the
+removal of the deprecated aliases listed in "Upgrade to 1.0". See
+[`MIGRATION.md`](./MIGRATION.md) for the full 0.x → 1.0 upgrade guide.
+
+### Upgrade to 1.0
+
+Three deprecated aliases were added this release, all still working today, all
+**removed in 1.0.0**:
+
+| Deprecated (works today, warns in dev)         | Replacement              | Component(s)                         |
+| ---------------------------------------------- | ------------------------ | ------------------------------------ |
+| `volt-navigation-menu-link` attribute selector | `voltNavigationMenuLink` | `VoltNavigationMenuLink`             |
+| `(resizing)` output                            | `(resizingChange)`       | `VoltResizableHandle`                |
+| `(dragOver)` output                            | `(dragOverChange)`       | `VoltFileUpload`, `VoltFileDropzone` |
+
+No components were removed or renamed. No CLI-copied file paths changed. Consumers on
+0.8.x need no code changes to stay on the deprecated names through 1.0 — only to adopt
+the replacements before then. Full detail in `MIGRATION.md`.
+
+### Fixed
+
+- **Docs site "API Reference" panel showed fabricated CVA variant options** for
+  `toggle`, `pagination`, `toggle-group`, and `textarea`: the generator script's variant
+  parser matched any `word:` pattern inside a class-string value (e.g. Tailwind's
+  `hover:`, `focus-visible:`, `data-[selected]:` prefixes), not just real option keys —
+  `toggle` showed 8 options instead of its real 4. Fixed the parser and re-verified every
+  CVA-based component's options against its actual `variants.ts`.
+- **`VoltNavigationMenuLink`'s selector was kebab-case** (`a[volt-navigation-menu-link]`),
+  the only attribute selector in the library not using camelCase, carrying an
+  unexplained lint suppression. Renamed to `a[voltNavigationMenuLink]`; the old
+  attribute still works (multi-selector) with a dev-mode deprecation warning, removed in
+  v1.0. Also fixed two bugs this surfaced: the component's own unit test used the
+  camelCase name against the kebab-only selector, so the directive silently never
+  attached and the test never really exercised it; and the public usage snippet showed
+  `<volt-navigation-menu-link>...</volt-navigation-menu-link>` as an element with
+  open/close tags, which never worked since the selector has always been attribute-only.
+- **`VoltResizableHandle.resizing` / `VoltFileUpload`/`VoltFileDropzone.dragOver`**
+  renamed to `resizingChange`/`dragOverChange` for consistency with every other
+  continuous-boolean-state output (`checkedChange`, `pressedChange`, ...); the old names
+  keep emitting in parallel, removed in v1.0. Found along the way:
+  `hostDirectives.outputs` cannot map one primitive output to two public aliases (both
+  silently go dead), so the dual-emit is bridged by injecting the host directive
+  instance directly and forwarding its real output to both public names.
+
+### Added
+
+- `specs/api-freeze-0.9.md`: generated public API inventory (41 components, 87
+  directives, 301 inputs, 42 outputs) — the v0.9 API-freeze reference. Generator logic
+  (`scripts/generate-api-freeze.mjs`) shares its extraction module
+  (`scripts/lib/api-extract.mjs`) with the existing docs-app API reference generator, so
+  the two can't drift from each other.
+- `MIGRATION.md`: 0.x → 1.0 upgrade guide.
+
+### Changed
+
+- Bumped the root package, `@voltui/components`, and `@voltui/cli` to `0.9.0`.
+
+## [0.8.4] - 2026-08-05
+
+### Added
+
+- **Range Slider** (`range-slider`): dual-thumb slider for selecting a `[low, high]`
+  value pair, built on `ng-primitives/slider`'s `NgpRangeSlider`. Reactive Forms and
+  template-driven forms support via `ControlValueAccessor`.
+- **Native Select** (`select/native-select.ts`, `VoltNativeSelect`) is now a documented,
+  tested part of the public surface: a lightweight alternative to `volt-select` that
+  applies to a real `<select>` element (`<select voltNativeSelect>`).
+
+### Fixed
+
+- **`VoltNativeSelect` had no forms support at all**: it wrapped a `<select>` inside its
+  own component template, which prevents Angular's built-in native-select
+  `ControlValueAccessor` from ever attaching — `[formControl]`/`[(ngModel)]` silently did
+  nothing. Rewritten to match `ng-primitives`' own reference pattern: an attribute
+  selector (`select[voltNativeSelect]`) applied directly to the native `<select>`, using
+  a `@Directive` instead of a `@Component` (no template/view needed, consistent with
+  `combobox-input.ts`/`avatar-image.ts`). Forms support now works for free via Angular's
+  built-in accessor. Existed in source and was copied by `volt add select` before this
+  fix, but was never exported, documented, or tested.
+- **`VoltDropdownMenuItem` had no `disabled` input**: `hostDirectives: [NgpMenuItem]` had
+  no `inputs` mapping, so `ngpMenuItemDisabled` was unreachable — a menu item could never
+  be marked disabled. Added the input and guarded the component's own
+  Enter/Space-to-click keyboard handling against it.
+- **`VoltInputOtp`'s `disabled` input never reached the `NgpInputOtp` primitive**: the
+  `hostDirectives` alias forwarded to a dead `isDisabled` binding that nothing ever set
+  (the class's own same-named field is a `computed()`, not bindable). The native
+  `<input>` was still correctly disabled through a separate binding, but the primitive's
+  own disabled state (and therefore the OTP slots' click-to-focus guard) never engaged.
+  Fixed the alias to `disabled`, matching the working pattern already used by
+  `slider`/`radio-group`/`toggle-group`.
+- Homepage test-count stat (`241`) was stale; updated to the current suite size (`264`).
+- **CLI: shared library files never copied for `volt add`**: `utils.ts` and
+  `form-control-state.ts` (imported by 14 of 41 components, including `button`,
+  `checkbox`, `input`, `select`, and `switch`) were never tracked as dependencies,
+  copied, or import-rewritten by `volt add`, so consumers received component files that
+  imported a path that didn't exist in their project. The CLI now detects and copies
+  these shared files and rewrites their import paths.
+- **CLI: `sidebar`'s relative import to `tooltip` never rewritten**: `volt add sidebar`
+  correctly copied its `tooltip` dependency but left the copied file's import pointing
+  at the original `../../components/tooltip` source path instead of the sibling
+  directory the CLI actually creates. Cross-component relative imports are now
+  collapsed to the CLI's flat layout.
+- Added a new CLI-driven consumer fixture (`e2e/consumer-cli/`,
+  `pnpm test:e2e:consumer-cli`) that runs `volt init` + `volt add` for every component
+  and builds the result, catching the two issues above; wired into CI alongside the
+  existing npm-import consumer fixture.
+- `volt init` now prints Tailwind CSS v4 setup guidance when it doesn't detect
+  `tailwindcss` configured in the target project.
+
+### Changed
+
+- Bumped the root package, `@voltui/components`, and `@voltui/cli` to `0.8.4`.
+
 ## [0.8.3] - 2026-08-03
 
 ### Fixed

@@ -120,7 +120,7 @@ Volt UI is an Angular component library inspired by shadcn/ui, built on top of n
 ## Components
 button · badge · card · input · autofill · search · textarea · checkbox · radio · switch · toggle ·
 select · tabs · accordion · avatar · separator · tooltip · navigation-menu · form-field ·
-dialog · popover · dropdown-menu · slider · progress · breadcrumbs · sidebar ·
+dialog · popover · dropdown-menu · slider · range-slider · progress · breadcrumbs · sidebar ·
 toggle-group · meter · pagination · toast · input-otp · file-upload · combobox ·
 date-picker · listbox · toolbar · skeleton · table · resizable · theme
 
@@ -221,6 +221,7 @@ You are working with **Volt UI**, an Angular v21 component library (shadcn/ui-in
 | Meter | \`./ui/meter\` | \`ui-meter\` + label/value/track/indicator | |
 | Progress | \`./ui/progress\` | \`ui-progress\` + label/value | |
 | Slider | \`./ui/slider\` | \`ui-slider\` | CVA |
+| Range Slider | \`./ui/range-slider\` | \`ui-range-slider\` | CVA, dual-thumb |
 | Form Field | \`./ui/form-field\` | \`ui-form-field\` + label/hint/error | |
 | Pagination | \`./ui/pagination\` | \`ui-pagination\` + first/previous/next/last/button | |
 | Table | \`./ui/table\` | \`ui-table\` + header/body/footer/row/head/cell/caption | |
@@ -662,6 +663,13 @@ const VSCODE_SNIPPETS = {
     prefix: ['volt-slider', 'ui-slider'],
     description: 'Volt UI Slider',
     body: ['<ui-slider [min]="${1:0}" [max]="${2:100}" [(value)]="${3:value}" />'],
+  },
+  'Volt UI Range Slider': {
+    prefix: ['volt-range-slider', 'ui-range-slider'],
+    description: 'Volt UI Range Slider',
+    body: [
+      '<ui-range-slider [min]="${1:0}" [max]="${2:100}" [(low)]="${3:low}" [(high)]="${4:high}" />',
+    ],
   },
   'Volt UI Progress': {
     prefix: ['volt-progress', 'ui-progress'],

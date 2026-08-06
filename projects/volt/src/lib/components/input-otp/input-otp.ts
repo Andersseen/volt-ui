@@ -40,7 +40,7 @@ import { injectFormControlState } from '../../form-control-state';
         'ngpInputOtpValue: value',
         'ngpInputOtpPattern: pattern',
         'ngpInputOtpInputMode: inputMode',
-        'ngpInputOtpDisabled: isDisabled',
+        'ngpInputOtpDisabled: disabled',
         'ngpInputOtpPlaceholder: placeholder',
       ],
       outputs: ['ngpInputOtpValueChange: valueChange', 'ngpInputOtpComplete: complete'],

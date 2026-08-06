@@ -6,6 +6,8 @@ const {
   initProject,
   listComponents,
   groupComponents,
+  detectTailwindSetup,
+  formatTailwindGuidance,
 } = require('../lib/core');
 
 function parseArgs(rawArgs) {
@@ -113,6 +115,11 @@ async function main() {
     const targetDir = args[1] || './src/app/ui';
     initProject(targetDir);
     console.log('✅ Initialized volt/ui in', targetDir);
+
+    const tailwind = detectTailwindSetup(process.cwd());
+    if (!tailwind.configured) {
+      console.log(`\n${formatTailwindGuidance(tailwind)}`);
+    }
   } else if (command === 'list') {
     const manifest = await loadManifest();
     const status = typeof flags.status === 'string' ? flags.status : null;
