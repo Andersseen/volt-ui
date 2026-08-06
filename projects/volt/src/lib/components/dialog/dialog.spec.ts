@@ -40,7 +40,7 @@ describe('VoltDialog', () => {
     expect(screen.getByRole('button', { name: /Open Dialog/i })).toBeInTheDocument();
   });
 
-  it('should render the dialog trigger', async () => {
+  it('should render the trigger button', async () => {
     const { container } = await render(DialogTestWrapper);
 
     expect(container.querySelector('button')).toBeTruthy();

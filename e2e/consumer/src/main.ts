@@ -246,6 +246,18 @@ import './styles.css';
             <volt-toast-close data-testid="toast-close" />
           </volt-toast>
         </ng-template>
+        <button type="button" data-testid="toast-error-trigger" (click)="showErrorToast()">
+          Show error toast
+        </button>
+        <ng-template #toastErrorTpl>
+          <volt-toast variant="error" data-testid="toast-error">
+            <div>
+              <volt-toast-title>Failed</volt-toast-title>
+              <volt-toast-description>Consumer error toast body</volt-toast-description>
+            </div>
+            <volt-toast-close data-testid="toast-error-close" />
+          </volt-toast>
+        </ng-template>
       </section>
 
       <volt-tabs value="one" data-testid="tabs">
@@ -262,12 +274,22 @@ import './styles.css';
 class ConsumerApp {
   readonly menuAction = signal('none');
   @ViewChild('toastTpl', { read: TemplateRef }) private toastTpl?: TemplateRef<void>;
+  @ViewChild('toastErrorTpl', { read: TemplateRef }) private toastErrorTpl?: TemplateRef<void>;
   private readonly toastManager = inject(NgpToastManager);
 
   showToast(): void {
     if (!this.toastTpl) return;
 
     this.toastManager.show(this.toastTpl, {
+      duration: 3000,
+      placement: 'bottom-end',
+    });
+  }
+
+  showErrorToast(): void {
+    if (!this.toastErrorTpl) return;
+
+    this.toastManager.show(this.toastErrorTpl, {
       duration: 3000,
       placement: 'bottom-end',
     });
