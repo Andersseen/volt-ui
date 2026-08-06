@@ -99,14 +99,14 @@ export const COMPONENT_GROUPS: ComponentMetadataGroup[] = [
         label: 'Input OTP',
         path: '/docs/components/input-otp',
         description: 'PIN code input',
-        stability: 'beta',
+        stability: 'stable',
       },
       {
         name: 'file-upload',
         label: 'File Upload',
         path: '/docs/components/file-upload',
         description: 'Upload controls',
-        stability: 'beta',
+        stability: 'stable',
       },
       {
         name: 'slider',
@@ -160,7 +160,7 @@ export const COMPONENT_GROUPS: ComponentMetadataGroup[] = [
         label: 'Date Picker',
         path: '/docs/components/date-picker',
         description: 'Calendar input',
-        stability: 'beta',
+        stability: 'stable',
       },
       {
         name: 'listbox',
@@ -179,7 +179,7 @@ export const COMPONENT_GROUPS: ComponentMetadataGroup[] = [
         label: 'Navigation Menu',
         path: '/docs/components/navigation-menu',
         description: 'Navbar with dropdowns',
-        stability: 'beta',
+        stability: 'stable',
       },
       {
         name: 'tabs',
@@ -320,7 +320,7 @@ export const COMPONENT_GROUPS: ComponentMetadataGroup[] = [
         label: 'Resizable',
         path: '/docs/components/resizable',
         description: 'Resizable panels',
-        stability: 'beta',
+        stability: 'stable',
       },
     ],
   },

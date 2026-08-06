@@ -77,14 +77,15 @@ export class VoltDatePicker implements ControlValueAccessor {
       this.datePickerState().disabled.set(this.isDisabled());
     });
 
-    effect(() => {
-      const value = this.date();
-      this.onChange(value);
-    });
+    // The NgpDatePicker host directive owns the selected date — the `date` model above
+    // is only the public alias for it. Watching that model instead of the primitive's
+    // own state never observed a calendar click, which left `[formControl]` silently
+    // disconnected in both directions. Mirrors the slider's CVA wiring.
+    this.datePickerState().dateChange.subscribe(value => this.onChange(value));
   }
 
   writeValue(value: Date | undefined | null): void {
-    this.date.set(value ?? undefined);
+    this.datePickerState().date.set(value ?? undefined);
   }
 
   registerOnChange(fn: (value: Date | undefined) => void): void {

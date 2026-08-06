@@ -20,6 +20,7 @@ import {
   VoltTabsList,
   VoltTabsTrigger,
 } from 'volt';
+import { CodeEditor } from '../components/code-editor';
 import { CopyButton } from '../components/copy-button';
 
 type ThemeMode = 'light' | 'dark';
@@ -300,6 +301,7 @@ function indent(lines: string[]): string {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
+    CodeEditor,
     CopyButton,
     VoltBadge,
     VoltButton,
@@ -540,9 +542,9 @@ function indent(lines: string[]): string {
               </div>
             </volt-card-header>
             <volt-card-content>
-              <pre
-                class="max-h-[420px] overflow-auto rounded-xl border border-border/70 bg-foreground p-5 text-xs leading-relaxed text-background shadow-inner"
-              ><code>{{ generatedCss() }}</code></pre>
+              <div class="overflow-hidden rounded-xl border border-border/70 bg-muted/30">
+                <app-code-editor [code]="generatedCss()" language="css" height="420px" />
+              </div>
             </volt-card-content>
           </volt-card>
         </div>

@@ -14,28 +14,29 @@ import {
   output,
   signal,
 } from '@angular/core';
+import { VoltResizable } from './resizable';
 
 @Component({
   selector: 'volt-resizable-handle',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class:
-      'relative flex shrink-0 items-center justify-center bg-border transition-colors hover:bg-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 cursor-col-resize',
-    '[class.w-1]': "orientation() === 'horizontal'",
-    '[class.h-full]': "orientation() === 'horizontal'",
-    '[class.h-1]': "orientation() === 'vertical'",
-    '[class.w-full]': "orientation() === 'vertical'",
-    '[class.cursor-col-resize]': "orientation() === 'horizontal'",
-    '[class.cursor-row-resize]': "orientation() === 'vertical'",
+      'relative flex shrink-0 items-center justify-center bg-border transition-colors hover:bg-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+    '[class.w-1]': "resolvedOrientation() === 'horizontal'",
+    '[class.h-full]': "resolvedOrientation() === 'horizontal'",
+    '[class.h-1]': "resolvedOrientation() === 'vertical'",
+    '[class.w-full]': "resolvedOrientation() === 'vertical'",
+    '[class.cursor-col-resize]': "resolvedOrientation() === 'horizontal'",
+    '[class.cursor-row-resize]': "resolvedOrientation() === 'vertical'",
     role: 'separator',
     tabindex: '0',
-    '[attr.aria-orientation]': 'orientation()',
+    '[attr.aria-orientation]': 'resolvedOrientation()',
     '[attr.aria-valuemin]': '0',
     '[attr.aria-valuemax]': 'ariaValueMax()',
     '[attr.aria-valuenow]': 'currentSize()',
   },
   template: `
-    @if (orientation() === 'horizontal') {
+    @if (resolvedOrientation() === 'horizontal') {
       <div class="h-4 w-1 rounded-full bg-muted-foreground/50"></div>
     } @else {
       <div class="h-1 w-4 rounded-full bg-muted-foreground/50"></div>
@@ -52,6 +53,18 @@ export class VoltResizableHandle implements AfterViewInit {
   protected readonly currentSize = signal(50);
   protected readonly measuredMaxSize = signal(100);
   protected readonly ariaValueMax = computed(() => this.maxSize() ?? this.measuredMaxSize());
+
+  private readonly group = inject(VoltResizable, { optional: true });
+
+  /**
+   * The enclosing group's orientation always wins. A handle whose axis disagrees with
+   * its group can only ever resize the wrong dimension, so there is no case where
+   * honoring a conflicting `orientation` input would be correct. The input stays as the
+   * fallback for a handle used outside a `volt-resizable` group.
+   */
+  protected readonly resolvedOrientation = computed(
+    () => this.group?.orientation() ?? this.orientation()
+  );
 
   private readonly elementRef = inject(ElementRef<HTMLElement>);
   private readonly renderer = inject(Renderer2);
@@ -77,7 +90,7 @@ export class VoltResizableHandle implements AfterViewInit {
     this.elementRef.nativeElement.setPointerCapture?.(event.pointerId);
     this.syncMeasurements();
 
-    if (this.orientation() === 'horizontal') {
+    if (this.resolvedOrientation() === 'horizontal') {
       this.startX = event.clientX;
     } else {
       this.startY = event.clientY;
@@ -100,7 +113,7 @@ export class VoltResizableHandle implements AfterViewInit {
 
   @HostListener('keydown', ['$event'])
   onKeyDown(event: KeyboardEvent): void {
-    const horizontal = this.orientation() === 'horizontal';
+    const horizontal = this.resolvedOrientation() === 'horizontal';
     const decrease = horizontal ? event.key === 'ArrowLeft' : event.key === 'ArrowUp';
     const increase = horizontal ? event.key === 'ArrowRight' : event.key === 'ArrowDown';
     if (!decrease && !increase) return;
@@ -117,7 +130,7 @@ export class VoltResizableHandle implements AfterViewInit {
     if (!this.isResizing || !this.prevElement) return;
 
     const delta =
-      this.orientation() === 'horizontal'
+      this.resolvedOrientation() === 'horizontal'
         ? event.clientX - this.startX
         : event.clientY - this.startY;
     const newSize = this.clampSize(this.startSize + delta);
@@ -131,14 +144,16 @@ export class VoltResizableHandle implements AfterViewInit {
 
     const parentRect = parentElement?.getBoundingClientRect();
     const measuredMax =
-      this.orientation() === 'horizontal' ? (parentRect?.width ?? 0) : (parentRect?.height ?? 0);
+      this.resolvedOrientation() === 'horizontal'
+        ? (parentRect?.width ?? 0)
+        : (parentRect?.height ?? 0);
     if (measuredMax > 0) {
       this.measuredMaxSize.set(Math.round(measuredMax));
     }
 
     const previousRect = this.prevElement?.getBoundingClientRect();
     const measuredCurrent =
-      this.orientation() === 'horizontal'
+      this.resolvedOrientation() === 'horizontal'
         ? (previousRect?.width ?? 0)
         : (previousRect?.height ?? 0);
     if (measuredCurrent > 0) {
@@ -149,7 +164,7 @@ export class VoltResizableHandle implements AfterViewInit {
   private setPreviousSize(size: number): void {
     if (!this.prevElement) return;
 
-    if (this.orientation() === 'horizontal') {
+    if (this.resolvedOrientation() === 'horizontal') {
       this.renderer.setStyle(this.prevElement, 'width', `${size}px`);
     } else {
       this.renderer.setStyle(this.prevElement, 'height', `${size}px`);

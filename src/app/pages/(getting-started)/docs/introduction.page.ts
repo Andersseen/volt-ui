@@ -339,42 +339,29 @@ import {
       <div class="space-y-4">
         <h2 class="text-xl font-semibold tracking-tight">Component Catalog</h2>
         <p class="text-muted-foreground">
-          Volt UI 1.0.0 is stable. Components are labeled
-          <span class="text-green-600 font-medium">stable</span> or
-          <span class="text-yellow-600 font-medium">beta</span>
-          to communicate confidence, not availability — every component ships through the package
-          and CLI regardless of label. See
+          Every component in Volt UI 1.0.0 is
+          <span class="text-green-600 font-medium">stable</span> — a settled API, tests that assert
+          the component's own behavior, and documented usage. The
+          <span class="font-medium">beta</span> label stays in the system for components added after
+          1.0; nothing carries it today. See
           <a routerLink="/docs/versioning" class="underline hover:text-foreground"
             >Versioning &amp; stability</a
           >
           for the full policy.
         </p>
 
-        <div class="grid gap-6 md:grid-cols-2">
-          <div class="p-4 rounded-lg border border-border bg-muted/30">
-            <h3 class="font-medium text-green-600 mb-2">Stable</h3>
-            <p class="text-sm text-muted-foreground mb-2">
-              Recommended for production use. Meaningful tests, documented API, and CVA coverage
-              where applicable.
-            </p>
-            <div class="font-mono text-xs text-muted-foreground">
-              accordion, autofill, avatar, badge, breadcrumbs, button, card, checkbox, combobox,
-              dialog, drawer, dropdown-menu, form-field, input, listbox, meter, native-select,
-              pagination, popover, progress, radio, range-slider, search, select, separator,
-              sidebar, skeleton, slider, switch, table, tabs, textarea, theme, toast, toggle,
-              toggle-group, toolbar, tooltip
-            </div>
-          </div>
-
-          <div class="p-4 rounded-lg border border-border bg-muted/30">
-            <h3 class="font-medium text-yellow-600 mb-2">Beta</h3>
-            <p class="text-sm text-muted-foreground mb-2">
-              Usable, but may still gain more forms, keyboard, accessibility, or edge-case coverage
-              before moving to stable.
-            </p>
-            <div class="font-mono text-xs text-muted-foreground">
-              date-picker, file-upload, input-otp, navigation-menu, resizable
-            </div>
+        <div class="p-4 rounded-lg border border-border bg-muted/30">
+          <h3 class="font-medium text-green-600 mb-2">Stable</h3>
+          <p class="text-sm text-muted-foreground mb-2">
+            Recommended for production use. Meaningful tests, documented API, and CVA coverage where
+            applicable.
+          </p>
+          <div class="font-mono text-xs text-muted-foreground">
+            accordion, autofill, avatar, badge, breadcrumbs, button, card, checkbox, combobox,
+            date-picker, dialog, drawer, dropdown-menu, file-upload, form-field, input, input-otp,
+            listbox, meter, native-select, navigation-menu, pagination, popover, progress, radio,
+            range-slider, resizable, search, select, separator, sidebar, skeleton, slider, switch,
+            table, tabs, textarea, theme, toast, toggle, toggle-group, toolbar, tooltip
           </div>
         </div>
       </div>

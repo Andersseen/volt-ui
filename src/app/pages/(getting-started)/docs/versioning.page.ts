@@ -74,12 +74,14 @@ import { RouterLink } from '@angular/router';
       <div class="space-y-4">
         <h2 class="text-xl font-semibold tracking-tight">What status labels mean now</h2>
         <p class="text-muted-foreground">
-          Every component in the catalog is labeled <code>stable</code> or <code>beta</code> — see
+          Every component in 1.0.0 is <code>stable</code> — see
           <a routerLink="/docs/components" class="text-primary underline-offset-4 hover:underline"
             >the component catalog</a
           >
-          for the current label per component. The label is a confidence signal, not an availability
-          gate: every component ships through the npm package and the CLI regardless of label.
+          for the per-component label. <code>beta</code> and <code>experimental</code> stay defined
+          below because components added after 1.0 may start there; nothing carries either label
+          today. The label is a confidence signal, not an availability gate: every component ships
+          through the npm package and the CLI regardless of label.
         </p>
         <div class="grid gap-4 md:grid-cols-3">
           <div class="p-4 rounded-lg border border-border bg-muted/30">
@@ -92,9 +94,10 @@ import { RouterLink } from '@angular/router';
           <div class="p-4 rounded-lg border border-border bg-muted/30">
             <h3 class="font-medium text-info">Beta</h3>
             <p class="text-sm text-muted-foreground mt-1">
-              Usable today. May still gain forms, keyboard, or accessibility hardening in a minor or
-              patch release — that hardening never breaks the existing public API, so moving from
-              beta to stable is a documentation change, not a version bump on its own.
+              Usable today, but may still gain forms, keyboard, or accessibility hardening in a
+              minor or patch release — that hardening never breaks the existing public API, so
+              moving from beta to stable is a documentation change, not a version bump on its own.
+              Unused in 1.0.
             </p>
           </div>
           <div class="p-4 rounded-lg border border-border bg-muted/30">

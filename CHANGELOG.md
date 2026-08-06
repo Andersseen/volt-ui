@@ -100,6 +100,35 @@ complete list of breaking changes between 0.9.0 and 1.0.0.
   phone screen, and the `kanban` demo's avatar stack pushed its "New Task" button past the
   frame. Both now collapse below `sm`, matching how the sidebar layout already goes
   off-canvas at that width.
+- **`VoltInputOtp` never displayed anything.** `NgpInputOtpInput` was missing from the
+  component's `imports`, so `ngpInputOtpInput` on the hidden field was an inert HTML
+  attribute: the input accepted text but no slot ever filled, no slot ever showed the
+  active caret, and the value was invisible in every usage. Fixed by importing the
+  directive. Its documented `placeholder` (`'○'`) and `inputMode` (`'numeric'`) defaults
+  were also declared on the component but never reached the primitive, so a default OTP
+  field showed no placeholder and asked mobile keyboards for text instead of digits.
+- **`VoltInputOtp` emitted `valueChange` twice per change**, because the component echoed
+  the primitive's output into its own `value` model, which emits under the same public
+  name.
+- **`[formControl]` was silently disconnected on `VoltDatePicker`, `VoltInputOtp` and
+  `VoltListbox`.** All three wrote `writeValue()` into their own `value`/`date` model
+  rather than the host directive's state — the model is only the public alias for that
+  state, so a form value never reached the calendar/slots/options. `VoltDatePicker` was
+  broken in both directions: clicking a date never reached `onChange` either, so the
+  control never updated. Every component with a `ControlValueAccessor` was then audited
+  the same way (asserting the DOM reflects what the form wrote, not just that
+  `FormControl.value` changed); the rest were already correct.
+- **A `volt-resizable-handle` inside a vertical group resized horizontally.** The handle
+  carried its own `orientation` input that had to be kept in sync with the group by hand,
+  and nothing enforced it — the documented example omitted it, so the vertical demo
+  rendered a column-resize bar that tracked `clientX` and set `width`. The enclosing
+  group's orientation now always wins; the input remains as the fallback for a handle
+  used outside a group. The unit test that covered this pressed ArrowRight in a vertical
+  group and asserted it resized, so the bug was pinned in place rather than caught.
+- The Create Theme page rendered its generated CSS with inverted colors
+  (`bg-foreground`/`text-background`), so in dark mode the export block appeared as a
+  bright white panel. It now uses the same lazily loaded editor as every other code block
+  on the site, with CSS syntax highlighting and the site's own theme.
 
 ### Added
 
@@ -113,23 +142,24 @@ complete list of breaking changes between 0.9.0 and 1.0.0.
 
 ### Changed
 
-- **20 components moved from `beta` to `stable`**: `accordion`, `autofill`, `combobox`,
-  `dialog`, `drawer`, `dropdown-menu`, `listbox`, `native-select`, `pagination`,
-  `popover`, `range-slider`, `search`, `select`, `sidebar`, `table`, `tabs`, `theme`,
-  `toast`, `toolbar`, `tooltip`. No behavior changed — these had been carrying a `beta`
-  label whose stated reason ("needs more forms, keyboard or focus coverage") was already
-  satisfied: the form controls have full Reactive Forms value/disabled/touched specs, and
-  the overlays have Escape, outside-click, focus-return and positioning covered by the
-  Playwright consumer suite. Two rows in `COMPONENT_STATUS.md` that claimed gaps
-  contradicted by their own specs were corrected (`toolbar` has an arrow-key focus test;
-  `select` delegates keyboard handling to ng-primitives rather than partially
-  implementing it), and `range-slider` — listed in the release groups but missing from
-  the table entirely — now has a row.
-  The five components still `beta` each have a specific outstanding gap, now documented
-  in `COMPONENT_STATUS.md`: `date-picker` (calendar grid untested), `file-upload`
-  (drag/drop never exercised in a browser), `input-otp` (per-slot focus movement not
-  asserted), `navigation-menu` (nested submenus untested), `resizable` (keyboard arrow
-  resizing untested).
+- **Every component ships `stable`; nothing is `beta` in 1.0.** 20 of them carried a
+  `beta` label whose stated reason ("needs more forms, keyboard or focus coverage") was
+  already satisfied — the form controls have full Reactive Forms specs and the overlays
+  have Escape, outside-click, focus-return and positioning covered by the Playwright
+  consumer suite. The remaining five were closed out by fixing the defects listed under
+  _Fixed_ above and adding the coverage that would have caught them: calendar grid
+  interaction for `date-picker`, real-browser `DataTransfer` drag/drop for `file-upload`
+  (`e2e/file-upload.spec.ts`), per-slot fill/active/caret movement for `input-otp`,
+  submenu open/swap/Escape for `navigation-menu`, and both-axis keyboard and pointer
+  resizing for `resizable`. Test count 266 → 285.
+  Two rows in `COMPONENT_STATUS.md` that claimed gaps contradicted by their own specs
+  were corrected (`toolbar` has an arrow-key focus test; `select` delegates keyboard
+  handling to ng-primitives rather than partially implementing it), and `range-slider` —
+  listed in the release groups but missing from the table entirely — now has a row.
+  `beta` and `experimental` stay defined as labels for components added after 1.0.
+- The docs site's code blocks now share one `app-code-editor` component instead of three
+  copies of the editor's load/theme/value lifecycle, which is what let the Create Theme
+  page drift onto the wrong theme in the first place.
 - `SDD.md` §12 "Roadmap to v1" replaced with a permanent Stability Policy section; the
   roadmap's history now lives in this changelog's `[0.5.0]`–`[1.0.0]` entries instead of
   being duplicated.
