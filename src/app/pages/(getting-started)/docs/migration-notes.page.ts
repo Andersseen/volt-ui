@@ -10,13 +10,25 @@ import { RouterLink } from '@angular/router';
       <div>
         <h1 class="text-3xl font-bold tracking-tight">0.x Migration Notes</h1>
         <p class="text-lg text-muted-foreground mt-2">
-          Volt UI is pre-1.0: minor versions can still change behavior. Because components are
-          copied into your project rather than installed as a dependency, "upgrading" means
-          re-running
+          Volt UI's public API is frozen as of 1.0.0 — see
+          <a routerLink="/docs/versioning" class="text-primary underline-offset-4 hover:underline"
+            >Versioning &amp; stability</a
+          >
+          for the current promise. Because components are copied into your project rather than
+          installed as a dependency, "upgrading" means re-running
           <code class="px-1.5 py-0.5 bg-muted rounded">volt add &lt;component&gt;</code> (or
           <code class="px-1.5 py-0.5 bg-muted rounded">--force</code> to overwrite) and diffing —
-          nothing updates silently underneath you. This page covers the changes across 0.x that
-          actually require you to touch template code, sourced from
+          nothing updates silently underneath you. This page covers the changes across the pre-1.0
+          <code class="px-1.5 py-0.5 bg-muted rounded">0.x</code> releases that actually required
+          touching template code when upgrading; see
+          <a
+            href="https://github.com/Andersseen/volt-ui/blob/main/MIGRATION.md"
+            target="_blank"
+            rel="noopener"
+            class="text-primary underline-offset-4 hover:underline"
+            >MIGRATION.md</a
+          >
+          for the 0.x → 1.0 upgrade guide specifically. Sourced from
           <a
             href="https://github.com/Andersseen/volt-ui/blob/main/CHANGELOG.md"
             target="_blank"
