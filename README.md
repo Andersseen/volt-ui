@@ -221,19 +221,25 @@ Volt UI ships three complementary ways to give AI assistants correct context:
 
 ## 📈 Stability & Roadmap
 
-Current status: **`0.8.4` — CLI consumer validation, native select, range slider patch.**
+Current status: **`0.9.0` — release candidate. The public API is frozen for 1.0.**
+
+Component inputs, outputs, and selectors will not change again before `1.0.0`, except
+for the removal of a small set of deprecated aliases — see
+**[MIGRATION.md](./MIGRATION.md)** for the full 0.x → 1.0 upgrade guide and
+**[specs/api-freeze-0.9.md](./specs/api-freeze-0.9.md)** for the complete frozen API
+reference.
 
 - **Stable** — recommended for early adoption.
 - **Beta** — usable; may still gain forms / keyboard / a11y / edge-case coverage.
 - **Experimental** — published for feedback; may change before v1.
 
-All components remain available through the package and CLI; the status label communicates **confidence, not availability**. While pre-v1, minor releases may include breaking changes to component APIs, selectors, class composition, theme tokens, and CLI output — always called out in release notes. After v1, breaking changes move to majors.
+All components remain available through the package and CLI; the status label communicates **confidence, not availability**. Now that the API is frozen, remaining pre-1.0 releases are limited to bug fixes and the deprecation removals documented in `MIGRATION.md` — no further breaking renames are planned. After v1, breaking changes move to majors.
 
 Full status table: **[COMPONENT_STATUS.md](./COMPONENT_STATUS.md)**.
 
 ### Compatibility policy
 
-The current `0.8.x` line targets Angular `^21.2` and Node 20 or newer. During
+The current `0.9.x` line targets Angular `^21.2` and Node 20 or newer. During
 pre-v1, Volt UI supports the latest declared Angular major only; widening that
 range requires consumer-fixture verification and is never assumed from a
 successful build. After v1, the project will document each supported Angular

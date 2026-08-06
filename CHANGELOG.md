@@ -5,7 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.9.0] - 2026-08-06
+
+**Release candidate for 1.0.** The public API is frozen as of this release: input,
+output, and selector names below will not change again before 1.0 except for the
+removal of the deprecated aliases listed in "Upgrade to 1.0". See
+[`MIGRATION.md`](./MIGRATION.md) for the full 0.x → 1.0 upgrade guide.
+
+### Upgrade to 1.0
+
+Three deprecated aliases were added this release, all still working today, all
+**removed in 1.0.0**:
+
+| Deprecated (works today, warns in dev)         | Replacement              | Component(s)                         |
+| ---------------------------------------------- | ------------------------ | ------------------------------------ |
+| `volt-navigation-menu-link` attribute selector | `voltNavigationMenuLink` | `VoltNavigationMenuLink`             |
+| `(resizing)` output                            | `(resizingChange)`       | `VoltResizableHandle`                |
+| `(dragOver)` output                            | `(dragOverChange)`       | `VoltFileUpload`, `VoltFileDropzone` |
+
+No components were removed or renamed. No CLI-copied file paths changed. Consumers on
+0.8.x need no code changes to stay on the deprecated names through 1.0 — only to adopt
+the replacements before then. Full detail in `MIGRATION.md`.
 
 ### Fixed
 
@@ -39,6 +59,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   (`scripts/generate-api-freeze.mjs`) shares its extraction module
   (`scripts/lib/api-extract.mjs`) with the existing docs-app API reference generator, so
   the two can't drift from each other.
+- `MIGRATION.md`: 0.x → 1.0 upgrade guide.
+
+### Changed
+
+- Bumped the root package, `@voltui/components`, and `@voltui/cli` to `0.9.0`.
 
 ## [0.8.4] - 2026-08-05
 
