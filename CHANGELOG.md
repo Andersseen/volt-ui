@@ -5,6 +5,66 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0] - 2026-08-06
+
+**Volt UI is stable.** The public API frozen at 0.9.0 is now locked for the `1.x` line —
+see [`specs/api-freeze-0.9.md`](./specs/api-freeze-0.9.md) for the full inventory and the
+new [Versioning & Stability](https://volt-ui.andersseen.dev/docs/versioning) docs page for
+the ongoing semver promise (breaking changes only in majors, features in minors, fixes in
+patches).
+
+### Removed (BREAKING)
+
+The three aliases deprecated in 0.9.0 are gone, with no further warning period — see
+[`MIGRATION.md`](./MIGRATION.md) if you haven't already moved off them:
+
+| Removed                                        | Replacement (already available since 0.9.0) | Component(s)                         |
+| ---------------------------------------------- | ------------------------------------------- | ------------------------------------ |
+| `volt-navigation-menu-link` attribute selector | `voltNavigationMenuLink`                    | `VoltNavigationMenuLink`             |
+| `(resizing)` output                            | `(resizingChange)`                          | `VoltResizableHandle`                |
+| `(dragOver)` output                            | `(dragOverChange)`                          | `VoltFileUpload`, `VoltFileDropzone` |
+
+No components were removed or renamed, and no CLI-copied file paths changed — this is the
+complete list of breaking changes between 0.9.0 and 1.0.0.
+
+### Fixed
+
+- **`VoltResizableHandle` crashed on every SSR render** of a page containing it:
+  `ngAfterViewInit()` called `getBoundingClientRect()` unconditionally, and that hook
+  still runs during SSR (it's not browser-only), so every server render of
+  `/docs/components/resizable` threw and the handle's ARIA value attributes were stuck
+  at their hardcoded defaults in the server-rendered HTML. Fixed by deferring the initial
+  measurement to `afterNextRender()`. Verified against the SSR dev server directly and
+  confirmed CLS 0.00 on a production build (no hydration-mismatch layout shift from the
+  fix).
+- The docs site's Component Catalog (introduction page and components index) listed nine
+  components — `autofill`, `combobox`, `date-picker`, `file-upload`, `listbox`,
+  `navigation-menu`, `resizable`, `sidebar`, `theme` — as "experimental," but
+  `COMPONENT_STATUS.md` has had zero experimental components since well before this
+  release; all nine are `beta`. Fixed the stale grouping on both pages.
+
+### Added
+
+- `dialog`/`drawer` now have an end-to-end test asserting the ARIA contract
+  (`role="dialog"`, `aria-modal="true"`, `aria-labelledby` pointing at the title) when
+  opened — previously nothing in the suite actually opened them to check. `toast`'s error
+  variant (`role="alert"`) is now covered too; previously only the default `role="status"`
+  variant had any test anywhere.
+- New `/docs/versioning` page: the semver promise, what `stable`/`beta`/`experimental`
+  mean going forward, and the Angular-major support policy.
+
+### Changed
+
+- `SDD.md` §12 "Roadmap to v1" replaced with a permanent Stability Policy section; the
+  roadmap's history now lives in this changelog's `[0.5.0]`–`[1.0.0]` entries instead of
+  being duplicated.
+- `specs/SPEC.md`: the 0.5.0→1.0.0 release ladder is marked complete; routine post-1.0
+  work follows ordinary semver instead of a per-minor plan.
+- Removed "pre-v1"/"release candidate"/"may change before v1" language from `README.md`,
+  `COMPONENT_STATUS.md`, `CONTRIBUTING.md`, `SECURITY.md`, `CLI.md`, and the docs site
+  (introduction, components index, AI-tool pages, homepage stats, header version badge).
+- Bumped the root package, `@voltui/components`, and `@voltui/cli` to `1.0.0`.
+
 ## [0.9.0] - 2026-08-06
 
 **Release candidate for 1.0.** The public API is frozen as of this release: input,
