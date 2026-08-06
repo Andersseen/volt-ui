@@ -1,8 +1,8 @@
 # Volt UI — Software Design Document (SDD)
 
-**Version:** 0.3.0-alpha  
-**Status:** Pre-v1 hardening  
-**Last updated:** 2026-06-24  
+**Version:** 1.0.0  
+**Status:** Stable  
+**Last updated:** 2026-08-06  
 **Maintainers:** Volt UI contributors
 
 ---
@@ -356,75 +356,45 @@ pnpm test:e2e:ci   # Build + Playwright smoke tests
 
 ## 11. Public API Surface
 
-The library currently exposes 40 component groups plus one layout from `projects/volt/src/public-api.ts`:
+The library currently exposes 41 component groups plus one layout from `projects/volt/src/public-api.ts`:
 
 - **Basic:** button, badge, input, search, autofill, textarea, card
-- **Form:** checkbox, radio, switch, toggle, form-field, select, slider, input-otp, file-upload, combobox, date-picker, listbox
+- **Form:** checkbox, radio, switch, toggle, form-field, select, slider, range-slider, input-otp, file-upload, combobox, date-picker, listbox
 - **Overlays:** tooltip, dialog, drawer, popover, dropdown-menu, toast
 - **Navigation:** navigation-menu, tabs, accordion, breadcrumbs, pagination, toolbar, sidebar (layout)
 - **Data / Feedback:** avatar, separator, progress, meter, toggle-group, skeleton, table, resizable
 - **Theming:** theme provider and utilities
 
-> The public API is still alpha; breaking changes may occur before v1.
+The public API is frozen as of `1.0.0` — see §12.0 for the post-v1 stability policy.
 
 ---
 
-## 12. Roadmap to v1
+## 12. Stability Policy
 
-The following items are considered blockers or strong requirements for a v1.0.0 release.
+Volt UI reached `1.0.0` on 2026-08-06. The road there (form/overlay hardening, full test
+coverage, CLI robustness, documentation completeness, theme polish, bundle/perf audits,
+API freeze) is recorded in [`CHANGELOG.md`](./CHANGELOG.md) release-by-release — see the
+`[0.5.0]` through `[1.0.0]` entries — rather than duplicated here as a roadmap.
 
-### 12.0 Stability policy while pre-v1
+### 12.0 Post-v1 stability policy
 
-- `stable candidate` components should avoid casual breaking changes, but may still change before v1 when accessibility, forms integration, or CLI copy behavior requires it.
-- `beta` components may change inputs, outputs, markup, generated class composition, or dependency structure in minor `0.x` releases.
-- The v1 surface is fixed as of 0.7; beta components may still receive compatible
-  hardening before v1, while removals require an explicit release note.
-- Breaking changes in `0.x` releases should be documented in release notes and kept focused.
-- After v1, breaking changes should move to major releases.
-- A component is considered stable only when its public API is documented, source-copy output is usable, forms/keyboard behavior is tested where applicable, and known accessibility caveats are documented.
-
-### 12.1 Harden overlay and form components
-
-- Dialog, popover, dropdown-menu, toast, drawer, tooltip.
-- Ensure correct focus trapping, escape handling, portal behavior, and SSR safety.
-- Validate all form components with reactive and template-driven forms, including `disabled` states and validation styling.
-
-### 12.2 Complete unit test coverage
-
-- ✅ Added tests for: badge, separator, skeleton, avatar, card, toggle, toolbar, progress, meter, breadcrumbs, pagination, textarea, search.
-- Still missing tests for: accordion, autofill, date-picker, drawer, dropdown-menu, file-upload, form-field, input-otp, listbox, navigation-menu, popover, resizable, table, toast, theme.
-
-### 12.3 CLI robustness
-
-- ✅ Removed the GitHub raw URL fallback; local source copy is now the only path.
-- ✅ Generate transitive dependency mapping automatically from source imports.
-- ✅ Added integration tests that run `volt init` and `volt add` against a temporary directory.
-- ✅ Support adding multiple components in one command (`volt add button card input`).
-- ✅ Refuse overwrite by default, with explicit `--force`.
-- ✅ Support `--dry-run` previews.
-
-### 12.4 Documentation completeness
-
-- Ensure every public component has a demo page, a source snippet, and a usage snippet.
-- Keep README.md and AGENTS.md in sync with `public-api.ts` and the component list.
-- Add migration and customization guides.
-
-### 12.5 Theme system polish
-
-- Audit token usage for contrast and accessibility.
-- Document how to create custom color/style presets.
-- Ensure all components respect `.dark` and `data-color` / `data-style` attributes.
-
-### 12.6 Performance and bundle size
-
-- Verify tree-shaking of unused components when consumed from `@voltui/components`.
-- Audit bundle size of the docs app and the theme CSS.
-
-### 12.7 API stability
-
-- Freeze public input/output names and selector conventions.
-- Keep non-v1 ideas out of the published surface until they have their own post-v1 plan.
-- Publish a v1 migration guide from the alpha versions.
+- **Breaking changes only happen in a major version bump.** The public API frozen at
+  `1.0.0` (inventoried in `specs/api-freeze-0.9.md`) will not change incompatibly in any
+  `1.x` release.
+- **New features land in minor releases** (`1.1.0`, `1.2.0`, ...): new components, new
+  optional inputs/outputs, new CVA variants that don't change existing defaults.
+- **Fixes land in patch releases** (`1.0.1`, `1.0.2`, ...): bug fixes, accessibility
+  corrections, and internal refactors that don't change the public contract.
+- `beta` components may still gain forms/keyboard/accessibility hardening in minor or
+  patch releases without that counting as a breaking change, as long as the existing
+  public API keeps working. Moving a component from `beta` to `stable` is a documentation
+  change, not an API change, and never requires a major bump on its own.
+- A component is considered `stable` only when its public API is documented, source-copy
+  output is usable, forms/keyboard behavior is tested where applicable, and known
+  accessibility caveats are documented. See [`COMPONENT_STATUS.md`](./COMPONENT_STATUS.md)
+  for the current label per component.
+- User-facing detail (semver promise, Angular-major support policy) lives in the docs
+  "Versioning & stability" page; this section is the source-of-truth for contributors.
 
 ---
 

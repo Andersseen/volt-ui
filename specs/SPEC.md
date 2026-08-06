@@ -1,13 +1,15 @@
 # Volt UI — Product Spec (Spec-Driven Development)
 
-**Current version:** 0.4.0
-**Target:** 1.0.0 — a production-ready, shadcn/ui-style component library for Angular
-**Last updated:** 2026-07-03
+**Current version:** 1.0.0
+**Status:** Release ladder complete — Volt UI is stable.
+**Last updated:** 2026-08-06
 
-This is the master spec. It defines _what_ v1.0 is and _how_ the work is divided into
-minor-version plans. Each plan in [`specs/plans/`](plans/) is self-contained and designed
-to be executed in a fresh session (potentially by a smaller/cheaper model) **without
-re-analyzing the repository from scratch**.
+This is the master spec. It defines _what_ v1.0 was (§2) and records _how_ the work was
+divided into minor-version plans (§4, now complete) and the policy that replaces the
+ladder post-1.0 (§7). Each plan in [`specs/plans/`](plans/) is self-contained and was
+designed to be executed in a fresh session (potentially by a smaller/cheaper model)
+**without re-analyzing the repository from scratch** — the same pattern applies to any
+future major-version plan.
 
 ---
 
@@ -54,18 +56,22 @@ runtime utilities; the CLI copies component source into the consumer's project.
 - No re-implementation of a11y primitives (ng-primitives is the layer for v1;
   a first-party headless layer under `@volt-ui/core` is reserved for **post-v1**).
 
-## 4. Release ladder (one plan per minor)
+## 4. Release ladder (one plan per minor) — complete
 
-| Version | Theme                               | Plan file                      |
-| ------- | ----------------------------------- | ------------------------------ |
-| 0.5.0   | Form controls hardening             | [plans/v0.5.md](plans/v0.5.md) |
-| 0.6.0   | Overlay hardening                   | [plans/v0.6.md](plans/v0.6.md) |
-| 0.7.0   | Composite components                | [plans/v0.7.md](plans/v0.7.md) |
-| 0.8.0   | Theme system & docs completeness    | [plans/v0.8.md](plans/v0.8.md) |
-| 0.9.0   | CLI, distribution & API freeze (RC) | [plans/v0.9.md](plans/v0.9.md) |
-| 1.0.0   | Stable release                      | [plans/v1.0.md](plans/v1.0.md) |
+| Version | Theme                               | Plan file                      | Status |
+| ------- | ----------------------------------- | ------------------------------ | ------ |
+| 0.5.0   | Form controls hardening             | [plans/v0.5.md](plans/v0.5.md) | done   |
+| 0.6.0   | Overlay hardening                   | [plans/v0.6.md](plans/v0.6.md) | done   |
+| 0.7.0   | Composite components                | [plans/v0.7.md](plans/v0.7.md) | done   |
+| 0.8.0   | Theme system & docs completeness    | [plans/v0.8.md](plans/v0.8.md) | done   |
+| 0.9.0   | CLI, distribution & API freeze (RC) | [plans/v0.9.md](plans/v0.9.md) | done   |
+| 1.0.0   | Stable release                      | [plans/v1.0.md](plans/v1.0.md) | done   |
 
-Rules:
+The ladder from 0.5.0 to 1.0.0 is complete — see [`CHANGELOG.md`](../CHANGELOG.md) for
+release-by-release detail. Post-1.0 work follows the stability policy in §7 below, not
+this ladder.
+
+Rules (still apply to any post-1.0 minor/patch plan):
 
 - **One minor = one plan = one (or a few) working sessions.** Plans are split into
   phases; a session may execute one phase or several, but never mixes plans.
@@ -105,3 +111,15 @@ Rules:
 | `specs/plans/*.md`    | Executable per-minor plans                                    |
 | `specs/GUARDRAILS.md` | Hard rules, ripple effects, troubleshooting                   |
 | `specs/patterns/*.md` | Canonical code shapes to copy (components, tests, docs pages) |
+
+## 7. Post-1.0
+
+The 0.5→1.0 ladder in §4 is done; this repo isn't going back to a "one plan per minor"
+cadence for routine work. Post-1.0 changes follow ordinary semver (see `SDD.md` §12.0):
+breaking changes need a major-version plan, features need a minor-version plan, fixes
+are ordinary patches that don't need a `specs/plans/*.md` file at all.
+
+The one exception already reserved: a first-party headless primitives layer under
+`@volt-ui/core`, meant to eventually replace `ng-primitives` as the accessibility/behavior
+layer (see §3's non-goals — explicitly out of scope for `1.0`). That project gets its own
+future spec when it starts; nothing about it is planned or scoped here.
