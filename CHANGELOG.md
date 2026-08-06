@@ -54,6 +54,17 @@ complete list of breaking changes between 0.9.0 and 1.0.0.
   layout demos) had `type="password"` inputs outside a `<form>`, which Chrome flags with
   a DOM advisory since password managers rely on form boundaries. Wrapped each in a
   `<form>` with submission prevented.
+- **The homepage hero's decorative background collage overlapped the real terminal
+  command bar** at common desktop widths — reproduced and confirmed broken at 1024px,
+  1366px, and 1920px, where the decorative "terminal" panel rendered directly on top of
+  the real copy-install-command control, and at 1024px the headline text itself
+  collided with the decorative panel. The decorative panels were positioned from
+  `100vw` with hand-tuned rem constants that didn't leave real clearance from the
+  content column at any width; repositioned them relative to the same `max-w-7xl`
+  container the real content uses, and raised the breakpoint that hides the decorative
+  scene entirely from 900px to 1279px (there isn't reliably enough width between 900
+  and 1280px for both the full-size headline and the collage). Verified clean at 1024,
+  1279, 1280, 1366, and 1920px in both themes.
 
 ### Added
 
