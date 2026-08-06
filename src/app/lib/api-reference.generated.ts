@@ -425,6 +425,7 @@ export const FILE_UPLOAD_API: ComponentApi = {
       outputs: [
         { name: 'selected', type: 'FileList | null' },
         { name: 'rejected', type: 'void' },
+        { name: 'dragOverChange', type: 'boolean' },
         { name: 'dragOver', type: 'boolean' },
       ],
     },
@@ -442,6 +443,7 @@ export const FILE_UPLOAD_API: ComponentApi = {
         { name: 'selected', type: 'FileList | null' },
         { name: 'canceled', type: 'void' },
         { name: 'rejected', type: 'void' },
+        { name: 'dragOverChange', type: 'boolean' },
         { name: 'dragOver', type: 'boolean' },
       ],
     },
@@ -599,7 +601,7 @@ export const NAVIGATION_MENU_API: ComponentApi = {
     },
     {
       className: 'VoltNavigationMenuLink',
-      selector: 'a[volt-navigation-menu-link]',
+      selector: 'a[volt-navigation-menu-link], a[voltNavigationMenuLink]',
       inputs: [
         { name: 'active', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
@@ -695,13 +697,7 @@ export const PAGINATION_API: ComponentApi = {
       outputs: [{ name: 'pageChange', type: 'number' }],
     },
   ],
-  variants: [
-    {
-      name: 'variant',
-      options: ['default', 'hover', 'hover', 'outline', 'hover', 'hover'],
-      default: 'default',
-    },
-  ],
+  variants: [{ name: 'variant', options: ['default', 'outline'], default: 'default' }],
 };
 
 export const POPOVER_API: ComponentApi = {
@@ -847,7 +843,10 @@ export const RESIZABLE_API: ComponentApi = {
         { name: 'orientation', type: "'horizontal' | 'vertical'", default: "'horizontal'" },
         { name: 'maxSize', type: 'number | undefined', default: 'undefined', transform: 'value' },
       ],
-      outputs: [{ name: 'resizing', type: 'boolean' }],
+      outputs: [
+        { name: 'resizingChange', type: 'boolean' },
+        { name: 'resizing', type: 'boolean' },
+      ],
     },
     {
       className: 'VoltResizablePanel',
@@ -1099,26 +1098,9 @@ export const TEXTAREA_API: ComponentApi = {
     },
   ],
   variants: [
-    {
-      name: 'variant',
-      options: [
-        'default',
-        'focus-visible',
-        'filled',
-        'focus-visible',
-        'focus-visible',
-        'ghost',
-        'focus-visible',
-        'focus-visible',
-      ],
-      default: 'default',
-    },
+    { name: 'variant', options: ['default', 'filled', 'ghost'], default: 'default' },
     { name: 'size', options: ['sm', 'md', 'lg'], default: 'md' },
-    {
-      name: 'state',
-      options: ['default', 'error', 'focus-visible', 'placeholder'],
-      default: 'default',
-    },
+    { name: 'state', options: ['default', 'error'], default: 'default' },
   ],
 };
 
@@ -1161,21 +1143,7 @@ export const TOGGLE_API: ComponentApi = {
     },
   ],
   variants: [
-    {
-      name: 'variant',
-      options: [
-        'default',
-        'outline',
-        'hover',
-        'hover',
-        'ghost',
-        'hover',
-        'hover',
-        'solid',
-        'hover',
-      ],
-      default: 'default',
-    },
+    { name: 'variant', options: ['default', 'outline', 'ghost', 'solid'], default: 'default' },
     { name: 'size', options: ['sm', 'md', 'lg', 'icon'], default: 'md' },
   ],
 };
@@ -1212,11 +1180,7 @@ export const TOGGLE_GROUP_API: ComponentApi = {
     },
   ],
   variants: [
-    {
-      name: 'variant',
-      options: ['default', 'hover', 'hover', 'outline', 'hover', 'hover'],
-      default: 'default',
-    },
+    { name: 'variant', options: ['default', 'outline'], default: 'default' },
     { name: 'size', options: ['sm', 'md', 'lg'], default: 'md' },
   ],
 };

@@ -5,6 +5,41 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+
+- **Docs site "API Reference" panel showed fabricated CVA variant options** for
+  `toggle`, `pagination`, `toggle-group`, and `textarea`: the generator script's variant
+  parser matched any `word:` pattern inside a class-string value (e.g. Tailwind's
+  `hover:`, `focus-visible:`, `data-[selected]:` prefixes), not just real option keys —
+  `toggle` showed 8 options instead of its real 4. Fixed the parser and re-verified every
+  CVA-based component's options against its actual `variants.ts`.
+- **`VoltNavigationMenuLink`'s selector was kebab-case** (`a[volt-navigation-menu-link]`),
+  the only attribute selector in the library not using camelCase, carrying an
+  unexplained lint suppression. Renamed to `a[voltNavigationMenuLink]`; the old
+  attribute still works (multi-selector) with a dev-mode deprecation warning, removed in
+  v1.0. Also fixed two bugs this surfaced: the component's own unit test used the
+  camelCase name against the kebab-only selector, so the directive silently never
+  attached and the test never really exercised it; and the public usage snippet showed
+  `<volt-navigation-menu-link>...</volt-navigation-menu-link>` as an element with
+  open/close tags, which never worked since the selector has always been attribute-only.
+- **`VoltResizableHandle.resizing` / `VoltFileUpload`/`VoltFileDropzone.dragOver`**
+  renamed to `resizingChange`/`dragOverChange` for consistency with every other
+  continuous-boolean-state output (`checkedChange`, `pressedChange`, ...); the old names
+  keep emitting in parallel, removed in v1.0. Found along the way:
+  `hostDirectives.outputs` cannot map one primitive output to two public aliases (both
+  silently go dead), so the dual-emit is bridged by injecting the host directive
+  instance directly and forwarding its real output to both public names.
+
+### Added
+
+- `specs/api-freeze-0.9.md`: generated public API inventory (41 components, 87
+  directives, 301 inputs, 42 outputs) — the v0.9 API-freeze reference. Generator logic
+  (`scripts/generate-api-freeze.mjs`) shares its extraction module
+  (`scripts/lib/api-extract.mjs`) with the existing docs-app API reference generator, so
+  the two can't drift from each other.
+
 ## [0.8.4] - 2026-08-05
 
 ### Added

@@ -299,12 +299,12 @@ import {
         <volt-navigation-menu-item>
           <volt-navigation-menu-trigger>Getting Started</volt-navigation-menu-trigger>
           <volt-navigation-menu-content>
-            <a volt-navigation-menu-link href="/docs">Introduction</a>
-            <a volt-navigation-menu-link href="/docs/installation">Installation</a>
+            <a voltNavigationMenuLink href="/docs">Introduction</a>
+            <a voltNavigationMenuLink href="/docs/installation">Installation</a>
           </volt-navigation-menu-content>
         </volt-navigation-menu-item>
         <volt-navigation-menu-item>
-          <volt-navigation-menu-link href="/docs/components">Components</volt-navigation-menu-link>
+          <a voltNavigationMenuLink href="/docs/components">Components</a>
         </volt-navigation-menu-item>
       </volt-navigation-menu-list>
     </volt-navigation-menu>

@@ -1,4 +1,12 @@
-import { booleanAttribute, ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import {
+  booleanAttribute,
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input,
+  output,
+} from '@angular/core';
+import { outputToObservable, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgpFileDropzone } from 'ng-primitives/file-upload';
 
 @Component({
@@ -13,11 +21,7 @@ import { NgpFileDropzone } from 'ng-primitives/file-upload';
         'ngpFileDropzoneDirectory: directory',
         'ngpFileDropzoneDisabled: disabled',
       ],
-      outputs: [
-        'ngpFileDropzoneSelected: selected',
-        'ngpFileDropzoneRejected: rejected',
-        'ngpFileDropzoneDragOver: dragOver',
-      ],
+      outputs: ['ngpFileDropzoneSelected: selected', 'ngpFileDropzoneRejected: rejected'],
     },
   ],
   host: {
@@ -34,5 +38,20 @@ export class VoltFileDropzone {
 
   readonly selected = output<FileList | null>();
   readonly rejected = output<void>();
+  readonly dragOverChange = output<boolean>();
+  /** @deprecated Use `dragOverChange` instead. Removed in v1.0. */
   readonly dragOver = output<boolean>();
+
+  constructor() {
+    // hostDirectives can only map one primitive output to one public alias (mapping
+    // the same internal output to two public names silently drops both), so the
+    // dragOver/dragOverChange pair is bridged manually from the primitive's own
+    // output instead of via hostDirectives.outputs.
+    outputToObservable(inject(NgpFileDropzone).dragOver)
+      .pipe(takeUntilDestroyed())
+      .subscribe(value => {
+        this.dragOverChange.emit(value);
+        this.dragOver.emit(value);
+      });
+  }
 }
