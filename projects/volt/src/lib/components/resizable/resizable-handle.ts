@@ -1,10 +1,12 @@
 import {
   AfterViewInit,
+  afterNextRender,
   ChangeDetectionStrategy,
   Component,
   computed,
   ElementRef,
   HostListener,
+  Injector,
   Renderer2,
   inject,
   input,
@@ -53,6 +55,7 @@ export class VoltResizableHandle implements AfterViewInit {
 
   private readonly elementRef = inject(ElementRef<HTMLElement>);
   private readonly renderer = inject(Renderer2);
+  private readonly injector = inject(Injector);
   private startX = 0;
   private startY = 0;
   private startSize = 0;
@@ -60,7 +63,9 @@ export class VoltResizableHandle implements AfterViewInit {
   private isResizing = false;
 
   ngAfterViewInit(): void {
-    this.syncMeasurements();
+    // getBoundingClientRect() is browser-only; ngAfterViewInit itself still runs
+    // during SSR, so the initial measurement must wait for afterNextRender.
+    afterNextRender(() => this.syncMeasurements(), { injector: this.injector });
   }
 
   @HostListener('pointerdown', ['$event'])

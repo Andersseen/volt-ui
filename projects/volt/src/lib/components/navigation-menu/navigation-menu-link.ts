@@ -5,6 +5,10 @@ import {
 } from 'ng-primitives/navigation-menu';
 
 @Component({
+  // Tag-scoped attribute selector (matches ng-primitives' own convention). ESLint's
+  // component-selector rule treats `a[...]` as an element selector and checks it
+  // against `style: 'kebab-case'`, which a camelCase attribute name never satisfies.
+  // eslint-disable-next-line @angular-eslint/component-selector -- tag-scoped attribute selector, not a mistake
   selector: 'a[voltNavigationMenuLink]',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [provideNavigationMenuLinkState()],
