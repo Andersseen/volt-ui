@@ -125,6 +125,18 @@ complete list of breaking changes between 0.9.0 and 1.0.0.
   group's orientation now always wins; the input remains as the fallback for a handle
   used outside a group. The unit test that covered this pressed ArrowRight in a vertical
   group and asserted it resized, so the bug was pinned in place rather than caught.
+- **The Theme Studio's preview panel scrolled out of view** despite being `lg:sticky`:
+  `overflow-hidden` on the page's `<main>` makes it a scroll container, which silently
+  disables `position: sticky` for everything inside. Switched to `overflow-x-clip`, which
+  still contains the decorative blurs without creating that container, and capped the
+  panel's height so it scrolls internally rather than outgrowing short viewports.
+- The Button demo showed its Variants row centered in a framed box while Sizes and States
+  sat bare and left-aligned. All three sections now use the same framed, centered
+  treatment.
+- Three controls on the Create Theme page rendered **duplicate DOM ids** — a static
+  `id="x"` on a Volt component stays on the host element _and_ is forwarded to the inner
+  control, so `<label for>` pointed at the custom element rather than the field. Bound as
+  properties instead.
 - The Create Theme page rendered its generated CSS with inverted colors
   (`bg-foreground`/`text-background`), so in dark mode the export block appeared as a
   bright white panel. It now uses the same lazily loaded editor as every other code block
@@ -132,6 +144,18 @@ complete list of breaking changes between 0.9.0 and 1.0.0.
 
 ### Added
 
+- **One-click palette generation in the Theme Studio.** `Generate` builds a complete
+  light _and_ dark palette — all 21 semantic tokens — from a seeded OKLCH ramp, with a
+  harmony selector (analogous, complementary, triadic, monochrome). Generation is
+  deterministic per seed, and every text/surface pair it produces is verified to clear
+  WCAG AA: accents that land on the lightness crossover where neither white nor near-black
+  text reaches 4.5:1 are walked away from it rather than shipped unreadable.
+- **Palette Crafter interop.** The Theme Studio imports a JSON export from
+  [Palette Crafter](https://palette-crafter.andersseen.dev) directly, mapping its
+  `bg`/`fg`/`primary`/`secondary`/`status` scales onto Volt's tokens — the 50–950 scales
+  are what make the opposite mode derivable, so one export fills both of Volt's modes.
+  Generated palettes also link back to Palette Crafter with their seed, harmony and hue
+  as query params, so a palette can be refined there and brought back.
 - `dialog`/`drawer` now have an end-to-end test asserting the ARIA contract
   (`role="dialog"`, `aria-modal="true"`, `aria-labelledby` pointing at the title) when
   opened — previously nothing in the suite actually opened them to check. `toast`'s error
