@@ -1,23 +1,11 @@
-import {
-  booleanAttribute,
-  ChangeDetectionStrategy,
-  Component,
-  ElementRef,
-  inject,
-  input,
-  isDevMode,
-} from '@angular/core';
+import { booleanAttribute, ChangeDetectionStrategy, Component, input } from '@angular/core';
 import {
   NgpNavigationMenuLink,
   provideNavigationMenuLinkState,
 } from 'ng-primitives/navigation-menu';
 
 @Component({
-  // `volt-navigation-menu-link` is deprecated (kebab-case, inconsistent with every
-  // other tag-scoped attribute selector in this library, e.g. `voltComboboxInput`,
-  // `voltNativeSelect`) — kept working until v1.0, see the constructor warning below.
-  // eslint-disable-next-line @angular-eslint/component-selector -- deprecated alias, not a mistake
-  selector: 'a[volt-navigation-menu-link], a[voltNavigationMenuLink]',
+  selector: 'a[voltNavigationMenuLink]',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [provideNavigationMenuLinkState()],
   host: {
@@ -35,17 +23,4 @@ import {
 export class VoltNavigationMenuLink {
   readonly active = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
-
-  constructor() {
-    if (isDevMode()) {
-      const element = inject(ElementRef).nativeElement as HTMLElement;
-      if (element.hasAttribute('volt-navigation-menu-link')) {
-        console.warn(
-          '[Volt UI] The `volt-navigation-menu-link` attribute selector is deprecated ' +
-            'and will be removed in v1.0. Use `voltNavigationMenuLink` instead ' +
-            '(matches the CLI-transformed `uiNavigationMenuLink` in consumer projects).'
-        );
-      }
-    }
-  }
 }

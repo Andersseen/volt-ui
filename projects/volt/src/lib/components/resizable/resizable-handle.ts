@@ -47,8 +47,6 @@ export class VoltResizableHandle implements AfterViewInit {
       value === undefined || value === null || value === '' ? undefined : numberAttribute(value),
   });
   readonly resizingChange = output<boolean>();
-  /** @deprecated Use `resizingChange` instead. Removed in v1.0. */
-  readonly resizing = output<boolean>();
   protected readonly currentSize = signal(50);
   protected readonly measuredMaxSize = signal(100);
   protected readonly ariaValueMax = computed(() => this.maxSize() ?? this.measuredMaxSize());
@@ -70,7 +68,6 @@ export class VoltResizableHandle implements AfterViewInit {
     event.preventDefault();
     this.isResizing = true;
     this.resizingChange.emit(true);
-    this.resizing.emit(true);
 
     this.elementRef.nativeElement.setPointerCapture?.(event.pointerId);
     this.syncMeasurements();
@@ -88,7 +85,6 @@ export class VoltResizableHandle implements AfterViewInit {
     const stopResizing = () => {
       this.isResizing = false;
       this.resizingChange.emit(false);
-      this.resizing.emit(false);
       moveUnlistener();
       upUnlistener();
       cancelUnlistener();

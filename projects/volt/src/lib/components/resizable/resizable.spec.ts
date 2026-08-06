@@ -8,11 +8,7 @@ import { VoltResizable, VoltResizableHandle, VoltResizablePanel } from './index'
   template: `
     <volt-resizable [orientation]="orientation()" class="custom-group">
       <volt-resizable-panel>First</volt-resizable-panel>
-      <volt-resizable-handle
-        aria-label="Resize panels"
-        (resizingChange)="resizingChange($event)"
-        (resizing)="resizing($event)"
-      />
+      <volt-resizable-handle aria-label="Resize panels" (resizingChange)="resizingChange($event)" />
       <volt-resizable-panel>Second</volt-resizable-panel>
     </volt-resizable>
   `,
@@ -20,7 +16,6 @@ import { VoltResizable, VoltResizableHandle, VoltResizablePanel } from './index'
 class ResizableFixture {
   readonly orientation = signal<'horizontal' | 'vertical'>('horizontal');
   resizingChange = vi.fn();
-  resizing = vi.fn();
 }
 
 describe('resizable components', () => {
@@ -61,16 +56,14 @@ describe('resizable components', () => {
     expect(handle).toHaveAttribute('aria-valuenow', '70');
   });
 
-  it('emits resizingChange and the deprecated resizing alias together', async () => {
+  it('emits resizingChange on pointer down and up', async () => {
     const { fixture } = await render(ResizableFixture);
     const handle = screen.getByRole('separator', { name: 'Resize panels' });
 
     fireEvent.pointerDown(handle, { clientX: 10, pointerId: 1 });
     expect(fixture.componentInstance.resizingChange).toHaveBeenCalledWith(true);
-    expect(fixture.componentInstance.resizing).toHaveBeenCalledWith(true);
 
     fireEvent.pointerUp(document, { pointerId: 1 });
     expect(fixture.componentInstance.resizingChange).toHaveBeenCalledWith(false);
-    expect(fixture.componentInstance.resizing).toHaveBeenCalledWith(false);
   });
 });

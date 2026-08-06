@@ -426,7 +426,6 @@ export const FILE_UPLOAD_API: ComponentApi = {
         { name: 'selected', type: 'FileList | null' },
         { name: 'rejected', type: 'void' },
         { name: 'dragOverChange', type: 'boolean' },
-        { name: 'dragOver', type: 'boolean' },
       ],
     },
     {
@@ -444,7 +443,6 @@ export const FILE_UPLOAD_API: ComponentApi = {
         { name: 'canceled', type: 'void' },
         { name: 'rejected', type: 'void' },
         { name: 'dragOverChange', type: 'boolean' },
-        { name: 'dragOver', type: 'boolean' },
       ],
     },
   ],
@@ -601,7 +599,7 @@ export const NAVIGATION_MENU_API: ComponentApi = {
     },
     {
       className: 'VoltNavigationMenuLink',
-      selector: 'a[volt-navigation-menu-link], a[voltNavigationMenuLink]',
+      selector: 'a[voltNavigationMenuLink]',
       inputs: [
         { name: 'active', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
@@ -843,10 +841,7 @@ export const RESIZABLE_API: ComponentApi = {
         { name: 'orientation', type: "'horizontal' | 'vertical'", default: "'horizontal'" },
         { name: 'maxSize', type: 'number | undefined', default: 'undefined', transform: 'value' },
       ],
-      outputs: [
-        { name: 'resizingChange', type: 'boolean' },
-        { name: 'resizing', type: 'boolean' },
-      ],
+      outputs: [{ name: 'resizingChange', type: 'boolean' }],
     },
     {
       className: 'VoltResizablePanel',

@@ -14,12 +14,7 @@ import { VoltFileDropzone, VoltFileUpload } from './index';
       [disabled]="disabled"
       (selected)="selected($event)"
     />
-    <volt-file-dropzone
-      fileTypes="image/png"
-      multiple
-      (dragOverChange)="dragOverChange($event)"
-      (dragOver)="dragOver($event)"
-    >
+    <volt-file-dropzone fileTypes="image/png" multiple (dragOverChange)="dragOverChange($event)">
       Drop files
     </volt-file-dropzone>
   `,
@@ -28,7 +23,6 @@ class FileUploadFixture {
   disabled = true;
   selected = vi.fn();
   dragOverChange = vi.fn();
-  dragOver = vi.fn();
 }
 
 describe('file upload directives', () => {
@@ -43,7 +37,7 @@ describe('file upload directives', () => {
     expect(dropzone).toHaveTextContent('Drop files');
   });
 
-  it('emits dragOverChange and the deprecated dragOver alias together', async () => {
+  it('emits dragOverChange on drag enter', async () => {
     const { container, fixture } = await render(FileUploadFixture);
     const dropzone = container.querySelector('volt-file-dropzone') as HTMLElement;
 
@@ -52,6 +46,5 @@ describe('file upload directives', () => {
     fixture.detectChanges();
 
     expect(fixture.componentInstance.dragOverChange).toHaveBeenCalledWith(true);
-    expect(fixture.componentInstance.dragOver).toHaveBeenCalledWith(true);
   });
 });
