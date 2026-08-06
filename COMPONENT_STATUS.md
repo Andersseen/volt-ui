@@ -1,20 +1,20 @@
 # Component Status
 
-Volt UI is pre-v1. Status labels describe the current confidence level for the copy-paste workflow, not a permanent promise.
+Volt UI `1.0.0` is stable. Status labels describe the current confidence level for the copy-paste workflow, not a permanent promise — a `beta` label means more hardening may land in a minor release, not that the API can break outside a major.
 
 > Naming note: this is the independent Angular Volt UI project under `@voltui`, not PrimeVue Volt UI.
 
 ## Status Labels
 
-- **stable**: recommended for early adoption; API and behavior are close to v1 shape, with meaningful tests and docs.
-- **beta**: usable, but may still need more form, keyboard, accessibility, or edge-case coverage.
-- **experimental**: useful demos exist, but the API or behavior may change before v1.
+- **stable**: recommended for production use; API and behavior are settled, with meaningful tests and docs.
+- **beta**: usable, but may still need more form, keyboard, accessibility, or edge-case coverage before moving to stable.
+- **experimental**: reserved for future previews whose API or behavior may still change; not currently used.
 
 ## Release Groups
 
 - **Stable**: `avatar`, `badge`, `breadcrumbs`, `button`, `card`, `checkbox`, `form-field`, `input`, `meter`, `progress`, `radio`, `separator`, `skeleton`, `slider`, `switch`, `textarea`, `toggle`, `toggle-group`.
 - **Beta**: `accordion`, `autofill`, `combobox`, `date-picker`, `dialog`, `drawer`, `dropdown-menu`, `file-upload`, `input-otp`, `listbox`, `native-select`, `navigation-menu`, `pagination`, `popover`, `range-slider`, `resizable`, `search`, `select`, `sidebar`, `table`, `tabs`, `theme`, `toast`, `toolbar`, `tooltip`.
-- **Experimental**: none. The v1 component surface is now fixed.
+- **Experimental**: none. The 1.0 component surface is fixed.
 
 ## Table
 
@@ -63,10 +63,10 @@ Volt UI is pre-v1. Status labels describe the current confidence level for the c
 | toolbar         | beta   | n/a                       | via ng-primitives               | focus grouping needs more coverage       | yes  | unit                |
 | tooltip         | beta   | n/a                       | hover/focus/Escape/blur covered | aria-describedby and position covered    | yes  | unit + e2e          |
 
-## v1 Hardening Checklist
+## Ongoing hardening policy
 
-- Keep all v1-surface components at beta until their remaining browser-level caveats are covered.
-- Move CVA controls to stable candidate only after Reactive Forms disabled/write/change/touched behavior is covered.
+- Keep `beta` components at `beta` until their remaining browser-level caveats are covered — moving to `stable` never happens as part of a patch that also changes behavior.
+- Move CVA controls to `stable` only after Reactive Forms disabled/write/change/touched behavior is covered.
 - Keep component source copyable without hidden docs-app dependencies.
 - Keep CLI overwrite behavior explicit and conservative.
-- Document any known accessibility caveats per component before marking stable.
+- Document any known accessibility caveats per component before marking `stable`.

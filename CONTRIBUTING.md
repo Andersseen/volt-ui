@@ -1,7 +1,7 @@
 # Contributing to Volt UI
 
 Thanks for helping improve Volt UI. Bug fixes, accessibility improvements,
-tests and documentation are especially welcome during pre-v1 hardening.
+tests and documentation are always welcome.
 
 ## Setup
 

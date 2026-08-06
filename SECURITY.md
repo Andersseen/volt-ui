@@ -2,8 +2,8 @@
 
 ## Supported versions
 
-Volt UI is pre-v1. Security fixes are applied to the latest published minor
-release. Older pre-v1 minors are not maintained.
+Security fixes are applied to the latest published `1.x` minor release. Pre-1.0
+(`0.x`) releases are no longer maintained.
 
 ## Reporting a vulnerability
 

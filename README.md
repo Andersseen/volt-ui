@@ -221,29 +221,35 @@ Volt UI ships three complementary ways to give AI assistants correct context:
 
 ## 📈 Stability & Roadmap
 
-Current status: **`0.9.0` — release candidate. The public API is frozen for 1.0.**
+Current status: **`1.0.0` — stable. The public API is locked.**
 
-Component inputs, outputs, and selectors will not change again before `1.0.0`, except
-for the removal of a small set of deprecated aliases — see
-**[MIGRATION.md](./MIGRATION.md)** for the full 0.x → 1.0 upgrade guide and
-**[specs/api-freeze-0.9.md](./specs/api-freeze-0.9.md)** for the complete frozen API
-reference.
+Component inputs, outputs, and selectors follow semantic versioning as of `1.0.0`:
+breaking changes only happen in a major version bump, new features land in minors, and
+fixes land in patches. If you're upgrading from a `0.x` release, see
+**[MIGRATION.md](./MIGRATION.md)** for the full 0.x → 1.0 upgrade guide (the three
+aliases it documents as removed in 1.0.0 are gone as of this release) and
+**[specs/api-freeze-0.9.md](./specs/api-freeze-0.9.md)** for the frozen pre-1.0 API
+reference this release shipped against.
 
-- **Stable** — recommended for early adoption.
-- **Beta** — usable; may still gain forms / keyboard / a11y / edge-case coverage.
-- **Experimental** — published for feedback; may change before v1.
+- **Stable** — recommended for production use.
+- **Beta** — usable; may still gain forms / keyboard / a11y / edge-case coverage before
+  moving to stable, but its public API won't change outside a major bump.
+- **Experimental** — reserved for future previews. Not currently used — every shipped
+  component is `stable` or `beta` as of `1.0.0`.
 
-All components remain available through the package and CLI; the status label communicates **confidence, not availability**. Now that the API is frozen, remaining pre-1.0 releases are limited to bug fixes and the deprecation removals documented in `MIGRATION.md` — no further breaking renames are planned. After v1, breaking changes move to majors.
+All components remain available through the package and CLI; the status label
+communicates **confidence, not availability**. See
+**[docs/versioning](https://volt-ui.andersseen.dev/docs/versioning)** for the full
+semver promise and support policy.
 
 Full status table: **[COMPONENT_STATUS.md](./COMPONENT_STATUS.md)**.
 
 ### Compatibility policy
 
-The current `0.9.x` line targets Angular `^21.2` and Node 20 or newer. During
-pre-v1, Volt UI supports the latest declared Angular major only; widening that
-range requires consumer-fixture verification and is never assumed from a
-successful build. After v1, the project will document each supported Angular
-major and provide migrations or release notes before dropping one.
+The `1.x` line targets Angular `^21.2` and Node 20 or newer. Volt UI supports the
+latest declared Angular major only; widening that range requires consumer-fixture
+verification and is never assumed from a successful build. Each supported Angular
+major is documented with migration notes or release notes before a major is dropped.
 
 Coverage is measured against the complete library source, CLI core and hosted
 MCP route. Every component family requires a real behavior spec, while overlays

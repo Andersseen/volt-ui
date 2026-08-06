@@ -113,7 +113,7 @@ export class MyComponent {}
 
 ## Available Components
 
-See [COMPONENT_STATUS.md](./COMPONENT_STATUS.md) for the current component list and pre-v1 maturity status.
+See [COMPONENT_STATUS.md](./COMPONENT_STATUS.md) for the current component list and maturity status.
 
 ## Safety Notes
 

@@ -21,23 +21,17 @@ import {
         </p>
       </div>
 
-      <div class="grid gap-3 sm:grid-cols-3">
+      <div class="grid gap-3 sm:grid-cols-2">
         <div class="rounded-lg border border-border bg-muted/20 p-4">
           <div class="text-sm font-medium text-success">Stable</div>
           <p class="mt-1 text-xs text-muted-foreground">
-            Recommended for early adoption. APIs are close to their v1 shape.
+            Recommended for production use. APIs are settled.
           </p>
         </div>
         <div class="rounded-lg border border-border bg-muted/20 p-4">
           <div class="text-sm font-medium text-info">Beta</div>
           <p class="mt-1 text-xs text-muted-foreground">
             Usable today, with more forms, keyboard, or edge-case coverage planned.
-          </p>
-        </div>
-        <div class="rounded-lg border border-border bg-muted/20 p-4">
-          <div class="text-sm font-medium text-warning">Experimental</div>
-          <p class="mt-1 text-xs text-muted-foreground">
-            Available for feedback. Behavior or APIs may change before v1.
           </p>
         </div>
       </div>

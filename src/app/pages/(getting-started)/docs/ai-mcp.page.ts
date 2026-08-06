@@ -243,7 +243,7 @@ const MCP_URL = 'https://volt-ui.pages.dev/api/mcp';
           <li class="flex items-start gap-2">
             <lmn-check class="w-[18px] h-[18px] text-green-500 mt-0.5 shrink-0" />
             <span>
-              <strong>All components</strong> — 41 components across stable, beta, and experimental
+              <strong>All components</strong> — 41 components across stable and beta status labels
             </span>
           </li>
           <li class="flex items-start gap-2">
