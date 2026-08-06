@@ -109,8 +109,9 @@ export class ChatListItem {
     <div
       class="h-[700px] border border-border rounded-lg overflow-hidden flex bg-background relative"
     >
-      <!-- Sidebar -->
-      <div class="w-72 border-r border-border flex flex-col shrink-0">
+      <!-- Sidebar — hidden on phones so the conversation pane isn't cut off,
+           matching how the sidebar layout goes off-canvas at the same width. -->
+      <div class="w-72 border-r border-border hidden sm:flex flex-col shrink-0">
         <!-- Search -->
         <div class="p-3 border-b border-border">
           <volt-input placeholder="Search conversations..." class="h-9 text-sm" />

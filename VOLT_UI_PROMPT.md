@@ -132,7 +132,7 @@ Known upstream caveats in `ng-primitives`: meter currently exposes `aria-valueno
 | Toolbar       | `./ui/toolbar`       | `<ui-toolbar>`, `<button uiToolbarButton>`                                                                                                              | `orientation`.                                                          |
 | Tooltip       | `./ui/tooltip`       | `[uiTooltip]`, `<ui-tooltip-content>`                                                                                                                   | Trigger references content template.                                    |
 
-### Additional beta components
+### Additional components
 
 | Component       | Import                 | Selectors                                                                                                        | Notes                                          |
 | --------------- | ---------------------- | ---------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- |

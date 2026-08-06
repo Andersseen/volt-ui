@@ -44,7 +44,7 @@ import { LmnGithubIcon } from 'lumen-icons';
             variant="secondary"
             class="font-mono text-xs hidden md:inline-flex border-none shadow-sm ring-1 ring-border/50"
           >
-            v0.9.0
+            v1.0.0
           </volt-badge>
         </div>
 

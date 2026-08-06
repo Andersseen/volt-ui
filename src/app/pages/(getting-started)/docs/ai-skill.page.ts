@@ -108,8 +108,8 @@ import skillMarkdown from '../../../../../.agents/skills/volt-ui/SKILL.md?raw';
           <li class="flex items-start gap-2">
             <span class="text-primary mt-0.5">•</span>
             <span>
-              <strong>Component catalog</strong> — stable, beta, and experimental components with
-              selectors and key inputs
+              <strong>Component catalog</strong> — stable and beta components with selectors and key
+              inputs
             </span>
           </li>
           <li class="flex items-start gap-2">

@@ -20,51 +20,55 @@
 
           <volt-tabs-content value="account">
             <volt-card>
-              <volt-card-header>
-                <volt-card-title>Account</volt-card-title>
-                <volt-card-description
-                  >Make changes to your account here. Click save when you're
-                  done.</volt-card-description
-                >
-              </volt-card-header>
-              <volt-card-content class="space-y-4">
-                <div class="space-y-2">
-                  <volt-label htmlFor="name">Name</volt-label>
-                  <volt-input id="name" value="Jane Doe" />
-                </div>
-                <div class="space-y-2">
-                  <volt-label htmlFor="username">Username</volt-label>
-                  <volt-input id="username" value="@janedoe" />
-                </div>
-              </volt-card-content>
-              <volt-card-footer>
-                <volt-button>Save changes</volt-button>
-              </volt-card-footer>
+              <form (submit)="$event.preventDefault()">
+                <volt-card-header>
+                  <volt-card-title>Account</volt-card-title>
+                  <volt-card-description
+                    >Make changes to your account here. Click save when you're
+                    done.</volt-card-description
+                  >
+                </volt-card-header>
+                <volt-card-content class="space-y-4">
+                  <div class="space-y-2">
+                    <volt-label htmlFor="name">Name</volt-label>
+                    <volt-input id="name" value="Jane Doe" />
+                  </div>
+                  <div class="space-y-2">
+                    <volt-label htmlFor="username">Username</volt-label>
+                    <volt-input id="username" value="@janedoe" />
+                  </div>
+                </volt-card-content>
+                <volt-card-footer>
+                  <volt-button type="submit">Save changes</volt-button>
+                </volt-card-footer>
+              </form>
             </volt-card>
           </volt-tabs-content>
 
           <volt-tabs-content value="password">
             <volt-card>
-              <volt-card-header>
-                <volt-card-title>Password</volt-card-title>
-                <volt-card-description
-                  >Change your password here. After saving, you'll be logged
-                  out.</volt-card-description
-                >
-              </volt-card-header>
-              <volt-card-content class="space-y-4">
-                <div class="space-y-2">
-                  <volt-label htmlFor="current">Current password</volt-label>
-                  <volt-input id="current" type="password" />
-                </div>
-                <div class="space-y-2">
-                  <volt-label htmlFor="new">New password</volt-label>
-                  <volt-input id="new" type="password" />
-                </div>
-              </volt-card-content>
-              <volt-card-footer>
-                <volt-button>Save password</volt-button>
-              </volt-card-footer>
+              <form (submit)="$event.preventDefault()">
+                <volt-card-header>
+                  <volt-card-title>Password</volt-card-title>
+                  <volt-card-description
+                    >Change your password here. After saving, you'll be logged
+                    out.</volt-card-description
+                  >
+                </volt-card-header>
+                <volt-card-content class="space-y-4">
+                  <div class="space-y-2">
+                    <volt-label htmlFor="current">Current password</volt-label>
+                    <volt-input id="current" type="password" />
+                  </div>
+                  <div class="space-y-2">
+                    <volt-label htmlFor="new">New password</volt-label>
+                    <volt-input id="new" type="password" />
+                  </div>
+                </volt-card-content>
+                <volt-card-footer>
+                  <volt-button type="submit">Save password</volt-button>
+                </volt-card-footer>
+              </form>
             </volt-card>
           </volt-tabs-content>
         </volt-tabs>

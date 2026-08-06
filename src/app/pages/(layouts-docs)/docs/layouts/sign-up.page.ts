@@ -45,7 +45,7 @@ class SocialSignUpButton {}
       </div>
 
       <!-- Form -->
-      <div class="space-y-4">
+      <form class="space-y-4" (submit)="$event.preventDefault()">
         <div class="grid grid-cols-2 gap-3">
           <div class="space-y-2">
             <volt-label>First name</volt-label>
@@ -85,8 +85,8 @@ class SocialSignUpButton {}
           </volt-label>
         </div>
 
-        <volt-button class="w-full" size="lg">Create Account</volt-button>
-      </div>
+        <volt-button type="submit" class="w-full" size="lg">Create Account</volt-button>
+      </form>
 
       <!-- Divider -->
       <div class="relative my-6">

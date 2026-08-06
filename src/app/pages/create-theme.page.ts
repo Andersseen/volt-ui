@@ -15,40 +15,29 @@ import {
   VoltSelectLabel,
   VoltSlider,
   VoltSwitch,
+  VoltTextarea,
   VoltTabs,
   VoltTabsContent,
   VoltTabsList,
   VoltTabsTrigger,
 } from 'volt';
+import { CodeEditor } from '../components/code-editor';
 import { CopyButton } from '../components/copy-button';
+import {
+  crafterUrl,
+  generatePalette,
+  paletteHarmonies,
+  paletteFromCrafterExport,
+  PaletteImportError,
+  randomSeed,
+  type ColorToken,
+  type GeneratedPalette,
+  type ModePalette,
+  type PaletteHarmony,
+} from '../lib/palette';
 
 type ThemeMode = 'light' | 'dark';
 type PresetName = 'glacier' | 'sage' | 'ember';
-
-type ColorToken =
-  | 'background'
-  | 'foreground'
-  | 'surface'
-  | 'surfaceForeground'
-  | 'muted'
-  | 'mutedForeground'
-  | 'border'
-  | 'input'
-  | 'ring'
-  | 'primary'
-  | 'primaryForeground'
-  | 'secondary'
-  | 'secondaryForeground'
-  | 'success'
-  | 'successForeground'
-  | 'warning'
-  | 'warningForeground'
-  | 'error'
-  | 'errorForeground'
-  | 'info'
-  | 'infoForeground';
-
-type ModePalette = Record<ColorToken, string>;
 
 interface ThemeDraft {
   name: string;
@@ -300,6 +289,7 @@ function indent(lines: string[]): string {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
+    CodeEditor,
     CopyButton,
     VoltBadge,
     VoltButton,
@@ -315,13 +305,17 @@ function indent(lines: string[]): string {
     VoltSelectLabel,
     VoltSlider,
     VoltSwitch,
+    VoltTextarea,
     VoltTabs,
     VoltTabsContent,
     VoltTabsList,
     VoltTabsTrigger,
   ],
   template: `
-    <main class="relative z-10 overflow-hidden pb-24">
+    <!-- overflow-x-clip, not overflow-hidden: it still contains the decorative blurs
+         but does not create a scroll container, which would silently disable the
+         preview panel's position: sticky. -->
+    <main class="relative z-10 overflow-x-clip pb-24">
       <section class="relative border-b border-border/50">
         <div class="theme-grid pointer-events-none absolute inset-0 -z-10"></div>
         <div
@@ -351,7 +345,9 @@ function indent(lines: string[]): string {
       <section
         class="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[minmax(0,1fr)_430px] lg:py-14"
       >
-        <div class="space-y-6">
+        <!-- min-w-0: the generated-CSS <pre> is wider than a phone, and without this
+             the grid item refuses to shrink below it and overflows the page. -->
+        <div class="min-w-0 space-y-6">
           <div class="flex items-end justify-between gap-4">
             <div>
               <p class="text-xs font-medium uppercase tracking-[0.18em] text-primary">Editor</p>
@@ -376,7 +372,7 @@ function indent(lines: string[]): string {
                     >Theme name</label
                   >
                   <volt-input
-                    id="theme-name"
+                    [id]="'theme-name'"
                     ariaLabel="Theme name"
                     [value]="theme().name"
                     (valueChange)="setName($event)"
@@ -399,6 +395,90 @@ function indent(lines: string[]): string {
                     </volt-select-content>
                   </volt-select>
                 </div>
+              </div>
+
+              <!-- Palette generator -->
+              <div class="mt-6 space-y-4 rounded-xl border border-border/70 bg-muted/25 p-4">
+                <div class="flex flex-wrap items-end justify-between gap-4">
+                  <div>
+                    <p class="text-sm font-medium text-foreground">Generate a palette</p>
+                    <p class="mt-1 text-sm text-muted-foreground">
+                      Perceptual OKLCH scales with contrast-checked text colors, for both modes at
+                      once.
+                    </p>
+                  </div>
+                  <div class="flex flex-wrap items-center gap-2">
+                    <volt-select
+                      [(value)]="harmonyValue"
+                      ariaLabel="Color harmony"
+                      placeholder="Harmony"
+                      class="w-40"
+                    >
+                      <volt-select-content>
+                        <volt-select-label>Harmony</volt-select-label>
+                        @for (option of harmonies; track option) {
+                          <volt-select-item [value]="option">{{ option }}</volt-select-item>
+                        }
+                      </volt-select-content>
+                    </volt-select>
+                    <volt-button (click)="generate()">Generate</volt-button>
+                  </div>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs">
+                  <button
+                    type="button"
+                    class="text-primary underline-offset-4 hover:underline"
+                    (click)="toggleImport()"
+                  >
+                    {{ importOpen() ? 'Hide import' : 'Import from Palette Crafter' }}
+                  </button>
+                  <a
+                    [href]="crafterLink()"
+                    target="_blank"
+                    rel="noreferrer"
+                    class="text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+                  >
+                    {{
+                      paletteMeta()
+                        ? 'Refine this palette in Palette Crafter ↗'
+                        : 'Craft one in Palette Crafter ↗'
+                    }}
+                  </a>
+                  @if (paletteMeta(); as meta) {
+                    <span class="font-mono text-muted-foreground">
+                      seed {{ meta.seed }} · hue {{ meta.baseHue }}°
+                    </span>
+                  }
+                </div>
+
+                @if (importOpen()) {
+                  <div class="space-y-2">
+                    <label for="palette-import" class="text-sm text-muted-foreground">
+                      Paste the <span class="font-medium text-foreground">JSON</span> export from
+                      Palette Crafter:
+                    </label>
+                    <volt-textarea
+                      [id]="'palette-import'"
+                      [rows]="4"
+                      placeholder='{ "theme": { "bg": "#f9fafd", … } }'
+                      [value]="importText()"
+                      (valueChange)="setImportText($event)"
+                      class="font-mono text-xs"
+                    />
+                    @if (importError(); as message) {
+                      <p role="alert" class="text-xs text-error">{{ message }}</p>
+                    }
+                    <volt-button
+                      size="sm"
+                      variant="outline"
+                      [disabled]="!importText().trim()"
+                      (click)="importFromCrafter()"
+                    >
+                      Apply palette
+                    </volt-button>
+                  </div>
+                }
               </div>
             </volt-card-content>
           </volt-card>
@@ -538,14 +618,16 @@ function indent(lines: string[]): string {
               </div>
             </volt-card-header>
             <volt-card-content>
-              <pre
-                class="max-h-[420px] overflow-auto rounded-xl border border-border/70 bg-foreground p-5 text-xs leading-relaxed text-background shadow-inner"
-              ><code>{{ generatedCss() }}</code></pre>
+              <div class="overflow-hidden rounded-xl border border-border/70 bg-muted/30">
+                <app-code-editor [code]="generatedCss()" language="css" height="420px" />
+              </div>
             </volt-card-content>
           </volt-card>
         </div>
 
-        <aside class="lg:sticky lg:top-20 lg:self-start">
+        <aside
+          class="min-w-0 lg:sticky lg:top-20 lg:max-h-[calc(100svh-6rem)] lg:self-start lg:overflow-y-auto"
+        >
           <div class="space-y-4">
             <div class="flex items-center justify-between gap-3">
               <div>
@@ -558,7 +640,7 @@ function indent(lines: string[]): string {
               <div class="flex items-center gap-2 text-sm text-muted-foreground">
                 <label for="theme-preview-dark">Dark</label>
                 <volt-switch
-                  id="theme-preview-dark"
+                  [id]="'theme-preview-dark'"
                   ariaLabel="Dark preview"
                   [checked]="previewDark()"
                   (checkedChange)="setPreviewDark($event)"
@@ -749,6 +831,21 @@ export default class CreateThemePage {
   protected readonly activeMode = signal<ThemeMode>('light');
   protected readonly previewDark = signal(false);
 
+  protected readonly harmonies = paletteHarmonies;
+  protected readonly harmony = signal<PaletteHarmony>('analogous');
+  /** Set once a palette has been generated or imported, so we can offer a deep link. */
+  protected readonly paletteMeta = signal<GeneratedPalette['meta'] | null>(null);
+  protected readonly importOpen = signal(false);
+  protected readonly importText = signal('');
+  protected readonly importError = signal('');
+
+  protected readonly crafterLink = computed(() => {
+    const meta = this.paletteMeta();
+    return meta
+      ? crafterUrl(meta, this.previewDark() ? 'dark' : 'light')
+      : 'https://palette-crafter.andersseen.dev/';
+  });
+
   protected readonly normalizedName = computed(() => normalizeThemeName(this.theme().name));
 
   protected readonly activePalette = computed(() =>
@@ -821,6 +918,51 @@ export default class CreateThemePage {
     if (typeof value === 'boolean') {
       this.previewDark.set(value);
     }
+  }
+
+  protected get harmonyValue(): PaletteHarmony {
+    return this.harmony();
+  }
+
+  protected set harmonyValue(value: unknown) {
+    if ((paletteHarmonies as string[]).includes(value as string)) {
+      this.harmony.set(value as PaletteHarmony);
+    }
+  }
+
+  /** One click: a fresh, contrast-checked light + dark palette. */
+  protected generate(): void {
+    this.applyPalette(generatePalette({ seed: randomSeed(), harmony: this.harmony() }));
+  }
+
+  protected toggleImport(): void {
+    this.importOpen.update(open => !open);
+    this.importError.set('');
+  }
+
+  protected setImportText(value: string): void {
+    this.importText.set(value);
+    if (this.importError()) this.importError.set('');
+  }
+
+  protected importFromCrafter(): void {
+    try {
+      this.applyPalette(paletteFromCrafterExport(this.importText()));
+      this.importOpen.set(false);
+      this.importText.set('');
+    } catch (error) {
+      this.importError.set(
+        error instanceof PaletteImportError ? error.message : 'Could not read that palette.'
+      );
+    }
+  }
+
+  private applyPalette(palette: GeneratedPalette): void {
+    // Only the colors change — radius, borders and shadows are the user's own shape work.
+    this.theme.update(theme => ({ ...theme, light: palette.light, dark: palette.dark }));
+    this.paletteMeta.set(palette.meta);
+    this.harmony.set(palette.meta.harmony);
+    this.importError.set('');
   }
 
   protected setColor(mode: ThemeMode, key: ColorToken, event: Event): void {

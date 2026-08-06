@@ -96,7 +96,7 @@ import promptMarkdown from '../../../../../VOLT_UI_PROMPT.md?raw';
           <li class="flex items-start gap-2">
             <span class="text-primary mt-0.5">•</span>
             <span>
-              <strong>Component catalog</strong> — stable, beta, and experimental with selectors and
+              <strong>Component catalog</strong> — stable and beta components with selectors and
               notes
             </span>
           </li>

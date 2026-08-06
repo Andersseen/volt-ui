@@ -154,23 +154,25 @@ class SettingsRow {
                 title="Account Security"
                 description="Manage your password and 2FA settings."
               >
-                <div class="space-y-4">
-                  <div class="space-y-2">
-                    <volt-label>Current Password</volt-label>
-                    <volt-input type="password" placeholder="Enter current password" />
+                <form (submit)="$event.preventDefault()">
+                  <div class="space-y-4">
+                    <div class="space-y-2">
+                      <volt-label>Current Password</volt-label>
+                      <volt-input type="password" placeholder="Enter current password" />
+                    </div>
+                    <div class="space-y-2">
+                      <volt-label>New Password</volt-label>
+                      <volt-input type="password" placeholder="Enter new password" />
+                    </div>
+                    <div class="space-y-2">
+                      <volt-label>Confirm Password</volt-label>
+                      <volt-input type="password" placeholder="Confirm new password" />
+                    </div>
                   </div>
-                  <div class="space-y-2">
-                    <volt-label>New Password</volt-label>
-                    <volt-input type="password" placeholder="Enter new password" />
+                  <div class="flex justify-end mt-6">
+                    <volt-button type="submit" size="sm">Update Password</volt-button>
                   </div>
-                  <div class="space-y-2">
-                    <volt-label>Confirm Password</volt-label>
-                    <volt-input type="password" placeholder="Confirm new password" />
-                  </div>
-                </div>
-                <div class="flex justify-end mt-6">
-                  <volt-button size="sm">Update Password</volt-button>
-                </div>
+                </form>
               </app-settings-section>
             </volt-card>
 

@@ -24,6 +24,7 @@ export default class DocsLayout {
         { path: '/docs/introduction', label: 'Introduction' },
         { path: '/docs/themes', label: 'Themes' },
         { path: '/docs/customization', label: 'Customization' },
+        { path: '/docs/versioning', label: 'Versioning & Stability' },
         { path: '/docs/migration-notes', label: 'Migration Notes' },
       ],
     },

@@ -58,94 +58,88 @@ import {
       <section class="hero-surface relative border-b border-border/60">
         <div class="hero-grid pointer-events-none absolute inset-0"></div>
         <div class="product-scene pointer-events-none absolute inset-0" aria-hidden="true">
-          <div class="scene-panel scene-panel-main">
-            <div class="flex items-center justify-between border-b border-border/60 px-4 py-3">
-              <div class="flex items-center gap-2">
-                <span class="h-2 w-2 rounded-full bg-success"></span>
-                <span class="font-mono text-[10px] uppercase text-muted-foreground">
-                  release board
-                </span>
-              </div>
-              <span class="font-mono text-[10px] text-primary">v0.9.0</span>
-            </div>
-            <div class="space-y-4 p-4">
-              <div class="flex items-center justify-between gap-4">
-                <div>
-                  <p class="text-sm font-semibold text-foreground">Component audit</p>
-                  <p class="mt-1 text-xs text-muted-foreground">API, a11y and theme coverage</p>
-                </div>
-                <span
-                  class="rounded-md border border-success/30 px-2 py-1 text-[10px] text-success"
-                >
-                  ready
-                </span>
-              </div>
-
-              <div class="grid grid-cols-3 gap-2">
-                @for (stat of showcaseStats; track stat.label) {
-                  <div class="rounded-md border border-border/60 bg-background/80 p-3">
-                    <p class="text-xl font-semibold tracking-tight">{{ stat.value }}</p>
-                    <p class="mt-1 text-[10px] text-muted-foreground">{{ stat.label }}</p>
-                  </div>
-                }
-              </div>
-
-              <div class="rounded-md border border-border/60 bg-background/80 p-3">
-                <div class="mb-2 flex items-center justify-between text-xs">
-                  <span class="font-medium">Release confidence</span>
-                  <span class="font-mono text-primary">96%</span>
-                </div>
-                <div class="h-2 overflow-hidden rounded-md bg-secondary">
-                  <div class="h-full w-[96%] rounded-md bg-primary"></div>
-                </div>
-              </div>
-
-              <div class="space-y-2">
-                @for (item of readiness; track item) {
-                  <div class="flex items-center gap-2 rounded-md bg-muted/45 px-3 py-2 text-xs">
-                    <span
-                      class="grid h-5 w-5 place-items-center rounded-md bg-success/10 text-success"
-                    >
-                      <lmn-check [size]="12" />
+          <div class="product-scene-inner relative mx-auto h-full max-w-7xl px-4 sm:px-6">
+            <div class="scene-stack">
+              <div class="scene-panel scene-panel-main">
+                <div class="flex items-center justify-between border-b border-border/60 px-4 py-3">
+                  <div class="flex items-center gap-2">
+                    <span class="h-2 w-2 rounded-full bg-success"></span>
+                    <span class="font-mono text-[10px] uppercase text-muted-foreground">
+                      release board
                     </span>
-                    <span>{{ item }}</span>
                   </div>
-                }
-              </div>
-            </div>
-          </div>
+                  <span class="font-mono text-[10px] text-primary">v1.0.0</span>
+                </div>
+                <div class="space-y-4 p-4">
+                  <div class="flex items-center justify-between gap-4">
+                    <div>
+                      <p class="text-sm font-semibold text-foreground">Component audit</p>
+                      <p class="mt-1 text-xs text-muted-foreground">API, a11y and theme coverage</p>
+                    </div>
+                    <span
+                      class="rounded-md border border-success/30 px-2 py-1 text-[10px] text-success"
+                    >
+                      ready
+                    </span>
+                  </div>
 
-          <div class="scene-panel scene-panel-code">
-            <div class="border-b border-white/10 px-4 py-3 font-mono text-[10px] text-white/55">
-              terminal
-            </div>
-            <div class="space-y-3 p-4 font-mono text-xs text-white">
-              <p><span class="text-success">></span> npx &#64;voltui/cli add dialog</p>
-              <p class="text-white/55">created ui/dialog.ts</p>
-              <p class="text-white/55">created ui/button.ts</p>
-              <p class="text-primary">source copied into your app</p>
-            </div>
-          </div>
+                  <div class="grid grid-cols-3 gap-2">
+                    @for (stat of showcaseStats; track stat.label) {
+                      <div class="rounded-md border border-border/60 bg-background/80 p-3">
+                        <p class="text-xl font-semibold tracking-tight">{{ stat.value }}</p>
+                        <p class="mt-1 text-[10px] text-muted-foreground">{{ stat.label }}</p>
+                      </div>
+                    }
+                  </div>
 
-          <div class="scene-panel scene-panel-form">
-            <div class="mb-4 flex items-center justify-between">
-              <div>
-                <p class="text-sm font-semibold">Workspace</p>
-                <p class="mt-1 text-xs text-muted-foreground">Owned source, live tokens</p>
+                  <div class="rounded-md border border-border/60 bg-background/80 p-3">
+                    <div class="mb-2 flex items-center justify-between text-xs">
+                      <span class="font-medium">Release confidence</span>
+                      <span class="font-mono text-primary">96%</span>
+                    </div>
+                    <div class="h-2 overflow-hidden rounded-md bg-secondary">
+                      <div class="h-full w-[96%] rounded-md bg-primary"></div>
+                    </div>
+                  </div>
+
+                  <div class="space-y-2">
+                    @for (item of readiness; track item) {
+                      <div class="flex items-center gap-2 rounded-md bg-muted/45 px-3 py-2 text-xs">
+                        <span
+                          class="grid h-5 w-5 place-items-center rounded-md bg-success/10 text-success"
+                        >
+                          <lmn-check [size]="12" />
+                        </span>
+                        <span>{{ item }}</span>
+                      </div>
+                    }
+                  </div>
+                </div>
               </div>
-              <span class="rounded-md bg-primary/10 px-2 py-1 text-[10px] text-primary">
-                Angular 21
-              </span>
-            </div>
-            <div class="space-y-3">
-              <div class="h-9 rounded-md border border-input bg-background"></div>
-              <div class="flex items-center justify-between rounded-md border border-border/70 p-3">
-                <span class="text-xs">Public theme preview</span>
-                <span class="h-5 w-9 rounded-md bg-primary"></span>
-              </div>
-              <div class="flex items-center gap-2 text-xs">
-                <span class="h-4 w-4 rounded-md border border-primary bg-primary"></span>
-                Forms ready
+
+              <div class="scene-panel scene-panel-form">
+                <div class="mb-4 flex items-center justify-between">
+                  <div>
+                    <p class="text-sm font-semibold">Workspace</p>
+                    <p class="mt-1 text-xs text-muted-foreground">Owned source, live tokens</p>
+                  </div>
+                  <span class="rounded-md bg-primary/10 px-2 py-1 text-[10px] text-primary">
+                    Angular 21
+                  </span>
+                </div>
+                <div class="space-y-3">
+                  <div class="h-9 rounded-md border border-input bg-background"></div>
+                  <div
+                    class="flex items-center justify-between rounded-md border border-border/70 p-3"
+                  >
+                    <span class="text-xs">Public theme preview</span>
+                    <span class="h-5 w-9 rounded-md bg-primary"></span>
+                  </div>
+                  <div class="flex items-center gap-2 text-xs">
+                    <span class="h-4 w-4 rounded-md border border-primary bg-primary"></span>
+                    Forms ready
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -154,13 +148,15 @@ import {
         <div
           class="relative mx-auto flex min-h-[calc(100svh-4rem)] max-w-7xl items-end px-4 pb-10 pt-20 sm:px-6 lg:pb-12 lg:pt-28"
         >
-          <div class="max-w-4xl pb-12 sm:pb-16 lg:pb-20">
+          <!-- min-w-0 lets this flex item shrink below the install command's
+               intrinsic width so the <code> truncates instead of overflowing. -->
+          <div class="w-full min-w-0 max-w-4xl pb-12 sm:pb-16 lg:pb-20">
             <volt-badge
               variant="outline"
               class="reveal-up border-primary/30 bg-background/85 px-3 py-1.5 text-primary shadow-sm backdrop-blur"
             >
               <span class="mr-2 inline-flex h-1.5 w-1.5 rounded-full bg-success"></span>
-              Volt UI 0.9.0 for Angular 21
+              Volt UI 1.0.0 for Angular 21
             </volt-badge>
 
             <h1
@@ -177,7 +173,11 @@ import {
             </p>
 
             <div class="reveal-up reveal-delay-3 mt-9 flex flex-col gap-3 sm:flex-row">
-              <volt-button routerLink="/docs/introduction" size="lg" class="group min-w-44">
+              <volt-button
+                routerLink="/docs/introduction"
+                size="lg"
+                class="group w-full min-w-44 sm:w-auto"
+              >
                 Start building
                 <lmn-arrow-right
                   slot="trailing"
@@ -189,7 +189,7 @@ import {
                 routerLink="/docs/components"
                 size="lg"
                 variant="outline"
-                class="min-w-44 bg-background/80 backdrop-blur"
+                class="w-full min-w-44 bg-background/80 backdrop-blur sm:w-auto"
               >
                 Browse components
               </volt-button>
@@ -428,8 +428,22 @@ import {
       opacity: 0.82;
     }
 
-    .scene-panel {
+    /* One flow-laid column instead of individually anchored panels, so the
+       decorative cards can never overlap each other at any viewport size. */
+    .scene-stack {
       position: absolute;
+      right: 0;
+      top: 5rem;
+      bottom: 3rem;
+      display: flex;
+      width: min(30rem, 38vw);
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 1.25rem;
+    }
+
+    .scene-panel {
       border: 1px solid color-mix(in oklch, var(--border) 72%, transparent);
       border-radius: 8px;
       background: color-mix(in oklch, var(--background) 86%, transparent);
@@ -438,22 +452,11 @@ import {
     }
 
     .scene-panel-main {
-      right: max(1rem, calc((100vw - 80rem) / 2));
-      top: 7rem;
-      width: min(34rem, 42vw);
-    }
-
-    .scene-panel-code {
-      right: max(2rem, calc((100vw - 76rem) / 2 + 25rem));
-      bottom: 5rem;
-      width: min(25rem, 34vw);
-      background: color-mix(in oklch, black 74%, var(--primary) 26%);
+      width: 100%;
     }
 
     .scene-panel-form {
-      right: max(1rem, calc((100vw - 80rem) / 2 + 4rem));
-      bottom: 2.5rem;
-      width: min(23rem, 32vw);
+      width: min(19rem, 26vw);
       padding: 1.25rem;
     }
 
@@ -501,7 +504,7 @@ import {
       }
     }
 
-    @media (max-width: 900px) {
+    @media (max-width: 1279px) {
       .product-scene {
         display: none;
       }
@@ -523,7 +526,7 @@ export default class Home {
 
   protected readonly showcaseStats = [
     { value: '42', label: 'components' },
-    { value: '268', label: 'tests passing' },
+    { value: '266', label: 'tests passing' },
     { value: '25', label: 'theme combos' },
   ];
 
@@ -536,7 +539,7 @@ export default class Home {
 
   protected readonly proofPoints = [
     { value: '42', label: 'documented components' },
-    { value: '268', label: 'automated tests' },
+    { value: '266', label: 'automated tests' },
     { value: '0', label: 'NgModules required' },
     { value: '100%', label: 'source ownership' },
   ];

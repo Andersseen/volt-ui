@@ -79,7 +79,9 @@ export class VoltListbox<T = unknown> implements ControlValueAccessor {
 
   writeValue(value: T[] | null | undefined): void {
     const nextValue = value ?? [];
-    this.value.set(nextValue);
+    // Write into the primitive's state, not the `value` model — the model is only the
+    // public alias for it, so setting it here left `[formControl]` selections invisible.
+    this.listboxState()?.value.set(nextValue);
   }
 
   registerOnChange(fn: (value: T[]) => void): void {

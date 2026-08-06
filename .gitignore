@@ -5,6 +5,7 @@
 /tmp
 /out-tsc
 /bazel-out
+/.wrangler
 
 # Node
 /node_modules

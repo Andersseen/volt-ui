@@ -5,6 +5,195 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0] - 2026-08-06
+
+**Volt UI is stable.** The public API frozen at 0.9.0 is now locked for the `1.x` line —
+see [`specs/api-freeze-0.9.md`](./specs/api-freeze-0.9.md) for the full inventory and the
+new [Versioning & Stability](https://volt-ui.andersseen.dev/docs/versioning) docs page for
+the ongoing semver promise (breaking changes only in majors, features in minors, fixes in
+patches).
+
+### Removed (BREAKING)
+
+The three aliases deprecated in 0.9.0 are gone, with no further warning period — see
+[`MIGRATION.md`](./MIGRATION.md) if you haven't already moved off them:
+
+| Removed                                        | Replacement (already available since 0.9.0) | Component(s)                         |
+| ---------------------------------------------- | ------------------------------------------- | ------------------------------------ |
+| `volt-navigation-menu-link` attribute selector | `voltNavigationMenuLink`                    | `VoltNavigationMenuLink`             |
+| `(resizing)` output                            | `(resizingChange)`                          | `VoltResizableHandle`                |
+| `(dragOver)` output                            | `(dragOverChange)`                          | `VoltFileUpload`, `VoltFileDropzone` |
+
+No components were removed or renamed, and no CLI-copied file paths changed — this is the
+complete list of breaking changes between 0.9.0 and 1.0.0.
+
+### Fixed
+
+- **`VoltResizableHandle` crashed on every SSR render** of a page containing it:
+  `ngAfterViewInit()` called `getBoundingClientRect()` unconditionally, and that hook
+  still runs during SSR (it's not browser-only), so every server render of
+  `/docs/components/resizable` threw and the handle's ARIA value attributes were stuck
+  at their hardcoded defaults in the server-rendered HTML. Fixed by deferring the initial
+  measurement to `afterNextRender()`. Verified against the SSR dev server directly and
+  confirmed CLS 0.00 on a production build (no hydration-mismatch layout shift from the
+  fix).
+- The docs site's Component Catalog (introduction page and components index) listed nine
+  components — `autofill`, `combobox`, `date-picker`, `file-upload`, `listbox`,
+  `navigation-menu`, `resizable`, `sidebar`, `theme` — as "experimental," but
+  `COMPONENT_STATUS.md` has had zero experimental components since well before this
+  release; all nine are `beta`. Fixed the stale grouping on both pages.
+- **The live sidebar and components grid showed 7 components as `beta` that
+  `COMPONENT_STATUS.md` has listed as `stable` for a while**: `form-field`, `checkbox`,
+  `switch`, `radio`, `slider`, `toggle`, `toggle-group`. The site's
+  `component-metadata.ts` (a separate hand-maintained file) had drifted out of sync with
+  the actual source of truth — verified each of the seven has full
+  `ControlValueAccessor` + 145-236 lines of real spec coverage before relabeling. This
+  was the majority of what made the catalog look mostly-beta; it wasn't that these
+  components needed more hardening, the site just wasn't reflecting reality.
+- Four demo pages (Tabs' Account/Password example, and the Login, Sign Up, and Settings
+  layout demos) had `type="password"` inputs outside a `<form>`, which Chrome flags with
+  a DOM advisory since password managers rely on form boundaries. Wrapped each in a
+  `<form>` with submission prevented.
+- **The homepage hero's decorative background collage overlapped the real terminal
+  command bar** at common desktop widths — reproduced and confirmed broken at 1024px,
+  1366px, and 1920px, where the decorative "terminal" panel rendered directly on top of
+  the real copy-install-command control, and at 1024px the headline text itself
+  collided with the decorative panel. The decorative panels were positioned from
+  `100vw` with hand-tuned rem constants that didn't leave real clearance from the
+  content column at any width; repositioned them relative to the same `max-w-7xl`
+  container the real content uses, and raised the breakpoint that hides the decorative
+  scene entirely from 900px to 1279px (there isn't reliably enough width between 900
+  and 1280px for both the full-size headline and the collage). Verified clean at 1024,
+  1279, 1280, 1366, and 1920px in both themes.
+- **The homepage hero's two lower decorative panels overlapped each other**, leaving the
+  "Workspace" card covering all but a ~30px strip of the "terminal" card at every desktop
+  width. Both were anchored independently to the bottom-right corner with hand-tuned
+  offsets and no layout relationship, so nothing kept them apart. Replaced the absolute
+  anchoring with a single flow-laid flex column (`.scene-stack`), which makes overlap
+  structurally impossible at any size, and dropped the decorative terminal panel — the
+  hero already shows a real, working `npx @voltui/cli add …` command bar two columns
+  over, so the fake one was duplicating the page's own message.
+- **The demo preview frame pinned width-constrained demos to the left edge** instead of
+  centering them, on every component page whose demo sets its own `max-w-*` (`search`,
+  `autofill`, `combobox`, `select`, and others). The frame's `justify-center` had no
+  effect because the content wrapper inside it was `w-full`. This is the misalignment
+  reported during 1.0 QA and previously recorded as "could not reproduce"; it was fully
+  deterministic, not a stale-HMR artifact. Now covered by an e2e assertion that the
+  gutters either side of a `max-w-md` demo stay equal.
+- Demo previews taller than 400px (`button`, `input`, `tabs`, `card`, `table`,
+  `date-picker`, `navigation-menu`) were centered inside a fixed-height scroll box, which
+  put the top of the demo above the scroll origin where it could not be reached. The
+  frame now grows with its content instead of scrolling internally.
+- **The landing hero overflowed the viewport on phones** and was silently clipped by
+  `overflow-hidden` on `<main>`: the hero column is a flex item, so it refused to shrink
+  below the install command's intrinsic width and the `truncate` on that command never
+  engaged. The existing mobile e2e test could not catch this because it only asserted the
+  document has no horizontal scroll — which the clipping guaranteed. Added `min-w-0`, and
+  extended the test to assert the command bar's far edge stays inside the viewport.
+- Same `min-width: auto` clipping fixed on the Create Theme page (the generated-CSS block
+  pushed the whole column past a phone screen) and in the `table` demo (its scroll
+  container was stretched instead of scrolling).
+- The `navigation-menu` demo's menu bar was clipped rather than scrollable at phone
+  widths; its dropdown content renders in a body-level portal, so the demo frame can
+  scroll horizontally without cutting the open panel.
+- The `chat` layout demo's conversation list squeezed the message pane off the edge of a
+  phone screen, and the `kanban` demo's avatar stack pushed its "New Task" button past the
+  frame. Both now collapse below `sm`, matching how the sidebar layout already goes
+  off-canvas at that width.
+- **`VoltInputOtp` never displayed anything.** `NgpInputOtpInput` was missing from the
+  component's `imports`, so `ngpInputOtpInput` on the hidden field was an inert HTML
+  attribute: the input accepted text but no slot ever filled, no slot ever showed the
+  active caret, and the value was invisible in every usage. Fixed by importing the
+  directive. Its documented `placeholder` (`'○'`) and `inputMode` (`'numeric'`) defaults
+  were also declared on the component but never reached the primitive, so a default OTP
+  field showed no placeholder and asked mobile keyboards for text instead of digits.
+- **`VoltInputOtp` emitted `valueChange` twice per change**, because the component echoed
+  the primitive's output into its own `value` model, which emits under the same public
+  name.
+- **`[formControl]` was silently disconnected on `VoltDatePicker`, `VoltInputOtp` and
+  `VoltListbox`.** All three wrote `writeValue()` into their own `value`/`date` model
+  rather than the host directive's state — the model is only the public alias for that
+  state, so a form value never reached the calendar/slots/options. `VoltDatePicker` was
+  broken in both directions: clicking a date never reached `onChange` either, so the
+  control never updated. Every component with a `ControlValueAccessor` was then audited
+  the same way (asserting the DOM reflects what the form wrote, not just that
+  `FormControl.value` changed); the rest were already correct.
+- **A `volt-resizable-handle` inside a vertical group resized horizontally.** The handle
+  carried its own `orientation` input that had to be kept in sync with the group by hand,
+  and nothing enforced it — the documented example omitted it, so the vertical demo
+  rendered a column-resize bar that tracked `clientX` and set `width`. The enclosing
+  group's orientation now always wins; the input remains as the fallback for a handle
+  used outside a group. The unit test that covered this pressed ArrowRight in a vertical
+  group and asserted it resized, so the bug was pinned in place rather than caught.
+- **The Theme Studio's preview panel scrolled out of view** despite being `lg:sticky`:
+  `overflow-hidden` on the page's `<main>` makes it a scroll container, which silently
+  disables `position: sticky` for everything inside. Switched to `overflow-x-clip`, which
+  still contains the decorative blurs without creating that container, and capped the
+  panel's height so it scrolls internally rather than outgrowing short viewports.
+- The Button demo showed its Variants row centered in a framed box while Sizes and States
+  sat bare and left-aligned. All three sections now use the same framed, centered
+  treatment.
+- Three controls on the Create Theme page rendered **duplicate DOM ids** — a static
+  `id="x"` on a Volt component stays on the host element _and_ is forwarded to the inner
+  control, so `<label for>` pointed at the custom element rather than the field. Bound as
+  properties instead.
+- The Create Theme page rendered its generated CSS with inverted colors
+  (`bg-foreground`/`text-background`), so in dark mode the export block appeared as a
+  bright white panel. It now uses the same lazily loaded editor as every other code block
+  on the site, with CSS syntax highlighting and the site's own theme.
+
+### Added
+
+- **One-click palette generation in the Theme Studio.** `Generate` builds a complete
+  light _and_ dark palette — all 21 semantic tokens — from a seeded OKLCH ramp, with a
+  harmony selector (analogous, complementary, triadic, monochrome). Generation is
+  deterministic per seed, and every text/surface pair it produces is verified to clear
+  WCAG AA: accents that land on the lightness crossover where neither white nor near-black
+  text reaches 4.5:1 are walked away from it rather than shipped unreadable.
+- **Palette Crafter interop.** The Theme Studio imports a JSON export from
+  [Palette Crafter](https://palette-crafter.andersseen.dev) directly, mapping its
+  `bg`/`fg`/`primary`/`secondary`/`status` scales onto Volt's tokens — the 50–950 scales
+  are what make the opposite mode derivable, so one export fills both of Volt's modes.
+  Generated palettes also link back to Palette Crafter with their seed, harmony and hue
+  as query params, so a palette can be refined there and brought back.
+- `dialog`/`drawer` now have an end-to-end test asserting the ARIA contract
+  (`role="dialog"`, `aria-modal="true"`, `aria-labelledby` pointing at the title) when
+  opened — previously nothing in the suite actually opened them to check. `toast`'s error
+  variant (`role="alert"`) is now covered too; previously only the default `role="status"`
+  variant had any test anywhere.
+- New `/docs/versioning` page: the semver promise, what `stable`/`beta`/`experimental`
+  mean going forward, and the Angular-major support policy.
+
+### Changed
+
+- **Every component ships `stable`; nothing is `beta` in 1.0.** 20 of them carried a
+  `beta` label whose stated reason ("needs more forms, keyboard or focus coverage") was
+  already satisfied — the form controls have full Reactive Forms specs and the overlays
+  have Escape, outside-click, focus-return and positioning covered by the Playwright
+  consumer suite. The remaining five were closed out by fixing the defects listed under
+  _Fixed_ above and adding the coverage that would have caught them: calendar grid
+  interaction for `date-picker`, real-browser `DataTransfer` drag/drop for `file-upload`
+  (`e2e/file-upload.spec.ts`), per-slot fill/active/caret movement for `input-otp`,
+  submenu open/swap/Escape for `navigation-menu`, and both-axis keyboard and pointer
+  resizing for `resizable`. Test count 266 → 285.
+  Two rows in `COMPONENT_STATUS.md` that claimed gaps contradicted by their own specs
+  were corrected (`toolbar` has an arrow-key focus test; `select` delegates keyboard
+  handling to ng-primitives rather than partially implementing it), and `range-slider` —
+  listed in the release groups but missing from the table entirely — now has a row.
+  `beta` and `experimental` stay defined as labels for components added after 1.0.
+- The docs site's code blocks now share one `app-code-editor` component instead of three
+  copies of the editor's load/theme/value lifecycle, which is what let the Create Theme
+  page drift onto the wrong theme in the first place.
+- `SDD.md` §12 "Roadmap to v1" replaced with a permanent Stability Policy section; the
+  roadmap's history now lives in this changelog's `[0.5.0]`–`[1.0.0]` entries instead of
+  being duplicated.
+- `specs/SPEC.md`: the 0.5.0→1.0.0 release ladder is marked complete; routine post-1.0
+  work follows ordinary semver instead of a per-minor plan.
+- Removed "pre-v1"/"release candidate"/"may change before v1" language from `README.md`,
+  `COMPONENT_STATUS.md`, `CONTRIBUTING.md`, `SECURITY.md`, `CLI.md`, and the docs site
+  (introduction, components index, AI-tool pages, homepage stats, header version badge).
+- Bumped the root package, `@voltui/components`, and `@voltui/cli` to `1.0.0`.
+
 ## [0.9.0] - 2026-08-06
 
 **Release candidate for 1.0.** The public API is frozen as of this release: input,

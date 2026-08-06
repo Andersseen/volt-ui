@@ -47,7 +47,7 @@ class SocialButton {}
       </div>
 
       <!-- Form -->
-      <div class="space-y-4">
+      <form class="space-y-4" (submit)="$event.preventDefault()">
         <div class="space-y-2">
           <volt-label>Email</volt-label>
           <volt-input type="email" placeholder="name@company.com" />
@@ -68,8 +68,8 @@ class SocialButton {}
           >
         </div>
 
-        <volt-button class="w-full" size="lg">Sign In</volt-button>
-      </div>
+        <volt-button type="submit" class="w-full" size="lg">Sign In</volt-button>
+      </form>
 
       <!-- Divider -->
       <div class="relative my-6">

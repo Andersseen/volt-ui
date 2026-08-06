@@ -71,6 +71,24 @@ describe('listbox components', () => {
     expect(listbox).toHaveAttribute('tabindex', '-1');
   });
 
+  it('renders the selection a Reactive Forms control writes into it', async () => {
+    const { fixture } = await render(ListboxFormsFixture);
+    const angular = screen.getByRole('option', { name: 'Angular' });
+    const react = screen.getByRole('option', { name: 'React' });
+
+    // Only the view→form direction used to be covered here, which is how a listbox
+    // that never showed its own form value shipped as working.
+    fixture.componentInstance.control.setValue(['react']);
+    await fixture.whenStable();
+    expect(react).toHaveAttribute('aria-selected', 'true');
+    expect(angular).toHaveAttribute('aria-selected', 'false');
+
+    fixture.componentInstance.control.setValue(['angular']);
+    await fixture.whenStable();
+    expect(angular).toHaveAttribute('aria-selected', 'true');
+    expect(react).toHaveAttribute('aria-selected', 'false');
+  });
+
   it('supports active-option keyboard selection', async () => {
     const user = userEvent.setup();
     const { fixture } = await render(ListboxFormsFixture);

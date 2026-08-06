@@ -1,5 +1,4 @@
-import { booleanAttribute, Directive, inject, input, output } from '@angular/core';
-import { outputToObservable, takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { booleanAttribute, Directive, input, output } from '@angular/core';
 import { NgpFileUpload } from 'ng-primitives/file-upload';
 
 @Directive({
@@ -23,6 +22,7 @@ import { NgpFileUpload } from 'ng-primitives/file-upload';
         'ngpFileUploadSelected: selected',
         'ngpFileUploadCanceled: canceled',
         'ngpFileUploadRejected: rejected',
+        'ngpFileUploadDragOver: dragOverChange',
       ],
     },
   ],
@@ -38,19 +38,4 @@ export class VoltFileUpload {
   readonly canceled = output<void>();
   readonly rejected = output<void>();
   readonly dragOverChange = output<boolean>();
-  /** @deprecated Use `dragOverChange` instead. Removed in v1.0. */
-  readonly dragOver = output<boolean>();
-
-  constructor() {
-    // hostDirectives can only map one primitive output to one public alias (mapping
-    // the same internal output to two public names silently drops both), so the
-    // dragOver/dragOverChange pair is bridged manually from the primitive's own
-    // output instead of via hostDirectives.outputs.
-    outputToObservable(inject(NgpFileUpload).dragOver)
-      .pipe(takeUntilDestroyed())
-      .subscribe(value => {
-        this.dragOverChange.emit(value);
-        this.dragOver.emit(value);
-      });
-  }
 }

@@ -1,30 +1,16 @@
-import { CommonModule, isPlatformBrowser } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  CUSTOM_ELEMENTS_SCHEMA,
-  DestroyRef,
-  inject,
-  input,
-  OnInit,
-  PLATFORM_ID,
-  signal,
-  afterNextRender,
-  afterRenderEffect,
-  Injector,
-  ElementRef,
-} from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, input, signal } from '@angular/core';
 import { VoltTabs, VoltTabsContent, VoltTabsList, VoltTabsTrigger } from 'volt';
 import { LmnCheckIcon, LmnCopyIcon } from 'lumen-icons';
-import { EditorLoaderService } from '../services/editor-loader.service';
+import { CodeEditor } from './code-editor';
 import { CopyButton } from './copy-button';
 
 @Component({
   selector: 'app-code-panel',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
     CommonModule,
+    CodeEditor,
     CopyButton,
     LmnCheckIcon,
     LmnCopyIcon,
@@ -72,13 +58,17 @@ import { CopyButton } from './copy-button';
           </volt-tabs-list>
 
           <volt-tabs-content value="preview">
+            <!-- Grid + min-height rather than a fixed height: short demos stay
+                 vertically centered, tall ones grow the box instead of hiding
+                 their overflow behind an inner scrollbar. -->
             <div
-              class="relative flex h-[400px] items-center justify-center overflow-auto rounded-lg border border-border bg-background/50 p-6"
+              class="grid min-h-[400px] w-full items-center overflow-x-auto rounded-lg border border-border bg-background/50 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] p-6"
             >
-              <div
-                class="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"
-              ></div>
-              <div class="relative z-10 w-full">
+              <!-- [&>*]:mx-auto centers demos that constrain their own width
+                   (max-w-md and friends) without shrinking full-width demos.
+                   min-w-0 stops a wide demo from stretching the whole frame on
+                   mobile — the demo's own scroll container handles it instead. -->
+              <div class="w-full min-w-0 [&>*]:mx-auto">
                 <ng-content />
               </div>
             </div>
@@ -91,21 +81,7 @@ import { CopyButton } from './copy-button';
                   >TypeScript</span
                 >
               </div>
-              @if (editorLoaded()) {
-                <vertex-editor-lite
-                  [attr.language]="'typescript'"
-                  [attr.theme]="editorTheme()"
-                  line-numbers="true"
-                  style="display: block; height: 400px; overflow: auto;"
-                ></vertex-editor-lite>
-              } @else {
-                <div
-                  style="display: block; height: 400px;"
-                  class="flex items-center justify-center"
-                >
-                  <div class="animate-pulse text-muted-foreground">Loading editor...</div>
-                </div>
-              }
+              <app-code-editor [code]="code()" />
             </div>
           </volt-tabs-content>
         </volt-tabs>
@@ -115,18 +91,7 @@ import { CopyButton } from './copy-button';
           <div class="absolute top-0 right-0 p-2 z-10">
             <span class="text-xs text-muted-foreground px-2 py-1 bg-muted rounded">TypeScript</span>
           </div>
-          @if (editorLoaded()) {
-            <vertex-editor-lite
-              [attr.language]="'typescript'"
-              [attr.theme]="editorTheme()"
-              line-numbers="true"
-              style="display: block; height: 400px; overflow: auto;"
-            ></vertex-editor-lite>
-          } @else {
-            <div style="display: block; height: 400px;" class="flex items-center justify-center">
-              <div class="animate-pulse text-muted-foreground">Loading editor...</div>
-            </div>
-          }
+          <app-code-editor [code]="code()" />
         </div>
       }
 
@@ -137,7 +102,7 @@ import { CopyButton } from './copy-button';
     </div>
   `,
 })
-export class CodePanel implements OnInit {
+export class CodePanel {
   readonly title = input<string>('Component Source');
   readonly code = input.required<string>();
   readonly cliCommand = input<string>('');
@@ -145,68 +110,7 @@ export class CodePanel implements OnInit {
   readonly tabbed = input<boolean>(false);
 
   cliCopied = signal(false);
-  editorTheme = signal<'light' | 'dark'>('light');
-  editorLoaded = signal(false);
-  editorReady = signal(false);
   activeTab = signal<'preview' | 'code'>('preview');
-
-  private readonly hostElement = inject(ElementRef).nativeElement as HTMLElement;
-  private readonly editorsWithReadyListener = new WeakSet<HTMLElement>();
-
-  private readonly syncEditorEffect = afterRenderEffect(() => {
-    const code = this.code();
-    const theme = this.editorTheme();
-    // Ensure this effect re-runs once the editor element is added to the DOM.
-    void this.editorLoaded();
-
-    this.hostElement.querySelectorAll('vertex-editor-lite').forEach(el => {
-      const editor = el as HTMLElement & { _ready?: boolean; setValue?: (value: string) => void };
-
-      if (editor._ready && typeof editor.setValue === 'function') {
-        editor.setValue(code);
-        editor.setAttribute('theme', theme);
-      } else if (!this.editorsWithReadyListener.has(editor)) {
-        this.editorsWithReadyListener.add(editor);
-        editor.addEventListener(
-          'ready',
-          () => {
-            if (typeof editor.setValue === 'function') {
-              editor.setValue(this.code());
-            }
-            editor.setAttribute('theme', this.editorTheme());
-          },
-          { once: true }
-        );
-      }
-    });
-  });
-
-  private destroyRef = inject(DestroyRef);
-  private editorLoader = inject(EditorLoaderService);
-  private platformId = inject(PLATFORM_ID);
-  private injector = inject(Injector);
-
-  async ngOnInit() {
-    if (!isPlatformBrowser(this.platformId)) return;
-
-    // Load the lightweight read-only editor script lazily
-    await this.editorLoader.loadEditor();
-    this.editorLoaded.set(true);
-
-    // Set readonly after the editor DOM element has connected and initialized its CodeMirror view.
-    // vertex-editor's editable effect only fires when editorView is non-null, which is after
-    // connectedCallback — afterNextRender guarantees we're past that point.
-    afterNextRender(() => this.editorReady.set(true), { injector: this.injector });
-
-    this.editorTheme.set(document.documentElement.classList.contains('dark') ? 'dark' : 'light');
-
-    const observer = new MutationObserver(() => {
-      this.editorTheme.set(document.documentElement.classList.contains('dark') ? 'dark' : 'light');
-    });
-
-    observer.observe(document.documentElement, { attributeFilter: ['class'] });
-    this.destroyRef.onDestroy(() => observer.disconnect());
-  }
 
   async copyCliCommand() {
     if (!this.cliCommand()) return;

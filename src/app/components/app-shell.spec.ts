@@ -22,7 +22,7 @@ describe('application shell', () => {
       'href',
       '/create-theme'
     );
-    expect(screen.getByText('v0.9.0')).toBeInTheDocument();
+    expect(screen.getByText('v1.0.0')).toBeInTheDocument();
   });
 
   it('renders useful footer navigation and repository metadata', async () => {

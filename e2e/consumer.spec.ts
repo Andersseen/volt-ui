@@ -114,6 +114,11 @@ test.describe('npm consumer fixture', () => {
 
     const dialogTrigger = page.getByTestId('dialog-trigger');
     await openAndExpectBox(page, 'dialog-trigger', 'dialog-content');
+    const dialogContent = page.getByTestId('dialog-content');
+    await expect(dialogContent).toHaveAttribute('role', 'dialog');
+    await expect(dialogContent).toHaveAttribute('aria-modal', 'true');
+    const dialogTitleId = await page.getByText('Dialog title').getAttribute('id');
+    await expect(dialogContent).toHaveAttribute('aria-labelledby', dialogTitleId ?? '');
     await expectFocusTrap(
       page,
       page.getByTestId('dialog-content'),
@@ -138,6 +143,11 @@ test.describe('npm consumer fixture', () => {
 
     const drawerTrigger = page.getByTestId('drawer-trigger');
     await openAndExpectBox(page, 'drawer-trigger', 'drawer-content');
+    const drawerContent = page.getByTestId('drawer-content');
+    await expect(drawerContent).toHaveAttribute('role', 'dialog');
+    await expect(drawerContent).toHaveAttribute('aria-modal', 'true');
+    const drawerTitleId = await page.getByText('Drawer title').getAttribute('id');
+    await expect(drawerContent).toHaveAttribute('aria-labelledby', drawerTitleId ?? '');
     await expectFocusTrap(
       page,
       page.getByTestId('drawer-content'),
@@ -165,5 +175,11 @@ test.describe('npm consumer fixture', () => {
     await expect(page.getByTestId('toast-close')).toBeFocused();
     await page.keyboard.press('Enter');
     await expect(page.getByTestId('toast')).toBeHidden();
+
+    await page.getByTestId('toast-error-trigger').click();
+    await expectBox(page.getByTestId('toast-error'), 'toast-error');
+    await expect(page.getByTestId('toast-error')).toHaveAttribute('role', 'alert');
+    await page.getByTestId('toast-error-close').click();
+    await expect(page.getByTestId('toast-error')).toBeHidden();
   });
 });
