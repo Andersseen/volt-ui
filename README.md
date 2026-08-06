@@ -17,6 +17,17 @@ and [ng-primitives](https://ng-primitives.dev) — accessible, themeable, and yo
 
 <br/>
 
+### 🎉 v1.0 is here
+
+**42 components. API locked. Semver from here on out.**
+
+After nine `0.x` minors, the public surface is frozen for the whole `1.x` line — inputs,
+outputs and selectors won't move under you again outside a major.<br/>
+See the **[release notes](./CHANGELOG.md)** · **[migration guide](./MIGRATION.md)** ·
+**[versioning policy](https://volt-ui.andersseen.dev/docs/versioning)**
+
+<br/>
+
 [![npm — components](https://img.shields.io/npm/v/@voltui/components?style=for-the-badge&logo=npm&logoColor=white&label=components&color=6366F1)](https://www.npmjs.com/package/@voltui/components)
 [![npm — cli](https://img.shields.io/npm/v/@voltui/cli?style=for-the-badge&logo=npm&logoColor=white&label=cli&color=6366F1)](https://www.npmjs.com/package/@voltui/cli)
 [![Angular 21](https://img.shields.io/badge/Angular-21-DD0031?style=for-the-badge&logo=angular&logoColor=white)](https://angular.dev)
@@ -151,14 +162,22 @@ Themes are CSS custom properties mapped into Tailwind v4 via `@theme inline`. Co
 </tr>
 </table>
 
-> 🎛️ Mix and match live in the **[Theme Builder →](https://volt-ui.andersseen.dev/create-theme)**
+> 🎛️ Mix and match live in the **[Theme Builder →](https://volt-ui.andersseen.dev/create-theme)** — generate a
+> contrast-checked palette in one click, or import one from
+> [Palette Crafter](https://palette-crafter.andersseen.dev).
 
 ---
 
 ## 🧩 Component Catalog
 
-**42 components** across every common surface. The v1 surface is now fixed and every
-component is labeled `stable` or `beta` — see **[COMPONENT_STATUS.md](./COMPONENT_STATUS.md)**.
+**42 components** across every common surface — which is, of course, the Answer to the
+Ultimate Question of Life, the Universe, and Everything. 🐋 The v1 surface is now fixed and
+every component is labeled `stable` or `beta` — see
+**[COMPONENT_STATUS.md](./COMPONENT_STATUS.md)**.
+
+<sub>Deep Thought needed 7½ million years to arrive at 42. We needed nine <code>0.x</code>
+minors, which is arguably worse. Don't panic: shipping a 43rd component in some future
+minor will ruin this joke, and we've made peace with that.</sub>
 
 <details open>
 <summary><b>Browse all components</b></summary>
