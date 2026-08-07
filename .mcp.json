@@ -20,6 +20,10 @@
       "command": "npx",
       "args": ["-y", "chrome-devtools-mcp@latest"]
     },
+    "codebase-memory": {
+      "command": "npx",
+      "args": ["-y", "codebase-memory-mcp"]
+    },
     "github": {
       "type": "http",
       "url": "https://api.githubcopilot.com/mcp/"
