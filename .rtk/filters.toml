@@ -1,0 +1,74 @@
+# Project-local RTK filters for Volt UI — committed, so the whole team gets them.
+#
+# Lookup priority: .rtk/filters.toml (this file) → ~/.config/rtk/filters.toml → built-ins.
+# First match wins, so a name that collides with a built-in shadows it. The names here
+# are deliberately repo-specific to avoid that.
+#
+# These only take effect once you trust them:  rtk trust
+# (RTK refuses project-local filters from an untrusted directory, since the file arrives
+# via git.) Validate any change with:  rtk verify  — it runs the inline [[tests.*]] below.
+#
+# RTK already ships built-ins for what this repo runs most — vitest, lint, tsc, prettier,
+# playwright, pnpm, git, gh. Do NOT re-declare those; you would only shadow something
+# better. This file covers the two gaps RTK has no built-in for: the ng-packagr library
+# build and the repo's manifest/AI-docs generators.
+#
+# Filters strip noise lines only — they never reformat. Anything not matched by a
+# strip pattern survives, which is why errors and warnings come through untouched.
+schema_version = 1
+
+# `pnpm build:lib` → `ng build volt`. ng-packagr emits spinner frames, per-entry-point
+# progress and asset-copy chatter around the few lines that actually matter.
+[filters.volt-build-lib]
+description = "Compact ng-packagr library build — strip progress, keep results and errors"
+match_command = "(^|\\s)(pnpm\\s+build:lib|ng\\s+build\\s+volt)\\b"
+strip_ansi = true
+strip_lines_matching = [
+  "^\\s*$",
+  "^\\s*[-\\\\|/]\\s*$",
+  "^\\s*Building entry point",
+  "^\\s*Compiling with Angular sources",
+  "^\\s*Copying assets",
+  "^\\s*Writing package manifest",
+  "^-{3,}$",
+  "^Build at:",
+]
+truncate_lines_at = 150
+max_lines = 40
+on_empty = "ng build volt: ok"
+
+[[tests.volt-build-lib]]
+name = "strips ng-packagr progress, keeps the success line"
+input = "\nBuilding Angular Package\n\n------------------------------------------------------------------------------\nBuilding entry point '@voltui/components'\n------------------------------------------------------------------------------\nCompiling with Angular sources in Ivy full compilation mode.\nCopying assets\nWriting package manifest\nBuilt Angular Package\n"
+expected = "Building Angular Package\nBuilt Angular Package"
+
+[[tests.volt-build-lib]]
+name = "preserves errors"
+input = "Building entry point '@voltui/components'\nERROR: Unexpected value 'undefined' exported by the module\nCopying assets\n"
+expected = "ERROR: Unexpected value 'undefined' exported by the module"
+
+# `pnpm manifest` / `pnpm check:ai-docs` print one success line per component file.
+# With 30+ components that is pure noise unless something actually drifted.
+[filters.volt-manifest]
+description = "Collapse manifest / AI-docs generator output to drift and errors"
+match_command = "(^|\\s)pnpm\\s+(manifest|check:ai-docs)\\b"
+strip_ansi = true
+strip_lines_matching = [
+  "^\\s*$",
+  "^\\s*[✓✔]\\s",
+  "^\\s*(added|wrote|copied)\\s",
+  "^Generating manifest",
+]
+truncate_lines_at = 150
+max_lines = 30
+on_empty = "manifest + ai-docs: in sync"
+
+[[tests.volt-manifest]]
+name = "collapses per-file success lines"
+input = "Generating manifest\n✓ button\n✓ badge\n✓ dialog\n"
+expected = "manifest + ai-docs: in sync"
+
+[[tests.volt-manifest]]
+name = "surfaces drift"
+input = "Generating manifest\n✓ button\nDRIFT: accordion missing from .agents/skills/volt-ui/SKILL.md\n"
+expected = "DRIFT: accordion missing from .agents/skills/volt-ui/SKILL.md"

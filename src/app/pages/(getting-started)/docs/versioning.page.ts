@@ -127,7 +127,10 @@ import { RouterLink } from '@angular/router';
       </div>
 
       <div class="p-4 rounded-lg border border-border bg-muted/30 text-sm text-muted-foreground">
-        Full per-component status table:
+        Where the project goes from here:
+        <a routerLink="/docs/roadmap" class="text-primary underline-offset-4 hover:underline"
+          >Roadmap</a
+        >. Full per-component status table:
         <a routerLink="/docs/components" class="text-primary underline-offset-4 hover:underline"
           >component catalog</a
         >. Upgrading an existing copy?
