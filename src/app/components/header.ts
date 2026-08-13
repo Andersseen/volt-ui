@@ -76,9 +76,16 @@ import { LmnGithubIcon } from 'lumen-icons';
             <a
               routerLink="/create-theme"
               routerLinkActive="text-foreground"
-              class="px-3 py-2 rounded-md transition-colors hover:text-foreground"
+              aria-label="Create Theme"
+              class="inline-flex items-center gap-1.5 rounded-md bg-primary/10 px-3 py-2 text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
             >
               Create Theme
+              <span
+                aria-hidden="true"
+                class="rounded-full bg-primary px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase leading-none text-primary-foreground"
+              >
+                New
+              </span>
             </a>
             <a
               routerLink="/docs/layouts"

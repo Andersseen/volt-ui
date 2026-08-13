@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { SITE_STATS } from '../lib/generated/site-stats';
 import {
   VoltBadge,
   VoltButton,
@@ -7,10 +8,13 @@ import {
   VoltCardContent,
   VoltCardHeader,
   VoltCheckbox,
+  VoltFormField,
   VoltInput,
+  VoltLabel,
   VoltProgress,
   VoltProgressLabel,
   VoltProgressValue,
+  VoltSlider,
   VoltSwitch,
 } from 'volt';
 import {
@@ -37,10 +41,13 @@ import {
     VoltCardContent,
     VoltCardHeader,
     VoltCheckbox,
+    VoltFormField,
     VoltInput,
+    VoltLabel,
     VoltProgress,
     VoltProgressLabel,
     VoltProgressValue,
+    VoltSlider,
     VoltSwitch,
     LmnArrowRightIcon,
     LmnCheckIcon,
@@ -55,169 +62,140 @@ import {
   ],
   template: `
     <main class="relative z-10 overflow-hidden">
-      <section class="hero-surface relative border-b border-border/60">
+      <section class="hero-surface relative overflow-hidden border-b border-border/60">
         <div class="hero-grid pointer-events-none absolute inset-0"></div>
-        <div class="product-scene pointer-events-none absolute inset-0" aria-hidden="true">
-          <div class="product-scene-inner relative mx-auto h-full max-w-7xl px-4 sm:px-6">
-            <div class="scene-stack">
-              <div class="scene-panel scene-panel-main">
-                <div class="flex items-center justify-between border-b border-border/60 px-4 py-3">
-                  <div class="flex items-center gap-2">
-                    <span class="h-2 w-2 rounded-full bg-success"></span>
-                    <span class="font-mono text-[10px] uppercase text-muted-foreground">
-                      release board
-                    </span>
-                  </div>
-                  <span class="font-mono text-[10px] text-primary">v1.0.0</span>
-                </div>
-                <div class="space-y-4 p-4">
-                  <div class="flex items-center justify-between gap-4">
-                    <div>
-                      <p class="text-sm font-semibold text-foreground">Component audit</p>
-                      <p class="mt-1 text-xs text-muted-foreground">API, a11y and theme coverage</p>
-                    </div>
-                    <span
-                      class="rounded-md border border-success/30 px-2 py-1 text-[10px] text-success"
-                    >
-                      ready
-                    </span>
-                  </div>
 
-                  <div class="grid grid-cols-3 gap-2">
-                    @for (stat of showcaseStats; track stat.label) {
-                      <div class="rounded-md border border-border/60 bg-background/80 p-3">
-                        <p class="text-xl font-semibold tracking-tight">{{ stat.value }}</p>
-                        <p class="mt-1 text-[10px] text-muted-foreground">{{ stat.label }}</p>
-                      </div>
-                    }
-                  </div>
-
-                  <div class="rounded-md border border-border/60 bg-background/80 p-3">
-                    <div class="mb-2 flex items-center justify-between text-xs">
-                      <span class="font-medium">Release confidence</span>
-                      <span class="font-mono text-primary">96%</span>
-                    </div>
-                    <div class="h-2 overflow-hidden rounded-md bg-secondary">
-                      <div class="h-full w-[96%] rounded-md bg-primary"></div>
-                    </div>
-                  </div>
-
-                  <div class="space-y-2">
-                    @for (item of readiness; track item) {
-                      <div class="flex items-center gap-2 rounded-md bg-muted/45 px-3 py-2 text-xs">
-                        <span
-                          class="grid h-5 w-5 place-items-center rounded-md bg-success/10 text-success"
-                        >
-                          <lmn-check [size]="12" />
-                        </span>
-                        <span>{{ item }}</span>
-                      </div>
-                    }
-                  </div>
-                </div>
-              </div>
-
-              <div class="scene-panel scene-panel-form">
-                <div class="mb-4 flex items-center justify-between">
-                  <div>
-                    <p class="text-sm font-semibold">Workspace</p>
-                    <p class="mt-1 text-xs text-muted-foreground">Owned source, live tokens</p>
-                  </div>
-                  <span class="rounded-md bg-primary/10 px-2 py-1 text-[10px] text-primary">
-                    Angular 21
-                  </span>
-                </div>
-                <div class="space-y-3">
-                  <div class="h-9 rounded-md border border-input bg-background"></div>
-                  <div
-                    class="flex items-center justify-between rounded-md border border-border/70 p-3"
-                  >
-                    <span class="text-xs">Public theme preview</span>
-                    <span class="h-5 w-9 rounded-md bg-primary"></span>
-                  </div>
-                  <div class="flex items-center gap-2 text-xs">
-                    <span class="h-4 w-4 rounded-md border border-primary bg-primary"></span>
-                    Forms ready
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div
-          class="relative mx-auto flex min-h-[calc(100svh-4rem)] max-w-7xl items-end px-4 pb-10 pt-20 sm:px-6 lg:pb-12 lg:pt-28"
-        >
-          <!-- min-w-0 lets this flex item shrink below the install command's
-               intrinsic width so the <code> truncates instead of overflowing. -->
-          <div class="w-full min-w-0 max-w-4xl pb-12 sm:pb-16 lg:pb-20">
-            <volt-badge
-              variant="outline"
-              class="reveal-up border-primary/30 bg-background/85 px-3 py-1.5 text-primary shadow-sm backdrop-blur"
-            >
-              <span class="mr-2 inline-flex h-1.5 w-1.5 rounded-full bg-success"></span>
-              Volt UI 1.0.0 for Angular 21
-            </volt-badge>
-
-            <h1
-              class="reveal-up reveal-delay-1 mt-7 max-w-4xl text-balance text-5xl font-bold leading-[1.02] tracking-normal text-foreground sm:text-7xl lg:text-[5.7rem]"
-            >
-              Ship Angular interfaces from components you can own.
-            </h1>
-
-            <p
-              class="reveal-up reveal-delay-2 mt-7 max-w-2xl text-balance text-lg leading-8 text-muted-foreground sm:text-xl"
-            >
-              Copy polished, accessible Angular source into your app. Keep the speed of a component
-              library, with the control of code that belongs to your product.
-            </p>
-
-            <div class="reveal-up reveal-delay-3 mt-9 flex flex-col gap-3 sm:flex-row">
-              <volt-button
-                routerLink="/docs/introduction"
-                size="lg"
-                class="group w-full min-w-44 sm:w-auto"
-              >
-                Start building
-                <lmn-arrow-right
-                  slot="trailing"
-                  [size]="16"
-                  class="transition-transform group-hover:translate-x-1"
-                />
-              </volt-button>
-              <volt-button
-                routerLink="/docs/components"
-                size="lg"
+        <div class="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:py-24">
+          <div class="grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-12">
+            <!-- min-w-0 lets this grid column shrink below the install command's
+                 intrinsic width so the <code> truncates instead of overflowing. -->
+            <div class="min-w-0">
+              <volt-badge
                 variant="outline"
-                class="w-full min-w-44 bg-background/80 backdrop-blur sm:w-auto"
+                class="reveal-up border-primary/30 bg-background/85 px-3 py-1.5 text-primary shadow-sm backdrop-blur"
               >
-                Browse components
-              </volt-button>
+                <span class="mr-2 inline-flex h-1.5 w-1.5 rounded-full bg-success"></span>
+                Volt UI 1.0.0 for Angular 21
+              </volt-badge>
+
+              <h1
+                class="reveal-up reveal-delay-1 mt-6 text-balance text-4xl font-bold leading-[1.05] tracking-normal text-foreground sm:text-5xl lg:text-6xl xl:text-[4.4rem]"
+              >
+                Ship Angular interfaces from components you can own.
+              </h1>
+
+              <p
+                class="reveal-up reveal-delay-2 mt-6 max-w-xl text-balance text-lg leading-8 text-muted-foreground"
+              >
+                Copy polished, accessible Angular source into your app. Keep the speed of a
+                component library, with the control of code that belongs to your product.
+              </p>
+
+              <div class="reveal-up reveal-delay-3 mt-8 flex flex-col gap-3 sm:flex-row">
+                <volt-button
+                  routerLink="/docs/introduction"
+                  size="lg"
+                  class="group w-full min-w-44 sm:w-auto"
+                >
+                  Start building
+                  <lmn-arrow-right
+                    slot="trailing"
+                    [size]="16"
+                    class="transition-transform group-hover:translate-x-1"
+                  />
+                </volt-button>
+                <volt-button
+                  routerLink="/create-theme"
+                  size="lg"
+                  variant="outline"
+                  class="w-full min-w-44 bg-background/80 backdrop-blur sm:w-auto"
+                >
+                  <lmn-sparkles slot="leading" [size]="16" class="text-primary" />
+                  Try the theme studio
+                </volt-button>
+              </div>
+
+              <div
+                class="reveal-up reveal-delay-4 mt-7 flex max-w-xl items-center gap-2 rounded-lg border border-border/70 bg-background/90 p-2 pl-4 text-left shadow-xl shadow-black/5 backdrop-blur"
+              >
+                <lmn-terminal [size]="16" class="shrink-0 text-primary" />
+                <code class="min-w-0 flex-1 truncate font-mono text-xs sm:text-sm">
+                  npx &#64;voltui/cli add button dialog form-field
+                </code>
+                <volt-button
+                  variant="ghost"
+                  size="icon"
+                  class="shrink-0"
+                  [attr.aria-label]="copied() ? 'Command copied' : 'Copy install command'"
+                  (click)="copyInstallCommand()"
+                >
+                  <span class="sr-only">
+                    {{ copied() ? 'Command copied' : 'Copy install command' }}
+                  </span>
+                  @if (copied()) {
+                    <lmn-check [size]="16" class="text-success" />
+                  } @else {
+                    <lmn-copy [size]="16" />
+                  }
+                </volt-button>
+              </div>
             </div>
 
-            <div
-              class="reveal-up reveal-delay-4 mt-7 flex max-w-2xl items-center gap-2 rounded-lg border border-border/70 bg-background/90 p-2 pl-4 text-left shadow-xl shadow-black/5 backdrop-blur"
-            >
-              <lmn-terminal [size]="16" class="shrink-0 text-primary" />
-              <code class="min-w-0 flex-1 truncate font-mono text-xs sm:text-sm">
-                npx &#64;voltui/cli add button dialog form-field
-              </code>
-              <volt-button
-                variant="ghost"
-                size="icon"
-                class="shrink-0"
-                [attr.aria-label]="copied() ? 'Command copied' : 'Copy install command'"
-                (click)="copyInstallCommand()"
+            <!-- Real Volt components, not a mockup: whatever theme preset the visitor
+                 picks in the header re-skins this panel live. -->
+            <div class="hero-showcase reveal-up reveal-delay-3 min-w-0">
+              <div
+                class="rounded-xl border border-border/70 bg-surface/80 p-5 shadow-2xl shadow-black/10 backdrop-blur-xl sm:p-6"
               >
-                <span class="sr-only">
-                  {{ copied() ? 'Command copied' : 'Copy install command' }}
-                </span>
-                @if (copied()) {
-                  <lmn-check [size]="16" class="text-success" />
-                } @else {
-                  <lmn-copy [size]="16" />
-                }
-              </volt-button>
+                <div class="mb-5 flex items-center justify-between gap-3">
+                  <div class="min-w-0">
+                    <p class="truncate text-sm font-semibold">Project settings</p>
+                    <p class="mt-0.5 truncate text-xs text-muted-foreground">
+                      Built with Volt UI components
+                    </p>
+                  </div>
+                  <volt-badge variant="secondary" class="shrink-0 font-mono text-[10px]">
+                    live
+                  </volt-badge>
+                </div>
+
+                <div class="space-y-5">
+                  <volt-form-field>
+                    <volt-label>Workspace name</volt-label>
+                    <volt-input value="Acme Design System" />
+                  </volt-form-field>
+
+                  <div class="flex items-center justify-between gap-4">
+                    <div class="min-w-0">
+                      <p class="text-sm font-medium">Public theme</p>
+                      <p class="mt-0.5 text-xs text-muted-foreground">Anyone can preview it</p>
+                    </div>
+                    <volt-switch [checked]="true" aria-label="Public theme" />
+                  </div>
+
+                  <div>
+                    <div class="mb-2 flex items-center justify-between text-sm">
+                      <span class="font-medium">Border radius</span>
+                      <span class="font-mono text-xs text-muted-foreground">0.5rem</span>
+                    </div>
+                    <volt-slider [value]="45" [min]="0" [max]="100" ariaLabel="Border radius" />
+                  </div>
+
+                  <volt-progress [value]="82">
+                    <volt-progress-label class="text-sm">Migration progress</volt-progress-label>
+                    <volt-progress-value class="text-sm">82%</volt-progress-value>
+                  </volt-progress>
+
+                  <div class="flex flex-wrap items-center gap-2 border-t border-border/60 pt-4">
+                    <volt-button size="sm">Save changes</volt-button>
+                    <volt-button size="sm" variant="outline">Reset</volt-button>
+                    <div class="flex items-center gap-2 pl-1">
+                      <volt-checkbox [checked]="true" aria-label="Auto-sync tokens" />
+                      <span class="text-xs text-muted-foreground">Auto-sync</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -328,8 +306,12 @@ import {
               <p class="text-sm font-semibold">Theme preview</p>
               <p class="mt-1 text-xs text-muted-foreground">Five color systems, five styles.</p>
               <div class="mt-5 grid grid-cols-5 gap-2">
-                @for (swatch of swatches; track swatch) {
-                  <span [class]="swatch"></span>
+                @for (swatch of swatches; track swatch.name) {
+                  <span
+                    class="theme-swatch h-9 rounded-md border border-border"
+                    [attr.data-color]="swatch.name"
+                    [attr.aria-label]="swatch.name + ' color preset'"
+                  ></span>
                 }
               </div>
               <div
@@ -377,7 +359,8 @@ import {
               Build the Angular interface you wanted.
             </h2>
             <p class="mt-5 max-w-2xl text-lg text-background/70">
-              Explore 40+ components, accessible layouts, theme presets, and an AI-ready workflow.
+              Explore {{ stats.components }} components, accessible layouts,
+              {{ stats.themeCombos }} theme combinations, and an AI-ready workflow.
             </p>
           </div>
           <div class="flex flex-col gap-3 sm:flex-row lg:flex-col">
@@ -424,40 +407,45 @@ import {
       mask-image: linear-gradient(to bottom, black 20%, transparent 92%);
     }
 
-    .product-scene {
-      opacity: 0.82;
+    /* The showcase is a real component composition in normal flow, so it survives
+       every breakpoint instead of being hidden below a desktop-only cutoff. */
+    .hero-showcase {
+      perspective: 1400px;
     }
 
-    /* One flow-laid column instead of individually anchored panels, so the
-       decorative cards can never overlap each other at any viewport size. */
-    .scene-stack {
-      position: absolute;
-      right: 0;
-      top: 5rem;
-      bottom: 3rem;
-      display: flex;
-      width: min(30rem, 38vw);
-      flex-direction: column;
-      align-items: flex-end;
-      justify-content: center;
-      gap: 1.25rem;
+    @media (min-width: 1024px) {
+      .hero-showcase > div {
+        transform: rotateY(-4deg) rotateX(2deg);
+        transition: transform 400ms cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .hero-showcase:hover > div {
+        transform: rotateY(0deg) rotateX(0deg);
+      }
     }
 
-    .scene-panel {
-      border: 1px solid color-mix(in oklch, var(--border) 72%, transparent);
-      border-radius: 8px;
-      background: color-mix(in oklch, var(--background) 86%, transparent);
-      box-shadow: 0 30px 80px -55px color-mix(in oklch, var(--foreground) 45%, transparent);
-      backdrop-filter: blur(18px);
+    .theme-swatch {
+      background: var(--swatch-primary);
     }
 
-    .scene-panel-main {
-      width: 100%;
+    .theme-swatch[data-color='volt'] {
+      --swatch-primary: oklch(0.566 0.22 265);
     }
 
-    .scene-panel-form {
-      width: min(19rem, 26vw);
-      padding: 1.25rem;
+    .theme-swatch[data-color='ember'] {
+      --swatch-primary: oklch(0.58 0.22 32);
+    }
+
+    .theme-swatch[data-color='sage'] {
+      --swatch-primary: oklch(0.532 0.15 155);
+    }
+
+    .theme-swatch[data-color='dusk'] {
+      --swatch-primary: oklch(0.55 0.2 295);
+    }
+
+    .theme-swatch[data-color='glacier'] {
+      --swatch-primary: oklch(0.526 0.16 225);
     }
 
     .feature-card {
@@ -504,12 +492,6 @@ import {
       }
     }
 
-    @media (max-width: 1279px) {
-      .product-scene {
-        display: none;
-      }
-    }
-
     @media (prefers-reduced-motion: reduce) {
       .reveal-up {
         animation: none;
@@ -518,38 +500,33 @@ import {
       .feature-card {
         transition: none;
       }
+
+      .hero-showcase > div,
+      .hero-showcase:hover > div {
+        transform: none;
+        transition: none;
+      }
     }
   `,
 })
 export default class Home {
   protected readonly copied = signal(false);
+  protected readonly stats = SITE_STATS;
 
-  protected readonly showcaseStats = [
-    { value: '42', label: 'components' },
-    { value: '266', label: 'tests passing' },
-    { value: '25', label: 'theme combos' },
-  ];
-
-  protected readonly readiness = [
-    'Keyboard paths covered',
-    'Reactive Forms connected',
-    'Portal controls exposed',
-    'AI docs synchronized',
-  ];
-
+  // Derived from the repo by scripts/generate-site-stats.mjs, never hand-edited.
   protected readonly proofPoints = [
-    { value: '42', label: 'documented components' },
-    { value: '266', label: 'automated tests' },
+    { value: `${SITE_STATS.components}`, label: 'documented components' },
+    { value: `${SITE_STATS.tests}`, label: 'automated tests' },
+    { value: `${SITE_STATS.themeCombos}`, label: 'theme combinations' },
     { value: '0', label: 'NgModules required' },
-    { value: '100%', label: 'source ownership' },
   ];
 
   protected readonly swatches = [
-    'h-9 rounded-md border border-border bg-primary',
-    'h-9 rounded-md border border-border bg-success',
-    'h-9 rounded-md border border-border bg-warning',
-    'h-9 rounded-md border border-border bg-accent',
-    'h-9 rounded-md border border-border bg-secondary',
+    { name: 'volt' },
+    { name: 'ember' },
+    { name: 'sage' },
+    { name: 'dusk' },
+    { name: 'glacier' },
   ];
 
   protected readonly features = [
@@ -572,7 +549,7 @@ export default class Home {
       title: 'Designed as a system',
       description:
         'Semantic Tailwind tokens, color presets, and style presets let one component set adapt to a complete visual language.',
-      detail: '5 colors - 5 styles',
+      detail: `${SITE_STATS.colorPresets} colors - ${SITE_STATS.stylePresets} styles`,
     },
   ];
 
