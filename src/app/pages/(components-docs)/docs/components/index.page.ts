@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { LmnGridIcon } from 'lumen-icons';
+import { ComponentPreview } from '../../../../components/component-preview';
 import {
   COMPONENT_GROUPS,
   type ComponentMetadata,
@@ -10,7 +10,7 @@ import {
 @Component({
   selector: 'app-components-index-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, LmnGridIcon],
+  imports: [RouterLink, ComponentPreview],
   template: `
     <div class="space-y-8">
       <div>
@@ -59,26 +59,24 @@ import {
               @for (item of group.components; track item.path) {
                 <a
                   [routerLink]="item.path"
-                  class="group p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/30 transition-all"
+                  class="group flex flex-col overflow-hidden rounded-lg border border-border transition-all hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5"
                 >
-                  <div class="flex items-start gap-3">
-                    <div
-                      class="mt-0.5 w-8 h-8 rounded-md bg-primary/10 text-primary flex items-center justify-center"
-                    >
-                      <lmn-grid [size]="16" />
+                  <div
+                    class="flex h-28 items-center justify-center overflow-hidden border-b border-border bg-muted/20 px-4 transition-colors group-hover:bg-muted/35"
+                  >
+                    <app-component-preview [name]="item.name" />
+                  </div>
+                  <div class="p-3">
+                    <div class="flex items-center justify-between gap-2">
+                      <h3 class="font-medium group-hover:text-primary">{{ item.label }}</h3>
+                      <span
+                        class="shrink-0 rounded-full px-2 py-0.5 text-[11px] font-medium leading-none"
+                        [class]="stabilityClass(item.stability)"
+                      >
+                        {{ stabilityLabel(item.stability) }}
+                      </span>
                     </div>
-                    <div class="min-w-0 flex-1">
-                      <div class="flex items-center justify-between gap-2">
-                        <h3 class="font-medium group-hover:text-primary">{{ item.label }}</h3>
-                        <span
-                          class="shrink-0 rounded-full px-2 py-0.5 text-[11px] font-medium leading-none"
-                          [class]="stabilityClass(item.stability)"
-                        >
-                          {{ stabilityLabel(item.stability) }}
-                        </span>
-                      </div>
-                      <p class="text-xs text-muted-foreground">{{ item.description }}</p>
-                    </div>
+                    <p class="text-xs text-muted-foreground">{{ item.description }}</p>
                   </div>
                 </a>
               }
