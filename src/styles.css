@@ -70,6 +70,51 @@
 
 :root {
   --radius: 0.5rem; /* default */
+  --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/*
+ * Scroll reveal, driven by the appReveal directive. Both classes are added from the
+ * browser only, so server-rendered markup is never hidden.
+ */
+.reveal-armed {
+  opacity: 0;
+  transform: translateY(18px);
+  will-change: opacity, transform;
+}
+
+.reveal-visible {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 700ms var(--ease-out-expo) var(--reveal-delay, 0ms),
+    transform 700ms var(--ease-out-expo) var(--reveal-delay, 0ms);
+}
+
+/* Smooth in-page navigation for anchor links and skip targets. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /*
+   * Neutralises both the reveal directive and tailwindcss-animate's enter/exit
+   * keyframes, which the overlays rely on.
+   */
+  .reveal-armed,
+  .reveal-visible {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .animate-in,
+  .animate-out,
+  [data-exit] {
+    animation: none !important;
+  }
 }
 
 * {

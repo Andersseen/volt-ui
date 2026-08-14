@@ -38,13 +38,13 @@ import { LmnMenuIcon, LmnXIcon } from 'lumen-icons';
       <!-- Overlay/Backdrop -->
       <div
         ngpDialogOverlay
-        class="fixed inset-0 bg-foreground/50 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
+        class="fixed inset-0 bg-foreground/50 animate-in fade-in-0 data-[exit]:animate-out data-[exit]:fade-out-0 duration-200"
       ></div>
 
       <!-- Drawer Content -->
       <div
         ngpDialog
-        class="fixed inset-y-0 right-0 z-50 h-full w-[280px] bg-background shadow-xl border-l border-border data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right duration-300"
+        class="fixed inset-y-0 right-0 z-50 h-full w-[280px] bg-background shadow-xl border-l border-border animate-in slide-in-from-right data-[exit]:animate-out data-[exit]:slide-out-to-right duration-300 ease-out"
       >
         <!-- Header -->
         <div class="flex items-center justify-between p-4 border-b border-border">
