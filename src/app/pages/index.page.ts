@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Reveal } from '../components/reveal';
 import { SITE_STATS } from '../lib/generated/site-stats';
 import {
   VoltBadge,
@@ -35,6 +36,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     RouterLink,
+    Reveal,
     VoltBadge,
     VoltButton,
     VoltCard,
@@ -201,7 +203,7 @@ import {
         </div>
       </section>
 
-      <section class="border-b border-border/60 bg-background">
+      <section appReveal class="border-b border-border/60 bg-background">
         <div
           class="mx-auto grid max-w-7xl grid-cols-2 divide-x divide-y divide-border/60 px-4 sm:grid-cols-4 sm:divide-y-0 sm:px-6"
         >
@@ -214,7 +216,7 @@ import {
         </div>
       </section>
 
-      <section class="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28">
+      <section appReveal class="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28">
         <div class="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
           <div>
             <volt-badge variant="outline" class="mb-5">Built for ownership</volt-badge>
@@ -229,8 +231,11 @@ import {
         </div>
 
         <div class="mt-12 grid gap-4 md:grid-cols-3">
-          @for (feature of features; track feature.title) {
-            <volt-card class="feature-card h-full border-border/70 bg-surface/70">
+          @for (feature of features; track feature.title; let i = $index) {
+            <volt-card
+              [appReveal]="i * 90"
+              class="feature-card h-full border-border/70 bg-surface/70"
+            >
               <volt-card-header>
                 <div
                   class="mb-5 grid h-11 w-11 place-items-center rounded-lg border border-primary/15 bg-primary/10 text-primary"
@@ -260,7 +265,7 @@ import {
         </div>
       </section>
 
-      <section class="border-y border-border/60 bg-muted/35">
+      <section appReveal class="border-y border-border/60 bg-muted/35">
         <div
           class="mx-auto grid max-w-7xl gap-10 px-4 py-20 sm:px-6 lg:grid-cols-[1fr_1.1fr] lg:py-28"
         >
@@ -349,7 +354,7 @@ import {
         </div>
       </section>
 
-      <section class="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28">
+      <section appReveal class="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28">
         <div
           class="grid gap-8 rounded-lg border border-border/70 bg-foreground p-6 text-background shadow-2xl shadow-black/15 sm:p-10 lg:grid-cols-[1fr_auto] lg:items-center"
         >

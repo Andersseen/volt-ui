@@ -3,7 +3,7 @@
 export const SITE_STATS = {
   components: 41,
   layouts: 1,
-  tests: 343,
+  tests: 347,
   colorPresets: 5,
   stylePresets: 5,
   themeCombos: 25,

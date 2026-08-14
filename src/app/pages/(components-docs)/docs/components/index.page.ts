@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ComponentPreview } from '../../../../components/component-preview';
+import { Reveal } from '../../../../components/reveal';
 import {
   COMPONENT_GROUPS,
   type ComponentMetadata,
@@ -10,7 +11,7 @@ import {
 @Component({
   selector: 'app-components-index-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, ComponentPreview],
+  imports: [RouterLink, ComponentPreview, Reveal],
   template: `
     <div class="space-y-8">
       <div>
@@ -56,10 +57,11 @@ import {
           <section class="space-y-4">
             <h2 class="text-lg font-semibold">{{ group.title }}</h2>
             <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              @for (item of group.components; track item.path) {
+              @for (item of group.components; track item.path; let i = $index) {
                 <a
                   [routerLink]="item.path"
-                  class="group flex flex-col overflow-hidden rounded-lg border border-border transition-all hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5"
+                  [appReveal]="(i % 3) * 70"
+                  class="group flex flex-col overflow-hidden rounded-lg border border-border transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5"
                 >
                   <div
                     class="flex h-28 items-center justify-center overflow-hidden border-b border-border bg-muted/20 px-4 transition-colors group-hover:bg-muted/35"
