@@ -10,10 +10,22 @@ test.describe('Official landing page', () => {
       page.getByRole('heading', { name: 'Ship Angular interfaces from components you can own.' })
     ).toBeVisible();
     await expect(page.getByText('npx @voltui/cli add button dialog form-field')).toBeVisible();
-    await expect(page.getByText('Release confidence')).toBeVisible();
     await expect(page.getByRole('button', { name: 'Start building' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Try the theme studio' })).toBeVisible();
     await expect(page.getByRole('button', { name: 'Browse components' }).first()).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Own the source' })).toBeVisible();
+  });
+
+  test('builds the hero showcase out of real Volt components', async ({ page }) => {
+    const showcase = page.locator('.hero-showcase');
+
+    await expect(showcase.getByText('Built with Volt UI components')).toBeVisible();
+
+    // The point of the panel is that it is the library itself rather than a mockup,
+    // so assert on actual component elements, not on decorative copy.
+    await expect(showcase.locator('volt-input')).toBeVisible();
+    await expect(showcase.locator('volt-switch')).toBeVisible();
+    await expect(showcase.locator('volt-slider')).toBeVisible();
   });
 
   test('keeps the complete landing page inside a mobile viewport', async ({ page }) => {
