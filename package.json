@@ -1,6 +1,6 @@
 {
   "name": "volt-ui",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "bin": {
     "volt": "./cli/bin/volt",
     "volt-ui-mcp": "./cli/mcp/setup-mcp.js"

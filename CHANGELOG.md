@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2026-08-18
+
+### Fixed
+
+- `VoltSidebar` now supports `width` and `collapsedWidth` inputs, with CSS custom
+  property fallbacks for app-wide or resizable sidebar widths.
+- `VoltSidebarItem` now keeps projected `slot="icon"` content mounted across collapsed
+  and expanded states, while keeping trailing content expanded-only.
+- Added sidebar width documentation, API reference entries, usage snippets, and regression
+  coverage for the configurable width and projected slot behavior.
+
 ## [1.0.0] - 2026-08-06
 
 **Volt UI is stable.** The public API frozen at 0.9.0 is now locked for the `1.x` line —
