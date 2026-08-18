@@ -24,7 +24,7 @@ import { ApiReference } from '../../../../components/api-reference';
 import { CodePanel } from '../../../../components/code-panel';
 import { SIDEBAR_API } from '../../../../lib/api-reference.generated';
 import { SIDEBAR_SNIPPET } from '../../../../lib/snippets';
-import { SIDEBAR_USAGE } from '../../../../lib/snippets/usage';
+import { SIDEBAR_USAGE, SIDEBAR_WIDTH_USAGE } from '../../../../lib/snippets/usage';
 
 @Component({
   selector: 'app-sidebar-demo',
@@ -239,6 +239,23 @@ export class SidebarDemo {
           <app-api-reference [data]="sidebarApi" />
         </div>
 
+        <div class="space-y-3">
+          <h3 class="text-lg font-semibold">Width</h3>
+          <p class="text-muted-foreground">
+            The sidebar is <strong>18rem</strong> expanded and <strong>4rem</strong> collapsed by
+            default. Override either one with the <code>width</code> /
+            <code>collapsedWidth</code> inputs, or globally with the
+            <code>--volt-sidebar-width</code> / <code>--volt-sidebar-collapsed-width</code> custom
+            properties &mdash; useful for a resizable sidebar, where you drive the custom property
+            from a drag handle. Inputs win over custom properties, and both accept any CSS length.
+          </p>
+          <app-code-panel
+            title="Configuring the width"
+            [code]="sidebarWidth"
+            description="Reach for the custom property when the width is dynamic or set from outside Angular."
+          />
+        </div>
+
         <app-code-panel
           title="Component Source"
           [code]="sidebarCode"
@@ -253,4 +270,5 @@ export default class DocsSidebar {
   readonly sidebarApi = SIDEBAR_API;
   readonly sidebarCode = SIDEBAR_SNIPPET;
   readonly sidebarUsage = SIDEBAR_USAGE;
+  readonly sidebarWidth = SIDEBAR_WIDTH_USAGE;
 }

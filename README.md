@@ -240,7 +240,7 @@ Volt UI ships three complementary ways to give AI assistants correct context:
 
 ## 📈 Stability & Roadmap
 
-Current status: **`1.0.0` — stable. The public API is locked.**
+Current status: **`1.0.1` — stable. The public API is locked.**
 
 Component inputs, outputs, and selectors follow semantic versioning as of `1.0.0`:
 breaking changes only happen in a major version bump, new features land in minors, and
