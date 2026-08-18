@@ -1256,6 +1256,8 @@ export const SIDEBAR_API: ComponentApi = {
       className: 'VoltSidebar',
       selector: 'volt-sidebar',
       inputs: [
+        { name: 'width', type: 'string' },
+        { name: 'collapsedWidth', type: 'string' },
         { name: 'label', type: 'string' },
         { name: 'routerLink', type: 'string', required: true },
         { name: 'queryParams', type: 'Record<string, string> | undefined', default: 'undefined' },

@@ -959,13 +959,21 @@ import {
     VoltSidebarFooter,
   ],
   template: \`
-    <volt-sidebar>
+    <!-- width/collapsedWidth take any CSS length; omit them for 18rem / 4rem -->
+    <volt-sidebar width="20rem" collapsedWidth="4.5rem">
       <volt-sidebar-header>My App</volt-sidebar-header>
 
       <volt-sidebar-content>
         <volt-sidebar-group label="Main">
-          <volt-sidebar-item routerLink="/" label="Home" [exact]="true" />
-          <volt-sidebar-item routerLink="/settings" label="Settings" />
+          <volt-sidebar-item routerLink="/" label="Home" [exact]="true">
+            <!-- slot="icon" stays rendered in both collapsed and expanded modes -->
+            <lucide-icon name="house" slot="icon" class="h-4 w-4" />
+          </volt-sidebar-item>
+          <volt-sidebar-item routerLink="/inbox" label="Inbox">
+            <lucide-icon name="mail" slot="icon" class="h-4 w-4" />
+            <!-- slot="trailing" only renders while expanded -->
+            <span slot="trailing" class="ml-auto text-xs">3</span>
+          </volt-sidebar-item>
         </volt-sidebar-group>
       </volt-sidebar-content>
 
@@ -978,3 +986,28 @@ import {
 export class MyComponent {
   protected readonly sidebarService = inject(VoltSidebarService);
 }`;
+
+export const SIDEBAR_WIDTH_USAGE = `<!-- 1. Inputs — any CSS length, per instance -->
+<volt-sidebar width="20rem" collapsedWidth="4.5rem">...</volt-sidebar>
+
+<!-- 2. Custom properties — app-wide, responsive, or driven by a drag handle -->
+<style>
+  :root {
+    --volt-sidebar-width: 20rem;
+    --volt-sidebar-collapsed-width: 4.5rem;
+  }
+
+  @media (min-width: 1536px) {
+    :root {
+      --volt-sidebar-width: 22rem;
+    }
+  }
+</style>
+
+<!-- 3. Resizable: write the custom property from a drag handle -->
+<volt-sidebar [style.--volt-sidebar-width.px]="dragWidth()">...</volt-sidebar>
+
+<!--
+  Precedence: input > custom property > default (18rem expanded, 4rem collapsed).
+  You no longer need global CSS reaching into the internal <aside> to resize it.
+-->`;

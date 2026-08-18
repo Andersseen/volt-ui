@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   HostListener,
+  computed,
   inject,
   input,
   booleanAttribute,
@@ -9,6 +10,12 @@ import {
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { VoltSidebarService } from './sidebar.service';
 import { VoltTooltip } from '../../components/tooltip';
+
+/** Expanded width when nothing overrides it — the value Tailwind's `w-72` resolves to. */
+const DEFAULT_SIDEBAR_WIDTH = 'calc(var(--spacing, 0.25rem) * 72)';
+
+/** Collapsed width when nothing overrides it — the value Tailwind's `w-16` resolves to. */
+const DEFAULT_SIDEBAR_COLLAPSED_WIDTH = 'calc(var(--spacing, 0.25rem) * 16)';
 
 // ==========================================
 // 1. Sidebar Container
@@ -29,7 +36,7 @@ import { VoltTooltip } from '../../components/tooltip';
 
     <aside
       class="fixed inset-y-0 left-0 z-50 flex h-full flex-col border-r border-border bg-card shadow-sm transition-all duration-300 ease-in-out md:relative md:z-auto md:translate-x-0"
-      [class]="sidebarService.isCollapsed() ? 'w-16' : 'w-72'"
+      [style.width]="resolvedWidth()"
       [class.translate-x-0]="sidebarService.isMobileOpen()"
       [class.-translate-x-full]="!sidebarService.isMobileOpen()"
       [attr.role]="sidebarService.isMobileOpen() ? 'dialog' : null"
@@ -40,7 +47,27 @@ import { VoltTooltip } from '../../components/tooltip';
   `,
 })
 export class VoltSidebar {
+  /**
+   * Width of the expanded sidebar as any CSS length (`'20rem'`, `'280px'`, `'25vw'`).
+   * Falls back to the `--volt-sidebar-width` custom property, then to `18rem`.
+   */
+  readonly width = input<string>();
+
+  /**
+   * Width of the collapsed sidebar as any CSS length.
+   * Falls back to the `--volt-sidebar-collapsed-width` custom property, then to `4rem`.
+   */
+  readonly collapsedWidth = input<string>();
+
   protected readonly sidebarService = inject(VoltSidebarService);
+
+  /** Input wins, then the custom property, then the historical Tailwind width. */
+  protected readonly resolvedWidth = computed(() =>
+    this.sidebarService.isCollapsed()
+      ? (this.collapsedWidth() ??
+        `var(--volt-sidebar-collapsed-width, ${DEFAULT_SIDEBAR_COLLAPSED_WIDTH})`)
+      : (this.width() ?? `var(--volt-sidebar-width, ${DEFAULT_SIDEBAR_WIDTH})`)
+  );
 
   @HostListener('document:keydown.escape')
   protected closeMobileSidebar(): void {
@@ -134,36 +161,38 @@ export class VoltSidebarGroup {
   imports: [RouterLink, RouterLinkActive, VoltTooltip],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    @if (sidebarService.isCollapsed()) {
-      <a
-        [voltTooltip]="label()"
-        placement="right"
-        [routerLink]="routerLink()"
-        [queryParams]="queryParams()"
-        routerLinkActive="bg-accent text-accent-foreground font-medium active"
-        [routerLinkActiveOptions]="{ exact: exact() }"
-        class="flex h-10 w-full items-center justify-center rounded-md text-muted-foreground transition-colors hover:text-foreground hover:bg-accent/50 group relative"
-        (click)="sidebarService.setMobileOpen(false)"
-      >
-        <ng-content select="[slot=icon]" />
+    <!--
+      A single anchor renders both modes on purpose. Angular assigns projected nodes to a
+      slot at compile time, so duplicating <ng-content select="[slot=icon]"> across two
+      branches binds the icon to whichever branch is declared first and leaves the other
+      one empty. One anchor => one slot per name, and the routing bindings stay in sync.
+    -->
+    <a
+      [voltTooltip]="label()"
+      placement="right"
+      [disabled]="!sidebarService.isCollapsed()"
+      [routerLink]="routerLink()"
+      [queryParams]="queryParams()"
+      routerLinkActive="bg-accent text-accent-foreground font-medium active"
+      [routerLinkActiveOptions]="{ exact: exact() }"
+      class="flex h-10 w-full items-center rounded-md text-muted-foreground transition-colors hover:text-foreground hover:bg-accent/50 group relative"
+      [class.justify-center]="sidebarService.isCollapsed()"
+      [class.gap-3]="!sidebarService.isCollapsed()"
+      [class.px-3]="!sidebarService.isCollapsed()"
+      [class.text-sm]="!sidebarService.isCollapsed()"
+      (click)="sidebarService.setMobileOpen(false)"
+    >
+      <ng-content select="[slot=icon]" />
+
+      @if (sidebarService.isCollapsed()) {
         <div
           class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-0 bg-primary rounded-r-md transition-all group-hover:h-4 [.active_&]:h-6"
         ></div>
-      </a>
-    } @else {
-      <a
-        [routerLink]="routerLink()"
-        [queryParams]="queryParams()"
-        routerLinkActive="bg-accent text-accent-foreground font-medium active"
-        [routerLinkActiveOptions]="{ exact: exact() }"
-        class="flex h-10 w-full items-center gap-3 rounded-md px-3 text-sm text-muted-foreground transition-colors hover:text-foreground hover:bg-accent/50 group relative"
-        (click)="sidebarService.setMobileOpen(false)"
-      >
-        <ng-content select="[slot=icon]" />
+      } @else {
         <span class="flex-1 truncate">{{ label() }}</span>
         <ng-content select="[slot=trailing]" />
-      </a>
-    }
+      }
+    </a>
   `,
 })
 export class VoltSidebarItem {
