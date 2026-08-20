@@ -7,7 +7,7 @@ test.describe('Blocks gallery', () => {
     await page
       .locator('header')
       .getByRole('navigation')
-      .getByRole('link', { name: 'Blocks' })
+      .getByRole('link', { name: 'Gallery' })
       .click();
     await expect(page).toHaveURL(/\/docs\/blocks$/);
     await expect(page.getByRole('heading', { level: 1, name: 'Blocks' })).toBeVisible();
@@ -88,5 +88,41 @@ test.describe('Blocks with reduced motion', () => {
       () => document.querySelector<HTMLElement>('.magnet')!.style.translate
     );
     expect(pulled).toBe('');
+  });
+});
+
+test.describe('Gallery tabs', () => {
+  test('crosses between blocks and layouts under one navbar entry', async ({ page }) => {
+    await page.goto('/docs/blocks/hero');
+
+    const tabs = page.getByRole('navigation', { name: 'Gallery sections' });
+    await expect(tabs.getByRole('link', { name: 'Blocks' })).toHaveAttribute(
+      'aria-current',
+      'page'
+    );
+
+    await tabs.getByRole('link', { name: 'Layouts' }).click();
+
+    await expect(page).toHaveURL(/\/docs\/layouts\/admin-dashboard$/);
+    await expect(tabs.getByRole('link', { name: 'Layouts' })).toHaveAttribute(
+      'aria-current',
+      'page'
+    );
+    // The sidebar belongs to the tab, not to the page.
+    await expect(page.getByRole('complementary', { name: 'Layouts' })).toBeVisible();
+  });
+
+  test('keeps one navbar entry lit for both halves', async ({ page }) => {
+    const gallery = page
+      .locator('header')
+      .getByRole('navigation')
+      .getByRole('link', { name: 'Gallery' });
+
+    // A deep link into either half has to arrive with the entry already active,
+    // which rules out anything that only updates on click.
+    for (const url of ['/docs/blocks/cta', '/docs/layouts/kanban']) {
+      await page.goto(url);
+      await expect(gallery).toHaveClass(/text-foreground/);
+    }
   });
 });

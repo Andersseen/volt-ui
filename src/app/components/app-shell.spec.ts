@@ -22,6 +22,9 @@ describe('application shell', () => {
       'href',
       '/create-theme'
     );
+    // Blocks and layouts share one entry; it opens on the first tab.
+    expect(screen.getByRole('link', { name: 'Gallery' })).toHaveAttribute('href', '/docs/blocks');
+    expect(screen.queryByRole('link', { name: 'Layouts' })).not.toBeInTheDocument();
     expect(screen.getByText('v1.0.0')).toBeInTheDocument();
   });
 
