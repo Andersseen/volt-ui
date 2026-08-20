@@ -92,6 +92,7 @@ export class MobileMenu {
     { path: '/', label: 'Home', exact: true },
     { path: '/docs/introduction', label: 'Docs', exact: false },
     { path: '/docs/components', label: 'Components', exact: false },
+    { path: '/docs/blocks', label: 'Blocks', exact: false },
     { path: '/create-theme', label: 'Create Theme', exact: false },
     { path: '/docs/layouts', label: 'Layouts', exact: false },
   ];

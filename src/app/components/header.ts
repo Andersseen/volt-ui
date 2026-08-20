@@ -74,6 +74,13 @@ import { LmnGithubIcon } from 'lumen-icons';
               Components
             </a>
             <a
+              routerLink="/docs/blocks"
+              routerLinkActive="text-foreground"
+              class="px-3 py-2 rounded-md transition-colors hover:text-foreground"
+            >
+              Blocks
+            </a>
+            <a
               routerLink="/create-theme"
               routerLinkActive="text-foreground"
               aria-label="Create Theme"

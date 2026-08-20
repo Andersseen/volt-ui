@@ -25,6 +25,7 @@ import { LmnGithubIcon } from 'lumen-icons';
           <a routerLink="/docs/components" class="hover:text-foreground transition-colors"
             >Components</a
           >
+          <a routerLink="/docs/blocks" class="hover:text-foreground transition-colors">Blocks</a>
           <span class="hidden sm:inline">&copy; {{ currentYear }}</span>
           <a
             href="https://github.com/Andersseen/volt-ui"
