@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import type { BlockMetadata } from '../lib/blocks-metadata';
+import { categoryFor, type BlockMetadata } from '../lib/blocks-metadata';
 import { CodePanel } from './code-panel';
 
 /**
@@ -21,7 +21,10 @@ import { CodePanel } from './code-panel';
   template: `
     <div class="space-y-8">
       <div>
-        <h1 class="text-3xl font-bold tracking-tight">{{ block().label }}</h1>
+        <p class="text-xs font-medium uppercase tracking-wider text-primary">
+          {{ category().label }}
+        </p>
+        <h1 class="mt-1.5 text-3xl font-bold tracking-tight">{{ block().label }}</h1>
         <p class="mt-2 text-lg text-muted-foreground">{{ block().tagline }}</p>
       </div>
 
@@ -70,4 +73,7 @@ import { CodePanel } from './code-panel';
 export class BlockShowcase {
   readonly block = input.required<BlockMetadata>();
   readonly code = input.required<string>();
+
+  /** Names the category above the title, so a block page says where it sits in the set. */
+  protected readonly category = computed(() => categoryFor(this.block()));
 }

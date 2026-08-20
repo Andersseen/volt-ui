@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { BlockThumbnail } from '../../../../components/block-thumbnail';
 import { Reveal } from '../../../../components/reveal';
-import { BLOCKS, UPCOMING_BLOCKS } from '../../../../lib/blocks-metadata';
+import { BLOCK_CATEGORIES, BLOCKS, UPCOMING_BLOCKS } from '../../../../lib/blocks-metadata';
 import { MOTION } from '../../../../lib/motion';
 
 @Component({
@@ -42,32 +42,54 @@ import { MOTION } from '../../../../lib/motion';
 
       <div class="h-px w-full bg-border"></div>
 
-      <div class="grid gap-5 lg:grid-cols-2">
-        @for (block of blocks; track block.slug; let i = $index) {
-          <a
-            [routerLink]="block.path"
-            [appReveal]="(i % 2) * stagger"
-            class="group flex flex-col overflow-hidden rounded-xl border border-border transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5 motion-safe:hover:-translate-y-1"
-          >
-            <div class="thumb relative h-48 overflow-hidden border-b border-border bg-background">
-              <app-block-thumbnail [slug]="block.slug" />
-            </div>
-            <div class="p-4">
-              <div class="flex items-center justify-between gap-2">
-                <h2 class="font-medium group-hover:text-primary">{{ block.label }}</h2>
-                <span class="text-xs text-muted-foreground">{{ block.atoms.length }} atoms</span>
+      @for (category of categories; track category.id) {
+        <section class="space-y-5">
+          <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <h2 class="text-lg font-semibold tracking-tight">{{ category.label }}</h2>
+            <p class="text-sm text-muted-foreground">{{ category.blurb }}</p>
+          </div>
+
+          <div class="grid gap-5 lg:grid-cols-2">
+            @for (block of category.blocks; track block.slug; let i = $index) {
+              <!--
+                The card is a <div> with a stretched link, not one big <a>. Blocks contain
+                real anchors — a service row, a footer sitemap — and an <a> inside an <a>
+                is invalid HTML that the parser silently rewrites, which desynchronises the
+                DOM from what the server serialised and breaks hydration. Stretching the
+                title's link over the card keeps the whole card clickable, gives the link a
+                short accessible name, and never nests.
+              -->
+              <div
+                [appReveal]="(i % 2) * stagger"
+                class="group relative flex flex-col overflow-hidden rounded-xl border border-border transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5 motion-safe:hover:-translate-y-1"
+              >
+                <div
+                  class="thumb relative h-48 overflow-hidden border-b border-border bg-background"
+                >
+                  <app-block-thumbnail [slug]="block.slug" />
+                </div>
+                <div class="p-4">
+                  <div class="flex items-center justify-between gap-2">
+                    <h3 class="font-medium group-hover:text-primary">
+                      <a [routerLink]="block.path" class="stretched">{{ block.label }}</a>
+                    </h3>
+                    <span class="text-xs text-muted-foreground">
+                      {{ block.atoms.length }} atoms
+                    </span>
+                  </div>
+                  <p class="mt-1.5 text-sm text-muted-foreground">{{ block.tagline }}</p>
+                </div>
               </div>
-              <p class="mt-1.5 text-sm text-muted-foreground">{{ block.tagline }}</p>
-            </div>
-          </a>
-        }
-      </div>
+            }
+          </div>
+        </section>
+      }
 
       <section class="space-y-4">
         <div class="flex items-baseline gap-3">
           <h2 class="text-lg font-semibold">Coming soon</h2>
           <span class="text-sm text-muted-foreground">
-            Four more sections, then the set is complete.
+            The categories above are the shape of the set; these fill the gaps.
           </span>
         </div>
         <div class="grid gap-3 sm:grid-cols-2">
@@ -103,6 +125,16 @@ import { MOTION } from '../../../../lib/motion';
     </div>
   `,
   styles: `
+    /* Covers the whole card from inside the title, so the card is one click target
+       without the markup nesting one anchor inside another. z-index puts it over the
+       thumbnail's fade, which is otherwise painted on top of it. */
+    .stretched::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+    }
+
     /* Fades the crop line at the bottom of the thumbnail, so a block that is taller than
        the frame reads as continuing rather than as cut off. */
     .thumb::after {
@@ -115,7 +147,16 @@ import { MOTION } from '../../../../lib/motion';
   `,
 })
 export default class BlocksIndexPage {
-  protected readonly blocks = BLOCKS;
+  /*
+   * Built here rather than reusing BLOCK_GROUPS because the gallery needs the blurb as
+   * well as the heading, and the sidebar does not. Empty categories are dropped: an
+   * announced-but-unbuilt section belongs in the "coming soon" list below, where it is
+   * honest, not as a heading with nothing under it.
+   */
+  protected readonly categories = BLOCK_CATEGORIES.map(category => ({
+    ...category,
+    blocks: BLOCKS.filter(block => block.category === category.id),
+  })).filter(category => category.blocks.length > 0);
   protected readonly upcoming = UPCOMING_BLOCKS;
   protected readonly stagger = MOTION.stagger;
 }

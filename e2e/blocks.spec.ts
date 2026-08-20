@@ -126,3 +126,38 @@ test.describe('Gallery tabs', () => {
     }
   });
 });
+
+test.describe('Blocks gallery cards', () => {
+  test('never nests one anchor inside another, which would break hydration', async ({ page }) => {
+    const errors: string[] = [];
+    page.on('console', message => {
+      if (message.type() === 'error') {
+        errors.push(message.text());
+      }
+    });
+
+    await page.goto('/docs/blocks');
+    await page.locator('app-block-thumbnail').first().waitFor();
+
+    // The thumbnails render whole blocks, and some blocks contain their own links. An
+    // <a> inside an <a> is invalid, and the parser rewrites it — which desynchronises the
+    // DOM from the server's markup and leaves duplicated sections behind.
+    expect(await page.locator('a a').count()).toBe(0);
+    expect(errors.filter(text => text.includes('NG0500'))).toEqual([]);
+
+    const headings = await page
+      .locator('app-blocks-index-page > div > section > div > h2')
+      .allInnerTexts();
+    expect(new Set(headings).size).toBe(headings.length);
+  });
+
+  test('keeps the whole card clickable from the thumbnail', async ({ page }) => {
+    await page.goto('/docs/blocks');
+
+    const thumbnail = page.locator('app-block-thumbnail').first();
+    await thumbnail.waitFor();
+    await thumbnail.click({ position: { x: 40, y: 40 }, force: true });
+
+    await expect(page).toHaveURL(/\/docs\/blocks\/hero$/);
+  });
+});

@@ -1,8 +1,12 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ContactSplit } from '../blocks/contact-split/contact-split';
 import { CtaMagnetic } from '../blocks/cta-magnetic/cta-magnetic';
 import { FeatureBento } from '../blocks/feature-bento/feature-bento';
+import { FooterSitemap } from '../blocks/footer-sitemap/footer-sitemap';
+import { HeroSplit } from '../blocks/hero-split/hero-split';
 import { HeroSpotlight } from '../blocks/hero-spotlight/hero-spotlight';
 import { PricingTiers } from '../blocks/pricing-tiers/pricing-tiers';
+import { ServiceList } from '../blocks/service-list/service-list';
 import { TestimonialMarquee } from '../blocks/testimonial-marquee/testimonial-marquee';
 
 /**
@@ -21,7 +25,17 @@ import { TestimonialMarquee } from '../blocks/testimonial-marquee/testimonial-ma
 @Component({
   selector: 'app-block-thumbnail',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [HeroSpotlight, FeatureBento, PricingTiers, TestimonialMarquee, CtaMagnetic],
+  imports: [
+    HeroSpotlight,
+    HeroSplit,
+    FeatureBento,
+    ServiceList,
+    PricingTiers,
+    TestimonialMarquee,
+    ContactSplit,
+    CtaMagnetic,
+    FooterSitemap,
+  ],
   host: {
     inert: '',
     'aria-hidden': 'true',
@@ -33,8 +47,14 @@ import { TestimonialMarquee } from '../blocks/testimonial-marquee/testimonial-ma
         @case ('hero') {
           <app-hero-spotlight />
         }
+        @case ('hero-split') {
+          <app-hero-split />
+        }
         @case ('bento') {
           <app-feature-bento />
+        }
+        @case ('services') {
+          <app-service-list />
         }
         @case ('pricing') {
           <app-pricing-tiers />
@@ -42,8 +62,14 @@ import { TestimonialMarquee } from '../blocks/testimonial-marquee/testimonial-ma
         @case ('testimonials') {
           <app-testimonial-marquee />
         }
+        @case ('contact') {
+          <app-contact-split />
+        }
         @case ('cta') {
           <app-cta-magnetic />
+        }
+        @case ('footer') {
+          <app-footer-sitemap />
         }
       }
     </div>

@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { BLOCKS, BLOCK_GROUPS, blockBySlug } from './blocks-metadata';
+import {
+  BLOCK_CATEGORIES,
+  BLOCK_GROUPS,
+  BLOCKS,
+  blockBySlug,
+  categoryFor,
+} from './blocks-metadata';
 
 describe('blocks catalog', () => {
   it('derives each path from the slug, so navigation and routes cannot drift apart', () => {
@@ -12,10 +18,33 @@ describe('blocks catalog', () => {
     expect(new Set(BLOCKS.map(block => block.slug)).size).toBe(BLOCKS.length);
   });
 
+  it('files every block under a category that exists', () => {
+    const ids = new Set(BLOCK_CATEGORIES.map(category => category.id));
+
+    for (const block of BLOCKS) {
+      expect(ids.has(block.category)).toBe(true);
+      expect(categoryFor(block).id).toBe(block.category);
+    }
+  });
+
   it('groups every block, so none can be published without a way to reach it', () => {
     const grouped = BLOCK_GROUPS.flatMap(group => group.blocks);
 
     expect(grouped).toHaveLength(BLOCKS.length);
+    expect(new Set(grouped.map(block => block.slug)).size).toBe(BLOCKS.length);
+  });
+
+  it('never renders a heading with nothing under it', () => {
+    for (const group of BLOCK_GROUPS) {
+      expect(group.blocks.length).toBeGreaterThan(0);
+    }
+  });
+
+  it('keeps the groups in the order a page is assembled, hero first and footer last', () => {
+    const headings = BLOCK_GROUPS.map(group => group.heading);
+
+    expect(headings[0]).toBe('Hero');
+    expect(headings.at(-1)).toBe('Footer');
   });
 
   it('points every atom at a component docs page', () => {
@@ -29,5 +58,11 @@ describe('blocks catalog', () => {
 
   it('fails loudly on an unknown slug rather than rendering a blank page', () => {
     expect(() => blockBySlug('does-not-exist')).toThrow(/unknown block/i);
+  });
+
+  it('fails loudly on a block filed under a category nobody declared', () => {
+    expect(() => categoryFor({ ...BLOCKS[0], category: 'not-a-category' })).toThrow(
+      /unknown category/i
+    );
   });
 });

@@ -8,8 +8,9 @@ describe('BlockThumbnail', () => {
     const { fixture } = await render(BlockThumbnail, { inputs: { slug } });
     const host = fixture.nativeElement as HTMLElement;
 
-    // Every block is a <section>; an unhandled slug would render an empty stage instead.
-    expect(host.querySelector('section')).not.toBeNull();
+    // Every block roots itself in a landmark — <section> for most, <footer> for the one
+    // that is a footer. An unhandled slug would render an empty stage instead.
+    expect(host.querySelector('section, footer')).not.toBeNull();
   });
 
   it('takes the whole preview out of the tab order and the accessibility tree', async () => {
