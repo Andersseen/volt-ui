@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ComponentPreview } from '../../../../components/component-preview';
-import { Reveal } from '../../../../components/reveal';
+import { MOTION } from '../../../../lib/motion';
 import {
   COMPONENT_GROUPS,
   type ComponentMetadata,
   type ComponentStability,
 } from '../../../../lib/component-metadata';
+import { Reveal } from '../../../../components/reveal';
 
 @Component({
   selector: 'app-components-index-page',
@@ -60,7 +61,7 @@ import {
               @for (item of group.components; track item.path; let i = $index) {
                 <a
                   [routerLink]="item.path"
-                  [appReveal]="(i % 3) * 70"
+                  [appReveal]="(i % 3) * stagger"
                   class="group flex flex-col overflow-hidden rounded-lg border border-border transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5"
                 >
                   <div
@@ -91,6 +92,8 @@ import {
 })
 export default class ComponentsIndexPage {
   readonly groups = COMPONENT_GROUPS;
+
+  protected readonly stagger = MOTION.stagger;
 
   protected stabilityLabel(stability: ComponentMetadata['stability']): string {
     return stability === 'experimental' ? 'experimental' : stability;

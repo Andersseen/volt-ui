@@ -113,7 +113,10 @@ describe('navigation menu components', () => {
     // Only one submenu may be open at a time, otherwise two panels stack on screen.
     await waitFor(() => expect(screen.getByRole('link', { name: 'About us' })).toBeInTheDocument());
     expect(screen.queryByRole('link', { name: 'Analytics' })).not.toBeInTheDocument();
-    expect(trigger(/Products/i)).toHaveAttribute('aria-expanded', 'false');
+    // The panel is torn down by the overlay, but aria-expanded is a host binding on the
+    // trigger, so it only lands on the next change detection pass. Waiting for both
+    // separately is what keeps this green on a slow CI runner.
+    await waitFor(() => expect(trigger(/Products/i)).toHaveAttribute('aria-expanded', 'false'));
   });
 
   it('closes the open submenu on Escape', async () => {
@@ -131,6 +134,6 @@ describe('navigation menu components', () => {
     await waitFor(() =>
       expect(screen.queryByRole('link', { name: 'Analytics' })).not.toBeInTheDocument()
     );
-    expect(products).toHaveAttribute('aria-expanded', 'false');
+    await waitFor(() => expect(products).toHaveAttribute('aria-expanded', 'false'));
   });
 });
