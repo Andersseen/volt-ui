@@ -44,6 +44,33 @@ Object.defineProperty(window, 'ResizeObserver', {
   value: ResizeObserverMock,
 });
 
+// Mock IntersectionObserver — jsdom does not implement it, and scroll-reveal directives
+// construct one during afterNextRender. Without this every render that mounts one logs a
+// ReferenceError to stderr. Specs that assert on observation stub their own richer version.
+class IntersectionObserverMock {
+  readonly root = null;
+  readonly rootMargin = '';
+  readonly thresholds: readonly number[] = [];
+  constructor(_callback: IntersectionObserverCallback, _options?: IntersectionObserverInit) {}
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+  takeRecords(): IntersectionObserverEntry[] {
+    return [];
+  }
+}
+
+Object.defineProperty(window, 'IntersectionObserver', {
+  writable: true,
+  configurable: true,
+  value: IntersectionObserverMock,
+});
+Object.defineProperty(globalThis, 'IntersectionObserver', {
+  writable: true,
+  configurable: true,
+  value: IntersectionObserverMock,
+});
+
 // Mock Element.prototype.getAnimations for jsdom (used by ng-primitives overlay animations)
 Object.defineProperty(Element.prototype, 'getAnimations', {
   writable: true,
