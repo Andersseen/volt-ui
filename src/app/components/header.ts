@@ -7,6 +7,7 @@ import { ThemeSwitcher } from './theme-switcher';
 import { MobileMenu } from './mobile-menu';
 import { LmnGithubIcon } from 'lumen-icons';
 import { GALLERY_SECTIONS } from '../lib/gallery-sections';
+import { SITE_STATS } from '../lib/generated/site-stats';
 
 @Component({
   selector: 'app-header',
@@ -42,7 +43,7 @@ import { GALLERY_SECTIONS } from '../lib/gallery-sections';
             variant="secondary"
             class="font-mono text-xs hidden lg:inline-flex border-none shadow-sm ring-1 ring-border/50"
           >
-            v1.0.0
+            v{{ version }}
           </volt-badge>
         </div>
 
@@ -118,6 +119,9 @@ import { GALLERY_SECTIONS } from '../lib/gallery-sections';
 })
 export class Header {
   private readonly router = inject(Router);
+
+  /** Generated from projects/volt/package.json, so the badge cannot outlive a release. */
+  protected readonly version = SITE_STATS.version;
 
   /** The gallery opens on its first tab; the other one is a tab away. */
   protected readonly galleryPath = GALLERY_SECTIONS[0].path;

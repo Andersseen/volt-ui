@@ -56,7 +56,12 @@ function runTestCount() {
   }
 }
 
+/** The published library version — what "Volt UI x.y.z" on the site means. */
+const libraryVersion = () =>
+  JSON.parse(readFileSync(resolve(root, 'projects/volt/package.json'), 'utf8')).version;
+
 const withTests = process.argv.includes('--with-tests');
+const version = libraryVersion();
 const components = countDirs('projects/volt/src/lib/components');
 const layouts = countDirs('projects/volt/src/lib/layouts');
 const colorPresets = countCssPresets('projects/volt/src/themes/colors');
@@ -71,6 +76,7 @@ if (tests === null) {
 const contents = `// GENERATED FILE - do not edit by hand.
 // Regenerate with: pnpm stats (structural only) or pnpm stats:full (re-runs the suite).
 export const SITE_STATS = {
+  version: '${version}',
   components: ${components},
   layouts: ${layouts},
   tests: ${tests},
@@ -92,6 +98,6 @@ try {
 if (previous !== contents) {
   writeFileSync(OUTPUT, contents);
   console.log(
-    `[site-stats] wrote ${components} components, ${tests} tests, ${colorPresets * stylePresets} theme combos`
+    `[site-stats] wrote v${version}, ${components} components, ${tests} tests, ${colorPresets * stylePresets} theme combos`
   );
 }

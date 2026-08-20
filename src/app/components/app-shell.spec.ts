@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest';
 import { DocsPageShell } from './docs-page-shell';
 import { Footer } from './footer';
 import { Header } from './header';
+import { SITE_STATS } from '../lib/generated/site-stats';
 
 describe('application shell', () => {
   it('renders the primary navigation and current release', async () => {
@@ -25,7 +26,7 @@ describe('application shell', () => {
     // Blocks and layouts share one entry; it opens on the first tab.
     expect(screen.getByRole('link', { name: 'Gallery' })).toHaveAttribute('href', '/docs/blocks');
     expect(screen.queryByRole('link', { name: 'Layouts' })).not.toBeInTheDocument();
-    expect(screen.getByText('v1.0.0')).toBeInTheDocument();
+    expect(screen.getByText(`v${SITE_STATS.version}`)).toBeInTheDocument();
   });
 
   it('renders useful footer navigation and repository metadata', async () => {

@@ -26,6 +26,7 @@ import {
   VoltSlider,
   VoltSwitch,
 } from 'volt';
+import { SITE_STATS } from '../../lib/generated/site-stats';
 import { HOVER_LIFT, TAP_PRESS } from '../../lib/motion';
 
 /** The install command the hero advertises and its copy button writes to the clipboard. */
@@ -83,7 +84,7 @@ export const INSTALL_COMMAND = 'npx @voltui/cli add button dialog form-field';
                 [moveDuration]="1800"
                 class="mr-2 inline-flex h-1.5 w-1.5 rounded-full bg-success"
               ></span>
-              Volt UI 1.0.0 for Angular 21
+              Volt UI {{ version }} for Angular 21
             </volt-badge>
 
             <h1
@@ -305,6 +306,8 @@ export const INSTALL_COMMAND = 'npx @voltui/cli add button dialog form-field';
   `,
 })
 export class LandingHero {
+  /** Generated from projects/volt/package.json, so the badge cannot outlive a release. */
+  protected readonly version = SITE_STATS.version;
   protected readonly copied = signal(false);
   protected readonly installCommand = INSTALL_COMMAND;
   protected readonly lift = HOVER_LIFT;
