@@ -297,11 +297,18 @@ import {
     <volt-navigation-menu>
       <volt-navigation-menu-list>
         <volt-navigation-menu-item>
-          <volt-navigation-menu-trigger>Getting Started</volt-navigation-menu-trigger>
-          <volt-navigation-menu-content>
-            <a voltNavigationMenuLink href="/docs">Introduction</a>
-            <a voltNavigationMenuLink href="/docs/installation">Installation</a>
-          </volt-navigation-menu-content>
+          <!-- The panel goes in as a template reference. \`content\` is a required input:
+               the trigger hands the template to an overlay that renders it elsewhere,
+               so projecting the content instead throws NG0950. -->
+          <volt-navigation-menu-trigger [content]="gettingStarted">
+            Getting Started
+          </volt-navigation-menu-trigger>
+          <ng-template #gettingStarted>
+            <volt-navigation-menu-content>
+              <a voltNavigationMenuLink href="/docs">Introduction</a>
+              <a voltNavigationMenuLink href="/docs/installation">Installation</a>
+            </volt-navigation-menu-content>
+          </ng-template>
         </volt-navigation-menu-item>
         <volt-navigation-menu-item>
           <a voltNavigationMenuLink href="/docs/components">Components</a>

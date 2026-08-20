@@ -1,5 +1,6 @@
 import type { DocsSidebarGroup } from '../components/docs-sidebar-nav';
 import { BLOCK_GROUPS } from './blocks-metadata';
+import { LAYOUT_GROUPS } from './layouts-metadata';
 
 /**
  * The two halves of the gallery.
@@ -26,39 +27,6 @@ export interface GallerySection {
   readonly groups: readonly DocsSidebarGroup[];
 }
 
-const LAYOUT_GROUPS: readonly DocsSidebarGroup[] = [
-  {
-    heading: 'Dashboards',
-    links: [
-      { path: '/docs/layouts/admin-dashboard', label: 'Admin Dashboard' },
-      { path: '/docs/layouts/top-nav', label: 'Top Navigation' },
-      { path: '/docs/layouts/analytics', label: 'Analytics' },
-    ],
-  },
-  {
-    heading: 'Base',
-    links: [
-      { path: '/docs/layouts/sidebar', label: 'Sidebar' },
-      { path: '/docs/layouts/settings', label: 'Settings' },
-      { path: '/docs/layouts/profile', label: 'Profile' },
-    ],
-  },
-  {
-    heading: 'Productivity',
-    links: [
-      { path: '/docs/layouts/kanban', label: 'Kanban Board' },
-      { path: '/docs/layouts/chat', label: 'Chat / Messages' },
-    ],
-  },
-  {
-    heading: 'Auth',
-    links: [
-      { path: '/docs/layouts/login', label: 'Login' },
-      { path: '/docs/layouts/sign-up', label: 'Sign Up' },
-    ],
-  },
-];
-
 export const GALLERY_SECTIONS: readonly GallerySection[] = [
   {
     id: 'blocks',
@@ -80,9 +48,12 @@ export const GALLERY_SECTIONS: readonly GallerySection[] = [
     label: 'Layouts',
     path: '/docs/layouts',
     title: 'Layouts',
-    description: 'Whole application shells. No install needed.',
+    description: 'Unbranded skeletons to fill with your screens.',
     browseLabel: 'Browse Layouts',
-    groups: LAYOUT_GROUPS,
+    groups: LAYOUT_GROUPS.map(group => ({
+      heading: group.heading,
+      links: group.layouts.map(layout => ({ path: layout.path, label: layout.label })),
+    })),
   },
 ];
 
