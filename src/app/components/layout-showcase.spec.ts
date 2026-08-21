@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { render, screen } from '@testing-library/angular';
 import { describe, expect, it } from 'vitest';
+import en from '../i18n/en.json';
 import { LayoutShowcase } from './layout-showcase';
 import { layoutBySlug } from '../lib/layouts-metadata';
 
@@ -32,7 +33,7 @@ describe('LayoutShowcase', () => {
     await renderHost();
 
     expect(screen.getByRole('heading', { name: /the arrangement/i })).toBeInTheDocument();
-    expect(screen.getByText(layoutBySlug('admin-dashboard').structure)).toBeInTheDocument();
+    expect(screen.getByText(en.layouts.items.adminDashboard.structure)).toBeInTheDocument();
   });
 
   it('links every component the layout is assembled from', async () => {

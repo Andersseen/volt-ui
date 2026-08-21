@@ -1,3 +1,5 @@
+import type { TranslationKey } from '../i18n/translations';
+
 /**
  * The blocks catalog.
  *
@@ -15,21 +17,21 @@
  */
 export interface BlockCategory {
   readonly id: string;
-  readonly label: string;
+  readonly labelKey: TranslationKey;
   /** Shown once above the category, so the cards underneath do not each re-explain it. */
-  readonly blurb: string;
+  readonly blurbKey: TranslationKey;
 }
 
 export interface BlockMetadata {
   /** Route segment under `/docs/blocks/`. */
   readonly slug: string;
   readonly path: string;
-  readonly label: string;
+  readonly labelKey: TranslationKey;
   readonly category: BlockCategory['id'];
   /** One line for the gallery card. */
-  readonly tagline: string;
+  readonly taglineKey: TranslationKey;
   /** What actually moves, in the visitor's terms. Shown on the block's own page. */
-  readonly motion: string;
+  readonly motionKey: TranslationKey;
   /** Volt components the block is built from, linked back to their own docs. */
   readonly atoms: readonly BlockAtom[];
 }
@@ -40,7 +42,7 @@ export interface BlockAtom {
 }
 
 export interface BlockGroup {
-  readonly heading: string;
+  readonly headingKey: TranslationKey;
   readonly blocks: readonly BlockMetadata[];
 }
 
@@ -48,54 +50,53 @@ export interface BlockGroup {
 export const BLOCK_CATEGORIES: readonly BlockCategory[] = [
   {
     id: 'hero',
-    label: 'Hero',
-    blurb: 'The first screen. What the product is, and the one thing to do about it.',
+    labelKey: 'blocks.categories.hero.label',
+    blurbKey: 'blocks.categories.hero.blurb',
   },
   {
     id: 'features',
-    label: 'Features',
-    blurb: 'What it does, arranged so the important one is visibly the important one.',
+    labelKey: 'blocks.categories.features.label',
+    blurbKey: 'blocks.categories.features.blurb',
   },
   {
     id: 'services',
-    label: 'Services',
-    blurb: 'What you do for someone, when the product is a team rather than a download.',
+    labelKey: 'blocks.categories.services.label',
+    blurbKey: 'blocks.categories.services.blurb',
   },
   {
     id: 'proof',
-    label: 'Social proof',
-    blurb: 'Other people saying it, which is the only version anyone believes.',
+    labelKey: 'blocks.categories.proof.label',
+    blurbKey: 'blocks.categories.proof.blurb',
   },
   {
     id: 'pricing',
-    label: 'Pricing',
-    blurb: 'Plans, the difference between them, and the one you would like picked.',
+    labelKey: 'blocks.categories.pricing.label',
+    blurbKey: 'blocks.categories.pricing.blurb',
   },
   {
     id: 'contact',
-    label: 'Contact',
-    blurb: 'A form that works, next to the ways of reaching you that are not a form.',
+    labelKey: 'blocks.categories.contact.label',
+    blurbKey: 'blocks.categories.contact.blurb',
   },
   {
     id: 'cta',
-    label: 'Call to action',
-    blurb: 'The last chance to convert someone who read the whole page.',
+    labelKey: 'blocks.categories.cta.label',
+    blurbKey: 'blocks.categories.cta.blurb',
   },
   {
     id: 'footer',
-    label: 'Footer',
-    blurb: 'The sitemap, the legal bits, and the newsletter nobody scrolls back up for.',
+    labelKey: 'blocks.categories.footer.label',
+    blurbKey: 'blocks.categories.footer.blurb',
   },
   {
     id: 'auth',
-    label: 'Auth',
-    blurb:
-      'Screens where the page is the component. The layouts tab has the same ones stripped to their skeleton.',
+    labelKey: 'blocks.categories.auth.label',
+    blurbKey: 'blocks.categories.auth.blurb',
   },
   {
     id: 'app',
-    label: 'Application',
-    blurb: 'The screens behind the login, with the work done rather than left as slots.',
+    labelKey: 'blocks.categories.app.label',
+    blurbKey: 'blocks.categories.app.blurb',
   },
 ];
 
@@ -103,11 +104,10 @@ export const BLOCKS: readonly BlockMetadata[] = [
   {
     slug: 'hero',
     path: '/docs/blocks/hero',
-    label: 'Hero Spotlight',
+    labelKey: 'blocks.items.hero.label',
     category: 'hero',
-    tagline: 'Centred opening with a spotlight that follows the pointer.',
-    motion:
-      'A radial spotlight tracks the pointer, two auroras drift behind the grid, the headline word shimmers, and the content rises in five steps at first paint.',
+    taglineKey: 'blocks.items.hero.tagline',
+    motionKey: 'blocks.items.hero.motion',
     atoms: [
       { name: 'VoltBadge', path: '/docs/components/badge' },
       { name: 'VoltButton', path: '/docs/components/button' },
@@ -117,11 +117,10 @@ export const BLOCKS: readonly BlockMetadata[] = [
   {
     slug: 'hero-split',
     path: '/docs/blocks/hero-split',
-    label: 'Hero Split',
+    labelKey: 'blocks.items.heroSplit.label',
     category: 'hero',
-    tagline: 'Copy on the left, a live product panel on the right, tilted toward the reader.',
-    motion:
-      'The panel sits on a slight 3D tilt that straightens as the pointer approaches, and a status row ticks through states on its own.',
+    taglineKey: 'blocks.items.heroSplit.tagline',
+    motionKey: 'blocks.items.heroSplit.motion',
     atoms: [
       { name: 'VoltBadge', path: '/docs/components/badge' },
       { name: 'VoltButton', path: '/docs/components/button' },
@@ -132,11 +131,10 @@ export const BLOCKS: readonly BlockMetadata[] = [
   {
     slug: 'bento',
     path: '/docs/blocks/bento',
-    label: 'Feature Bento',
+    labelKey: 'blocks.items.bento.label',
     category: 'features',
-    tagline: 'Asymmetric grid where each card lights its own border under the cursor.',
-    motion:
-      'Each card carries a radial fill and a one-pixel gradient ring that follow the pointer inside that card, plus a lift on hover.',
+    taglineKey: 'blocks.items.bento.tagline',
+    motionKey: 'blocks.items.bento.motion',
     atoms: [
       { name: 'VoltCard', path: '/docs/components/card' },
       { name: 'VoltBadge', path: '/docs/components/badge' },
@@ -145,11 +143,10 @@ export const BLOCKS: readonly BlockMetadata[] = [
   {
     slug: 'services',
     path: '/docs/blocks/services',
-    label: 'Service List',
+    labelKey: 'blocks.items.services.label',
     category: 'services',
-    tagline: 'Numbered rows that open as you point at them, instead of four equal cards.',
-    motion:
-      'The row under the pointer expands to reveal its detail and deliverables while the others recede, so the section reads as one thing at a time.',
+    taglineKey: 'blocks.items.services.tagline',
+    motionKey: 'blocks.items.services.motion',
     atoms: [
       { name: 'VoltBadge', path: '/docs/components/badge' },
       { name: 'VoltButton', path: '/docs/components/button' },
@@ -159,11 +156,10 @@ export const BLOCKS: readonly BlockMetadata[] = [
   {
     slug: 'testimonials',
     path: '/docs/blocks/testimonials',
-    label: 'Testimonial Marquee',
+    labelKey: 'blocks.items.testimonials.label',
     category: 'proof',
-    tagline: 'Two rows of quotes sliding in opposite directions, pausing under the pointer.',
-    motion:
-      'Each row loops a duplicated list by exactly half its width, so the seam is invisible, and stops on hover or focus.',
+    taglineKey: 'blocks.items.testimonials.tagline',
+    motionKey: 'blocks.items.testimonials.motion',
     atoms: [
       { name: 'VoltCard', path: '/docs/components/card' },
       { name: 'VoltAvatar', path: '/docs/components/avatar' },
@@ -172,11 +168,10 @@ export const BLOCKS: readonly BlockMetadata[] = [
   {
     slug: 'pricing',
     path: '/docs/blocks/pricing',
-    label: 'Pricing Tiers',
+    labelKey: 'blocks.items.pricing.label',
     category: 'pricing',
-    tagline: 'Three plans with an annual switch, animated prices and a scaled featured tier.',
-    motion:
-      'Switching the billing period replays the price entrance, the savings badge slides in, and the featured tier sits scaled above the row.',
+    taglineKey: 'blocks.items.pricing.tagline',
+    motionKey: 'blocks.items.pricing.motion',
     atoms: [
       { name: 'VoltCard', path: '/docs/components/card' },
       { name: 'VoltSwitch', path: '/docs/components/switch' },
@@ -187,11 +182,10 @@ export const BLOCKS: readonly BlockMetadata[] = [
   {
     slug: 'contact',
     path: '/docs/blocks/contact',
-    label: 'Contact Split',
+    labelKey: 'blocks.items.contact.label',
     category: 'contact',
-    tagline: 'A real form beside the ways of reaching you that are not a form.',
-    motion:
-      'Each field group grows an accent bar and brightens its label on focus, and submitting swaps the form for a confirmation in place, with focus moved onto it.',
+    taglineKey: 'blocks.items.contact.tagline',
+    motionKey: 'blocks.items.contact.motion',
     atoms: [
       { name: 'VoltInput', path: '/docs/components/input' },
       { name: 'VoltTextarea', path: '/docs/components/textarea' },
@@ -202,11 +196,10 @@ export const BLOCKS: readonly BlockMetadata[] = [
   {
     slug: 'cta',
     path: '/docs/blocks/cta',
-    label: 'Magnetic CTA',
+    labelKey: 'blocks.items.cta.label',
     category: 'cta',
-    tagline: 'Closing panel with a rotating gradient border and a button that leans toward you.',
-    motion:
-      'A conic gradient spins around the panel edge, and the submit button is pulled toward the pointer while it is within 140px.',
+    taglineKey: 'blocks.items.cta.tagline',
+    motionKey: 'blocks.items.cta.motion',
     atoms: [
       { name: 'VoltButton', path: '/docs/components/button' },
       { name: 'VoltInput', path: '/docs/components/input' },
@@ -215,11 +208,10 @@ export const BLOCKS: readonly BlockMetadata[] = [
   {
     slug: 'login',
     path: '/docs/blocks/login',
-    label: 'Login Split',
+    labelKey: 'blocks.items.login.label',
     category: 'auth',
-    tagline: 'A marketing panel beside the form — the shipped version of the login layout.',
-    motion:
-      'Two auroras drift behind the brand panel, and the copy and form rise in three steps at first paint. The panel itself is dropped, not stacked, once the section is too narrow for it.',
+    taglineKey: 'blocks.items.login.tagline',
+    motionKey: 'blocks.items.login.motion',
     atoms: [
       { name: 'VoltFormField', path: '/docs/components/form-field' },
       { name: 'VoltInput', path: '/docs/components/input' },
@@ -230,11 +222,10 @@ export const BLOCKS: readonly BlockMetadata[] = [
   {
     slug: 'footer',
     path: '/docs/blocks/footer',
-    label: 'Footer Sitemap',
+    labelKey: 'blocks.items.footer.label',
     category: 'footer',
-    tagline: 'Four link columns, a newsletter field, and a status line that is actually live.',
-    motion:
-      'Column links slide their underline out from the left on hover, and the status dot pulses on a slow loop.',
+    taglineKey: 'blocks.items.footer.tagline',
+    motionKey: 'blocks.items.footer.motion',
     atoms: [
       { name: 'VoltInput', path: '/docs/components/input' },
       { name: 'VoltButton', path: '/docs/components/button' },
@@ -244,11 +235,10 @@ export const BLOCKS: readonly BlockMetadata[] = [
   {
     slug: 'dashboard',
     path: '/docs/blocks/dashboard',
-    label: 'Dashboard',
+    labelKey: 'blocks.items.dashboard.label',
     category: 'app',
-    tagline: 'Branded shell, figures that count up, and a chart that draws itself.',
-    motion:
-      'The figures count to their value the first time the row is scrolled into view, once and never again, and the chart strokes itself on as it arrives. Both start finished under reduced motion.',
+    taglineKey: 'blocks.items.dashboard.tagline',
+    motionKey: 'blocks.items.dashboard.motion',
     atoms: [
       { name: 'VoltSidebar', path: '/docs/components/sidebar' },
       { name: 'VoltCard', path: '/docs/components/card' },
@@ -264,7 +254,7 @@ export const BLOCKS: readonly BlockMetadata[] = [
  * with. Categories with nothing in them yet are dropped rather than rendered empty.
  */
 export const BLOCK_GROUPS: readonly BlockGroup[] = BLOCK_CATEGORIES.map(category => ({
-  heading: category.label,
+  headingKey: category.labelKey,
   blocks: BLOCKS.filter(block => block.category === category.id),
 })).filter(group => group.blocks.length > 0);
 
@@ -273,22 +263,25 @@ export const BLOCK_GROUPS: readonly BlockGroup[] = BLOCK_CATEGORIES.map(category
  * the shape of the set — a visitor deciding whether to adopt this wants to know what is
  * missing, and finding out later is worse than being told now.
  */
-export const UPCOMING_BLOCKS: readonly { readonly label: string; readonly tagline: string }[] = [
+export const UPCOMING_BLOCKS: readonly {
+  readonly labelKey: TranslationKey;
+  readonly taglineKey: TranslationKey;
+}[] = [
   {
-    label: 'Logo Cloud',
-    tagline: 'Customer logos that settle into place as the section arrives.',
+    labelKey: 'blocks.upcoming.logoCloud.label',
+    taglineKey: 'blocks.upcoming.logoCloud.tagline',
   },
   {
-    label: 'FAQ',
-    tagline: 'Accordion built on the accessible primitive, with a search field over it.',
+    labelKey: 'blocks.upcoming.faq.label',
+    taglineKey: 'blocks.upcoming.faq.tagline',
   },
   {
-    label: 'Stats',
-    tagline: 'Figures that count up once, the first time they are scrolled into view.',
+    labelKey: 'blocks.upcoming.stats.label',
+    taglineKey: 'blocks.upcoming.stats.tagline',
   },
   {
-    label: 'Team',
-    tagline: 'Portraits that swap for a role and a link when you point at them.',
+    labelKey: 'blocks.upcoming.team.label',
+    taglineKey: 'blocks.upcoming.team.tagline',
   },
 ];
 

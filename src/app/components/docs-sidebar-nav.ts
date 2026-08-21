@@ -9,17 +9,23 @@ import {
 } from 'ng-primitives/dialog';
 import { LmnChevronRightIcon, LmnXIcon } from 'lumen-icons';
 import type { ComponentStability } from '../lib/component-metadata';
-import { Translations } from '../i18n/translations';
+import { Translations, type TranslationKey } from '../i18n/translations';
 
+/*
+ * Keys, not text. Most sidebars on the site are built from a static catalog const, which
+ * has no injector and so can never call `t` — carrying the key lets the one component
+ * that does render the label resolve it in whatever language is on screen, including
+ * after a switch with no reload.
+ */
 export interface DocsSidebarLink {
   path: string;
-  label: string;
+  labelKey: TranslationKey;
   exact?: boolean;
   stability?: ComponentStability;
 }
 
 export interface DocsSidebarGroup {
-  heading?: string;
+  headingKey?: TranslationKey;
   links: DocsSidebarLink[];
 }
 
@@ -57,9 +63,9 @@ export interface DocsSidebarGroup {
         <p class="text-xs text-muted-foreground">{{ description() }}</p>
       }
       @for (group of groups(); track $index) {
-        @if (group.heading) {
+        @if (group.headingKey; as headingKey) {
           <h5 class="font-medium text-xs mt-4 text-muted-foreground uppercase tracking-wider">
-            {{ group.heading }}
+            {{ t(headingKey) }}
           </h5>
         }
         <ul class="space-y-1 mt-2 border-l border-border/50 ml-2 pl-4">
@@ -71,7 +77,7 @@ export interface DocsSidebarGroup {
                 [routerLinkActiveOptions]="{ exact: link.exact ?? false }"
                 class="flex items-center justify-between gap-2 px-2 py-1 text-sm rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
               >
-                <span class="truncate">{{ link.label }}</span>
+                <span class="truncate">{{ t(link.labelKey) }}</span>
                 @if (link.stability; as stability) {
                   <span
                     class="shrink-0 rounded-full px-1.5 py-0.5 text-[10px] font-medium leading-none"
@@ -102,7 +108,7 @@ export interface DocsSidebarGroup {
           <button
             (click)="close()"
             class="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:text-foreground hover:bg-muted"
-            aria-label="Close menu"
+            [attr.aria-label]="t('nav.closeMenu')"
           >
             <lmn-x [size]="20" />
           </button>
@@ -112,11 +118,11 @@ export interface DocsSidebarGroup {
           ngpDialogDescription
         >
           @for (group of groups(); track $index) {
-            @if (group.heading) {
+            @if (group.headingKey; as headingKey) {
               <p
                 class="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider mt-3 mb-1"
               >
-                {{ group.heading }}
+                {{ t(headingKey) }}
               </p>
             }
             @for (link of group.links; track link.path) {
@@ -127,7 +133,7 @@ export interface DocsSidebarGroup {
                 (click)="close()"
                 class="flex items-center justify-between gap-3 px-3 py-2.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
               >
-                <span>{{ link.label }}</span>
+                <span>{{ t(link.labelKey) }}</span>
                 @if (link.stability; as stability) {
                   <span
                     class="rounded-full px-1.5 py-0.5 text-[10px] font-medium leading-none"
@@ -150,6 +156,8 @@ export interface DocsSidebarGroup {
 export class DocsSidebarNav {
   private readonly translations = inject(Translations);
 
+  protected readonly t = this.translations.t;
+
   /** Every sidebar link on the site passes through here, so one call keeps them all in locale. */
   protected readonly path = this.translations.path;
 
@@ -158,8 +166,11 @@ export class DocsSidebarNav {
   readonly description = input<string>('');
   readonly groups = input.required<readonly DocsSidebarGroup[]>();
 
+  /** The row is narrow, so `experimental` gets an abbreviation the others do not need. */
   protected stabilityLabel(stability: ComponentStability): string {
-    return stability === 'experimental' ? 'exp' : stability;
+    return stability === 'experimental'
+      ? this.t('catalog.stability.experimentalShort')
+      : this.t(`catalog.stability.${stability}`);
   }
 
   protected stabilityClass(stability: ComponentStability): string {

@@ -1,44 +1,36 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { LmnCheckIcon, LmnCopyIcon, LmnDownloadIcon } from 'lumen-icons';
 import skillMarkdown from '../../../../../.agents/skills/volt-ui/SKILL.md?raw';
+import { Prose } from '../../../components/prose';
+import { Translations } from '../../../i18n/translations';
 
 @Component({
   selector: 'app-ai-skill-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, LmnCopyIcon, LmnCheckIcon, LmnDownloadIcon],
+  imports: [Prose, RouterLink, LmnCopyIcon, LmnCheckIcon, LmnDownloadIcon],
   template: `
     <div class="space-y-8 max-w-3xl">
       <!-- Header -->
       <div>
-        <h1 class="text-3xl font-bold tracking-tight">Local Skill</h1>
-        <p class="text-lg text-muted-foreground mt-2">
-          A built-in skill file that OpenCode / Claude Code auto-discover in any workspace that uses
-          Volt UI components.
-        </p>
+        <h1 class="text-3xl font-bold tracking-tight">{{ t('guide.aiSkillPage.title') }}</h1>
+        <p class="text-lg text-muted-foreground mt-2">{{ t('guide.aiSkillPage.lede') }}</p>
       </div>
 
       <!-- What it is -->
       <div class="rounded-lg border border-border bg-muted/30 p-4">
-        <h3 class="font-semibold">What it is</h3>
+        <h3 class="font-semibold">{{ t('guide.aiSkillPage.whatTitle') }}</h3>
         <p class="text-sm text-muted-foreground mt-1">
-          The skill lives at
-          <code class="bg-muted px-1 rounded">.agents/skills/volt-ui/SKILL.md</code>
-          in the Volt UI repository. Any AI agent that supports OpenCode-style skills will load it
-          automatically and use the conventions, selectors, and component catalog when writing code
-          for your project.
+          <app-prose key="guide.aiSkillPage.whatBody" />
         </p>
       </div>
 
       <!-- Install -->
       <div class="space-y-4">
         <h2 class="text-2xl font-semibold tracking-tight border-b border-border/50 pb-2">
-          Install the skill
+          {{ t('guide.aiSkillPage.installTitle') }}
         </h2>
-        <p class="text-muted-foreground">
-          The fastest way to install the skill in a consumer project is to copy it into the standard
-          local-skills location:
-        </p>
+        <p class="text-muted-foreground">{{ t('guide.aiSkillPage.installBody') }}</p>
         <div class="bg-[#1e1e1e] rounded-lg p-4 font-mono text-sm text-zinc-300 overflow-x-auto">
           <code>{{ installCommand }}</code>
         </div>
@@ -50,10 +42,10 @@ import skillMarkdown from '../../../../../.agents/skills/volt-ui/SKILL.md?raw';
           >
             @if (installCopied()) {
               <lmn-check [size]="16" />
-              <span>Copied</span>
+              <span>{{ t('guide.aiSkillPage.copiedCmd') }}</span>
             } @else {
               <lmn-copy [size]="16" />
-              <span>Copy install command</span>
+              <span>{{ t('guide.aiSkillPage.copyCmd') }}</span>
             }
           </button>
 
@@ -63,7 +55,7 @@ import skillMarkdown from '../../../../../.agents/skills/volt-ui/SKILL.md?raw';
             class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium border border-border bg-background rounded-md hover:bg-accent hover:text-accent-foreground transition-colors"
           >
             <lmn-download [size]="16" />
-            <span>Download SKILL.md</span>
+            <span>{{ t('guide.aiSkillPage.downloadSkill') }}</span>
           </button>
 
           <button
@@ -73,10 +65,10 @@ import skillMarkdown from '../../../../../.agents/skills/volt-ui/SKILL.md?raw';
           >
             @if (skillCopied()) {
               <lmn-check [size]="16" />
-              <span>Copied</span>
+              <span>{{ t('guide.aiSkillPage.copiedSkill') }}</span>
             } @else {
               <lmn-copy [size]="16" />
-              <span>Copy skill contents</span>
+              <span>{{ t('guide.aiSkillPage.copySkill') }}</span>
             }
           </button>
         </div>
@@ -85,55 +77,32 @@ import skillMarkdown from '../../../../../.agents/skills/volt-ui/SKILL.md?raw';
       <!-- What it covers -->
       <div class="space-y-4">
         <h2 class="text-2xl font-semibold tracking-tight border-b border-border/50 pb-2">
-          What the skill covers
+          {{ t('guide.aiSkillPage.coversTitle') }}
         </h2>
         <ul class="space-y-2 text-muted-foreground">
           <li class="flex items-start gap-2">
             <span class="text-primary mt-0.5">•</span>
-            <span>
-              <strong>Stack context</strong> — Angular 21, zoneless signals, OnPush, standalone,
-              Tailwind v4, ng-primitives, CVA
-            </span>
+            <span><app-prose key="guide.aiSkillPage.coversStack" /></span>
           </li>
           <li class="flex items-start gap-2">
             <span class="text-primary mt-0.5">•</span>
-            <span>
-              <strong>Naming conventions</strong> —
-              <code class="bg-muted px-1 rounded">ui-*</code>
-              vs
-              <code class="bg-muted px-1 rounded">volt-*</code>
-              , element vs attribute selectors
-            </span>
+            <span><app-prose key="guide.aiSkillPage.coversNaming" /></span>
           </li>
           <li class="flex items-start gap-2">
             <span class="text-primary mt-0.5">•</span>
-            <span>
-              <strong>Component catalog</strong> — stable and beta components with selectors and key
-              inputs
-            </span>
+            <span><app-prose key="guide.aiSkillPage.coversCatalog" /></span>
           </li>
           <li class="flex items-start gap-2">
             <span class="text-primary mt-0.5">•</span>
-            <span>
-              <strong>Overlay rules</strong> — attribute-directive triggers +
-              <code class="bg-muted px-1 rounded">&lt;ng-template&gt;</code>
-              for dialog, drawer, popover, tooltip, dropdown-menu
-            </span>
+            <span><app-prose key="guide.aiSkillPage.coversOverlays" /></span>
           </li>
           <li class="flex items-start gap-2">
             <span class="text-primary mt-0.5">•</span>
-            <span>
-              <strong>Reactive Forms</strong> — which components are CVA and how to wire
-              <code class="bg-muted px-1 rounded">FormControl</code>
-            </span>
+            <span><app-prose key="guide.aiSkillPage.coversForms" /></span>
           </li>
           <li class="flex items-start gap-2">
             <span class="text-primary mt-0.5">•</span>
-            <span>
-              <strong>Theme system</strong> —
-              <code class="bg-muted px-1 rounded">provideVoltTheme</code>
-              , colors, styles, and dark mode
-            </span>
+            <span><app-prose key="guide.aiSkillPage.coversTheme" /></span>
           </li>
         </ul>
       </div>
@@ -141,7 +110,7 @@ import skillMarkdown from '../../../../../.agents/skills/volt-ui/SKILL.md?raw';
       <!-- Example rule -->
       <div class="space-y-4">
         <h2 class="text-2xl font-semibold tracking-tight border-b border-border/50 pb-2">
-          Example rule from the skill
+          {{ t('guide.aiSkillPage.exampleTitle') }}
         </h2>
         <div class="bg-[#1e1e1e] rounded-lg p-4 font-mono text-sm text-zinc-300 overflow-x-auto">
           <div>// Overlays are template-based</div>
@@ -152,17 +121,17 @@ import skillMarkdown from '../../../../../.agents/skills/volt-ui/SKILL.md?raw';
           <div>&lt;/ng-template&gt;</div>
         </div>
         <p class="text-sm text-muted-foreground">
-          The skill explicitly tells the agent never to write
-          <code class="bg-muted px-1 rounded">&lt;ui-dialog&gt;</code>
-          ,
-          <code class="bg-muted px-1 rounded">&lt;ui-tooltip&gt;</code>
-          , or other invalid element selectors.
+          <app-prose key="guide.aiSkillPage.exampleBody" />
         </p>
       </div>
     </div>
   `,
 })
 export default class AiSkillPage {
+  private readonly translations = inject(Translations);
+
+  protected readonly t = this.translations.t;
+
   readonly skillContent = skillMarkdown;
   readonly installCommand = `mkdir -p .agents/skills/volt-ui && curl -fsSL https://volt-ui.pages.dev/.agents/skills/volt-ui/SKILL.md -o .agents/skills/volt-ui/SKILL.md`;
   readonly installCopied = signal(false);

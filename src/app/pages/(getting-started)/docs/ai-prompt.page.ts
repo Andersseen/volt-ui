@@ -3,42 +3,34 @@ import { Translations } from '../../../i18n/translations';
 import { RouterLink } from '@angular/router';
 import { LmnCheckIcon, LmnCopyIcon } from 'lumen-icons';
 import promptMarkdown from '../../../../../VOLT_UI_PROMPT.md?raw';
+import { Prose } from '../../../components/prose';
 
 @Component({
   selector: 'app-ai-prompt-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, LmnCopyIcon, LmnCheckIcon],
+  imports: [Prose, RouterLink, LmnCopyIcon, LmnCheckIcon],
   template: `
     <div class="space-y-8 max-w-3xl">
       <!-- Header -->
       <div>
-        <h1 class="text-3xl font-bold tracking-tight">Prompt Reference</h1>
-        <p class="text-lg text-muted-foreground mt-2">
-          A single-file prompt you can paste into any LLM chat to get correct selectors, examples,
-          and rules for Volt UI components.
-        </p>
+        <h1 class="text-3xl font-bold tracking-tight">{{ t('guide.aiPromptPage.title') }}</h1>
+        <p class="text-lg text-muted-foreground mt-2">{{ t('guide.aiPromptPage.lede') }}</p>
       </div>
 
       <!-- What it is -->
       <div class="rounded-lg border border-border bg-muted/30 p-4">
-        <h3 class="font-semibold">What it is</h3>
+        <h3 class="font-semibold">{{ t('guide.aiPromptPage.whatTitle') }}</h3>
         <p class="text-sm text-muted-foreground mt-1">
-          <code class="bg-muted px-1 rounded">VOLT_UI_PROMPT.md</code>
-          is a self-contained prompt reference. It tells the LLM everything it needs to know about
-          Volt UI: installation, naming, the full component catalog, overlay rules, Reactive Forms
-          examples, and troubleshooting.
+          <app-prose key="guide.aiPromptPage.whatBody" />
         </p>
       </div>
 
       <!-- Copy prompt -->
       <div class="space-y-4">
         <h2 class="text-2xl font-semibold tracking-tight border-b border-border/50 pb-2">
-          Copy the prompt
+          {{ t('guide.aiPromptPage.copyTitle') }}
         </h2>
-        <p class="text-muted-foreground">
-          Paste the contents below at the top of a new chat with any LLM (ChatGPT, Claude, Gemini,
-          Cursor Chat, etc.), then ask your question.
-        </p>
+        <p class="text-muted-foreground">{{ t('guide.aiPromptPage.copyLede') }}</p>
         <div class="relative">
           <button
             type="button"
@@ -47,10 +39,10 @@ import promptMarkdown from '../../../../../VOLT_UI_PROMPT.md?raw';
           >
             @if (copied()) {
               <lmn-check [size]="14" />
-              <span>Copied</span>
+              <span>{{ t('guide.aiPromptPage.copied') }}</span>
             } @else {
               <lmn-copy [size]="14" />
-              <span>Copy prompt</span>
+              <span>{{ t('guide.aiPromptPage.copyButton') }}</span>
             }
           </button>
           <textarea
@@ -64,75 +56,52 @@ import promptMarkdown from '../../../../../VOLT_UI_PROMPT.md?raw';
       <!-- How to use -->
       <div class="space-y-4">
         <h2 class="text-2xl font-semibold tracking-tight border-b border-border/50 pb-2">
-          How to use it
+          {{ t('guide.aiPromptPage.howTitle') }}
         </h2>
         <ol class="space-y-3 text-muted-foreground list-decimal ml-4">
-          <li>Click <strong>Copy prompt</strong> above.</li>
-          <li>Paste it at the top of a new chat with your LLM.</li>
-          <li>Ask your question, e.g. "Create a login form with Volt UI components."</li>
+          <li><app-prose key="guide.aiPromptPage.howStep1" /></li>
+          <li>{{ t('guide.aiPromptPage.howStep2') }}</li>
+          <li>{{ t('guide.aiPromptPage.howStep3') }}</li>
         </ol>
       </div>
 
       <!-- What's inside -->
       <div class="space-y-4">
         <h2 class="text-2xl font-semibold tracking-tight border-b border-border/50 pb-2">
-          What's inside
+          {{ t('guide.aiPromptPage.insideTitle') }}
         </h2>
         <ul class="space-y-2 text-muted-foreground">
           <li class="flex items-start gap-2">
             <span class="text-primary mt-0.5">•</span>
-            <span> <strong>Installation</strong> — npm package and CLI workflows </span>
+            <span><app-prose key="guide.aiPromptPage.insideInstall" /></span>
           </li>
           <li class="flex items-start gap-2">
             <span class="text-primary mt-0.5">•</span>
-            <span>
-              <strong>Naming conventions</strong> —
-              <code class="bg-muted px-1 rounded">ui-*</code>
-              / <code class="bg-muted px-1 rounded">UiXxx</code>
-              vs
-              <code class="bg-muted px-1 rounded">volt-*</code>
-              / <code class="bg-muted px-1 rounded">VoltXxx</code>
-            </span>
+            <span><app-prose key="guide.aiPromptPage.insideNaming" /></span>
           </li>
           <li class="flex items-start gap-2">
             <span class="text-primary mt-0.5">•</span>
-            <span>
-              <strong>Component catalog</strong> — stable and beta components with selectors and
-              notes
-            </span>
+            <span><app-prose key="guide.aiPromptPage.insideCatalog" /></span>
           </li>
           <li class="flex items-start gap-2">
             <span class="text-primary mt-0.5">•</span>
-            <span>
-              <strong>Overlay rules</strong> — dialog, drawer, popover, tooltip, dropdown-menu
-              templates
-            </span>
+            <span><app-prose key="guide.aiPromptPage.insideOverlays" /></span>
           </li>
           <li class="flex items-start gap-2">
             <span class="text-primary mt-0.5">•</span>
-            <span>
-              <strong>Reactive Forms</strong> — CVA components and
-              <code class="bg-muted px-1 rounded">FormControl</code>
-              wiring
-            </span>
+            <span><app-prose key="guide.aiPromptPage.insideForms" /></span>
           </li>
           <li class="flex items-start gap-2">
             <span class="text-primary mt-0.5">•</span>
-            <span>
-              <strong>Theme system</strong> — colors, styles,
-              <code class="bg-muted px-1 rounded">provideVoltTheme</code>
-            </span>
+            <span><app-prose key="guide.aiPromptPage.insideTheme" /></span>
           </li>
           <li class="flex items-start gap-2">
             <span class="text-primary mt-0.5">•</span>
-            <span>
-              <strong>AI assistant rules</strong> — what to do and what not to do when generating
-              Volt UI code
-            </span>
+            <span><app-prose key="guide.aiPromptPage.insideRules" /></span>
           </li>
           <li class="flex items-start gap-2">
             <span class="text-primary mt-0.5">•</span>
-            <span> <strong>Troubleshooting</strong> — common mistakes and fixes </span>
+            <span><app-prose key="guide.aiPromptPage.insideTroubleshooting" /></span>
           </li>
         </ul>
       </div>
@@ -140,21 +109,10 @@ import promptMarkdown from '../../../../../VOLT_UI_PROMPT.md?raw';
       <!-- When to use -->
       <div class="space-y-4">
         <h2 class="text-2xl font-semibold tracking-tight border-b border-border/50 pb-2">
-          When to use it
+          {{ t('guide.aiPromptPage.whenTitle') }}
         </h2>
-        <p class="text-muted-foreground">
-          Use the prompt reference when your editor or agent doesn't support MCP or local skills
-          yet. It's also handy for one-off questions in web-based LLM chats.
-        </p>
-        <p class="text-sm text-muted-foreground">
-          For integrated agents, prefer the
-          <a [routerLink]="path('/docs/ai-mcp')" class="text-primary hover:underline">MCP server</a>
-          or the
-          <a [routerLink]="path('/docs/ai-skill')" class="text-primary hover:underline"
-            >local skill</a
-          >
-          so the context stays in sync automatically.
-        </p>
+        <p class="text-muted-foreground">{{ t('guide.aiPromptPage.whenBody') }}</p>
+        <p class="text-sm text-muted-foreground">{{ t('guide.aiPromptPage.whenAlt') }}</p>
       </div>
     </div>
   `,

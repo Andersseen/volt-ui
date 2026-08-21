@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { categoryFor, type BlockMetadata } from '../lib/blocks-metadata';
 import { CodePanel } from './code-panel';
+import { Translations } from '../i18n/translations';
 
 /**
  * The frame every block page shares: heading, live section, what moves, and the source.
@@ -22,10 +23,10 @@ import { CodePanel } from './code-panel';
     <div class="space-y-8">
       <div>
         <p class="text-xs font-medium uppercase tracking-wider text-primary">
-          {{ category().label }}
+          {{ t(category().labelKey) }}
         </p>
-        <h1 class="mt-1.5 text-3xl font-bold tracking-tight">{{ block().label }}</h1>
-        <p class="mt-2 text-lg text-muted-foreground">{{ block().tagline }}</p>
+        <h1 class="mt-1.5 text-3xl font-bold tracking-tight">{{ t(block().labelKey) }}</h1>
+        <p class="mt-2 text-lg text-muted-foreground">{{ t(block().taglineKey) }}</p>
       </div>
 
       <div class="overflow-hidden rounded-xl border border-border">
@@ -34,11 +35,11 @@ import { CodePanel } from './code-panel';
 
       <div class="grid gap-4 sm:grid-cols-2">
         <div class="rounded-lg border border-border bg-muted/20 p-4">
-          <h2 class="text-sm font-medium">What moves</h2>
-          <p class="mt-1.5 text-sm text-muted-foreground">{{ block().motion }}</p>
+          <h2 class="text-sm font-medium">{{ t('gallery.whatMoves') }}</h2>
+          <p class="mt-1.5 text-sm text-muted-foreground">{{ t(block().motionKey) }}</p>
         </div>
         <div class="rounded-lg border border-border bg-muted/20 p-4">
-          <h2 class="text-sm font-medium">Built from</h2>
+          <h2 class="text-sm font-medium">{{ t('gallery.builtFrom') }}</h2>
           <ul class="mt-2 flex flex-wrap gap-1.5">
             @for (atom of block().atoms; track atom.name) {
               <li>
@@ -55,22 +56,25 @@ import { CodePanel } from './code-panel';
       </div>
 
       <app-code-panel
-        title="Block source"
+        [title]="t('gallery.blockSource')"
         [code]="code()"
-        description="One standalone component. Paste it into your project, point the imports at your Volt path, and wire the buttons to your own routes."
+        [description]="t('gallery.blockSourceNote')"
       />
 
       <div class="rounded-lg border border-border bg-muted/30 p-4">
+        <!-- The CSS media query is a literal, so it is passed in rather than translated. -->
         <p class="text-sm text-muted-foreground">
-          Every animation here is guarded by <code>prefers-reduced-motion</code>, and the colours
-          come from theme tokens — try a different preset with the switcher in the header and the
-          block follows.
+          {{ t('gallery.blockThemeNote', { reducedMotion: 'prefers-reduced-motion' }) }}
         </p>
       </div>
     </div>
   `,
 })
 export class BlockShowcase {
+  private readonly translations = inject(Translations);
+
+  protected readonly t = this.translations.t;
+
   readonly block = input.required<BlockMetadata>();
   readonly code = input.required<string>();
 

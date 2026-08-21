@@ -1,5 +1,23 @@
 import { describe, expect, it } from 'vitest';
 import { LAYOUT_CATEGORIES, LAYOUT_GROUPS, LAYOUTS, layoutBySlug } from './layouts-metadata';
+import en from '../i18n/en.json';
+
+/** The catalog holds keys, so a test about the prose has to go and read the prose. */
+function lookup(key: string): string {
+  const value = key
+    .split('.')
+    .reduce<unknown>(
+      (node, part) =>
+        node && typeof node === 'object' ? (node as Record<string, unknown>)[part] : undefined,
+      en
+    );
+
+  if (typeof value !== 'string') {
+    throw new Error(`Missing translation: ${key}`);
+  }
+
+  return value;
+}
 
 describe('layouts catalog', () => {
   it('derives each path from the slug, so navigation and routes cannot drift apart', () => {
@@ -31,7 +49,7 @@ describe('layouts catalog', () => {
 
   it('describes the arrangement, which is what a layout is chosen by', () => {
     for (const layout of LAYOUTS) {
-      expect(layout.structure.length).toBeGreaterThan(40);
+      expect(lookup(layout.structureKey).length).toBeGreaterThan(40);
       expect(layout.atoms.length).toBeGreaterThan(0);
       for (const atom of layout.atoms) {
         expect(atom.path).toMatch(/^\/docs\/components\/[a-z-]+$/);

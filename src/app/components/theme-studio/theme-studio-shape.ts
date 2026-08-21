@@ -8,6 +8,7 @@ import {
   VoltSlider,
 } from 'volt';
 import { ThemeStudioStore } from '../../services/theme-studio-store';
+import { Translations } from '../../i18n/translations';
 
 /** The structural tokens both modes share: radius, borders, focus ring, shadow. */
 @Component({
@@ -26,10 +27,8 @@ import { ThemeStudioStore } from '../../services/theme-studio-store';
       class="border-border/70 bg-surface/80 shadow-sm backdrop-blur transition-colors duration-200 hover:border-primary/25"
     >
       <volt-card-header>
-        <volt-card-title>Shape & Feel</volt-card-title>
-        <volt-card-description
-          >Adjust the structural tokens shared by both modes.</volt-card-description
-        >
+        <volt-card-title>{{ t('themeStudio.shape.title') }}</volt-card-title>
+        <volt-card-description>{{ t('themeStudio.shape.lede') }}</volt-card-description>
       </volt-card-header>
       <volt-card-content>
         <div class="grid gap-5 sm:grid-cols-2">
@@ -56,6 +55,10 @@ import { ThemeStudioStore } from '../../services/theme-studio-store';
   `,
 })
 export class ThemeStudioShape {
+  private readonly translations = inject(Translations);
+
+  protected readonly t = this.translations.t;
+
   protected readonly store = inject(ThemeStudioStore);
 
   /** Four sliders that differ only in label and range, so they are data, not markup. */

@@ -61,6 +61,8 @@ Skipping any of these WILL break CI or the CLI. See `specs/patterns/docs-page.md
 | Test can't find element by role                                                | ng-primitives renders state via `data-*` attributes (`data-checked`, `data-disabled`); assert on those or use `screen.getByRole` with the semantic role the primitive sets. |
 | `pnpm release:check` npm-cache permission errors                               | Scripts already use repo-local `.npm-cache`; don't "fix" by using the global cache.                                                                                         |
 | Husky blocks a commit                                                          | Fix the lint error. Never use `--no-verify`.                                                                                                                                |
+| `no-hardcoded-copy.spec.ts` names a sentence in your template                  | Move it to `en.json`, translate it in `es.json` and `uk.json`, and render it with `t()` — or with `<app-prose>` if it contains code, emphasis or a link.                    |
+| `dictionaries` spec says a locale is missing a key                             | You added to `en.json` only. All three files carry the same key set.                                                                                                        |
 
 ## Where things are (quick map)
 

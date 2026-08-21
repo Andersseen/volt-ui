@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import type { LayoutMetadata } from '../lib/layouts-metadata';
 import { CodePanel } from './code-panel';
+import { Translations } from '../i18n/translations';
 
 /**
  * The frame every layout page shares.
@@ -18,8 +19,8 @@ import { CodePanel } from './code-panel';
   template: `
     <div class="space-y-8">
       <div>
-        <h1 class="text-3xl font-bold tracking-tight">{{ layout().label }}</h1>
-        <p class="mt-2 text-lg text-muted-foreground">{{ layout().tagline }}</p>
+        <h1 class="text-3xl font-bold tracking-tight">{{ t(layout().labelKey) }}</h1>
+        <p class="mt-2 text-lg text-muted-foreground">{{ t(layout().taglineKey) }}</p>
       </div>
 
       <div class="overflow-hidden rounded-xl border border-border">
@@ -28,11 +29,11 @@ import { CodePanel } from './code-panel';
 
       <div class="grid gap-4 sm:grid-cols-2">
         <div class="rounded-lg border border-border bg-muted/20 p-4">
-          <h2 class="text-sm font-medium">The arrangement</h2>
-          <p class="mt-1.5 text-sm text-muted-foreground">{{ layout().structure }}</p>
+          <h2 class="text-sm font-medium">{{ t('gallery.arrangement') }}</h2>
+          <p class="mt-1.5 text-sm text-muted-foreground">{{ t(layout().structureKey) }}</p>
         </div>
         <div class="rounded-lg border border-border bg-muted/20 p-4">
-          <h2 class="text-sm font-medium">Assembled from</h2>
+          <h2 class="text-sm font-medium">{{ t('gallery.assembledFrom') }}</h2>
           <ul class="mt-2 flex flex-wrap gap-1.5">
             @for (atom of layout().atoms; track atom.name) {
               <li>
@@ -49,26 +50,28 @@ import { CodePanel } from './code-panel';
       </div>
 
       <app-code-panel
-        title="Layout source"
+        [title]="t('gallery.layoutSource')"
         [code]="code()"
-        description="The arrangement, with the sample data kept in plain arrays at the bottom. Swap those for yours and the template stops being an example."
+        [description]="t('gallery.layoutSourceNote')"
       />
 
       <div class="rounded-lg border border-border bg-muted/30 p-4">
         <p class="text-sm text-muted-foreground">
-          Layouts stay unbranded on purpose: no gradients, no logos, no stock photography, and
-          nothing fetched from a third party. If you want a section that is finished rather than a
-          shape to fill,
+          {{ t('gallery.layoutUnbrandedNote') }}
           <a routerLink="/docs/blocks" class="text-primary underline-offset-4 hover:underline">
-            the blocks gallery
+            {{ t('gallery.blocksGalleryLink') }}
           </a>
-          is the other tab.
+          {{ t('gallery.isTheOtherTab') }}
         </p>
       </div>
     </div>
   `,
 })
 export class LayoutShowcase {
+  private readonly translations = inject(Translations);
+
+  protected readonly t = this.translations.t;
+
   readonly layout = input.required<LayoutMetadata>();
   readonly code = input.required<string>();
 }

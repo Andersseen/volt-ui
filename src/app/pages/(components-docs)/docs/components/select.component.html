@@ -1,12 +1,10 @@
 <div class="px-6 py-12 max-w-3xl mx-auto space-y-12">
   <div>
-    <h1 class="text-3xl font-bold tracking-tight mb-2">Select</h1>
-    <p class="text-muted-foreground text-lg">
-      Displays a list of options for the user to pick from—triggered by a button.
-    </p>
+    <h1 class="text-3xl font-bold tracking-tight mb-2">{{ t('components.select.title') }}</h1>
+    <p class="text-muted-foreground text-lg">{{ t('components.select.description') }}</p>
   </div>
 
-  <app-code-panel title="Usage" [code]="selectUsage" [tabbed]="true">
+  <app-code-panel [title]="t('ui.codePanel.usage')" [code]="selectUsage" [tabbed]="true">
     <div class="space-y-4">
       <div
         class="p-12 flex justify-center items-center rounded-xl border bg-card/30 backdrop-blur-sm shadow-sm ring-1 ring-border/50"
@@ -38,7 +36,11 @@
   </app-code-panel>
 
   <!-- Native Select Example -->
-  <app-code-panel title="Native Select" [code]="nativeSelectUsage" [tabbed]="true">
+  <app-code-panel
+    [title]="t('components.select.nativeTitle')"
+    [code]="nativeSelectUsage"
+    [tabbed]="true"
+  >
     <div class="space-y-4">
       <div
         class="p-12 flex justify-center items-center rounded-xl border bg-card/30 backdrop-blur-sm shadow-sm ring-1 ring-border/50"
@@ -57,22 +59,19 @@
     </div>
   </app-code-panel>
   <p class="text-sm text-muted-foreground -mt-6">
-    A lighter alternative to <code>volt-select</code> for simple cases: it's the real native
-    <code>&lt;select&gt;</code> element (full mobile/native picker behavior, works with
-    <code>formControl</code>/<code>ngModel</code> for free), styled to match the theme.
+    {{ t('components.select.nativeNote', nativeNoteSlots) }}
   </p>
 
   <!-- API Reference -->
   <div class="space-y-3">
-    <h3 class="text-lg font-semibold">API Reference</h3>
+    <h3 class="text-lg font-semibold">{{ t('ui.api.title') }}</h3>
     <app-api-reference [data]="selectApi" />
   </div>
 
   <!-- Source Code Section -->
   <app-code-panel
-    title="Component Source"
     [code]="selectCode"
     cliCommand="npx @voltui/cli add select"
-    description="Copy this code to your project. The component uses ng-primitives/select."
+    [description]="t('ui.codePanel.copyNoteDep', { dep: 'ng-primitives/select' })"
   />
 </div>

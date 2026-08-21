@@ -41,22 +41,24 @@ describe('blocks catalog', () => {
   });
 
   it('keeps the page-section groups in the order a page is assembled', () => {
-    const headings = BLOCK_GROUPS.map(group => group.heading);
-    const footer = headings.indexOf('Footer');
+    const headings = BLOCK_GROUPS.map(group => group.headingKey);
+    const footer = headings.indexOf('blocks.categories.footer.label');
 
     // Hero to footer, top to bottom, the way you would build the page.
-    expect(headings[0]).toBe('Hero');
-    expect(headings.indexOf('Features')).toBeGreaterThan(0);
-    expect(footer).toBeGreaterThan(headings.indexOf('Call to action'));
+    expect(headings[0]).toBe('blocks.categories.hero.label');
+    expect(headings.indexOf('blocks.categories.features.label')).toBeGreaterThan(0);
+    expect(footer).toBeGreaterThan(headings.indexOf('blocks.categories.cta.label'));
   });
 
   it('keeps whole-page categories after the sections that make up a page', () => {
-    const headings = BLOCK_GROUPS.map(group => group.heading);
-    const footer = headings.indexOf('Footer');
+    const headings = BLOCK_GROUPS.map(group => group.headingKey);
+    const footer = headings.indexOf('blocks.categories.footer.label');
 
     // Neither a login nor a dashboard is a section of a landing page, so neither belongs
     // in that sequence.
-    for (const wholeScreen of ['Auth', 'Application']) {
+    const wholeScreens = ['blocks.categories.auth.label', 'blocks.categories.app.label'] as const;
+
+    for (const wholeScreen of wholeScreens) {
       expect(headings.indexOf(wholeScreen)).toBeGreaterThan(footer);
     }
   });

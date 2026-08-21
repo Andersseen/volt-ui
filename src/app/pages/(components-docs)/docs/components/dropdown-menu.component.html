@@ -1,14 +1,16 @@
 <div class="space-y-6">
   <div>
-    <h1 class="text-3xl font-bold tracking-tight text-foreground">Dropdown Menu</h1>
+    <h1 class="text-3xl font-bold tracking-tight text-foreground">
+      {{ t('components.dropdownMenu.title') }}
+    </h1>
     <p class="text-base text-muted-foreground mt-2">
-      Displays a menu of options to the user, triggered by a button.
+      {{ t('components.dropdownMenu.description') }}
     </p>
   </div>
 
   <div class="w-full h-px bg-border"></div>
 
-  <app-code-panel title="Usage" [code]="dropdownMenuUsage" [tabbed]="true">
+  <app-code-panel [title]="t('ui.codePanel.usage')" [code]="dropdownMenuUsage" [tabbed]="true">
     <div
       class="p-8 border border-border rounded-lg bg-card/30 flex items-center justify-center min-h-[300px]"
     >
@@ -30,14 +32,13 @@
 
   <!-- API Reference -->
   <div class="space-y-3">
-    <h3 class="text-lg font-semibold">API Reference</h3>
+    <h3 class="text-lg font-semibold">{{ t('ui.api.title') }}</h3>
     <app-api-reference [data]="dropdownMenuApi" />
   </div>
 
   <app-code-panel
-    title="Component Source"
     [code]="dropdownMenuCode"
     cliCommand="npx @voltui/cli add dropdown-menu"
-    description="Copy this code to your project. The component uses ng-primitives/menu."
+    [description]="t('ui.codePanel.copyNoteDep', { dep: 'ng-primitives/menu' })"
   />
 </div>

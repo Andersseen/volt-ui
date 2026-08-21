@@ -1,15 +1,17 @@
 <div class="space-y-6">
   <div>
-    <h1 class="text-3xl font-bold tracking-tight text-foreground">Popover</h1>
-    <p class="text-base text-muted-foreground mt-2">
-      Displays rich content in a portal, triggered by clicking an element.
-    </p>
+    <h1 class="text-3xl font-bold tracking-tight text-foreground">
+      {{ t('components.popover.title') }}
+    </h1>
+    <p class="text-base text-muted-foreground mt-2">{{ t('components.popover.description') }}</p>
   </div>
 
   <div class="w-full h-px bg-border"></div>
 
   <div class="space-y-4">
-    <h2 class="text-xl font-semibold tracking-tight text-foreground">Example</h2>
+    <h2 class="text-xl font-semibold tracking-tight text-foreground">
+      {{ t('ui.section.example') }}
+    </h2>
     <div
       class="p-8 border border-border rounded-lg bg-card/30 flex items-center justify-center min-h-[300px]"
     >
@@ -30,14 +32,13 @@
 
   <!-- API Reference -->
   <div class="space-y-3">
-    <h3 class="text-lg font-semibold">API Reference</h3>
+    <h3 class="text-lg font-semibold">{{ t('ui.api.title') }}</h3>
     <app-api-reference [data]="popoverApi" />
   </div>
 
   <app-code-panel
-    title="Component Source"
     [code]="popoverCode"
     cliCommand="npx @voltui/cli add popover"
-    description="Copy this code to your project. The component uses ng-primitives/popover."
+    [description]="t('ui.codePanel.copyNoteDep', { dep: 'ng-primitives/popover' })"
   />
 </div>

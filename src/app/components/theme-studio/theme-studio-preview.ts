@@ -13,6 +13,7 @@ import {
   VoltSwitch,
 } from 'volt';
 import { ThemeStudioStore } from '../../services/theme-studio-store';
+import { Translations } from '../../i18n/translations';
 
 /**
  * The live canvas. Everything inside the shell is rendered under the draft's own tokens
@@ -43,12 +44,16 @@ import { ThemeStudioStore } from '../../services/theme-studio-store';
     <aside class="space-y-4">
       <div class="flex items-center justify-between gap-3">
         <div>
-          <p class="text-xs font-medium uppercase tracking-[0.18em] text-primary">Canvas</p>
-          <h2 class="mt-2 text-2xl font-semibold tracking-tight text-foreground">Live preview</h2>
-          <p class="text-sm text-muted-foreground">Scoped safely from the docs theme.</p>
+          <p class="text-xs font-medium uppercase tracking-[0.18em] text-primary">
+            {{ t('themeStudio.preview.eyebrow') }}
+          </p>
+          <h2 class="mt-2 text-2xl font-semibold tracking-tight text-foreground">
+            {{ t('themeStudio.preview.title') }}
+          </h2>
+          <p class="text-sm text-muted-foreground">{{ t('themeStudio.preview.lede') }}</p>
         </div>
         <div class="flex items-center gap-2 text-sm text-muted-foreground">
-          <label for="theme-preview-dark">Dark</label>
+          <label for="theme-preview-dark">{{ t('themeStudio.preview.dark') }}</label>
           <volt-switch
             [id]="'theme-preview-dark'"
             ariaLabel="Dark preview"
@@ -184,5 +189,9 @@ import { ThemeStudioStore } from '../../services/theme-studio-store';
   `,
 })
 export class ThemeStudioPreview {
+  private readonly translations = inject(Translations);
+
+  protected readonly t = this.translations.t;
+
   protected readonly store = inject(ThemeStudioStore);
 }

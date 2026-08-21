@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LmnCheckIcon, LmnCopyIcon } from 'lumen-icons';
+import { Translations } from '../i18n/translations';
 
 @Component({
   selector: 'app-copy-button',
@@ -17,15 +18,19 @@ import { LmnCheckIcon, LmnCopyIcon } from 'lumen-icons';
     >
       @if (copied()) {
         <lmn-check [size]="14" />
-        <span>Copied!</span>
+        <span>{{ t('ui.copy.copied') }}</span>
       } @else {
         <lmn-copy [size]="14" />
-        <span>Copy code</span>
+        <span>{{ t('ui.copy.code') }}</span>
       }
     </button>
   `,
 })
 export class CopyButton {
+  private readonly translations = inject(Translations);
+
+  protected readonly t = this.translations.t;
+
   readonly code = input.required<string>();
   readonly copied = signal(false);
 

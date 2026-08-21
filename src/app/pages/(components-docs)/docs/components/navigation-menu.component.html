@@ -1,12 +1,14 @@
 <div class="space-y-10">
   <div>
-    <h1 class="text-3xl font-bold tracking-tight text-foreground">Navigation Menu</h1>
+    <h1 class="text-3xl font-bold tracking-tight text-foreground">
+      {{ t('components.navigationMenu.title') }}
+    </h1>
     <p class="text-lg text-muted-foreground mt-2">
-      A collection of links for navigating websites, with support for dropdown menus.
+      {{ t('components.navigationMenu.description') }}
     </p>
   </div>
 
-  <app-code-panel title="Usage" [code]="navigationMenuUsage" [tabbed]="true">
+  <app-code-panel [title]="t('ui.codePanel.usage')" [code]="navigationMenuUsage" [tabbed]="true">
     <div
       class="border rounded-xl border-border/50 p-6 md:p-10 flex items-center justify-center bg-background/50 relative min-h-[400px]"
     >
@@ -157,27 +159,28 @@
   </app-code-panel>
 
   <div class="space-y-4">
-    <h2 class="text-xl font-semibold tracking-tight text-foreground">Features</h2>
+    <h2 class="text-xl font-semibold tracking-tight text-foreground">
+      {{ t('ui.section.features') }}
+    </h2>
     <ul class="list-disc list-inside space-y-2 text-muted-foreground">
-      <li>Keyboard navigation with Arrow keys and Escape</li>
-      <li>Accessible with proper ARIA attributes</li>
-      <li>Smooth animations and transitions</li>
-      <li>Flexible content layouts (single column, multi-column)</li>
-      <li>Support for direct links and dropdown menus</li>
+      <li>{{ t('components.navigationMenu.features.keyboard') }}</li>
+      <li>{{ t('components.navigationMenu.features.aria') }}</li>
+      <li>{{ t('components.navigationMenu.features.animations') }}</li>
+      <li>{{ t('components.navigationMenu.features.layouts') }}</li>
+      <li>{{ t('components.navigationMenu.features.links') }}</li>
     </ul>
   </div>
 
   <!-- API Reference -->
   <div class="space-y-3">
-    <h3 class="text-lg font-semibold">API Reference</h3>
+    <h3 class="text-lg font-semibold">{{ t('ui.api.title') }}</h3>
     <app-api-reference [data]="navigationMenuApi" />
   </div>
 
   <!-- Source Code Section -->
   <app-code-panel
-    title="Component Source"
     [code]="navigationMenuCode"
     cliCommand="npx @voltui/cli add navigation-menu"
-    description="Copy this code to your project. The component uses ng-primitives/navigation-menu."
+    [description]="t('ui.codePanel.copyNoteDep', { dep: 'ng-primitives/navigation-menu' })"
   />
 </div>

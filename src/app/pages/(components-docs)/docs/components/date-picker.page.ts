@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import {
   NgpDatePickerCellRender,
   NgpDatePickerRowRender,
@@ -15,6 +15,7 @@ import { ApiReference } from '../../../../components/api-reference';
 import { DATE_PICKER_SNIPPET } from '../../../../lib/snippets';
 import { DATE_PICKER_USAGE } from '../../../../lib/snippets/usage';
 import { DATE_PICKER_API } from '../../../../lib/api-reference.generated';
+import { Translations } from '../../../../i18n/translations';
 
 @Component({
   selector: 'app-date-picker-demo',
@@ -36,13 +37,15 @@ import { DATE_PICKER_API } from '../../../../lib/api-reference.generated';
   template: `
     <div class="space-y-6">
       <div>
-        <h1 class="text-3xl font-bold tracking-tight text-foreground">Date Picker</h1>
+        <h1 class="text-3xl font-bold tracking-tight text-foreground">
+          {{ t('components.datePicker.title') }}
+        </h1>
         <p class="text-base text-muted-foreground mt-2">
-          Calendar primitives for date and range selection.
+          {{ t('components.datePicker.description') }}
         </p>
       </div>
       <div class="w-full h-px bg-border"></div>
-      <app-code-panel title="Usage" [code]="usage" [tabbed]="true">
+      <app-code-panel [title]="t('ui.codePanel.usage')" [code]="usage" [tabbed]="true">
         <div
           class="p-8 border border-border rounded-lg bg-card/30 flex items-center justify-center"
         >
@@ -73,20 +76,23 @@ import { DATE_PICKER_API } from '../../../../lib/api-reference.generated';
       </app-code-panel>
       <!-- API Reference -->
       <div class="space-y-3">
-        <h3 class="text-lg font-semibold">API Reference</h3>
+        <h3 class="text-lg font-semibold">{{ t('ui.api.title') }}</h3>
         <app-api-reference [data]="datePickerApi" />
       </div>
 
       <app-code-panel
-        title="Component Source"
         [code]="code"
         cliCommand="npx @voltui/cli add date-picker"
-        description="Copy this code to your project. The component uses ng-primitives/date-picker."
+        [description]="t('ui.codePanel.copyNoteDep', { dep: 'ng-primitives/date-picker' })"
       />
     </div>
   `,
 })
 export default class DatePickerDemo {
+  private readonly translations = inject(Translations);
+
+  protected readonly t = this.translations.t;
+
   readonly datePickerApi = DATE_PICKER_API;
   readonly code = DATE_PICKER_SNIPPET;
   readonly usage = DATE_PICKER_USAGE;

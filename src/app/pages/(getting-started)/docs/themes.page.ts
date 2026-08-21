@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Translations } from '../../../i18n/translations';
+import { Prose } from '../../../components/prose';
 import { RouterLink } from '@angular/router';
 import {
   VoltCard,
@@ -13,6 +14,7 @@ import {
   selector: 'app-themes-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    Prose,
     RouterLink,
     VoltCard,
     VoltCardHeader,
@@ -24,142 +26,50 @@ import {
     <div class="space-y-8">
       <!-- Header -->
       <div>
-        <h1 class="text-3xl font-bold tracking-tight">Themes</h1>
-        <p class="text-lg text-muted-foreground mt-2">
-          Customize the look and feel of your application with built-in themes, colors, and dark
-          mode support.
-        </p>
+        <h1 class="text-3xl font-bold tracking-tight">{{ t('guide.themesPage.title') }}</h1>
+        <p class="text-lg text-muted-foreground mt-2">{{ t('guide.themesPage.lede') }}</p>
       </div>
 
       <div class="w-full h-px bg-border"></div>
 
       <!-- Available Themes -->
       <div class="space-y-4">
-        <h2 class="text-xl font-semibold tracking-tight">Available Themes</h2>
-        <p class="text-muted-foreground">
-          Volt UI comes with several pre-built color themes. Each theme provides a unique palette
-          for primary, secondary, accent, and semantic colors.
-        </p>
+        <h2 class="text-xl font-semibold tracking-tight">
+          {{ t('guide.themesPage.availableTitle') }}
+        </h2>
+        <p class="text-muted-foreground">{{ t('guide.themesPage.availableLede') }}</p>
 
         <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          <!-- Volt Theme -->
-          <div
-            class="p-4 rounded-lg border border-border hover:border-primary/50 transition-colors cursor-pointer group"
-          >
-            <div class="flex items-center gap-3 mb-3">
-              <div
-                class="w-10 h-10 rounded-lg bg-blue-500 flex items-center justify-center text-white font-bold"
-              >
-                V
+          @for (preset of presets; track preset.id) {
+            <div
+              class="p-4 rounded-lg border border-border hover:border-primary/50 transition-colors cursor-pointer group"
+            >
+              <div class="flex items-center gap-3 mb-3">
+                <div
+                  class="w-10 h-10 rounded-lg flex items-center justify-center text-white font-bold"
+                  [class]="preset.badge"
+                >
+                  {{ preset.initial }}
+                </div>
+                <div>
+                  <h3 class="font-medium" [class]="preset.hover">{{ preset.name }}</h3>
+                  <p class="text-xs text-muted-foreground">{{ t(preset.descriptionKey) }}</p>
+                </div>
               </div>
-              <div>
-                <h3 class="font-medium group-hover:text-blue-500">Volt</h3>
-                <p class="text-xs text-muted-foreground">Default blue theme</p>
-              </div>
-            </div>
-            <div class="flex gap-2">
-              <div class="w-6 h-6 rounded-full bg-blue-500"></div>
-              <div class="w-6 h-6 rounded-full bg-blue-600"></div>
-              <div class="w-6 h-6 rounded-full bg-slate-500"></div>
-            </div>
-          </div>
-
-          <!-- Ember Theme -->
-          <div
-            class="p-4 rounded-lg border border-border hover:border-primary/50 transition-colors cursor-pointer group"
-          >
-            <div class="flex items-center gap-3 mb-3">
-              <div
-                class="w-10 h-10 rounded-lg bg-orange-500 flex items-center justify-center text-white font-bold"
-              >
-                E
-              </div>
-              <div>
-                <h3 class="font-medium group-hover:text-orange-500">Ember</h3>
-                <p class="text-xs text-muted-foreground">Warm orange theme</p>
+              <div class="flex gap-2">
+                @for (swatch of preset.swatches; track $index) {
+                  <div class="w-6 h-6 rounded-full" [class]="swatch"></div>
+                }
               </div>
             </div>
-            <div class="flex gap-2">
-              <div class="w-6 h-6 rounded-full bg-orange-500"></div>
-              <div class="w-6 h-6 rounded-full bg-red-500"></div>
-              <div class="w-6 h-6 rounded-full bg-amber-500"></div>
-            </div>
-          </div>
-
-          <!-- Sage Theme -->
-          <div
-            class="p-4 rounded-lg border border-border hover:border-primary/50 transition-colors cursor-pointer group"
-          >
-            <div class="flex items-center gap-3 mb-3">
-              <div
-                class="w-10 h-10 rounded-lg bg-emerald-500 flex items-center justify-center text-white font-bold"
-              >
-                S
-              </div>
-              <div>
-                <h3 class="font-medium group-hover:text-emerald-500">Sage</h3>
-                <p class="text-xs text-muted-foreground">Natural green theme</p>
-              </div>
-            </div>
-            <div class="flex gap-2">
-              <div class="w-6 h-6 rounded-full bg-emerald-500"></div>
-              <div class="w-6 h-6 rounded-full bg-green-600"></div>
-              <div class="w-6 h-6 rounded-full bg-teal-500"></div>
-            </div>
-          </div>
-
-          <!-- Dusk Theme -->
-          <div
-            class="p-4 rounded-lg border border-border hover:border-primary/50 transition-colors cursor-pointer group"
-          >
-            <div class="flex items-center gap-3 mb-3">
-              <div
-                class="w-10 h-10 rounded-lg bg-violet-500 flex items-center justify-center text-white font-bold"
-              >
-                D
-              </div>
-              <div>
-                <h3 class="font-medium group-hover:text-violet-500">Dusk</h3>
-                <p class="text-xs text-muted-foreground">Purple twilight theme</p>
-              </div>
-            </div>
-            <div class="flex gap-2">
-              <div class="w-6 h-6 rounded-full bg-violet-500"></div>
-              <div class="w-6 h-6 rounded-full bg-purple-600"></div>
-              <div class="w-6 h-6 rounded-full bg-indigo-500"></div>
-            </div>
-          </div>
-
-          <!-- Glacier Theme -->
-          <div
-            class="p-4 rounded-lg border border-border hover:border-primary/50 transition-colors cursor-pointer group"
-          >
-            <div class="flex items-center gap-3 mb-3">
-              <div
-                class="w-10 h-10 rounded-lg bg-cyan-500 flex items-center justify-center text-white font-bold"
-              >
-                G
-              </div>
-              <div>
-                <h3 class="font-medium group-hover:text-cyan-500">Glacier</h3>
-                <p class="text-xs text-muted-foreground">Cool cyan theme</p>
-              </div>
-            </div>
-            <div class="flex gap-2">
-              <div class="w-6 h-6 rounded-full bg-cyan-500"></div>
-              <div class="w-6 h-6 rounded-full bg-sky-500"></div>
-              <div class="w-6 h-6 rounded-full bg-blue-400"></div>
-            </div>
-          </div>
+          }
         </div>
       </div>
 
       <!-- Theme Setup -->
       <div class="space-y-4">
-        <h2 class="text-xl font-semibold tracking-tight">Theme Setup</h2>
-        <p class="text-muted-foreground">
-          Add the theme provider to your application configuration:
-        </p>
+        <h2 class="text-xl font-semibold tracking-tight">{{ t('guide.themesPage.setupTitle') }}</h2>
+        <p class="text-muted-foreground">{{ t('guide.themesPage.setupLede') }}</p>
 
         <div class="p-4 rounded-lg border border-border bg-muted/30 font-mono text-sm">
           import {{ '{' }} provideVoltTheme {{ '}' }} from '&#64;voltui/components'; export const
@@ -170,48 +80,34 @@ import {
 
       <!-- Color Options -->
       <div class="space-y-4">
-        <h2 class="text-xl font-semibold tracking-tight">Color Options</h2>
+        <h2 class="text-xl font-semibold tracking-tight">
+          {{ t('guide.themesPage.colorOptionsTitle') }}
+        </h2>
         <div class="grid gap-4 md:grid-cols-2">
           <volt-card>
             <volt-card-header>
-              <volt-card-title>Theme Colors</volt-card-title>
-              <volt-card-description>Choose your primary color palette</volt-card-description>
+              <volt-card-title>{{ t('guide.themesPage.colorsTitle') }}</volt-card-title>
+              <volt-card-description>{{ t('guide.themesPage.colorsLede') }}</volt-card-description>
             </volt-card-header>
             <volt-card-content>
               <ul class="space-y-2 text-sm">
-                <li><code class="px-1.5 py-0.5 bg-muted rounded">'volt'</code> - Blue (default)</li>
-                <li><code class="px-1.5 py-0.5 bg-muted rounded">'ember'</code> - Orange/Red</li>
-                <li><code class="px-1.5 py-0.5 bg-muted rounded">'sage'</code> - Green</li>
-                <li><code class="px-1.5 py-0.5 bg-muted rounded">'dusk'</code> - Purple</li>
-                <li><code class="px-1.5 py-0.5 bg-muted rounded">'glacier'</code> - Cyan</li>
+                @for (key of colorKeys; track key) {
+                  <li><app-prose [key]="key" /></li>
+                }
               </ul>
             </volt-card-content>
           </volt-card>
 
           <volt-card>
             <volt-card-header>
-              <volt-card-title>Style Variants</volt-card-title>
-              <volt-card-description>Choose your component style</volt-card-description>
+              <volt-card-title>{{ t('guide.themesPage.stylesTitle') }}</volt-card-title>
+              <volt-card-description>{{ t('guide.themesPage.stylesLede') }}</volt-card-description>
             </volt-card-header>
             <volt-card-content>
               <ul class="space-y-2 text-sm">
-                <li>
-                  <code class="px-1.5 py-0.5 bg-muted rounded">'sharp'</code> - Small radius, flat
-                  shadows (default)
-                </li>
-                <li>
-                  <code class="px-1.5 py-0.5 bg-muted rounded">'soft'</code> - Large radius, diffuse
-                  shadows
-                </li>
-                <li>
-                  <code class="px-1.5 py-0.5 bg-muted rounded">'brutal'</code> - No radius, hard
-                  offset shadows, heavy borders
-                </li>
-                <li>
-                  <code class="px-1.5 py-0.5 bg-muted rounded">'ghost'</code> - No borders, no
-                  shadows
-                </li>
-                <li><code class="px-1.5 py-0.5 bg-muted rounded">'retro'</code> - Y2K look</li>
+                @for (key of styleKeys; track key) {
+                  <li><app-prose [key]="key" /></li>
+                }
               </ul>
             </volt-card-content>
           </volt-card>
@@ -220,17 +116,10 @@ import {
 
       <!-- Runtime API -->
       <div class="space-y-4">
-        <h2 class="text-xl font-semibold tracking-tight">Runtime API</h2>
-        <p class="text-muted-foreground">
-          Two functions from
-          <code class="px-1.5 py-0.5 bg-muted rounded">&#64;voltui/components</code> control the
-          theme at runtime. Both just set
-          <code class="px-1.5 py-0.5 bg-muted rounded">data-color</code>,
-          <code class="px-1.5 py-0.5 bg-muted rounded">data-style</code> and a
-          <code class="px-1.5 py-0.5 bg-muted rounded">.dark</code> class on
-          <code class="px-1.5 py-0.5 bg-muted rounded">&lt;html&gt;</code> — there is no hidden
-          state, so you can inspect or override the result with plain DOM APIs at any time.
-        </p>
+        <h2 class="text-xl font-semibold tracking-tight">
+          {{ t('guide.themesPage.runtimeTitle') }}
+        </h2>
+        <p class="text-muted-foreground"><app-prose key="guide.themesPage.runtimeLede" /></p>
 
         <div class="grid gap-4 md:grid-cols-2">
           <volt-card>
@@ -238,18 +127,13 @@ import {
               <volt-card-title class="font-mono text-base"
                 >provideVoltTheme(options)</volt-card-title
               >
-              <volt-card-description
-                >Environment provider. Call it once in <code>appConfig.providers</code> to set the
-                theme at bootstrap, on both server and client.</volt-card-description
-              >
+              <volt-card-description>
+                <app-prose key="guide.themesPage.provideLede" />
+              </volt-card-description>
             </volt-card-header>
             <volt-card-content>
               <p class="text-sm text-muted-foreground">
-                <strong class="text-foreground">SSR-safe.</strong> It reads Angular's
-                <code class="px-1.5 py-0.5 bg-muted rounded">DOCUMENT</code> injection token rather
-                than the global <code class="px-1.5 py-0.5 bg-muted rounded">document</code>, so the
-                theme attributes are present in the server-rendered HTML itself — no flash of the
-                default theme while the client bundle hydrates.
+                <app-prose key="guide.themesPage.provideBody" />
               </p>
             </volt-card-content>
           </volt-card>
@@ -259,15 +143,13 @@ import {
               <volt-card-title class="font-mono text-base"
                 >applyVoltTheme(options, doc?)</volt-card-title
               >
-              <volt-card-description
-                >Plain function. Call it from a click handler, an effect, or anywhere else you need
-                to change the theme after bootstrap (e.g. a theme switcher).</volt-card-description
-              >
+              <volt-card-description>
+                {{ t('guide.themesPage.applyLede') }}
+              </volt-card-description>
             </volt-card-header>
             <volt-card-content>
               <p class="text-sm text-muted-foreground">
-                Browser-only by default (it no-ops if <code>document</code> is undefined). Pass an
-                explicit <code>doc</code> argument to target a different document, e.g. in a test.
+                <app-prose key="guide.themesPage.applyBody" />
               </p>
             </volt-card-content>
           </volt-card>
@@ -288,19 +170,8 @@ import {
 
       <!-- Dark Mode Strategy -->
       <div class="space-y-4">
-        <h2 class="text-xl font-semibold tracking-tight">Dark Mode Strategy</h2>
-        <p class="text-muted-foreground">
-          Dark mode is class-based: adding
-          <code class="px-1.5 py-0.5 bg-muted rounded">.dark</code> to
-          <code class="px-1.5 py-0.5 bg-muted rounded">&lt;html&gt;</code> switches every component
-          to its dark token values (see <code>core.css</code>'s
-          <code class="px-1.5 py-0.5 bg-muted rounded">&#64;custom-variant dark</code>). Volt does
-          <strong class="text-foreground">not</strong> read
-          <code class="px-1.5 py-0.5 bg-muted rounded">prefers-color-scheme</code> automatically —
-          <code>dark</code> defaults to light unless you pass <code>dark: true</code> or call
-          <code>applyVoltTheme</code> yourself, so the choice is always explicit and won't silently
-          change if the visitor's OS theme changes.
-        </p>
+        <h2 class="text-xl font-semibold tracking-tight">{{ t('guide.themesPage.darkTitle') }}</h2>
+        <p class="text-muted-foreground"><app-prose key="guide.themesPage.darkLede" /></p>
 
         <div class="p-4 rounded-lg border border-border bg-muted/30 font-mono text-sm">
           <div class="text-muted-foreground">// Static: dark by default</div>
@@ -320,26 +191,14 @@ import {
         </div>
 
         <p class="text-xs text-muted-foreground">
-          The docs app itself persists the visitor's choice to
-          <code class="px-1.5 py-0.5 bg-muted rounded">localStorage</code> and applies it from a
-          small inline script in <code>index.html</code>'s <code>&lt;head&gt;</code>, before any
-          stylesheet loads — see
-          <code class="px-1.5 py-0.5 bg-muted rounded">src/app/components/theme-switcher.ts</code>
-          for a reference implementation if you want the same no-flash behavior client-side.
+          <app-prose key="guide.themesPage.persistNote" />
         </p>
       </div>
 
       <!-- CSS Variables -->
       <div class="space-y-4">
-        <h2 class="text-xl font-semibold tracking-tight">CSS Variables</h2>
-        <p class="text-muted-foreground">
-          Every preset sets the same set of semantic tokens as
-          <code class="px-1.5 py-0.5 bg-muted rounded">oklch()</code> values. Components consume
-          them through Tailwind utilities (<code>bg-primary</code>,
-          <code>text-muted-foreground</code>) mapped via <code>&#64;theme inline</code> in
-          <code>core.css</code> — never a raw <code>var(--primary)</code>. This is the full list a
-          preset can define; see the two guides below for copy-paste templates.
-        </p>
+        <h2 class="text-xl font-semibold tracking-tight">{{ t('guide.themesPage.varsTitle') }}</h2>
+        <p class="text-muted-foreground"><app-prose key="guide.themesPage.varsLede" /></p>
 
         <div
           class="p-4 rounded-lg border border-border bg-muted/30 font-mono text-sm overflow-x-auto"
@@ -371,13 +230,10 @@ import {
 
       <!-- Custom color preset -->
       <div class="space-y-4">
-        <h2 class="text-xl font-semibold tracking-tight">Create a Custom Color Preset</h2>
-        <p class="text-muted-foreground">
-          A color preset is just a pair of selectors keyed by
-          <code class="px-1.5 py-0.5 bg-muted rounded">data-color</code>. Copy this template,
-          replace <code>'mytheme'</code> and the values, then import the file after
-          <code>&#64;voltui/components/themes.css</code> in your global stylesheet.
-        </p>
+        <h2 class="text-xl font-semibold tracking-tight">
+          {{ t('guide.themesPage.colorPresetTitle') }}
+        </h2>
+        <p class="text-muted-foreground"><app-prose key="guide.themesPage.colorPresetLede" /></p>
 
         <div
           class="p-4 rounded-lg border border-border bg-muted/30 font-mono text-sm overflow-x-auto"
@@ -414,28 +270,22 @@ import {
         </div>
 
         <p class="text-xs text-muted-foreground">
-          Keep every foreground/background pair at 4.5:1 contrast or better (3:1 for
-          <code>--ring</code> and <code>--input</code> against <code>--background</code>) — see
-          <code class="px-1.5 py-0.5 bg-muted rounded">scripts/contrast-audit.mjs</code> in the repo
-          for the exact check this project runs against its own presets. The
+          <app-prose key="guide.themesPage.contrastNote" />
           <a
             [routerLink]="path('/create-theme')"
             class="text-primary underline-offset-4 hover:underline"
-            >Create Theme</a
+            >{{ t('nav.createTheme') }}</a
           >
-          tool generates a starting point from a single accent color if you'd rather not hand-pick
-          eleven tokens.
+          {{ t('guide.themesPage.contrastNoteTail') }}
         </p>
       </div>
 
       <!-- Custom style preset -->
       <div class="space-y-4">
-        <h2 class="text-xl font-semibold tracking-tight">Create a Custom Style Preset</h2>
-        <p class="text-muted-foreground">
-          A style preset never touches color — only shape. It's keyed by
-          <code class="px-1.5 py-0.5 bg-muted rounded">data-style</code> and applies to every color
-          at once.
-        </p>
+        <h2 class="text-xl font-semibold tracking-tight">
+          {{ t('guide.themesPage.stylePresetTitle') }}
+        </h2>
+        <p class="text-muted-foreground"><app-prose key="guide.themesPage.stylePresetLede" /></p>
 
         <div
           class="p-4 rounded-lg border border-border bg-muted/30 font-mono text-sm overflow-x-auto"
@@ -464,10 +314,7 @@ import {
         </div>
 
         <p class="text-xs text-muted-foreground">
-          Registration is the same as a color preset: put it in your global stylesheet after
-          <code class="px-1.5 py-0.5 bg-muted rounded">&#64;voltui/components/themes.css</code>,
-          then set <code>data-style="mystyle"</code> via <code>provideVoltTheme</code> or
-          <code>applyVoltTheme</code>.
+          <app-prose key="guide.themesPage.styleRegisterNote" />
         </p>
       </div>
     </div>
@@ -478,4 +325,76 @@ export default class ThemesPage {
 
   protected readonly t = this.translations.t;
   protected readonly path = this.translations.path;
+
+  /*
+   * The five presets, as data. They used to be five near-identical blocks of markup, which
+   * is a hundred lines to keep in sync by hand and five places to forget a translation.
+   *
+   * The colours are fixed brand swatches rather than theme tokens on purpose: this grid
+   * has to show a palette the page is not currently using. Tailwind reads these literals
+   * straight out of this file, so they are emitted like any class in a template.
+   */
+  protected readonly presets = [
+    {
+      id: 'volt',
+      name: 'Volt',
+      initial: 'V',
+      badge: 'bg-blue-500',
+      hover: 'group-hover:text-blue-500',
+      swatches: ['bg-blue-500', 'bg-blue-600', 'bg-slate-500'],
+      descriptionKey: 'guide.themesPage.presets.volt',
+    },
+    {
+      id: 'ember',
+      name: 'Ember',
+      initial: 'E',
+      badge: 'bg-orange-500',
+      hover: 'group-hover:text-orange-500',
+      swatches: ['bg-orange-500', 'bg-red-500', 'bg-amber-500'],
+      descriptionKey: 'guide.themesPage.presets.ember',
+    },
+    {
+      id: 'sage',
+      name: 'Sage',
+      initial: 'S',
+      badge: 'bg-emerald-500',
+      hover: 'group-hover:text-emerald-500',
+      swatches: ['bg-emerald-500', 'bg-green-600', 'bg-teal-500'],
+      descriptionKey: 'guide.themesPage.presets.sage',
+    },
+    {
+      id: 'dusk',
+      name: 'Dusk',
+      initial: 'D',
+      badge: 'bg-violet-500',
+      hover: 'group-hover:text-violet-500',
+      swatches: ['bg-violet-500', 'bg-purple-600', 'bg-indigo-500'],
+      descriptionKey: 'guide.themesPage.presets.dusk',
+    },
+    {
+      id: 'glacier',
+      name: 'Glacier',
+      initial: 'G',
+      badge: 'bg-cyan-500',
+      hover: 'group-hover:text-cyan-500',
+      swatches: ['bg-cyan-500', 'bg-sky-500', 'bg-blue-400'],
+      descriptionKey: 'guide.themesPage.presets.glacier',
+    },
+  ] as const;
+
+  protected readonly colorKeys = [
+    'guide.themesPage.colors.volt',
+    'guide.themesPage.colors.ember',
+    'guide.themesPage.colors.sage',
+    'guide.themesPage.colors.dusk',
+    'guide.themesPage.colors.glacier',
+  ] as const;
+
+  protected readonly styleKeys = [
+    'guide.themesPage.styles.sharp',
+    'guide.themesPage.styles.soft',
+    'guide.themesPage.styles.brutal',
+    'guide.themesPage.styles.ghost',
+    'guide.themesPage.styles.retro',
+  ] as const;
 }

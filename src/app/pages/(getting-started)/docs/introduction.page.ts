@@ -8,11 +8,13 @@ import {
   VoltCardHeader,
   VoltCardTitle,
 } from 'volt';
+import { Prose, INLINE_CODE_SM } from '../../../components/prose';
 
 @Component({
   selector: 'app-introduction-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    Prose,
     RouterLink,
     VoltCard,
     VoltCardHeader,
@@ -106,11 +108,7 @@ import {
                 npx &#64;voltui/cli add button card input
               </div>
               <p class="text-sm text-muted-foreground">
-                Use
-                <code class="px-1 py-0.5 bg-muted rounded text-xs">--dry-run</code>
-                to preview files and
-                <code class="px-1 py-0.5 bg-muted rounded text-xs">--force</code>
-                to overwrite edited components.
+                <app-prose key="guide.intro.cliFlags" [codeClass]="inlineCode" />
               </p>
             </volt-card-content>
           </volt-card>
@@ -190,11 +188,9 @@ import {
           </div>
 
           <div class="p-4 rounded-lg border border-border bg-muted/30">
-            <span class="font-medium">Tailwind CSS v4</span>
+            <span class="font-medium">{{ t('guide.intro.tailwindTitle') }}</span>
             <p class="text-xs text-muted-foreground mt-1">
-              Volt components ship critical layout CSS, so npm consumers do not need an
-              <code class="px-1 py-0.5 bg-muted rounded text-xs">&#64;source</code> directive for
-              <code class="px-1 py-0.5 bg-muted rounded text-xs">node_modules</code>.
+              <app-prose key="guide.intro.tailwindBody" [codeClass]="inlineCode" />
             </p>
             <code class="text-sm font-mono text-muted-foreground block mt-2">
               npm install -D tailwindcss &#64;tailwindcss/postcss
@@ -250,7 +246,7 @@ import {
 
       <!-- Usage -->
       <div class="space-y-4">
-        <h2 class="text-xl font-semibold tracking-tight">Usage</h2>
+        <h2 class="text-xl font-semibold tracking-tight">{{ t('guide.intro.usageTitle') }}</h2>
         <p class="text-muted-foreground">{{ t('guide.intro.afterAdding') }}</p>
 
         <div
@@ -273,10 +269,7 @@ import {
       <div class="space-y-4">
         <h2 class="text-xl font-semibold tracking-tight">{{ t('guide.intro.overlayTitle') }}</h2>
         <p class="text-muted-foreground">
-          Dialog, drawer, popover, tooltip, and dropdown-menu use an attribute-directive trigger
-          that references an
-          <code class="px-1 py-0.5 bg-muted rounded text-xs">&lt;ng-template&gt;</code>
-          containing the overlay content.
+          <app-prose key="guide.intro.overlayLede" [codeClass]="inlineCode" />
         </p>
 
         <div
@@ -302,15 +295,11 @@ import {
       <div class="space-y-4">
         <h2 class="text-xl font-semibold tracking-tight">{{ t('guide.intro.catalogTitle') }}</h2>
         <p class="text-muted-foreground">
-          Every component in Volt UI 1.0.0 is
-          <span class="text-green-600 font-medium">stable</span> — a settled API, tests that assert
-          the component's own behavior, and documented usage. The
-          <span class="font-medium">beta</span> label stays in the system for components added after
-          1.0; nothing carries it today. See
-          <a [routerLink]="path('/docs/versioning')" class="underline hover:text-foreground"
-            >Versioning &amp; stability</a
-          >
-          for the full policy.
+          <app-prose key="guide.intro.catalogLede" />
+          <a [routerLink]="path('/docs/versioning')" class="underline hover:text-foreground">{{
+            t('guide.intro.versioningLink')
+          }}</a>
+          {{ t('guide.intro.catalogLedeTail') }}
         </p>
 
         <div class="p-4 rounded-lg border border-border bg-muted/30">
@@ -364,5 +353,7 @@ export default class IntroductionPage {
   private readonly translations = inject(Translations);
 
   protected readonly t = this.translations.t;
+
+  protected readonly inlineCode = INLINE_CODE_SM;
   protected readonly path = this.translations.path;
 }

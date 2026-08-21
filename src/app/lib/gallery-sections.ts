@@ -40,10 +40,10 @@ export const GALLERY_SECTIONS: readonly GallerySection[] = [
     descriptionKey: 'gallery.blocks.description',
     browseKey: 'gallery.blocks.browse',
     groups: [
-      { links: [{ path: '/docs/blocks', label: 'Overview', exact: true }] },
+      { links: [{ path: '/docs/blocks', labelKey: 'gallery.overview', exact: true }] },
       ...BLOCK_GROUPS.map(group => ({
-        heading: group.heading,
-        links: group.blocks.map(block => ({ path: block.path, label: block.label })),
+        headingKey: group.headingKey,
+        links: group.blocks.map(block => ({ path: block.path, labelKey: block.labelKey })),
       })),
     ],
   },
@@ -55,8 +55,8 @@ export const GALLERY_SECTIONS: readonly GallerySection[] = [
     descriptionKey: 'gallery.layouts.description',
     browseKey: 'gallery.layouts.browse',
     groups: LAYOUT_GROUPS.map(group => ({
-      heading: group.heading,
-      links: group.layouts.map(layout => ({ path: layout.path, label: layout.label })),
+      headingKey: group.headingKey,
+      links: group.layouts.map(layout => ({ path: layout.path, labelKey: layout.labelKey })),
     })),
   },
 ];

@@ -1,12 +1,10 @@
 <div class="space-y-6">
   <div>
-    <h1 class="text-3xl font-bold tracking-tight">Table</h1>
-    <p class="text-lg text-muted-foreground mt-2">
-      A responsive table component for displaying tabular data.
-    </p>
+    <h1 class="text-3xl font-bold tracking-tight">{{ t('components.table.title') }}</h1>
+    <p class="text-lg text-muted-foreground mt-2">{{ t('components.table.description') }}</p>
   </div>
 
-  <app-code-panel title="Usage" [code]="tableUsage" [tabbed]="true">
+  <app-code-panel [title]="t('ui.codePanel.usage')" [code]="tableUsage" [tabbed]="true">
     <div
       class="border rounded-xl border-border/50 p-6 md:p-10 flex flex-col items-center justify-center bg-background/50 relative overflow-hidden min-h-[300px]"
     >
@@ -76,14 +74,13 @@
 
   <!-- API Reference -->
   <div class="space-y-3">
-    <h3 class="text-lg font-semibold">API Reference</h3>
+    <h3 class="text-lg font-semibold">{{ t('ui.api.title') }}</h3>
     <app-api-reference [data]="tableApi" />
   </div>
 
   <app-code-panel
-    title="Component Source"
     [code]="tableCode"
     cliCommand="npx @voltui/cli add table"
-    description="Copy this code to your project."
+    [description]="t('ui.codePanel.copyNote')"
   />
 </div>

@@ -25,6 +25,7 @@ import { CodePanel } from '../../../../components/code-panel';
 import { SIDEBAR_API } from '../../../../lib/api-reference.generated';
 import { SIDEBAR_SNIPPET } from '../../../../lib/snippets';
 import { SIDEBAR_USAGE, SIDEBAR_WIDTH_USAGE } from '../../../../lib/snippets/usage';
+import { Translations } from '../../../../i18n/translations';
 
 @Component({
   selector: 'app-sidebar-demo',
@@ -229,13 +230,13 @@ export class SidebarDemo {
 
       <div class="mt-16 space-y-6">
         <app-code-panel
-          title="Usage"
+          [title]="t('ui.codePanel.usage')"
           [code]="sidebarUsage"
-          description="The live demo above is the full page-shell composition; this is the minimal shape."
+          [description]="t('layouts.sidebarDocs.minimalShape')"
         />
 
         <div class="space-y-3">
-          <h3 class="text-lg font-semibold">API Reference</h3>
+          <h3 class="text-lg font-semibold">{{ t('ui.api.title') }}</h3>
           <app-api-reference [data]="sidebarApi" />
         </div>
 
@@ -250,23 +251,26 @@ export class SidebarDemo {
             from a drag handle. Inputs win over custom properties, and both accept any CSS length.
           </p>
           <app-code-panel
-            title="Configuring the width"
+            [title]="t('layouts.sidebarDocs.widthTitle')"
             [code]="sidebarWidth"
-            description="Reach for the custom property when the width is dynamic or set from outside Angular."
+            [description]="t('layouts.sidebarDocs.widthNote')"
           />
         </div>
 
         <app-code-panel
-          title="Component Source"
           [code]="sidebarCode"
           cliCommand="npx @voltui/cli add sidebar"
-          description="Copy this code to your project. VoltSidebarService holds the collapsed/mobile-open state as signals; nothing else in the layout depends on Angular Router beyond routerLink."
+          [description]="t('layouts.sidebarDocs.sourceNote')"
         />
       </div>
     </div>
   `,
 })
 export default class DocsSidebar {
+  private readonly translations = inject(Translations);
+
+  protected readonly t = this.translations.t;
+
   readonly sidebarApi = SIDEBAR_API;
   readonly sidebarCode = SIDEBAR_SNIPPET;
   readonly sidebarUsage = SIDEBAR_USAGE;

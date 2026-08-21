@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import type { ComponentApi } from '../lib/api-reference.generated';
+import { Translations } from '../i18n/translations';
 
 @Component({
   selector: 'app-api-reference',
@@ -22,9 +23,9 @@ import type { ComponentApi } from '../lib/api-reference.generated';
               <table class="w-full text-sm">
                 <thead>
                   <tr class="text-left text-muted-foreground border-b border-border">
-                    <th class="p-3 font-medium">Input</th>
-                    <th class="p-3 font-medium">Type</th>
-                    <th class="p-3 font-medium">Default</th>
+                    <th class="p-3 font-medium">{{ t('ui.api.input') }}</th>
+                    <th class="p-3 font-medium">{{ t('ui.api.type') }}</th>
+                    <th class="p-3 font-medium">{{ t('ui.api.default') }}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -52,8 +53,8 @@ import type { ComponentApi } from '../lib/api-reference.generated';
               <table class="w-full text-sm">
                 <thead>
                   <tr class="text-left text-muted-foreground border-b border-border">
-                    <th class="p-3 font-medium">Output</th>
-                    <th class="p-3 font-medium">Type</th>
+                    <th class="p-3 font-medium">{{ t('ui.api.output') }}</th>
+                    <th class="p-3 font-medium">{{ t('ui.api.type') }}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -72,14 +73,14 @@ import type { ComponentApi } from '../lib/api-reference.generated';
 
       @if (data().variants; as variants) {
         <div class="space-y-3">
-          <h4 class="font-mono text-sm text-muted-foreground">CVA variants</h4>
+          <h4 class="font-mono text-sm text-muted-foreground">{{ t('ui.api.variants') }}</h4>
           <div class="rounded-lg border border-border bg-muted/30 overflow-x-auto">
             <table class="w-full text-sm">
               <thead>
                 <tr class="text-left text-muted-foreground border-b border-border">
-                  <th class="p-3 font-medium">Prop</th>
-                  <th class="p-3 font-medium">Options</th>
-                  <th class="p-3 font-medium">Default</th>
+                  <th class="p-3 font-medium">{{ t('ui.api.prop') }}</th>
+                  <th class="p-3 font-medium">{{ t('ui.api.options') }}</th>
+                  <th class="p-3 font-medium">{{ t('ui.api.default') }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -103,5 +104,9 @@ import type { ComponentApi } from '../lib/api-reference.generated';
   `,
 })
 export class ApiReference {
+  private readonly translations = inject(Translations);
+
+  protected readonly t = this.translations.t;
+
   readonly data = input.required<ComponentApi>();
 }

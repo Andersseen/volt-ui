@@ -1,13 +1,11 @@
 <div class="space-y-6">
   <div>
-    <h1 class="text-3xl font-bold tracking-tight">Badge</h1>
-    <p class="text-lg text-muted-foreground mt-2">
-      Displays a badge or a component that looks like a badge.
-    </p>
+    <h1 class="text-3xl font-bold tracking-tight">{{ t('components.badge.title') }}</h1>
+    <p class="text-lg text-muted-foreground mt-2">{{ t('components.badge.description') }}</p>
   </div>
 
   <!-- Usage Example -->
-  <app-code-panel title="Usage" [code]="badgeUsage" [tabbed]="true">
+  <app-code-panel [title]="t('ui.codePanel.usage')" [code]="badgeUsage" [tabbed]="true">
     <div
       class="border rounded-xl border-border/50 p-6 md:p-10 flex flex-col items-center justify-center bg-background/50 relative overflow-hidden min-h-[300px]"
     >
@@ -22,15 +20,14 @@
 
   <!-- API Reference -->
   <div class="space-y-3">
-    <h3 class="text-lg font-semibold">API Reference</h3>
+    <h3 class="text-lg font-semibold">{{ t('ui.api.title') }}</h3>
     <app-api-reference [data]="badgeApi" />
   </div>
 
   <!-- Source Code Section -->
   <app-code-panel
-    title="Component Source"
     [code]="badgeCode"
     cliCommand="npx @voltui/cli add badge"
-    description="Copy this code to your project. The component uses class-variance-authority."
+    [description]="t('ui.codePanel.copyNoteDep', { dep: 'class-variance-authority' })"
   />
 </div>

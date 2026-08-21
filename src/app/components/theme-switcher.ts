@@ -18,6 +18,7 @@ import {
   type VoltThemeColor,
   type VoltThemeStyle,
 } from 'volt';
+import { Translations } from '../i18n/translations';
 
 interface ColorOption {
   readonly id: VoltThemeColor;
@@ -84,7 +85,7 @@ const STYLES: readonly { id: VoltThemeStyle; label: string }[] = [
         type="button"
         class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-input bg-surface text-sm transition-colors hover:bg-muted"
         (click)="toggleDark()"
-        aria-label="Toggle dark mode"
+        [attr.aria-label]="t('nav.toggleDark')"
       >
         @if (isDark()) {
           <lmn-moon [size]="20" />
@@ -104,7 +105,7 @@ const STYLES: readonly { id: VoltThemeStyle; label: string }[] = [
             id="theme-palette-label"
             class="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground"
           >
-            Palette
+            {{ t('nav.palette') }}
           </p>
           <volt-toggle-group
             class="w-full justify-between"
@@ -130,7 +131,7 @@ const STYLES: readonly { id: VoltThemeStyle; label: string }[] = [
             id="theme-shape-label"
             class="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground"
           >
-            Shape
+            {{ t('nav.shape') }}
           </p>
           <!-- flex-wrap is the safety net: the chips fit at this width with the shipped
                font, and drop to a second row rather than out of the panel if they ever
@@ -156,6 +157,9 @@ const STYLES: readonly { id: VoltThemeStyle; label: string }[] = [
 })
 export class ThemeSwitcher {
   private readonly platformId = inject(PLATFORM_ID);
+  private readonly translations = inject(Translations);
+
+  protected readonly t = this.translations.t;
 
   protected readonly colors = COLORS;
   protected readonly styles = STYLES;
@@ -172,11 +176,15 @@ export class ThemeSwitcher {
     () => COLORS.find(option => option.id === this.color())?.swatch ?? COLORS[0].swatch
   );
 
+  /*
+   * The palette and shape names are product names — "Volt", "Brutal" — so they stay as
+   * they are in every language; only the sentence around them is translated.
+   */
   protected readonly triggerLabel = computed(() => {
     const color = COLORS.find(option => option.id === this.color())?.label ?? '';
     const style = STYLES.find(option => option.id === this.style())?.label ?? '';
 
-    return `Theme: ${color} palette, ${style} shape`;
+    return this.t('nav.themeLabel', { color, style });
   });
 
   constructor() {

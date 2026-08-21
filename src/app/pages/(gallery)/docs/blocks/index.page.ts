@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { BlockThumbnail } from '../../../../components/block-thumbnail';
 import { Reveal } from '../../../../components/reveal';
 import { BLOCK_CATEGORIES, BLOCKS, UPCOMING_BLOCKS } from '../../../../lib/blocks-metadata';
+import { Translations } from '../../../../i18n/translations';
 import { MOTION } from '../../../../lib/motion';
 
 @Component({
@@ -12,31 +13,22 @@ import { MOTION } from '../../../../lib/motion';
   template: `
     <div class="space-y-10">
       <div>
-        <h1 class="text-3xl font-bold tracking-tight">Blocks</h1>
-        <p class="mt-2 text-lg text-muted-foreground">
-          Whole page sections built from Volt components, with the motion already wired. Every block
-          is one file: copy it, rename it, and delete the parts you do not want.
-        </p>
+        <h1 class="text-3xl font-bold tracking-tight">{{ t('gallery.blocks.title') }}</h1>
+        <p class="mt-2 text-lg text-muted-foreground">{{ t('gallery.blocks.lede') }}</p>
       </div>
 
       <div class="grid gap-3 sm:grid-cols-3">
         <div class="rounded-lg border border-border bg-muted/20 p-4">
-          <p class="text-sm font-medium">One file each</p>
-          <p class="mt-1 text-xs text-muted-foreground">
-            Template, styles and behaviour in a single standalone component.
-          </p>
+          <p class="text-sm font-medium">{{ t('gallery.blocks.oneFile') }}</p>
+          <p class="mt-1 text-xs text-muted-foreground">{{ t('gallery.blocks.oneFileBody') }}</p>
         </div>
         <div class="rounded-lg border border-border bg-muted/20 p-4">
-          <p class="text-sm font-medium">No animation runtime</p>
-          <p class="mt-1 text-xs text-muted-foreground">
-            CSS and a pointer handler. Nothing to add to your bundle.
-          </p>
+          <p class="text-sm font-medium">{{ t('gallery.blocks.noRuntime') }}</p>
+          <p class="mt-1 text-xs text-muted-foreground">{{ t('gallery.blocks.noRuntimeBody') }}</p>
         </div>
         <div class="rounded-lg border border-border bg-muted/20 p-4">
-          <p class="text-sm font-medium">Theme-aware</p>
-          <p class="mt-1 text-xs text-muted-foreground">
-            Built on tokens, so every preset and dark mode come along.
-          </p>
+          <p class="text-sm font-medium">{{ t('gallery.blocks.themeAware') }}</p>
+          <p class="mt-1 text-xs text-muted-foreground">{{ t('gallery.blocks.themeAwareBody') }}</p>
         </div>
       </div>
 
@@ -45,8 +37,8 @@ import { MOTION } from '../../../../lib/motion';
       @for (category of categories; track category.id) {
         <section class="space-y-5">
           <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-            <h2 class="text-lg font-semibold tracking-tight">{{ category.label }}</h2>
-            <p class="text-sm text-muted-foreground">{{ category.blurb }}</p>
+            <h2 class="text-lg font-semibold tracking-tight">{{ t(category.labelKey) }}</h2>
+            <p class="text-sm text-muted-foreground">{{ t(category.blurbKey) }}</p>
           </div>
 
           <div class="grid gap-5 lg:grid-cols-2">
@@ -71,13 +63,13 @@ import { MOTION } from '../../../../lib/motion';
                 <div class="p-4">
                   <div class="flex items-center justify-between gap-2">
                     <h3 class="font-medium group-hover:text-primary">
-                      <a [routerLink]="block.path" class="stretched">{{ block.label }}</a>
+                      <a [routerLink]="block.path" class="stretched">{{ t(block.labelKey) }}</a>
                     </h3>
                     <span class="text-xs text-muted-foreground">
-                      {{ block.atoms.length }} atoms
+                      {{ t('gallery.atoms', { count: block.atoms.length }) }}
                     </span>
                   </div>
-                  <p class="mt-1.5 text-sm text-muted-foreground">{{ block.tagline }}</p>
+                  <p class="mt-1.5 text-sm text-muted-foreground">{{ t(block.taglineKey) }}</p>
                 </div>
               </div>
             }
@@ -87,39 +79,39 @@ import { MOTION } from '../../../../lib/motion';
 
       <section class="space-y-4">
         <div class="flex items-baseline gap-3">
-          <h2 class="text-lg font-semibold">Coming soon</h2>
+          <h2 class="text-lg font-semibold">{{ t('gallery.comingSoon') }}</h2>
           <span class="text-sm text-muted-foreground">
-            The categories above are the shape of the set; these fill the gaps.
+            {{ t('gallery.comingSoonHint') }}
           </span>
         </div>
         <div class="grid gap-3 sm:grid-cols-2">
-          @for (block of upcoming; track block.label) {
+          @for (block of upcoming; track block.labelKey) {
             <div
               class="rounded-lg border border-dashed border-border bg-muted/10 p-4 text-muted-foreground"
             >
               <div class="flex items-center justify-between gap-2">
-                <p class="text-sm font-medium text-foreground/70">{{ block.label }}</p>
+                <p class="text-sm font-medium text-foreground/70">{{ t(block.labelKey) }}</p>
                 <span
                   class="shrink-0 rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium leading-none"
                 >
-                  Soon
+                  {{ t('gallery.soon') }}
                 </span>
               </div>
-              <p class="mt-1.5 text-sm">{{ block.tagline }}</p>
+              <p class="mt-1.5 text-sm">{{ t(block.taglineKey) }}</p>
             </div>
           }
         </div>
         <p class="text-sm text-muted-foreground">
-          Missing one you need?
+          {{ t('gallery.missing') }}
           <a
             href="https://github.com/andersseen/volt-ui/issues/new"
             target="_blank"
             rel="noreferrer"
             class="text-primary underline-offset-4 hover:underline"
           >
-            Open an issue
+            {{ t('gallery.openIssue') }}
           </a>
-          and it goes to the front of the queue.
+          {{ t('gallery.missingTail') }}
         </p>
       </section>
     </div>
@@ -147,6 +139,10 @@ import { MOTION } from '../../../../lib/motion';
   `,
 })
 export default class BlocksIndexPage {
+  private readonly translations = inject(Translations);
+
+  protected readonly t = this.translations.t;
+
   /*
    * Built here rather than reusing BLOCK_GROUPS because the gallery needs the blurb as
    * well as the heading, and the sidebar does not. Empty categories are dropped: an

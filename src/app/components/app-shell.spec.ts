@@ -52,10 +52,18 @@ describe('application shell', () => {
         description: 'Component catalog',
         groups: [
           {
-            heading: 'Forms',
+            headingKey: 'catalog.groups.forms',
             links: [
-              { path: '/docs/components/input', label: 'Input', stability: 'stable' },
-              { path: '/docs/components/combobox', label: 'Combobox', stability: 'beta' },
+              {
+                path: '/docs/components/input',
+                labelKey: 'catalog.input.label',
+                stability: 'stable',
+              },
+              {
+                path: '/docs/components/combobox',
+                labelKey: 'components.combobox.title',
+                stability: 'beta',
+              },
             ],
           },
         ],

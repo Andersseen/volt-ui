@@ -1,13 +1,11 @@
 <div class="space-y-6">
   <div>
-    <h1 class="text-3xl font-bold tracking-tight">Tabs</h1>
-    <p class="text-lg text-muted-foreground mt-2">
-      A set of layered sections of content—known as tab panels—that are displayed one at a time.
-    </p>
+    <h1 class="text-3xl font-bold tracking-tight">{{ t('components.tabs.title') }}</h1>
+    <p class="text-lg text-muted-foreground mt-2">{{ t('components.tabs.description') }}</p>
   </div>
 
   <!-- Usage Example -->
-  <app-code-panel title="Usage" [code]="tabsUsage" [tabbed]="true">
+  <app-code-panel [title]="t('ui.codePanel.usage')" [code]="tabsUsage" [tabbed]="true">
     <div
       class="border rounded-xl border-border/50 p-6 md:p-10 flex flex-col items-center justify-center bg-background/50 relative overflow-hidden min-h-[500px]"
     >
@@ -78,15 +76,14 @@
 
   <!-- API Reference -->
   <div class="space-y-3">
-    <h3 class="text-lg font-semibold">API Reference</h3>
+    <h3 class="text-lg font-semibold">{{ t('ui.api.title') }}</h3>
     <app-api-reference [data]="tabsApi" />
   </div>
 
   <!-- Source Code Section -->
   <app-code-panel
-    title="Component Source"
     [code]="tabsCode"
     cliCommand="npx @voltui/cli add tabs"
-    description="Copy this code to your project. The component uses ng-primitives/tabs."
+    [description]="t('ui.codePanel.copyNoteDep', { dep: 'ng-primitives/tabs' })"
   />
 </div>

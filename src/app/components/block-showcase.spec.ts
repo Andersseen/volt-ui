@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { render, screen } from '@testing-library/angular';
 import { describe, expect, it } from 'vitest';
+import en from '../i18n/en.json';
 import { BlockShowcase } from './block-showcase';
 import { blockBySlug } from '../lib/blocks-metadata';
 
@@ -32,7 +33,7 @@ describe('BlockShowcase', () => {
     await renderHost();
 
     expect(screen.getByRole('heading', { name: /what moves/i })).toBeInTheDocument();
-    expect(screen.getByText(blockBySlug('hero').motion)).toBeInTheDocument();
+    expect(screen.getByText(en.blocks.items.hero.motion)).toBeInTheDocument();
   });
 
   it('links every atom back to its own component page', async () => {

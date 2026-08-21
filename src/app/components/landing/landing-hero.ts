@@ -165,11 +165,11 @@ export const INSTALL_COMMAND = 'npx @voltui/cli add button dialog form-field';
                 <div class="min-w-0">
                   <p class="truncate text-sm font-semibold">{{ t('landing.hero.panelTitle') }}</p>
                   <p class="mt-0.5 truncate text-xs text-muted-foreground">
-                    Built with Volt UI components
+                    {{ t('landing.hero.panelSubtitle') }}
                   </p>
                 </div>
                 <volt-badge variant="secondary" class="shrink-0 font-mono text-[10px]">
-                  live
+                  {{ t('landing.hero.live') }}
                 </volt-badge>
               </div>
 
