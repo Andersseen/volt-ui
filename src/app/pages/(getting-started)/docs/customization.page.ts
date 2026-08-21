@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Translations } from '../../../i18n/translations';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -143,7 +144,9 @@ export function cn(...inputs: ClassValue[]): string {{ '{' }}
         <p class="text-muted-foreground">
           Before editing a component's Tailwind classes to change a color or a border-radius, check
           whether a
-          <a routerLink="/docs/themes" class="text-primary underline-offset-4 hover:underline"
+          <a
+            [routerLink]="path('/docs/themes')"
+            class="text-primary underline-offset-4 hover:underline"
             >theme preset</a
           >
           already covers it — <code>bg-primary</code>, <code>rounded-md</code>, and
@@ -159,4 +162,9 @@ export function cn(...inputs: ClassValue[]): string {{ '{' }}
     </div>
   `,
 })
-export default class CustomizationPage {}
+export default class CustomizationPage {
+  private readonly translations = inject(Translations);
+
+  protected readonly t = this.translations.t;
+  protected readonly path = this.translations.path;
+}

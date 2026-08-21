@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Translations } from '../../../i18n/translations';
 import { RouterLink } from '@angular/router';
 
 interface RoadmapItem {
@@ -40,7 +41,9 @@ interface RoadmapItem {
         <p class="text-sm text-muted-foreground">
           None of this breaks your existing code. The 1.0 public API is frozen and everything below
           follows ordinary semantic versioning — see
-          <a routerLink="/docs/versioning" class="text-primary underline-offset-4 hover:underline"
+          <a
+            [routerLink]="path('/docs/versioning')"
+            class="text-primary underline-offset-4 hover:underline"
             >Versioning &amp; Stability</a
           >.
         </p>
@@ -165,6 +168,11 @@ interface RoadmapItem {
   `,
 })
 export default class RoadmapPage {
+  private readonly translations = inject(Translations);
+
+  protected readonly t = this.translations.t;
+  protected readonly path = this.translations.path;
+
   readonly items: RoadmapItem[] = [
     {
       order: 1,

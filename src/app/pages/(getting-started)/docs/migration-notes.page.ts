@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Translations } from '../../../i18n/translations';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -11,7 +12,9 @@ import { RouterLink } from '@angular/router';
         <h1 class="text-3xl font-bold tracking-tight">0.x Migration Notes</h1>
         <p class="text-lg text-muted-foreground mt-2">
           Volt UI's public API is frozen as of 1.0.0 — see
-          <a routerLink="/docs/versioning" class="text-primary underline-offset-4 hover:underline"
+          <a
+            [routerLink]="path('/docs/versioning')"
+            class="text-primary underline-offset-4 hover:underline"
             >Versioning &amp; stability</a
           >
           for the current promise. Because components are copied into your project rather than
@@ -130,7 +133,9 @@ import { RouterLink } from '@angular/router';
         Nothing on this page applies to a component you haven't copied yet — a fresh
         <code class="px-1.5 py-0.5 bg-muted rounded">volt add</code> always gives you the current
         behavior. This page is for diffing an existing copy. See the
-        <a routerLink="/docs/customization" class="text-primary underline-offset-4 hover:underline"
+        <a
+          [routerLink]="path('/docs/customization')"
+          class="text-primary underline-offset-4 hover:underline"
           >Customization guide</a
         >
         for how to carry your own edits forward across a re-add.
@@ -138,4 +143,9 @@ import { RouterLink } from '@angular/router';
     </div>
   `,
 })
-export default class MigrationNotesPage {}
+export default class MigrationNotesPage {
+  private readonly translations = inject(Translations);
+
+  protected readonly t = this.translations.t;
+  protected readonly path = this.translations.path;
+}

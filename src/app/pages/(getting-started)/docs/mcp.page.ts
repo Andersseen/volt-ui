@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Translations } from '../../../i18n/translations';
 import { RouterLink } from '@angular/router';
 
 const MCP_URL = 'https://volt-ui.pages.dev/api/mcp';
@@ -26,7 +27,7 @@ const MCP_URL = 'https://volt-ui.pages.dev/api/mcp';
 
         <div class="grid gap-4">
           <a
-            routerLink="/docs/ai-skill"
+            [routerLink]="path('/docs/ai-skill')"
             class="group flex items-start gap-4 p-4 rounded-lg border border-border hover:border-primary/50 transition-colors"
           >
             <div
@@ -46,7 +47,7 @@ const MCP_URL = 'https://volt-ui.pages.dev/api/mcp';
           </a>
 
           <a
-            routerLink="/docs/ai-mcp"
+            [routerLink]="path('/docs/ai-mcp')"
             class="group flex items-start gap-4 p-4 rounded-lg border border-border hover:border-primary/50 transition-colors"
           >
             <div
@@ -66,7 +67,7 @@ const MCP_URL = 'https://volt-ui.pages.dev/api/mcp';
           </a>
 
           <a
-            routerLink="/docs/ai-prompt"
+            [routerLink]="path('/docs/ai-prompt')"
             class="group flex items-start gap-4 p-4 rounded-lg border border-border hover:border-primary/50 transition-colors"
           >
             <div
@@ -121,7 +122,7 @@ const MCP_URL = 'https://volt-ui.pages.dev/api/mcp';
               <tr class="border-b border-border/50">
                 <td class="py-2">You use Claude Code or OpenCode</td>
                 <td class="py-2">
-                  <a routerLink="/docs/ai-skill" class="text-primary hover:underline"
+                  <a [routerLink]="path('/docs/ai-skill')" class="text-primary hover:underline"
                     >Local Skill</a
                   >
                 </td>
@@ -129,20 +130,24 @@ const MCP_URL = 'https://volt-ui.pages.dev/api/mcp';
               <tr class="border-b border-border/50">
                 <td class="py-2">You use Claude Desktop, Cursor, or Windsurf</td>
                 <td class="py-2">
-                  <a routerLink="/docs/ai-mcp" class="text-primary hover:underline">MCP Server</a>
+                  <a [routerLink]="path('/docs/ai-mcp')" class="text-primary hover:underline"
+                    >MCP Server</a
+                  >
                 </td>
               </tr>
               <tr class="border-b border-border/50">
                 <td class="py-2">You use GitHub Copilot in VS Code</td>
                 <td class="py-2">
-                  <a routerLink="/docs/ai-mcp" class="text-primary hover:underline">MCP Server</a>
+                  <a [routerLink]="path('/docs/ai-mcp')" class="text-primary hover:underline"
+                    >MCP Server</a
+                  >
                   (instructions + snippets)
                 </td>
               </tr>
               <tr>
                 <td class="py-2">You use a web chat (ChatGPT, Gemini, etc.)</td>
                 <td class="py-2">
-                  <a routerLink="/docs/ai-prompt" class="text-primary hover:underline"
+                  <a [routerLink]="path('/docs/ai-prompt')" class="text-primary hover:underline"
                     >Prompt Reference</a
                   >
                 </td>
@@ -155,5 +160,10 @@ const MCP_URL = 'https://volt-ui.pages.dev/api/mcp';
   `,
 })
 export default class McpDocsPage {
+  private readonly translations = inject(Translations);
+
+  protected readonly t = this.translations.t;
+  protected readonly path = this.translations.path;
+
   readonly mcpUrl = MCP_URL;
 }

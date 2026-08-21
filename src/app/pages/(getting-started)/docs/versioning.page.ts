@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Translations } from '../../../i18n/translations';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -63,7 +64,7 @@ import { RouterLink } from '@angular/router';
           — every input, output, and selector present at the 1.0.0 freeze. Upgrading from a 0.x
           release? See
           <a
-            routerLink="/docs/migration-notes"
+            [routerLink]="path('/docs/migration-notes')"
             class="text-primary underline-offset-4 hover:underline"
             >0.x Migration Notes</a
           >.
@@ -75,7 +76,9 @@ import { RouterLink } from '@angular/router';
         <h2 class="text-xl font-semibold tracking-tight">What status labels mean now</h2>
         <p class="text-muted-foreground">
           Every component in 1.0.0 is <code>stable</code> — see
-          <a routerLink="/docs/components" class="text-primary underline-offset-4 hover:underline"
+          <a
+            [routerLink]="path('/docs/components')"
+            class="text-primary underline-offset-4 hover:underline"
             >the component catalog</a
           >
           for the per-component label. <code>beta</code> and <code>experimental</code> stay defined
@@ -128,14 +131,18 @@ import { RouterLink } from '@angular/router';
 
       <div class="p-4 rounded-lg border border-border bg-muted/30 text-sm text-muted-foreground">
         Where the project goes from here:
-        <a routerLink="/docs/roadmap" class="text-primary underline-offset-4 hover:underline"
+        <a
+          [routerLink]="path('/docs/roadmap')"
+          class="text-primary underline-offset-4 hover:underline"
           >Roadmap</a
         >. Full per-component status table:
-        <a routerLink="/docs/components" class="text-primary underline-offset-4 hover:underline"
+        <a
+          [routerLink]="path('/docs/components')"
+          class="text-primary underline-offset-4 hover:underline"
           >component catalog</a
         >. Upgrading an existing copy?
         <a
-          routerLink="/docs/migration-notes"
+          [routerLink]="path('/docs/migration-notes')"
           class="text-primary underline-offset-4 hover:underline"
           >0.x Migration Notes</a
         >. Full release history:
@@ -150,4 +157,9 @@ import { RouterLink } from '@angular/router';
     </div>
   `,
 })
-export default class VersioningPage {}
+export default class VersioningPage {
+  private readonly translations = inject(Translations);
+
+  protected readonly t = this.translations.t;
+  protected readonly path = this.translations.path;
+}

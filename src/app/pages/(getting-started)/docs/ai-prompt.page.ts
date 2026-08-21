@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { Translations } from '../../../i18n/translations';
 import { RouterLink } from '@angular/router';
 import { LmnCheckIcon, LmnCopyIcon } from 'lumen-icons';
 import promptMarkdown from '../../../../../VOLT_UI_PROMPT.md?raw';
@@ -147,9 +148,11 @@ import promptMarkdown from '../../../../../VOLT_UI_PROMPT.md?raw';
         </p>
         <p class="text-sm text-muted-foreground">
           For integrated agents, prefer the
-          <a routerLink="/docs/ai-mcp" class="text-primary hover:underline">MCP server</a>
+          <a [routerLink]="path('/docs/ai-mcp')" class="text-primary hover:underline">MCP server</a>
           or the
-          <a routerLink="/docs/ai-skill" class="text-primary hover:underline">local skill</a>
+          <a [routerLink]="path('/docs/ai-skill')" class="text-primary hover:underline"
+            >local skill</a
+          >
           so the context stays in sync automatically.
         </p>
       </div>
@@ -157,6 +160,11 @@ import promptMarkdown from '../../../../../VOLT_UI_PROMPT.md?raw';
   `,
 })
 export default class AiPromptPage {
+  private readonly translations = inject(Translations);
+
+  protected readonly t = this.translations.t;
+  protected readonly path = this.translations.path;
+
   readonly promptContent = promptMarkdown;
   readonly copied = signal(false);
 

@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Translations } from '../../../i18n/translations';
 import { RouterLink } from '@angular/router';
 import {
   VoltCard,
@@ -417,7 +418,9 @@ import {
           <code>--ring</code> and <code>--input</code> against <code>--background</code>) — see
           <code class="px-1.5 py-0.5 bg-muted rounded">scripts/contrast-audit.mjs</code> in the repo
           for the exact check this project runs against its own presets. The
-          <a routerLink="/create-theme" class="text-primary underline-offset-4 hover:underline"
+          <a
+            [routerLink]="path('/create-theme')"
+            class="text-primary underline-offset-4 hover:underline"
             >Create Theme</a
           >
           tool generates a starting point from a single accent color if you'd rather not hand-pick
@@ -470,4 +473,9 @@ import {
     </div>
   `,
 })
-export default class ThemesPage {}
+export default class ThemesPage {
+  private readonly translations = inject(Translations);
+
+  protected readonly t = this.translations.t;
+  protected readonly path = this.translations.path;
+}

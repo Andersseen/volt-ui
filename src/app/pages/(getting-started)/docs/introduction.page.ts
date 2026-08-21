@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Translations } from '../../../i18n/translations';
 import { RouterLink } from '@angular/router';
 import {
   VoltCard,
@@ -23,54 +24,40 @@ import {
     <div class="space-y-8">
       <!-- Header -->
       <div>
-        <h1 class="text-3xl font-bold tracking-tight">Introduction</h1>
-        <p class="text-lg text-muted-foreground mt-2">
-          Volt UI is a collection of reusable, accessible Angular components built on top of
-          ng-primitives. Inspired by shadcn/ui, you can copy and customize components to match your
-          needs.
-        </p>
+        <h1 class="text-3xl font-bold tracking-tight">{{ t('guide.intro.title') }}</h1>
+        <p class="text-lg text-muted-foreground mt-2">{{ t('guide.intro.lede') }}</p>
       </div>
 
       <div class="w-full h-px bg-border"></div>
 
       <!-- AI Tools -->
       <div class="space-y-4">
-        <h2 class="text-xl font-semibold tracking-tight">AI Tools for Consumers</h2>
-        <p class="text-muted-foreground">
-          Volt UI ships with three complementary ways to give AI assistants full context about its
-          components, selectors, and conventions.
-        </p>
+        <h2 class="text-xl font-semibold tracking-tight">{{ t('guide.intro.aiTitle') }}</h2>
+        <p class="text-muted-foreground">{{ t('guide.intro.aiLede') }}</p>
 
         <div class="grid gap-4 md:grid-cols-3">
           <a
-            routerLink="/docs/ai-skill"
+            [routerLink]="path('/docs/ai-skill')"
             class="group p-4 rounded-lg border border-border hover:border-primary/50 transition-colors"
           >
-            <h3 class="font-medium group-hover:text-primary">Local Skill →</h3>
-            <p class="text-sm text-muted-foreground mt-1">
-              Auto-discovered by OpenCode / Claude Code. Component catalog, naming, and usage rules.
-            </p>
+            <h3 class="font-medium group-hover:text-primary">{{ t('guide.intro.skillLink') }}</h3>
+            <p class="text-sm text-muted-foreground mt-1">{{ t('guide.intro.skillBody') }}</p>
           </a>
 
           <a
-            routerLink="/docs/ai-mcp"
+            [routerLink]="path('/docs/ai-mcp')"
             class="group p-4 rounded-lg border border-border hover:border-primary/50 transition-colors"
           >
-            <h3 class="font-medium group-hover:text-primary">MCP Server →</h3>
-            <p class="text-sm text-muted-foreground mt-1">
-              Hosted MCP tools for listing components, getting examples, and generating CLI
-              commands.
-            </p>
+            <h3 class="font-medium group-hover:text-primary">{{ t('guide.intro.mcpLink') }}</h3>
+            <p class="text-sm text-muted-foreground mt-1">{{ t('guide.intro.mcpBody') }}</p>
           </a>
 
           <a
-            routerLink="/docs/ai-prompt"
+            [routerLink]="path('/docs/ai-prompt')"
             class="group p-4 rounded-lg border border-border hover:border-primary/50 transition-colors"
           >
-            <h3 class="font-medium group-hover:text-primary">Prompt Reference →</h3>
-            <p class="text-sm text-muted-foreground mt-1">
-              A single-file prompt to paste into any LLM chat for correct selectors and examples.
-            </p>
+            <h3 class="font-medium group-hover:text-primary">{{ t('guide.intro.promptLink') }}</h3>
+            <p class="text-sm text-muted-foreground mt-1">{{ t('guide.intro.promptBody') }}</p>
           </a>
         </div>
       </div>
@@ -79,19 +66,15 @@ import {
 
       <!-- Installation Options -->
       <div class="space-y-4">
-        <h2 class="text-xl font-semibold tracking-tight">Installation Options</h2>
-        <p class="text-muted-foreground">
-          There are two ways to use Volt UI components in your project:
-        </p>
+        <h2 class="text-xl font-semibold tracking-tight">{{ t('guide.intro.installTitle') }}</h2>
+        <p class="text-muted-foreground">{{ t('guide.intro.installLede') }}</p>
 
         <div class="grid gap-4 md:grid-cols-3">
           <!-- Option 1: npm install -->
           <volt-card>
             <volt-card-header>
-              <volt-card-title>Option 1: npm package</volt-card-title>
-              <volt-card-description>
-                Install the library directly from npm and import components in your project.
-              </volt-card-description>
+              <volt-card-title>{{ t('guide.intro.option1') }}</volt-card-title>
+              <volt-card-description>{{ t('guide.intro.option1Body') }}</volt-card-description>
             </volt-card-header>
             <volt-card-content class="space-y-3">
               <div class="flex items-center gap-2 p-3 rounded-lg bg-muted font-mono text-sm">
@@ -101,8 +84,8 @@ import {
                 &#64;import '&#64;voltui/components/themes.css';
               </div>
               <p class="text-sm text-muted-foreground">
-                Then import:
-                <code class="px-1 py-0.5 bg-muted rounded text-xs"
+                {{ t('guide.intro.thenImport')
+                }}<code class="px-1 py-0.5 bg-muted rounded text-xs"
                   >from '&#64;voltui/components'</code
                 >
               </p>
@@ -112,10 +95,8 @@ import {
           <!-- Option 2: CLI -->
           <volt-card>
             <volt-card-header>
-              <volt-card-title>Option 2: CLI (shadcn-style)</volt-card-title>
-              <volt-card-description>
-                Copy component source files into your project with ui-* prefix. Full customization.
-              </volt-card-description>
+              <volt-card-title>{{ t('guide.intro.option2') }}</volt-card-title>
+              <volt-card-description>{{ t('guide.intro.option2Body') }}</volt-card-description>
             </volt-card-header>
             <volt-card-content class="space-y-3">
               <div class="flex items-center gap-2 p-3 rounded-lg bg-muted font-mono text-sm">
@@ -137,19 +118,15 @@ import {
           <!-- Option 3: Manual -->
           <volt-card>
             <volt-card-header>
-              <volt-card-title>Option 3: Copy & Paste</volt-card-title>
-              <volt-card-description>
-                Browse component demos and copy the source code directly. Full control over the
-                implementation.
-              </volt-card-description>
+              <volt-card-title>{{ t('guide.intro.option3') }}</volt-card-title>
+              <volt-card-description>{{ t('guide.intro.option3Body') }}</volt-card-description>
             </volt-card-header>
             <volt-card-content>
               <a
-                routerLink="/docs/components"
+                [routerLink]="path('/docs/components')"
                 class="inline-flex items-center text-primary hover:underline"
+                >{{ t('guide.intro.browse') }}</a
               >
-                Browse Components →
-              </a>
             </volt-card-content>
           </volt-card>
         </div>
@@ -157,30 +134,28 @@ import {
 
       <!-- Naming conventions -->
       <div class="space-y-4">
-        <h2 class="text-xl font-semibold tracking-tight">Naming Conventions</h2>
-        <p class="text-muted-foreground">
-          Volt UI uses different prefixes for library source and CLI-generated output.
-        </p>
+        <h2 class="text-xl font-semibold tracking-tight">{{ t('guide.intro.namingTitle') }}</h2>
+        <p class="text-muted-foreground">{{ t('guide.intro.namingLede') }}</p>
 
         <div class="p-4 rounded-lg border border-border bg-muted/30 overflow-x-auto">
           <table class="w-full text-sm">
             <thead>
               <tr class="text-left text-muted-foreground border-b border-border">
-                <th class="pb-2 font-medium">Context</th>
-                <th class="pb-2 font-medium">Selector</th>
-                <th class="pb-2 font-medium">Class name</th>
-                <th class="pb-2 font-medium">Import path</th>
+                <th class="pb-2 font-medium">{{ t('guide.intro.context') }}</th>
+                <th class="pb-2 font-medium">{{ t('guide.intro.selector') }}</th>
+                <th class="pb-2 font-medium">{{ t('guide.intro.className') }}</th>
+                <th class="pb-2 font-medium">{{ t('guide.intro.importPath') }}</th>
               </tr>
             </thead>
             <tbody>
               <tr class="border-b border-border/50">
-                <td class="py-2">Library source</td>
+                <td class="py-2">{{ t('guide.intro.librarySource') }}</td>
                 <td class="py-2 font-mono">volt-* / [voltXxx]</td>
                 <td class="py-2 font-mono">VoltXxx</td>
                 <td class="py-2 font-mono">'volt'</td>
               </tr>
               <tr>
-                <td class="py-2">CLI output</td>
+                <td class="py-2">{{ t('guide.intro.cliOutput') }}</td>
                 <td class="py-2 font-mono">ui-* / [uiXxx]</td>
                 <td class="py-2 font-mono">UiXxx</td>
                 <td class="py-2 font-mono">'./ui/&lt;component&gt;'</td>
@@ -192,18 +167,13 @@ import {
 
       <!-- Prerequisites -->
       <div class="space-y-4">
-        <h2 class="text-xl font-semibold tracking-tight">Prerequisites</h2>
-        <p class="text-muted-foreground">
-          Before using Volt UI components, ensure you have the following dependencies installed:
-        </p>
+        <h2 class="text-xl font-semibold tracking-tight">{{ t('guide.intro.prereqTitle') }}</h2>
+        <p class="text-muted-foreground">{{ t('guide.intro.prereqLede') }}</p>
 
         <div class="space-y-3">
           <div class="p-4 rounded-lg border border-border bg-muted/30">
-            <span class="font-medium">npm package</span>
-            <p class="text-xs text-muted-foreground mt-1">
-              Runtime dependencies are included automatically. Import the theme CSS once in your
-              global stylesheet.
-            </p>
+            <span class="font-medium">{{ t('guide.intro.npmPackage') }}</span>
+            <p class="text-xs text-muted-foreground mt-1">{{ t('guide.intro.npmBody') }}</p>
             <code class="text-sm font-mono text-muted-foreground block mt-2">
               npm install &#64;voltui/components
             </code>
@@ -213,7 +183,7 @@ import {
           </div>
 
           <div class="p-4 rounded-lg border border-border bg-muted/30">
-            <span class="font-medium">CLI / Copy & Paste — runtime deps</span>
+            <span class="font-medium">{{ t('guide.intro.cliDeps') }}</span>
             <code class="text-sm font-mono text-muted-foreground block mt-2">
               npm install ng-primitives class-variance-authority clsx tailwind-merge
             </code>
@@ -235,11 +205,8 @@ import {
 
       <!-- Theme -->
       <div class="space-y-4">
-        <h2 class="text-xl font-semibold tracking-tight">Theme System</h2>
-        <p class="text-muted-foreground">
-          Volt UI provides semantic Tailwind tokens via CSS custom properties. Configure the theme
-          in your app config.
-        </p>
+        <h2 class="text-xl font-semibold tracking-tight">{{ t('guide.intro.themeTitle') }}</h2>
+        <p class="text-muted-foreground">{{ t('guide.intro.themeLede') }}</p>
 
         <div
           class="p-4 rounded-lg border border-border bg-muted/30 font-mono text-sm overflow-x-auto"
@@ -265,10 +232,8 @@ import {
 
       <!-- Project Structure -->
       <div class="space-y-4">
-        <h2 class="text-xl font-semibold tracking-tight">Project Structure</h2>
-        <p class="text-muted-foreground">
-          When using the CLI, components are added to your project's ui folder:
-        </p>
+        <h2 class="text-xl font-semibold tracking-tight">{{ t('guide.intro.structureTitle') }}</h2>
+        <p class="text-muted-foreground">{{ t('guide.intro.structureLede') }}</p>
 
         <div class="p-4 rounded-lg border border-border bg-muted/30 font-mono text-sm">
           <div class="text-muted-foreground">src/app/</div>
@@ -286,9 +251,7 @@ import {
       <!-- Usage -->
       <div class="space-y-4">
         <h2 class="text-xl font-semibold tracking-tight">Usage</h2>
-        <p class="text-muted-foreground">
-          After adding a component, import and use it in your Angular components:
-        </p>
+        <p class="text-muted-foreground">{{ t('guide.intro.afterAdding') }}</p>
 
         <div
           class="p-4 rounded-lg border border-border bg-muted/30 font-mono text-sm overflow-x-auto"
@@ -308,7 +271,7 @@ import {
 
       <!-- Overlay pattern -->
       <div class="space-y-4">
-        <h2 class="text-xl font-semibold tracking-tight">Overlay Components</h2>
+        <h2 class="text-xl font-semibold tracking-tight">{{ t('guide.intro.overlayTitle') }}</h2>
         <p class="text-muted-foreground">
           Dialog, drawer, popover, tooltip, and dropdown-menu use an attribute-directive trigger
           that references an
@@ -337,25 +300,22 @@ import {
 
       <!-- Component catalog -->
       <div class="space-y-4">
-        <h2 class="text-xl font-semibold tracking-tight">Component Catalog</h2>
+        <h2 class="text-xl font-semibold tracking-tight">{{ t('guide.intro.catalogTitle') }}</h2>
         <p class="text-muted-foreground">
           Every component in Volt UI 1.0.0 is
           <span class="text-green-600 font-medium">stable</span> — a settled API, tests that assert
           the component's own behavior, and documented usage. The
           <span class="font-medium">beta</span> label stays in the system for components added after
           1.0; nothing carries it today. See
-          <a routerLink="/docs/versioning" class="underline hover:text-foreground"
+          <a [routerLink]="path('/docs/versioning')" class="underline hover:text-foreground"
             >Versioning &amp; stability</a
           >
           for the full policy.
         </p>
 
         <div class="p-4 rounded-lg border border-border bg-muted/30">
-          <h3 class="font-medium text-green-600 mb-2">Stable</h3>
-          <p class="text-sm text-muted-foreground mb-2">
-            Recommended for production use. Meaningful tests, documented API, and CVA coverage where
-            applicable.
-          </p>
+          <h3 class="font-medium text-green-600 mb-2">{{ t('guide.intro.stableLabel') }}</h3>
+          <p class="text-sm text-muted-foreground mb-2">{{ t('guide.intro.stableBody') }}</p>
           <div class="font-mono text-xs text-muted-foreground">
             accordion, autofill, avatar, badge, breadcrumbs, button, card, checkbox, combobox,
             date-picker, dialog, drawer, dropdown-menu, file-upload, form-field, input, input-otp,
@@ -368,38 +328,41 @@ import {
 
       <!-- Next Steps -->
       <div class="space-y-4">
-        <h2 class="text-xl font-semibold tracking-tight">Next Steps</h2>
+        <h2 class="text-xl font-semibold tracking-tight">{{ t('guide.intro.nextTitle') }}</h2>
         <div class="grid gap-4 md:grid-cols-3">
           <a
-            routerLink="/docs/themes"
+            [routerLink]="path('/docs/themes')"
             class="group p-4 rounded-lg border border-border hover:border-primary/50 transition-colors"
           >
-            <h3 class="font-medium group-hover:text-primary">Themes →</h3>
+            <h3 class="font-medium group-hover:text-primary">{{ t('guide.intro.nextThemes') }}</h3>
+            <p class="text-sm text-muted-foreground mt-1">{{ t('guide.intro.nextThemesBody') }}</p>
+          </a>
+          <a
+            [routerLink]="path('/docs/components')"
+            class="group p-4 rounded-lg border border-border hover:border-primary/50 transition-colors"
+          >
+            <h3 class="font-medium group-hover:text-primary">
+              {{ t('guide.intro.nextComponents') }}
+            </h3>
             <p class="text-sm text-muted-foreground mt-1">
-              Learn how to customize colors, typography, and dark mode.
+              {{ t('guide.intro.nextComponentsBody') }}
             </p>
           </a>
           <a
-            routerLink="/docs/components"
+            [routerLink]="path('/docs/mcp')"
             class="group p-4 rounded-lg border border-border hover:border-primary/50 transition-colors"
           >
-            <h3 class="font-medium group-hover:text-primary">Components →</h3>
-            <p class="text-sm text-muted-foreground mt-1">
-              Explore all available components with examples and source code.
-            </p>
-          </a>
-          <a
-            routerLink="/docs/mcp"
-            class="group p-4 rounded-lg border border-border hover:border-primary/50 transition-colors"
-          >
-            <h3 class="font-medium group-hover:text-primary">AI Integration →</h3>
-            <p class="text-sm text-muted-foreground mt-1">
-              Configure the MCP server and IDE snippets for Claude, Cursor, Copilot, and more.
-            </p>
+            <h3 class="font-medium group-hover:text-primary">{{ t('guide.intro.nextAi') }}</h3>
+            <p class="text-sm text-muted-foreground mt-1">{{ t('guide.intro.nextAiBody') }}</p>
           </a>
         </div>
       </div>
     </div>
   `,
 })
-export default class IntroductionPage {}
+export default class IntroductionPage {
+  private readonly translations = inject(Translations);
+
+  protected readonly t = this.translations.t;
+  protected readonly path = this.translations.path;
+}
