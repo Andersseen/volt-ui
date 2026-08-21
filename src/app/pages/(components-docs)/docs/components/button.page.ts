@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { VoltButton } from 'volt';
 import { ApiReference } from '../../../../components/api-reference';
 import { CodePanel } from '../../../../components/code-panel';
@@ -6,6 +6,7 @@ import { BUTTON_API } from '../../../../lib/api-reference.generated';
 import { BUTTON_SNIPPET } from '../../../../lib/snippets';
 import { BUTTON_USAGE } from '../../../../lib/snippets/usage';
 import { LmnArrowRightIcon, LmnChevronRightIcon, LmnMailIcon } from 'lumen-icons';
+import { Translations } from '../../../../i18n/translations';
 
 @Component({
   selector: 'app-button-demo',
@@ -22,6 +23,10 @@ import { LmnArrowRightIcon, LmnChevronRightIcon, LmnMailIcon } from 'lumen-icons
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class ButtonDemo {
+  private readonly translations = inject(Translations);
+
+  protected readonly t = this.translations.t;
+
   readonly buttonCode = BUTTON_SNIPPET;
   readonly buttonUsage = BUTTON_USAGE;
   readonly buttonApi = BUTTON_API;

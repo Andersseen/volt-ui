@@ -9,6 +9,7 @@ import {
 import { CodeEditor } from '../code-editor';
 import { CopyButton } from '../copy-button';
 import { ThemeStudioStore } from '../../services/theme-studio-store';
+import { Translations } from '../../i18n/translations';
 
 /** The exported stylesheet, ready to paste into a Volt theme preset. */
 @Component({
@@ -30,10 +31,8 @@ import { ThemeStudioStore } from '../../services/theme-studio-store';
       <volt-card-header>
         <div class="flex items-center justify-between gap-3">
           <div>
-            <volt-card-title>Generated CSS</volt-card-title>
-            <volt-card-description
-              >Paste this into a Volt theme preset or app stylesheet.</volt-card-description
-            >
+            <volt-card-title>{{ t('themeStudio.output.title') }}</volt-card-title>
+            <volt-card-description>{{ t('themeStudio.output.lede') }}</volt-card-description>
           </div>
           <app-copy-button [code]="store.generatedCss()" />
         </div>
@@ -47,5 +46,9 @@ import { ThemeStudioStore } from '../../services/theme-studio-store';
   `,
 })
 export class ThemeStudioOutput {
+  private readonly translations = inject(Translations);
+
+  protected readonly t = this.translations.t;
+
   protected readonly store = inject(ThemeStudioStore);
 }

@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
 import { VoltTabs, VoltTabsContent, VoltTabsList, VoltTabsTrigger } from 'volt';
 import { LmnCheckIcon, LmnCopyIcon } from 'lumen-icons';
 import { CodeEditor } from './code-editor';
 import { CopyButton } from './copy-button';
+import { Translations } from '../i18n/translations';
 
 @Component({
   selector: 'app-code-panel',
@@ -23,7 +24,7 @@ import { CopyButton } from './copy-button';
     <div class="space-y-3">
       <!-- Header with title and copy button -->
       <div class="flex items-center justify-between">
-        <h3 class="font-semibold text-lg">{{ title() }}</h3>
+        <h3 class="font-semibold text-lg">{{ heading() }}</h3>
         @if (!tabbed() || activeTab() === 'code') {
           <app-copy-button [code]="code()" />
         }
@@ -32,7 +33,7 @@ import { CopyButton } from './copy-button';
       <!-- CLI Command -->
       @if (cliCommand()) {
         <div class="flex items-center gap-2 p-3 rounded-lg bg-muted/50 border border-border">
-          <span class="text-sm text-muted-foreground">Install via CLI:</span>
+          <span class="text-sm text-muted-foreground">{{ t('ui.codePanel.installCli') }}</span>
           <code class="text-sm font-mono text-foreground">{{ cliCommand() }}</code>
           <button
             type="button"
@@ -41,10 +42,10 @@ import { CopyButton } from './copy-button';
           >
             @if (cliCopied()) {
               <lmn-check [size]="14" class="text-success" />
-              <span class="text-success">Copied!</span>
+              <span class="text-success">{{ t('ui.copy.copied') }}</span>
             } @else {
               <lmn-copy [size]="14" />
-              <span>Copy</span>
+              <span>{{ t('ui.copy.action') }}</span>
             }
           </button>
         </div>
@@ -53,8 +54,8 @@ import { CopyButton } from './copy-button';
       @if (tabbed()) {
         <volt-tabs [value]="activeTab()" (valueChange)="onTabChange($event)">
           <volt-tabs-list class="grid w-full grid-cols-2">
-            <volt-tabs-trigger value="preview">Preview</volt-tabs-trigger>
-            <volt-tabs-trigger value="code">Code</volt-tabs-trigger>
+            <volt-tabs-trigger value="preview">{{ t('ui.codePanel.preview') }}</volt-tabs-trigger>
+            <volt-tabs-trigger value="code">{{ t('ui.codePanel.code') }}</volt-tabs-trigger>
           </volt-tabs-list>
 
           <volt-tabs-content value="preview">
@@ -103,11 +104,25 @@ import { CopyButton } from './copy-button';
   `,
 })
 export class CodePanel {
-  readonly title = input<string>('Component Source');
+  private readonly translations = inject(Translations);
+
+  protected readonly t = this.translations.t;
+
+  /*
+   * Display text, not a key: the caller already holds `t`, and the sentences these panels
+   * carry are mostly one shared parameterised note rather than one string per page. An
+   * empty title means "the usual one", so the forty pages that show component source do
+   * not each repeat it.
+   */
+  readonly title = input<string>('');
   readonly code = input.required<string>();
   readonly cliCommand = input<string>('');
   readonly description = input<string>('');
   readonly tabbed = input<boolean>(false);
+
+  protected readonly heading = computed(
+    () => this.title() || this.t('ui.codePanel.componentSource')
+  );
 
   cliCopied = signal(false);
   activeTab = signal<'preview' | 'code'>('preview');

@@ -14,12 +14,15 @@ import {
   VoltTextarea,
 } from 'volt';
 import { ThemeStudioStore } from '../../services/theme-studio-store';
+import { Prose } from '../../components/prose';
+import { Translations } from '../../i18n/translations';
 
 /** Name the theme, pick a starting preset, generate or import a palette. */
 @Component({
   selector: 'app-theme-studio-setup',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    Prose,
     VoltButton,
     VoltCard,
     VoltCardContent,
@@ -38,33 +41,35 @@ import { ThemeStudioStore } from '../../services/theme-studio-store';
       class="border-border/70 bg-surface/80 shadow-sm backdrop-blur transition-colors duration-200 hover:border-primary/25"
     >
       <volt-card-header>
-        <volt-card-title>Theme Setup</volt-card-title>
-        <volt-card-description
-          >Name it, pick a starting palette, then tune the details.</volt-card-description
-        >
+        <volt-card-title>{{ t('themeStudio.setup.title') }}</volt-card-title>
+        <volt-card-description>{{ t('themeStudio.setup.lede') }}</volt-card-description>
       </volt-card-header>
       <volt-card-content>
         <div class="grid gap-4 sm:grid-cols-2">
           <div class="space-y-2">
-            <label for="theme-name" class="text-sm font-medium text-foreground">Theme name</label>
+            <label for="theme-name" class="text-sm font-medium text-foreground">{{
+              t('themeStudio.setup.nameLabel')
+            }}</label>
             <volt-input
               [id]="'theme-name'"
               ariaLabel="Theme name"
               [value]="store.theme().name"
               (valueChange)="store.setName($event)"
-              placeholder="acme-ocean"
+              [placeholder]="t('themeStudio.setup.namePlaceholder')"
             />
           </div>
 
           <div class="space-y-2">
-            <span class="text-sm font-medium text-foreground">Start from</span>
+            <span class="text-sm font-medium text-foreground">{{
+              t('themeStudio.setup.startFrom')
+            }}</span>
             <volt-select
               [(value)]="store.presetValue"
               ariaLabel="Starting preset"
-              placeholder="Choose preset"
+              [placeholder]="t('themeStudio.setup.presetPlaceholder')"
             >
               <volt-select-content>
-                <volt-select-label>Presets</volt-select-label>
+                <volt-select-label>{{ t('themeStudio.setup.presets') }}</volt-select-label>
                 <volt-select-item value="glacier">Glacier</volt-select-item>
                 <volt-select-item value="sage">Sage</volt-select-item>
                 <volt-select-item value="ember">Ember</volt-select-item>
@@ -77,26 +82,30 @@ import { ThemeStudioStore } from '../../services/theme-studio-store';
         <div class="mt-6 space-y-4 rounded-xl border border-border/70 bg-muted/25 p-4">
           <div class="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p class="text-sm font-medium text-foreground">Generate a palette</p>
+              <p class="text-sm font-medium text-foreground">
+                {{ t('themeStudio.setup.generateTitle') }}
+              </p>
               <p class="mt-1 text-sm text-muted-foreground">
-                Perceptual OKLCH scales with contrast-checked text colors, for both modes at once.
+                {{ t('themeStudio.setup.generateLede') }}
               </p>
             </div>
             <div class="flex flex-wrap items-center gap-2">
               <volt-select
                 [(value)]="store.harmonyValue"
                 ariaLabel="Color harmony"
-                placeholder="Harmony"
+                [placeholder]="t('themeStudio.setup.harmony')"
                 class="w-40"
               >
                 <volt-select-content>
-                  <volt-select-label>Harmony</volt-select-label>
+                  <volt-select-label>{{ t('themeStudio.setup.harmony') }}</volt-select-label>
                   @for (option of store.harmonies; track option) {
                     <volt-select-item [value]="option">{{ option }}</volt-select-item>
                   }
                 </volt-select-content>
               </volt-select>
-              <volt-button (click)="store.generate()">Generate</volt-button>
+              <volt-button (click)="store.generate()">{{
+                t('themeStudio.setup.generate')
+              }}</volt-button>
             </div>
           </div>
 
@@ -130,8 +139,7 @@ import { ThemeStudioStore } from '../../services/theme-studio-store';
           @if (store.importOpen()) {
             <div class="space-y-2">
               <label for="palette-import" class="text-sm text-muted-foreground">
-                Paste the <span class="font-medium text-foreground">JSON</span> export from Palette
-                Crafter:
+                <app-prose key="themeStudio.setup.importLabel" />
               </label>
               <volt-textarea
                 [id]="'palette-import'"
@@ -150,7 +158,7 @@ import { ThemeStudioStore } from '../../services/theme-studio-store';
                 [disabled]="!store.importText().trim()"
                 (click)="store.importFromCrafter()"
               >
-                Apply palette
+                {{ t('themeStudio.setup.applyPalette') }}
               </volt-button>
             </div>
           }
@@ -160,5 +168,9 @@ import { ThemeStudioStore } from '../../services/theme-studio-store';
   `,
 })
 export class ThemeStudioSetup {
+  private readonly translations = inject(Translations);
+
+  protected readonly t = this.translations.t;
+
   protected readonly store = inject(ThemeStudioStore);
 }

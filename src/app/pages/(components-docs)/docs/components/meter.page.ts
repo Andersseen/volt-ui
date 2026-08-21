@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import {
   VoltMeter,
   VoltMeterIndicator,
@@ -11,6 +11,7 @@ import { ApiReference } from '../../../../components/api-reference';
 import { METER_SNIPPET } from '../../../../lib/snippets';
 import { METER_USAGE } from '../../../../lib/snippets/usage';
 import { METER_API } from '../../../../lib/api-reference.generated';
+import { Translations } from '../../../../i18n/translations';
 
 @Component({
   selector: 'app-meter-demo',
@@ -28,13 +29,13 @@ import { METER_API } from '../../../../lib/api-reference.generated';
   template: `
     <div class="space-y-6">
       <div>
-        <h1 class="text-3xl font-bold tracking-tight text-foreground">Meter</h1>
-        <p class="text-base text-muted-foreground mt-2">
-          Displays a scalar measurement within a known range.
-        </p>
+        <h1 class="text-3xl font-bold tracking-tight text-foreground">
+          {{ t('components.meter.title') }}
+        </h1>
+        <p class="text-base text-muted-foreground mt-2">{{ t('components.meter.description') }}</p>
       </div>
       <div class="w-full h-px bg-border"></div>
-      <app-code-panel title="Usage" [code]="usage" [tabbed]="true">
+      <app-code-panel [title]="t('ui.codePanel.usage')" [code]="usage" [tabbed]="true">
         <div
           class="p-8 border border-border rounded-lg bg-card/30 flex items-center justify-center"
         >
@@ -53,20 +54,23 @@ import { METER_API } from '../../../../lib/api-reference.generated';
       </app-code-panel>
       <!-- API Reference -->
       <div class="space-y-3">
-        <h3 class="text-lg font-semibold">API Reference</h3>
+        <h3 class="text-lg font-semibold">{{ t('ui.api.title') }}</h3>
         <app-api-reference [data]="meterApi" />
       </div>
 
       <app-code-panel
-        title="Component Source"
         [code]="code"
         cliCommand="npx @voltui/cli add meter"
-        description="Copy this code to your project. The component uses ng-primitives/meter."
+        [description]="t('ui.codePanel.copyNoteDep', { dep: 'ng-primitives/meter' })"
       />
     </div>
   `,
 })
 export default class MeterDemo {
+  private readonly translations = inject(Translations);
+
+  protected readonly t = this.translations.t;
+
   readonly meterApi = METER_API;
   readonly code = METER_SNIPPET;
   readonly usage = METER_USAGE;

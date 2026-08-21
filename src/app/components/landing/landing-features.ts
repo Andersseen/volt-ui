@@ -1,11 +1,20 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { LmnPackageIcon, LmnShieldIcon, LmnSparklesIcon } from 'lumen-icons';
+import { Translations, type TranslationKey } from '../../i18n/translations';
 import { VoltBadge, VoltCard, VoltCardContent, VoltCardHeader } from 'volt';
 import { SITE_STATS } from '../../lib/generated/site-stats';
 import { MOTION } from '../../lib/motion';
 import { Reveal } from '../reveal';
 
 /** The three pillars of the library, as a staggered card grid. */
+interface Feature {
+  readonly icon: string;
+  /** Typed, so a renamed key breaks the build rather than the Spanish page. */
+  readonly titleKey: TranslationKey;
+  readonly bodyKey: TranslationKey;
+  readonly detail: string;
+}
+
 @Component({
   selector: 'app-landing-features',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -23,19 +32,20 @@ import { Reveal } from '../reveal';
     <section class="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28">
       <div appReveal class="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
         <div>
-          <volt-badge variant="outline" class="mb-5">Built for ownership</volt-badge>
+          <volt-badge variant="outline" class="mb-5">{{
+            t('landing.features.eyebrow')
+          }}</volt-badge>
           <h2 class="text-balance text-3xl font-semibold tracking-normal sm:text-5xl">
-            Production behavior first. Product taste next.
+            {{ t('landing.features.title') }}
           </h2>
         </div>
         <p class="max-w-2xl text-lg leading-8 text-muted-foreground lg:justify-self-end">
-          Volt UI starts with ng-primitives for focus, overlays, ARIA and forms, then wraps it in
-          Angular signals, Tailwind tokens, and copyable source you can reshape.
+          {{ t('landing.features.subtitle') }}
         </p>
       </div>
 
       <div class="mt-12 grid gap-4 md:grid-cols-3">
-        @for (feature of features; track feature.title; let i = $index) {
+        @for (feature of features; track feature.titleKey; let i = $index) {
           <volt-card
             [appReveal]="i * stagger"
             class="feature-card h-full border-border/70 bg-surface/70"
@@ -56,9 +66,9 @@ import { Reveal } from '../reveal';
                   }
                 }
               </div>
-              <h3 class="text-lg font-semibold tracking-normal">{{ feature.title }}</h3>
+              <h3 class="text-lg font-semibold tracking-normal">{{ t(feature.titleKey) }}</h3>
               <p class="mt-2 text-sm leading-6 text-muted-foreground">
-                {{ feature.description }}
+                {{ t(feature.bodyKey) }}
               </p>
             </volt-card-header>
             <volt-card-content>
@@ -97,28 +107,29 @@ import { Reveal } from '../reveal';
   `,
 })
 export class LandingFeatures {
+  private readonly translations = inject(Translations);
+
+  protected readonly t = this.translations.t;
+
   protected readonly stagger = MOTION.stagger;
 
-  protected readonly features = [
+  protected readonly features: readonly Feature[] = [
     {
       icon: 'package',
-      title: 'Own the source',
-      description:
-        'The CLI copies readable standalone components directly into your application. Change every line when your product needs it.',
+      titleKey: 'landing.features.ownTitle',
+      bodyKey: 'landing.features.ownBody',
       detail: 'npx @voltui/cli add',
     },
     {
       icon: 'shield',
-      title: 'Behavior built in',
-      description:
-        'ng-primitives handles focus, keyboard navigation, overlays, and ARIA contracts while Volt UI handles product-ready styling.',
+      titleKey: 'landing.features.behaviorTitle',
+      bodyKey: 'landing.features.behaviorBody',
       detail: 'WAI-ARIA - CVA - zoneless',
     },
     {
       icon: 'sparkles',
-      title: 'Designed as a system',
-      description:
-        'Semantic Tailwind tokens, color presets, and style presets let one component set adapt to a complete visual language.',
+      titleKey: 'landing.features.systemTitle',
+      bodyKey: 'landing.features.systemBody',
       detail: `${SITE_STATS.colorPresets} colors - ${SITE_STATS.stylePresets} styles`,
     },
   ];

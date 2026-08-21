@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { VoltRangeSlider } from 'volt';
 import { CodePanel } from '../../../../components/code-panel';
 import { ApiReference } from '../../../../components/api-reference';
 import { RANGE_SLIDER_SNIPPET } from '../../../../lib/snippets';
 import { RANGE_SLIDER_USAGE } from '../../../../lib/snippets/usage';
 import { RANGE_SLIDER_API } from '../../../../lib/api-reference.generated';
+import { Translations } from '../../../../i18n/translations';
 
 @Component({
   selector: 'app-range-slider-demo',
@@ -14,6 +15,10 @@ import { RANGE_SLIDER_API } from '../../../../lib/api-reference.generated';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class RangeSliderDemo {
+  private readonly translations = inject(Translations);
+
+  protected readonly t = this.translations.t;
+
   readonly rangeSliderApi = RANGE_SLIDER_API;
   readonly rangeSliderCode = RANGE_SLIDER_SNIPPET;
   readonly rangeSliderUsage = RANGE_SLIDER_USAGE;

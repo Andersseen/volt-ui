@@ -25,5 +25,5 @@ export class DocsPageShell {
   readonly title = input.required<string>();
   readonly browseLabel = input<string>('Browse');
   readonly description = input<string>('');
-  readonly groups = input.required<DocsSidebarGroup[]>();
+  readonly groups = input.required<readonly DocsSidebarGroup[]>();
 }

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import {
   NgpDialog,
@@ -10,6 +10,7 @@ import {
 import { LmnMenuIcon, LmnXIcon } from 'lumen-icons';
 import { MoveEnterDirective } from 'angular-movement';
 import { MOTION } from '../lib/motion';
+import { Translations } from '../i18n/translations';
 
 @Component({
   selector: 'app-mobile-menu',
@@ -31,7 +32,7 @@ import { MOTION } from '../lib/motion';
     <button
       [ngpDialogTrigger]="mobileMenuTemplate"
       class="md:hidden inline-flex h-9 w-9 items-center justify-center rounded-md border border-border/60 text-muted-foreground transition-colors hover:text-foreground hover:bg-muted/60"
-      aria-label="Open menu"
+      [attr.aria-label]="t('nav.openMenu')"
     >
       <lmn-menu [size]="20" />
     </button>
@@ -51,11 +52,11 @@ import { MOTION } from '../lib/motion';
       >
         <!-- Header -->
         <div class="flex items-center justify-between p-4 border-b border-border">
-          <h2 ngpDialogTitle class="text-lg font-semibold">Menu</h2>
+          <h2 ngpDialogTitle class="text-lg font-semibold">{{ t('nav.menu') }}</h2>
           <button
             (click)="close()"
             class="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:text-foreground hover:bg-muted"
-            aria-label="Close menu"
+            [attr.aria-label]="t('nav.closeMenu')"
           >
             <lmn-x [size]="20" />
           </button>
@@ -68,7 +69,7 @@ import { MOTION } from '../lib/motion';
         >
           @for (link of links; track link.path; let i = $index) {
             <a
-              [routerLink]="link.path"
+              [routerLink]="path(link.path)"
               routerLinkActive="bg-muted text-foreground font-medium"
               [routerLinkActiveOptions]="{ exact: link.exact }"
               (click)="close()"
@@ -76,7 +77,7 @@ import { MOTION } from '../lib/motion';
               [moveDelay]="i * stagger"
               class="px-3 py-2.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
             >
-              {{ link.label }}
+              {{ t(link.key) }}
             </a>
           }
         </nav>
@@ -85,14 +86,19 @@ import { MOTION } from '../lib/motion';
   `,
 })
 export class MobileMenu {
+  private readonly translations = inject(Translations);
+
+  protected readonly t = this.translations.t;
+  protected readonly path = this.translations.path;
+
   /** Links stagger in behind the drawer, so the panel reads as arriving rather than appearing. */
   protected readonly stagger = MOTION.stagger;
 
   protected readonly links = [
-    { path: '/', label: 'Home', exact: true },
-    { path: '/docs/introduction', label: 'Docs', exact: false },
-    { path: '/docs/components', label: 'Components', exact: false },
-    { path: '/create-theme', label: 'Create Theme', exact: false },
-    { path: '/docs/layouts', label: 'Layouts', exact: false },
-  ];
+    { path: '/', key: 'nav.home', exact: true },
+    { path: '/docs/introduction', key: 'nav.docs', exact: false },
+    { path: '/docs/components', key: 'nav.components', exact: false },
+    { path: '/docs/blocks', key: 'nav.gallery', exact: false },
+    { path: '/create-theme', key: 'nav.createTheme', exact: false },
+  ] as const;
 }

@@ -6,7 +6,7 @@ import { test, expect, type Page } from '@playwright/test';
  * presets and asserts key computed styles change."
  *
  * This drives the real header controls (not a raw `data-*` attribute
- * override) so it also exercises the theme-switcher UI itself, and it reads
+ * override) so it also exercises the theme popover itself, and it reads
  * computed styles off a live rendered button — the same signal a human
  * would notice as "the theme didn't change" if the CSS pipeline regresses
  * (e.g. the docs app's styles.css silently drifting from the token source
@@ -16,22 +16,21 @@ import { test, expect, type Page } from '@playwright/test';
 const COLOR_OPTIONS = ['Ember', 'Sage', 'Dusk', 'Glacier'] as const;
 const STYLE_OPTIONS = ['Soft', 'Brutal', 'Ghost', 'Retro'] as const;
 
-function colorTrigger(page: Page) {
-  return page.locator('button[ngpSelect]').first();
+/** Opens the header's theme popover if it is not already showing. */
+async function openThemePanel(page: Page) {
+  const panel = page.getByRole('group', { name: 'Palette' });
+
+  if (!(await panel.isVisible().catch(() => false))) {
+    await page.locator('header button[aria-label^="Theme:"]').click();
+    await expect(panel).toBeVisible();
+  }
 }
 
-function styleTrigger(page: Page) {
-  return page.locator('button[ngpSelect]').nth(1);
-}
-
-/** Open a volt-select trigger and pick an option, waiting out the portal's
- * open/close transition so the next interaction doesn't race a stale DOM. */
-async function selectOption(page: Page, trigger: ReturnType<typeof colorTrigger>, name: string) {
-  await trigger.click();
-  const listbox = page.getByRole('listbox');
-  await expect(listbox).toBeVisible();
-  await listbox.getByRole('option', { name }).click();
-  await expect(listbox).toBeHidden();
+/** Picks a palette or shape from the theme popover, which stays open between picks. */
+async function pickTheme(page: Page, group: 'Palette' | 'Shape', name: string) {
+  await openThemePanel(page);
+  await page.getByRole('group', { name: group }).getByRole('radio', { name }).click();
+  await expect(page.getByRole('radio', { name })).toBeChecked();
 }
 
 async function readTokens(page: Page) {
@@ -50,8 +49,8 @@ async function readTokens(page: Page) {
 
 test.describe('Theme preset cycling', () => {
   test.beforeEach(async ({ page }) => {
-    // Desktop viewport: the color/style pickers are hidden below the lg/xl
-    // breakpoints in the header (see src/app/components/theme-switcher.ts).
+    // Desktop viewport: the theme popover trigger lives in the desktop header
+    // (see src/app/components/theme-switcher.ts).
     await page.setViewportSize({ width: 1280, height: 900 });
     await page.goto('/docs/components/button');
     await expect(page.getByRole('button', { name: 'Solid' })).toBeVisible();
@@ -63,7 +62,7 @@ test.describe('Theme preset cycling', () => {
 
     let previousPrimary = baseline.primary;
     for (const color of COLOR_OPTIONS) {
-      await selectOption(page, colorTrigger(page), color);
+      await pickTheme(page, 'Palette', color);
 
       const tokens = await readTokens(page);
       expect(tokens.dataColor).toBe(color.toLowerCase());
@@ -78,7 +77,7 @@ test.describe('Theme preset cycling', () => {
   test('cycling data-style changes computed shape/radius tokens', async ({ page }) => {
     let previousRadius = (await readTokens(page)).radius;
     for (const style of STYLE_OPTIONS) {
-      await selectOption(page, styleTrigger(page), style);
+      await pickTheme(page, 'Shape', style);
 
       const tokens = await readTokens(page);
       expect(tokens.dataStyle).toBe(style.toLowerCase());
@@ -90,7 +89,7 @@ test.describe('Theme preset cycling', () => {
     // test also catches a wrong preset being wired up, not just "changed".
     // (Already selected last in the loop above when STYLE_OPTIONS ends in
     // 'Retro' it would not be; re-select explicitly for a stable assertion.)
-    await selectOption(page, styleTrigger(page), 'Brutal');
+    await pickTheme(page, 'Shape', 'Brutal');
     // Custom properties report their raw authored value, not a resolved
     // length — brutal.css literally writes `--radius: 0;` (no unit).
     expect((await readTokens(page)).radius).toBe('0');

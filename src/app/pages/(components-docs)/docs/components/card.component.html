@@ -1,13 +1,11 @@
 <div class="space-y-6">
   <div>
-    <h1 class="text-3xl font-bold tracking-tight">Card</h1>
-    <p class="text-lg text-muted-foreground mt-2">
-      Displays a card with header, content, and footer.
-    </p>
+    <h1 class="text-3xl font-bold tracking-tight">{{ t('components.card.title') }}</h1>
+    <p class="text-lg text-muted-foreground mt-2">{{ t('components.card.description') }}</p>
   </div>
 
   <!-- Usage Example -->
-  <app-code-panel title="Usage" [code]="cardUsage" [tabbed]="true">
+  <app-code-panel [title]="t('ui.codePanel.usage')" [code]="cardUsage" [tabbed]="true">
     <div
       class="border rounded-xl border-border/50 p-6 md:p-10 flex items-center justify-center bg-background/50 relative overflow-hidden min-h-[400px]"
     >
@@ -46,9 +44,8 @@
 
   <!-- Source Code Section -->
   <app-code-panel
-    title="Component Source"
     [code]="cardCode"
     cliCommand="npx @voltui/cli add card"
-    description="Copy this code to your project. The component uses class-variance-authority for variants."
+    [description]="t('ui.codePanel.copyNoteDep', { dep: 'class-variance-authority for variants' })"
   />
 </div>

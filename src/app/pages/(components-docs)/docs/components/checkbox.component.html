@@ -1,13 +1,11 @@
 <div class="space-y-6">
   <div>
-    <h1 class="text-3xl font-bold tracking-tight">Checkbox</h1>
-    <p class="text-lg text-muted-foreground mt-2">
-      A control that allows the user to toggle between checked and not checked.
-    </p>
+    <h1 class="text-3xl font-bold tracking-tight">{{ t('components.checkbox.title') }}</h1>
+    <p class="text-lg text-muted-foreground mt-2">{{ t('components.checkbox.description') }}</p>
   </div>
 
   <!-- Usage Example -->
-  <app-code-panel title="Usage" [code]="checkboxUsage" [tabbed]="true">
+  <app-code-panel [title]="t('ui.codePanel.usage')" [code]="checkboxUsage" [tabbed]="true">
     <div
       class="border rounded-xl border-border/50 p-6 md:p-10 flex flex-col items-center justify-center bg-background/50 relative overflow-hidden min-h-[300px]"
     >
@@ -32,15 +30,14 @@
 
   <!-- API Reference -->
   <div class="space-y-3">
-    <h3 class="text-lg font-semibold">API Reference</h3>
+    <h3 class="text-lg font-semibold">{{ t('ui.api.title') }}</h3>
     <app-api-reference [data]="checkboxApi" />
   </div>
 
   <!-- Source Code Section -->
   <app-code-panel
-    title="Component Source"
     [code]="checkboxCode"
     cliCommand="npx @voltui/cli add checkbox"
-    description="Copy this code to your project. The component uses ng-primitives/checkbox."
+    [description]="t('ui.codePanel.copyNoteDep', { dep: 'ng-primitives/checkbox' })"
   />
 </div>

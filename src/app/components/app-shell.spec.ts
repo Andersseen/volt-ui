@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest';
 import { DocsPageShell } from './docs-page-shell';
 import { Footer } from './footer';
 import { Header } from './header';
+import { SITE_STATS } from '../lib/generated/site-stats';
 
 describe('application shell', () => {
   it('renders the primary navigation and current release', async () => {
@@ -22,7 +23,10 @@ describe('application shell', () => {
       'href',
       '/create-theme'
     );
-    expect(screen.getByText('v1.0.0')).toBeInTheDocument();
+    // Blocks and layouts share one entry; it opens on the first tab.
+    expect(screen.getByRole('link', { name: 'Gallery' })).toHaveAttribute('href', '/docs/blocks');
+    expect(screen.queryByRole('link', { name: 'Layouts' })).not.toBeInTheDocument();
+    expect(screen.getByText(`v${SITE_STATS.version}`)).toBeInTheDocument();
   });
 
   it('renders useful footer navigation and repository metadata', async () => {
@@ -48,10 +52,18 @@ describe('application shell', () => {
         description: 'Component catalog',
         groups: [
           {
-            heading: 'Forms',
+            headingKey: 'catalog.groups.forms',
             links: [
-              { path: '/docs/components/input', label: 'Input', stability: 'stable' },
-              { path: '/docs/components/combobox', label: 'Combobox', stability: 'beta' },
+              {
+                path: '/docs/components/input',
+                labelKey: 'catalog.input.label',
+                stability: 'stable',
+              },
+              {
+                path: '/docs/components/combobox',
+                labelKey: 'components.combobox.title',
+                stability: 'beta',
+              },
             ],
           },
         ],

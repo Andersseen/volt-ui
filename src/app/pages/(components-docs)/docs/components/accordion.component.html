@@ -1,13 +1,11 @@
 <div class="space-y-6">
   <div>
-    <h1 class="text-3xl font-bold tracking-tight">Accordion</h1>
-    <p class="text-lg text-muted-foreground mt-2">
-      A vertically stacked set of interactive headings that each reveal a section of content.
-    </p>
+    <h1 class="text-3xl font-bold tracking-tight">{{ t('components.accordion.title') }}</h1>
+    <p class="text-lg text-muted-foreground mt-2">{{ t('components.accordion.description') }}</p>
   </div>
 
   <!-- Usage Example -->
-  <app-code-panel title="Usage" [code]="accordionUsage" [tabbed]="true">
+  <app-code-panel [title]="t('ui.codePanel.usage')" [code]="accordionUsage" [tabbed]="true">
     <div
       class="w-full max-w-lg mx-auto bg-background p-6 rounded-lg shadow-sm border border-border/50"
     >
@@ -38,15 +36,14 @@
 
   <!-- API Reference -->
   <div class="space-y-3">
-    <h3 class="text-lg font-semibold">API Reference</h3>
+    <h3 class="text-lg font-semibold">{{ t('ui.api.title') }}</h3>
     <app-api-reference [data]="accordionApi" />
   </div>
 
   <!-- Source Code Section -->
   <app-code-panel
-    title="Component Source"
     [code]="accordionCode"
     cliCommand="npx @voltui/cli add accordion"
-    description="Copy this code to your project. The component uses ng-primitives/accordion."
+    [description]="t('ui.codePanel.copyNoteDep', { dep: 'ng-primitives/accordion' })"
   />
 </div>

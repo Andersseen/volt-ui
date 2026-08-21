@@ -1,14 +1,16 @@
 <div class="space-y-6">
   <div>
-    <h1 class="text-3xl font-bold tracking-tight text-foreground">Breadcrumbs</h1>
+    <h1 class="text-3xl font-bold tracking-tight text-foreground">
+      {{ t('components.breadcrumbs.title') }}
+    </h1>
     <p class="text-base text-muted-foreground mt-2">
-      Displays the path to the current resource using a hierarchy of links.
+      {{ t('components.breadcrumbs.description') }}
     </p>
   </div>
 
   <div class="w-full h-px bg-border"></div>
 
-  <app-code-panel title="Usage" [code]="breadcrumbsUsage" [tabbed]="true">
+  <app-code-panel [title]="t('ui.codePanel.usage')" [code]="breadcrumbsUsage" [tabbed]="true">
     <div
       class="p-8 border border-border rounded-lg bg-card/30 flex items-center justify-center min-h-[300px]"
     >
@@ -32,14 +34,13 @@
 
   <!-- API Reference -->
   <div class="space-y-3">
-    <h3 class="text-lg font-semibold">API Reference</h3>
+    <h3 class="text-lg font-semibold">{{ t('ui.api.title') }}</h3>
     <app-api-reference [data]="breadcrumbsApi" />
   </div>
 
   <app-code-panel
-    title="Component Source"
     [code]="breadcrumbsCode"
     cliCommand="npx @voltui/cli add breadcrumbs"
-    description="Copy this code to your project. The component uses ng-primitives/breadcrumbs."
+    [description]="t('ui.codePanel.copyNoteDep', { dep: 'ng-primitives/breadcrumbs' })"
   />
 </div>

@@ -1,0 +1,1144 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "docs": "Documentación",
+    "components": "Componentes",
+    "gallery": "Galería",
+    "createTheme": "Crear tema",
+    "new": "Nuevo",
+    "main": "Principal",
+    "github": "Repositorio de GitHub",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú",
+    "menu": "Menú",
+    "language": "Idioma",
+    "toggleDark": "Cambiar a modo oscuro",
+    "themeLabel": "Tema: paleta {color}, forma {style}",
+    "palette": "Paleta",
+    "shape": "Forma",
+    "logoAlt": "Logotipo de Volt UI"
+  },
+  "footer": {
+    "tagline": "Componentes de Angular que son tuyos.",
+    "rights": "© {year}"
+  },
+  "gallery": {
+    "sections": "Secciones de la galería",
+    "blocks": {
+      "title": "Bloques",
+      "browse": "Ver bloques",
+      "description": "Secciones de página animadas. Copia el código y quédate con el movimiento.",
+      "lede": "Secciones de página completas construidas con componentes de Volt, con el movimiento ya resuelto. Cada bloque es un solo archivo: cópialo, renómbralo y borra lo que no quieras.",
+      "oneFile": "Un archivo cada uno",
+      "oneFileBody": "Plantilla, estilos y comportamiento en un único componente standalone.",
+      "noRuntime": "Sin runtime de animación",
+      "noRuntimeBody": "CSS y un manejador de puntero. Nada que añadir a tu bundle.",
+      "themeAware": "Consciente del tema",
+      "themeAwareBody": "Construido sobre tokens, así que cada preset y el modo oscuro vienen incluidos."
+    },
+    "layouts": {
+      "title": "Layouts",
+      "browse": "Ver layouts",
+      "description": "Esqueletos sin marca para rellenar con tus pantallas."
+    },
+    "overview": "Resumen",
+    "comingSoon": "Próximamente",
+    "comingSoonHint": "Las categorías de arriba son la forma del conjunto; estas cubren los huecos.",
+    "soon": "Pronto",
+    "missing": "¿Te falta alguno?",
+    "openIssue": "Abre una issue",
+    "missingTail": "y pasa al principio de la cola.",
+    "atoms": "{count} átomos",
+    "whatMoves": "Qué se mueve",
+    "builtFrom": "Construido con",
+    "blockSource": "Código del bloque",
+    "arrangement": "La disposición",
+    "assembledFrom": "Ensamblado con",
+    "layoutSource": "Código del layout",
+    "blockSourceNote": "Un componente standalone. Pégalo en tu proyecto, apunta los imports a tu ruta de Volt y conecta los botones a tus propias rutas.",
+    "blockThemeNote": "Cada animación aquí está protegida por {reducedMotion}, y los colores salen de los tokens del tema — prueba otro preset con el selector de la cabecera y el bloque lo sigue.",
+    "layoutSourceNote": "La disposición, con los datos de ejemplo en arrays planos al final. Cámbialos por los tuyos y la plantilla deja de ser un ejemplo.",
+    "layoutUnbrandedNote": "Los layouts se quedan sin marca a propósito: sin degradados, sin logotipos, sin fotos de stock y sin nada traído de terceros. Si buscas una sección terminada en vez de una forma que rellenar,",
+    "blocksGalleryLink": "la galería de bloques",
+    "isTheOtherTab": "es la otra pestaña."
+  },
+  "language": {
+    "switch": "Cambiar idioma",
+    "current": "Idioma: {name}"
+  },
+  "landing": {
+    "hero": {
+      "badge": "Volt UI {version} para Angular 21",
+      "title": "Publica interfaces de Angular con componentes que son tuyos.",
+      "subtitle": "Copia código Angular pulido y accesible dentro de tu app. Conserva la velocidad de una librería de componentes, con el control de un código que pertenece a tu producto.",
+      "start": "Empezar a construir",
+      "studio": "Probar el estudio de temas",
+      "copyCommand": "Copiar el comando de instalación",
+      "copied": "Copiado",
+      "panelTitle": "Ajustes del proyecto",
+      "panelSubtitle": "Hecho con componentes de Volt UI",
+      "live": "en vivo",
+      "workspace": "Nombre del espacio",
+      "publicTheme": "Tema público",
+      "publicThemeHint": "Cualquiera puede verlo",
+      "radius": "Radio del borde",
+      "migration": "Progreso de la migración",
+      "save": "Guardar cambios",
+      "reset": "Restablecer",
+      "autoSync": "Sincronía automática"
+    },
+    "proof": {
+      "components": "componentes documentados",
+      "tests": "tests automatizados",
+      "themes": "combinaciones de tema",
+      "ngModules": "NgModules necesarios"
+    },
+    "features": {
+      "eyebrow": "Pensado para que sea tuyo",
+      "title": "Primero el comportamiento en producción. Después el gusto de producto.",
+      "subtitle": "Volt UI parte de ng-primitives para foco, overlays, ARIA y formularios, y lo envuelve en signals de Angular, tokens de Tailwind y código copiable que puedes remodelar.",
+      "ownTitle": "El código es tuyo",
+      "ownBody": "La CLI copia componentes standalone legibles directamente en tu aplicación. Cambia cada línea cuando tu producto lo pida.",
+      "behaviorTitle": "Comportamiento incluido",
+      "behaviorBody": "ng-primitives se encarga del foco, la navegación por teclado, los overlays y los contratos ARIA; Volt UI, del estilo listo para producto.",
+      "systemTitle": "Diseñado como un sistema",
+      "systemBody": "Los tokens semánticos de Tailwind, los presets de color y los de estilo permiten que un mismo conjunto de componentes adopte un lenguaje visual completo."
+    },
+    "workflow": {
+      "eyebrow": "Un comando. Tu código.",
+      "title": "Un flujo que acaba en Angular editable, no en dependencia del proveedor.",
+      "subtitle": "La CLI resuelve las dependencias entre componentes, escribe archivos legibles y mantiene los selectores coherentes con un flujo centrado en el código.",
+      "install": "Leer la guía de instalación",
+      "copied": "copiado",
+      "export": "exportar",
+      "themePreview": "Vista previa del tema",
+      "themeCaption": "Cinco sistemas de color, cinco estilos.",
+      "darkMode": "Listo para modo oscuro",
+      "accessible": "Interacciones accesibles",
+      "workspaceLabel": "Espacio de trabajo",
+      "ownedSource": "Código propio",
+      "saveUi": "Guardar UI"
+    },
+    "cta": {
+      "title": "Construye la interfaz de Angular que querías.",
+      "browse": "Ver componentes",
+      "star": "Dar una estrella en GitHub",
+      "body": "Explora {components} componentes, layouts accesibles, {themes} combinaciones de tema y un flujo listo para IA."
+    }
+  },
+  "guide": {
+    "title": "Primeros pasos",
+    "browse": "Ver documentación",
+    "description": "Todo lo que necesitas para publicar con Volt UI.",
+    "aiTools": "Herramientas de IA",
+    "introduction": "Introducción",
+    "themes": "Temas",
+    "customization": "Personalización",
+    "versioning": "Versionado y estabilidad",
+    "roadmap": "Hoja de ruta",
+    "migration": "Notas de migración",
+    "aiIntegration": "Integración con IA",
+    "localSkill": "Skill local",
+    "mcpServer": "Servidor MCP",
+    "promptReference": "Referencia de prompt",
+    "intro": {
+      "title": "Introducción",
+      "lede": "Volt UI es una colección de componentes de Angular reutilizables y accesibles, construidos sobre ng-primitives. Inspirado en shadcn/ui: puedes copiar y personalizar los componentes según lo que necesites.",
+      "aiTitle": "Herramientas de IA para consumidores",
+      "aiLede": "Volt UI incluye tres formas complementarias de dar a los asistentes de IA contexto completo sobre sus componentes, selectores y convenciones.",
+      "skillLink": "Skill local →",
+      "skillBody": "Detectado automáticamente por OpenCode / Claude Code. Catálogo de componentes, nomenclatura y reglas de uso.",
+      "mcpLink": "Servidor MCP →",
+      "mcpBody": "Herramientas MCP alojadas para listar componentes, obtener ejemplos y generar comandos de la CLI.",
+      "promptLink": "Referencia de prompt →",
+      "promptBody": "Un prompt en un solo archivo para pegar en cualquier chat de LLM y obtener selectores y ejemplos correctos.",
+      "installTitle": "Opciones de instalación",
+      "installLede": "Hay dos formas de usar los componentes de Volt UI en tu proyecto:",
+      "option1": "Opción 1: paquete de npm",
+      "option1Body": "Instala la librería directamente desde npm e importa los componentes en tu proyecto.",
+      "thenImport": "Después importa:",
+      "option2": "Opción 2: CLI (estilo shadcn)",
+      "option2Body": "Copia los archivos fuente de los componentes a tu proyecto con el prefijo ui-*. Personalización total.",
+      "option3": "Opción 3: copiar y pegar",
+      "option3Body": "Explora las demos de los componentes y copia el código directamente. Control total sobre la implementación.",
+      "browse": "Ver componentes →",
+      "namingTitle": "Convenciones de nombres",
+      "namingLede": "Volt UI usa prefijos distintos para el código de la librería y para lo que genera la CLI.",
+      "context": "Contexto",
+      "selector": "Selector",
+      "className": "Nombre de clase",
+      "importPath": "Ruta de importación",
+      "librarySource": "Código de la librería",
+      "cliOutput": "Salida de la CLI",
+      "prereqTitle": "Requisitos previos",
+      "prereqLede": "Antes de usar los componentes de Volt UI, asegúrate de tener instaladas estas dependencias:",
+      "npmPackage": "paquete de npm",
+      "npmBody": "Las dependencias de runtime se incluyen automáticamente. Importa el CSS del tema una vez en tu hoja de estilos global.",
+      "cliDeps": "CLI / copiar y pegar — dependencias de runtime",
+      "themeTitle": "Sistema de temas",
+      "themeLede": "Volt UI ofrece tokens semánticos de Tailwind mediante custom properties de CSS. Configura el tema en la configuración de tu app.",
+      "structureTitle": "Estructura del proyecto",
+      "structureLede": "Al usar la CLI, los componentes se añaden a la carpeta ui de tu proyecto:",
+      "afterAdding": "Tras añadir un componente, impórtalo y úsalo en tus componentes de Angular:",
+      "overlayTitle": "Componentes de overlay",
+      "catalogTitle": "Catálogo de componentes",
+      "stableLabel": "Estable",
+      "stableBody": "Recomendado para producción. Tests con sentido, API documentada y cobertura de CVA cuando aplica.",
+      "nextTitle": "Siguientes pasos",
+      "nextThemes": "Temas →",
+      "nextThemesBody": "Aprende a personalizar colores, tipografía y modo oscuro.",
+      "nextComponents": "Componentes →",
+      "nextComponentsBody": "Explora todos los componentes disponibles con ejemplos y código.",
+      "nextAi": "Integración con IA →",
+      "nextAiBody": "Configura el servidor MCP y los snippets del IDE para Claude, Cursor, Copilot y más.",
+      "cliFlags": "Usa `--dry-run` para previsualizar los archivos y `--force` para sobrescribir componentes ya editados.",
+      "tailwindTitle": "Tailwind CSS v4",
+      "tailwindBody": "Los componentes de Volt incluyen el CSS de disposición crítico, así que quien consuma el paquete de npm no necesita una directiva `@source` para `node_modules`.",
+      "usageTitle": "Uso",
+      "overlayLede": "Dialog, drawer, popover, tooltip y dropdown-menu usan una directiva de atributo como disparador que referencia un `<ng-template>` con el contenido de la superposición.",
+      "catalogLede": "Todos los componentes de Volt UI 1.0.0 son **estables**: API asentada, tests que comprueban el comportamiento propio del componente y uso documentado. La etiqueta **beta** sigue en el sistema para componentes añadidos después de 1.0; hoy no la lleva ninguno. Consulta",
+      "versioningLink": "Versionado y estabilidad",
+      "catalogLedeTail": "para la política completa."
+    },
+    "themesPage": {
+      "title": "Temas",
+      "lede": "Personaliza el aspecto de tu aplicación con temas integrados, colores y soporte de modo oscuro.",
+      "availableTitle": "Temas disponibles",
+      "availableLede": "Volt UI viene con varios temas de color preconstruidos. Cada tema aporta una paleta propia para los colores primario, secundario, de acento y semánticos.",
+      "presets": {
+        "volt": "Tema azul por defecto",
+        "ember": "Tema naranja cálido",
+        "sage": "Tema verde natural",
+        "dusk": "Tema violeta crepuscular",
+        "glacier": "Tema cian frío"
+      },
+      "setupTitle": "Configuración del tema",
+      "setupLede": "Añade el proveedor de tema a la configuración de tu aplicación:",
+      "colorOptionsTitle": "Opciones de color",
+      "colorsTitle": "Colores del tema",
+      "colorsLede": "Elige tu paleta de color principal",
+      "colors": {
+        "volt": "`'volt'` — Azul (por defecto)",
+        "ember": "`'ember'` — Naranja/rojo",
+        "sage": "`'sage'` — Verde",
+        "dusk": "`'dusk'` — Violeta",
+        "glacier": "`'glacier'` — Cian"
+      },
+      "stylesTitle": "Variantes de estilo",
+      "stylesLede": "Elige el estilo de tus componentes",
+      "styles": {
+        "sharp": "`'sharp'` — Radio pequeño, sombras planas (por defecto)",
+        "soft": "`'soft'` — Radio grande, sombras difusas",
+        "brutal": "`'brutal'` — Sin radio, sombras duras desplazadas, bordes gruesos",
+        "ghost": "`'ghost'` — Sin bordes, sin sombras",
+        "retro": "`'retro'` — Estética Y2K"
+      },
+      "runtimeTitle": "API en tiempo de ejecución",
+      "runtimeLede": "Dos funciones de `@voltui/components` controlan el tema en tiempo de ejecución. Ambas se limitan a fijar `data-color`, `data-style` y una clase `.dark` en `<html>`: no hay estado oculto, así que puedes inspeccionar o sobrescribir el resultado con las API del DOM en cualquier momento.",
+      "provideLede": "Proveedor de entorno. Llámalo una vez en `appConfig.providers` para fijar el tema en el arranque, tanto en servidor como en cliente.",
+      "provideBody": "**Seguro con SSR.** Lee el token de inyección `DOCUMENT` de Angular en vez del `document` global, así que los atributos del tema ya están en el HTML renderizado en servidor: sin parpadeo del tema por defecto mientras hidrata el bundle del cliente.",
+      "applyLede": "Función normal. Llámala desde un manejador de clic, un effect o donde necesites cambiar el tema después del arranque (por ejemplo, un selector de tema).",
+      "applyBody": "Solo navegador por defecto (no hace nada si `document` es undefined). Pasa un argumento `doc` explícito para actuar sobre otro documento, por ejemplo en un test.",
+      "darkTitle": "Estrategia de modo oscuro",
+      "darkLede": "El modo oscuro se basa en una clase: añadir `.dark` a `<html>` cambia todos los componentes a sus valores de token oscuros (mira `@custom-variant dark` en `core.css`). Volt **no** lee `prefers-color-scheme` automáticamente: `dark` es claro salvo que pases `dark: true` o llames tú a `applyVoltTheme`, de modo que la decisión siempre es explícita y no cambia sin avisar si cambia el tema del sistema del visitante.",
+      "varsTitle": "Variables CSS",
+      "varsLede": "Cada preset define el mismo conjunto de tokens semánticos como valores `oklch()`. Los componentes los consumen mediante utilidades de Tailwind (`bg-primary`, `text-muted-foreground`) mapeadas con `@theme inline` en `core.css`, nunca con un `var(--primary)` crudo. Esta es la lista completa que puede definir un preset; mira las dos guías de abajo para plantillas listas para copiar.",
+      "colorPresetTitle": "Crear un preset de color propio",
+      "colorPresetLede": "Un preset de color no es más que un par de selectores indexados por `data-color`. Copia esta plantilla, sustituye `'mytheme'` y los valores, y luego importa el archivo después de `@voltui/components/themes.css` en tu hoja de estilos global.",
+      "contrastNote": "Mantén cada par de primer plano y fondo con un contraste de 4,5:1 o mejor (3:1 para `--ring` y `--input` frente a `--background`); mira `scripts/contrast-audit.mjs` en el repositorio para la comprobación exacta que este proyecto ejecuta sobre sus propios presets. La herramienta",
+      "contrastNoteTail": "genera un punto de partida a partir de un solo color de acento si prefieres no elegir once tokens a mano.",
+      "stylePresetTitle": "Crear un preset de estilo propio",
+      "stylePresetLede": "Un preset de estilo no toca el color, solo la forma. Se indexa por `data-style` y se aplica a todos los colores a la vez.",
+      "styleRegisterNote": "El registro es igual que el de un preset de color: ponlo en tu hoja de estilos global después de `@voltui/components/themes.css` y luego fija `data-style=\"mystyle\"` con `provideVoltTheme` o `applyVoltTheme`.",
+      "persistNote": "La propia web de documentación guarda la elección del visitante en `localStorage` y la aplica desde un pequeño script en línea dentro del `<head>` de `index.html`, antes de que cargue ninguna hoja de estilos; mira `src/app/components/theme-switcher.ts` como implementación de referencia si quieres el mismo comportamiento sin parpadeo en cliente."
+    },
+    "customizationPage": {
+      "title": "Personalización",
+      "lede": "Cada componente que añades con `npx @voltui/cli add` se copia en tu proyecto como código fuente normal. No hay paquete del que hacer eject ni API de sobrescritura que aprender: editas el archivo igual que editarías cualquier otro componente que hubieras escrito tú.",
+      "editingTitle": "Editar un componente copiado",
+      "editingLede": "Después de `volt add button`, `src/app/ui/button/button.ts` es tuyo (o donde apunte la configuración de tu CLI). ¿Quieres un cuarto tamaño de botón? Añádelo directamente: no hay nada más que regenerar ni sincronizar.",
+      "inferredType": "El tipo `ButtonVariants['size']` se infiere de este objeto mediante `VariantProps<typeof buttonVariants>`, así que `<volt-button size=\"xl\">` queda completamente tipado en cuanto guardas el archivo: no hay una declaración de tipo aparte que actualizar.",
+      "cvaTitle": "Cómo funcionan aquí las variantes de CVA",
+      "newGroup": "Añadir un grupo de variantes nuevo (no solo una opción más en uno existente, por ejemplo una variante `tone` junto a `variant` y `size`) sigue el mismo patrón: añade la clave a `variants` en `variants.ts`, luego añade `readonly tone = input<...>('default')` y pásala en el `computed()` de arriba.",
+      "cnTitle": "Sobrescribir clases con cn()",
+      "cnLede": "La mayoría de componentes exponen una entrada `class` que pasa por `cn()`: `clsx` para unir condicionalmente y `tailwind-merge` para resolver conflictos, de modo que gane la última utilidad en vez de acabar las dos en la lista de clases:",
+      "cnMerge": "Como por debajo es `tailwind-merge`, `class=\"bg-red-500\"` sobrescribe de forma fiable la utilidad de fondo de la propia variante en vez de producir dos clases `bg-*` en conflicto en la salida final.",
+      "colorsTitle": "Color y forma frente a estructura",
+      "cvaLedeHead": "Los componentes con variantes visuales (button, badge, toast, ...) separan el estilo en un `variants.ts` hermano usando",
+      "cvaLink": "class-variance-authority",
+      "cvaLedeTail": ". El componente en sí solo calcula qué variante está activa; nunca escribe clases condicionales a mano en la plantilla:",
+      "colorsLedeHead": "Antes de editar las clases de Tailwind de un componente para cambiar un color o un radio de borde, comprueba si un",
+      "themePresetLink": "preset de tema",
+      "colorsLedeTail": "ya lo cubre: `bg-primary`, `rounded-md` y `shadow-lg` se resuelven todos a través de tokens `--volt-*` que ya varían según el preset de color o de estilo. Escribir `bg-indigo-600` a mano en un componente copiado deja a ese componente fuera del cambio de tema; recurre a un preset de color o de estilo propio cuando el cambio deba aplicarse en todas partes. Las ediciones de componente son para cambios **estructurales** —nuevas variantes, nuevos slots, marcado distinto— que ningún token podría expresar."
+    },
+    "versioningPage": {
+      "title": "Versionado y estabilidad",
+      "lede": "Volt UI llegó a `1.0.0`: la API pública queda fijada y a partir de aquí sigue el [versionado semántico](https://semver.org/) de siempre.",
+      "semverTitle": "La promesa de semver",
+      "majorLabel": "Mayor — `2.0.0`",
+      "majorBody": "El único sitio donde ocurren cambios que rompen: entradas, salidas o selectores renombrados o eliminados, comportamiento por defecto distinto, soporte de una versión mayor de Angular retirado.",
+      "minorLabel": "Menor — `1.1.0`",
+      "minorBody": "Componentes nuevos, entradas y salidas opcionales nuevas, variantes de CVA nuevas. Siempre compatible hacia atrás con la versión menor anterior.",
+      "patchLabel": "Parche — `1.0.1`",
+      "patchBody": "Corrección de fallos, correcciones de accesibilidad, refactorizaciones internas. Nunca cambia el contrato público.",
+      "frozenSurface": "La superficie congelada está inventariada en [specs/api-freeze-0.9.md](https://github.com/Andersseen/volt-ui/blob/main/specs/api-freeze-0.9.md): cada entrada, salida y selector presente en el congelado de 1.0.0. ¿Actualizas desde una versión 0.x? Mira las [notas de migración de 0.x](/docs/migration-notes).",
+      "labelsTitle": "Qué significan ahora las etiquetas de estado",
+      "labelsLede": "Todos los componentes de 1.0.0 son `stable`; consulta [el catálogo de componentes](/docs/components) para la etiqueta de cada uno. `beta` y `experimental` siguen definidas más abajo porque los componentes añadidos después de 1.0 pueden empezar ahí; hoy no las lleva ninguno. La etiqueta es una señal de confianza, no una barrera de disponibilidad: todos los componentes se publican por el paquete de npm y por la CLI, lleven la etiqueta que lleven.",
+      "stableTitle": "Estable",
+      "stableBody": "Recomendado para producción. API documentada, tests con sentido y salvedades de accesibilidad conocidas (si las hay) puestas por escrito.",
+      "betaTitle": "Beta",
+      "betaBody": "Utilizable hoy, pero todavía puede recibir refuerzos de formularios, teclado o accesibilidad en una versión menor o de parche; ese refuerzo nunca rompe la API pública existente, así que pasar de beta a estable es un cambio de documentación, no un salto de versión por sí mismo. Sin usar en 1.0.",
+      "expTitle": "Experimental",
+      "expBody": "Reservado para futuras vistas previas cuya API todavía puede cambiar. Hoy sin uso: ningún componente publicado lleva esta etiqueta a fecha de 1.0.0.",
+      "angularTitle": "Versiones de Angular admitidas",
+      "angularLede": "La línea `1.x` apunta a Angular `^21.2` y Node 20 o posterior. Volt UI solo admite la última versión mayor de Angular declarada; ampliar ese rango exige verificación con proyectos de prueba reales, no solo que la compilación funcione, así que nunca se da por hecho.",
+      "angularNote": "Cuando sale una nueva versión mayor de Angular, mover a ella el soporte de Volt UI es una versión menor con notas de migración o de publicación que documentan lo que haya cambiado. Una versión mayor admitida nunca se retira en silencio.",
+      "seeAlso": "Hacia dónde va el proyecto: [Hoja de ruta](/docs/roadmap). Tabla completa de estado por componente: [catálogo de componentes](/docs/components). ¿Actualizas una copia existente? [Notas de migración de 0.x](/docs/migration-notes). Historial completo de versiones: [CHANGELOG.md](https://github.com/Andersseen/volt-ui/blob/main/CHANGELOG.md)."
+    },
+    "migrationPage": {
+      "title": "Notas de migración de 0.x",
+      "lede": "La API pública de Volt UI está congelada desde 1.0.0; consulta [Versionado y estabilidad](/docs/versioning) para la promesa vigente. Como los componentes se copian en tu proyecto en vez de instalarse como dependencia, «actualizar» significa volver a ejecutar `volt add <component>` (o `--force` para sobrescribir) y comparar los cambios: nada se actualiza en silencio por debajo. Esta página recoge los cambios de las versiones `0.x` previas a 1.0 que de verdad obligaban a tocar el código de las plantillas al actualizar; para la guía concreta de 0.x → 1.0, mira [MIGRATION.md](https://github.com/Andersseen/volt-ui/blob/main/MIGRATION.md). Extraído de [CHANGELOG.md](https://github.com/Andersseen/volt-ui/blob/main/CHANGELOG.md). La mayoría de versiones 0.x fueron aditivas; esas no salen aquí.",
+      "actionTitle": "Cambios que requieren acción",
+      "buttonTypeTitle": "Button pasa a `type=\"button\"` por defecto",
+      "buttonTypeBody": "Antes de 0.4.0, un `<volt-button>` sin `type` explícito caía en el valor por defecto del navegador dentro de un `<form>`, que es `\"submit\"`. Si tenías un botón que dependía de ese envío implícito, ahora no hace nada hasta que le pongas `type=\"submit\"` de forma explícita.",
+      "booleanTitle": "Entradas booleanas normalizadas a `booleanAttribute`",
+      "booleanBody": "`disabled`, `required`, `multiple` y otras entradas booleanas de la librería pasaron de comprobaciones de veracidad de JavaScript a la transformación `booleanAttribute` de Angular. Esto importa sobre todo si pasabas una cadena en posición de atributo de plantilla: `disabled=\"false\"` como atributo suelto ahora se interpreta correctamente como `false`, donde antes una comprobación de veracidad ingenua habría tratado la cadena no vacía `\"false\"` como verdadera.",
+      "additiveTitle": "Cambios aditivos que conviene adoptar",
+      "additiveLede": "Estos no obligaban a cambiar nada para seguir funcionando, pero el patrón nuevo es el que muestran la documentación y los ejemplos actuales.",
+      "formsTitle": "Soporte de Reactive Forms añadido a combobox, listbox e input-OTP",
+      "formsBody": "Ahora implementan `ControlValueAccessor` además de su enlace de modelo de tipo `[(value)]`, que sigue funcionando igual. De aquí en adelante, prefiere `formControlName` / `[formControl]` para el estado de validación (`aria-invalid`, propagación de deshabilitado, «tocado») que el enlace de modelo por sí solo no te da.",
+      "internalTitle": "Correcciones internas (no requieren acción)",
+      "selectFix": "**0.6.0** `VoltSelect` declaraba `valueChange` dos veces; se eliminó el duplicado para que `value = model(...)` sea el dueño de la única salida generada. Quien se suscribiera normalmente a `(valueChange)` nunca se vio afectado.",
+      "menuFix": "**0.6.0** Los menús desplegables abiertos con el teclado ahora mueven correctamente el foco al primer elemento visible.",
+      "footer": "Nada de esta página se aplica a un componente que aún no hayas copiado: un `volt add` nuevo siempre te da el comportamiento actual. Esta página sirve para comparar una copia existente. Mira la [guía de personalización](/docs/customization) para saber cómo mantener tus propias ediciones al volver a añadir un componente."
+    },
+    "roadmapPage": {
+      "items": {
+        "languages": {
+          "title": "Documentación en más idiomas",
+          "summary": "Hoy la documentación está solo en inglés. El ucraniano (UA) y el español (ES) son lo siguiente, para que la librería sea accesible sin tener que leer inglés primero.",
+          "details": {
+            "d1": "Se aplica a este sitio de documentación: guías, páginas de componentes y ejemplos.",
+            "d2": "Los nombres de componentes, los selectores, las entradas y las salidas se quedan en inglés. Traducir una API rompería todos los componentes copiados y todos los ejemplos de código que hay en internet.",
+            "d3": "El idioma es una preferencia del lector, no una compilación aparte: los mismos componentes y el mismo paquete están detrás de cada idioma."
+          }
+        },
+        "headless": {
+          "title": "Una capa headless propia — @volt-ui/core",
+          "summary": "Sustituir la dependencia de ng-primitives por las primitivas headless propias de Volt UI, de modo que comportamiento y estilo sean dos capas de un mismo proyecto en vez de un proyecto encima del de otra persona.",
+          "details": {
+            "d1": "Headless y estilado se publican por separado. ¿Solo quieres el comportamiento —gestión del foco, manejo del teclado, cableado ARIA— con tu propio marcado y CSS? Coge @volt-ui/core a secas.",
+            "d2": "¿Quieres el aspecto que tiene Volt UI hoy? Sigue usando los componentes estilados; están construidos sobre esa misma capa headless.",
+            "d3": "Esto ocurre antes de que crezca el catálogo de componentes; el razonamiento está más abajo.",
+            "d4": "El nombre @volt-ui/core ya está reservado exactamente para esto en la especificación del proyecto; no es una idea nueva, es la siguiente."
+          }
+        },
+        "distributions": {
+          "title": "Dos distribuciones: con Tailwind y sin él",
+          "summary": "Hoy Volt UI se estiliza con Tailwind CSS v4, lo que lo descarta para proyectos que no usan o no pueden usar Tailwind. Una distribución sin Tailwind elimina esa restricción.",
+          "details": {
+            "d1": "La compilación con Tailwind sigue siendo la predeterminada y funciona exactamente igual que ahora.",
+            "d2": "La compilación sin Tailwind publica los mismos componentes y los mismos tokens de diseño en CSS plano.",
+            "d3": "Depende de que aterrice antes la capa headless: una vez separado el comportamiento del estilo, un segundo destino de estilo deja de ser un fork y pasa a ser una salida de compilación."
+          }
+        },
+        "layouts": {
+          "title": "Más layouts construidos con componentes de Volt UI",
+          "summary": "Más allá de los layouts de barra lateral y navegación superior que ya existen: shells de aplicación más completos ensamblados con componentes que ya existen, para que una pantalla real sea un punto de partida y no un trabajo de montaje.",
+          "details": {
+            "d1": "El punto menos crítico de esta página, y así lo decimos: es una comodidad, no una carencia.",
+            "d2": "Compuesto con componentes de Volt UI ya publicados en vez de primitivas nuevas de un solo uso.",
+            "d3": "Va el último a propósito: los layouts construidos antes del cambio a headless también habría que portarlos."
+          }
+        }
+      },
+      "scopes": {
+        "docs": "Documentación",
+        "library": "Librería"
+      },
+      "statuses": {
+        "next": "Siguiente",
+        "planned": "Planificado",
+        "exploring": "En exploración"
+      },
+      "statusLabel": "Estado:",
+      "scopeLabel": "Se aplica a:",
+      "title": "Hoja de ruta",
+      "lede": "Volt UI llegó a `1.0.0`, y 1.0 es una línea de salida, no de meta. Esta es la dirección que sigue el proyecto y el orden en que llegará.",
+      "howToTitle": "Cómo leer esta página",
+      "howToBody": "Aquí no hay fechas a propósito: una hoja de ruta con fechas que no puede cumplir es peor que no tener ninguna. Lo que sí está comprometido es el **orden**: cada punto depende del anterior, y publicarlos fuera de secuencia significaría rehacer trabajo. Lo que de aquí resulte estar equivocado se elimina de esta página en vez de abandonarse en silencio.",
+      "semverNote": "Nada de esto rompe tu código actual. La API pública de 1.0 está congelada y todo lo de abajo sigue el versionado semántico de siempre; mira [Versionado y estabilidad](/docs/versioning).",
+      "whyTitle": "Por qué la capa headless va primero",
+      "whyBody": "Lo más tentador después de un 1.0 es añadir componentes. Deliberadamente, eso no es lo que viene ahora. Hoy cada componente de Volt UI delega su accesibilidad y su comportamiento de interacción en [ng-primitives](https://ng-primitives.dev), así que cada componente añadido antes de sustituir esa capa es un componente más que portar después. Hacer crecer el catálogo primero volvería la migración más grande, más lenta y más propensa a romper tu código cuando llegue.",
+      "whyOrder": "Hacerlo en este orden significa que la migración ocurre una sola vez, sobre los componentes que existen hoy, y que el catálogo crece después sobre una base enteramente propia.",
+      "notChangingTitle": "Lo que no va a cambiar",
+      "copyInTitle": "El modelo de copiar el código",
+      "copyInBody": "Los componentes siguen siendo copiables a tu proyecto con la CLI. El código que copias es tuyo; nada de esta página cambia eso.",
+      "apiTitle": "La API de 1.0",
+      "apiBody": "Los selectores, entradas y salidas congelados en 1.0 siguen funcionando. Un cambio que rompa exige una versión mayor y notas de migración.",
+      "themingTitle": "Temas",
+      "themingBody": "Los 5 colores × 5 estilos y el sistema de tokens se quedan como están. Una compilación sin Tailwind añade una opción; no quita nada.",
+      "feedback": "¿Tienes una opinión sobre el orden o necesitas algo que no está aquí? Abre una issue o una discusión en [GitHub](https://github.com/Andersseen/volt-ui). El trabajo publicado queda registrado en [CHANGELOG.md](https://github.com/Andersseen/volt-ui/blob/main/CHANGELOG.md), y el encuadre técnico a más largo plazo vive en [specs/SPEC.md](https://github.com/Andersseen/volt-ui/blob/main/specs/SPEC.md)."
+    },
+    "mcpPage": {
+      "title": "Integración con IA",
+      "lede": "Volt UI ofrece a los asistentes de IA tres formas de entender y usar bien la librería de componentes: una skill local, un servidor MCP alojado y una referencia de prompt.",
+      "chooseTitle": "Elige tu integración",
+      "skillTitle": "Skill local",
+      "skillBody": "Lo mejor para quien usa OpenCode o Claude Code. El archivo de skill se descubre solo en tu espacio de trabajo y le enseña al agente las convenciones, los selectores y el catálogo de componentes de Volt UI.",
+      "skillLink": "Saber más →",
+      "mcpTitle": "Servidor MCP",
+      "mcpLink": "Saber más →",
+      "promptTitle": "Referencia de prompt",
+      "promptBody": "Lo mejor para chats web con LLM o agentes sin soporte de MCP ni de skills. Pega el contenido de `VOLT_UI_PROMPT.md` en cualquier chat para tener una guía de uso completa.",
+      "promptLink": "Saber más →",
+      "quickStartTitle": "Inicio rápido (MCP)",
+      "quickStartLede": "Si quieres el camino más rápido con Claude, Cursor o Windsurf:",
+      "quickStartNote": "El instalador escribe los archivos de configuración adecuados para tu agente y añade reglas de Cursor o instrucciones de Copilot cuando procede.",
+      "whenTitle": "Cuándo usar cada cosa",
+      "colSituation": "Situación",
+      "colTool": "Herramienta recomendada",
+      "row1": "Usas Claude Code u OpenCode",
+      "row1Tool": "[Skill local](/docs/ai-skill)",
+      "row2": "Usas Claude Desktop, Cursor o Windsurf",
+      "row2Tool": "[Servidor MCP](/docs/ai-mcp)",
+      "row3": "Usas GitHub Copilot en VS Code",
+      "row3Tool": "[Servidor MCP](/docs/ai-mcp) (instrucciones + snippets)",
+      "row4": "Usas un chat web (ChatGPT, Gemini, etc.)",
+      "row4Tool": "[Referencia de prompt](/docs/ai-prompt)",
+      "mcpBody": "Lo mejor para Claude, Cursor, Windsurf y cualquier agente nativo de MCP. El servidor alojado en `{url}` expone herramientas para consultar componentes, ejemplos, temas y comandos de la CLI a demanda."
+    },
+    "aiSkillPage": {
+      "title": "Skill local",
+      "lede": "Un archivo de skill integrado que OpenCode y Claude Code descubren solos en cualquier espacio de trabajo que use componentes de Volt UI.",
+      "whatTitle": "Qué es",
+      "whatBody": "La skill vive en `.agents/skills/volt-ui/SKILL.md` dentro del repositorio de Volt UI. Cualquier agente de IA compatible con skills al estilo de OpenCode la cargará automáticamente y usará las convenciones, los selectores y el catálogo de componentes al escribir código para tu proyecto.",
+      "installTitle": "Instalar la skill",
+      "installBody": "La forma más rápida de instalar la skill en un proyecto es copiarla en la ubicación estándar de skills locales:",
+      "copiedCmd": "Copiado",
+      "copyCmd": "Copiar comando de instalación",
+      "downloadSkill": "Descargar SKILL.md",
+      "copiedSkill": "Copiado",
+      "copySkill": "Copiar el contenido de la skill",
+      "coversTitle": "Qué cubre la skill",
+      "coversStack": "**Contexto del stack** — Angular 21, signals sin zonas, OnPush, standalone, Tailwind v4, ng-primitives, CVA",
+      "coversNaming": "**Convenciones de nombres** — `ui-*` frente a `volt-*`, selectores de elemento frente a selectores de atributo",
+      "coversCatalog": "**Catálogo de componentes** — componentes estables y beta con sus selectores y entradas principales",
+      "coversOverlays": "**Reglas de superposición** — disparadores como directiva de atributo + `<ng-template>` para dialog, drawer, popover, tooltip y dropdown-menu",
+      "coversForms": "**Reactive Forms** — qué componentes son CVA y cómo conectar `FormControl`",
+      "coversTheme": "**Sistema de temas** — `provideVoltTheme`, colores, estilos y modo oscuro",
+      "exampleTitle": "Ejemplo de regla de la skill",
+      "exampleBody": "La skill le dice explícitamente al agente que nunca escriba `<ui-dialog>`, `<ui-tooltip>` ni otros selectores de elemento inválidos."
+    },
+    "aiPromptPage": {
+      "title": "Referencia de prompt",
+      "lede": "Un prompt en un solo archivo que puedes pegar en cualquier chat con un LLM para obtener selectores, ejemplos y reglas correctas de los componentes de Volt UI.",
+      "whatTitle": "Qué es",
+      "whatBody": "`VOLT_UI_PROMPT.md` es una referencia de prompt autocontenida. Le cuenta al LLM todo lo que necesita saber sobre Volt UI: instalación, nomenclatura, el catálogo completo de componentes, reglas de superposición, ejemplos de Reactive Forms y resolución de problemas.",
+      "copyTitle": "Copiar el prompt",
+      "copyLede": "Pega el contenido de abajo al principio de un chat nuevo con cualquier LLM (ChatGPT, Claude, Gemini, el chat de Cursor, etc.) y luego haz tu pregunta.",
+      "copied": "Copiado",
+      "copyButton": "Copiar prompt",
+      "howTitle": "Cómo usarlo",
+      "howStep1": "Pulsa **Copiar prompt** arriba.",
+      "howStep2": "Pégalo al principio de un chat nuevo con tu LLM.",
+      "howStep3": "Haz tu pregunta, por ejemplo: «Crea un formulario de login con componentes de Volt UI».",
+      "insideTitle": "Qué contiene",
+      "insideInstall": "**Instalación** — flujos con el paquete de npm y con la CLI",
+      "insideNaming": "**Convenciones de nombres** — `ui-*` / `UiXxx` frente a `volt-*` / `VoltXxx`",
+      "insideCatalog": "**Catálogo de componentes** — componentes estables y beta con selectores y notas",
+      "insideOverlays": "**Reglas de superposición** — plantillas de dialog, drawer, popover, tooltip y dropdown-menu",
+      "insideForms": "**Reactive Forms** — componentes CVA y cableado de `FormControl`",
+      "insideTheme": "**Sistema de temas** — colores, estilos, `provideVoltTheme`",
+      "insideRules": "**Reglas para asistentes de IA** — qué hacer y qué no al generar código de Volt UI",
+      "insideTroubleshooting": "**Resolución de problemas** — errores habituales y cómo corregirlos",
+      "whenTitle": "Cuándo usarlo",
+      "whenBody": "Usa la referencia de prompt cuando tu editor o tu agente aún no admitan MCP ni skills locales. También va bien para preguntas sueltas en chats web con LLM.",
+      "whenAlt": "Para agentes integrados, mejor el [servidor MCP](/docs/ai-mcp) o la [skill local](/docs/ai-skill), así el contexto se mantiene sincronizado solo."
+    },
+    "aiMcpPage": {
+      "title": "Servidor MCP",
+      "lede": "Un servidor alojado de Model Context Protocol que expone los componentes, los ejemplos de uso, la información de temas y los comandos de la CLI de Volt UI como herramientas que puede llamar cualquier agente compatible.",
+      "whatTitle": "¿Qué es MCP?",
+      "setupTitle": "Configuración rápida",
+      "setupLede": "Ejecuta el instalador interactivo desde el directorio de tu proyecto:",
+      "setupNote": "Pregunta qué agente o agentes configurar y luego escribe los archivos de configuración correctos automáticamente. También puedes pasar el agente directamente:",
+      "agentsTitle": "Agentes compatibles",
+      "claudeName": "Claude",
+      "claudeBadge": "MCP nativo",
+      "claudeBody": "Claude Desktop y Claude Code: acceso completo a las herramientas por el servidor MCP alojado.",
+      "claudeWrites": "Escribe `.claude/mcp.json` y modifica la configuración global de Claude Desktop si la encuentra.",
+      "cursorName": "Cursor",
+      "cursorBadge": "MCP nativo",
+      "cursorBody": "Soporte completo de MCP más un archivo `.cursorrules` con contexto de los componentes para las sugerencias en línea.",
+      "cursorWrites": "Escribe `.cursor/mcp.json` y `.cursorrules`.",
+      "windsurfName": "Windsurf",
+      "windsurfBadge": "MCP nativo",
+      "windsurfBody": "El editor Windsurf de Codeium, con soporte nativo de MCP.",
+      "windsurfWrites": "Escribe `.codeium/windsurf/mcp_config.json`.",
+      "copilotName": "GitHub Copilot",
+      "copilotBadge": "instrucciones",
+      "copilotBody": "Copilot todavía no admite MCP por HTTP, así que el instalador escribe en su lugar un archivo de instrucciones de Copilot y snippets de VS Code.",
+      "copilotWrites": "Escribe `.github/copilot-instructions.md` y `.vscode/volt-snippets.code-snippets`.",
+      "manualTitle": "Configuración manual",
+      "manualLede": "Para agentes nativos de MCP, añade esta entrada a tu archivo de configuración:",
+      "configLocations": "Ubicación de los archivos de configuración:",
+      "configClaudeDesktop": "**Claude Desktop** — `~/Library/Application Support/Claude/claude_desktop_config.json`",
+      "configClaudeCode": "**Claude Code** — `.claude/mcp.json` en tu proyecto",
+      "configCursor": "**Cursor** — `.cursor/mcp.json` en tu proyecto",
+      "configWindsurf": "**Windsurf** — `.codeium/windsurf/mcp_config.json` en tu proyecto",
+      "capabilitiesTitle": "Capacidades del servidor",
+      "capTools": "Herramientas",
+      "capResources": "Recursos",
+      "capPrompts": "Prompts",
+      "learnsTitle": "Qué aprende el agente",
+      "learnsComponents": "**Todos los componentes** — 41 componentes entre las etiquetas de estado estable y beta",
+      "learnsSelectors": "**Selectores correctos** — componentes de elemento frente a directivas de atributo para las superposiciones",
+      "learnsVariants": "**Variantes y entradas** — solid, outline, ghost, destructive y los tamaños",
+      "learnsTheme": "**Sistema de temas** — 5 colores × 5 estilos, `provideVoltTheme`",
+      "learnsCli": "**Comandos de la CLI** — `npx @voltui/cli add`, `init`, `list`",
+      "learnsPrompts": "**Prompts reutilizables** — prompts de generación de componentes y de resolución de problemas",
+      "examplesTitle": "Prompts de ejemplo",
+      "examplesLede": "Después de configurarlo, prueba a pedirle a tu asistente de IA:",
+      "apiTitle": "Referencia de la API",
+      "apiBody": "El servidor implementa el transporte Streamable HTTP de MCP. No guarda estado y devuelve respuestas JSON a las peticiones POST.",
+      "endpointLabel": "Endpoint del servidor MCP",
+      "setupConfigsLabel": "Configuraciones de instalación",
+      "whatBody": "El Model Context Protocol es un estándar abierto que permite a los LLM hablar con herramientas, recursos y prompts externos. El servidor MCP de Volt UI corre en `{url}` y expone un endpoint Streamable HTTP conforme a la especificación. Los agentes pueden listar componentes, leer metadatos detallados, obtener ejemplos de uso e incluso recuperar prompts reutilizables.",
+      "discoveryNote": "`GET {url}` devuelve un JSON de descubrimiento legible (herramientas, recursos, prompts y enlaces de instalación).",
+      "endpointBody": "`GET {url}` — información del servidor y lista de capacidades",
+      "setupConfigsBody": "`GET {url}?agent=claude` — los archivos exactos que escribir para cada agente",
+      "tools": {
+        "listComponents": "Lista todos los componentes disponibles de Volt UI.",
+        "getComponent": "Obtiene información detallada de un componente concreto.",
+        "getUsageExample": "Obtiene las rutas de importación y los fragmentos de uso.",
+        "getThemeInfo": "Obtiene los colores, los estilos y la API del proveedor de tema.",
+        "getProjectInfo": "Obtiene las reglas de framework, nomenclatura y arquitectura.",
+        "generateCliCommand": "Genera comandos npx @voltui/cli."
+      },
+      "resources": {
+        "componentName": "Metadatos completos de un solo componente.",
+        "themeInfo": "Colores, estilos y utilidades de tema disponibles.",
+        "projectInfo": "Visión general del framework, la nomenclatura y la arquitectura."
+      },
+      "prompts": {
+        "generateVoltUiComponent": "Prompt precargado para generar un ejemplo de uso de un componente.",
+        "voltUiTroubleshooting": "Prompt precargado para diagnosticar errores habituales con Volt UI."
+      },
+      "examples": {
+        "e1": "Crea un formulario de login con card, form-field, input y button de Volt UI",
+        "e2": "Añade una página de ajustes con tabs de Volt UI para las secciones de Cuenta y Seguridad",
+        "e3": "Construye una cabecera de navegación usando navigation-menu de Volt UI con desplegables",
+        "e4": "Crea una tabla de datos con badge de Volt UI para el estado y avatar para la columna de usuario",
+        "e5": "Aplica el color ember con el estilo brutal a esta app usando provideVoltTheme"
+      }
+    }
+  },
+  "ui": {
+    "copy": {
+      "code": "Copiar código",
+      "copied": "¡Copiado!",
+      "action": "Copiar"
+    },
+    "codePanel": {
+      "installCli": "Instalar por CLI:",
+      "preview": "Vista previa",
+      "code": "Código",
+      "componentSource": "Código del componente",
+      "directiveSource": "Código de la directiva",
+      "usage": "Uso",
+      "copyNote": "Copia este código en tu proyecto.",
+      "copyNoteDep": "Copia este código en tu proyecto. El componente usa {dep}."
+    },
+    "api": {
+      "input": "Entrada",
+      "output": "Salida",
+      "type": "Tipo",
+      "default": "Por defecto",
+      "prop": "Propiedad",
+      "options": "Opciones",
+      "variants": "Variantes CVA",
+      "title": "Referencia de la API"
+    },
+    "section": {
+      "example": "Ejemplo",
+      "variants": "Variantes",
+      "sizes": "Tamaños",
+      "features": "Características",
+      "horizontal": "Horizontal",
+      "vertical": "Vertical"
+    },
+    "codeEditor": {
+      "loading": "Cargando el editor…"
+    }
+  },
+  "catalog": {
+    "groups": {
+      "forms": "Formularios",
+      "controls": "Controles",
+      "navigation": "Navegación",
+      "overlays": "Superposiciones",
+      "display": "Presentación",
+      "layout": "Disposición"
+    },
+    "button": {
+      "description": "Botones interactivos"
+    },
+    "input": {
+      "label": "Input",
+      "description": "Campos de texto"
+    },
+    "search": {
+      "description": "Búsqueda con acción de limpiar"
+    },
+    "autofill": {
+      "description": "Detección de autocompletado del navegador"
+    },
+    "textarea": {
+      "description": "Entrada de varias líneas"
+    },
+    "formField": {
+      "description": "Etiquetas, pistas y errores"
+    },
+    "checkbox": {
+      "description": "Selección booleana"
+    },
+    "switch": {
+      "description": "Controles de encendido/apagado"
+    },
+    "radio": {
+      "description": "Opciones de selección única"
+    },
+    "select": {
+      "description": "Selección desplegable"
+    },
+    "combobox": {
+      "description": "Selector con búsqueda"
+    },
+    "inputOtp": {
+      "description": "Entrada de código PIN"
+    },
+    "fileUpload": {
+      "description": "Controles de subida"
+    },
+    "slider": {
+      "description": "Entrada de rango"
+    },
+    "rangeSlider": {
+      "description": "Selección de rango con dos tiradores"
+    },
+    "toggle": {
+      "description": "Botón con estado presionado"
+    },
+    "toggleGroup": {
+      "description": "Controles de alternancia agrupados"
+    },
+    "toolbar": {
+      "description": "Acciones agrupadas"
+    },
+    "pagination": {
+      "description": "Navegación entre páginas"
+    },
+    "datePicker": {
+      "description": "Entrada de calendario"
+    },
+    "listbox": {
+      "description": "Lista de selección"
+    },
+    "navigationMenu": {
+      "description": "Barra de navegación con desplegables",
+      "short": "Menú nav."
+    },
+    "tabs": {
+      "description": "Interfaz por pestañas"
+    },
+    "breadcrumbs": {
+      "description": "Rastro de la ruta"
+    },
+    "dialog": {
+      "description": "Diálogos modales"
+    },
+    "drawer": {
+      "description": "Paneles deslizantes"
+    },
+    "popover": {
+      "description": "Paneles flotantes"
+    },
+    "dropdownMenu": {
+      "description": "Menús de acciones"
+    },
+    "tooltip": {
+      "description": "Información al pasar el cursor"
+    },
+    "toast": {
+      "description": "Notificaciones"
+    },
+    "accordion": {
+      "description": "Paneles plegables"
+    },
+    "avatar": {
+      "description": "Imágenes de usuario"
+    },
+    "badge": {
+      "description": "Indicadores de estado"
+    },
+    "card": {
+      "description": "Contenedores de contenido"
+    },
+    "meter": {
+      "description": "Valores de rango conocido"
+    },
+    "progress": {
+      "description": "Avance de una tarea"
+    },
+    "separator": {
+      "description": "Divisores visuales"
+    },
+    "skeleton": {
+      "description": "Marcadores de carga"
+    },
+    "table": {
+      "description": "Tablas de datos"
+    },
+    "resizable": {
+      "description": "Paneles redimensionables"
+    },
+    "all": "Todos los componentes",
+    "browse": "Ver componentes",
+    "stable": "Estable",
+    "stableBody": "Recomendado para producción. Las API están asentadas.",
+    "beta": "Beta",
+    "betaBody": "Utilizable hoy, con más formularios, teclado o cobertura de casos límite por llegar.",
+    "quickInstall": "Instalación rápida:",
+    "orBrowse": "o explora abajo para copiar el código fuente.",
+    "learnMore": "Saber más →",
+    "stability": {
+      "stable": "estable",
+      "beta": "beta",
+      "experimental": "experimental",
+      "experimentalShort": "exp"
+    }
+  },
+  "layouts": {
+    "sidebarDocs": {
+      "minimalShape": "La demo de arriba es la composición completa del shell de página; esto es la forma mínima.",
+      "widthTitle": "Configurar el ancho",
+      "widthNote": "Recurre a la custom property cuando el ancho sea dinámico o se fije desde fuera de Angular.",
+      "sourceNote": "Copia este código en tu proyecto. VoltSidebarService guarda el estado plegado/abierto en móvil como signals; nada más en el layout depende de Angular Router más allá de routerLink."
+    },
+    "items": {
+      "adminDashboard": {
+        "label": "Admin Dashboard",
+        "tagline": "Barra lateral plegable, barra superior y un área de contenido con métricas y una tabla.",
+        "structure": "Una barra lateral que se pliega a iconos, una barra superior con el control de plegado y una miga de pan, y un área de contenido con desplazamiento. La fila de métricas y la tabla están ahí para enseñar para qué sirve el área de contenido: son la parte que sustituyes."
+      },
+      "topNav": {
+        "label": "Top Navigation",
+        "tagline": "Navegación horizontal en lugar de barra lateral, para apps con pocas secciones.",
+        "structure": "Una cabecera a todo el ancho con la marca, la navegación principal y el menú de cuenta, sobre una columna de contenido centrada. La forma a la que recurrir cuando las secciones caben en una línea."
+      },
+      "analytics": {
+        "label": "Analytics",
+        "tagline": "Una página de métricas: barra de filtros, fila de KPI y paneles dimensionados por importancia.",
+        "structure": "Una barra de filtros fijada sobre una fila de KPI y, debajo, una cuadrícula donde los paneles son deliberadamente desiguales: el gráfico merece más espacio que la lista de al lado."
+      },
+      "sidebar": {
+        "label": "Sidebar",
+        "tagline": "El propio componente de barra lateral: API, comportamiento de plegado y control del ancho.",
+        "structure": "A diferencia del resto de esta pestaña, esto documenta un componente que se publica en la librería y no una disposición que copias. Los layouts de arriba están construidos sobre él."
+      },
+      "settings": {
+        "label": "Settings",
+        "tagline": "Navegación por secciones junto a una columna de formulario, la forma que tiene toda página de ajustes.",
+        "structure": "Una lista estrecha de secciones a la izquierda y una sola columna de formulario a la derecha, con cada grupo separado en vez de encajonado. Escala a más secciones sin rediseñar nada."
+      },
+      "profile": {
+        "label": "Profile",
+        "tagline": "Una cabecera de identidad sobre paneles de detalle con pestañas.",
+        "structure": "Una cabecera que dice quién es esta persona y qué acciones puedes tomar sobre ella, y debajo pestañas para el detalle. La cabecera se queda mientras las pestañas cambian lo de abajo."
+      },
+      "kanban": {
+        "label": "Kanban Board",
+        "tagline": "Columnas que se desplazan en horizontal con tarjetas que se desplazan dentro de ellas.",
+        "structure": "El problema del desplazamiento en dos ejes, resuelto: el tablero se desplaza en horizontal, cada columna desplaza sus propias tarjetas y ninguno le roba el gesto al otro."
+      },
+      "chat": {
+        "label": "Chat",
+        "tagline": "Una lista de conversaciones, un hilo de mensajes y un redactor fijado abajo.",
+        "structure": "Tres regiones con comportamientos de desplazamiento distintos: la lista se desplaza, el hilo se desplaza y empieza abajo, y el redactor no se mueve nunca."
+      },
+      "login": {
+        "label": "Login",
+        "tagline": "Un formulario de credenciales centrado con los campos conectados a form-field.",
+        "structure": "Una tarjeta, centrada en ambos ejes, con las etiquetas ligadas a sus campos y las pistas en el slot que las anuncia. Deliberadamente sin marca: la galería de bloques es donde un login recibe una cara."
+      },
+      "signUp": {
+        "label": "Sign Up",
+        "tagline": "Registro con espacio para validación y la casilla de términos que condiciona el envío.",
+        "structure": "La forma del login más lo que añade el registro: más campos, un sitio para los errores de cada campo y un envío que sigue deshabilitado hasta que se aceptan los términos."
+      }
+    },
+    "categories": {
+      "shells": {
+        "label": "Shells de aplicación"
+      },
+      "account": {
+        "label": "Cuenta"
+      },
+      "productivity": {
+        "label": "Productividad"
+      },
+      "auth": {
+        "label": "Autenticación"
+      }
+    }
+  },
+  "themeStudio": {
+    "setup": {
+      "title": "Configuración del tema",
+      "lede": "Ponle nombre, elige una paleta de partida y luego ajusta los detalles.",
+      "nameLabel": "Nombre del tema",
+      "namePlaceholder": "acme-ocean",
+      "startFrom": "Partir de",
+      "presetPlaceholder": "Elige un preset",
+      "presets": "Presets",
+      "generateTitle": "Generar una paleta",
+      "generateLede": "Escalas OKLCH perceptuales con colores de texto verificados por contraste, para ambos modos a la vez.",
+      "harmony": "Armonía",
+      "generate": "Generar",
+      "importLabel": "Pega el export **JSON** de Palette Crafter:",
+      "applyPalette": "Aplicar paleta"
+    },
+    "tokens": {
+      "title": "Tokens de color",
+      "lede": "Edita las paletas clara y oscura de forma independiente.",
+      "light": "Claro",
+      "dark": "Oscuro"
+    },
+    "shape": {
+      "title": "Forma y textura",
+      "lede": "Ajusta los tokens estructurales que comparten ambos modos."
+    },
+    "output": {
+      "title": "CSS generado",
+      "lede": "Pega esto en un preset de tema de Volt o en la hoja de estilos de tu app."
+    },
+    "preview": {
+      "eyebrow": "Lienzo",
+      "title": "Vista previa en vivo",
+      "lede": "Aislada del tema de la documentación.",
+      "dark": "Oscuro"
+    },
+    "page": {
+      "eyebrow": "Estudio de temas",
+      "badge": "Variables CSS listas para exportar",
+      "title": "Diseña tu sistema.",
+      "lede": "Ajusta cada token semántico, compara los modos claro y oscuro y exporta un tema de Volt UI listo para producción sin salir del navegador.",
+      "editor": "Editor",
+      "foundations": "Fundamentos del tema",
+      "instant": "Los cambios se previsualizan al instante"
+    }
+  },
+  "components": {
+    "accordion": {
+      "title": "Accordion",
+      "description": "Un conjunto de encabezados interactivos apilados verticalmente que revelan cada uno una sección de contenido."
+    },
+    "avatar": {
+      "title": "Avatar",
+      "description": "Un elemento de imagen con alternativa de respaldo para representar al usuario."
+    },
+    "badge": {
+      "title": "Badge",
+      "description": "Muestra una insignia o un componente con aspecto de insignia."
+    },
+    "breadcrumbs": {
+      "title": "Breadcrumbs",
+      "description": "Muestra la ruta hasta el recurso actual mediante una jerarquía de enlaces."
+    },
+    "button": {
+      "title": "Button",
+      "description": "Muestra un botón o un componente con aspecto de botón.",
+      "statesSlots": "Estados e iconos (slots)"
+    },
+    "card": {
+      "title": "Card",
+      "description": "Muestra una tarjeta con cabecera, contenido y pie."
+    },
+    "checkbox": {
+      "title": "Checkbox",
+      "description": "Un control que permite al usuario alternar entre marcado y no marcado."
+    },
+    "dialog": {
+      "title": "Dialog",
+      "description": "Una ventana superpuesta sobre la ventana principal u otra ventana de diálogo.",
+      "features": {
+        "escape": "Navegación por teclado, con Escape para cerrar",
+        "outside": "Clic fuera para cerrar (configurable)",
+        "focusTrap": "Trampa de foco para accesibilidad",
+        "animations": "Animaciones y transiciones suaves",
+        "aria": "Atributos ARIA para lectores de pantalla"
+      }
+    },
+    "drawer": {
+      "title": "Drawer",
+      "description": "Un panel que se desliza desde el borde de la pantalla. Construido sobre las primitivas de Dialog."
+    },
+    "dropdownMenu": {
+      "title": "Dropdown Menu",
+      "description": "Muestra al usuario un menú de opciones, activado por un botón."
+    },
+    "input": {
+      "title": "Input y formularios",
+      "description": "Muestra un campo de formulario o un componente con aspecto de campo de entrada."
+    },
+    "navigationMenu": {
+      "title": "Navigation Menu",
+      "description": "Una colección de enlaces para navegar por sitios web, con soporte para menús desplegables.",
+      "features": {
+        "keyboard": "Navegación por teclado con las flechas y Escape",
+        "aria": "Accesible, con los atributos ARIA correctos",
+        "animations": "Animaciones y transiciones suaves",
+        "layouts": "Disposiciones de contenido flexibles (una o varias columnas)",
+        "links": "Soporte para enlaces directos y menús desplegables"
+      }
+    },
+    "popover": {
+      "title": "Popover",
+      "description": "Muestra contenido enriquecido en un portal, activado al hacer clic en un elemento."
+    },
+    "progress": {
+      "title": "Progress",
+      "description": "Muestra un indicador con el avance de una tarea."
+    },
+    "radio": {
+      "title": "Radio",
+      "description": "Un conjunto de botones marcables —los botones de radio— donde no puede haber más de uno marcado a la vez."
+    },
+    "rangeSlider": {
+      "title": "Range Slider",
+      "description": "Un control donde el usuario selecciona un rango de valores entre dos tiradores."
+    },
+    "resizable": {
+      "title": "Resizable",
+      "description": "Grupos de paneles redimensionables y accesibles, con tiradores arrastrables."
+    },
+    "select": {
+      "title": "Select",
+      "description": "Muestra una lista de opciones para que el usuario elija, activada por un botón.",
+      "nativeTitle": "Select nativo",
+      "nativeNote": "Una alternativa más ligera a {select} para casos sencillos: es el elemento {element} nativo de verdad (comportamiento completo del selector móvil/nativo, funciona con {formControl}/{ngModel} sin más), con estilo acorde al tema."
+    },
+    "separator": {
+      "title": "Separator",
+      "description": "Separa contenido visual o semánticamente."
+    },
+    "skeleton": {
+      "title": "Skeleton",
+      "description": "Sirve para mostrar un marcador mientras el contenido se carga."
+    },
+    "slider": {
+      "title": "Slider",
+      "description": "Un control donde el usuario elige un valor dentro de un rango dado."
+    },
+    "switch": {
+      "title": "Switch",
+      "description": "Un control que permite al usuario alternar entre marcado y no marcado."
+    },
+    "table": {
+      "title": "Table",
+      "description": "Un componente de tabla responsive para mostrar datos tabulares."
+    },
+    "tabs": {
+      "title": "Tabs",
+      "description": "Un conjunto de secciones de contenido superpuestas —los paneles de pestaña— que se muestran de una en una."
+    },
+    "toggle": {
+      "title": "Toggle",
+      "description": "Un botón de dos estados que puede estar activado o desactivado."
+    },
+    "tooltip": {
+      "title": "Tooltip",
+      "description": "Un mensaje emergente que muestra información sobre un elemento cuando este recibe el foco del teclado o el ratón pasa por encima."
+    },
+    "autofill": {
+      "title": "Autofill",
+      "description": "Directiva para detectar el estado de autocompletado del navegador en los controles de formulario."
+    },
+    "combobox": {
+      "title": "Combobox",
+      "description": "Campo de selección con búsqueda y plantilla de opción personalizada."
+    },
+    "datePicker": {
+      "title": "Date Picker",
+      "description": "Primitivas de calendario para seleccionar fechas y rangos."
+    },
+    "fileUpload": {
+      "title": "File Upload",
+      "description": "Primitivas de selector de archivos y zona de arrastrar y soltar."
+    },
+    "formField": {
+      "title": "Form Field",
+      "description": "Envoltorio de formulario accesible con etiqueta, pista y texto de error."
+    },
+    "index": {
+      "title": "Componentes",
+      "description": "Una colección de componentes reutilizables y accesibles construidos con Angular y Tailwind CSS. Cada componente incluye el código fuente para que lo copies y lo adaptes."
+    },
+    "inputOtp": {
+      "title": "Input OTP",
+      "description": "Campo de contraseña de un solo uso para flujos de verificación y PIN."
+    },
+    "listbox": {
+      "title": "Listbox",
+      "description": "Lista accesible de selección simple o múltiple."
+    },
+    "meter": {
+      "title": "Meter",
+      "description": "Muestra una medida escalar dentro de un rango conocido."
+    },
+    "pagination": {
+      "title": "Pagination",
+      "description": "Controles de paginación con botones de anterior, siguiente y número de página."
+    },
+    "search": {
+      "title": "Search",
+      "description": "Envoltorio de campo de búsqueda con acción de limpiar, impulsado por ng-primitives."
+    },
+    "textarea": {
+      "title": "Textarea",
+      "description": "Campo de texto multilínea con tamaño, variante, redimensionado y estados de error."
+    },
+    "toast": {
+      "title": "Toast",
+      "description": "Una superficie de notificación compacta con título, descripción y opción de cierre."
+    },
+    "toggleGroup": {
+      "title": "Toggle Group",
+      "description": "Un conjunto agrupado de alternadores para selección simple o múltiple."
+    },
+    "toolbar": {
+      "title": "Toolbar",
+      "description": "Controles agrupados con semántica de barra de herramientas y foco itinerante."
+    }
+  },
+  "blocks": {
+    "categories": {
+      "hero": {
+        "label": "Hero",
+        "blurb": "La primera pantalla. Qué es el producto y la única cosa que hacer al respecto."
+      },
+      "features": {
+        "label": "Características",
+        "blurb": "Lo que hace, dispuesto de forma que la característica importante se vea como la importante."
+      },
+      "services": {
+        "label": "Servicios",
+        "blurb": "Lo que haces por alguien, cuando el producto es un equipo y no una descarga."
+      },
+      "proof": {
+        "label": "Prueba social",
+        "blurb": "Que lo diga otra gente, que es la única versión que alguien se cree."
+      },
+      "pricing": {
+        "label": "Precios",
+        "blurb": "Los planes, la diferencia entre ellos y el que te gustaría que eligieran."
+      },
+      "contact": {
+        "label": "Contacto",
+        "blurb": "Un formulario que funciona, junto a las formas de localizarte que no son un formulario."
+      },
+      "cta": {
+        "label": "Llamada a la acción",
+        "blurb": "La última oportunidad de convertir a quien ha leído la página entera."
+      },
+      "footer": {
+        "label": "Pie de página",
+        "blurb": "El mapa del sitio, la letra pequeña y la newsletter por la que nadie vuelve a subir."
+      },
+      "auth": {
+        "label": "Autenticación",
+        "blurb": "Pantallas donde la página es el componente. La pestaña de layouts tiene las mismas reducidas a su esqueleto."
+      },
+      "app": {
+        "label": "Aplicación",
+        "blurb": "Las pantallas detrás del login, con el trabajo hecho en vez de dejado como huecos."
+      }
+    },
+    "items": {
+      "hero": {
+        "label": "Hero Spotlight",
+        "tagline": "Apertura centrada con un foco que sigue al puntero.",
+        "motion": "Un foco radial sigue al puntero, dos auroras se desplazan tras la cuadrícula, la palabra del titular reluce y el contenido asciende en cinco pasos en el primer pintado."
+      },
+      "heroSplit": {
+        "label": "Hero Split",
+        "tagline": "El texto a la izquierda y un panel de producto vivo a la derecha, inclinado hacia el lector.",
+        "motion": "El panel se apoya en una ligera inclinación 3D que se endereza al acercarse el puntero, y una fila de estado va pasando por sus estados sola."
+      },
+      "bento": {
+        "label": "Feature Bento",
+        "tagline": "Cuadrícula asimétrica donde cada tarjeta ilumina su propio borde bajo el cursor.",
+        "motion": "Cada tarjeta lleva un relleno radial y un anillo degradado de un píxel que siguen al puntero dentro de esa tarjeta, más una elevación al pasar por encima."
+      },
+      "services": {
+        "label": "Service List",
+        "tagline": "Filas numeradas que se abren al apuntarlas, en vez de cuatro tarjetas iguales.",
+        "motion": "La fila bajo el puntero se expande para revelar su detalle y sus entregables mientras las demás retroceden, así la sección se lee de una cosa cada vez."
+      },
+      "testimonials": {
+        "label": "Testimonial Marquee",
+        "tagline": "Dos filas de citas deslizándose en sentidos opuestos, que se detienen bajo el puntero.",
+        "motion": "Cada fila repite en bucle una lista duplicada exactamente por la mitad de su ancho, así la costura es invisible, y se detiene al pasar el cursor o al recibir el foco."
+      },
+      "pricing": {
+        "label": "Pricing Tiers",
+        "tagline": "Tres planes con un conmutador anual, precios animados y un plan destacado a mayor escala.",
+        "motion": "Cambiar el periodo de facturación repite la entrada del precio, la insignia de ahorro se desliza y el plan destacado queda a mayor escala por encima de la fila."
+      },
+      "contact": {
+        "label": "Contact Split",
+        "tagline": "Un formulario de verdad junto a las formas de localizarte que no son un formulario.",
+        "motion": "Cada grupo de campos hace crecer una barra de acento e ilumina su etiqueta al recibir el foco, y al enviar el formulario se sustituye en el sitio por una confirmación, con el foco movido a ella."
+      },
+      "cta": {
+        "label": "Magnetic CTA",
+        "tagline": "Panel de cierre con un borde degradado giratorio y un botón que se inclina hacia ti.",
+        "motion": "Un degradado cónico gira por el borde del panel, y el botón de envío es atraído hacia el puntero mientras está a menos de 140px."
+      },
+      "login": {
+        "label": "Login Split",
+        "tagline": "Un panel de marketing junto al formulario: la versión acabada del layout de login.",
+        "motion": "Dos auroras se desplazan tras el panel de marca, y el texto y el formulario ascienden en tres pasos en el primer pintado. El propio panel se descarta, no se apila, cuando la sección se queda demasiado estrecha para él."
+      },
+      "footer": {
+        "label": "Footer Sitemap",
+        "tagline": "Cuatro columnas de enlaces, un campo de newsletter y una línea de estado que está viva de verdad.",
+        "motion": "Los enlaces de columna despliegan su subrayado desde la izquierda al pasar el cursor, y el punto de estado late en un bucle lento."
+      },
+      "dashboard": {
+        "label": "Dashboard",
+        "tagline": "Shell con marca, cifras que cuentan hacia arriba y un gráfico que se dibuja solo.",
+        "motion": "Las cifras cuentan hasta su valor la primera vez que la fila entra en pantalla, una vez y nunca más, y el gráfico se traza a medida que aparece. Ambos empiezan terminados si se reduce el movimiento."
+      }
+    },
+    "upcoming": {
+      "logoCloud": {
+        "label": "Logo Cloud",
+        "tagline": "Logotipos de clientes que se asientan en su sitio según llega la sección."
+      },
+      "faq": {
+        "label": "FAQ",
+        "tagline": "Acordeón construido sobre la primitiva accesible, con un campo de búsqueda encima."
+      },
+      "stats": {
+        "label": "Stats",
+        "tagline": "Cifras que cuentan hacia arriba una vez, la primera vez que entran en pantalla."
+      },
+      "team": {
+        "label": "Team",
+        "tagline": "Retratos que cambian por un cargo y un enlace cuando los apuntas."
+      }
+    }
+  }
+}

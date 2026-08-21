@@ -13,6 +13,7 @@ import {
   signal,
 } from '@angular/core';
 import { EditorLoaderService } from '../services/editor-loader.service';
+import { Translations } from '../i18n/translations';
 
 export type CodeEditorLanguage = 'typescript' | 'javascript' | 'css' | 'html' | 'json';
 
@@ -42,12 +43,16 @@ export type CodeEditorLanguage = 'typescript' | 'javascript' | 'css' | 'html' | 
       ></vertex-editor-lite>
     } @else {
       <div class="flex items-center justify-center" [style.height]="height()">
-        <div class="animate-pulse text-muted-foreground">Loading editor...</div>
+        <div class="animate-pulse text-muted-foreground">{{ t('ui.codeEditor.loading') }}</div>
       </div>
     }
   `,
 })
 export class CodeEditor implements OnInit {
+  private readonly translations = inject(Translations);
+
+  protected readonly t = this.translations.t;
+
   readonly code = input.required<string>();
   readonly language = input<CodeEditorLanguage>('typescript');
   readonly height = input<string>('400px');

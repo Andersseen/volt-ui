@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { VoltBadge } from 'volt';
 import { ThemeStudioOutput } from '../components/theme-studio/theme-studio-output';
 import { ThemeStudioPreview } from '../components/theme-studio/theme-studio-preview';
@@ -6,6 +6,7 @@ import { ThemeStudioSetup } from '../components/theme-studio/theme-studio-setup'
 import { ThemeStudioShape } from '../components/theme-studio/theme-studio-shape';
 import { ThemeStudioTokens } from '../components/theme-studio/theme-studio-tokens';
 import { ThemeStudioStore } from '../services/theme-studio-store';
+import { Translations } from '../i18n/translations';
 
 /**
  * The theme studio is a two-column layout over one shared draft. The draft lives in
@@ -40,16 +41,15 @@ import { ThemeStudioStore } from '../services/theme-studio-store';
               <volt-badge
                 variant="outline"
                 class="rounded-full border-primary/25 bg-background/75 text-primary backdrop-blur"
-                >Theme studio</volt-badge
+                >{{ t('themeStudio.page.eyebrow') }}</volt-badge
               >
-              <span class="text-sm text-muted-foreground">Export-ready CSS variables</span>
+              <span class="text-sm text-muted-foreground">{{ t('themeStudio.page.badge') }}</span>
             </div>
             <h1 class="mt-5 text-4xl font-semibold tracking-tight text-foreground sm:text-6xl">
-              Design your system.
+              {{ t('themeStudio.page.title') }}
             </h1>
             <p class="mt-5 max-w-2xl text-lg leading-8 text-muted-foreground">
-              Tune every semantic token, compare light and dark modes, and export a production-ready
-              Volt UI theme without leaving the browser.
+              {{ t('themeStudio.page.lede') }}
             </p>
           </div>
         </div>
@@ -63,12 +63,16 @@ import { ThemeStudioStore } from '../services/theme-studio-store';
         <div class="min-w-0 space-y-6">
           <div class="flex items-end justify-between gap-4">
             <div>
-              <p class="text-xs font-medium uppercase tracking-[0.18em] text-primary">Editor</p>
-              <h2 class="mt-2 text-2xl font-semibold tracking-tight">Theme foundations</h2>
+              <p class="text-xs font-medium uppercase tracking-[0.18em] text-primary">
+                {{ t('themeStudio.page.editor') }}
+              </p>
+              <h2 class="mt-2 text-2xl font-semibold tracking-tight">
+                {{ t('themeStudio.page.foundations') }}
+              </h2>
             </div>
-            <span class="hidden text-xs text-muted-foreground sm:block"
-              >Changes preview instantly</span
-            >
+            <span class="hidden text-xs text-muted-foreground sm:block">{{
+              t('themeStudio.page.instant')
+            }}</span>
           </div>
 
           <app-theme-studio-setup />
@@ -99,4 +103,8 @@ import { ThemeStudioStore } from '../services/theme-studio-store';
     }
   `,
 })
-export default class CreateThemePage {}
+export default class CreateThemePage {
+  private readonly translations = inject(Translations);
+
+  protected readonly t = this.translations.t;
+}

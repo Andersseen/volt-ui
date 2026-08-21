@@ -1,12 +1,10 @@
 <div class="space-y-10">
   <div>
-    <h1 class="text-3xl font-bold tracking-tight">Dialog</h1>
-    <p class="text-lg text-muted-foreground mt-2">
-      A window overlaid on either the primary window or another dialog window.
-    </p>
+    <h1 class="text-3xl font-bold tracking-tight">{{ t('components.dialog.title') }}</h1>
+    <p class="text-lg text-muted-foreground mt-2">{{ t('components.dialog.description') }}</p>
   </div>
 
-  <app-code-panel title="Usage" [code]="dialogUsage" [tabbed]="true">
+  <app-code-panel [title]="t('ui.codePanel.usage')" [code]="dialogUsage" [tabbed]="true">
     <div class="flex flex-wrap gap-3 items-center justify-center p-8">
       <volt-button [voltDialog]="editProfileTpl">Open Dialog</volt-button>
 
@@ -49,27 +47,26 @@
   </app-code-panel>
 
   <div class="space-y-4">
-    <h2 class="text-xl font-semibold tracking-tight">Features</h2>
+    <h2 class="text-xl font-semibold tracking-tight">{{ t('ui.section.features') }}</h2>
     <ul class="list-disc list-inside space-y-2 text-muted-foreground">
-      <li>Keyboard navigation with Escape key to close</li>
-      <li>Click outside to close (configurable)</li>
-      <li>Focus trap for accessibility</li>
-      <li>Smooth animations and transitions</li>
-      <li>ARIA attributes for screen readers</li>
+      <li>{{ t('components.dialog.features.escape') }}</li>
+      <li>{{ t('components.dialog.features.outside') }}</li>
+      <li>{{ t('components.dialog.features.focusTrap') }}</li>
+      <li>{{ t('components.dialog.features.animations') }}</li>
+      <li>{{ t('components.dialog.features.aria') }}</li>
     </ul>
   </div>
 
   <!-- API Reference -->
   <div class="space-y-3">
-    <h3 class="text-lg font-semibold">API Reference</h3>
+    <h3 class="text-lg font-semibold">{{ t('ui.api.title') }}</h3>
     <app-api-reference [data]="dialogApi" />
   </div>
 
   <!-- Source Code Section -->
   <app-code-panel
-    title="Component Source"
     [code]="dialogCode"
     cliCommand="npx @voltui/cli add dialog"
-    description="Copy this code to your project. The component uses ng-primitives/dialog."
+    [description]="t('ui.codePanel.copyNoteDep', { dep: 'ng-primitives/dialog' })"
   />
 </div>

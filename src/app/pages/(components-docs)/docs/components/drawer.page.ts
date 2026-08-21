@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import {
   VoltDrawer,
   VoltDrawerContent,
@@ -15,6 +15,7 @@ import { LmnXIcon } from 'lumen-icons';
 import { DRAWER_SNIPPET } from '../../../../lib/snippets';
 import { DRAWER_USAGE } from '../../../../lib/snippets/usage';
 import { DRAWER_API } from '../../../../lib/api-reference.generated';
+import { Translations } from '../../../../i18n/translations';
 
 @Component({
   selector: 'app-drawer-demo',
@@ -36,6 +37,10 @@ import { DRAWER_API } from '../../../../lib/api-reference.generated';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class DrawerDemo {
+  private readonly translations = inject(Translations);
+
+  protected readonly t = this.translations.t;
+
   readonly drawerApi = DRAWER_API;
   readonly drawerCode = DRAWER_SNIPPET;
   readonly drawerUsage = DRAWER_USAGE;

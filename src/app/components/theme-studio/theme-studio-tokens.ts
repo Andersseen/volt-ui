@@ -11,6 +11,7 @@ import {
   VoltTabsTrigger,
 } from 'volt';
 import { ThemeStudioStore } from '../../services/theme-studio-store';
+import { Translations } from '../../i18n/translations';
 
 /** The semantic color tokens, edited per mode. */
 @Component({
@@ -32,14 +33,14 @@ import { ThemeStudioStore } from '../../services/theme-studio-store';
       class="border-border/70 bg-surface/80 shadow-sm backdrop-blur transition-colors duration-200 hover:border-primary/25"
     >
       <volt-card-header>
-        <volt-card-title>Color Tokens</volt-card-title>
-        <volt-card-description>Edit light and dark palettes independently.</volt-card-description>
+        <volt-card-title>{{ t('themeStudio.tokens.title') }}</volt-card-title>
+        <volt-card-description>{{ t('themeStudio.tokens.lede') }}</volt-card-description>
       </volt-card-header>
       <volt-card-content>
         <volt-tabs [value]="store.activeMode()" (valueChange)="store.setActiveMode($event)">
           <volt-tabs-list class="grid w-full grid-cols-2">
-            <volt-tabs-trigger value="light">Light</volt-tabs-trigger>
-            <volt-tabs-trigger value="dark">Dark</volt-tabs-trigger>
+            <volt-tabs-trigger value="light">{{ t('themeStudio.tokens.light') }}</volt-tabs-trigger>
+            <volt-tabs-trigger value="dark">{{ t('themeStudio.tokens.dark') }}</volt-tabs-trigger>
           </volt-tabs-list>
 
           @for (mode of store.modes; track mode) {
@@ -82,5 +83,9 @@ import { ThemeStudioStore } from '../../services/theme-studio-store';
   `,
 })
 export class ThemeStudioTokens {
+  private readonly translations = inject(Translations);
+
+  protected readonly t = this.translations.t;
+
   protected readonly store = inject(ThemeStudioStore);
 }

@@ -1,13 +1,11 @@
 <div class="space-y-6">
   <div>
-    <h1 class="text-3xl font-bold tracking-tight">Input & Forms</h1>
-    <p class="text-lg text-muted-foreground mt-2">
-      Displays a form input field or a component that looks like an input field.
-    </p>
+    <h1 class="text-3xl font-bold tracking-tight">{{ t('components.input.title') }}</h1>
+    <p class="text-lg text-muted-foreground mt-2">{{ t('components.input.description') }}</p>
   </div>
 
   <!-- Usage Example -->
-  <app-code-panel title="Usage" [code]="inputUsage" [tabbed]="true">
+  <app-code-panel [title]="t('ui.codePanel.usage')" [code]="inputUsage" [tabbed]="true">
     <div
       class="border rounded-xl border-border/50 p-6 md:p-10 bg-background/50 relative overflow-hidden"
     >
@@ -39,15 +37,14 @@
 
   <!-- API Reference -->
   <div class="space-y-3">
-    <h3 class="text-lg font-semibold">API Reference</h3>
+    <h3 class="text-lg font-semibold">{{ t('ui.api.title') }}</h3>
     <app-api-reference [data]="inputApi" />
   </div>
 
   <!-- Source Code Section -->
   <app-code-panel
-    title="Component Source"
     [code]="inputCode"
     cliCommand="npx @voltui/cli add input"
-    description="Copy this code to your project. The component uses ng-primitives/input."
+    [description]="t('ui.codePanel.copyNoteDep', { dep: 'ng-primitives/input' })"
   />
 </div>

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ComponentPreview } from '../../../../components/component-preview';
 import { MOTION } from '../../../../lib/motion';
@@ -8,6 +8,7 @@ import {
   type ComponentStability,
 } from '../../../../lib/component-metadata';
 import { Reveal } from '../../../../components/reveal';
+import { Translations } from '../../../../i18n/translations';
 
 @Component({
   selector: 'app-components-index-page',
@@ -16,25 +17,18 @@ import { Reveal } from '../../../../components/reveal';
   template: `
     <div class="space-y-8">
       <div>
-        <h1 class="text-3xl font-bold tracking-tight">Components</h1>
-        <p class="text-lg text-muted-foreground mt-2">
-          A collection of reusable, accessible components built with Angular and Tailwind CSS. Each
-          component includes source code that you can copy and customize.
-        </p>
+        <h1 class="text-3xl font-bold tracking-tight">{{ t('components.index.title') }}</h1>
+        <p class="text-lg text-muted-foreground mt-2">{{ t('components.index.description') }}</p>
       </div>
 
       <div class="grid gap-3 sm:grid-cols-2">
         <div class="rounded-lg border border-border bg-muted/20 p-4">
-          <div class="text-sm font-medium text-success">Stable</div>
-          <p class="mt-1 text-xs text-muted-foreground">
-            Recommended for production use. APIs are settled.
-          </p>
+          <div class="text-sm font-medium text-success">{{ t('catalog.stable') }}</div>
+          <p class="mt-1 text-xs text-muted-foreground">{{ t('catalog.stableBody') }}</p>
         </div>
         <div class="rounded-lg border border-border bg-muted/20 p-4">
-          <div class="text-sm font-medium text-info">Beta</div>
-          <p class="mt-1 text-xs text-muted-foreground">
-            Usable today, with more forms, keyboard, or edge-case coverage planned.
-          </p>
+          <div class="text-sm font-medium text-info">{{ t('catalog.beta') }}</div>
+          <p class="mt-1 text-xs text-muted-foreground">{{ t('catalog.betaBody') }}</p>
         </div>
       </div>
 
@@ -42,21 +36,21 @@ import { Reveal } from '../../../../components/reveal';
 
       <div class="p-4 rounded-lg border border-border bg-muted/30">
         <p class="text-sm">
-          <span class="font-medium">Quick install:</span>
+          <span class="font-medium">{{ t('catalog.quickInstall') }}</span>
           <code class="px-1.5 py-0.5 bg-muted rounded mx-1"
             >npx &#64;voltui/cli add [component]</code
           >
-          or browse below to copy source code.
-          <a routerLink="/docs/introduction" class="text-primary hover:underline ml-1"
-            >Learn more -></a
-          >
+          {{ t('catalog.orBrowse') }}
+          <a routerLink="/docs/introduction" class="text-primary hover:underline ml-1">{{
+            t('catalog.learnMore')
+          }}</a>
         </p>
       </div>
 
       <div class="space-y-8">
-        @for (group of groups; track group.title) {
+        @for (group of groups; track group.titleKey) {
           <section class="space-y-4">
-            <h2 class="text-lg font-semibold">{{ group.title }}</h2>
+            <h2 class="text-lg font-semibold">{{ t(group.titleKey) }}</h2>
             <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               @for (item of group.components; track item.path; let i = $index) {
                 <a
@@ -71,7 +65,7 @@ import { Reveal } from '../../../../components/reveal';
                   </div>
                   <div class="p-3">
                     <div class="flex items-center justify-between gap-2">
-                      <h3 class="font-medium group-hover:text-primary">{{ item.label }}</h3>
+                      <h3 class="font-medium group-hover:text-primary">{{ t(item.labelKey) }}</h3>
                       <span
                         class="shrink-0 rounded-full px-2 py-0.5 text-[11px] font-medium leading-none"
                         [class]="stabilityClass(item.stability)"
@@ -79,7 +73,7 @@ import { Reveal } from '../../../../components/reveal';
                         {{ stabilityLabel(item.stability) }}
                       </span>
                     </div>
-                    <p class="text-xs text-muted-foreground">{{ item.description }}</p>
+                    <p class="text-xs text-muted-foreground">{{ t(item.descriptionKey) }}</p>
                   </div>
                 </a>
               }
@@ -91,12 +85,16 @@ import { Reveal } from '../../../../components/reveal';
   `,
 })
 export default class ComponentsIndexPage {
+  private readonly translations = inject(Translations);
+
+  protected readonly t = this.translations.t;
+
   readonly groups = COMPONENT_GROUPS;
 
   protected readonly stagger = MOTION.stagger;
 
   protected stabilityLabel(stability: ComponentMetadata['stability']): string {
-    return stability === 'experimental' ? 'experimental' : stability;
+    return this.t(`catalog.stability.${stability}`);
   }
 
   protected stabilityClass(stability: ComponentStability): string {

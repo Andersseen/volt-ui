@@ -1,16 +1,14 @@
 <div class="space-y-10">
   <div>
-    <h1 class="text-3xl font-bold tracking-tight">Button</h1>
-    <p class="text-lg text-muted-foreground mt-2">
-      Displays a button or a component that looks like a button.
-    </p>
+    <h1 class="text-3xl font-bold tracking-tight">{{ t('components.button.title') }}</h1>
+    <p class="text-lg text-muted-foreground mt-2">{{ t('components.button.description') }}</p>
   </div>
 
   <!-- Usage Example -->
-  <app-code-panel title="Usage" [code]="buttonUsage" [tabbed]="true">
+  <app-code-panel [title]="t('ui.codePanel.usage')" [code]="buttonUsage" [tabbed]="true">
     <div class="space-y-8">
       <div class="space-y-4">
-        <h3 class="font-semibold text-lg">Variants</h3>
+        <h3 class="font-semibold text-lg">{{ t('ui.section.variants') }}</h3>
         <div
           class="border rounded-xl border-border/50 p-6 md:p-10 flex items-center justify-center bg-background/50 relative overflow-hidden"
         >
@@ -25,7 +23,7 @@
       </div>
 
       <div class="space-y-4">
-        <h3 class="font-semibold text-lg">Sizes</h3>
+        <h3 class="font-semibold text-lg">{{ t('ui.section.sizes') }}</h3>
         <div
           class="border rounded-xl border-border/50 p-6 md:p-10 flex items-center justify-center bg-background/50 relative overflow-hidden"
         >
@@ -41,7 +39,7 @@
       </div>
 
       <div class="space-y-4">
-        <h3 class="font-semibold text-lg">States & Icons (Slots)</h3>
+        <h3 class="font-semibold text-lg">{{ t('components.button.statesSlots') }}</h3>
         <div
           class="border rounded-xl border-border/50 p-6 md:p-10 flex items-center justify-center bg-background/50 relative overflow-hidden"
         >
@@ -65,15 +63,16 @@
 
   <!-- API Reference -->
   <div class="space-y-3">
-    <h3 class="text-lg font-semibold">API Reference</h3>
+    <h3 class="text-lg font-semibold">{{ t('ui.api.title') }}</h3>
     <app-api-reference [data]="buttonApi" />
   </div>
 
   <!-- Source Code Section -->
   <app-code-panel
-    title="Component Source"
     [code]="buttonCode"
     cliCommand="npx @voltui/cli add button"
-    description="Copy this code to your project. The component uses ng-primitives and class-variance-authority."
+    [description]="
+      t('ui.codePanel.copyNoteDep', { dep: 'ng-primitives and class-variance-authority' })
+    "
   />
 </div>

@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { VoltAvatar, VoltAvatarFallback, VoltAvatarImage } from 'volt';
 import { CodePanel } from '../../../../components/code-panel';
 import { ApiReference } from '../../../../components/api-reference';
 import { AVATAR_SNIPPET } from '../../../../lib/snippets';
 import { AVATAR_USAGE } from '../../../../lib/snippets/usage';
 import { AVATAR_API } from '../../../../lib/api-reference.generated';
+import { Translations } from '../../../../i18n/translations';
 
 @Component({
   selector: 'app-avatar-demo',
@@ -14,6 +15,10 @@ import { AVATAR_API } from '../../../../lib/api-reference.generated';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class AvatarDemo {
+  private readonly translations = inject(Translations);
+
+  protected readonly t = this.translations.t;
+
   readonly avatarApi = AVATAR_API;
   readonly avatarCode = AVATAR_SNIPPET;
   readonly avatarUsage = AVATAR_USAGE;

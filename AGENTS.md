@@ -71,6 +71,35 @@ pnpm test:all
 - Color presets: `volt`, `ember`, `sage`, `dusk`, `glacier`.
 - Style presets: `sharp`, `soft`, `brutal`, `ghost`, `retro`.
 
+## Site copy and translations
+
+The docs site is published in English, Spanish and Ukrainian. **Every string a visitor
+reads lives in `src/app/i18n/{en,es,uk}.json` and is reached through `t()`** — there is no
+second convention, and `src/app/i18n/no-hardcoded-copy.spec.ts` fails the build if one
+appears.
+
+- `t()` is typed against the English dictionary, so `t('nav.dcos')` does not compile. That
+  check runs during `pnpm build` (Angular compiles templates; plain `tsc` does not).
+- Static data — the component catalog, the blocks and layouts metadata, the sidebar — carries
+  `TranslationKey` fields (`labelKey`, `descriptionKey`, …), never text. A `const` has no
+  injector and so can never call `t()` itself.
+- A sentence containing inline code, emphasis or a link stays **one** key and uses
+  `<app-prose>`, which reads Markdown-style marks: `` `code` ``, `**bold**`,
+  `[text](/docs/path)`. Splitting a sentence at its markup produces fragments no translator
+  can reassemble.
+- Adding a key means adding it to all three dictionaries. `dictionaries.spec.ts` enforces
+  that the three files have exactly the same keys and the same `{placeholder}` slots.
+
+Two kinds of text are deliberately **not** translated:
+
+| Not translated                            | Why                                                                                                                                   |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/app/blocks/**`, `src/app/layouts/**` | Read with `?raw` and shown as source to copy. A `t()` call would break in a consumer's project, which has no `Translations`.          |
+| The live demo inside `<app-code-panel>`   | It is an exhibit of the code shown beside it. A demo reading "Manzana" next to a snippet saying `Apple` looks broken, not translated. |
+
+The guard recognises both structurally; the handful of specimens that sit outside a code
+panel are listed with their reasons at the top of `no-hardcoded-copy.spec.ts`.
+
 ## Adding or editing a component
 
 1. Create/edit files under `projects/volt/src/lib/components/<name>/`.

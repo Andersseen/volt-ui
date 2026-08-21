@@ -1,12 +1,10 @@
 <div class="space-y-6">
   <div>
-    <h1 class="text-3xl font-bold tracking-tight">Skeleton</h1>
-    <p class="text-lg text-muted-foreground mt-2">
-      Use to show a placeholder while content is loading.
-    </p>
+    <h1 class="text-3xl font-bold tracking-tight">{{ t('components.skeleton.title') }}</h1>
+    <p class="text-lg text-muted-foreground mt-2">{{ t('components.skeleton.description') }}</p>
   </div>
 
-  <app-code-panel title="Usage" [code]="skeletonUsage" [tabbed]="true">
+  <app-code-panel [title]="t('ui.codePanel.usage')" [code]="skeletonUsage" [tabbed]="true">
     <div
       class="border rounded-xl border-border/50 p-6 md:p-10 flex flex-col items-center justify-center bg-background/50 relative overflow-hidden min-h-[300px]"
     >
@@ -49,14 +47,13 @@
 
   <!-- API Reference -->
   <div class="space-y-3">
-    <h3 class="text-lg font-semibold">API Reference</h3>
+    <h3 class="text-lg font-semibold">{{ t('ui.api.title') }}</h3>
     <app-api-reference [data]="skeletonApi" />
   </div>
 
   <app-code-panel
-    title="Component Source"
     [code]="skeletonCode"
     cliCommand="npx @voltui/cli add skeleton"
-    description="Copy this code to your project."
+    [description]="t('ui.codePanel.copyNote')"
   />
 </div>

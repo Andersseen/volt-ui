@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { CodePanel } from '../../../../components/code-panel';
 import { ApiReference } from '../../../../components/api-reference';
 import { AUTOFILL_SNIPPET } from '../../../../lib/snippets';
 import { AUTOFILL_USAGE } from '../../../../lib/snippets/usage';
 import { AUTOFILL_API } from '../../../../lib/api-reference.generated';
 import { VoltAutofill } from 'volt';
+import { Translations } from '../../../../i18n/translations';
 
 @Component({
   selector: 'app-autofill-demo',
@@ -13,13 +14,11 @@ import { VoltAutofill } from 'volt';
   template: `
     <div class="space-y-8">
       <div>
-        <h1 class="text-3xl font-bold tracking-tight">Autofill</h1>
-        <p class="mt-2 text-muted-foreground">
-          Directive for detecting browser autofill state on form controls.
-        </p>
+        <h1 class="text-3xl font-bold tracking-tight">{{ t('components.autofill.title') }}</h1>
+        <p class="mt-2 text-muted-foreground">{{ t('components.autofill.description') }}</p>
       </div>
 
-      <app-code-panel title="Usage" [code]="usageCode" [tabbed]="true">
+      <app-code-panel [title]="t('ui.codePanel.usage')" [code]="usageCode" [tabbed]="true">
         <div class="max-w-md space-y-2">
           <input
             voltAutofill
@@ -35,12 +34,12 @@ import { VoltAutofill } from 'volt';
 
       <!-- API Reference -->
       <div class="space-y-3">
-        <h3 class="text-lg font-semibold">API Reference</h3>
+        <h3 class="text-lg font-semibold">{{ t('ui.api.title') }}</h3>
         <app-api-reference [data]="autofillApi" />
       </div>
 
       <app-code-panel
-        title="Directive Source"
+        [title]="t('ui.codePanel.directiveSource')"
         [code]="sourceCode"
         cliCommand="npx @voltui/cli add autofill"
       />
@@ -48,6 +47,10 @@ import { VoltAutofill } from 'volt';
   `,
 })
 export default class AutofillPage {
+  private readonly translations = inject(Translations);
+
+  protected readonly t = this.translations.t;
+
   readonly autofillApi = AUTOFILL_API;
   readonly autofilled = signal(false);
   readonly sourceCode = AUTOFILL_SNIPPET;

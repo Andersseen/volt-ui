@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MoveHoverDirective, MoveTapDirective } from 'angular-movement';
 import { LmnArrowRightIcon, LmnZapIcon } from 'lumen-icons';
@@ -12,6 +12,7 @@ import {
   VoltProgressValue,
   VoltSwitch,
 } from 'volt';
+import { Translations } from '../../i18n/translations';
 import { HOVER_LIFT, HOVER_POP, MOTION, TAP_PRESS } from '../../lib/motion';
 import { Reveal } from '../reveal';
 
@@ -43,24 +44,23 @@ import { Reveal } from '../reveal';
         <div appReveal appRevealPreset="fade-right" class="max-w-xl">
           <volt-badge variant="outline">
             <lmn-zap [size]="12" class="mr-1.5" />
-            One command. Your source.
+            {{ t('landing.workflow.eyebrow') }}
           </volt-badge>
           <h2 class="mt-6 text-balance text-3xl font-semibold tracking-normal sm:text-5xl">
-            A workflow that ends in editable Angular, not vendor lock-in.
+            {{ t('landing.workflow.title') }}
           </h2>
           <p class="mt-5 text-lg leading-8 text-muted-foreground">
-            The CLI resolves component dependencies, writes readable files, and keeps selectors
-            consistent with the source-first workflow.
+            {{ t('landing.workflow.subtitle') }}
           </p>
           <volt-button
-            routerLink="/docs/introduction"
+            [routerLink]="path('/docs/introduction')"
             variant="outline"
             size="lg"
             class="mt-8"
             [moveWhileHover]="lift"
             [moveWhileTap]="press"
           >
-            Read the installation guide
+            {{ t('landing.workflow.install') }}
             <lmn-arrow-right slot="trailing" [size]="16" />
           </volt-button>
         </div>
@@ -73,11 +73,14 @@ import { Reveal } from '../reveal';
             <div class="mb-4 flex items-center justify-between">
               <p class="font-mono text-xs text-muted-foreground">app/ui/button.ts</p>
               <span class="rounded-md bg-success/10 px-2 py-1 text-[10px] text-success">
-                copied
+                {{ t('landing.workflow.copied') }}
               </span>
             </div>
             <div class="space-y-2 font-mono text-xs">
-              <p><span class="text-primary">export</span> class UiButton {{ '{' }}</p>
+              <p>
+                <span class="text-primary">{{ t('landing.workflow.export') }}</span> class UiButton
+                {{ '{' }}
+              </p>
               <p class="pl-4 text-muted-foreground">readonly variant = input(...)</p>
               <p class="pl-4 text-muted-foreground">readonly size = input(...)</p>
               <p>{{ '}' }}</p>
@@ -88,8 +91,10 @@ import { Reveal } from '../reveal';
             [appReveal]="stagger"
             class="rounded-lg border border-border/70 bg-background p-5 shadow-xl shadow-black/5"
           >
-            <p class="text-sm font-semibold">Theme preview</p>
-            <p class="mt-1 text-xs text-muted-foreground">Five color systems, five styles.</p>
+            <p class="text-sm font-semibold">{{ t('landing.workflow.themePreview') }}</p>
+            <p class="mt-1 text-xs text-muted-foreground">
+              {{ t('landing.workflow.themeCaption') }}
+            </p>
             <div class="mt-5 grid grid-cols-5 gap-2">
               @for (swatch of swatches; track swatch.name) {
                 <span
@@ -103,8 +108,8 @@ import { Reveal } from '../reveal';
             <div
               class="mt-5 flex items-center justify-between rounded-md border border-border/70 p-3"
             >
-              <span class="text-xs">Dark mode ready</span>
-              <volt-switch [checked]="true" aria-label="Dark mode ready" />
+              <span class="text-xs">{{ t('landing.workflow.darkMode') }}</span>
+              <volt-switch [checked]="true" aria-label="{{ t('landing.workflow.darkMode') }}" />
             </div>
           </div>
 
@@ -114,21 +119,25 @@ import { Reveal } from '../reveal';
           >
             <div class="mb-3 flex items-center justify-between">
               <volt-progress [value]="92" class="w-full">
-                <volt-progress-label>Accessible interactions</volt-progress-label>
+                <volt-progress-label>{{ t('landing.workflow.accessible') }}</volt-progress-label>
                 <volt-progress-value>92%</volt-progress-value>
               </volt-progress>
             </div>
             <div class="grid gap-3 pt-3 sm:grid-cols-3">
               <label for="landing-workspace" class="space-y-2">
-                <span class="text-xs font-medium">Workspace</span>
+                <span class="text-xs font-medium">{{ t('landing.workflow.workspaceLabel') }}</span>
                 <volt-input id="landing-workspace" value="Volt Studio" />
               </label>
               <div class="flex items-end gap-3 pb-2">
                 <volt-checkbox id="landing-owned-source" [checked]="true" />
-                <label for="landing-owned-source" class="text-sm">Owned source</label>
+                <label for="landing-owned-source" class="text-sm">{{
+                  t('landing.workflow.ownedSource')
+                }}</label>
               </div>
               <div class="flex items-end justify-end">
-                <volt-button class="w-full sm:w-auto" [moveWhileTap]="press">Save UI</volt-button>
+                <volt-button class="w-full sm:w-auto" [moveWhileTap]="press">{{
+                  t('landing.workflow.saveUi')
+                }}</volt-button>
               </div>
             </div>
           </div>
@@ -163,6 +172,11 @@ import { Reveal } from '../reveal';
   `,
 })
 export class LandingWorkflow {
+  private readonly translations = inject(Translations);
+
+  protected readonly t = this.translations.t;
+  protected readonly path = this.translations.path;
+
   protected readonly stagger = MOTION.stagger;
 
   protected readonly lift = HOVER_LIFT;
