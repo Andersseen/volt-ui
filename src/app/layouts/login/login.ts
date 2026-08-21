@@ -78,10 +78,13 @@ import {
 
         <!-- The slot for federated sign-in. Put your provider's mark in the leading slot;
              it is left out here so the layout carries no third-party branding. -->
+        <!-- The rules are wrapped rather than sized directly: volt-separator composes its
+             own classes without twMerge, so its shrink-0 and w-full win over anything put
+             on it and each rule takes the full row. The wrapper is what shrinks. -->
         <div class="my-6 flex items-center gap-3">
-          <volt-separator class="shrink" />
+          <span class="min-w-0 flex-1"><volt-separator /></span>
           <span class="shrink-0 text-xs uppercase tracking-wider text-muted-foreground"> or </span>
-          <volt-separator class="shrink" />
+          <span class="min-w-0 flex-1"><volt-separator /></span>
         </div>
 
         <div class="grid gap-2 sm:grid-cols-2">

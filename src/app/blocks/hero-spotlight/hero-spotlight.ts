@@ -34,7 +34,9 @@ import { VoltAvatar, VoltAvatarFallback, VoltBadge, VoltButton } from 'volt';
     '(pointerleave)': 'resetSpotlight()',
   },
   template: `
-    <section class="relative isolate overflow-hidden bg-background px-4 py-24 sm:px-6 sm:py-32">
+    <section
+      class="@container relative isolate overflow-hidden bg-background px-4 py-24 @2xl:px-6 @2xl:py-32"
+    >
       <!-- Decorative backdrop: grid, two drifting auroras, and the pointer spotlight. -->
       <div class="hero-grid pointer-events-none absolute inset-0" aria-hidden="true"></div>
       <div class="hero-aurora hero-aurora-a pointer-events-none absolute" aria-hidden="true"></div>
@@ -51,7 +53,7 @@ import { VoltAvatar, VoltAvatarFallback, VoltBadge, VoltButton } from 'volt';
         </volt-badge>
 
         <h1
-          class="rise rise-2 mt-6 text-balance text-4xl font-bold leading-[1.05] tracking-tight text-foreground sm:text-6xl"
+          class="rise rise-2 mt-6 text-balance text-4xl font-bold leading-[1.05] tracking-tight text-foreground @3xl:text-6xl"
         >
           Interfaces that feel
           <span class="hero-shimmer">alive</span>
@@ -63,8 +65,8 @@ import { VoltAvatar, VoltAvatarFallback, VoltBadge, VoltButton } from 'volt';
           motion, own every line of it.
         </p>
 
-        <div class="rise rise-4 mt-9 flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
-          <volt-button size="lg" class="group w-full min-w-44 sm:w-auto">
+        <div class="rise rise-4 mt-9 flex w-full flex-col gap-3 @md:w-auto @md:flex-row">
+          <volt-button size="lg" class="group w-full min-w-44 @md:w-auto">
             Start building
             <lmn-arrow-right
               slot="trailing"
@@ -72,13 +74,13 @@ import { VoltAvatar, VoltAvatarFallback, VoltBadge, VoltButton } from 'volt';
               class="transition-transform duration-300 motion-safe:group-hover:translate-x-1"
             />
           </volt-button>
-          <volt-button variant="outline" size="lg" class="w-full min-w-44 sm:w-auto">
+          <volt-button variant="outline" size="lg" class="w-full min-w-44 @md:w-auto">
             Browse blocks
           </volt-button>
         </div>
 
         <!-- Social proof. The avatars overlap, so they read as one group rather than a list. -->
-        <div class="rise rise-5 mt-12 flex flex-col items-center gap-3 sm:flex-row sm:gap-4">
+        <div class="rise rise-5 mt-12 flex flex-col items-center gap-3 @md:flex-row @md:gap-4">
           <div class="flex -space-x-2.5">
             @for (person of people; track person.initials) {
               <volt-avatar
@@ -90,7 +92,7 @@ import { VoltAvatar, VoltAvatarFallback, VoltBadge, VoltButton } from 'volt';
               </volt-avatar>
             }
           </div>
-          <div class="flex flex-col items-center gap-1 sm:items-start">
+          <div class="flex flex-col items-center gap-1 @md:items-start">
             <div class="flex items-center gap-0.5 text-warning" aria-hidden="true">
               @for (star of stars; track $index) {
                 <lmn-star [size]="14" variant="filled" />

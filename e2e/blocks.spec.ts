@@ -161,3 +161,56 @@ test.describe('Blocks gallery cards', () => {
     await expect(page).toHaveURL(/\/docs\/blocks\/hero$/);
   });
 });
+
+test.describe('Blocks respond to their container', () => {
+  // The gallery renders blocks inside a documentation column that is far narrower than
+  // the window. Viewport breakpoints cannot see that, so a block laid out with them
+  // stays in its desktop shape and overflows; these are container queries instead, and
+  // this is the test that says so — the viewport never moves.
+  test('lays a block out by the space it gets, not by the window width', async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 1000 });
+    await page.goto('/docs/blocks/hero-split');
+
+    const section = page.locator('app-hero-split section');
+    await section.waitFor();
+
+    expect(await section.evaluate(el => getComputedStyle(el).containerType)).toBe('inline-size');
+
+    const columnsAt = (width: number) =>
+      section.evaluate((el, target) => {
+        const frame = el.closest('.overflow-hidden') as HTMLElement;
+        const previous = frame.style.width;
+        frame.style.width = `${target}px`;
+        const grid = el.querySelector('.grid')!;
+        const columns = getComputedStyle(grid).gridTemplateColumns.split(' ').length;
+        frame.style.width = previous;
+        return columns;
+      }, width);
+
+    expect(await columnsAt(600)).toBe(1);
+    expect(await columnsAt(1100)).toBe(2);
+  });
+
+  test('drops the login block brand panel when the section is too narrow for it', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 1000 });
+    await page.goto('/docs/blocks/login');
+
+    const section = page.locator('app-auth-login section');
+    await section.waitFor();
+
+    const brandVisibleAt = (width: number) =>
+      section.evaluate((el, target) => {
+        const frame = el.closest('.overflow-hidden') as HTMLElement;
+        const previous = frame.style.width;
+        frame.style.width = `${target}px`;
+        const visible = (el.querySelector('.brand') as HTMLElement).offsetParent !== null;
+        frame.style.width = previous;
+        return visible;
+      }, width);
+
+    expect(await brandVisibleAt(700)).toBe(false);
+    expect(await brandVisibleAt(1200)).toBe(true);
+  });
+});

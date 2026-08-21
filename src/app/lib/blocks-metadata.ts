@@ -86,6 +86,12 @@ export const BLOCK_CATEGORIES: readonly BlockCategory[] = [
     label: 'Footer',
     blurb: 'The sitemap, the legal bits, and the newsletter nobody scrolls back up for.',
   },
+  {
+    id: 'auth',
+    label: 'Auth',
+    blurb:
+      'Screens where the page is the component. The layouts tab has the same ones stripped to their skeleton.',
+  },
 ];
 
 export const BLOCKS: readonly BlockMetadata[] = [
@@ -199,6 +205,21 @@ export const BLOCKS: readonly BlockMetadata[] = [
     atoms: [
       { name: 'VoltButton', path: '/docs/components/button' },
       { name: 'VoltInput', path: '/docs/components/input' },
+    ],
+  },
+  {
+    slug: 'login',
+    path: '/docs/blocks/login',
+    label: 'Login Split',
+    category: 'auth',
+    tagline: 'A marketing panel beside the form — the shipped version of the login layout.',
+    motion:
+      'Two auroras drift behind the brand panel, and the copy and form rise in three steps at first paint. The panel itself is dropped, not stacked, once the section is too narrow for it.',
+    atoms: [
+      { name: 'VoltFormField', path: '/docs/components/form-field' },
+      { name: 'VoltInput', path: '/docs/components/input' },
+      { name: 'VoltButton', path: '/docs/components/button' },
+      { name: 'VoltAvatar', path: '/docs/components/avatar' },
     ],
   },
   {

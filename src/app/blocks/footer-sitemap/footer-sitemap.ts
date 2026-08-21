@@ -31,9 +31,9 @@ interface LinkColumn {
     LmnCheckIcon,
   ],
   template: `
-    <footer class="border-t border-border bg-background px-4 pb-10 pt-16 sm:px-6">
+    <footer class="@container border-t border-border bg-background px-4 pb-10 pt-16 @2xl:px-6">
       <div class="mx-auto max-w-6xl">
-        <div class="grid gap-12 lg:grid-cols-[1.2fr_2fr]">
+        <div class="grid gap-12 @4xl:grid-cols-[1.2fr_2fr]">
           <div class="max-w-sm">
             <div class="flex items-center gap-2">
               <span
@@ -109,7 +109,7 @@ interface LinkColumn {
         <volt-separator class="mt-14" />
 
         <div
-          class="flex flex-col items-center justify-between gap-4 pt-6 text-sm text-muted-foreground sm:flex-row"
+          class="flex flex-col items-center justify-between gap-4 pt-6 text-sm text-muted-foreground @md:flex-row"
         >
           <p>&copy; {{ year }} Northwind Systems. All rights reserved.</p>
 

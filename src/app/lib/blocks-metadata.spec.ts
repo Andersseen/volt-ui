@@ -40,11 +40,21 @@ describe('blocks catalog', () => {
     }
   });
 
-  it('keeps the groups in the order a page is assembled, hero first and footer last', () => {
+  it('keeps the page-section groups in the order a page is assembled', () => {
+    const headings = BLOCK_GROUPS.map(group => group.heading);
+    const footer = headings.indexOf('Footer');
+
+    // Hero to footer, top to bottom, the way you would build the page.
+    expect(headings[0]).toBe('Hero');
+    expect(headings.indexOf('Features')).toBeGreaterThan(0);
+    expect(footer).toBeGreaterThan(headings.indexOf('Call to action'));
+  });
+
+  it('keeps whole-page categories after the sections that make up a page', () => {
     const headings = BLOCK_GROUPS.map(group => group.heading);
 
-    expect(headings[0]).toBe('Hero');
-    expect(headings.at(-1)).toBe('Footer');
+    // Auth is not a section of a landing page, so it does not belong in that sequence.
+    expect(headings.indexOf('Auth')).toBeGreaterThan(headings.indexOf('Footer'));
   });
 
   it('points every atom at a component docs page', () => {

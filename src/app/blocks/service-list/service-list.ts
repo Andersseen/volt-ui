@@ -31,12 +31,12 @@ interface Service {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [VoltBadge, VoltButton, VoltSeparator, LmnArrowRightIcon],
   template: `
-    <section class="bg-background px-4 py-20 sm:px-6 sm:py-24">
+    <section class="@container bg-background px-4 py-20 @2xl:px-6 @2xl:py-24">
       <div class="mx-auto max-w-5xl">
-        <div class="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+        <div class="flex flex-col gap-6 @md:flex-row @2xl:items-end @2xl:justify-between">
           <div class="max-w-xl">
             <volt-badge variant="secondary" class="mb-4">What we do</volt-badge>
-            <h2 class="text-balance text-3xl font-bold tracking-tight sm:text-4xl">
+            <h2 class="text-balance text-3xl font-bold tracking-tight @2xl:text-4xl">
               Four things, done properly, instead of everything.
             </h2>
           </div>
@@ -55,7 +55,7 @@ interface Service {
         <ul class="service-list">
           @for (service of services; track service.number) {
             <li class="service">
-              <div class="flex items-start gap-5 py-7 sm:gap-8">
+              <div class="flex items-start gap-5 py-7 @2xl:gap-8">
                 <span
                   class="mt-1 font-mono text-sm tabular-nums text-muted-foreground transition-colors duration-300"
                 >
@@ -63,14 +63,14 @@ interface Service {
                 </span>
 
                 <div class="min-w-0 flex-1">
-                  <h3 class="text-xl font-semibold tracking-tight sm:text-2xl">
+                  <h3 class="text-xl font-semibold tracking-tight @2xl:text-2xl">
                     <!-- A link, so the row is reachable by keyboard and :focus-within can
                          open it without any script. -->
                     <a href="#" class="service-link" (click)="$event.preventDefault()">
                       {{ service.title }}
                     </a>
                   </h3>
-                  <p class="mt-2 text-sm text-muted-foreground sm:text-base">
+                  <p class="mt-2 text-sm text-muted-foreground @2xl:text-base">
                     {{ service.summary }}
                   </p>
 

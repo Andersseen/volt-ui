@@ -37,11 +37,11 @@ interface Feature {
     LmnGridIcon,
   ],
   template: `
-    <section class="bg-background px-4 py-20 sm:px-6 sm:py-24">
+    <section class="@container bg-background px-4 py-20 @2xl:px-6 @2xl:py-24">
       <div class="mx-auto max-w-6xl">
         <div class="max-w-2xl">
           <volt-badge variant="secondary" class="mb-4">Why teams pick it</volt-badge>
-          <h2 class="text-balance text-3xl font-bold tracking-tight sm:text-4xl">
+          <h2 class="text-balance text-3xl font-bold tracking-tight @2xl:text-4xl">
             Everything you need, nothing you have to unlearn.
           </h2>
           <p class="mt-4 text-lg text-muted-foreground">
@@ -50,7 +50,7 @@ interface Feature {
           </p>
         </div>
 
-        <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="mt-12 grid gap-4 @2xl:grid-cols-2 @4xl:grid-cols-3">
           @for (feature of features; track feature.title) {
             <volt-card
               class="bento-card group relative overflow-hidden p-6 transition-transform duration-300 motion-safe:hover:-translate-y-1"
@@ -174,7 +174,7 @@ export class FeatureBento {
       icon: 'zap',
       title: 'Motion that ships with the markup',
       body: 'Every interaction here is CSS and a pointer handler — no animation runtime, no bundle cost, and it degrades to a static section when the visitor asks for reduced motion.',
-      span: 'sm:col-span-2',
+      span: '@2xl:col-span-2',
       tags: ['@keyframes', 'mask-composite', 'pointermove', 'prefers-reduced-motion'],
     },
     {

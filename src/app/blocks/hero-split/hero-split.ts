@@ -66,17 +66,21 @@ const STEP_MS = 2200;
     '(pointerleave)': 'tilt()',
   },
   template: `
-    <section class="relative overflow-hidden bg-background px-4 py-20 sm:px-6 sm:py-28">
+    <section
+      class="@container relative overflow-hidden bg-background px-4 py-20 @2xl:px-6 @2xl:py-28"
+    >
       <div class="hero-wash pointer-events-none absolute inset-0" aria-hidden="true"></div>
 
-      <div class="relative mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
+      <div
+        class="relative mx-auto grid max-w-6xl items-center gap-12 @4xl:grid-cols-[1.05fr_0.95fr]"
+      >
         <div class="min-w-0">
           <volt-badge variant="outline" class="border-primary/30 text-primary">
             Ships on every push
           </volt-badge>
 
           <h1
-            class="mt-6 text-balance text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl"
+            class="mt-6 text-balance text-4xl font-bold leading-[1.05] tracking-tight @2xl:text-5xl @4xl:text-6xl"
           >
             From commit to production without the ceremony.
           </h1>
@@ -86,8 +90,8 @@ const STEP_MS = 2200;
             about who owns the deploy.
           </p>
 
-          <div class="mt-9 flex flex-col gap-3 sm:flex-row">
-            <volt-button size="lg" class="group w-full min-w-44 sm:w-auto">
+          <div class="mt-9 flex flex-col gap-3 @md:flex-row">
+            <volt-button size="lg" class="group w-full min-w-44 @md:w-auto">
               Deploy your repo
               <lmn-arrow-right
                 slot="trailing"
@@ -95,7 +99,7 @@ const STEP_MS = 2200;
                 class="transition-transform duration-300 motion-safe:group-hover:translate-x-1"
               />
             </volt-button>
-            <volt-button variant="outline" size="lg" class="w-full min-w-44 sm:w-auto">
+            <volt-button variant="outline" size="lg" class="w-full min-w-44 @md:w-auto">
               Read the docs
             </volt-button>
           </div>
@@ -197,8 +201,9 @@ const STEP_MS = 2200;
     }
 
     /* Only tilt where there is room for it. On a stacked layout the panel is the whole
-       width and a rotation just makes one edge blurry. */
-    @media (min-width: 1024px) {
+       width and a rotation just makes one edge blurry. Container query, not a media one:
+       what decides is how wide this section is, not how wide the window is. */
+    @container (min-width: 56rem) {
       .panel {
         transform: rotateY(-7deg) rotateX(3deg);
       }

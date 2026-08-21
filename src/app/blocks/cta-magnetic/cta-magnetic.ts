@@ -31,9 +31,9 @@ const round = (value: number): number => Math.round(value * 100) / 100;
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [VoltButton, VoltInput, LmnArrowRightIcon, LmnCheckIcon],
   template: `
-    <section class="bg-background px-4 py-20 sm:px-6 sm:py-24">
+    <section class="@container bg-background px-4 py-20 @2xl:px-6 @2xl:py-24">
       <div
-        class="cta-panel relative mx-auto max-w-4xl overflow-hidden rounded-2xl px-6 py-16 text-center sm:px-12"
+        class="cta-panel relative mx-auto max-w-4xl overflow-hidden rounded-2xl px-6 py-16 text-center @2xl:px-12"
         (pointermove)="pull($event)"
         (pointerleave)="release()"
       >
@@ -41,7 +41,7 @@ const round = (value: number): number => Math.round(value * 100) / 100;
         <span class="cta-glow" aria-hidden="true"></span>
 
         <div class="relative mx-auto max-w-2xl">
-          <h2 class="text-balance text-3xl font-bold tracking-tight sm:text-4xl">
+          <h2 class="text-balance text-3xl font-bold tracking-tight @2xl:text-4xl">
             Start from a block. Ship the page today.
           </h2>
           <p class="mt-4 text-balance text-lg text-muted-foreground">
@@ -49,7 +49,7 @@ const round = (value: number): number => Math.round(value * 100) / 100;
           </p>
 
           <form
-            class="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row"
+            class="mt-8 flex flex-col items-center justify-center gap-3 @md:flex-row"
             (submit)="submit($event)"
           >
             <!-- Bound rather than static, so the id lands on the inner <input> only;
@@ -59,13 +59,13 @@ const round = (value: number): number => Math.round(value * 100) / 100;
             <volt-input
               [id]="'cta-email'"
               type="email"
-              class="w-full sm:w-72"
+              class="w-full @md:w-72"
               placeholder="you@company.com"
             />
 
             <!-- The magnet, not the button, is what actually moves. -->
-            <span #magnet class="magnet inline-flex w-full sm:w-auto">
-              <volt-button type="submit" size="lg" class="group w-full sm:w-auto">
+            <span #magnet class="magnet inline-flex w-full @md:w-auto">
+              <volt-button type="submit" size="lg" class="group w-full @md:w-auto">
                 Get the blocks
                 <lmn-arrow-right
                   slot="trailing"

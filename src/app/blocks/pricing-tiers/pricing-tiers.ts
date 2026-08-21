@@ -29,10 +29,10 @@ interface Tier {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [VoltCard, VoltButton, VoltBadge, VoltSwitch, LmnCheckIcon],
   template: `
-    <section class="bg-background px-4 py-20 sm:px-6 sm:py-24">
+    <section class="@container bg-background px-4 py-20 @2xl:px-6 @2xl:py-24">
       <div class="mx-auto max-w-5xl">
         <div class="text-center">
-          <h2 class="text-balance text-3xl font-bold tracking-tight sm:text-4xl">
+          <h2 class="text-balance text-3xl font-bold tracking-tight @2xl:text-4xl">
             Pricing that stops being interesting once you ship.
           </h2>
           <p class="mx-auto mt-4 max-w-xl text-balance text-lg text-muted-foreground">
@@ -76,7 +76,7 @@ interface Tier {
           </volt-badge>
         </div>
 
-        <div class="mt-12 grid items-start gap-6 lg:grid-cols-3">
+        <div class="mt-12 grid items-start gap-6 @4xl:grid-cols-3">
           @for (tier of tiers; track tier.name) {
             <volt-card
               class="tier relative p-8 transition-all duration-300 motion-safe:hover:-translate-y-1.5 hover:shadow-lg"
@@ -147,8 +147,9 @@ interface Tier {
     /* Tailwind v4 drives translate and scale through their own CSS properties, so setting
        scale here composes with the card's hover lift instead of overwriting it. Lifting a
        tier out of the row only means something while there is a row, so it collapses once
-       the cards stack. */
-    @media (min-width: 1024px) {
+       the cards stack — and it asks the container, not the viewport, because the row is
+       gone at 56rem of section width whatever the window is doing. */
+    @container (min-width: 56rem) {
       .tier-featured {
         scale: 1.04;
       }

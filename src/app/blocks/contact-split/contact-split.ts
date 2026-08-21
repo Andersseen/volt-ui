@@ -51,10 +51,10 @@ interface ContactMethod {
     LmnCheckIcon,
   ],
   template: `
-    <section class="bg-background px-4 py-20 sm:px-6 sm:py-24">
-      <div class="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+    <section class="@container bg-background px-4 py-20 @2xl:px-6 @2xl:py-24">
+      <div class="mx-auto grid max-w-6xl gap-12 @4xl:grid-cols-[0.9fr_1.1fr] @4xl:gap-16">
         <div class="min-w-0">
-          <h2 class="text-balance text-3xl font-bold tracking-tight sm:text-4xl">
+          <h2 class="text-balance text-3xl font-bold tracking-tight @2xl:text-4xl">
             Tell us what you are building.
           </h2>
           <p class="mt-4 max-w-md text-balance text-lg text-muted-foreground">
@@ -91,7 +91,7 @@ interface ContactMethod {
           </dl>
         </div>
 
-        <div class="form-panel rounded-xl border border-border bg-surface p-6 sm:p-8">
+        <div class="form-panel rounded-xl border border-border bg-surface p-6 @2xl:p-8">
           @if (sent()) {
             <!-- tabindex="-1" so the code can move focus here; role="status" so it is
                  announced without stealing focus from anyone who did not submit. -->
@@ -116,7 +116,7 @@ interface ContactMethod {
             </div>
           } @else {
             <form class="space-y-5" (submit)="submit($event)">
-              <div class="grid gap-5 sm:grid-cols-2">
+              <div class="grid gap-5 @2xl:grid-cols-2">
                 <div class="field">
                   <label class="field-label" for="contact-name">Name</label>
                   <volt-input
@@ -161,11 +161,13 @@ interface ContactMethod {
                 />
               </div>
 
-              <div class="flex flex-col gap-4 pt-1 sm:flex-row sm:items-center sm:justify-between">
+              <div
+                class="flex flex-col gap-4 pt-1 @md:flex-row @md:items-center @2xl:justify-between"
+              >
                 <p class="text-xs text-muted-foreground">
                   We never share your details. No newsletter unless you ask.
                 </p>
-                <volt-button type="submit" size="lg" class="group w-full sm:w-auto">
+                <volt-button type="submit" size="lg" class="group w-full @md:w-auto">
                   Send message
                   <lmn-send
                     slot="trailing"

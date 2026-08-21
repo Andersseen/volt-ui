@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { AuthLogin } from '../blocks/auth-login/auth-login';
 import { ContactSplit } from '../blocks/contact-split/contact-split';
 import { CtaMagnetic } from '../blocks/cta-magnetic/cta-magnetic';
 import { FeatureBento } from '../blocks/feature-bento/feature-bento';
@@ -33,6 +34,7 @@ import { TestimonialMarquee } from '../blocks/testimonial-marquee/testimonial-ma
     PricingTiers,
     TestimonialMarquee,
     ContactSplit,
+    AuthLogin,
     CtaMagnetic,
     FooterSitemap,
   ],
@@ -67,6 +69,9 @@ import { TestimonialMarquee } from '../blocks/testimonial-marquee/testimonial-ma
         }
         @case ('cta') {
           <app-cta-magnetic />
+        }
+        @case ('login') {
+          <app-auth-login />
         }
         @case ('footer') {
           <app-footer-sitemap />

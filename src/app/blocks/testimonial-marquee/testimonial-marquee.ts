@@ -33,9 +33,9 @@ interface Row {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgTemplateOutlet, VoltCard, VoltAvatar, VoltAvatarFallback, LmnStarIcon],
   template: `
-    <section class="overflow-hidden bg-background py-20 sm:py-24">
-      <div class="mx-auto max-w-3xl px-4 text-center sm:px-6">
-        <h2 class="text-balance text-3xl font-bold tracking-tight sm:text-4xl">
+    <section class="@container overflow-hidden bg-background py-20 @2xl:py-24">
+      <div class="mx-auto max-w-3xl px-4 text-center @2xl:px-6">
+        <h2 class="text-balance text-3xl font-bold tracking-tight @2xl:text-4xl">
           Shipped by people who do not enjoy writing components.
         </h2>
         <p class="mt-4 text-lg text-muted-foreground">
@@ -80,7 +80,7 @@ interface Row {
 
     <ng-template #card let-item>
       <volt-card
-        class="w-[19rem] p-6 transition-colors duration-300 hover:border-primary/40 sm:w-[22rem]"
+        class="w-[19rem] p-6 transition-colors duration-300 hover:border-primary/40 @2xl:w-[22rem]"
       >
         <div class="flex items-center gap-0.5 text-warning" aria-hidden="true">
           @for (star of stars; track $index) {
