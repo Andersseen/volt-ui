@@ -5,6 +5,7 @@
  * the code on the page is the code running above it, so the two cannot drift. Editing a
  * block updates its documentation in the same commit, for free.
  */
+import appDashboardSource from '../../blocks/app-dashboard/app-dashboard.ts?raw';
 import authLoginSource from '../../blocks/auth-login/auth-login.ts?raw';
 import contactSplitSource from '../../blocks/contact-split/contact-split.ts?raw';
 import ctaMagneticSource from '../../blocks/cta-magnetic/cta-magnetic.ts?raw';
@@ -26,3 +27,4 @@ export const SERVICE_LIST_BLOCK = serviceListSource;
 export const CONTACT_SPLIT_BLOCK = contactSplitSource;
 export const FOOTER_SITEMAP_BLOCK = footerSitemapSource;
 export const AUTH_LOGIN_BLOCK = authLoginSource;
+export const APP_DASHBOARD_BLOCK = appDashboardSource;

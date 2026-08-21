@@ -92,6 +92,11 @@ export const BLOCK_CATEGORIES: readonly BlockCategory[] = [
     blurb:
       'Screens where the page is the component. The layouts tab has the same ones stripped to their skeleton.',
   },
+  {
+    id: 'app',
+    label: 'Application',
+    blurb: 'The screens behind the login, with the work done rather than left as slots.',
+  },
 ];
 
 export const BLOCKS: readonly BlockMetadata[] = [
@@ -234,6 +239,21 @@ export const BLOCKS: readonly BlockMetadata[] = [
       { name: 'VoltInput', path: '/docs/components/input' },
       { name: 'VoltButton', path: '/docs/components/button' },
       { name: 'VoltSeparator', path: '/docs/components/separator' },
+    ],
+  },
+  {
+    slug: 'dashboard',
+    path: '/docs/blocks/dashboard',
+    label: 'Dashboard',
+    category: 'app',
+    tagline: 'Branded shell, figures that count up, and a chart that draws itself.',
+    motion:
+      'The figures count to their value the first time the row is scrolled into view, once and never again, and the chart strokes itself on as it arrives. Both start finished under reduced motion.',
+    atoms: [
+      { name: 'VoltSidebar', path: '/docs/components/sidebar' },
+      { name: 'VoltCard', path: '/docs/components/card' },
+      { name: 'VoltBadge', path: '/docs/components/badge' },
+      { name: 'VoltAvatar', path: '/docs/components/avatar' },
     ],
   },
 ];

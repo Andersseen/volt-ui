@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { AppDashboard } from '../blocks/app-dashboard/app-dashboard';
 import { AuthLogin } from '../blocks/auth-login/auth-login';
 import { ContactSplit } from '../blocks/contact-split/contact-split';
 import { CtaMagnetic } from '../blocks/cta-magnetic/cta-magnetic';
@@ -35,6 +36,7 @@ import { TestimonialMarquee } from '../blocks/testimonial-marquee/testimonial-ma
     TestimonialMarquee,
     ContactSplit,
     AuthLogin,
+    AppDashboard,
     CtaMagnetic,
     FooterSitemap,
   ],
@@ -72,6 +74,9 @@ import { TestimonialMarquee } from '../blocks/testimonial-marquee/testimonial-ma
         }
         @case ('login') {
           <app-auth-login />
+        }
+        @case ('dashboard') {
+          <app-app-dashboard />
         }
         @case ('footer') {
           <app-footer-sitemap />

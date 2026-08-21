@@ -52,9 +52,21 @@ describe('blocks catalog', () => {
 
   it('keeps whole-page categories after the sections that make up a page', () => {
     const headings = BLOCK_GROUPS.map(group => group.heading);
+    const footer = headings.indexOf('Footer');
 
-    // Auth is not a section of a landing page, so it does not belong in that sequence.
-    expect(headings.indexOf('Auth')).toBeGreaterThan(headings.indexOf('Footer'));
+    // Neither a login nor a dashboard is a section of a landing page, so neither belongs
+    // in that sequence.
+    for (const wholeScreen of ['Auth', 'Application']) {
+      expect(headings.indexOf(wholeScreen)).toBeGreaterThan(footer);
+    }
+  });
+
+  it('mirrors the layouts that have a finished counterpart', () => {
+    // The pair is the clearest statement of what the two galleries are for: the same
+    // subject, once as a skeleton and once as something you would ship.
+    for (const slug of ['login', 'dashboard']) {
+      expect(BLOCKS.some(block => block.slug === slug)).toBe(true);
+    }
   });
 
   it('points every atom at a component docs page', () => {
