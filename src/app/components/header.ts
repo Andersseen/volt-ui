@@ -6,20 +6,33 @@ import { VoltBadge } from 'volt';
 import { ThemeSwitcher } from './theme-switcher';
 import { MobileMenu } from './mobile-menu';
 import { LmnGithubIcon } from 'lumen-icons';
+import { LanguageSwitcher } from './language-switcher';
+import { Translations } from '../i18n/translations';
 import { GALLERY_SECTIONS } from '../lib/gallery-sections';
 import { SITE_STATS } from '../lib/generated/site-stats';
 
 @Component({
   selector: 'app-header',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, RouterLinkActive, VoltBadge, ThemeSwitcher, MobileMenu, LmnGithubIcon],
+  imports: [
+    RouterLink,
+    RouterLinkActive,
+    VoltBadge,
+    ThemeSwitcher,
+    MobileMenu,
+    LanguageSwitcher,
+    LmnGithubIcon,
+  ],
   template: `
     <header class="sticky top-0 z-50 bg-background/70 backdrop-blur-xl border-b border-border/40">
       <div
         class="max-w-6xl mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between gap-2"
       >
         <div class="flex items-center gap-3 shrink-0">
-          <a routerLink="/" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
+          <a
+            [routerLink]="path('/')"
+            class="flex items-center gap-2 hover:opacity-80 transition-opacity"
+          >
             <div
               class="flex items-center justify-center w-8 h-8 shrink-0 rounded-lg overflow-hidden relative shadow-[0_0_15px_rgba(var(--color-primary),0.5)]"
             >
@@ -50,51 +63,51 @@ import { SITE_STATS } from '../lib/generated/site-stats';
         <div class="flex items-center gap-2 sm:gap-3">
           <nav
             class="hidden md:flex gap-0.5 text-sm font-medium text-muted-foreground"
-            aria-label="Main"
+            [attr.aria-label]="t('nav.main')"
           >
             <a
-              routerLink="/"
+              [routerLink]="path('/')"
               routerLinkActive="text-foreground"
               [routerLinkActiveOptions]="{ exact: true }"
               class="whitespace-nowrap rounded-md px-2.5 py-2 transition-colors hover:text-foreground lg:px-3"
             >
-              Home
+              {{ t('nav.home') }}
             </a>
             <a
-              routerLink="/docs/introduction"
+              [routerLink]="path('/docs/introduction')"
               routerLinkActive="text-foreground"
               class="whitespace-nowrap rounded-md px-2.5 py-2 transition-colors hover:text-foreground lg:px-3"
             >
-              Docs
+              {{ t('nav.docs') }}
             </a>
             <a
-              routerLink="/docs/components"
+              [routerLink]="path('/docs/components')"
               routerLinkActive="text-foreground"
               class="whitespace-nowrap rounded-md px-2.5 py-2 transition-colors hover:text-foreground lg:px-3"
             >
-              Components
+              {{ t('nav.components') }}
             </a>
             <!-- One entry for both halves of the gallery, so the active state has to be
                  computed: routerLinkActive only knows about this link's own path, and the
                  tab underneath it may be the layouts one. -->
             <a
-              [routerLink]="galleryPath"
+              [routerLink]="path(galleryPath)"
               class="whitespace-nowrap rounded-md px-2.5 py-2 transition-colors hover:text-foreground lg:px-3"
               [class.text-foreground]="inGallery()"
             >
-              Gallery
+              {{ t('nav.gallery') }}
             </a>
             <a
-              routerLink="/create-theme"
+              [routerLink]="path('/create-theme')"
               routerLinkActive="text-foreground"
               class="inline-flex items-center gap-1.5 whitespace-nowrap rounded-md bg-primary/10 px-2.5 py-2 text-primary transition-colors hover:bg-primary hover:text-primary-foreground lg:px-3"
             >
-              Create Theme
+              {{ t('nav.createTheme') }}
               <span
                 aria-hidden="true"
                 class="rounded-full bg-primary px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase leading-none text-primary-foreground"
               >
-                New
+                {{ t('nav.new') }}
               </span>
             </a>
           </nav>
@@ -104,10 +117,12 @@ import { SITE_STATS } from '../lib/generated/site-stats';
             target="_blank"
             rel="noreferrer"
             class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-border/60 text-muted-foreground transition-colors hover:text-foreground hover:bg-muted/60"
-            aria-label="GitHub repository"
+            [attr.aria-label]="t('nav.github')"
           >
             <lmn-github [size]="20" />
           </a>
+
+          <app-language-switcher />
 
           <app-theme-switcher />
 
@@ -119,6 +134,11 @@ import { SITE_STATS } from '../lib/generated/site-stats';
 })
 export class Header {
   private readonly router = inject(Router);
+  private readonly translations = inject(Translations);
+
+  protected readonly t = this.translations.t;
+  /** Keeps every link in the locale the visitor is already reading. */
+  protected readonly path = this.translations.path;
 
   /** Generated from projects/volt/package.json, so the badge cannot outlive a release. */
   protected readonly version = SITE_STATS.version;

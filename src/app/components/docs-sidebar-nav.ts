@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import {
   NgpDialog,
@@ -9,6 +9,7 @@ import {
 } from 'ng-primitives/dialog';
 import { LmnChevronRightIcon, LmnXIcon } from 'lumen-icons';
 import type { ComponentStability } from '../lib/component-metadata';
+import { Translations } from '../i18n/translations';
 
 export interface DocsSidebarLink {
   path: string;
@@ -65,7 +66,7 @@ export interface DocsSidebarGroup {
           @for (link of group.links; track link.path) {
             <li>
               <a
-                [routerLink]="link.path"
+                [routerLink]="path(link.path)"
                 routerLinkActive="font-medium text-foreground bg-muted"
                 [routerLinkActiveOptions]="{ exact: link.exact ?? false }"
                 class="flex items-center justify-between gap-2 px-2 py-1 text-sm rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
@@ -120,7 +121,7 @@ export interface DocsSidebarGroup {
             }
             @for (link of group.links; track link.path) {
               <a
-                [routerLink]="link.path"
+                [routerLink]="path(link.path)"
                 routerLinkActive="bg-muted text-foreground font-medium"
                 [routerLinkActiveOptions]="{ exact: link.exact ?? false }"
                 (click)="close()"
@@ -147,6 +148,11 @@ export interface DocsSidebarGroup {
   `,
 })
 export class DocsSidebarNav {
+  private readonly translations = inject(Translations);
+
+  /** Every sidebar link on the site passes through here, so one call keeps them all in locale. */
+  protected readonly path = this.translations.path;
+
   readonly title = input.required<string>();
   readonly browseLabel = input<string>('Browse');
   readonly description = input<string>('');

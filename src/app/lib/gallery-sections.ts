@@ -1,6 +1,7 @@
 import type { DocsSidebarGroup } from '../components/docs-sidebar-nav';
 import { BLOCK_GROUPS } from './blocks-metadata';
 import { LAYOUT_GROUPS } from './layouts-metadata';
+import type { TranslationKey } from '../i18n/translations';
 
 /**
  * The two halves of the gallery.
@@ -17,24 +18,27 @@ import { LAYOUT_GROUPS } from './layouts-metadata';
  */
 export interface GallerySection {
   readonly id: 'blocks' | 'layouts';
-  /** Tab label, and the root the tab links to. */
-  readonly label: string;
   readonly path: string;
-  /** Heading and blurb for the sidebar while this tab is active. */
-  readonly title: string;
-  readonly description: string;
-  readonly browseLabel: string;
+  /*
+   * Translation keys rather than text. The catalog is data, and data that carries English
+   * strings can only ever be shown in English — keeping the key here is what lets the same
+   * definition serve all three languages.
+   */
+  readonly labelKey: TranslationKey;
+  readonly titleKey: TranslationKey;
+  readonly descriptionKey: TranslationKey;
+  readonly browseKey: TranslationKey;
   readonly groups: readonly DocsSidebarGroup[];
 }
 
 export const GALLERY_SECTIONS: readonly GallerySection[] = [
   {
     id: 'blocks',
-    label: 'Blocks',
     path: '/docs/blocks',
-    title: 'Blocks',
-    description: 'Animated page sections. Copy the source, keep the motion.',
-    browseLabel: 'Browse Blocks',
+    labelKey: 'gallery.blocks.title',
+    titleKey: 'gallery.blocks.title',
+    descriptionKey: 'gallery.blocks.description',
+    browseKey: 'gallery.blocks.browse',
     groups: [
       { links: [{ path: '/docs/blocks', label: 'Overview', exact: true }] },
       ...BLOCK_GROUPS.map(group => ({
@@ -45,11 +49,11 @@ export const GALLERY_SECTIONS: readonly GallerySection[] = [
   },
   {
     id: 'layouts',
-    label: 'Layouts',
     path: '/docs/layouts',
-    title: 'Layouts',
-    description: 'Unbranded skeletons to fill with your screens.',
-    browseLabel: 'Browse Layouts',
+    labelKey: 'gallery.layouts.title',
+    titleKey: 'gallery.layouts.title',
+    descriptionKey: 'gallery.layouts.description',
+    browseKey: 'gallery.layouts.browse',
     groups: LAYOUT_GROUPS.map(group => ({
       heading: group.heading,
       links: group.layouts.map(layout => ({ path: layout.path, label: layout.label })),

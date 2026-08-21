@@ -1,0 +1,115 @@
+{
+  "nav": {
+    "home": "Home",
+    "docs": "Docs",
+    "components": "Components",
+    "gallery": "Gallery",
+    "createTheme": "Create Theme",
+    "new": "New",
+    "main": "Main",
+    "github": "GitHub repository",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "menu": "Menu",
+    "language": "Language",
+    "toggleDark": "Toggle dark mode",
+    "themeLabel": "Theme: {color} palette, {style} shape",
+    "palette": "Palette",
+    "shape": "Shape"
+  },
+  "footer": {
+    "tagline": "Angular components you own.",
+    "rights": "© {year}"
+  },
+  "gallery": {
+    "sections": "Gallery sections",
+    "blocks": {
+      "title": "Blocks",
+      "browse": "Browse Blocks",
+      "description": "Animated page sections. Copy the source, keep the motion."
+    },
+    "layouts": {
+      "title": "Layouts",
+      "browse": "Browse Layouts",
+      "description": "Unbranded skeletons to fill with your screens."
+    },
+    "overview": "Overview",
+    "comingSoon": "Coming soon",
+    "comingSoonHint": "The categories above are the shape of the set; these fill the gaps.",
+    "soon": "Soon",
+    "missing": "Missing one you need?",
+    "openIssue": "Open an issue",
+    "missingTail": "and it goes to the front of the queue.",
+    "atoms": "{count} atoms",
+    "whatMoves": "What moves",
+    "builtFrom": "Built from",
+    "blockSource": "Block source",
+    "arrangement": "The arrangement",
+    "assembledFrom": "Assembled from",
+    "layoutSource": "Layout source"
+  },
+  "language": {
+    "switch": "Change language",
+    "current": "Language: {name}"
+  },
+  "landing": {
+    "hero": {
+      "badge": "Volt UI {version} for Angular 21",
+      "title": "Ship Angular interfaces from components you can own.",
+      "subtitle": "Copy polished, accessible Angular source into your app. Keep the speed of a component library, with the control of code that belongs to your product.",
+      "start": "Start building",
+      "studio": "Try the theme studio",
+      "copyCommand": "Copy the install command",
+      "copied": "Copied",
+      "panelTitle": "Project settings",
+      "panelSubtitle": "Built with Volt UI components",
+      "live": "live",
+      "workspace": "Workspace name",
+      "publicTheme": "Public theme",
+      "publicThemeHint": "Anyone can preview it",
+      "radius": "Border radius",
+      "migration": "Migration progress",
+      "save": "Save changes",
+      "reset": "Reset",
+      "autoSync": "Auto-sync"
+    },
+    "proof": {
+      "components": "documented components",
+      "tests": "automated tests",
+      "themes": "theme combinations",
+      "ngModules": "NgModules required"
+    },
+    "features": {
+      "eyebrow": "Built for ownership",
+      "title": "Production behavior first. Product taste next.",
+      "subtitle": "Volt UI starts with ng-primitives for focus, overlays, ARIA and forms, then wraps it in Angular signals, Tailwind tokens, and copyable source you can reshape.",
+      "ownTitle": "Own the source",
+      "ownBody": "The CLI copies readable standalone components directly into your application. Change every line when your product needs it.",
+      "behaviorTitle": "Behavior built in",
+      "behaviorBody": "ng-primitives handles focus, keyboard navigation, overlays, and ARIA contracts while Volt UI handles product-ready styling.",
+      "systemTitle": "Designed as a system",
+      "systemBody": "Semantic Tailwind tokens, colour presets, and style presets let one component set adapt to a complete visual language."
+    },
+    "workflow": {
+      "eyebrow": "One command. Your source.",
+      "title": "A workflow that ends in editable Angular, not vendor lock-in.",
+      "subtitle": "The CLI resolves component dependencies, writes readable files, and keeps selectors consistent with the source-first workflow.",
+      "install": "Read the installation guide",
+      "copied": "copied",
+      "export": "export",
+      "themePreview": "Theme preview",
+      "themeCaption": "Five color systems, five styles.",
+      "darkMode": "Dark mode ready",
+      "accessible": "Accessible interactions",
+      "workspaceLabel": "Workspace",
+      "ownedSource": "Owned source",
+      "saveUi": "Save UI"
+    },
+    "cta": {
+      "title": "Build the Angular interface you wanted.",
+      "browse": "Browse components",
+      "star": "Star on GitHub",
+      "body": "Explore {components} components, accessible layouts, {themes} theme combinations, and an AI-ready workflow."
+    }
+  }
+}

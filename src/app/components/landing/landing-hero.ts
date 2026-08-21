@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import {
   MoveEnterDirective,
@@ -26,6 +26,7 @@ import {
   VoltSlider,
   VoltSwitch,
 } from 'volt';
+import { Translations } from '../../i18n/translations';
 import { SITE_STATS } from '../../lib/generated/site-stats';
 import { HOVER_LIFT, TAP_PRESS } from '../../lib/motion';
 
@@ -84,31 +85,30 @@ export const INSTALL_COMMAND = 'npx @voltui/cli add button dialog form-field';
                 [moveDuration]="1800"
                 class="mr-2 inline-flex h-1.5 w-1.5 rounded-full bg-success"
               ></span>
-              Volt UI {{ version }} for Angular 21
+              {{ t('landing.hero.badge', { version }) }}
             </volt-badge>
 
             <h1
               class="reveal-up reveal-delay-1 mt-6 text-balance text-4xl font-bold leading-[1.05] tracking-normal text-foreground sm:text-5xl lg:text-6xl xl:text-[4.4rem]"
             >
-              Ship Angular interfaces from components you can own.
+              {{ t('landing.hero.title') }}
             </h1>
 
             <p
               class="reveal-up reveal-delay-2 mt-6 max-w-xl text-balance text-lg leading-8 text-muted-foreground"
             >
-              Copy polished, accessible Angular source into your app. Keep the speed of a component
-              library, with the control of code that belongs to your product.
+              {{ t('landing.hero.subtitle') }}
             </p>
 
             <div class="reveal-up reveal-delay-3 mt-8 flex flex-col gap-3 sm:flex-row">
               <volt-button
-                routerLink="/docs/introduction"
+                [routerLink]="path('/docs/introduction')"
                 size="lg"
                 class="group w-full min-w-44 sm:w-auto"
                 [moveWhileHover]="lift"
                 [moveWhileTap]="press"
               >
-                Start building
+                {{ t('landing.hero.start') }}
                 <lmn-arrow-right
                   slot="trailing"
                   [size]="16"
@@ -116,7 +116,7 @@ export const INSTALL_COMMAND = 'npx @voltui/cli add button dialog form-field';
                 />
               </volt-button>
               <volt-button
-                routerLink="/create-theme"
+                [routerLink]="path('/create-theme')"
                 size="lg"
                 variant="outline"
                 class="w-full min-w-44 bg-background/80 backdrop-blur sm:w-auto"
@@ -124,7 +124,7 @@ export const INSTALL_COMMAND = 'npx @voltui/cli add button dialog form-field';
                 [moveWhileTap]="press"
               >
                 <lmn-sparkles slot="leading" [size]="16" class="text-primary" />
-                Try the theme studio
+                {{ t('landing.hero.studio') }}
               </volt-button>
             </div>
 
@@ -163,7 +163,7 @@ export const INSTALL_COMMAND = 'npx @voltui/cli add button dialog form-field';
             >
               <div class="mb-5 flex items-center justify-between gap-3">
                 <div class="min-w-0">
-                  <p class="truncate text-sm font-semibold">Project settings</p>
+                  <p class="truncate text-sm font-semibold">{{ t('landing.hero.panelTitle') }}</p>
                   <p class="mt-0.5 truncate text-xs text-muted-foreground">
                     Built with Volt UI components
                   </p>
@@ -175,39 +175,55 @@ export const INSTALL_COMMAND = 'npx @voltui/cli add button dialog form-field';
 
               <div class="space-y-5">
                 <volt-form-field>
-                  <volt-label>Workspace name</volt-label>
+                  <volt-label>{{ t('landing.hero.workspace') }}</volt-label>
                   <volt-input value="Acme Design System" />
                 </volt-form-field>
 
                 <div class="flex items-center justify-between gap-4">
                   <div class="min-w-0">
-                    <p class="text-sm font-medium">Public theme</p>
-                    <p class="mt-0.5 text-xs text-muted-foreground">Anyone can preview it</p>
+                    <p class="text-sm font-medium">{{ t('landing.hero.publicTheme') }}</p>
+                    <p class="mt-0.5 text-xs text-muted-foreground">
+                      {{ t('landing.hero.publicThemeHint') }}
+                    </p>
                   </div>
-                  <volt-switch [checked]="true" aria-label="Public theme" />
+                  <volt-switch [checked]="true" [attr.aria-label]="t('landing.hero.publicTheme')" />
                 </div>
 
                 <div>
                   <div class="mb-2 flex items-center justify-between text-sm">
-                    <span class="font-medium">Border radius</span>
+                    <span class="font-medium">{{ t('landing.hero.radius') }}</span>
                     <span class="font-mono text-xs text-muted-foreground">0.5rem</span>
                   </div>
-                  <volt-slider [value]="45" [min]="0" [max]="100" ariaLabel="Border radius" />
+                  <volt-slider
+                    [value]="45"
+                    [min]="0"
+                    [max]="100"
+                    [ariaLabel]="t('landing.hero.radius')"
+                  />
                 </div>
 
                 <volt-progress [value]="82">
-                  <volt-progress-label class="text-sm">Migration progress</volt-progress-label>
+                  <volt-progress-label class="text-sm">{{
+                    t('landing.hero.migration')
+                  }}</volt-progress-label>
                   <volt-progress-value class="text-sm">82%</volt-progress-value>
                 </volt-progress>
 
                 <div class="flex flex-wrap items-center gap-2 border-t border-border/60 pt-4">
-                  <volt-button size="sm" [moveWhileTap]="press">Save changes</volt-button>
+                  <volt-button size="sm" [moveWhileTap]="press">{{
+                    t('landing.hero.save')
+                  }}</volt-button>
                   <volt-button size="sm" variant="outline" [moveWhileTap]="press">
-                    Reset
+                    {{ t('landing.hero.reset') }}
                   </volt-button>
                   <div class="flex items-center gap-2 pl-1">
-                    <volt-checkbox [checked]="true" aria-label="Auto-sync tokens" />
-                    <span class="text-xs text-muted-foreground">Auto-sync</span>
+                    <volt-checkbox
+                      [checked]="true"
+                      [attr.aria-label]="t('landing.hero.autoSync')"
+                    />
+                    <span class="text-xs text-muted-foreground">{{
+                      t('landing.hero.autoSync')
+                    }}</span>
                   </div>
                 </div>
               </div>
@@ -306,6 +322,11 @@ export const INSTALL_COMMAND = 'npx @voltui/cli add button dialog form-field';
   `,
 })
 export class LandingHero {
+  private readonly translations = inject(Translations);
+
+  protected readonly t = this.translations.t;
+  protected readonly path = this.translations.path;
+
   /** Generated from projects/volt/package.json, so the badge cannot outlive a release. */
   protected readonly version = SITE_STATS.version;
   protected readonly copied = signal(false);

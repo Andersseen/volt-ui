@@ -1,0 +1,115 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "docs": "Documentación",
+    "components": "Componentes",
+    "gallery": "Galería",
+    "createTheme": "Crear tema",
+    "new": "Nuevo",
+    "main": "Principal",
+    "github": "Repositorio de GitHub",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú",
+    "menu": "Menú",
+    "language": "Idioma",
+    "toggleDark": "Cambiar a modo oscuro",
+    "themeLabel": "Tema: paleta {color}, forma {style}",
+    "palette": "Paleta",
+    "shape": "Forma"
+  },
+  "footer": {
+    "tagline": "Componentes de Angular que son tuyos.",
+    "rights": "© {year}"
+  },
+  "gallery": {
+    "sections": "Secciones de la galería",
+    "blocks": {
+      "title": "Bloques",
+      "browse": "Ver bloques",
+      "description": "Secciones de página animadas. Copia el código y quédate con el movimiento."
+    },
+    "layouts": {
+      "title": "Layouts",
+      "browse": "Ver layouts",
+      "description": "Esqueletos sin marca para rellenar con tus pantallas."
+    },
+    "overview": "Resumen",
+    "comingSoon": "Próximamente",
+    "comingSoonHint": "Las categorías de arriba son la forma del conjunto; estas cubren los huecos.",
+    "soon": "Pronto",
+    "missing": "¿Te falta alguno?",
+    "openIssue": "Abre una issue",
+    "missingTail": "y pasa al principio de la cola.",
+    "atoms": "{count} átomos",
+    "whatMoves": "Qué se mueve",
+    "builtFrom": "Construido con",
+    "blockSource": "Código del bloque",
+    "arrangement": "La disposición",
+    "assembledFrom": "Ensamblado con",
+    "layoutSource": "Código del layout"
+  },
+  "language": {
+    "switch": "Cambiar idioma",
+    "current": "Idioma: {name}"
+  },
+  "landing": {
+    "hero": {
+      "badge": "Volt UI {version} para Angular 21",
+      "title": "Publica interfaces de Angular con componentes que son tuyos.",
+      "subtitle": "Copia código Angular pulido y accesible dentro de tu app. Conserva la velocidad de una librería de componentes, con el control de un código que pertenece a tu producto.",
+      "start": "Empezar a construir",
+      "studio": "Probar el estudio de temas",
+      "copyCommand": "Copiar el comando de instalación",
+      "copied": "Copiado",
+      "panelTitle": "Ajustes del proyecto",
+      "panelSubtitle": "Hecho con componentes de Volt UI",
+      "live": "en vivo",
+      "workspace": "Nombre del espacio",
+      "publicTheme": "Tema público",
+      "publicThemeHint": "Cualquiera puede verlo",
+      "radius": "Radio del borde",
+      "migration": "Progreso de la migración",
+      "save": "Guardar cambios",
+      "reset": "Restablecer",
+      "autoSync": "Sincronía automática"
+    },
+    "proof": {
+      "components": "componentes documentados",
+      "tests": "tests automatizados",
+      "themes": "combinaciones de tema",
+      "ngModules": "NgModules necesarios"
+    },
+    "features": {
+      "eyebrow": "Pensado para que sea tuyo",
+      "title": "Primero el comportamiento en producción. Después el gusto de producto.",
+      "subtitle": "Volt UI parte de ng-primitives para foco, overlays, ARIA y formularios, y lo envuelve en signals de Angular, tokens de Tailwind y código copiable que puedes remodelar.",
+      "ownTitle": "El código es tuyo",
+      "ownBody": "La CLI copia componentes standalone legibles directamente en tu aplicación. Cambia cada línea cuando tu producto lo pida.",
+      "behaviorTitle": "Comportamiento incluido",
+      "behaviorBody": "ng-primitives se encarga del foco, la navegación por teclado, los overlays y los contratos ARIA; Volt UI, del estilo listo para producto.",
+      "systemTitle": "Diseñado como un sistema",
+      "systemBody": "Los tokens semánticos de Tailwind, los presets de color y los de estilo permiten que un mismo conjunto de componentes adopte un lenguaje visual completo."
+    },
+    "workflow": {
+      "eyebrow": "Un comando. Tu código.",
+      "title": "Un flujo que acaba en Angular editable, no en dependencia del proveedor.",
+      "subtitle": "La CLI resuelve las dependencias entre componentes, escribe archivos legibles y mantiene los selectores coherentes con un flujo centrado en el código.",
+      "install": "Leer la guía de instalación",
+      "copied": "copiado",
+      "export": "exportar",
+      "themePreview": "Vista previa del tema",
+      "themeCaption": "Cinco sistemas de color, cinco estilos.",
+      "darkMode": "Listo para modo oscuro",
+      "accessible": "Interacciones accesibles",
+      "workspaceLabel": "Espacio de trabajo",
+      "ownedSource": "Código propio",
+      "saveUi": "Guardar UI"
+    },
+    "cta": {
+      "title": "Construye la interfaz de Angular que querías.",
+      "browse": "Ver componentes",
+      "star": "Dar una estrella en GitHub",
+      "body": "Explora {components} componentes, layouts accesibles, {themes} combinaciones de tema y un flujo listo para IA."
+    }
+  }
+}

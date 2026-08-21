@@ -4,6 +4,7 @@ import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router
 import { filter, map } from 'rxjs';
 import { DocsPageShell } from '../components/docs-page-shell';
 import { GALLERY_SECTIONS, sectionForUrl } from '../lib/gallery-sections';
+import { Translations } from '../i18n/translations';
 
 /**
  * Shell shared by both halves of the gallery.
@@ -23,23 +24,26 @@ import { GALLERY_SECTIONS, sectionForUrl } from '../lib/gallery-sections';
   imports: [RouterOutlet, RouterLink, DocsPageShell],
   template: `
     <div class="border-b border-border/60">
-      <nav class="mx-auto flex max-w-6xl gap-1 px-4 sm:px-6" aria-label="Gallery sections">
+      <nav
+        class="mx-auto flex max-w-6xl gap-1 px-4 sm:px-6"
+        [attr.aria-label]="t('gallery.sections')"
+      >
         @for (section of sections; track section.id) {
           <a
-            [routerLink]="section.path"
+            [routerLink]="path(section.path)"
             [class]="section.id === active().id ? activeTab : idleTab"
             [attr.aria-current]="section.id === active().id ? 'page' : null"
           >
-            {{ section.label }}
+            {{ t(section.labelKey) }}
           </a>
         }
       </nav>
     </div>
 
     <app-docs-page-shell
-      [title]="active().title"
-      [browseLabel]="active().browseLabel"
-      [description]="active().description"
+      [title]="t(active().titleKey)"
+      [browseLabel]="t(active().browseKey)"
+      [description]="t(active().descriptionKey)"
       [groups]="active().groups"
     >
       <router-outlet />
@@ -48,6 +52,10 @@ import { GALLERY_SECTIONS, sectionForUrl } from '../lib/gallery-sections';
 })
 export default class GalleryLayout {
   private readonly router = inject(Router);
+  private readonly translations = inject(Translations);
+
+  protected readonly t = this.translations.t;
+  protected readonly path = this.translations.path;
 
   protected readonly sections = GALLERY_SECTIONS;
 

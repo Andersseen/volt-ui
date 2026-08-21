@@ -1,4 +1,5 @@
-import { provideRouter } from '@angular/router';
+import { By } from '@angular/platform-browser';
+import { provideRouter, Router, RouterLink } from '@angular/router';
 import { render, screen } from '@testing-library/angular';
 import { describe, expect, it } from 'vitest';
 import { SITE_STATS } from '../lib/generated/site-stats';
@@ -31,10 +32,37 @@ describe('official landing page', () => {
   });
 
   it('routes the secondary hero call to action to the theme studio', async () => {
-    await render(Home, { providers: [provideRouter([])] });
+    const { fixture } = await render(Home, { providers: [provideRouter([])] });
 
-    const themeStudio = screen.getByRole('button', { name: 'Try the theme studio' });
-    expect(themeStudio).toBeInTheDocument();
-    expect(themeStudio.closest('volt-button')?.getAttribute('routerlink')).toBe('/create-theme');
+    expect(screen.getByRole('button', { name: 'Try the theme studio' })).toBeInTheDocument();
+
+    /*
+     * Read from the directive rather than from a `routerlink` attribute. The link is a
+     * binding now, because it carries the reader's language — so there is no static
+     * attribute to read, and asserting on one would only ever have proved that somebody
+     * typed a string into the template.
+     */
+    const targets = fixture.debugElement
+      .queryAll(By.directive(RouterLink))
+      .map(link => link.injector.get(RouterLink).urlTree?.toString());
+
+    expect(targets).toContain('/create-theme');
+  });
+
+  it("carries the reader's language into the hero links", async () => {
+    // A route to land on: the locale comes from the URL, so the URL has to be reachable.
+    const { fixture } = await render(Home, {
+      providers: [provideRouter([{ path: 'es', children: [] }])],
+    });
+    const router = fixture.debugElement.injector.get(Router);
+
+    await router.navigateByUrl('/es');
+    await fixture.whenStable();
+
+    const targets = fixture.debugElement
+      .queryAll(By.directive(RouterLink))
+      .map(link => link.injector.get(RouterLink).urlTree?.toString());
+
+    expect(targets).toContain('/es/create-theme');
   });
 });
