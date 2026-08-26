@@ -92,7 +92,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lumen-icons": "^0.1.0",
-    "ng-primitives": "0.110.2",
+    "ng-primitives": "0.130.1",
     "rxjs": "~7.8.0",
     "tailwind-merge": "^3.5.0",
     "tailwindcss": "^4.3.0",
