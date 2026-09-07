@@ -4,6 +4,11 @@
 **Status:** Release ladder complete — Volt UI is stable.
 **Last updated:** 2026-08-06
 
+> Post-v1 planning update (2026-09-07): see [`v2/README.md`](v2/README.md) for the
+> proposed next direction and executable plans. It recommends deferring the headless
+> replacement mentioned below and prioritizing consumer reliability. This document
+> retains the v1 history; no implementation of the new proposal has started.
+
 This is the master spec. It defines _what_ v1.0 was (§2) and records _how_ the work was
 divided into minor-version plans (§4, now complete) and the policy that replaces the
 ladder post-1.0 (§7). Each plan in [`specs/plans/`](plans/) is self-contained and was

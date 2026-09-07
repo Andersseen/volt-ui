@@ -1,6 +1,14 @@
 # specs/ — Spec-Driven Development for Volt UI
 
-This folder drives the road from **0.4.0 to 1.0.0**.
+This folder records the road from **0.4.0 to 1.0.0** and proposals for subsequent work.
+
+- **Post-v1 review and proposed direction:** [`v2/README.md`](v2/README.md) — an
+  evidence-based audit, SDD, and six bounded implementation plans focused on reliable
+  installation, copyable examples, component contracts, safe diffs, and useful recipes.
+  Written on 2026-09-07; implementation has not started. The “v2” horizon does not
+  require a major release for compatible improvements.
+
+The following documents describe the historical v1 release ladder:
 
 - [`SPEC.md`](SPEC.md) — the vision, the v1.0 definition of done, the release ladder,
   and the execution protocol. **Read this first.**
