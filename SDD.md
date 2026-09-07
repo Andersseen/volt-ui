@@ -5,6 +5,10 @@
 **Last updated:** 2026-08-06  
 **Maintainers:** Volt UI contributors
 
+> Post-v1 design proposal (2026-09-07): [`specs/v2/README.md`](specs/v2/README.md)
+> contains the current audit and a bounded evolution plan. This document describes the
+> v1 architecture; the new proposal does not imply an implemented or released v2.
+
 ---
 
 ## 1. Overview
