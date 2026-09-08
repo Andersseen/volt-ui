@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, inject, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LmnCheckIcon, LmnCopyIcon } from 'lumen-icons';
-import { Translations } from '../i18n/translations';
+import { injectAppI18n } from '../i18n/i18n';
 
 @Component({
   selector: 'app-copy-button',
@@ -27,7 +27,7 @@ import { Translations } from '../i18n/translations';
   `,
 })
 export class CopyButton {
-  private readonly translations = inject(Translations);
+  private readonly translations = injectAppI18n();
 
   protected readonly t = this.translations.t;
 

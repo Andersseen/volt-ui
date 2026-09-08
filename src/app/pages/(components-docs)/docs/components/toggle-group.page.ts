@@ -1,11 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { VoltToggleGroup, VoltToggleGroupItem } from 'volt';
 import { CodePanel } from '../../../../components/code-panel';
 import { ApiReference } from '../../../../components/api-reference';
 import { TOGGLE_GROUP_SNIPPET } from '../../../../lib/snippets';
 import { TOGGLE_GROUP_USAGE } from '../../../../lib/snippets/usage';
 import { TOGGLE_GROUP_API } from '../../../../lib/api-reference.generated';
-import { Translations } from '../../../../i18n/translations';
+import { injectAppI18n } from '../../../../i18n/i18n';
 
 @Component({
   selector: 'app-toggle-group-demo',
@@ -49,7 +49,7 @@ import { Translations } from '../../../../i18n/translations';
   `,
 })
 export default class ToggleGroupDemo {
-  private readonly translations = inject(Translations);
+  private readonly translations = injectAppI18n();
 
   protected readonly t = this.translations.t;
 

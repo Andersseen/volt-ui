@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MoveHoverDirective, MoveTapDirective } from 'angular-movement';
 import { LmnGithubIcon, LmnGridIcon } from 'lumen-icons';
 import { VoltButton } from 'volt';
-import { Translations } from '../../i18n/translations';
+import { injectAppI18n } from '../../i18n/i18n';
 import { SITE_STATS } from '../../lib/generated/site-stats';
 import { HOVER_LIFT, TAP_PRESS } from '../../lib/motion';
 import { Reveal } from '../reveal';
@@ -69,7 +69,7 @@ import { Reveal } from '../reveal';
   `,
 })
 export class LandingCta {
-  private readonly translations = inject(Translations);
+  private readonly translations = injectAppI18n();
 
   protected readonly t = this.translations.t;
   protected readonly path = this.translations.path;

@@ -1,11 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { CodePanel } from '../../../../components/code-panel';
 import { ApiReference } from '../../../../components/api-reference';
 import { AUTOFILL_SNIPPET } from '../../../../lib/snippets';
 import { AUTOFILL_USAGE } from '../../../../lib/snippets/usage';
 import { AUTOFILL_API } from '../../../../lib/api-reference.generated';
 import { VoltAutofill } from 'volt';
-import { Translations } from '../../../../i18n/translations';
+import { injectAppI18n } from '../../../../i18n/i18n';
 
 @Component({
   selector: 'app-autofill-demo',
@@ -47,7 +47,7 @@ import { Translations } from '../../../../i18n/translations';
   `,
 })
 export default class AutofillPage {
-  private readonly translations = inject(Translations);
+  private readonly translations = injectAppI18n();
 
   protected readonly t = this.translations.t;
 

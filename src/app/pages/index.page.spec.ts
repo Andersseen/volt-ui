@@ -1,5 +1,6 @@
 import { By } from '@angular/platform-browser';
-import { provideRouter, Router, RouterLink } from '@angular/router';
+import { EtymaI18n } from '@etyma/angular';
+import { provideRouter, RouterLink } from '@angular/router';
 import { render, screen } from '@testing-library/angular';
 import { describe, expect, it } from 'vitest';
 import { SITE_STATS } from '../lib/generated/site-stats';
@@ -50,13 +51,12 @@ describe('official landing page', () => {
   });
 
   it("carries the reader's language into the hero links", async () => {
-    // A route to land on: the locale comes from the URL, so the URL has to be reachable.
     const { fixture } = await render(Home, {
-      providers: [provideRouter([{ path: 'es', children: [] }])],
+      providers: [provideRouter([])],
     });
-    const router = fixture.debugElement.injector.get(Router);
+    const translations = fixture.debugElement.injector.get(EtymaI18n);
 
-    await router.navigateByUrl('/es');
+    await translations.setLocale('es');
     await fixture.whenStable();
 
     const targets = fixture.debugElement

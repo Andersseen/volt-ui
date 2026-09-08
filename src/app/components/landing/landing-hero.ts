@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import {
   MoveEnterDirective,
@@ -26,7 +26,7 @@ import {
   VoltSlider,
   VoltSwitch,
 } from 'volt';
-import { Translations } from '../../i18n/translations';
+import { injectAppI18n } from '../../i18n/i18n';
 import { SITE_STATS } from '../../lib/generated/site-stats';
 import { HOVER_LIFT, TAP_PRESS } from '../../lib/motion';
 
@@ -322,7 +322,7 @@ export const INSTALL_COMMAND = 'npx @voltui/cli add button dialog form-field';
   `,
 })
 export class LandingHero {
-  private readonly translations = inject(Translations);
+  private readonly translations = injectAppI18n();
 
   protected readonly t = this.translations.t;
   protected readonly path = this.translations.path;

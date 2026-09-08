@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { Translations } from '../../../i18n/translations';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { injectAppI18n } from '../../../i18n/i18n';
 import { Prose } from '../../../components/prose';
 import { RouterLink } from '@angular/router';
 import {
@@ -223,8 +223,7 @@ import {
 --ring-width / --ring-offset-width
 --volt-shadow-sm / --volt-shadow / --volt-shadow-md / --volt-shadow-lg
 --spacing-component / --spacing-gap
---volt-font-weight-base / --volt-font-weight-heading / --volt-font-weight-label</pre
-          >
+--volt-font-weight-base / --volt-font-weight-heading / --volt-font-weight-label</pre>
         </div>
       </div>
 
@@ -265,8 +264,7 @@ import {
 
 .dark[data-color='mytheme'] {{ '{' }}
   /* same tokens, tuned for a dark --background/--surface */
-{{ '}' }}</pre
-          >
+{{ '}' }}</pre>
         </div>
 
         <p class="text-xs text-muted-foreground">
@@ -309,8 +307,7 @@ import {
   --volt-font-weight-base: 400;
   --volt-font-weight-heading: 600;
   --volt-font-weight-label: 500;
-{{ '}' }}</pre
-          >
+{{ '}' }}</pre>
         </div>
 
         <p class="text-xs text-muted-foreground">
@@ -321,7 +318,7 @@ import {
   `,
 })
 export default class ThemesPage {
-  private readonly translations = inject(Translations);
+  private readonly translations = injectAppI18n();
 
   protected readonly t = this.translations.t;
   protected readonly path = this.translations.path;

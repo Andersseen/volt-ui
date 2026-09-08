@@ -1,7 +1,7 @@
 import type { DocsSidebarGroup } from '../components/docs-sidebar-nav';
 import { BLOCK_GROUPS } from './blocks-metadata';
 import { LAYOUT_GROUPS } from './layouts-metadata';
-import type { TranslationKey } from '../i18n/translations';
+import type { TranslationKey } from '../i18n/i18n';
 
 /**
  * The two halves of the gallery.

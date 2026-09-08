@@ -13,14 +13,14 @@
     "menu": "Menu",
     "language": "Language",
     "toggleDark": "Toggle dark mode",
-    "themeLabel": "Theme: {color} palette, {style} shape",
+    "themeLabel": "Theme: {$color} palette, {$style} shape",
     "palette": "Palette",
     "shape": "Shape",
     "logoAlt": "Volt UI Logo"
   },
   "footer": {
     "tagline": "Angular components you own.",
-    "rights": "© {year}"
+    "rights": "© {$year :number useGrouping=never}"
   },
   "gallery": {
     "sections": "Gallery sections",
@@ -48,7 +48,7 @@
     "missing": "Missing one you need?",
     "openIssue": "Open an issue",
     "missingTail": "and it goes to the front of the queue.",
-    "atoms": "{count} atoms",
+    "atoms": "{$count} atoms",
     "whatMoves": "What moves",
     "builtFrom": "Built from",
     "blockSource": "Block source",
@@ -56,7 +56,7 @@
     "assembledFrom": "Assembled from",
     "layoutSource": "Layout source",
     "blockSourceNote": "One standalone component. Paste it into your project, point the imports at your Volt path, and wire the buttons to your own routes.",
-    "blockThemeNote": "Every animation here is guarded by {reducedMotion}, and the colours come from theme tokens — try a different preset with the switcher in the header and the block follows.",
+    "blockThemeNote": "Every animation here is guarded by {$reducedMotion}, and the colours come from theme tokens — try a different preset with the switcher in the header and the block follows.",
     "layoutSourceNote": "The arrangement, with the sample data kept in plain arrays at the bottom. Swap those for yours and the template stops being an example.",
     "layoutUnbrandedNote": "Layouts stay unbranded on purpose: no gradients, no logos, no stock photography, and nothing fetched from a third party. If you want a section that is finished rather than a shape to fill,",
     "blocksGalleryLink": "the blocks gallery",
@@ -64,11 +64,11 @@
   },
   "language": {
     "switch": "Change language",
-    "current": "Language: {name}"
+    "current": "Language: {$name}"
   },
   "landing": {
     "hero": {
-      "badge": "Volt UI {version} for Angular 21",
+      "badge": "Volt UI {$version} for Angular 21",
       "title": "Ship Angular interfaces from components you can own.",
       "subtitle": "Copy polished, accessible Angular source into your app. Keep the speed of a component library, with the control of code that belongs to your product.",
       "start": "Start building",
@@ -123,7 +123,7 @@
       "title": "Build the Angular interface you wanted.",
       "browse": "Browse components",
       "star": "Star on GitHub",
-      "body": "Explore {components} components, accessible layouts, {themes} theme combinations, and an AI-ready workflow."
+      "body": "Explore {$components} components, accessible layouts, {$themes} theme combinations, and an AI-ready workflow."
     }
   },
   "guide": {
@@ -406,7 +406,7 @@
       "row3Tool": "[MCP Server](/docs/ai-mcp) (instructions + snippets)",
       "row4": "You use a web chat (ChatGPT, Gemini, etc.)",
       "row4Tool": "[Prompt Reference](/docs/ai-prompt)",
-      "mcpBody": "Best for Claude, Cursor, Windsurf, and any MCP-native agent. The hosted server at `{url}` exposes tools to query components, examples, themes, and CLI commands on demand."
+      "mcpBody": "Best for Claude, Cursor, Windsurf, and any MCP-native agent. The hosted server at `{$url}` exposes tools to query components, examples, themes, and CLI commands on demand."
     },
     "aiSkillPage": {
       "title": "Local Skill",
@@ -504,10 +504,10 @@
       "apiBody": "The server implements the MCP Streamable HTTP transport. It is stateless and returns JSON responses for POST requests.",
       "endpointLabel": "MCP Server endpoint",
       "setupConfigsLabel": "Setup configs",
-      "whatBody": "The Model Context Protocol is an open standard that lets LLMs talk to external tools, resources, and prompts. The Volt UI MCP server runs at `{url}` and exposes a spec-compliant Streamable HTTP endpoint. Agents can list components, read detailed metadata, fetch usage examples, and even retrieve reusable prompts.",
-      "discoveryNote": "`GET {url}` returns human-readable discovery JSON (tools, resources, prompts, setup links).",
-      "endpointBody": "`GET {url}` — server info & capability list",
-      "setupConfigsBody": "`GET {url}?agent=claude` — exact files to write per agent",
+      "whatBody": "The Model Context Protocol is an open standard that lets LLMs talk to external tools, resources, and prompts. The Volt UI MCP server runs at `{$url}` and exposes a spec-compliant Streamable HTTP endpoint. Agents can list components, read detailed metadata, fetch usage examples, and even retrieve reusable prompts.",
+      "discoveryNote": "`GET {$url}` returns human-readable discovery JSON (tools, resources, prompts, setup links).",
+      "endpointBody": "`GET {$url}` — server info & capability list",
+      "setupConfigsBody": "`GET {$url}?agent=claude` — exact files to write per agent",
       "tools": {
         "listComponents": "List all available Volt UI components.",
         "getComponent": "Get detailed info about a specific component.",
@@ -548,7 +548,7 @@
       "directiveSource": "Directive Source",
       "usage": "Usage",
       "copyNote": "Copy this code to your project.",
-      "copyNoteDep": "Copy this code to your project. The component uses {dep}."
+      "copyNoteDep": "Copy this code to your project. The component uses {$dep}."
     },
     "api": {
       "input": "Input",
@@ -660,7 +660,7 @@
       "title": "Select",
       "description": "Displays a list of options for the user to pick from—triggered by a button.",
       "nativeTitle": "Native Select",
-      "nativeNote": "A lighter alternative to {select} for simple cases: it's the real native {element} element (full mobile/native picker behavior, works with {formControl}/{ngModel} for free), styled to match the theme."
+      "nativeNote": "A lighter alternative to {$select} for simple cases: it's the real native {$element} element (full mobile/native picker behavior, works with {$formControl}/{$ngModel} for free), styled to match the theme."
     },
     "separator": {
       "title": "Separator",

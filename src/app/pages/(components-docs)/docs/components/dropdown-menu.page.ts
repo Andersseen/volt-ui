@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   VoltDropdownMenuTrigger,
   VoltDropdownMenu,
@@ -12,7 +12,7 @@ import { ApiReference } from '../../../../components/api-reference';
 import { DROPDOWN_MENU_SNIPPET } from '../../../../lib/snippets';
 import { DROPDOWN_MENU_USAGE } from '../../../../lib/snippets/usage';
 import { DROPDOWN_MENU_API } from '../../../../lib/api-reference.generated';
-import { Translations } from '../../../../i18n/translations';
+import { injectAppI18n } from '../../../../i18n/i18n';
 
 @Component({
   selector: 'app-dropdown-menu-demo',
@@ -31,7 +31,7 @@ import { Translations } from '../../../../i18n/translations';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class DropdownMenuDemo {
-  private readonly translations = inject(Translations);
+  private readonly translations = injectAppI18n();
 
   protected readonly t = this.translations.t;
 

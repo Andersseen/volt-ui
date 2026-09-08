@@ -1,9 +1,7 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { LmnCheckIcon, LmnGlobeIcon } from 'lumen-icons';
 import { VoltPopoverContent, VoltPopoverTrigger } from 'volt';
-import { LOCALES, LOCALE_NAMES, LOCALE_SHORT, localizePath, type Locale } from '../i18n/locales';
-import { Translations } from '../i18n/translations';
+import { injectAppI18n, LOCALES, LOCALE_NAMES, LOCALE_SHORT, type Locale } from '../i18n/i18n';
 
 /**
  * Language picker.
@@ -12,9 +10,8 @@ import { Translations } from '../i18n/translations';
  * what decides the language here. Anything else would leave `/es/docs` rendering English
  * — and would hand out links that open in whatever the recipient last picked.
  *
- * `replaceUrl` keeps the two versions of a page from stacking in history: going back
- * should return to the page before this one, not to the same page in the previous
- * language.
+ * Etyma loads the target catalog before navigating, so the destination page never renders
+ * a frame in the language the visitor just left.
  */
 @Component({
   selector: 'app-language-switcher',
@@ -25,6 +22,7 @@ import { Translations } from '../i18n/translations';
       type="button"
       [voltPopover]="languages"
       placement="bottom-end"
+      data-testid="language-trigger"
       class="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-md border border-input bg-surface px-2.5 text-sm transition-colors hover:bg-muted"
       [attr.aria-label]="t('language.current', { name: name(locale()) })"
     >
@@ -43,6 +41,7 @@ import { Translations } from '../i18n/translations';
             class="flex w-full items-center justify-between gap-2 rounded-md px-2 py-1.5 text-left text-sm transition-colors hover:bg-muted"
             [class]="option === locale() ? 'bg-muted font-medium' : ''"
             [attr.aria-current]="option === locale() ? 'true' : null"
+            [attr.data-testid]="'language-option-' + option"
             (click)="switchTo(option)"
           >
             <span>{{ name(option) }}</span>
@@ -56,22 +55,21 @@ import { Translations } from '../i18n/translations';
   `,
 })
 export class LanguageSwitcher {
-  private readonly router = inject(Router);
-  private readonly translations = inject(Translations);
+  private readonly translations = injectAppI18n();
 
   protected readonly locales = LOCALES;
   protected readonly locale = this.translations.locale;
   protected readonly t = this.translations.t;
 
-  protected name(locale: Locale): string {
-    return LOCALE_NAMES[locale];
+  protected name(locale: string): string {
+    return LOCALE_NAMES[locale as Locale] ?? locale;
   }
 
-  protected short(locale: Locale): string {
-    return LOCALE_SHORT[locale];
+  protected short(locale: string): string {
+    return LOCALE_SHORT[locale as Locale] ?? locale.toUpperCase();
   }
 
   protected switchTo(locale: Locale): void {
-    void this.router.navigateByUrl(localizePath(this.router.url, locale), { replaceUrl: true });
+    void this.translations.setLocale(locale);
   }
 }

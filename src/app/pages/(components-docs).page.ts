@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { DocsPageShell } from '../components/docs-page-shell';
 import type { DocsSidebarGroup } from '../components/docs-sidebar-nav';
 import { COMPONENT_GROUPS } from '../lib/component-metadata';
-import { Translations } from '../i18n/translations';
+import { injectAppI18n } from '../i18n/i18n';
 
 @Component({
   selector: 'app-components-layout',
@@ -20,7 +20,7 @@ import { Translations } from '../i18n/translations';
   `,
 })
 export default class ComponentsLayout {
-  private readonly translations = inject(Translations);
+  private readonly translations = injectAppI18n();
 
   protected readonly t = this.translations.t;
 

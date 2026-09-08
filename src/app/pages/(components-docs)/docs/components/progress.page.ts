@@ -1,11 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { VoltProgress, VoltProgressLabel, VoltProgressValue } from 'volt';
 import { CodePanel } from '../../../../components/code-panel';
 import { ApiReference } from '../../../../components/api-reference';
 import { PROGRESS_SNIPPET } from '../../../../lib/snippets';
 import { PROGRESS_USAGE } from '../../../../lib/snippets/usage';
 import { PROGRESS_API } from '../../../../lib/api-reference.generated';
-import { Translations } from '../../../../i18n/translations';
+import { injectAppI18n } from '../../../../i18n/i18n';
 
 @Component({
   selector: 'app-progress-demo',
@@ -15,7 +15,7 @@ import { Translations } from '../../../../i18n/translations';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class ProgressDemo {
-  private readonly translations = inject(Translations);
+  private readonly translations = injectAppI18n();
 
   protected readonly t = this.translations.t;
 

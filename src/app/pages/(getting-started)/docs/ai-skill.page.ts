@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { LmnCheckIcon, LmnCopyIcon, LmnDownloadIcon } from 'lumen-icons';
 import skillMarkdown from '../../../../../.agents/skills/volt-ui/SKILL.md?raw';
 import { Prose } from '../../../components/prose';
-import { Translations } from '../../../i18n/translations';
+import { injectAppI18n } from '../../../i18n/i18n';
 
 @Component({
   selector: 'app-ai-skill-page',
@@ -128,7 +128,7 @@ import { Translations } from '../../../i18n/translations';
   `,
 })
 export default class AiSkillPage {
-  private readonly translations = inject(Translations);
+  private readonly translations = injectAppI18n();
 
   protected readonly t = this.translations.t;
 

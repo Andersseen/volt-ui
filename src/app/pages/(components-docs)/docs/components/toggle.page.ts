@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { VoltToggle } from 'volt';
 import { CodePanel } from '../../../../components/code-panel';
 import { ApiReference } from '../../../../components/api-reference';
@@ -6,7 +6,7 @@ import { TOGGLE_SNIPPET } from '../../../../lib/snippets';
 import { TOGGLE_USAGE } from '../../../../lib/snippets/usage';
 import { TOGGLE_API } from '../../../../lib/api-reference.generated';
 import { LmnBoldIcon, LmnItalicIcon } from 'lumen-icons';
-import { Translations } from '../../../../i18n/translations';
+import { injectAppI18n } from '../../../../i18n/i18n';
 
 @Component({
   selector: 'app-toggle-demo',
@@ -16,7 +16,7 @@ import { Translations } from '../../../../i18n/translations';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class ToggleDemo {
-  private readonly translations = inject(Translations);
+  private readonly translations = injectAppI18n();
 
   protected readonly t = this.translations.t;
 

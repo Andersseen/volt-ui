@@ -18,7 +18,7 @@ import {
   type VoltThemeColor,
   type VoltThemeStyle,
 } from 'volt';
-import { Translations } from '../i18n/translations';
+import { injectAppI18n } from '../i18n/i18n';
 
 interface ColorOption {
   readonly id: VoltThemeColor;
@@ -157,7 +157,7 @@ const STYLES: readonly { id: VoltThemeStyle; label: string }[] = [
 })
 export class ThemeSwitcher {
   private readonly platformId = inject(PLATFORM_ID);
-  private readonly translations = inject(Translations);
+  private readonly translations = injectAppI18n();
 
   protected readonly t = this.translations.t;
 

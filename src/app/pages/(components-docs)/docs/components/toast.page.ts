@@ -12,7 +12,7 @@ import { ApiReference } from '../../../../components/api-reference';
 import { TOAST_SNIPPET } from '../../../../lib/snippets';
 import { TOAST_USAGE } from '../../../../lib/snippets/usage';
 import { TOAST_API } from '../../../../lib/api-reference.generated';
-import { Translations } from '../../../../i18n/translations';
+import { injectAppI18n } from '../../../../i18n/i18n';
 
 @Component({
   selector: 'app-toast-demo',
@@ -68,7 +68,7 @@ import { Translations } from '../../../../i18n/translations';
   `,
 })
 export default class ToastDemo {
-  private readonly translations = inject(Translations);
+  private readonly translations = injectAppI18n();
 
   protected readonly t = this.translations.t;
 

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   VoltTable,
   VoltTableHeader,
@@ -13,7 +13,7 @@ import { ApiReference } from '../../../../components/api-reference';
 import { TABLE_SNIPPET } from '../../../../lib/snippets';
 import { TABLE_USAGE } from '../../../../lib/snippets/usage';
 import { TABLE_API } from '../../../../lib/api-reference.generated';
-import { Translations } from '../../../../i18n/translations';
+import { injectAppI18n } from '../../../../i18n/i18n';
 
 @Component({
   selector: 'app-table-demo',
@@ -33,7 +33,7 @@ import { Translations } from '../../../../i18n/translations';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class TableDemo {
-  private readonly translations = inject(Translations);
+  private readonly translations = injectAppI18n();
 
   protected readonly t = this.translations.t;
 

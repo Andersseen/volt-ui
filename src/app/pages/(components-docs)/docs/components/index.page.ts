@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ComponentPreview } from '../../../../components/component-preview';
 import { MOTION } from '../../../../lib/motion';
@@ -8,7 +8,7 @@ import {
   type ComponentStability,
 } from '../../../../lib/component-metadata';
 import { Reveal } from '../../../../components/reveal';
-import { Translations } from '../../../../i18n/translations';
+import { injectAppI18n } from '../../../../i18n/i18n';
 
 @Component({
   selector: 'app-components-index-page',
@@ -85,7 +85,7 @@ import { Translations } from '../../../../i18n/translations';
   `,
 })
 export default class ComponentsIndexPage {
-  private readonly translations = inject(Translations);
+  private readonly translations = injectAppI18n();
 
   protected readonly t = this.translations.t;
 

@@ -9,7 +9,7 @@ import {
 import { CodeEditor } from '../code-editor';
 import { CopyButton } from '../copy-button';
 import { ThemeStudioStore } from '../../services/theme-studio-store';
-import { Translations } from '../../i18n/translations';
+import { injectAppI18n } from '../../i18n/i18n';
 
 /** The exported stylesheet, ready to paste into a Volt theme preset. */
 @Component({
@@ -46,7 +46,7 @@ import { Translations } from '../../i18n/translations';
   `,
 })
 export class ThemeStudioOutput {
-  private readonly translations = inject(Translations);
+  private readonly translations = injectAppI18n();
 
   protected readonly t = this.translations.t;
 

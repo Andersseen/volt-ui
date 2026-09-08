@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Translations, type TranslationKey, type TranslationParams } from '../i18n/translations';
+import { injectAppI18n, type TranslationKey, type TranslationParams } from '../i18n/i18n';
 
 type SegmentKind = 'text' | 'code' | 'strong' | 'link';
 
@@ -65,7 +65,7 @@ const MARKED = /`([^`]+)`|\*\*([^*]+)\*\*|\[([^\]]+)\]\(([^)]+)\)/g;
   }`,
 })
 export class Prose {
-  private readonly translations = inject(Translations);
+  private readonly translations = injectAppI18n();
 
   readonly key = input.required<TranslationKey>();
   readonly params = input<TranslationParams | undefined>(undefined);

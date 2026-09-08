@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import {
   NgpDialog,
@@ -9,7 +9,7 @@ import {
 } from 'ng-primitives/dialog';
 import { LmnChevronRightIcon, LmnXIcon } from 'lumen-icons';
 import type { ComponentStability } from '../lib/component-metadata';
-import { Translations, type TranslationKey } from '../i18n/translations';
+import { injectAppI18n, type TranslationKey } from '../i18n/i18n';
 
 /*
  * Keys, not text. Most sidebars on the site are built from a static catalog const, which
@@ -154,7 +154,7 @@ export interface DocsSidebarGroup {
   `,
 })
 export class DocsSidebarNav {
-  private readonly translations = inject(Translations);
+  private readonly translations = injectAppI18n();
 
   protected readonly t = this.translations.t;
 

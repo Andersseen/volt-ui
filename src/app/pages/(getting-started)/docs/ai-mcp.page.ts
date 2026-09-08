@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { LmnCheckIcon, LmnExternalLinkIcon, LmnListIcon, LmnSparklesIcon } from 'lumen-icons';
 import { Prose } from '../../../components/prose';
-import { Translations, type TranslationKey } from '../../../i18n/translations';
+import { injectAppI18n, type TranslationKey } from '../../../i18n/i18n';
 
 const MCP_URL = 'https://volt-ui.pages.dev/api/mcp';
 
@@ -159,7 +159,7 @@ const MCP_URL = 'https://volt-ui.pages.dev/api/mcp';
   `,
 })
 export default class AiMcpPage {
-  private readonly translations = inject(Translations);
+  private readonly translations = injectAppI18n();
 
   protected readonly t = this.translations.t;
 

@@ -15,7 +15,7 @@ import {
 } from 'volt';
 import { ThemeStudioStore } from '../../services/theme-studio-store';
 import { Prose } from '../../components/prose';
-import { Translations } from '../../i18n/translations';
+import { injectAppI18n } from '../../i18n/i18n';
 
 /** Name the theme, pick a starting preset, generate or import a palette. */
 @Component({
@@ -168,7 +168,7 @@ import { Translations } from '../../i18n/translations';
   `,
 })
 export class ThemeStudioSetup {
-  private readonly translations = inject(Translations);
+  private readonly translations = injectAppI18n();
 
   protected readonly t = this.translations.t;
 

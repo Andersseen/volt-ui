@@ -7,7 +7,7 @@ import { ThemeSwitcher } from './theme-switcher';
 import { MobileMenu } from './mobile-menu';
 import { LmnGithubIcon } from 'lumen-icons';
 import { LanguageSwitcher } from './language-switcher';
-import { Translations } from '../i18n/translations';
+import { injectAppI18n } from '../i18n/i18n';
 import { GALLERY_SECTIONS } from '../lib/gallery-sections';
 import { SITE_STATS } from '../lib/generated/site-stats';
 
@@ -134,7 +134,7 @@ import { SITE_STATS } from '../lib/generated/site-stats';
 })
 export class Header {
   private readonly router = inject(Router);
-  private readonly translations = inject(Translations);
+  private readonly translations = injectAppI18n();
 
   protected readonly t = this.translations.t;
   /** Keeps every link in the locale the visitor is already reading. */
