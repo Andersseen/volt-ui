@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { LmnPackageIcon, LmnShieldIcon, LmnSparklesIcon } from 'lumen-icons';
-import { Translations, type TranslationKey } from '../../i18n/translations';
+import { injectAppI18n, type TranslationKey } from '../../i18n/i18n';
 import { VoltBadge, VoltCard, VoltCardContent, VoltCardHeader } from 'volt';
 import { SITE_STATS } from '../../lib/generated/site-stats';
 import { MOTION } from '../../lib/motion';
@@ -107,7 +107,7 @@ interface Feature {
   `,
 })
 export class LandingFeatures {
-  private readonly translations = inject(Translations);
+  private readonly translations = injectAppI18n();
 
   protected readonly t = this.translations.t;
 

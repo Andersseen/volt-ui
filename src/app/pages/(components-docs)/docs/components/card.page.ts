@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   VoltCard,
   VoltCardHeader,
@@ -11,7 +11,7 @@ import { VoltButton } from 'volt';
 import { CodePanel } from '../../../../components/code-panel';
 import { CARD_SNIPPET } from '../../../../lib/snippets';
 import { CARD_USAGE } from '../../../../lib/snippets/usage';
-import { Translations } from '../../../../i18n/translations';
+import { injectAppI18n } from '../../../../i18n/i18n';
 
 @Component({
   selector: 'app-card-demo',
@@ -30,7 +30,7 @@ import { Translations } from '../../../../i18n/translations';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class CardDemo {
-  private readonly translations = inject(Translations);
+  private readonly translations = injectAppI18n();
 
   protected readonly t = this.translations.t;
 

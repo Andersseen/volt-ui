@@ -13,7 +13,7 @@ import {
   signal,
 } from '@angular/core';
 import { EditorLoaderService } from '../services/editor-loader.service';
-import { Translations } from '../i18n/translations';
+import { injectAppI18n } from '../i18n/i18n';
 
 export type CodeEditorLanguage = 'typescript' | 'javascript' | 'css' | 'html' | 'json';
 
@@ -49,7 +49,7 @@ export type CodeEditorLanguage = 'typescript' | 'javascript' | 'css' | 'html' | 
   `,
 })
 export class CodeEditor implements OnInit {
-  private readonly translations = inject(Translations);
+  private readonly translations = injectAppI18n();
 
   protected readonly t = this.translations.t;
 
@@ -74,8 +74,7 @@ export class CodeEditor implements OnInit {
     void this.editorLoaded();
 
     const editor = this.hostElement.querySelector('vertex-editor-lite') as
-      | (HTMLElement & { _ready?: boolean; setValue?: (value: string) => void })
-      | null;
+      (HTMLElement & { _ready?: boolean; setValue?: (value: string) => void }) | null;
     if (!editor) return;
 
     if (editor._ready && typeof editor.setValue === 'function') {

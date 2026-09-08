@@ -11,7 +11,7 @@ import {
   VoltTabsTrigger,
 } from 'volt';
 import { ThemeStudioStore } from '../../services/theme-studio-store';
-import { Translations } from '../../i18n/translations';
+import { injectAppI18n } from '../../i18n/i18n';
 
 /** The semantic color tokens, edited per mode. */
 @Component({
@@ -83,7 +83,7 @@ import { Translations } from '../../i18n/translations';
   `,
 })
 export class ThemeStudioTokens {
-  private readonly translations = inject(Translations);
+  private readonly translations = injectAppI18n();
 
   protected readonly t = this.translations.t;
 

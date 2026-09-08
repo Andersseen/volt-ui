@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { Translations } from '../../../i18n/translations';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { injectAppI18n } from '../../../i18n/i18n';
 import { RouterLink } from '@angular/router';
 import { LmnCheckIcon, LmnCopyIcon } from 'lumen-icons';
 import promptMarkdown from '../../../../../VOLT_UI_PROMPT.md?raw';
@@ -118,7 +118,7 @@ import { Prose } from '../../../components/prose';
   `,
 })
 export default class AiPromptPage {
-  private readonly translations = inject(Translations);
+  private readonly translations = injectAppI18n();
 
   protected readonly t = this.translations.t;
   protected readonly path = this.translations.path;

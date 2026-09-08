@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
 import {
   NgpDatePickerCellRender,
   NgpDatePickerRowRender,
@@ -15,7 +15,7 @@ import { ApiReference } from '../../../../components/api-reference';
 import { DATE_PICKER_SNIPPET } from '../../../../lib/snippets';
 import { DATE_PICKER_USAGE } from '../../../../lib/snippets/usage';
 import { DATE_PICKER_API } from '../../../../lib/api-reference.generated';
-import { Translations } from '../../../../i18n/translations';
+import { injectAppI18n } from '../../../../i18n/i18n';
 
 @Component({
   selector: 'app-date-picker-demo',
@@ -89,7 +89,7 @@ import { Translations } from '../../../../i18n/translations';
   `,
 })
 export default class DatePickerDemo {
-  private readonly translations = inject(Translations);
+  private readonly translations = injectAppI18n();
 
   protected readonly t = this.translations.t;
 

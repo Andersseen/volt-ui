@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { Translations } from '../../../i18n/translations';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { injectAppI18n } from '../../../i18n/i18n';
 import { RouterLink } from '@angular/router';
 import { Prose } from '../../../components/prose';
 
@@ -138,7 +138,7 @@ const MCP_URL = 'https://volt-ui.pages.dev/api/mcp';
   `,
 })
 export default class McpDocsPage {
-  private readonly translations = inject(Translations);
+  private readonly translations = injectAppI18n();
 
   protected readonly t = this.translations.t;
   protected readonly path = this.translations.path;

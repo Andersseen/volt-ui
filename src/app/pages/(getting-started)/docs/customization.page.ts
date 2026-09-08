@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { Translations } from '../../../i18n/translations';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { injectAppI18n } from '../../../i18n/i18n';
 import { RouterLink } from '@angular/router';
 import { Prose } from '../../../components/prose';
 
@@ -40,8 +40,7 @@ export const buttonVariants = cva('...', {{ '{' }}
       xl: 'h-12 rounded-md px-10 text-base',   // &lt;- added
     {{ '}' }},
   {{ '}' }},
-{{ '}' }});</pre
-          >
+{{ '}' }});</pre>
         </div>
 
         <p class="text-sm text-muted-foreground">
@@ -72,8 +71,7 @@ export const buttonVariants = cva('...', {{ '{' }}
 // button.ts
 protected readonly classes = computed(() =&gt;
   cn(buttonVariants({{ '{' }} variant: this.variant(), size: this.size() {{ '}' }}), this.class())
-);</pre
-          >
+);</pre>
         </div>
 
         <p class="text-sm text-muted-foreground">
@@ -95,8 +93,7 @@ protected readonly classes = computed(() =&gt;
 // utils.ts — this ships with every component that imports it
 export function cn(...inputs: ClassValue[]): string {{ '{' }}
   return twMerge(clsx(inputs));
-{{ '}' }}</pre
-          >
+{{ '}' }}</pre>
         </div>
 
         <div class="p-4 rounded-lg border border-border bg-muted/30 font-mono text-sm">
@@ -130,7 +127,7 @@ export function cn(...inputs: ClassValue[]): string {{ '{' }}
   `,
 })
 export default class CustomizationPage {
-  private readonly translations = inject(Translations);
+  private readonly translations = injectAppI18n();
 
   protected readonly t = this.translations.t;
   protected readonly path = this.translations.path;

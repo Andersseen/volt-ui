@@ -71,9 +71,18 @@ function freshRouteTablePlugin(): Plugin {
   };
 }
 
-export default defineConfig({
+function localeChunk(id: string): string | undefined {
+  const locale = /\/app\/i18n\/([a-z-]+)\.json$/.exec(id)?.[1];
+
+  return locale !== undefined && locale !== 'en' ? `etyma-locale-${locale}` : undefined;
+}
+
+export default defineConfig(({ isSsrBuild }) => ({
+  build: {
+    ...(isSsrBuild ? {} : { rollupOptions: { output: { manualChunks: localeChunk } } }),
+  },
   ssr: {
-    noExternal: ['@analogjs/router'],
+    noExternal: ['@analogjs/router', '@etyma/analog', '@etyma/angular', '@etyma/core'],
   },
   plugins: [
     freshRouteTablePlugin(),
@@ -95,4 +104,4 @@ export default defineConfig({
       volt: resolve(__dirname, 'projects/volt/src/public-api.ts'),
     },
   },
-});
+}));

@@ -4,7 +4,7 @@ import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router
 import { filter, map } from 'rxjs';
 import { DocsPageShell } from '../components/docs-page-shell';
 import { GALLERY_SECTIONS, sectionForUrl } from '../lib/gallery-sections';
-import { Translations } from '../i18n/translations';
+import { injectAppI18n } from '../i18n/i18n';
 
 /**
  * Shell shared by both halves of the gallery.
@@ -52,7 +52,7 @@ import { Translations } from '../i18n/translations';
 })
 export default class GalleryLayout {
   private readonly router = inject(Router);
-  private readonly translations = inject(Translations);
+  private readonly translations = injectAppI18n();
 
   protected readonly t = this.translations.t;
   protected readonly path = this.translations.path;

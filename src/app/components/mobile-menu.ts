@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import {
   NgpDialog,
@@ -10,7 +10,7 @@ import {
 import { LmnMenuIcon, LmnXIcon } from 'lumen-icons';
 import { MoveEnterDirective } from 'angular-movement';
 import { MOTION } from '../lib/motion';
-import { Translations } from '../i18n/translations';
+import { injectAppI18n } from '../i18n/i18n';
 
 @Component({
   selector: 'app-mobile-menu',
@@ -86,7 +86,7 @@ import { Translations } from '../i18n/translations';
   `,
 })
 export class MobileMenu {
-  private readonly translations = inject(Translations);
+  private readonly translations = injectAppI18n();
 
   protected readonly t = this.translations.t;
   protected readonly path = this.translations.path;

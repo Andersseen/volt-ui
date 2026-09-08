@@ -13,7 +13,7 @@ import {
   VoltSwitch,
 } from 'volt';
 import { ThemeStudioStore } from '../../services/theme-studio-store';
-import { Translations } from '../../i18n/translations';
+import { injectAppI18n } from '../../i18n/i18n';
 
 /**
  * The live canvas. Everything inside the shell is rendered under the draft's own tokens
@@ -189,7 +189,7 @@ import { Translations } from '../../i18n/translations';
   `,
 })
 export class ThemeStudioPreview {
-  private readonly translations = inject(Translations);
+  private readonly translations = injectAppI18n();
 
   protected readonly t = this.translations.t;
 

@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { BlockThumbnail } from '../../../../components/block-thumbnail';
 import { Reveal } from '../../../../components/reveal';
 import { BLOCK_CATEGORIES, BLOCKS, UPCOMING_BLOCKS } from '../../../../lib/blocks-metadata';
-import { Translations } from '../../../../i18n/translations';
+import { injectAppI18n } from '../../../../i18n/i18n';
 import { MOTION } from '../../../../lib/motion';
 
 @Component({
@@ -139,7 +139,7 @@ import { MOTION } from '../../../../lib/motion';
   `,
 })
 export default class BlocksIndexPage {
-  private readonly translations = inject(Translations);
+  private readonly translations = injectAppI18n();
 
   protected readonly t = this.translations.t;
 

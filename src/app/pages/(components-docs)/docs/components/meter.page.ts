@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   VoltMeter,
   VoltMeterIndicator,
@@ -11,7 +11,7 @@ import { ApiReference } from '../../../../components/api-reference';
 import { METER_SNIPPET } from '../../../../lib/snippets';
 import { METER_USAGE } from '../../../../lib/snippets/usage';
 import { METER_API } from '../../../../lib/api-reference.generated';
-import { Translations } from '../../../../i18n/translations';
+import { injectAppI18n } from '../../../../i18n/i18n';
 
 @Component({
   selector: 'app-meter-demo',
@@ -67,7 +67,7 @@ import { Translations } from '../../../../i18n/translations';
   `,
 })
 export default class MeterDemo {
-  private readonly translations = inject(Translations);
+  private readonly translations = injectAppI18n();
 
   protected readonly t = this.translations.t;
 

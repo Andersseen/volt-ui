@@ -13,14 +13,14 @@
     "menu": "Menú",
     "language": "Idioma",
     "toggleDark": "Cambiar a modo oscuro",
-    "themeLabel": "Tema: paleta {color}, forma {style}",
+    "themeLabel": "Tema: paleta {$color}, forma {$style}",
     "palette": "Paleta",
     "shape": "Forma",
     "logoAlt": "Logotipo de Volt UI"
   },
   "footer": {
     "tagline": "Componentes de Angular que son tuyos.",
-    "rights": "© {year}"
+    "rights": "© {$year :number useGrouping=never}"
   },
   "gallery": {
     "sections": "Secciones de la galería",
@@ -48,7 +48,7 @@
     "missing": "¿Te falta alguno?",
     "openIssue": "Abre una issue",
     "missingTail": "y pasa al principio de la cola.",
-    "atoms": "{count} átomos",
+    "atoms": "{$count} átomos",
     "whatMoves": "Qué se mueve",
     "builtFrom": "Construido con",
     "blockSource": "Código del bloque",
@@ -56,7 +56,7 @@
     "assembledFrom": "Ensamblado con",
     "layoutSource": "Código del layout",
     "blockSourceNote": "Un componente standalone. Pégalo en tu proyecto, apunta los imports a tu ruta de Volt y conecta los botones a tus propias rutas.",
-    "blockThemeNote": "Cada animación aquí está protegida por {reducedMotion}, y los colores salen de los tokens del tema — prueba otro preset con el selector de la cabecera y el bloque lo sigue.",
+    "blockThemeNote": "Cada animación aquí está protegida por {$reducedMotion}, y los colores salen de los tokens del tema — prueba otro preset con el selector de la cabecera y el bloque lo sigue.",
     "layoutSourceNote": "La disposición, con los datos de ejemplo en arrays planos al final. Cámbialos por los tuyos y la plantilla deja de ser un ejemplo.",
     "layoutUnbrandedNote": "Los layouts se quedan sin marca a propósito: sin degradados, sin logotipos, sin fotos de stock y sin nada traído de terceros. Si buscas una sección terminada en vez de una forma que rellenar,",
     "blocksGalleryLink": "la galería de bloques",
@@ -64,11 +64,11 @@
   },
   "language": {
     "switch": "Cambiar idioma",
-    "current": "Idioma: {name}"
+    "current": "Idioma: {$name}"
   },
   "landing": {
     "hero": {
-      "badge": "Volt UI {version} para Angular 21",
+      "badge": "Volt UI {$version} para Angular 21",
       "title": "Publica interfaces de Angular con componentes que son tuyos.",
       "subtitle": "Copia código Angular pulido y accesible dentro de tu app. Conserva la velocidad de una librería de componentes, con el control de un código que pertenece a tu producto.",
       "start": "Empezar a construir",
@@ -123,7 +123,7 @@
       "title": "Construye la interfaz de Angular que querías.",
       "browse": "Ver componentes",
       "star": "Dar una estrella en GitHub",
-      "body": "Explora {components} componentes, layouts accesibles, {themes} combinaciones de tema y un flujo listo para IA."
+      "body": "Explora {$components} componentes, layouts accesibles, {$themes} combinaciones de tema y un flujo listo para IA."
     }
   },
   "guide": {
@@ -406,7 +406,7 @@
       "row3Tool": "[Servidor MCP](/docs/ai-mcp) (instrucciones + snippets)",
       "row4": "Usas un chat web (ChatGPT, Gemini, etc.)",
       "row4Tool": "[Referencia de prompt](/docs/ai-prompt)",
-      "mcpBody": "Lo mejor para Claude, Cursor, Windsurf y cualquier agente nativo de MCP. El servidor alojado en `{url}` expone herramientas para consultar componentes, ejemplos, temas y comandos de la CLI a demanda."
+      "mcpBody": "Lo mejor para Claude, Cursor, Windsurf y cualquier agente nativo de MCP. El servidor alojado en `{$url}` expone herramientas para consultar componentes, ejemplos, temas y comandos de la CLI a demanda."
     },
     "aiSkillPage": {
       "title": "Skill local",
@@ -504,10 +504,10 @@
       "apiBody": "El servidor implementa el transporte Streamable HTTP de MCP. No guarda estado y devuelve respuestas JSON a las peticiones POST.",
       "endpointLabel": "Endpoint del servidor MCP",
       "setupConfigsLabel": "Configuraciones de instalación",
-      "whatBody": "El Model Context Protocol es un estándar abierto que permite a los LLM hablar con herramientas, recursos y prompts externos. El servidor MCP de Volt UI corre en `{url}` y expone un endpoint Streamable HTTP conforme a la especificación. Los agentes pueden listar componentes, leer metadatos detallados, obtener ejemplos de uso e incluso recuperar prompts reutilizables.",
-      "discoveryNote": "`GET {url}` devuelve un JSON de descubrimiento legible (herramientas, recursos, prompts y enlaces de instalación).",
-      "endpointBody": "`GET {url}` — información del servidor y lista de capacidades",
-      "setupConfigsBody": "`GET {url}?agent=claude` — los archivos exactos que escribir para cada agente",
+      "whatBody": "El Model Context Protocol es un estándar abierto que permite a los LLM hablar con herramientas, recursos y prompts externos. El servidor MCP de Volt UI corre en `{$url}` y expone un endpoint Streamable HTTP conforme a la especificación. Los agentes pueden listar componentes, leer metadatos detallados, obtener ejemplos de uso e incluso recuperar prompts reutilizables.",
+      "discoveryNote": "`GET {$url}` devuelve un JSON de descubrimiento legible (herramientas, recursos, prompts y enlaces de instalación).",
+      "endpointBody": "`GET {$url}` — información del servidor y lista de capacidades",
+      "setupConfigsBody": "`GET {$url}?agent=claude` — los archivos exactos que escribir para cada agente",
       "tools": {
         "listComponents": "Lista todos los componentes disponibles de Volt UI.",
         "getComponent": "Obtiene información detallada de un componente concreto.",
@@ -548,7 +548,7 @@
       "directiveSource": "Código de la directiva",
       "usage": "Uso",
       "copyNote": "Copia este código en tu proyecto.",
-      "copyNoteDep": "Copia este código en tu proyecto. El componente usa {dep}."
+      "copyNoteDep": "Copia este código en tu proyecto. El componente usa {$dep}."
     },
     "api": {
       "input": "Entrada",
@@ -927,7 +927,7 @@
       "title": "Select",
       "description": "Muestra una lista de opciones para que el usuario elija, activada por un botón.",
       "nativeTitle": "Select nativo",
-      "nativeNote": "Una alternativa más ligera a {select} para casos sencillos: es el elemento {element} nativo de verdad (comportamiento completo del selector móvil/nativo, funciona con {formControl}/{ngModel} sin más), con estilo acorde al tema."
+      "nativeNote": "Una alternativa más ligera a {$select} para casos sencillos: es el elemento {$element} nativo de verdad (comportamiento completo del selector móvil/nativo, funciona con {$formControl}/{$ngModel} sin más), con estilo acorde al tema."
     },
     "separator": {
       "title": "Separator",

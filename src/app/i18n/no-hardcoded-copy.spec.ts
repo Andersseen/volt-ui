@@ -15,7 +15,7 @@ import { describe, expect, it } from 'vitest';
  *
  *  - **Product source** — `src/app/blocks/` and `src/app/layouts/` are read with Vite's
  *    `?raw` and shown as code to copy. A `t()` call in there would break the moment it
- *    landed in a consumer's project, which has no `Translations`.
+ *    landed in a consumer's project, which has no Volt docs i18n setup.
  *  - **Specimens** — the live demo projected into `<app-code-panel>`, and the miniatures
  *    in `component-preview` / `block-thumbnail`. That content is an exhibit of the code
  *    shown beside it; translating "Apple" while the snippet under it still says `Apple`

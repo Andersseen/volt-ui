@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MoveHoverDirective, MoveTapDirective } from 'angular-movement';
 import { LmnArrowRightIcon, LmnZapIcon } from 'lumen-icons';
@@ -12,7 +12,7 @@ import {
   VoltProgressValue,
   VoltSwitch,
 } from 'volt';
-import { Translations } from '../../i18n/translations';
+import { injectAppI18n } from '../../i18n/i18n';
 import { HOVER_LIFT, HOVER_POP, MOTION, TAP_PRESS } from '../../lib/motion';
 import { Reveal } from '../reveal';
 
@@ -172,7 +172,7 @@ import { Reveal } from '../reveal';
   `,
 })
 export class LandingWorkflow {
-  private readonly translations = inject(Translations);
+  private readonly translations = injectAppI18n();
 
   protected readonly t = this.translations.t;
   protected readonly path = this.translations.path;

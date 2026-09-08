@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { categoryFor, type BlockMetadata } from '../lib/blocks-metadata';
 import { CodePanel } from './code-panel';
-import { Translations } from '../i18n/translations';
+import { injectAppI18n } from '../i18n/i18n';
 
 /**
  * The frame every block page shares: heading, live section, what moves, and the source.
@@ -71,7 +71,7 @@ import { Translations } from '../i18n/translations';
   `,
 })
 export class BlockShowcase {
-  private readonly translations = inject(Translations);
+  private readonly translations = injectAppI18n();
 
   protected readonly t = this.translations.t;
 

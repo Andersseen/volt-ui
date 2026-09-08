@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import {
   VoltPagination,
   VoltPaginationPrevious,
@@ -10,7 +10,7 @@ import { ApiReference } from '../../../../components/api-reference';
 import { PAGINATION_SNIPPET } from '../../../../lib/snippets';
 import { PAGINATION_USAGE } from '../../../../lib/snippets/usage';
 import { PAGINATION_API } from '../../../../lib/api-reference.generated';
-import { Translations } from '../../../../i18n/translations';
+import { injectAppI18n } from '../../../../i18n/i18n';
 
 @Component({
   selector: 'app-pagination-demo',
@@ -63,7 +63,7 @@ import { Translations } from '../../../../i18n/translations';
   `,
 })
 export default class PaginationDemo {
-  private readonly translations = inject(Translations);
+  private readonly translations = injectAppI18n();
 
   protected readonly t = this.translations.t;
 

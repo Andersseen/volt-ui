@@ -1,4 +1,4 @@
-import type { TranslationKey } from '../i18n/translations';
+import type { TranslationKey } from '../i18n/i18n';
 
 /**
  * The blocks catalog.

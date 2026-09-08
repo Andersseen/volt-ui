@@ -2,11 +2,13 @@ import {
   DestroyRef,
   Directive,
   ElementRef,
+  PLATFORM_ID,
   afterNextRender,
   inject,
   input,
   numberAttribute,
 } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { MOVE_PRESETS, MoveAnimator, type MovePreset } from 'angular-movement';
 import { MOTION } from '../lib/motion';
 
@@ -29,6 +31,7 @@ import { MOTION } from '../lib/motion';
 export class Reveal {
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly animator = inject(MoveAnimator);
+  private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
   /** Stagger, in milliseconds, applied before this element animates. */
   readonly appReveal = input(0, { transform: numberAttribute });
@@ -45,6 +48,10 @@ export class Reveal {
   }
 
   private arm(): void {
+    if (!this.isBrowser) {
+      return;
+    }
+
     const element = this.host.nativeElement;
 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {

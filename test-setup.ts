@@ -6,9 +6,11 @@ import { vi } from 'vitest';
 import { getTestBed } from '@angular/core/testing';
 import { NgModule, provideZonelessChangeDetection } from '@angular/core';
 import { BrowserTestingModule, platformBrowserTesting } from '@angular/platform-browser/testing';
+import { provideEtyma } from '@etyma/angular';
+import { appI18n } from './src/app/i18n/i18n';
 
 @NgModule({
-  providers: [provideZonelessChangeDetection()],
+  providers: [provideZonelessChangeDetection(), provideEtyma(appI18n)],
 })
 class ZonelessTestModule {}
 

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { VoltBadge } from 'volt';
 import { ThemeStudioOutput } from '../components/theme-studio/theme-studio-output';
 import { ThemeStudioPreview } from '../components/theme-studio/theme-studio-preview';
@@ -6,7 +6,7 @@ import { ThemeStudioSetup } from '../components/theme-studio/theme-studio-setup'
 import { ThemeStudioShape } from '../components/theme-studio/theme-studio-shape';
 import { ThemeStudioTokens } from '../components/theme-studio/theme-studio-tokens';
 import { ThemeStudioStore } from '../services/theme-studio-store';
-import { Translations } from '../i18n/translations';
+import { injectAppI18n } from '../i18n/i18n';
 
 /**
  * The theme studio is a two-column layout over one shared draft. The draft lives in
@@ -104,7 +104,7 @@ import { Translations } from '../i18n/translations';
   `,
 })
 export default class CreateThemePage {
-  private readonly translations = inject(Translations);
+  private readonly translations = injectAppI18n();
 
   protected readonly t = this.translations.t;
 }

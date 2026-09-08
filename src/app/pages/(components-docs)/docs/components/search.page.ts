@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CodePanel } from '../../../../components/code-panel';
 import { SEARCH_SNIPPET } from '../../../../lib/snippets';
 import { SEARCH_USAGE } from '../../../../lib/snippets/usage';
 import { VoltInput, VoltSearch, VoltSearchClear } from 'volt';
-import { Translations } from '../../../../i18n/translations';
+import { injectAppI18n } from '../../../../i18n/i18n';
 
 @Component({
   selector: 'app-search-demo',
@@ -28,7 +28,7 @@ import { Translations } from '../../../../i18n/translations';
   `,
 })
 export default class SearchPage {
-  private readonly translations = inject(Translations);
+  private readonly translations = injectAppI18n();
 
   protected readonly t = this.translations.t;
 

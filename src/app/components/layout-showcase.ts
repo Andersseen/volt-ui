@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import type { LayoutMetadata } from '../lib/layouts-metadata';
 import { CodePanel } from './code-panel';
-import { Translations } from '../i18n/translations';
+import { injectAppI18n } from '../i18n/i18n';
 
 /**
  * The frame every layout page shares.
@@ -68,7 +68,7 @@ import { Translations } from '../i18n/translations';
   `,
 })
 export class LayoutShowcase {
-  private readonly translations = inject(Translations);
+  private readonly translations = injectAppI18n();
 
   protected readonly t = this.translations.t;
 

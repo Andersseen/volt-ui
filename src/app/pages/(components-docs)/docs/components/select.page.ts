@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import {
   VoltNativeSelect,
@@ -13,7 +13,7 @@ import { ApiReference } from '../../../../components/api-reference';
 import { SELECT_SNIPPET } from '../../../../lib/snippets';
 import { SELECT_USAGE, NATIVE_SELECT_USAGE } from '../../../../lib/snippets/usage';
 import { SELECT_API } from '../../../../lib/api-reference.generated';
-import { Translations } from '../../../../i18n/translations';
+import { injectAppI18n } from '../../../../i18n/i18n';
 
 @Component({
   selector: 'app-select-demo',
@@ -33,7 +33,7 @@ import { Translations } from '../../../../i18n/translations';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class SelectDemo {
-  private readonly translations = inject(Translations);
+  private readonly translations = injectAppI18n();
 
   protected readonly t = this.translations.t;
 
