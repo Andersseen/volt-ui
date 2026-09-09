@@ -140,6 +140,6 @@
     "typescript-eslint": "^8.58.0",
     "vite": "^8.2.2",
     "vitest": "^4.1.8",
-    "wrangler": "^4.72.0"
+    "wrangler": "^4.127.1"
   }
 }
