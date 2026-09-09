@@ -4,13 +4,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-overrides:
-  '@etyma/angular': file:/private/tmp/etyma-dogfood-packs/etyma-angular-0.1.0.tgz
-  '@etyma/core': file:/private/tmp/etyma-dogfood-packs/etyma-core-0.1.0.tgz
-  '@etyma/core@^0.1.0': file:/private/tmp/etyma-dogfood-packs/etyma-core-0.1.0.tgz
-  '@etyma/analog>@etyma/core': file:/private/tmp/etyma-dogfood-packs/etyma-core-0.1.0.tgz
-  '@etyma/angular>@etyma/core': file:/private/tmp/etyma-dogfood-packs/etyma-core-0.1.0.tgz
-
 importers:
 
   .:
@@ -49,14 +42,14 @@ importers:
         specifier: ^21.2.2
         version: 21.2.17(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.17(@angular/animations@21.2.2(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@etyma/analog':
-        specifier: file:/private/tmp/etyma-dogfood-packs/etyma-analog-0.1.0.tgz
-        version: file:../../../../../../private/tmp/etyma-dogfood-packs/etyma-analog-0.1.0.tgz(e78c47ff062f3370fd780737a9823bb9)
+        specifier: 0.1.0
+        version: 0.1.0(5fd95c32eb62d32d576203cfb6b29522)
       '@etyma/angular':
-        specifier: file:/private/tmp/etyma-dogfood-packs/etyma-angular-0.1.0.tgz
-        version: file:../../../../../../private/tmp/etyma-dogfood-packs/etyma-angular-0.1.0.tgz(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
+        specifier: 0.1.0
+        version: 0.1.0(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       '@etyma/core':
-        specifier: file:/private/tmp/etyma-dogfood-packs/etyma-core-0.1.0.tgz
-        version: file:../../../../../../private/tmp/etyma-dogfood-packs/etyma-core-0.1.0.tgz
+        specifier: 0.1.0
+        version: 0.1.0
       '@floating-ui/dom':
         specifier: ^1.6.0
         version: 1.7.6
@@ -1278,9 +1271,8 @@ packages:
     resolution: {integrity: sha512-ejvBr8MQCbVsWNZnCwDXjUKq40MDmHalq7cJ6e9s/qzTUFIIo/afzt1Vui9T97FM/V/pN4YsFVoed5NIa96RDg==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
 
-  '@etyma/analog@file:../../../../../../private/tmp/etyma-dogfood-packs/etyma-analog-0.1.0.tgz':
-    resolution: {integrity: sha512-BV43162GAkr05INwT8pC2kiF8LG5bMFr9zhquIXG3Ka+8nuY/9XiwEBT5FrdYOxoJxKabpVyScEDx9HKbxcw2Q==, tarball: file:../../../../../../private/tmp/etyma-dogfood-packs/etyma-analog-0.1.0.tgz}
-    version: 0.1.0
+  '@etyma/analog@0.1.0':
+    resolution: {integrity: sha512-+3KQoKAjJxR/CTpdry1Swa8wA9Glki0cgckPuqF8mSgpBX97GT8f6QSQTSTkrLDqmOzAa90Sr6yEJYbPy0lpQQ==}
     engines: {node: '>=22.22.0'}
     peerDependencies:
       '@analogjs/router': '>=2.6.0 <3'
@@ -1289,17 +1281,15 @@ packages:
       '@angular/router': ^21.0.0 || ^22.0.0
       '@etyma/angular': ^0.1.0
 
-  '@etyma/angular@file:../../../../../../private/tmp/etyma-dogfood-packs/etyma-angular-0.1.0.tgz':
-    resolution: {integrity: sha512-xl9RfkfqTlloLeaq9Cq+L4dcmRKWtMmOluaxrxHdGD7Vk0sxZOh9Wn0JR6A/3sbj6QXN35Zi+Ct9L6YIqW/YIg==, tarball: file:../../../../../../private/tmp/etyma-dogfood-packs/etyma-angular-0.1.0.tgz}
-    version: 0.1.0
+  '@etyma/angular@0.1.0':
+    resolution: {integrity: sha512-0WDbXcAJFPzSpJMTUKCrbaYxYBfISnoZU8fgO6yJ3RTsu5PA/rIZT0WEIbT91FBdZVdYJCc2C/4EosPk9UIY5Q==}
     engines: {node: '>=22.22.0'}
     peerDependencies:
       '@angular/common': ^21.0.0 || ^22.0.0
       '@angular/core': ^21.0.0 || ^22.0.0
 
-  '@etyma/core@file:../../../../../../private/tmp/etyma-dogfood-packs/etyma-core-0.1.0.tgz':
-    resolution: {integrity: sha512-a8usZ735Svmkj4wc5wfODkVfHN4KgcJbruJB0tVMxtGITE6pPO50bMFMJw6Nwy3/SnjQoHkLM8hEyg1TAtGH9Q==, tarball: file:../../../../../../private/tmp/etyma-dogfood-packs/etyma-core-0.1.0.tgz}
-    version: 0.1.0
+  '@etyma/core@0.1.0':
+    resolution: {integrity: sha512-SmNH2I5NCDv2vrMeb+71CxTLHAh//PrdUNDGy/QqvIrS5mDxN2XhtR3oNKe45c+P2cEnqdJcR38Grkr7ak85pQ==}
     engines: {node: '>=22.22.0'}
 
   '@exodus/bytes@1.15.0':
@@ -7159,24 +7149,24 @@ snapshots:
       '@eslint/core': 1.2.0
       levn: 0.4.1
 
-  '@etyma/analog@file:../../../../../../private/tmp/etyma-dogfood-packs/etyma-analog-0.1.0.tgz(e78c47ff062f3370fd780737a9823bb9)':
+  '@etyma/analog@0.1.0(5fd95c32eb62d32d576203cfb6b29522)':
     dependencies:
       '@analogjs/router': 2.6.1(@analogjs/content@2.6.1(e80ea6dd8df40211ba45cd5baf611ae4))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/router@21.2.17(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.17(@angular/animations@21.2.2(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2))
       '@angular/common': 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/core': 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@angular/router': 21.2.17(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.17(@angular/animations@21.2.2(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
-      '@etyma/angular': file:../../../../../../private/tmp/etyma-dogfood-packs/etyma-angular-0.1.0.tgz(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
-      '@etyma/core': file:../../../../../../private/tmp/etyma-dogfood-packs/etyma-core-0.1.0.tgz
+      '@etyma/angular': 0.1.0(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
+      '@etyma/core': 0.1.0
       tslib: 2.8.1
 
-  '@etyma/angular@file:../../../../../../private/tmp/etyma-dogfood-packs/etyma-angular-0.1.0.tgz(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))':
+  '@etyma/angular@0.1.0(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))':
     dependencies:
       '@angular/common': 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/core': 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
-      '@etyma/core': file:../../../../../../private/tmp/etyma-dogfood-packs/etyma-core-0.1.0.tgz
+      '@etyma/core': 0.1.0
       tslib: 2.8.1
 
-  '@etyma/core@file:../../../../../../private/tmp/etyma-dogfood-packs/etyma-core-0.1.0.tgz':
+  '@etyma/core@0.1.0':
     dependencies:
       messageformat: 4.0.0
 
