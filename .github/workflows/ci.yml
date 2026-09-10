@@ -118,7 +118,7 @@ jobs:
           PUBLIC_UMAMI_WEBSITE_ID: ${{ vars.PUBLIC_UMAMI_WEBSITE_ID || '5baf0049-5fed-401f-a71c-eb6af6ef3166' }}
 
       - name: Deploy to Cloudflare Pages
-        run: pnpm exec wrangler pages deploy dist/analog/public --project-name=volt-ui --branch=main
+        run: pnpm exec wrangler pages deploy dist/analog/public --project-name=volt-ui --branch=production
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
