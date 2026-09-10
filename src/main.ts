@@ -11,13 +11,14 @@ import { App } from './app/app';
  * (local dev without .env, CI without vars) the injection is skipped silently.
  */
 function initUmami(): void {
-  const url = import.meta.env.PUBLIC_UMAMI_URL as string | undefined;
-  const websiteId = import.meta.env.PUBLIC_UMAMI_WEBSITE_ID as string | undefined;
+  const env = import.meta.env as Record<string, string | undefined>;
+  const url = env['PUBLIC_UMAMI_URL'];
+  const websiteId = env['PUBLIC_UMAMI_WEBSITE_ID'];
   if (!url || !websiteId || typeof document === 'undefined') return;
   const script = document.createElement('script');
   script.defer = true;
   script.src = url;
-  script.dataset.websiteId = websiteId;
+  script.dataset['websiteId'] = websiteId;
   document.head.appendChild(script);
 }
 
