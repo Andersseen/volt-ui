@@ -111,6 +111,11 @@ jobs:
 
       - name: Build application
         run: pnpm build
+        env:
+          # Umami tracker is baked in at build time. Values are public by design
+          # (they ship in the page HTML); repo vars can override the defaults.
+          PUBLIC_UMAMI_URL: ${{ vars.PUBLIC_UMAMI_URL || 'https://umami.andersseen.dev/script.js' }}
+          PUBLIC_UMAMI_WEBSITE_ID: ${{ vars.PUBLIC_UMAMI_WEBSITE_ID || '5baf0049-5fed-401f-a71c-eb6af6ef3166' }}
 
       - name: Deploy to Cloudflare Pages
         run: pnpm exec wrangler pages deploy dist/analog/public --project-name=volt-ui --branch=main
