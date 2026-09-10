@@ -81,6 +81,8 @@ export default defineConfig(({ isSsrBuild }) => ({
   build: {
     ...(isSsrBuild ? {} : { rollupOptions: { output: { manualChunks: localeChunk } } }),
   },
+  // Expose PUBLIC_* env vars to import.meta.env (not a Vite default prefix).
+  envPrefix: ['VITE_', 'PUBLIC_'],
   ssr: {
     noExternal: ['@analogjs/router', '@etyma/analog', '@etyma/angular', '@etyma/core'],
   },
