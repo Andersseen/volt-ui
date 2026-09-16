@@ -1,7 +1,7 @@
-import { defineI18n, type MessageParams } from '@etyma/core';
+import { createHttpMessageLoader, defineRemoteI18n, type MessageParams } from '@etyma/core';
 import { injectI18n, type EtymaI18n } from '@etyma/angular';
 
-import en from './en.json';
+import contract from './etyma.generated';
 
 export const LOCALES = ['en', 'es', 'uk'] as const;
 
@@ -21,13 +21,20 @@ export const LOCALE_SHORT: Readonly<Record<Locale, string>> = {
   uk: 'UA',
 };
 
-export const appI18n = defineI18n({
+// Translation content is owned by Glossa, not this repo. See AGENTS.md "Translations" for
+// the agent workflow (Glossa MCP) and how to refresh `etyma.generated.ts` after a key change.
+const GLOSSA_I18N_BASE = 'https://glossa.andersseen.dev/i18n/volt-ui';
+
+const remoteLoader = createHttpMessageLoader(locale => `${GLOSSA_I18N_BASE}/${locale}.json`);
+
+export const appI18n = defineRemoteI18n({
   locales: LOCALES,
   sourceLocale: SOURCE_LOCALE,
-  source: en,
+  contract,
   loaders: {
-    es: () => import('./es.json'),
-    uk: () => import('./uk.json'),
+    en: remoteLoader,
+    es: remoteLoader,
+    uk: remoteLoader,
   },
 });
 

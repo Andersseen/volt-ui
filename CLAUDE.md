@@ -30,20 +30,27 @@ Configured in `.mcp.json` (committed, so the whole team gets them — Claude Cod
 project MCP servers from there, not from `.claude/settings.json`). Reach for the right
 one instead of guessing or re-deriving from source:
 
-| Server            | Use it for                                                              | Reach for it when                                                        |
-| ----------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| `ngp-mcp`         | ng-primitives API — directives, inputs, outputs, data attributes        | **Before writing any component template.** Never guess a primitive's API |
-| `angular-cli`     | Angular 21 docs and best practices                                      | Signals, zoneless, control flow, SSR questions                           |
-| `volt-ui`         | This library's own catalog, as a consumer sees it                       | Verifying what the published surface exposes                             |
-| `playwright`      | Driving the docs app — accessibility tree, keyboard, focus, interaction | **Verifying UI work before calling it done** (see below)                 |
-| `chrome-devtools` | Performance traces (LCP/CLS/INP), network, CPU/network throttling       | Bundle and perf audits (`specs/plans/v0.9.md` Phase 2)                   |
-| `codebase-memory` | A persistent code knowledge graph — symbols, call paths, architecture   | Orienting in unfamiliar areas or tracing a symbol across 30+ components  |
-| `github`          | Issues, PRs, CI runs                                                    | Reading a failing CI log, filing or triaging issues                      |
+| Server            | Use it for                                                                                  | Reach for it when                                                                                                                     |
+| ----------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `ngp-mcp`         | ng-primitives API — directives, inputs, outputs, data attributes                            | **Before writing any component template.** Never guess a primitive's API                                                              |
+| `angular-cli`     | Angular 21 docs and best practices                                                          | Signals, zoneless, control flow, SSR questions                                                                                        |
+| `volt-ui`         | This library's own catalog, as a consumer sees it                                           | Verifying what the published surface exposes                                                                                          |
+| `playwright`      | Driving the docs app — accessibility tree, keyboard, focus, interaction                     | **Verifying UI work before calling it done** (see below)                                                                              |
+| `chrome-devtools` | Performance traces (LCP/CLS/INP), network, CPU/network throttling                           | Bundle and perf audits (`specs/plans/v0.9.md` Phase 2)                                                                                |
+| `codebase-memory` | A persistent code knowledge graph — symbols, call paths, architecture                       | Orienting in unfamiliar areas or tracing a symbol across 30+ components                                                               |
+| `github`          | Issues, PRs, CI runs                                                                        | Reading a failing CI log, filing or triaging issues                                                                                   |
+| `glossa`          | Reading/writing translation content — `get_translation`, `set_translation`, `list_catalogs` | Any change to what a visitor reads. See AGENTS.md "Site copy and translations" — never add local locale JSON or a sync script instead |
 
 `ngp-mcp` runs from the **local install** (`npx --no-install ngp-mcp`) so its API surface
 always matches the pinned `ng-primitives` version in `package.json`. Do not change it to
 `npx -y @ng-primitives/mcp` — that fetches the latest release, which drifts ahead of the
 pinned version and will describe primitives this repo does not have.
+
+`glossa` needs `GLOSSA_TOKEN` exported in the shell that starts Claude Code (see
+`.env.example`) — Claude Code expands `${GLOSSA_TOKEN}` in `.mcp.json`'s `headers` at
+startup from the environment, not from `.env` directly. Without it the server fails to
+authenticate; that's expected for anyone who hasn't set up a Glossa token, and is not a
+reason to add a fallback or a second way to edit translations.
 
 `codebase-memory` needs an explicit index before its queries return anything — it starts
 with `autoindex.skip reason=disabled`. Once per clone (and after large refactors) call its

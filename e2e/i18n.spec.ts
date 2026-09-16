@@ -2,7 +2,10 @@ import { expect, test } from '@playwright/test';
 
 const ORIGIN = 'https://volt-ui.andersseen.dev';
 const RUNS_SSR = process.env['E2E_SERVER'] === 'wrangler';
-const localeChunk = (locale: string) => new RegExp(`/assets/etyma-locale-${locale}-[^/]+\\.js$`);
+// Locale content is fetched as JSON from Glossa at runtime, not bundled as a per-locale JS
+// chunk - see AGENTS.md "Site copy and translations". `pathname` ignores origin, so this
+// matches the request whether it lands on glossa.andersseen.dev or a same-origin proxy.
+const localeCatalogRequest = (locale: string) => new RegExp(`/i18n/volt-ui/${locale}\\.json$`);
 
 async function headLinks(page: import('@playwright/test').Page) {
   return page.evaluate(() => ({
@@ -212,20 +215,25 @@ test.describe('Localised site', () => {
     await expect(
       page.locator('header').getByRole('navigation').getByRole('link', { name: 'Documentación' })
     ).toBeVisible();
-    await page.waitForLoadState('networkidle');
 
-    expect(requested.filter(path => localeChunk('es').test(path))).toEqual([]);
+    expect(requested.filter(path => localeCatalogRequest('es').test(path))).toEqual([]);
   });
 
   test('lazy-loads secondary locale catalogs only when requested', async ({ page }) => {
+    // Not `waitForLoadState('networkidle')`: the catalog now comes from a cross-origin
+    // fetch to Glossa, and a browser keeping that connection warm for reuse can leave the
+    // page "not idle" indefinitely. Waiting for the translated content to render is both
+    // the thing this test actually cares about and immune to that.
     const requested: string[] = [];
     page.on('request', request => requested.push(new URL(request.url()).pathname));
 
     await page.goto('/docs');
-    await page.waitForLoadState('networkidle');
+    await expect(
+      page.locator('header').getByRole('navigation').getByRole('link', { name: 'Docs' })
+    ).toBeVisible();
 
-    expect(requested.filter(path => localeChunk('es').test(path))).toEqual([]);
-    expect(requested.filter(path => localeChunk('uk').test(path))).toEqual([]);
+    expect(requested.filter(path => localeCatalogRequest('es').test(path))).toEqual([]);
+    expect(requested.filter(path => localeCatalogRequest('uk').test(path))).toEqual([]);
 
     await chooseLanguage(page, 'es');
     await expect(page).toHaveURL(/\/es\/docs\/introduction$/);
@@ -234,7 +242,9 @@ test.describe('Localised site', () => {
     ).toBeVisible();
 
     await page.goto('/es/docs');
-    await page.waitForLoadState('networkidle');
+    await expect(
+      page.locator('header').getByRole('navigation').getByRole('link', { name: 'Documentación' })
+    ).toBeVisible();
     requested.length = 0;
 
     await chooseLanguage(page, 'uk');
@@ -243,7 +253,28 @@ test.describe('Localised site', () => {
       page.locator('header').getByRole('navigation').getByRole('link', { name: 'Документація' })
     ).toBeVisible();
 
-    expect(requested.filter(path => localeChunk('uk').test(path))).toHaveLength(1);
-    expect(requested.filter(path => localeChunk('es').test(path))).toHaveLength(0);
+    expect(requested.filter(path => localeCatalogRequest('uk').test(path))).toHaveLength(1);
+    expect(requested.filter(path => localeCatalogRequest('es').test(path))).toHaveLength(0);
+  });
+
+  test('keeps focus on the option a keyboard user just activated while the catalog loads', async ({
+    page,
+  }) => {
+    await page.goto('/docs');
+    await page.getByTestId('language-trigger').focus();
+    await page.keyboard.press('Enter');
+
+    const esOption = page.getByTestId('language-option-es');
+    await expect(esOption).toBeVisible();
+    await esOption.focus();
+    await page.keyboard.press('Enter');
+
+    // The picker marks itself busy with `aria-disabled`, not the native `disabled`
+    // attribute - disabling the option a keyboard user just activated would blur it to
+    // <body> the instant the switch starts, synchronously, before the Glossa fetch even
+    // begins. This holds regardless of how fast the network resolves.
+    await expect(esOption).toBeFocused();
+
+    await expect(page).toHaveURL(/\/es\/docs\/introduction$/);
   });
 });
