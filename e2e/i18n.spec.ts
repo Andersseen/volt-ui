@@ -256,4 +256,25 @@ test.describe('Localised site', () => {
     expect(requested.filter(path => localeCatalogRequest('uk').test(path))).toHaveLength(1);
     expect(requested.filter(path => localeCatalogRequest('es').test(path))).toHaveLength(0);
   });
+
+  test('keeps focus on the option a keyboard user just activated while the catalog loads', async ({
+    page,
+  }) => {
+    await page.goto('/docs');
+    await page.getByTestId('language-trigger').focus();
+    await page.keyboard.press('Enter');
+
+    const esOption = page.getByTestId('language-option-es');
+    await expect(esOption).toBeVisible();
+    await esOption.focus();
+    await page.keyboard.press('Enter');
+
+    // The picker marks itself busy with `aria-disabled`, not the native `disabled`
+    // attribute - disabling the option a keyboard user just activated would blur it to
+    // <body> the instant the switch starts, synchronously, before the Glossa fetch even
+    // begins. This holds regardless of how fast the network resolves.
+    await expect(esOption).toBeFocused();
+
+    await expect(page).toHaveURL(/\/es\/docs\/introduction$/);
+  });
 });
