@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { LAYOUT_CATEGORIES, LAYOUT_GROUPS, LAYOUTS, layoutBySlug } from './layouts-metadata';
-import en from '../i18n/en.json';
+import en from '../i18n/__fixtures__/en.json';
 
 /** The catalog holds keys, so a test about the prose has to go and read the prose. */
 function lookup(key: string): string {

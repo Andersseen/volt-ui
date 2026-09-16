@@ -1,8 +1,11 @@
 import analog from '@analogjs/platform';
 import tailwindcss from '@tailwindcss/vite';
+import { etymaRemoteContract } from '@etyma/tooling/vite';
 import { defineConfig, Plugin } from 'vite';
 import { resolve } from 'path';
 import { readFileSync } from 'fs';
+
+const GLOSSA_I18N_BASE = 'https://glossa.andersseen.dev/i18n/volt-ui';
 
 /**
  * Ensures that ?raw imports of TypeScript files are always served as raw
@@ -71,16 +74,7 @@ function freshRouteTablePlugin(): Plugin {
   };
 }
 
-function localeChunk(id: string): string | undefined {
-  const locale = /\/app\/i18n\/([a-z-]+)\.json$/.exec(id)?.[1];
-
-  return locale !== undefined && locale !== 'en' ? `etyma-locale-${locale}` : undefined;
-}
-
-export default defineConfig(({ isSsrBuild }) => ({
-  build: {
-    ...(isSsrBuild ? {} : { rollupOptions: { output: { manualChunks: localeChunk } } }),
-  },
+export default defineConfig(() => ({
   // Expose PUBLIC_* env vars to import.meta.env (not a Vite default prefix).
   envPrefix: ['VITE_', 'PUBLIC_'],
   ssr: {
@@ -89,6 +83,10 @@ export default defineConfig(({ isSsrBuild }) => ({
   plugins: [
     freshRouteTablePlugin(),
     rawTypeScriptPlugin(),
+    etymaRemoteContract({
+      source: `${GLOSSA_I18N_BASE}/en.json`,
+      output: resolve(__dirname, 'src/app/i18n/etyma.generated.ts'),
+    }),
     tailwindcss(),
     analog({
       ssr: true,

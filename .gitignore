@@ -13,6 +13,10 @@
 npm-debug.log
 yarn-error.log
 
+# Local secrets (GLOSSA_TOKEN, etc.) — see .env.example for the documented shape
+.env
+.env.local
+
 # IDEs and editors
 .idea/
 .project

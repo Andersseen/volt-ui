@@ -74,12 +74,30 @@ pnpm test:all
 ## Site copy and translations
 
 The docs site is published in English, Spanish and Ukrainian. **Every string a visitor
-reads lives in `src/app/i18n/{en,es,uk}.json` and is reached through `t()`** — there is no
-second convention, and `src/app/i18n/no-hardcoded-copy.spec.ts` fails the build if one
-appears.
+reads is reached through `t()`** — there is no second convention, and
+`src/app/i18n/no-hardcoded-copy.spec.ts` fails the build if one appears.
 
-- `t()` is typed against the English dictionary, so `t('nav.dcos')` does not compile. That
-  check runs during `pnpm build` (Angular compiles templates; plain `tsc` does not).
+Translation content is managed by **Glossa**, not this repo:
+
+- Runtime catalogs are fetched from `https://glossa.andersseen.dev/i18n/volt-ui` — see
+  `src/app/i18n/i18n.ts` (`defineRemoteI18n` + `createHttpMessageLoader`). Volt UI does not
+  store production translation content locally, and does not have a sync script, client, or
+  cache for it — `@etyma/core`'s HTTP loader talks to Glossa's public delivery endpoint
+  directly.
+- The typed key contract (`src/app/i18n/etyma.generated.ts`) is generated at `vite dev`/
+  `vite build` time by `@etyma/tooling`'s `etymaRemoteContract()` plugin, wired in
+  `vite.config.ts`. It is committed (keys only, no translation values) so `pnpm typecheck`,
+  the editor's TS server, and a build during a Glossa outage all still have a last-known
+  contract. **Do not hand-edit it.** After a source-locale key is added or removed through
+  Glossa, restart `pnpm dev` or run `pnpm build` so Etyma refreshes it — there is no watcher
+  for this.
+- For translation changes (adding, editing, or reading a key), use the **`glossa`** MCP
+  server (`.mcp.json`) — tools include `get_project`, `list_catalogs`, `get_translation`,
+  `set_translation`. It needs `GLOSSA_TOKEN` exported in the shell that starts your agent
+  (see `.env.example`); the token is a developer/agent secret, never committed, never bundled
+  into the site, and not required for the site itself to build or run. Read a translation
+  before overwriting it — Glossa has revision/concurrency protection.
+- `t()` is typed against the generated contract, so `t('nav.dcos')` does not compile.
 - Static data — the component catalog, the blocks and layouts metadata, the sidebar — carries
   `TranslationKey` fields (`labelKey`, `descriptionKey`, …), never text. A `const` has no
   injector and so can never call `t()` itself.
@@ -87,8 +105,14 @@ appears.
   `<app-prose>`, which reads Markdown-style marks: `` `code` ``, `**bold**`,
   `[text](/docs/path)`. Splitting a sentence at its markup produces fragments no translator
   can reassemble.
-- Adding a key means adding it to all three dictionaries. `dictionaries.spec.ts` enforces
-  that the three files have exactly the same keys and the same `{placeholder}` slots.
+- `src/app/i18n/__fixtures__/{en,es,uk}.json` is a **test-only** snapshot the unit test
+  suite mocks `fetch` against (see `test-setup.ts`), so component specs that render real
+  copy don't need a live Glossa connection. It is never imported by production code and can
+  drift from Glossa between refreshes — it is not a source of truth for content.
+
+Do not recreate any of this: no `scripts/glossa/`, no `GlossaClient`/`GlossaService`, no
+local sync state. Glossa owns catalog storage and parity across locales; Volt only owns the
+config that connects to it.
 
 Two kinds of text are deliberately **not** translated:
 

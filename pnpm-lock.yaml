@@ -42,14 +42,14 @@ importers:
         specifier: ^21.2.2
         version: 21.2.17(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.17(@angular/animations@21.2.2(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@etyma/analog':
-        specifier: 0.1.0
-        version: 0.1.0(5fd95c32eb62d32d576203cfb6b29522)
+        specifier: 0.2.0
+        version: 0.2.0(ef5e6299b93a1a5397a38061a2e9719e)
       '@etyma/angular':
-        specifier: 0.1.0
-        version: 0.1.0(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
+        specifier: 0.2.0
+        version: 0.2.0(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
       '@etyma/core':
-        specifier: 0.1.0
-        version: 0.1.0
+        specifier: 0.2.0
+        version: 0.2.0
       '@floating-ui/dom':
         specifier: ^1.6.0
         version: 1.7.6
@@ -114,6 +114,9 @@ importers:
       '@eslint/js':
         specifier: ^10.0.1
         version: 10.0.1(eslint@10.2.0(jiti@2.6.1))
+      '@etyma/tooling':
+        specifier: 0.1.0
+        version: 0.1.0
       '@ng-primitives/mcp':
         specifier: ^0.110.2
         version: 0.110.2
@@ -1271,25 +1274,29 @@ packages:
     resolution: {integrity: sha512-ejvBr8MQCbVsWNZnCwDXjUKq40MDmHalq7cJ6e9s/qzTUFIIo/afzt1Vui9T97FM/V/pN4YsFVoed5NIa96RDg==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
 
-  '@etyma/analog@0.1.0':
-    resolution: {integrity: sha512-+3KQoKAjJxR/CTpdry1Swa8wA9Glki0cgckPuqF8mSgpBX97GT8f6QSQTSTkrLDqmOzAa90Sr6yEJYbPy0lpQQ==}
+  '@etyma/analog@0.2.0':
+    resolution: {integrity: sha512-MjcYTVTxMlmK5eYXWytEnuZPlPrpMudcxHXpJiAR57IduXgv/D8UW6JhrMO9KoBq1vM/MdlCRo5CjMKOUFjBYQ==}
     engines: {node: '>=22.22.0'}
     peerDependencies:
       '@analogjs/router': '>=2.6.0 <3'
       '@angular/common': ^21.0.0 || ^22.0.0
       '@angular/core': ^21.0.0 || ^22.0.0
       '@angular/router': ^21.0.0 || ^22.0.0
-      '@etyma/angular': ^0.1.0
+      '@etyma/angular': ^0.2.0
 
-  '@etyma/angular@0.1.0':
-    resolution: {integrity: sha512-0WDbXcAJFPzSpJMTUKCrbaYxYBfISnoZU8fgO6yJ3RTsu5PA/rIZT0WEIbT91FBdZVdYJCc2C/4EosPk9UIY5Q==}
+  '@etyma/angular@0.2.0':
+    resolution: {integrity: sha512-FbfEnHjoRaAJxfqRSAU0nQ8gPuuCcXv5w3SDSyhOnX/7lcTw/8zcyOpsQr7fZYXvcP3KFKdHjcKeo4UKl7Dcsg==}
     engines: {node: '>=22.22.0'}
     peerDependencies:
       '@angular/common': ^21.0.0 || ^22.0.0
       '@angular/core': ^21.0.0 || ^22.0.0
 
-  '@etyma/core@0.1.0':
-    resolution: {integrity: sha512-SmNH2I5NCDv2vrMeb+71CxTLHAh//PrdUNDGy/QqvIrS5mDxN2XhtR3oNKe45c+P2cEnqdJcR38Grkr7ak85pQ==}
+  '@etyma/core@0.2.0':
+    resolution: {integrity: sha512-NvEY0ku4TbVuZZJseWp3bqOQIugalL+Y39vRNkjUt+r8Xhhgt40zSLKd57dsm/G4lODmLzs5f2xCBwf7ECJNjg==}
+    engines: {node: '>=22.22.0'}
+
+  '@etyma/tooling@0.1.0':
+    resolution: {integrity: sha512-DXexMiIhnd3Gmxc61P1WhsvyCzr4xb886JwO7aSbIrYfzyzU5hhUGO/b0NN9jPkvs9SThR8MTfcgpHMxJGp/5A==}
     engines: {node: '>=22.22.0'}
 
   '@exodus/bytes@1.15.0':
@@ -7149,25 +7156,30 @@ snapshots:
       '@eslint/core': 1.2.0
       levn: 0.4.1
 
-  '@etyma/analog@0.1.0(5fd95c32eb62d32d576203cfb6b29522)':
+  '@etyma/analog@0.2.0(ef5e6299b93a1a5397a38061a2e9719e)':
     dependencies:
       '@analogjs/router': 2.6.1(@analogjs/content@2.6.1(e80ea6dd8df40211ba45cd5baf611ae4))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/router@21.2.17(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.17(@angular/animations@21.2.2(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2))
       '@angular/common': 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/core': 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
       '@angular/router': 21.2.17(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(@angular/platform-browser@21.2.17(@angular/animations@21.2.2(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)))(rxjs@7.8.2)
-      '@etyma/angular': 0.1.0(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
-      '@etyma/core': 0.1.0
+      '@etyma/angular': 0.2.0(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))
+      '@etyma/core': 0.2.0
       tslib: 2.8.1
 
-  '@etyma/angular@0.1.0(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))':
+  '@etyma/angular@0.2.0(@angular/common@21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))':
     dependencies:
       '@angular/common': 21.2.17(@angular/core@21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/core': 21.2.17(@angular/compiler@21.2.17)(rxjs@7.8.2)
-      '@etyma/core': 0.1.0
+      '@etyma/core': 0.2.0
       tslib: 2.8.1
 
-  '@etyma/core@0.1.0':
+  '@etyma/core@0.2.0':
     dependencies:
+      messageformat: 4.0.0
+
+  '@etyma/tooling@0.1.0':
+    dependencies:
+      '@etyma/core': 0.2.0
       messageformat: 4.0.0
 
   '@exodus/bytes@1.15.0': {}

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { render, screen } from '@testing-library/angular';
 import { describe, expect, it } from 'vitest';
-import en from '../i18n/en.json';
+import en from '../i18n/__fixtures__/en.json';
 import { BlockShowcase } from './block-showcase';
 import { blockBySlug } from '../lib/blocks-metadata';
 

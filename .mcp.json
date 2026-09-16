@@ -27,6 +27,13 @@
     "github": {
       "type": "http",
       "url": "https://api.githubcopilot.com/mcp/"
+    },
+    "glossa": {
+      "type": "http",
+      "url": "https://glossa.andersseen.dev/mcp",
+      "headers": {
+        "Authorization": "Bearer ${GLOSSA_TOKEN}"
+      }
     }
   }
 }
