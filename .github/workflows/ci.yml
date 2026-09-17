@@ -118,7 +118,13 @@ jobs:
           PUBLIC_UMAMI_WEBSITE_ID: ${{ vars.PUBLIC_UMAMI_WEBSITE_ID || '5baf0049-5fed-401f-a71c-eb6af6ef3166' }}
 
       - name: Deploy to Cloudflare Pages
-        run: pnpm exec wrangler pages deploy dist/analog/public --project-name=volt-ui --branch=production
+        # Must match the Pages project's "Production branch" setting in the Cloudflare
+        # dashboard (main) - wrangler only tags a deployment "Production" (the environment
+        # the custom domain serves) when --branch matches that setting. A literal
+        # --branch=production does not mean "the production environment": it deploys under
+        # a branch that happens to be *named* production, which Cloudflare treats as an
+        # ordinary Preview deployment. See git blame on this line before changing it again.
+        run: pnpm exec wrangler pages deploy dist/analog/public --project-name=volt-ui --branch=main
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
