@@ -13,6 +13,12 @@ const COMPONENT_METADATA = {
     description: 'Collapsible panels',
     stability: 'beta',
   },
+  alert: {
+    group: 'Feedback',
+    label: 'Alert',
+    description: 'Inline feedback panels',
+    stability: 'beta',
+  },
   autofill: {
     group: 'Forms',
     label: 'Autofill',
@@ -192,6 +198,12 @@ const COMPONENT_METADATA = {
     label: 'Skeleton',
     description: 'Loading placeholders',
     stability: 'stable',
+  },
+  spinner: {
+    group: 'Feedback',
+    label: 'Spinner',
+    description: 'Loading indicator',
+    stability: 'beta',
   },
   slider: {
     group: 'Forms',

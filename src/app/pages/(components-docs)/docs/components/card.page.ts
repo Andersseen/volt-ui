@@ -6,9 +6,14 @@ import {
   VoltCardDescription,
   VoltCardContent,
   VoltCardFooter,
+  VoltFormField,
+  VoltInput,
+  VoltLabel,
+  VoltNativeButton,
 } from 'volt';
-import { VoltButton } from 'volt';
+import { ApiReference } from '../../../../components/api-reference';
 import { CodePanel } from '../../../../components/code-panel';
+import { CARD_API } from '../../../../lib/api-reference.generated';
 import { CARD_SNIPPET } from '../../../../lib/snippets';
 import { CARD_USAGE } from '../../../../lib/snippets/usage';
 import { injectAppI18n } from '../../../../i18n/i18n';
@@ -23,8 +28,12 @@ import { injectAppI18n } from '../../../../i18n/i18n';
     VoltCardDescription,
     VoltCardContent,
     VoltCardFooter,
-    VoltButton,
+    VoltFormField,
+    VoltInput,
+    VoltLabel,
+    VoltNativeButton,
     CodePanel,
+    ApiReference,
   ],
   templateUrl: './card.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -34,6 +43,7 @@ export default class CardDemo {
 
   protected readonly t = this.translations.t;
 
+  readonly cardApi = CARD_API;
   readonly cardCode = CARD_SNIPPET;
   readonly cardUsage = CARD_USAGE;
 }

@@ -44,4 +44,18 @@ describe('VoltBadge', () => {
     const badge = container.querySelector('volt-badge');
     expect(badge).toHaveClass('bg-destructive');
   });
+
+  it.each([
+    ['success', 'bg-success', 'text-success-foreground'],
+    ['warning', 'bg-warning', 'text-warning-foreground'],
+    ['info', 'bg-info', 'text-info-foreground'],
+  ])('should apply the %s status variant with its semantic tokens', async (variant, bg, fg) => {
+    const { container } = await render(`<volt-badge variant="${variant}">Status</volt-badge>`, {
+      imports: [VoltBadge],
+    });
+
+    const badge = container.querySelector('volt-badge');
+    expect(badge).toHaveClass(bg, fg);
+    expect(badge).not.toHaveClass('bg-primary');
+  });
 });

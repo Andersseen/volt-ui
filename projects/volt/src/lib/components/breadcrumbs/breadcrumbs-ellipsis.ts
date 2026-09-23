@@ -1,11 +1,12 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { NgpBreadcrumbEllipsis } from 'ng-primitives/breadcrumbs';
+import { cn } from '../../utils';
 
 @Component({
   selector: 'volt-breadcrumb-ellipsis',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgpBreadcrumbEllipsis],
-  host: { class: 'inline-flex items-center' },
+  host: { '[class]': 'classes()' },
   template: `
     <span ngpBreadcrumbEllipsis class="flex h-9 w-9 items-center justify-center" aria-label="More">
       <svg
@@ -28,4 +29,8 @@ import { NgpBreadcrumbEllipsis } from 'ng-primitives/breadcrumbs';
     </span>
   `,
 })
-export class VoltBreadcrumbEllipsis {}
+export class VoltBreadcrumbEllipsis {
+  readonly class = input<string>('');
+
+  protected readonly classes = computed(() => cn('inline-flex items-center', this.class()));
+}

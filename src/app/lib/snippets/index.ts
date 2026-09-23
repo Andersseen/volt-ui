@@ -1,11 +1,13 @@
 // Single-file components
 import buttonSource from '../../../../projects/volt/src/lib/components/button/button.ts?raw';
 import buttonVariantsSource from '../../../../projects/volt/src/lib/components/button/variants.ts?raw';
+import nativeButtonSource from '../../../../projects/volt/src/lib/components/button/native-button.ts?raw';
 import badgeSource from '../../../../projects/volt/src/lib/components/badge/badge.ts?raw';
 import badgeVariantsSource from '../../../../projects/volt/src/lib/components/badge/variants.ts?raw';
 import cardSource from '../../../../projects/volt/src/lib/components/card/card.ts?raw';
 import checkboxSource from '../../../../projects/volt/src/lib/components/checkbox/checkbox.ts?raw';
 import inputSource from '../../../../projects/volt/src/lib/components/input/input.ts?raw';
+import inputVariantsSource from '../../../../projects/volt/src/lib/components/input/variants.ts?raw';
 import autofillSource from '../../../../projects/volt/src/lib/components/autofill/autofill.ts?raw';
 import progressSource from '../../../../projects/volt/src/lib/components/progress/progress.ts?raw';
 import progressLabelSource from '../../../../projects/volt/src/lib/components/progress/progress-label.ts?raw';
@@ -131,6 +133,7 @@ import toastVariantsSource from '../../../../projects/volt/src/lib/components/to
 import toastTitleSource from '../../../../projects/volt/src/lib/components/toast/toast-title.ts?raw';
 import toastDescriptionSource from '../../../../projects/volt/src/lib/components/toast/toast-description.ts?raw';
 import toastCloseSource from '../../../../projects/volt/src/lib/components/toast/toast-close.ts?raw';
+import toastServiceSource from '../../../../projects/volt/src/lib/components/toast/toast-service.ts?raw';
 
 import toggleGroupSource from '../../../../projects/volt/src/lib/components/toggle-group/toggle-group.ts?raw';
 import toggleGroupItemSource from '../../../../projects/volt/src/lib/components/toggle-group/toggle-group-item.ts?raw';
@@ -153,6 +156,8 @@ import dialogOverlaySource from '../../../../projects/volt/src/lib/components/di
 import dialogContentSource from '../../../../projects/volt/src/lib/components/dialog/dialog-content.ts?raw';
 import dialogTitleSource from '../../../../projects/volt/src/lib/components/dialog/dialog-title.ts?raw';
 import dialogDescriptionSource from '../../../../projects/volt/src/lib/components/dialog/dialog-description.ts?raw';
+import dialogRootSource from '../../../../projects/volt/src/lib/components/dialog/dialog-root.ts?raw';
+import dialogServiceSource from '../../../../projects/volt/src/lib/components/dialog/dialog-service.ts?raw';
 
 import drawerSource from '../../../../projects/volt/src/lib/components/drawer/drawer.ts?raw';
 import drawerOverlaySource from '../../../../projects/volt/src/lib/components/drawer/drawer-overlay.ts?raw';
@@ -165,6 +170,14 @@ import resizableSource from '../../../../projects/volt/src/lib/components/resiza
 import resizablePanelSource from '../../../../projects/volt/src/lib/components/resizable/resizable-panel.ts?raw';
 import resizableHandleSource from '../../../../projects/volt/src/lib/components/resizable/resizable-handle.ts?raw';
 
+import alertSource from '../../../../projects/volt/src/lib/components/alert/alert.ts?raw';
+import alertTitleSource from '../../../../projects/volt/src/lib/components/alert/alert-title.ts?raw';
+import alertDescriptionSource from '../../../../projects/volt/src/lib/components/alert/alert-description.ts?raw';
+import alertVariantsSource from '../../../../projects/volt/src/lib/components/alert/variants.ts?raw';
+
+import spinnerSource from '../../../../projects/volt/src/lib/components/spinner/spinner.ts?raw';
+import spinnerVariantsSource from '../../../../projects/volt/src/lib/components/spinner/variants.ts?raw';
+
 import sidebarSource from '../../../../projects/volt/src/lib/layouts/sidebar/sidebar.ts?raw';
 import sidebarServiceSource from '../../../../projects/volt/src/lib/layouts/sidebar/sidebar.service.ts?raw';
 
@@ -174,12 +187,13 @@ function join(...parts: [filename: string, source: string][]): string {
 
 export const BUTTON_SNIPPET = join(
   ['button.ts', buttonSource],
+  ['native-button.ts', nativeButtonSource],
   ['variants.ts', buttonVariantsSource]
 );
 export const BADGE_SNIPPET = join(['badge.ts', badgeSource], ['variants.ts', badgeVariantsSource]);
 export const CARD_SNIPPET = cardSource;
 export const CHECKBOX_SNIPPET = checkboxSource;
-export const INPUT_SNIPPET = inputSource;
+export const INPUT_SNIPPET = join(['input.ts', inputSource], ['variants.ts', inputVariantsSource]);
 export const AUTOFILL_SNIPPET = autofillSource;
 export const PROGRESS_SNIPPET = join(
   ['progress.ts', progressSource],
@@ -350,7 +364,8 @@ export const TOAST_SNIPPET = join(
   ['variants.ts', toastVariantsSource],
   ['toast-title.ts', toastTitleSource],
   ['toast-description.ts', toastDescriptionSource],
-  ['toast-close.ts', toastCloseSource]
+  ['toast-close.ts', toastCloseSource],
+  ['toast-service.ts', toastServiceSource]
 );
 
 export const TOGGLE_GROUP_SNIPPET = join(
@@ -380,7 +395,9 @@ export const DIALOG_SNIPPET = join(
   ['dialog-overlay.ts', dialogOverlaySource],
   ['dialog-content.ts', dialogContentSource],
   ['dialog-title.ts', dialogTitleSource],
-  ['dialog-description.ts', dialogDescriptionSource]
+  ['dialog-description.ts', dialogDescriptionSource],
+  ['dialog-root.ts', dialogRootSource],
+  ['dialog-service.ts', dialogServiceSource]
 );
 
 export const DRAWER_SNIPPET = join(
@@ -401,4 +418,16 @@ export const RESIZABLE_SNIPPET = join(
 export const SIDEBAR_SNIPPET = join(
   ['sidebar.ts', sidebarSource],
   ['sidebar.service.ts', sidebarServiceSource]
+);
+
+export const ALERT_SNIPPET = join(
+  ['alert.ts', alertSource],
+  ['alert-title.ts', alertTitleSource],
+  ['alert-description.ts', alertDescriptionSource],
+  ['variants.ts', alertVariantsSource]
+);
+
+export const SPINNER_SNIPPET = join(
+  ['spinner.ts', spinnerSource],
+  ['variants.ts', spinnerVariantsSource]
 );

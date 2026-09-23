@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { VoltFormField, VoltLabel, VoltHint, VoltError, VoltInput } from 'volt';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { VoltFormField, VoltLabel, VoltHint, VoltError, VoltInput, VoltNativeButton } from 'volt';
 import { CodePanel } from '../../../../components/code-panel';
 import { ApiReference } from '../../../../components/api-reference';
 import { FORM_FIELD_SNIPPET } from '../../../../lib/snippets';
@@ -10,7 +11,17 @@ import { injectAppI18n } from '../../../../i18n/i18n';
 @Component({
   selector: 'app-form-field-demo',
   standalone: true,
-  imports: [VoltFormField, VoltLabel, VoltHint, VoltError, VoltInput, CodePanel, ApiReference],
+  imports: [
+    ReactiveFormsModule,
+    VoltFormField,
+    VoltLabel,
+    VoltHint,
+    VoltError,
+    VoltInput,
+    VoltNativeButton,
+    CodePanel,
+    ApiReference,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="space-y-6">
@@ -36,6 +47,31 @@ import { injectAppI18n } from '../../../../i18n/i18n';
               <volt-input state="error" placeholder="My app" />
               <volt-error>Project name is required.</volt-error>
             </volt-form-field>
+
+            <form
+              class="space-y-4 border-t border-border pt-5"
+              [formGroup]="login"
+              (ngSubmit)="submit()"
+              data-testid="login-form"
+            >
+              <volt-form-field>
+                <volt-label>Work email</volt-label>
+                <volt-input formControlName="email" type="email" autocomplete="email" />
+                @if (login.controls.email.touched && login.controls.email.invalid) {
+                  <volt-error>Enter a valid email address.</volt-error>
+                }
+              </volt-form-field>
+              <volt-form-field>
+                <volt-label>Password</volt-label>
+                <volt-input
+                  formControlName="password"
+                  type="password"
+                  autocomplete="current-password"
+                />
+                <volt-hint>At least 8 characters.</volt-hint>
+              </volt-form-field>
+              <button voltButton type="submit" class="w-full">Sign in</button>
+            </form>
           </div>
         </div>
       </app-code-panel>
@@ -61,4 +97,20 @@ export default class FormFieldDemo {
   readonly formFieldApi = FORM_FIELD_API;
   readonly code = FORM_FIELD_SNIPPET;
   readonly usage = FORM_FIELD_USAGE;
+
+  protected readonly login = new FormGroup({
+    email: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.email],
+    }),
+    password: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.minLength(8)],
+    }),
+  });
+
+  protected submit(): void {
+    // Marks every control touched so invalid fields show their error state at once.
+    this.login.markAllAsTouched();
+  }
 }

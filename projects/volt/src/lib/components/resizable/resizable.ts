@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, input, computed } from '@angular/core';
+import { cn } from '../../utils';
 
 @Component({
   selector: 'volt-resizable',
@@ -13,8 +14,7 @@ export class VoltResizable {
   readonly class = input<string>('');
 
   protected readonly classes = computed(() => {
-    const base = 'flex h-full w-full';
-    const direction = this.orientation() === 'horizontal' ? ' flex-row' : ' flex-col';
-    return base + direction + ' ' + this.class();
+    const direction = this.orientation() === 'horizontal' ? 'flex-row' : 'flex-col';
+    return cn('flex h-full w-full', direction, this.class());
   });
 }

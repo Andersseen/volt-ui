@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, input, computed } from '@angular/core';
+import { cn } from '../../utils';
 
 @Component({
   selector: 'volt-table-footer',
@@ -12,8 +13,7 @@ import { ChangeDetectionStrategy, Component, input, computed } from '@angular/co
 export class VoltTableFooter {
   readonly class = input<string>('');
 
-  protected readonly classes = computed(
-    () =>
-      'table-footer-group border-t bg-muted/50 font-medium [&>tr]:last:border-b-0 ' + this.class()
+  protected readonly classes = computed(() =>
+    cn('table-footer-group border-t bg-muted/50 font-medium [&>tr]:last:border-b-0', this.class())
   );
 }

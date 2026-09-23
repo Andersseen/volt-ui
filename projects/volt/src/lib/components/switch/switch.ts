@@ -11,6 +11,8 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NgpSwitch, NgpSwitchThumb } from 'ng-primitives/switch';
 import { injectFormControlState } from '../../form-control-state';
+import { forwardAttributesFromHost } from '../../host-forwarding';
+import { cn } from '../../utils';
 
 let nextSwitchId = 0;
 
@@ -19,7 +21,7 @@ let nextSwitchId = 0;
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgpSwitch, NgpSwitchThumb],
   host: {
-    class: 'inline-flex',
+    '[class]': 'classes()',
   },
   providers: [
     {
@@ -35,7 +37,7 @@ let nextSwitchId = 0;
       [id]="id()"
       [ngpSwitchChecked]="checked()"
       [ngpSwitchDisabled]="isDisabled()"
-      [attr.aria-label]="ariaLabel() || null"
+      [attr.aria-label]="ariaLabel() || ariaLabelAttribute() || null"
       [attr.aria-invalid]="formControlState.invalid() ? 'true' : null"
       (ngpSwitchCheckedChange)="onCheckedChange($event)"
       (blur)="onTouched()"
@@ -49,10 +51,17 @@ let nextSwitchId = 0;
   `,
 })
 export class VoltSwitch implements ControlValueAccessor {
+  readonly class = input<string>('');
+
+  protected readonly classes = computed(() => cn('inline-flex', this.class()));
+
   protected readonly formControlState = injectFormControlState();
 
   readonly id = input(`volt-switch-${++nextSwitchId}`);
   readonly ariaLabel = input('');
+  /** Same as `ariaLabel`, for the attribute spelling consumers write naturally. */
+  // eslint-disable-next-line @angular-eslint/no-input-rename -- `ariaLabel` (1.0) already owns the camelCase name
+  readonly ariaLabelAttribute = input<string | undefined>(undefined, { alias: 'aria-label' });
   readonly checked = model(false);
   readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
 
@@ -61,6 +70,11 @@ export class VoltSwitch implements ControlValueAccessor {
 
   private onChange: (value: boolean) => void = () => {};
   protected onTouched: () => void = () => {};
+
+  constructor() {
+    // Both belong to the native switch button, not the host.
+    forwardAttributesFromHost('id', 'aria-label');
+  }
 
   protected onCheckedChange(value: boolean): void {
     this.checked.set(value);

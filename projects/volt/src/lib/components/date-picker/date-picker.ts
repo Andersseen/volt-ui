@@ -16,6 +16,7 @@ import {
   provideDatePickerConfig,
 } from 'ng-primitives/date-picker';
 import { NgpNativeDateAdapter, provideDateAdapter } from 'ng-primitives/date-time';
+import { cn } from '../../utils';
 
 export type VoltDatePickerFirstDayOfWeek = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
@@ -50,12 +51,20 @@ export type VoltDatePickerFirstDayOfWeek = 1 | 2 | 3 | 4 | 5 | 6 | 7;
     },
   ],
   host: {
-    class:
-      'grid w-fit gap-3 rounded-md border border-border bg-popover p-3 text-popover-foreground shadow-sm',
+    '[class]': 'classes()',
   },
   template: `<ng-content />`,
 })
 export class VoltDatePicker implements ControlValueAccessor {
+  readonly class = input<string>('');
+
+  protected readonly classes = computed(() =>
+    cn(
+      'grid w-fit gap-3 rounded-md border border-border bg-popover p-3 text-popover-foreground shadow-sm',
+      this.class()
+    )
+  );
+
   private readonly datePickerState = injectDatePickerState<Date>();
 
   readonly min = input<Date>();

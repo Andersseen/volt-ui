@@ -15,13 +15,13 @@ import {
   signal,
 } from '@angular/core';
 import { VoltResizable } from './resizable';
+import { cn } from '../../utils';
 
 @Component({
   selector: 'volt-resizable-handle',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class:
-      'relative flex shrink-0 items-center justify-center bg-border transition-colors hover:bg-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+    '[class]': 'classes()',
     '[class.w-1]': "resolvedOrientation() === 'horizontal'",
     '[class.h-full]': "resolvedOrientation() === 'horizontal'",
     '[class.h-1]': "resolvedOrientation() === 'vertical'",
@@ -44,6 +44,15 @@ import { VoltResizable } from './resizable';
   `,
 })
 export class VoltResizableHandle implements AfterViewInit {
+  readonly class = input<string>('');
+
+  protected readonly classes = computed(() =>
+    cn(
+      'relative flex shrink-0 items-center justify-center bg-border transition-colors hover:bg-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+      this.class()
+    )
+  );
+
   readonly orientation = input<'horizontal' | 'vertical'>('horizontal');
   readonly maxSize = input<number | undefined, unknown>(undefined, {
     transform: value =>

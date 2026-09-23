@@ -6,7 +6,7 @@ test.describe('Button Demo Page', () => {
   });
 
   test('should load page and display title', async ({ page }) => {
-    await expect(page.getByRole('heading', { name: 'Button' })).toBeVisible();
+    await expect(page.getByRole('heading', { level: 1, name: 'Button' })).toBeVisible();
   });
 
   test('should have working navigation', async ({ page }) => {
@@ -45,13 +45,13 @@ test.describe('Card Demo Page', () => {
   });
 
   test('should load page and display title', async ({ page }) => {
-    await expect(page.getByRole('heading', { name: 'Card' })).toBeVisible();
+    await expect(page.getByRole('heading', { level: 1, name: 'Card' })).toBeVisible();
   });
 
   test('should render card with form', async ({ page }) => {
     await expect(page.locator('input[placeholder="Name of your project"]')).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Deploy' })).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Cancel' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Deploy', exact: true })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Cancel', exact: true })).toBeVisible();
   });
 });
 
@@ -69,6 +69,8 @@ test.describe('Input Demo Page', () => {
   });
 
   test('should render textarea', async ({ page }) => {
-    await expect(page.getByRole('textbox', { name: 'Type your message here.' })).toBeVisible();
+    // Named by its <volt-label htmlFor>, which only started working in 1.1 (it used to fall
+    // back to the placeholder).
+    await expect(page.getByRole('textbox', { name: 'Message (Textarea)' })).toBeVisible();
   });
 });

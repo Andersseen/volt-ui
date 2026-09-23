@@ -1,6 +1,6 @@
 # Volt UI — Product Spec (Spec-Driven Development)
 
-**Current version:** 1.0.0
+**Current version:** 1.1.0 (see [plans/v1.1.md](plans/v1.1.md))
 **Status:** Release ladder complete — Volt UI is stable.
 **Last updated:** 2026-08-06
 

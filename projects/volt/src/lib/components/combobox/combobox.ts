@@ -25,6 +25,7 @@ import {
 } from 'ng-primitives/combobox';
 import type { NgpFlipInput } from 'ng-primitives/portal';
 import { VoltComboboxOption } from './combobox-option';
+import { cn } from '../../utils';
 
 let nextComboboxId = 0;
 
@@ -48,7 +49,7 @@ let nextComboboxId = 0;
     },
   ],
   host: {
-    class: 'block w-full',
+    '[class]': 'classes()',
   },
   template: `
     <div
@@ -123,6 +124,10 @@ let nextComboboxId = 0;
   `,
 })
 export class VoltCombobox implements ControlValueAccessor {
+  readonly class = input<string>('');
+
+  protected readonly classes = computed(() => cn('block w-full', this.class()));
+
   readonly id = input(`volt-combobox-${++nextComboboxId}`);
   readonly label = input<string>();
   readonly value = model<unknown>();

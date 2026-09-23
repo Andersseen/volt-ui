@@ -1,14 +1,23 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { NgpInputOtpSlot } from 'ng-primitives/input-otp';
+import { cn } from '../../utils';
 
 @Component({
   selector: 'volt-input-otp-slot',
   changeDetection: ChangeDetectionStrategy.OnPush,
   hostDirectives: [NgpInputOtpSlot],
   host: {
-    class:
-      'relative flex h-10 w-10 items-center justify-center rounded-md border border-input bg-background text-sm font-medium text-foreground transition-all focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 data-[active]:ring-2 data-[active]:ring-ring data-[active]:ring-offset-2 data-[filled]:border-primary data-[filled]:bg-primary/5',
+    '[class]': 'classes()',
   },
   template: `<ng-content />`,
 })
-export class VoltInputOtpSlot {}
+export class VoltInputOtpSlot {
+  readonly class = input<string>('');
+
+  protected readonly classes = computed(() =>
+    cn(
+      'relative flex h-10 w-10 items-center justify-center rounded-md border border-input bg-background text-sm font-medium text-foreground transition-all focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 data-[active]:ring-2 data-[active]:ring-ring data-[active]:ring-offset-2 data-[filled]:border-primary data-[filled]:bg-primary/5',
+      this.class()
+    )
+  );
+}

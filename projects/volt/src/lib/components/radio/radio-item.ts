@@ -7,13 +7,14 @@ import {
 } from '@angular/core';
 import { uniqueId } from 'ng-primitives/utils';
 import { injectRadioGroupState, NgpRadioItem, NgpRadioIndicator } from 'ng-primitives/radio';
+import { cn } from '../../utils';
 
 @Component({
   selector: 'volt-radio-item',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgpRadioItem, NgpRadioIndicator],
   host: {
-    class: 'flex items-center gap-2',
+    '[class]': 'classes()',
   },
   template: `
     <button
@@ -37,6 +38,10 @@ import { injectRadioGroupState, NgpRadioItem, NgpRadioIndicator } from 'ng-primi
   `,
 })
 export class VoltRadioItem {
+  readonly class = input<string>('');
+
+  protected readonly classes = computed(() => cn('flex items-center gap-2', this.class()));
+
   private readonly radioGroupState = injectRadioGroupState<string>();
   protected readonly labelId = uniqueId('volt-radio-label');
 

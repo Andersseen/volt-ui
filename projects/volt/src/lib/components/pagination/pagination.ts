@@ -5,15 +5,17 @@ import {
   input,
   model,
   numberAttribute,
+  computed,
 } from '@angular/core';
 import { NgpPagination, providePaginationState } from 'ng-primitives/pagination';
+import { cn } from '../../utils';
 
 @Component({
   selector: 'volt-pagination',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [providePaginationState()],
   host: {
-    class: 'flex w-full items-center justify-center gap-1',
+    '[class]': 'classes()',
   },
   hostDirectives: [
     {
@@ -29,6 +31,12 @@ import { NgpPagination, providePaginationState } from 'ng-primitives/pagination'
   template: `<ng-content />`,
 })
 export class VoltPagination {
+  readonly class = input<string>('');
+
+  protected readonly classes = computed(() =>
+    cn('flex w-full items-center justify-center gap-1', this.class())
+  );
+
   readonly page = model<number>(1);
   readonly pageCount = input<number, number>(0, { transform: numberAttribute });
   readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });

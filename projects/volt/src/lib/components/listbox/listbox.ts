@@ -14,6 +14,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { injectListboxState, NgpListbox, provideListboxState } from 'ng-primitives/listbox';
 import type { NgpSelectionMode } from 'ng-primitives/common';
 import { injectFormControlState } from '../../form-control-state';
+import { cn } from '../../utils';
 
 @Component({
   selector: 'volt-listbox',
@@ -40,8 +41,7 @@ import { injectFormControlState } from '../../form-control-state';
     },
   ],
   host: {
-    class:
-      'grid min-w-[12rem] gap-1 rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-sm outline-none',
+    '[class]': 'classes()',
     '[attr.aria-invalid]': 'formControlState.invalid() ? "true" : null',
     '[attr.aria-disabled]': 'isDisabled()',
     '[attr.data-disabled]': 'isDisabled() ? "" : null',
@@ -50,6 +50,15 @@ import { injectFormControlState } from '../../form-control-state';
   template: `<ng-content />`,
 })
 export class VoltListbox<T = unknown> implements ControlValueAccessor {
+  readonly class = input<string>('');
+
+  protected readonly classes = computed(() =>
+    cn(
+      'grid min-w-[12rem] gap-1 rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-sm outline-none',
+      this.class()
+    )
+  );
+
   private readonly listbox = inject<NgpListbox<T>>(NgpListbox);
   private readonly listboxState = injectListboxState<NgpListbox<T>>();
   protected readonly formControlState = injectFormControlState();

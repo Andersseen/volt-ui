@@ -14,7 +14,7 @@
   --ring: oklch(0.55 0.2 295);
   --success: oklch(0.536 0.15 150);
   --success-foreground: oklch(0.98 0 0);
-  --warning: oklch(0.564 0.15 60);
+  --warning: oklch(0.559 0.15 60);
   --warning-foreground: oklch(0.98 0 0);
   --error: oklch(0.55 0.2 15);
   --error-foreground: oklch(0.98 0 0);
@@ -38,7 +38,7 @@
   --ring: oklch(0.65 0.2 295);
   --success: oklch(0.536 0.15 150);
   --success-foreground: oklch(0.98 0 0);
-  --warning: oklch(0.564 0.15 60);
+  --warning: oklch(0.559 0.15 60);
   --warning-foreground: oklch(0.98 0 0);
   --error: oklch(0.578 0.2 15);
   --error-foreground: oklch(0.98 0 0);

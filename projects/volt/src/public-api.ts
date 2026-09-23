@@ -40,6 +40,8 @@ export * from './lib/components/toolbar';
 export * from './lib/components/skeleton';
 export * from './lib/components/table';
 export * from './lib/components/resizable';
+export * from './lib/components/alert';
+export * from './lib/components/spinner';
 
 // Layouts
 export * from './lib/layouts/sidebar';

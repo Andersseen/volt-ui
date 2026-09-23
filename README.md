@@ -12,18 +12,18 @@
 
 ### Modern UI building blocks for Angular
 
-Copy-and-own Angular components built on **signals**, **Tailwind CSS v4**, **CVA**,<br/>
-and [ng-primitives](https://ng-primitives.dev) — accessible, themeable, and yours to edit.
+Angular UI atoms that stay out of the way of your product's own design — built on **signals**,<br/>
+**Tailwind CSS v4**, **CVA** and [ng-primitives](https://ng-primitives.dev). Install the package or copy the source.
 
 <br/>
 
-### 🎉 v1.0 is here
+### ⚡ v1.1 — Consumer DX
 
-**42 components. API locked. Semver from here on out.**
-
-After nine `0.x` minors, the public surface is frozen for the whole `1.x` line — inputs,
-outputs and selectors won't move under you again outside a major.<br/>
-See the **[release notes](./CHANGELOG.md)** · **[migration guide](./MIGRATION.md)** ·
+**Built from what real apps ran into.** `class` now reliably styles the element you expect on every
+component, `<a voltButton routerLink>` replaces `<a><volt-button>`, forms get sizes and states,
+toasts and state-driven dialogs no longer need ng-primitives APIs, and `Alert` + `Spinner` join the
+catalog. Fully backwards compatible with 1.0.<br/>
+See the **[release notes](./CHANGELOG.md)** · **[upgrade notes](./MIGRATION.md)** ·
 **[versioning policy](https://volt-ui.andersseen.dev/docs/versioning)**
 
 <br/>
@@ -48,16 +48,22 @@ See the **[release notes](./CHANGELOG.md)** · **[migration guide](./MIGRATION.m
 
 ## 💡 What is Volt UI?
 
-Volt UI is an independent Angular component library **inspired by [shadcn/ui](https://ui.shadcn.com)** — not a closed, versioned dependency you install and hope stays out of your way, but a **source-ownership workflow**:
+Volt UI is an independent Angular component library **inspired by [shadcn/ui](https://ui.shadcn.com)**.
+It provides the **atoms** — buttons, inputs, cards, badges, tabs, form fields, alerts, overlays — and
+leaves everything that makes your product yours to your app: layouts, identity, icons, motion,
+state and domain components.
 
-```bash
-npx @voltui/cli add button
-```
+There are two first-class ways to use it. Pick per project; both are supported for the whole 1.x line.
 
-- 📥 The CLI **copies the component source** into your project.
-- ✍️ The copied files **become your code** — edit markup, styles, behavior, variants.
-- 🎨 Restyle through **Tailwind v4 tokens** instead of fighting a theming API.
-- 📦 Reach for the npm package **only** when you deliberately want shared themes/utilities.
+|           | **Package mode** — `@voltui/components`              | **Copy-and-own mode** — `@voltui/cli`                 |
+| --------- | ---------------------------------------------------- | ----------------------------------------------------- |
+| You get   | `VoltButton`, `VoltCard`… imported from npm          | `UiButton`, `UiCard`… copied into `src/app/ui`        |
+| Updates   | `npm update` — centralized, one version across apps  | You own the source; re-copy when you choose           |
+| Customize | `class` (merged with `cn()`), variants, theme tokens | Edit the component itself                             |
+| Best for  | Several apps sharing the same atoms and behavior     | Apps that want full control and no long-term coupling |
+
+- 🎨 Restyle through **Tailwind v4 tokens** and `class` instead of fighting a theming API.
+- ♿ Keyboard, focus and ARIA behavior come from ng-primitives, on the native elements you write.
 
 > **Why it exists** — Angular has strong headless and enterprise UI options, but few focused on the shadcn-style _"copy the component and own it"_ workflow. Volt UI fills that gap with modern Angular 21 patterns: standalone components, `OnPush`, signals, zoneless compatibility, `ng-primitives` accessibility behavior, and Tailwind v4 tokens.
 
@@ -67,18 +73,50 @@ npx @voltui/cli add button
 
 ## ✨ Highlights
 
-|                                |                                                                                             |
-| ------------------------------ | ------------------------------------------------------------------------------------------- |
-| ⚡ **Copy, don't couple**      | CLI copies source into your app — no lock-in, no black-box updates.                         |
-| ♿ **Accessible by default**   | Keyboard, focus, and ARIA behavior delegated to [ng-primitives](https://ng-primitives.dev). |
-| 🎨 **25 theme combinations**   | 5 color × 5 style presets, plus dark mode, driven by Tailwind v4 tokens.                    |
-| 🧩 **42 components**           | Forms, overlays, navigation, data display — see the [full catalog](#-component-catalog).    |
-| 🛰️ **Zoneless & signal-first** | `input()` / `output()` / `model()` / `computed()`, `OnPush` everywhere.                     |
-| 🤖 **AI-ready**                | Ships an MCP server, a skill, and a prompt reference so assistants use it correctly.        |
+|                                |                                                                                               |
+| ------------------------------ | --------------------------------------------------------------------------------------------- |
+| ⚡ **Package or copy**         | Import from npm for shared updates, or copy the source with the CLI and own it.               |
+| ♿ **Accessible by default**   | Keyboard, focus, and ARIA behavior delegated to [ng-primitives](https://ng-primitives.dev).   |
+| 🎨 **25 theme combinations**   | 5 color × 5 style presets, plus dark mode, driven by Tailwind v4 tokens.                      |
+| 🧩 **44 components**           | Forms, overlays, feedback, navigation, data display — see the [catalog](#-component-catalog). |
+| 🛰️ **Zoneless & signal-first** | `input()` / `output()` / `model()` / `computed()`, `OnPush` everywhere.                       |
+| 🤖 **AI-ready**                | Ships an MCP server, a skill, and a prompt reference so assistants use it correctly.          |
 
 ---
 
 ## 🚀 Quick Start
+
+### Package mode
+
+```bash
+npm install @voltui/components
+```
+
+```css
+/* styles.css */
+@import 'tailwindcss';
+@import '@voltui/components/themes.css';
+```
+
+```ts
+import { RouterLink } from '@angular/router';
+import { VoltCard, VoltCardContent, VoltNativeButton } from '@voltui/components';
+
+@Component({
+  selector: 'app-example',
+  imports: [RouterLink, VoltCard, VoltCardContent, VoltNativeButton],
+  template: `
+    <volt-card>
+      <volt-card-content class="p-4">
+        <a voltButton variant="outline" routerLink="/docs">Documentation</a>
+      </volt-card-content>
+    </volt-card>
+  `,
+})
+export class ExampleComponent {}
+```
+
+### Copy-and-own mode
 
 Initialize a local UI folder, then add components:
 
@@ -98,7 +136,7 @@ import { UiButton } from './ui/button';
 @Component({
   selector: 'app-example',
   imports: [UiButton],
-  template: `<ui-button>Save</ui-button>`,
+  template: `<button uiButton type="submit">Save</button>`,
 })
 export class ExampleComponent {}
 ```
@@ -170,14 +208,12 @@ Themes are CSS custom properties mapped into Tailwind v4 via `@theme inline`. Co
 
 ## 🧩 Component Catalog
 
-**42 components** across every common surface — which is, of course, the Answer to the
-Ultimate Question of Life, the Universe, and Everything. 🐋 The v1 surface is now fixed and
-every component is labeled `stable` or `beta` — see
-**[COMPONENT_STATUS.md](./COMPONENT_STATUS.md)**.
+**44 components** across every common surface. Every component is labeled `stable` or `beta` —
+see **[COMPONENT_STATUS.md](./COMPONENT_STATUS.md)**.
 
-<sub>Deep Thought needed 7½ million years to arrive at 42. We needed nine <code>0.x</code>
-minors, which is arguably worse. Don't panic: shipping a 43rd component in some future
-minor will ruin this joke, and we've made peace with that.</sub>
+<sub>1.0 shipped 42 components, the Answer to the Ultimate Question of Life, the Universe, and
+Everything. 1.1 added <code>alert</code> and <code>spinner</code>, which ruined the joke exactly as
+promised. We have made peace with that.</sub>
 
 <details open>
 <summary><b>Browse all components</b></summary>
@@ -187,19 +223,21 @@ minor will ruin this joke, and we've made peace with that.</sub>
 | Category             | Components                                                                                                                                                                                                             |
 | -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Forms & inputs**   | `input` · `textarea` · `checkbox` · `radio` · `select` · `combobox` · `listbox` · `switch` · `slider` · `toggle` · `toggle-group` · `input-otp` · `form-field` · `autofill` · `file-upload` · `date-picker` · `search` |
-| **Actions**          | `button` · `toolbar`                                                                                                                                                                                                   |
-| **Overlays**         | `dialog` · `drawer` · `popover` · `tooltip` · `dropdown-menu` · `toast`                                                                                                                                                |
+| **Actions**          | `button` (+ `voltButton` on `<button>` / `<a>`) · `toolbar`                                                                                                                                                            |
+| **Feedback**         | `alert` · `spinner` · `badge` · `toast`                                                                                                                                                                                |
+| **Overlays**         | `dialog` · `drawer` · `popover` · `tooltip` · `dropdown-menu`                                                                                                                                                          |
 | **Navigation**       | `navigation-menu` · `breadcrumbs` · `pagination` · `tabs` · `accordion`                                                                                                                                                |
-| **Data display**     | `table` · `avatar` · `badge` · `card` · `meter` · `progress` · `skeleton` · `separator`                                                                                                                                |
+| **Data display**     | `table` · `avatar` · `card` · `meter` · `progress` · `skeleton` · `separator`                                                                                                                                          |
 | **Layout & utility** | `resizable` · `sidebar` · `theme`                                                                                                                                                                                      |
 
 </details>
 
 ---
 
-## 📦 Optional Package Usage
+## 📦 Package Mode in Detail
 
-The `@voltui/components` package exists for themes, utilities, and advanced consumers who deliberately want package-owned imports. It is **not** the default for teams who want source ownership.
+`@voltui/components` is a first-class way to use Volt: import the same `Volt*` components the CLI
+copies, and get fixes and features through normal semver updates.
 
 ```bash
 npm install @voltui/components
@@ -213,6 +251,10 @@ Import themes once — that single line is all Tailwind v4 needs:
 ```
 
 The theme CSS self-registers the compiled component bundle as a `@source`, so every utility class the components use is generated automatically. It also aligns Tailwind's `dark:` variant with the `.dark` class Volt toggles.
+
+Customize with `class` — on every component it is merged with `cn()` (tailwind-merge) over the
+defaults and applied to the element that paints, so `<volt-card-content class="p-3">` replaces the
+default padding and `<volt-input class="w-24">` sizes the native input.
 
 Provide a theme at bootstrap:
 
@@ -240,7 +282,7 @@ Volt UI ships three complementary ways to give AI assistants correct context:
 
 ## 📈 Stability & Roadmap
 
-Current status: **`1.0.1` — stable. The public API is locked.**
+Current status: **`1.1.0` — stable. The public API is locked; 1.1 only adds to it.**
 
 Component inputs, outputs, and selectors follow semantic versioning as of `1.0.0`:
 breaking changes only happen in a major version bump, new features land in minors, and

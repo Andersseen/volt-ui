@@ -1,12 +1,12 @@
-import { ChangeDetectionStrategy, Component, inject, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, output, computed, input } from '@angular/core';
 import { NgpToast, NgpToastManager } from 'ng-primitives/toast';
+import { cn } from '../../utils';
 
 @Component({
   selector: 'volt-toast-close',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class:
-      'inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer',
+    '[class]': 'classes()',
     role: 'button',
     tabindex: '0',
     '(click)': 'close()',
@@ -33,6 +33,15 @@ import { NgpToast, NgpToastManager } from 'ng-primitives/toast';
   `,
 })
 export class VoltToastClose {
+  readonly class = input<string>('');
+
+  protected readonly classes = computed(() =>
+    cn(
+      'inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer',
+      this.class()
+    )
+  );
+
   readonly closeChange = output<void>();
   private readonly toast = inject(NgpToast, { optional: true });
   private readonly toastManager = inject(NgpToastManager, { optional: true });

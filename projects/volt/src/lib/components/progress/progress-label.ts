@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { NgpProgressLabel } from 'ng-primitives/progress';
+import { cn } from '../../utils';
 
 @Component({
   selector: 'volt-progress-label',
@@ -11,8 +12,14 @@ import { NgpProgressLabel } from 'ng-primitives/progress';
     },
   ],
   host: {
-    class: 'block text-sm font-medium text-foreground',
+    '[class]': 'classes()',
   },
   template: `<ng-content />`,
 })
-export class VoltProgressLabel {}
+export class VoltProgressLabel {
+  readonly class = input<string>('');
+
+  protected readonly classes = computed(() =>
+    cn('block text-sm font-medium text-foreground', this.class())
+  );
+}

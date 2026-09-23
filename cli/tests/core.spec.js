@@ -61,6 +61,15 @@ describe('CLI Core', () => {
       expect(output).toContain("from '../tooltip'");
     });
 
+    it('should rewrite Volt element tags inside inline templates', () => {
+      const output = core.transformContent(
+        "template: `<volt-toast [variant]=\"v\"><volt-toast-title>x</volt-toast-title></volt-toast>`"
+      );
+      expect(output).toContain('<ui-toast [variant]="v">');
+      expect(output).toContain('<ui-toast-title>x</ui-toast-title></ui-toast>');
+      expect(output).not.toContain('volt-toast');
+    });
+
     it('should rewrite shared lib-root imports (utils, form-control-state) to a flat sibling', () => {
       const input = `
         import { cn } from '../../utils';
@@ -361,10 +370,19 @@ describe('CLI Core', () => {
     });
 
     it('should not copy shared files for components that do not need them', async () => {
-      const result = await core.copyComponent('card', testDir, manifest);
+      const result = await core.copyComponent('autofill', testDir, manifest);
       expect(result.sharedFiles).toEqual([]);
       expect(existsSync(join(testDir, 'utils.ts'))).toBe(false);
       expect(existsSync(join(testDir, 'form-control-state.ts'))).toBe(false);
+      expect(existsSync(join(testDir, 'host-forwarding.ts'))).toBe(false);
+    });
+
+    it('should copy host-forwarding.ts flat for wrapper components that need it', async () => {
+      const result = await core.copyComponent('input', testDir, manifest);
+      expect(result.sharedFiles).toContain('host-forwarding.ts');
+      expect(existsSync(join(testDir, 'host-forwarding.ts'))).toBe(true);
+      const content = readFileSync(join(testDir, 'input', 'input.ts'), 'utf-8');
+      expect(content).toContain("from '../host-forwarding'");
     });
   });
 

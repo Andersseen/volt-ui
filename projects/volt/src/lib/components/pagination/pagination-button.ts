@@ -8,13 +8,14 @@ import {
 } from '@angular/core';
 import { NgpPaginationButton } from 'ng-primitives/pagination';
 import { paginationButtonVariants, type PaginationButtonVariants } from './variants';
+import { cn } from '../../utils';
 
 @Component({
   selector: 'volt-pagination-button',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgpPaginationButton],
   host: {
-    class: 'inline-flex',
+    '[class]': 'hostClasses()',
   },
   template: `
     <button
@@ -29,6 +30,10 @@ import { paginationButtonVariants, type PaginationButtonVariants } from './varia
   `,
 })
 export class VoltPaginationButton {
+  readonly class = input<string>('');
+
+  protected readonly hostClasses = computed(() => cn('inline-flex', this.class()));
+
   readonly page = input.required<number, number>({ transform: numberAttribute });
   readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly variant = input<PaginationButtonVariants['variant']>('default');

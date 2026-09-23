@@ -158,4 +158,44 @@ describe('VoltFormField', () => {
     expect(input).toHaveAttribute('aria-invalid', 'true');
     expect(screen.getByRole('alert')).toHaveTextContent('Email is required.');
   });
+
+  describe('label association', () => {
+    it('focuses the control when its label is clicked inside a form field, without ids', async () => {
+      await render(
+        `<volt-form-field>
+          <volt-label>Email</volt-label>
+          <volt-input />
+          <volt-hint>We never share it.</volt-hint>
+        </volt-form-field>`,
+        { imports: [VoltFormField, VoltLabel, VoltHint, VoltInput] }
+      );
+
+      const control = screen.getByRole('textbox', { name: 'Email' });
+      expect(control).toHaveAccessibleDescription('We never share it.');
+      await userEvent.setup().click(screen.getByText('Email'));
+      expect(control).toHaveFocus();
+    });
+
+    it('focuses the control through htmlFor outside a form field', async () => {
+      const { container } = await render(
+        `<volt-label htmlFor="city">City</volt-label><volt-input id="city" />`,
+        { imports: [VoltLabel, VoltInput] }
+      );
+
+      expect(container.querySelector('label')).toHaveAttribute('for', 'city');
+      await userEvent.setup().click(screen.getByText('City'));
+      expect(screen.getByRole('textbox', { name: 'City' })).toHaveFocus();
+    });
+
+    it('applies error styling and custom classes to the native label', async () => {
+      const { container } = await render(
+        `<volt-label error class="uppercase text-xs">Name</volt-label>`,
+        { imports: [VoltLabel] }
+      );
+      const label = container.querySelector('label')!;
+
+      expect(label).toHaveClass('text-error', 'uppercase', 'text-xs');
+      expect(label).not.toHaveClass('text-sm');
+    });
+  });
 });

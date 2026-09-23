@@ -1,12 +1,20 @@
-import { booleanAttribute, ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import {
+  booleanAttribute,
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  output,
+  computed,
+} from '@angular/core';
 import { NgpComboboxOption } from 'ng-primitives/combobox';
+import { cn } from '../../utils';
 
 @Component({
   selector: 'volt-combobox-option',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgpComboboxOption],
   host: {
-    class: 'contents',
+    '[class]': 'classes()',
   },
   template: `
     <div
@@ -22,6 +30,10 @@ import { NgpComboboxOption } from 'ng-primitives/combobox';
   `,
 })
 export class VoltComboboxOption {
+  readonly class = input<string>('');
+
+  protected readonly classes = computed(() => cn('contents', this.class()));
+
   readonly value = input.required<unknown>();
   readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly index = input<number | undefined>();

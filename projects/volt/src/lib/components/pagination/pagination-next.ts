@@ -1,12 +1,19 @@
-import { booleanAttribute, ChangeDetectionStrategy, Component, input } from '@angular/core';
+import {
+  booleanAttribute,
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  computed,
+} from '@angular/core';
 import { NgpPaginationNext } from 'ng-primitives/pagination';
+import { cn } from '../../utils';
 
 @Component({
   selector: 'volt-pagination-next',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgpPaginationNext],
   host: {
-    class: 'inline-flex',
+    '[class]': 'classes()',
   },
   template: `
     <button
@@ -34,5 +41,9 @@ import { NgpPaginationNext } from 'ng-primitives/pagination';
   `,
 })
 export class VoltPaginationNext {
+  readonly class = input<string>('');
+
+  protected readonly classes = computed(() => cn('inline-flex', this.class()));
+
   readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
 }

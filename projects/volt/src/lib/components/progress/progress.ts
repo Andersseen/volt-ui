@@ -1,10 +1,17 @@
-import { ChangeDetectionStrategy, Component, input, numberAttribute } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  numberAttribute,
+  computed,
+} from '@angular/core';
 import {
   NgpProgress,
   NgpProgressIndicator,
   NgpProgressTrack,
   provideProgressState,
 } from 'ng-primitives/progress';
+import { cn } from '../../utils';
 
 @Component({
   selector: 'volt-progress',
@@ -22,7 +29,7 @@ import {
     },
   ],
   host: {
-    class: 'block w-full',
+    '[class]': 'classes()',
   },
   imports: [NgpProgressTrack, NgpProgressIndicator],
   template: `
@@ -37,6 +44,10 @@ import {
   `,
 })
 export class VoltProgress {
+  readonly class = input<string>('');
+
+  protected readonly classes = computed(() => cn('block w-full', this.class()));
+
   readonly value = input<number | null, number | null>(null, {
     transform: numberAttribute as never,
   });

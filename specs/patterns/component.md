@@ -140,10 +140,50 @@ Non-negotiables for Shape B:
 5. Disabled state is passed to the ng-primitives directive
    (`[ngpCheckboxDisabled]="isDisabled()"`), not just styled.
 
+## Styling contract (required since 1.1)
+
+> A consumer-provided `class` is merged with the Volt defaults using `cn()` and applied to the
+> element that visually owns those styles.
+
+Every styled component declares `readonly class = input<string>('')` and merges it last:
+
+```ts
+protected readonly classes = computed(() =>
+  cn(defaultClasses, someVariants({ variant: this.variant() }), this.class())
+);
+```
+
+Never build class strings with `+`, template literals or `[...].join(' ')` — `cn()` is what makes
+`<volt-card-content class="p-3">` replace `p-6` instead of competing with it (Tailwind v4 emits
+`.p-3` before `.p-6`, so without `tailwind-merge` the consumer loses).
+
+Where the classes go depends on which element paints:
+
+| Shape                                                        | `class` goes to                              | Host                                                                                                             | Examples                                            |
+| ------------------------------------------------------------ | -------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- |
+| Host-styled atom (`template: '<ng-content />'`)              | host, via `host: { '[class]': 'classes()' }` | is the visual element                                                                                            | Card parts, Badge, Alert, Spinner, Table, Tabs      |
+| Directive on a native element                                | the element, via host `[class]`              | is the native element                                                                                            | `button[voltButton]`, `select[voltNativeSelect]`    |
+| Wrapper around **one** native control                        | the native control, `[class]="classes()"`    | call `forwardClassFromHost(OWN_HOST_CLASSES)` so Angular's static copy of `class` does not also land on the host | Input, Textarea, Select trigger, Label, Hint, Error |
+| Wrapper that is also the layout box (group item, radio item) | host                                         | is the layout box; placement (`flex-1`, `ml-auto`) must keep working                                             | ToggleGroupItem, PaginationButton, Switch           |
+
+The same applies to attributes that belong to the native control: `id` (a copy on the host
+duplicates the id and breaks `<label for>`) and `aria-label`. Forward them with an input
+(`input(undefined, { alias: 'aria-label' })`) and remove the static host copy with
+`forwardAttributesFromHost('id', 'aria-label')` from `host-forwarding.ts`. Do not add generic
+passthrough inputs for arbitrary attributes — when a consumer needs full control, the answer is a
+native-element directive (`voltButton`), not twenty inputs.
+
+Test it with `describeClassContract()` from `projects/volt/testing/class-contract.ts` (add a case to
+`projects/volt/src/lib/class-contract.spec.ts`): consumer classes on the right element, the
+conflicting default replaced, behaviour classes kept, responsive and arbitrary classes intact, and —
+for wrappers — nothing left on the host.
+
 ## Checklist for any new/edited component
 
 - [ ] File set: `index.ts`, `<name>.ts`, `variants.ts` (Shape A only), `<name>.spec.ts`.
 - [ ] Selector `volt-<name>`, class `Volt<Name>`.
+- [ ] `class` input merged with `cn()` on the element that paints (see "Styling contract"), with a
+      `describeClassContract()` case.
 - [ ] Ripple effects done (GUARDRAILS.md "Required ripple effects": public-api,
       snippets ×2, demo page, `pnpm manifest`, COMPONENT_STATUS.md).
 - [ ] Tests follow `specs/patterns/form-control-tests.md` or overlay pattern.

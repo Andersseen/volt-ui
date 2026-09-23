@@ -12,6 +12,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { injectRadioGroupState, NgpRadioGroup, provideRadioGroupState } from 'ng-primitives/radio';
 import type { NgpOrientation } from 'ng-primitives/common';
 import { injectFormControlState } from '../../form-control-state';
+import { cn } from '../../utils';
 
 @Component({
   selector: 'volt-radio-group',
@@ -25,7 +26,7 @@ import { injectFormControlState } from '../../form-control-state';
     },
   ],
   host: {
-    class: 'flex gap-2',
+    '[class]': 'classes()',
     '[attr.aria-orientation]': 'orientation()',
     '[attr.aria-invalid]': 'formControlState.invalid() ? "true" : null',
     '[class.flex-col]': 'orientation() === "vertical"',
@@ -48,6 +49,10 @@ import { injectFormControlState } from '../../form-control-state';
   template: ` <ng-content /> `,
 })
 export class VoltRadioGroup implements ControlValueAccessor {
+  readonly class = input<string>('');
+
+  protected readonly classes = computed(() => cn('flex gap-2', this.class()));
+
   private readonly state = injectRadioGroupState<string>();
   protected readonly formControlState = injectFormControlState();
 

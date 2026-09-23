@@ -35,7 +35,7 @@ const RUNTIME_DEPENDENCIES = [
 // manifest's dependency detector only resolves components/layouts imports, so these are
 // tracked and copied separately, flat into the target dir (sibling to each component's
 // own subfolder), since that's what the rewritten `../utils` import path expects.
-const SHARED_LIB_FILES = ['utils.ts', 'form-control-state.ts'];
+const SHARED_LIB_FILES = ['utils.ts', 'form-control-state.ts', 'host-forwarding.ts'];
 
 // ---------------------------------------------------------------------------
 // Package manager detection
@@ -100,6 +100,10 @@ function transformContent(content) {
     const newSelector = selector.replace(/volt-/g, 'ui-').replace(/\bvolt([A-Z]\w*)/g, 'ui$1');
     return `selector: '${newSelector}'`;
   });
+
+  // Element tags inside inline templates (`<volt-toast>`, `</volt-toast>`) must follow the
+  // renamed selectors, or a component that renders another Volt component matches nothing.
+  content = content.replace(/<(\/?)volt-/g, '<$1ui-');
 
   // Replace all VoltXxx identifiers with UiXxx
   content = content.replace(/\bVolt([A-Z]\w*)/g, 'Ui$1');
