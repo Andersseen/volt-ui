@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { NgpListboxOption } from 'ng-primitives/listbox';
 import { listboxOptionVariants, type ListboxOptionVariants } from './variants';
+import { cn } from '../../utils';
 
 @Component({
   selector: 'volt-listbox-option',
@@ -32,5 +33,8 @@ export class VoltListboxOption<T = unknown> {
   readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly inset = input<ListboxOptionVariants['inset']>(false);
 
-  protected readonly classes = computed(() => listboxOptionVariants({ inset: this.inset() }));
+  readonly class = input<string>('');
+  protected readonly classes = computed(() =>
+    cn(listboxOptionVariants({ inset: this.inset() }), this.class())
+  );
 }

@@ -6,7 +6,10 @@
 
   <app-code-panel [title]="t('ui.codePanel.usage')" [code]="dialogUsage" [tabbed]="true">
     <div class="flex flex-wrap gap-3 items-center justify-center p-8">
-      <volt-button [voltDialog]="editProfileTpl">Open Dialog</volt-button>
+      <!-- Trigger -->
+      <button voltButton [voltDialog]="editProfileTpl" data-testid="dialog-trigger-demo">
+        Open Dialog
+      </button>
 
       <ng-template #editProfileTpl let-close="close">
         <div voltDialogOverlay></div>
@@ -18,31 +21,69 @@
             </p>
           </div>
           <div class="grid gap-4 py-4">
-            <div class="grid grid-cols-4 items-center gap-4">
-              <label for="dialog-name" class="text-right text-sm font-medium">Name</label>
-              <input
-                id="dialog-name"
-                class="col-span-3 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground"
-                value="Jane Doe"
-              />
-            </div>
-            <div class="grid grid-cols-4 items-center gap-4">
-              <label for="dialog-email" class="text-right text-sm font-medium">Email</label>
-              <input
-                id="dialog-email"
-                class="col-span-3 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground"
-                value="jane@example.com"
-              />
-            </div>
+            <volt-form-field>
+              <volt-label>Name</volt-label>
+              <volt-input value="Jane Doe" />
+            </volt-form-field>
+            <volt-form-field>
+              <volt-label>Email</volt-label>
+              <volt-input type="email" value="jane@example.com" />
+            </volt-form-field>
           </div>
-          <div class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
-            <volt-button variant="outline" class="mt-2 sm:mt-0" (click)="close()">
-              Cancel
-            </volt-button>
-            <volt-button (click)="close()">Save changes</volt-button>
+          <div class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+            <button voltButton variant="outline" type="button" (click)="close()">Cancel</button>
+            <button voltButton type="button" (click)="close()">Save changes</button>
           </div>
         </div>
       </ng-template>
+
+      <!-- Controlled: application state owns `open` -->
+      <button voltButton variant="outline" type="button" (click)="editing.set(true)">
+        Rename project
+      </button>
+      <ng-template voltDialogRoot [(open)]="editing" (closed)="onRenamed($event)" let-close="close">
+        <div voltDialogOverlay></div>
+        <form
+          voltDialogContent
+          class="max-w-md"
+          (submit)="$event.preventDefault(); close(projectName.value)"
+        >
+          <h2 voltDialogTitle>Rename project</h2>
+          <p voltDialogDescription>The new name is visible to everyone on the team.</p>
+          <volt-form-field class="py-4">
+            <volt-label>Project name</volt-label>
+            <volt-input [formControl]="projectName" />
+          </volt-form-field>
+          <div class="flex justify-end gap-2">
+            <button voltButton variant="outline" type="button" (click)="close()">Cancel</button>
+            <button voltButton type="submit">Rename</button>
+          </div>
+        </form>
+      </ng-template>
+
+      <!-- Confirm: opened from code, awaited -->
+      <button voltButton variant="destructive" type="button" (click)="confirmDelete()">
+        Delete project
+      </button>
+      <ng-template #confirmTpl let-close="close">
+        <div voltDialogOverlay></div>
+        <div voltDialogContent class="max-w-sm">
+          <h2 voltDialogTitle>Delete {{ projectName.value }}?</h2>
+          <p voltDialogDescription>This action cannot be undone.</p>
+          <div class="mt-6 flex justify-end gap-2">
+            <button voltButton variant="outline" type="button" (click)="close(false)">
+              Cancel
+            </button>
+            <button voltButton variant="destructive" type="button" (click)="close(true)">
+              Delete
+            </button>
+          </div>
+        </div>
+      </ng-template>
+
+      <p class="w-full text-center text-sm text-muted-foreground" aria-live="polite">
+        {{ lastResult() }}
+      </p>
     </div>
   </app-code-panel>
 

@@ -1,7 +1,7 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 
 export const textareaVariants = cva(
-  'flex w-full rounded-md text-foreground transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-50',
+  'flex w-full rounded-md text-foreground transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-error aria-invalid:focus-visible:ring-error',
   {
     variants: {
       variant: {
@@ -17,6 +17,7 @@ export const textareaVariants = cva(
       state: {
         default: '',
         error: 'border-error focus-visible:ring-error placeholder:text-error/70',
+        success: 'border-success focus-visible:ring-success',
       },
     },
     defaultVariants: {

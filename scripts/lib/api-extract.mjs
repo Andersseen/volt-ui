@@ -131,11 +131,14 @@ function extractSignals(src) {
     const args = splitTopLevel(body).map(s => s.trim());
     const [defaultRaw, optionsRaw] = args;
     const transformMatch = optionsRaw?.match(/transform:\s*(\w+)/);
+    // `input(x, { alias: 'aria-label' })` is bound by its alias, so that is the documented name.
+    const aliasMatch = optionsRaw?.match(/alias:\s*'([^']+)'/);
+    const publicName = aliasMatch?.[1] ?? name;
     const type = generic ? splitGenericTopLevel(generic)[0].trim() : inferTypeFromLiteral(defaultRaw);
 
     if (kind === 'input') {
       inputs.push({
-        name,
+        name: publicName,
         type,
         required: !!required,
         default: defaultRaw || undefined,
@@ -228,20 +231,28 @@ function dedupeByName(entries) {
   return [...seen.values()];
 }
 
+// One file can declare several components (card.ts holds all six card parts). Each
+// `@Component(` / `@Directive(` starts a segment that runs to the next decorator.
+function decoratedSegments(src) {
+  const starts = [...src.matchAll(/@(?:Component|Directive)\(/g)].map(m => m.index);
+  return starts.map((start, i) => src.slice(start, starts[i + 1] ?? src.length));
+}
+
 export function processComponentDir(dirPath) {
   const files = listSourceFiles(dirPath);
   const directives = [];
   for (const file of files) {
     const src = readFileSync(join(dirPath, file), 'utf8');
-    if (!src.includes('@Component(') && !src.includes('@Directive(')) continue;
-    const { selector, className } = extractSelectorAndClass(src);
-    if (!className) continue;
-    const signals = extractSignals(src);
-    const hostIO = extractHostDirectiveIO(src);
-    const inputs = dedupeByName([...signals.inputs, ...hostIO.inputs]);
-    const outputs = dedupeByName([...signals.outputs, ...hostIO.outputs]);
-    if (inputs.length === 0 && outputs.length === 0) continue; // nothing to document
-    directives.push({ className, selector, inputs, outputs });
+    for (const segment of decoratedSegments(src)) {
+      const { selector, className } = extractSelectorAndClass(segment);
+      if (!className) continue;
+      const signals = extractSignals(segment);
+      const hostIO = extractHostDirectiveIO(segment);
+      const inputs = dedupeByName([...signals.inputs, ...hostIO.inputs]);
+      const outputs = dedupeByName([...signals.outputs, ...hostIO.outputs]);
+      if (inputs.length === 0 && outputs.length === 0) continue; // nothing to document
+      directives.push({ className, selector, inputs, outputs });
+    }
   }
   let variantsSrc = null;
   try {

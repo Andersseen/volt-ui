@@ -5,6 +5,83 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-09-23
+
+**Volt UI 1.1 — Consumer DX.** Driven by an audit of real apps built on Volt (DevFlare, ForgeCMS,
+Wisp, Palette Crafter, Lumen Icons, CV Builder, Agentyx, the Angular Movement and Quartz sites).
+Volt is used as an atom layer inside apps that own their layout and design; this release makes those
+atoms easier and safer to consume. Backwards compatible — see [MIGRATION.md](./MIGRATION.md) for
+the behaviour fixes you might notice.
+
+### Added
+
+- **Universal styling contract.** Every styled component now has a `class` input merged with
+  `cn()` (tailwind-merge) onto the element that paints: 80+ parts gained `class`, and Skeleton,
+  Table ×8, Resizable ×2 and DrawerContent stopped concatenating strings by hand. Wrappers
+  (Input, Textarea, Select trigger, Label, Hint, Error, SearchClear, Breadcrumb parts, Sidebar
+  parts) apply it to their native element and drop the host copy. Covered by a shared
+  `describeClassContract()` suite across 29 components.
+- **`voltButton` directive** (`VoltNativeButton`) for `<button>` and `<a>`: the same variants and
+  sizes on the native element — `<a voltButton routerLink="/docs">`, no more `<a><volt-button>`.
+  Anchors never get fake disabled semantics (a dev-mode warning explains why).
+- **ARIA forwarding on `<volt-button>`:** `aria-label`, `aria-labelledby`, `aria-describedby`,
+  `aria-expanded`, `aria-pressed`, `aria-controls`, `aria-haspopup` reach the inner `<button>`.
+- **Input:** `size` (`sm`/`md`/`lg`), `state` (`default`/`error`/`success`), `class`, and an
+  `aria-label` attribute alias. **Textarea:** `class`, `success` state, `aria-label`. Both show the
+  error style whenever `aria-invalid` is set. **NativeSelect:** `class`. **Switch/Select:**
+  `aria-label` attribute alias.
+- **Card:** `class` on `VoltCard`, `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`,
+  `CardFooter`.
+- **Badge:** `success`, `warning` and `info` variants on the existing semantic tokens.
+- **`VoltToastService`** (`show`, `success`, `error`, `warning`, `info`, `showTemplate`,
+  `dismissAll`) and **`provideVoltToast()`** — no ng-primitives types needed; SSR-safe no-op on
+  the server.
+- **Controlled and imperative dialogs:** `<ng-template voltDialogRoot [(open)]>` and
+  `VoltDialogService.open(template | component, { role, data, closeOnEscape, closeOnClick })`
+  returning a `VoltDialogRef` whose `closed` promise resolves with the result. Works with drawer
+  content too. Per-dialog `role: 'alertdialog'` is now honoured.
+- **`VoltAlert`** (+ `VoltAlertTitle`, `VoltAlertDescription`): `default`, `info`, `success`,
+  `warning`, `destructive`; no live-region role unless `role="status"` / `role="alert"` is set. Beta.
+- **`VoltSpinner`**: `sm`/`md`/`lg`; decorative by default, `role="status"` with visually hidden
+  text when given a `label`; slows down under reduced motion. Beta.
+- Contrast audit gains status-colour pairs used as icons and borders (170 checks, all passing).
+- Consumer regression fixtures in both `e2e/consumer` (npm package) and `e2e/consumer-cli`
+  (copied source) for links styled as buttons, icon-only names, forwarded ARIA state, compact
+  inputs, custom Card/Dialog/Drawer sizing, Reactive Forms validation, badges, alerts, spinners,
+  the toast service and trigger/controlled/confirm dialogs.
+
+### Fixed
+
+- `<volt-input id>` / `<volt-textarea id>` / `<volt-checkbox id>` / `<volt-switch id>` duplicated
+  the id on the host, so `<label for>` pointed at a non-labelable element.
+- Inside `<volt-form-field>`, Input and Textarea overrode ng-primitives' generated id with `''`,
+  so clicking the label did not focus the control.
+- `<volt-label htmlFor>` outside a form field had its `for` removed and its click cancelled.
+- Form controls did not update `aria-invalid` after programmatic `markAllAsTouched()`.
+- The CLI left `<volt-*>` child tags in copied templates, so copied `input-otp` slots and
+  `combobox` options (and the new toast service) never rendered.
+- The contrast audit now rounds colours to the 8-bit sRGB the browser paints. That exposed eleven
+  preset pairs rendering at 4.47–4.50:1 (and one 2.99:1 input border) that passed in exact maths;
+  their tokens moved by 0.005 OKLCH lightness (`dusk` warning, `ember` muted/success/info,
+  `glacier` primary/success, `sage` secondary/error/input, default `muted-foreground`). Verified
+  against rendered pixels across all 5 colours × 5 styles × light/dark.
+- API reference generation now documents every component in multi-component files (all six Card
+  parts) and uses input aliases (`aria-label`) as the documented names.
+
+### Deprecated
+
+- `VoltButton.customClass` — use `class`. Still merged; removal is a 2.0 candidate.
+- `NgpToastManager` / `provideToastConfig` and the `Ngp*` dialog re-exports are documented as
+  low-level; prefer `VoltToastService`, `provideVoltToast()`, `VoltDialogService`. Not removed.
+
+### Docs
+
+- Package mode (`@voltui/components`) and copy-and-own mode (`@voltui/cli`) are documented as
+  equal, first-class workflows. Usage snippets import from `@voltui/components`.
+- New Alert and Spinner pages; Button, Badge, Card, Input, Form Field, Dialog and Toast pages show
+  the 1.1 patterns. AI skill, installers, MCP server and prompt reference updated (and fixed: the
+  form-field selectors are `ui-label`, `ui-hint`, `ui-error`).
+
 ## [1.0.1] - 2026-08-18
 
 ### Fixed

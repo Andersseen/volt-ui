@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import '@angular/compiler';
 import { bootstrapApplication } from '@angular/platform-browser';
+import { provideRouter } from '@angular/router';
 import {
   NgpToastManager,
   VoltAvatar,
@@ -53,6 +54,7 @@ import {
   VoltToastTitle,
 } from '@voltui/components';
 
+import { RegressionFixtures } from './regressions';
 import './styles.css';
 
 @Component({
@@ -100,6 +102,7 @@ import './styles.css';
     VoltToastClose,
     VoltToastDescription,
     VoltToastTitle,
+    RegressionFixtures,
   ],
   template: `
     <main class="mx-auto flex max-w-3xl flex-col gap-6 p-6">
@@ -268,6 +271,8 @@ import './styles.css';
         <volt-tabs-content value="one" data-testid="tabs-content">First tab</volt-tabs-content>
         <volt-tabs-content value="two">Second tab</volt-tabs-content>
       </volt-tabs>
+
+      <app-regressions />
     </main>
   `,
 })
@@ -297,7 +302,7 @@ class ConsumerApp {
 }
 
 bootstrapApplication(ConsumerApp, {
-  providers: [provideZonelessChangeDetection()],
+  providers: [provideZonelessChangeDetection(), provideRouter([])],
 }).catch(error => {
   console.error(error);
 });

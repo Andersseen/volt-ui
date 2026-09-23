@@ -1,12 +1,13 @@
-import { ChangeDetectionStrategy, Component, input, model } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, model, computed } from '@angular/core';
 import { NgpNavigationMenu, provideNavigationMenuState } from 'ng-primitives/navigation-menu';
+import { cn } from '../../utils';
 
 @Component({
   selector: 'volt-navigation-menu',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [provideNavigationMenuState()],
   host: {
-    class: 'relative flex max-w-max flex-1 items-center justify-center',
+    '[class]': 'classes()',
     role: 'navigation',
   },
   hostDirectives: [
@@ -24,6 +25,12 @@ import { NgpNavigationMenu, provideNavigationMenuState } from 'ng-primitives/nav
   template: `<ng-content />`,
 })
 export class VoltNavigationMenu {
+  readonly class = input<string>('');
+
+  protected readonly classes = computed(() =>
+    cn('relative flex max-w-max flex-1 items-center justify-center', this.class())
+  );
+
   readonly orientation = input<'horizontal' | 'vertical'>('horizontal');
   readonly showDelay = input<number>(200);
   readonly hideDelay = input<number>(150);

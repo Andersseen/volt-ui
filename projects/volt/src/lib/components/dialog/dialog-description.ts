@@ -1,11 +1,16 @@
-import { Directive } from '@angular/core';
+import { Directive, computed, input } from '@angular/core';
 import { NgpDialogDescription } from 'ng-primitives/dialog';
+import { cn } from '../../utils';
 
 @Directive({
   selector: '[voltDialogDescription]',
   hostDirectives: [NgpDialogDescription],
   host: {
-    class: 'text-sm text-muted-foreground',
+    '[class]': 'classes()',
   },
 })
-export class VoltDialogDescription {}
+export class VoltDialogDescription {
+  readonly class = input<string>('');
+
+  protected readonly classes = computed(() => cn('text-sm text-muted-foreground', this.class()));
+}

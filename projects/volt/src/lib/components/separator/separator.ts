@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { NgpSeparator } from 'ng-primitives/separator';
+import { cn } from '../../utils';
 
 @Component({
   selector: 'volt-separator',
@@ -18,8 +19,13 @@ import { NgpSeparator } from 'ng-primitives/separator';
 export class VoltSeparator {
   readonly orientation = input<'horizontal' | 'vertical'>('horizontal');
 
-  protected readonly classes = computed(() => {
-    const base = 'block shrink-0 bg-border';
-    return this.orientation() === 'vertical' ? `${base} w-px h-full` : `${base} h-px w-full`;
-  });
+  readonly class = input<string>('');
+
+  protected readonly classes = computed(() =>
+    cn(
+      'block shrink-0 bg-border',
+      this.orientation() === 'vertical' ? 'w-px h-full' : 'h-px w-full',
+      this.class()
+    )
+  );
 }

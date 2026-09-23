@@ -140,4 +140,40 @@ describe('VoltTextarea', () => {
 
     expect(fixture.componentInstance.value).toBe('typed');
   });
+
+  describe('1.1 customization', () => {
+    it('merges class onto the native textarea and keeps the host clean', async () => {
+      const { container } = await render(
+        `<volt-textarea class="font-mono px-2" aria-label="Notes" />`,
+        { imports: [VoltTextarea] }
+      );
+      const native = screen.getByRole('textbox', { name: 'Notes' });
+
+      expect(native).toHaveClass('font-mono', 'px-2');
+      expect(native).not.toHaveClass('px-4');
+      expect(container.querySelector('volt-textarea')).not.toHaveClass('font-mono');
+      expect(container.querySelector('volt-textarea')).not.toHaveAttribute('aria-label');
+    });
+
+    it('supports the success state alongside error', async () => {
+      const { container } = await render(
+        `<volt-textarea state="success" /><volt-textarea state="error" />`,
+        { imports: [VoltTextarea] }
+      );
+      const [success, error] = Array.from(container.querySelectorAll('textarea'));
+
+      expect(success).toHaveClass('border-success');
+      expect(success).not.toHaveAttribute('aria-invalid');
+      expect(error).toHaveAttribute('aria-invalid', 'true');
+    });
+
+    it('does not duplicate a consumer id on the host', async () => {
+      const { container } = await render(`<volt-textarea id="bio" />`, {
+        imports: [VoltTextarea],
+      });
+
+      expect(container.querySelectorAll('#bio')).toHaveLength(1);
+      expect(container.querySelector('#bio')!.tagName).toBe('TEXTAREA');
+    });
+  });
 });

@@ -12,6 +12,7 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NgpCheckbox } from 'ng-primitives/checkbox';
 import { injectFormControlState } from '../../form-control-state';
+import { forwardAttributesFromHost } from '../../host-forwarding';
 
 let nextCheckboxId = 0;
 
@@ -88,6 +89,11 @@ export class VoltCheckbox implements ControlValueAccessor {
 
   private onChange: (value: boolean) => void = () => {};
   protected onTouched: () => void = () => {};
+
+  constructor() {
+    // The id belongs to the native button; a copy on the host would duplicate it.
+    forwardAttributesFromHost('id');
+  }
 
   protected onCheckedChange(value: boolean): void {
     this.checked.set(value);

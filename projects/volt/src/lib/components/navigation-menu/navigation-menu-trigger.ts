@@ -1,6 +1,13 @@
-import { booleanAttribute, ChangeDetectionStrategy, Component, input } from '@angular/core';
+import {
+  booleanAttribute,
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  computed,
+} from '@angular/core';
 import { NgpNavigationMenuTrigger } from 'ng-primitives/navigation-menu';
 import type { NgpOverlayContent } from 'ng-primitives/portal';
+import { cn } from '../../utils';
 
 export type NavigationMenuPlacement =
   | 'bottom-start'
@@ -17,7 +24,7 @@ export type NavigationMenuPlacement =
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgpNavigationMenuTrigger],
   host: {
-    class: 'inline-flex',
+    '[class]': 'classes()',
   },
   template: `
     <button
@@ -49,6 +56,10 @@ export type NavigationMenuPlacement =
   `,
 })
 export class VoltNavigationMenuTrigger {
+  readonly class = input<string>('');
+
+  protected readonly classes = computed(() => cn('inline-flex', this.class()));
+
   readonly content = input.required<NgpOverlayContent<unknown>>();
   readonly placement = input<NavigationMenuPlacement>('bottom-start');
   readonly offset = input<number>(4);

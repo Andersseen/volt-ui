@@ -17,30 +17,36 @@
           </volt-card-header>
           <volt-card-content>
             <form>
-              <div class="grid w-full items-center gap-4">
-                <div class="flex flex-col space-y-1.5">
-                  <label
-                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    for="name"
-                    >Name</label
-                  >
-                  <input
-                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                    id="name"
-                    placeholder="Name of your project"
-                  />
-                </div>
-              </div>
+              <volt-form-field>
+                <volt-label>Name</volt-label>
+                <volt-input placeholder="Name of your project" />
+              </volt-form-field>
             </form>
           </volt-card-content>
-          <volt-card-footer class="flex justify-between">
-            <volt-button variant="outline">Cancel</volt-button>
-            <volt-button>Deploy</volt-button>
+          <volt-card-footer class="justify-between">
+            <button voltButton variant="outline" type="button">Cancel</button>
+            <button voltButton type="button">Deploy</button>
+          </volt-card-footer>
+        </volt-card>
+
+        <volt-card class="mt-6" data-testid="card-custom">
+          <volt-card-content class="p-3 md:p-4 text-center">
+            <p class="text-sm text-muted-foreground">No deployments yet</p>
+          </volt-card-content>
+          <volt-card-footer class="justify-end gap-2 border-t border-border p-3">
+            <button voltButton variant="ghost" size="sm" type="button">Dismiss</button>
+            <button voltButton size="sm" type="button">Deploy now</button>
           </volt-card-footer>
         </volt-card>
       </div>
     </div>
   </app-code-panel>
+
+  <!-- API Reference -->
+  <div class="space-y-3">
+    <h3 class="text-lg font-semibold">{{ t('ui.api.title') }}</h3>
+    <app-api-reference [data]="cardApi" />
+  </div>
 
   <!-- Source Code Section -->
   <app-code-panel

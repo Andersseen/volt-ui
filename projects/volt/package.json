@@ -1,7 +1,7 @@
 {
   "name": "@voltui/components",
-  "version": "1.0.1",
-  "description": "Copy-and-own Angular components built with signals, Tailwind CSS v4 and ng-primitives.",
+  "version": "1.1.0",
+  "description": "Angular UI atoms built with signals, Tailwind CSS v4 and ng-primitives. Use the package or copy the source with @voltui/cli.",
   "license": "MIT",
   "homepage": "https://volt-ui.andersseen.dev",
   "repository": {

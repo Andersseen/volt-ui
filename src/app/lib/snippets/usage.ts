@@ -1,42 +1,81 @@
 export const BUTTON_USAGE = `import { Component } from '@angular/core';
-import { VoltButton } from 'volt';
+import { RouterLink } from '@angular/router';
+import { VoltButton, VoltNativeButton, VoltSpinner } from '@voltui/components';
 
 @Component({
-  imports: [VoltButton],
+  imports: [RouterLink, VoltButton, VoltNativeButton, VoltSpinner],
   template: \`
-    <volt-button>Click me</volt-button>
-    <volt-button variant="outline">Outline</volt-button>
-    <volt-button variant="destructive">Delete</volt-button>
-    <volt-button disabled>Disabled</volt-button>
+    <!-- Native element: the element you write is the one that is focused and announced -->
+    <button voltButton type="submit">Save</button>
+    <button voltButton variant="outline" type="button">Cancel</button>
 
-    <!-- With icon slots -->
-    <volt-button>
-      <lmn-mail slot="leading" [size]="16" />
-      Login with Email
-    </volt-button>
+    <!-- Links styled as buttons: a real <a>, never <a><button> -->
+    <a voltButton variant="outline" routerLink="/docs">Documentation</a>
+    <a voltButton variant="ghost" href="https://github.com/Andersseen/volt-ui" target="_blank" rel="noopener">
+      GitHub
+    </a>
+
+    <!-- Icon-only: name it with aria-label; hide the icon -->
+    <button voltButton variant="ghost" size="icon" type="button" aria-label="Switch theme">
+      <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="4" />
+      </svg>
+    </button>
+
+    <!-- Loading: the text says what is happening, so the spinner is decorative -->
+    <button voltButton type="button" [disabled]="saving">
+      @if (saving) { <volt-spinner size="sm" /> }
+      {{ saving ? 'Saving…' : 'Save' }}
+    </button>
+
+    <!-- <volt-button> is still supported; ARIA inputs are forwarded to its inner <button> -->
+    <volt-button variant="destructive" aria-describedby="delete-hint">Delete</volt-button>
   \`,
 })
-export class MyComponent {}`;
+export class MyComponent {
+  saving = false;
+}`;
 
 export const BADGE_USAGE = `import { Component } from '@angular/core';
-import { VoltBadge } from 'volt';
+import { VoltBadge } from '@voltui/components';
 
 @Component({
   imports: [VoltBadge],
   template: \`
     <volt-badge>Default</volt-badge>
     <volt-badge variant="secondary">Secondary</volt-badge>
-    <volt-badge variant="destructive">Destructive</volt-badge>
     <volt-badge variant="outline">Outline</volt-badge>
+    <volt-badge variant="destructive">Failed</volt-badge>
+
+    <!-- Status -->
+    <volt-badge variant="success">Connected</volt-badge>
+    <volt-badge variant="warning">Needs attention</volt-badge>
+    <volt-badge variant="info">Beta</volt-badge>
   \`,
 })
 export class MyComponent {}`;
 
 export const CARD_USAGE = `import { Component } from '@angular/core';
-import { VoltCard } from 'volt';
+import {
+  VoltCard,
+  VoltCardHeader,
+  VoltCardTitle,
+  VoltCardDescription,
+  VoltCardContent,
+  VoltCardFooter,
+  VoltNativeButton,
+} from '@voltui/components';
 
 @Component({
-  imports: [VoltCard],
+  imports: [
+    VoltCard,
+    VoltCardHeader,
+    VoltCardTitle,
+    VoltCardDescription,
+    VoltCardContent,
+    VoltCardFooter,
+    VoltNativeButton,
+  ],
   template: \`
     <volt-card>
       <volt-card-header>
@@ -47,7 +86,16 @@ import { VoltCard } from 'volt';
         <p>Card content</p>
       </volt-card-content>
       <volt-card-footer>
-        <volt-button>Save</volt-button>
+        <button voltButton type="button">Save</button>
+      </volt-card-footer>
+    </volt-card>
+
+    <!-- Every part merges class with cn(): p-3 replaces the default p-6 / pt-0 -->
+    <volt-card class="max-w-sm">
+      <volt-card-content class="p-3 md:p-4 text-center">Compact content</volt-card-content>
+      <volt-card-footer class="justify-end gap-2 border-t border-border p-3">
+        <button voltButton variant="ghost" size="sm" type="button">Cancel</button>
+        <button voltButton size="sm" type="button">Confirm</button>
       </volt-card-footer>
     </volt-card>
   \`,
@@ -55,23 +103,32 @@ import { VoltCard } from 'volt';
 export class MyComponent {}`;
 
 export const INPUT_USAGE = `import { Component } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { VoltInput } from 'volt';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { VoltInput } from '@voltui/components';
 
 @Component({
   imports: [ReactiveFormsModule, VoltInput],
   template: \`
-    <volt-input [formControl]="email" type="email" placeholder="Email address" />
-    <volt-input disabled placeholder="Disabled input" />
+    <volt-input [formControl]="email" type="email" placeholder="Email address" aria-label="Email" />
+
+    <!-- Density and state; class styles the native <input> -->
+    <volt-input size="sm" class="w-24 font-mono" aria-label="Quantity" />
+    <volt-input state="success" aria-label="Username" value="volt" />
+
+    <!-- A touched invalid control is marked aria-invalid and drawn in the error colour -->
+    <volt-input [formControl]="required" aria-label="Required field" />
+
+    <volt-input disabled placeholder="Disabled input" aria-label="Disabled" />
   \`,
 })
 export class MyComponent {
   email = new FormControl('', { nonNullable: true });
+  required = new FormControl('', { nonNullable: true, validators: Validators.required });
 }`;
 
 export const CHECKBOX_USAGE = `import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { VoltCheckbox, VoltLabel } from 'volt';
+import { VoltCheckbox, VoltLabel } from '@voltui/components';
 
 @Component({
   imports: [ReactiveFormsModule, VoltCheckbox, VoltLabel],
@@ -88,7 +145,7 @@ export class MyComponent {
 
 export const SWITCH_USAGE = `import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { VoltSwitch, VoltLabel } from 'volt';
+import { VoltSwitch, VoltLabel } from '@voltui/components';
 
 @Component({
   imports: [ReactiveFormsModule, VoltSwitch, VoltLabel],
@@ -104,7 +161,7 @@ export class MyComponent {
 }`;
 
 export const TABS_USAGE = `import { Component } from '@angular/core';
-import { VoltTabs, VoltTabsList, VoltTabsTrigger, VoltTabsContent } from 'volt';
+import { VoltTabs, VoltTabsList, VoltTabsTrigger, VoltTabsContent } from '@voltui/components';
 
 @Component({
   imports: [VoltTabs, VoltTabsList, VoltTabsTrigger, VoltTabsContent],
@@ -131,7 +188,7 @@ import {
   VoltAccordionItem,
   VoltAccordionTrigger,
   VoltAccordionContent,
-} from 'volt';
+} from '@voltui/components';
 
 @Component({
   imports: [VoltAccordion, VoltAccordionItem, VoltAccordionTrigger, VoltAccordionContent],
@@ -155,7 +212,7 @@ import {
 export class MyComponent {}`;
 
 export const AVATAR_USAGE = `import { Component } from '@angular/core';
-import { VoltAvatar, VoltAvatarImage, VoltAvatarFallback } from 'volt';
+import { VoltAvatar, VoltAvatarImage, VoltAvatarFallback } from '@voltui/components';
 
 @Component({
   imports: [VoltAvatar, VoltAvatarImage, VoltAvatarFallback],
@@ -176,7 +233,7 @@ import {
   VoltBreadcrumbsLink,
   VoltBreadcrumbsPage,
   VoltBreadcrumbsSeparator,
-} from 'volt';
+} from '@voltui/components';
 
 @Component({
   imports: [
@@ -207,34 +264,83 @@ import {
 })
 export class MyComponent {}`;
 
-export const DIALOG_USAGE = `import { Component } from '@angular/core';
+export const DIALOG_USAGE = `import { Component, inject, signal, TemplateRef, viewChild } from '@angular/core';
 import {
   VoltDialog,
+  VoltDialogRoot,
+  VoltDialogService,
   VoltDialogContent,
   VoltDialogTitle,
   VoltDialogDescription,
   VoltDialogOverlay,
-} from 'volt';
-import { VoltButton } from 'volt';
+  VoltNativeButton,
+  type VoltDialogContext,
+} from '@voltui/components';
 
 @Component({
-  imports: [VoltDialog, VoltDialogContent, VoltDialogTitle, VoltDialogDescription, VoltDialogOverlay, VoltButton],
+  imports: [
+    VoltDialog,
+    VoltDialogRoot,
+    VoltDialogContent,
+    VoltDialogTitle,
+    VoltDialogDescription,
+    VoltDialogOverlay,
+    VoltNativeButton,
+  ],
   template: \`
-    <button voltDialog [voltDialog]="dialogTpl">Open Dialog</button>
-
-    <ng-template #dialogTpl let-close="close">
+    <!-- 1. Trigger: the button opens the template -->
+    <button voltButton [voltDialog]="infoTpl">Open dialog</button>
+    <ng-template #infoTpl let-close="close">
       <div voltDialogOverlay></div>
       <div voltDialogContent>
-        <h2 voltDialogTitle>Are you sure?</h2>
-        <p voltDialogDescription>
-          This action cannot be undone.
-        </p>
-        <volt-button (click)="close()">Confirm</volt-button>
+        <h2 voltDialogTitle>Keyboard shortcuts</h2>
+        <p voltDialogDescription>Press ? anywhere to open this list.</p>
+        <button voltButton (click)="close()">Close</button>
+      </div>
+    </ng-template>
+
+    <!-- 2. Controlled: your state decides when it is open -->
+    <button voltButton variant="outline" (click)="editing.set(true)">Edit profile</button>
+    <ng-template voltDialogRoot [(open)]="editing" (closed)="onEdited($event)" let-close="close">
+      <div voltDialogOverlay></div>
+      <form voltDialogContent (submit)="$event.preventDefault(); close('saved')">
+        <h2 voltDialogTitle>Edit profile</h2>
+        <p voltDialogDescription>Changes are visible to your team.</p>
+        <!-- form fields… -->
+        <button voltButton type="submit">Save</button>
+      </form>
+    </ng-template>
+
+    <!-- 3. Confirm: open from code and await the answer -->
+    <button voltButton variant="destructive" (click)="remove()">Delete project</button>
+    <ng-template #confirmTpl let-close="close">
+      <div voltDialogOverlay></div>
+      <div voltDialogContent>
+        <h2 voltDialogTitle>Delete project?</h2>
+        <p voltDialogDescription>This action cannot be undone.</p>
+        <button voltButton variant="outline" (click)="close(false)">Cancel</button>
+        <button voltButton variant="destructive" (click)="close(true)">Delete</button>
       </div>
     </ng-template>
   \`,
 })
-export class MyComponent {}`;
+export class MyComponent {
+  private readonly dialog = inject(VoltDialogService);
+  private readonly confirmTpl = viewChild.required<TemplateRef<VoltDialogContext<boolean>>>('confirmTpl');
+
+  readonly editing = signal(false);
+
+  onEdited(result: unknown) {
+    console.log('closed with', result);
+  }
+
+  async remove() {
+    const confirmed = await this.dialog.open<boolean>(this.confirmTpl(), { role: 'alertdialog' }).closed;
+    if (confirmed) {
+      // delete…
+    }
+  }
+}`;
 
 export const DROPDOWN_MENU_USAGE = `import { Component } from '@angular/core';
 import {
@@ -243,8 +349,8 @@ import {
   VoltDropdownMenuItem,
   VoltDropdownMenuLabel,
   VoltDropdownMenuSeparator,
-} from 'volt';
-import { VoltButton } from 'volt';
+} from '@voltui/components';
+import { VoltButton } from '@voltui/components';
 
 @Component({
   imports: [
@@ -282,7 +388,7 @@ import {
   VoltNavigationMenuTrigger,
   VoltNavigationMenuContent,
   VoltNavigationMenuLink,
-} from 'volt';
+} from '@voltui/components';
 
 @Component({
   imports: [
@@ -320,8 +426,8 @@ import {
 export class MyComponent {}`;
 
 export const POPOVER_USAGE = `import { Component } from '@angular/core';
-import { VoltPopoverTrigger, VoltPopoverContent } from 'volt';
-import { VoltButton } from 'volt';
+import { VoltPopoverTrigger, VoltPopoverContent } from '@voltui/components';
+import { VoltButton } from '@voltui/components';
 
 @Component({
   imports: [VoltButton, VoltPopoverTrigger, VoltPopoverContent],
@@ -340,7 +446,7 @@ import { VoltButton } from 'volt';
 export class MyComponent {}`;
 
 export const PROGRESS_USAGE = `import { Component, signal } from '@angular/core';
-import { VoltProgress, VoltProgressLabel, VoltProgressValue } from 'volt';
+import { VoltProgress, VoltProgressLabel, VoltProgressValue } from '@voltui/components';
 
 @Component({
   imports: [VoltProgress, VoltProgressLabel, VoltProgressValue],
@@ -357,7 +463,7 @@ export class MyComponent {
 
 export const RADIO_USAGE = `import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { VoltRadioGroup, VoltRadioItem, VoltLabel } from 'volt';
+import { VoltRadioGroup, VoltRadioItem, VoltLabel } from '@voltui/components';
 
 @Component({
   imports: [ReactiveFormsModule, VoltRadioGroup, VoltRadioItem, VoltLabel],
@@ -386,7 +492,7 @@ import {
   VoltSelectItem,
   VoltSelectLabel,
   VoltSelectSeparator,
-} from 'volt';
+} from '@voltui/components';
 
 @Component({
   imports: [
@@ -415,7 +521,7 @@ export class MyComponent {
 }`;
 
 export const SEPARATOR_USAGE = `import { Component } from '@angular/core';
-import { VoltSeparator } from 'volt';
+import { VoltSeparator } from '@voltui/components';
 
 @Component({
   imports: [VoltSeparator],
@@ -438,7 +544,7 @@ export class MyComponent {}`;
 
 export const SLIDER_USAGE = `import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { VoltSlider } from 'volt';
+import { VoltSlider } from '@voltui/components';
 
 @Component({
   imports: [ReactiveFormsModule, VoltSlider],
@@ -453,7 +559,7 @@ export class MyComponent {
 
 export const NATIVE_SELECT_USAGE = `import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { VoltNativeSelect } from 'volt';
+import { VoltNativeSelect } from '@voltui/components';
 
 @Component({
   imports: [ReactiveFormsModule, VoltNativeSelect],
@@ -463,6 +569,12 @@ import { VoltNativeSelect } from 'volt';
       <option value="banana">Banana</option>
       <option value="blueberry">Blueberry</option>
     </select>
+
+    <!-- class merges with cn(), so h-8 replaces the default h-10 -->
+    <select voltNativeSelect class="h-8 w-40 text-xs" aria-label="Sort by">
+      <option>Newest</option>
+      <option>Oldest</option>
+    </select>
   \`,
 })
 export class MyComponent {
@@ -471,7 +583,7 @@ export class MyComponent {
 
 export const RANGE_SLIDER_USAGE = `import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { VoltRangeSlider } from 'volt';
+import { VoltRangeSlider } from '@voltui/components';
 
 @Component({
   imports: [ReactiveFormsModule, VoltRangeSlider],
@@ -492,7 +604,7 @@ export class MyComponent {
 
 export const TOGGLE_USAGE = `import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { VoltToggle } from 'volt';
+import { VoltToggle } from '@voltui/components';
 
 @Component({
   imports: [ReactiveFormsModule, VoltToggle],
@@ -507,8 +619,8 @@ export class MyComponent {
 }`;
 
 export const TOOLTIP_USAGE = `import { Component } from '@angular/core';
-import { VoltTooltip, VoltTooltipContent } from 'volt';
-import { VoltButton } from 'volt';
+import { VoltTooltip, VoltTooltipContent } from '@voltui/components';
+import { VoltButton } from '@voltui/components';
 
 @Component({
   imports: [VoltButton, VoltTooltip, VoltTooltipContent],
@@ -528,12 +640,15 @@ export class MyComponent {}`;
 
 export const TEXTAREA_USAGE = `import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { VoltTextarea } from 'volt';
+import { VoltTextarea } from '@voltui/components';
 
 @Component({
   imports: [ReactiveFormsModule, VoltTextarea],
   template: \`
-    <volt-textarea [formControl]="message" rows="4" />
+    <volt-textarea [formControl]="message" rows="4" aria-label="Message" />
+
+    <!-- variant, size, state and class all style the native <textarea> -->
+    <volt-textarea variant="filled" size="sm" state="success" class="font-mono" aria-label="Notes" />
   \`,
 })
 export class MyComponent {
@@ -541,26 +656,37 @@ export class MyComponent {
 }`;
 
 export const FORM_FIELD_USAGE = `import { Component } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { VoltFormField, VoltLabel, VoltHint, VoltInput } from 'volt';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { VoltFormField, VoltLabel, VoltHint, VoltError, VoltInput } from '@voltui/components';
 
 @Component({
-  imports: [ReactiveFormsModule, VoltFormField, VoltLabel, VoltHint, VoltInput],
+  imports: [ReactiveFormsModule, VoltFormField, VoltLabel, VoltHint, VoltError, VoltInput],
   template: \`
+    <!-- Inside a form field the label, hint and error are wired to the control: no ids needed -->
     <volt-form-field>
       <volt-label>Email</volt-label>
       <volt-input [formControl]="email" type="email" placeholder="you@example.com" />
       <volt-hint>We'll only use this for account updates.</volt-hint>
+      @if (email.touched && email.invalid) {
+        <volt-error>Enter a valid email address.</volt-error>
+      }
     </volt-form-field>
+
+    <!-- Outside one, point the label at the control with htmlFor -->
+    <volt-label htmlFor="team" class="text-xs uppercase">Team</volt-label>
+    <volt-input id="team" size="sm" />
   \`,
 })
 export class MyComponent {
-  email = new FormControl('', { nonNullable: true });
+  email = new FormControl('', {
+    nonNullable: true,
+    validators: [Validators.required, Validators.email],
+  });
 }`;
 
 export const TOGGLE_GROUP_USAGE = `import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { VoltToggleGroup, VoltToggleGroupItem } from 'volt';
+import { VoltToggleGroup, VoltToggleGroupItem } from '@voltui/components';
 
 @Component({
   imports: [ReactiveFormsModule, VoltToggleGroup, VoltToggleGroupItem],
@@ -577,7 +703,7 @@ export class MyComponent {
 }`;
 
 export const METER_USAGE = `import { Component } from '@angular/core';
-import { VoltMeter, VoltMeterTrack, VoltMeterIndicator, VoltMeterLabel, VoltMeterValue } from 'volt';
+import { VoltMeter, VoltMeterTrack, VoltMeterIndicator, VoltMeterLabel, VoltMeterValue } from '@voltui/components';
 
 @Component({
   imports: [VoltMeter, VoltMeterTrack, VoltMeterIndicator, VoltMeterLabel, VoltMeterValue],
@@ -601,7 +727,7 @@ import {
   VoltPaginationPrevious,
   VoltPaginationButton,
   VoltPaginationNext,
-} from 'volt';
+} from '@voltui/components';
 
 @Component({
   imports: [VoltPagination, VoltPaginationPrevious, VoltPaginationButton, VoltPaginationNext],
@@ -619,47 +745,40 @@ export class MyComponent {
   page = signal(1);
 }`;
 
-export const TOAST_USAGE = `import { Component, TemplateRef, ViewChild } from '@angular/core';
-import {
-  NgpToastManager,
-  VoltButton,
-  VoltToast,
-  VoltToastTitle,
-  VoltToastDescription,
-  VoltToastClose,
-} from 'volt';
+export const TOAST_USAGE = `import { Component, inject } from '@angular/core';
+import { VoltNativeButton, VoltToastService } from '@voltui/components';
 
 @Component({
-  imports: [VoltButton, VoltToast, VoltToastTitle, VoltToastDescription, VoltToastClose],
+  imports: [VoltNativeButton],
   template: \`
-    <volt-button (click)="showToast()">Show toast</volt-button>
-
-    <ng-template #toastTemplate>
-      <volt-toast>
-        <div>
-          <volt-toast-title>Saved</volt-toast-title>
-          <volt-toast-description>Your changes have been synced.</volt-toast-description>
-        </div>
-        <volt-toast-close />
-      </volt-toast>
-    </ng-template>
+    <button voltButton (click)="save()">Save</button>
+    <button voltButton variant="outline" (click)="copy()">Copy link</button>
+    <button voltButton variant="destructive" (click)="fail()">Fail</button>
   \`,
 })
 export class MyComponent {
-  @ViewChild('toastTemplate', { read: TemplateRef }) private toastTemplate?: TemplateRef<void>;
+  private readonly toast = inject(VoltToastService);
 
-  constructor(private readonly toastManager: NgpToastManager) {}
-
-  showToast() {
-    if (!this.toastTemplate) return;
-
-    this.toastManager.show(this.toastTemplate, { placement: 'bottom-end' });
+  save() {
+    this.toast.show({ title: 'Changes saved', description: 'Your workspace has been updated.' });
   }
-}`;
+
+  copy() {
+    this.toast.success('Copied to clipboard');
+  }
+
+  fail() {
+    // error toasts are announced with role="alert"
+    this.toast.error('Could not save', { description: 'Check your connection and try again.' });
+  }
+}
+
+// Optional, app-wide defaults:
+// bootstrapApplication(App, { providers: [provideVoltToast({ placement: 'top-end', duration: 5000 })] });`;
 
 export const INPUT_OTP_USAGE = `import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { VoltInputOtp } from 'volt';
+import { VoltInputOtp } from '@voltui/components';
 
 @Component({
   imports: [ReactiveFormsModule, VoltInputOtp],
@@ -672,7 +791,7 @@ export class MyComponent {
 }`;
 
 export const FILE_UPLOAD_USAGE = `import { Component } from '@angular/core';
-import { VoltFileDropzone } from 'volt';
+import { VoltFileDropzone } from '@voltui/components';
 
 @Component({
   imports: [VoltFileDropzone],
@@ -686,7 +805,7 @@ export class MyComponent {}`;
 
 export const COMBOBOX_USAGE = `import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { VoltCombobox } from 'volt';
+import { VoltCombobox } from '@voltui/components';
 
 @Component({
   imports: [ReactiveFormsModule, VoltCombobox],
@@ -713,7 +832,7 @@ import {
   VoltDatePickerLabel,
   VoltDatePickerNextMonth,
   VoltDatePickerPreviousMonth,
-} from 'volt';
+} from '@voltui/components';
 
 @Component({
   imports: [
@@ -771,7 +890,7 @@ export class MyComponent {
 
 export const LISTBOX_USAGE = `import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { VoltListbox, VoltListboxOption } from 'volt';
+import { VoltListbox, VoltListboxOption } from '@voltui/components';
 
 @Component({
   imports: [ReactiveFormsModule, VoltListbox, VoltListboxOption],
@@ -788,7 +907,7 @@ export class MyComponent {
 }`;
 
 export const TOOLBAR_USAGE = `import { Component } from '@angular/core';
-import { VoltToolbar, VoltToolbarButton } from 'volt';
+import { VoltToolbar, VoltToolbarButton } from '@voltui/components';
 
 @Component({
   imports: [VoltToolbar, VoltToolbarButton],
@@ -803,7 +922,7 @@ import { VoltToolbar, VoltToolbarButton } from 'volt';
 export class MyComponent {}`;
 
 export const SKELETON_USAGE = `import { Component } from '@angular/core';
-import { VoltSkeleton } from 'volt';
+import { VoltSkeleton } from '@voltui/components';
 
 @Component({
   imports: [VoltSkeleton],
@@ -828,7 +947,7 @@ import {
   VoltTableHead,
   VoltTableCell,
   VoltTableCaption,
-} from 'volt';
+} from '@voltui/components';
 
 @Component({
   imports: [VoltTable, VoltTableHeader, VoltTableBody, VoltTableRow, VoltTableHead, VoltTableCell, VoltTableCaption],
@@ -865,7 +984,7 @@ import {
   VoltDrawerOverlay,
   VoltDrawerClose,
   VoltButton,
-} from 'volt';
+} from '@voltui/components';
 
 @Component({
   imports: [VoltDrawer, VoltDrawerContent, VoltDrawerTitle, VoltDrawerDescription, VoltDrawerOverlay, VoltDrawerClose, VoltButton],
@@ -894,7 +1013,7 @@ import {
 export class MyComponent {}`;
 
 export const RESIZABLE_USAGE = `import { Component } from '@angular/core';
-import { VoltResizable, VoltResizablePanel, VoltResizableHandle } from 'volt';
+import { VoltResizable, VoltResizablePanel, VoltResizableHandle } from '@voltui/components';
 
 @Component({
   imports: [VoltResizable, VoltResizablePanel, VoltResizableHandle],
@@ -913,7 +1032,7 @@ import { VoltResizable, VoltResizablePanel, VoltResizableHandle } from 'volt';
 export class MyComponent {}`;
 
 export const SEARCH_USAGE = `import { Component } from '@angular/core';
-import { VoltInput, VoltSearch, VoltSearchClear } from 'volt';
+import { VoltInput, VoltSearch, VoltSearchClear } from '@voltui/components';
 
 @Component({
   imports: [VoltInput, VoltSearch, VoltSearchClear],
@@ -927,7 +1046,7 @@ import { VoltInput, VoltSearch, VoltSearchClear } from 'volt';
 export class MyComponent {}`;
 
 export const AUTOFILL_USAGE = `import { Component, signal } from '@angular/core';
-import { VoltAutofill } from 'volt';
+import { VoltAutofill } from '@voltui/components';
 
 @Component({
   imports: [VoltAutofill],
@@ -954,7 +1073,7 @@ import {
   VoltSidebarItem,
   VoltSidebarFooter,
   VoltSidebarService,
-} from 'volt';
+} from '@voltui/components';
 
 @Component({
   imports: [
@@ -1018,3 +1137,56 @@ export const SIDEBAR_WIDTH_USAGE = `<!-- 1. Inputs — any CSS length, per insta
   Precedence: input > custom property > default (18rem expanded, 4rem collapsed).
   You no longer need global CSS reaching into the internal <aside> to resize it.
 -->`;
+
+export const ALERT_USAGE = `import { Component } from '@angular/core';
+import { VoltAlert, VoltAlertTitle, VoltAlertDescription, VoltNativeButton } from '@voltui/components';
+
+@Component({
+  imports: [VoltAlert, VoltAlertTitle, VoltAlertDescription, VoltNativeButton],
+  template: \`
+    <volt-alert variant="warning">
+      <svg slot="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" />
+      </svg>
+      <volt-alert-title>Connection needs attention</volt-alert-title>
+      <volt-alert-description>Reconnect your Cloudflare account.</volt-alert-description>
+      <button slot="action" voltButton variant="outline" size="sm">Reconnect</button>
+    </volt-alert>
+
+    <!-- Static content has no live-region role. Opt in when the alert appears after an action: -->
+    <volt-alert variant="success" role="status">
+      <volt-alert-title>Deployment finished</volt-alert-title>
+    </volt-alert>
+    <volt-alert variant="destructive" role="alert">
+      <volt-alert-title>Payment failed</volt-alert-title>
+      <volt-alert-description>Update your card to keep the workspace active.</volt-alert-description>
+    </volt-alert>
+    <volt-alert variant="info">
+      <volt-alert-title>New version available</volt-alert-title>
+    </volt-alert>
+  \`,
+})
+export class MyComponent {}`;
+
+export const SPINNER_USAGE = `import { Component } from '@angular/core';
+import { VoltSpinner, VoltNativeButton } from '@voltui/components';
+
+@Component({
+  imports: [VoltSpinner, VoltNativeButton],
+  template: \`
+    <!-- Decorative: the surrounding text already says what is happening -->
+    <button voltButton disabled>
+      <volt-spinner size="sm" />
+      Saving…
+    </button>
+
+    <!-- Standalone status: announced politely as "Loading projects" -->
+    <div class="grid place-items-center py-12" aria-busy="true">
+      <volt-spinner size="lg" label="Loading projects" />
+    </div>
+
+    <!-- Inline, in the current text colour -->
+    <p class="text-muted-foreground"><volt-spinner size="sm" /> Syncing</p>
+  \`,
+})
+export class MyComponent {}`;

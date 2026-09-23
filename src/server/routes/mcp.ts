@@ -47,10 +47,12 @@ interface ComponentMeta {
 const components: Record<string, ComponentMeta> = {
   button: {
     name: 'Button',
-    description: 'Button component with multiple variants and sizes',
+    description:
+      'Button styles for native elements (`button[uiButton]`, `a[uiButton]`) and the `<ui-button>` wrapper. Use `a[uiButton]` for links — never nest a button in a link.',
     dependencies: ['ng-primitives/button'],
     variants: ['solid', 'outline', 'ghost', 'link', 'destructive'],
     sizes: ['sm', 'md', 'lg', 'icon'],
+    subComponents: ['button[uiButton]', 'a[uiButton]'],
     inputs: [
       {
         name: 'variant',
@@ -60,10 +62,15 @@ const components: Record<string, ComponentMeta> = {
       },
       { name: 'size', type: 'string', default: 'md', options: ['sm', 'md', 'lg', 'icon'] },
       { name: 'disabled', type: 'boolean', default: false },
+      { name: 'class', type: 'string', default: '' },
+      { name: 'aria-label', type: 'string' },
+      { name: 'aria-expanded', type: 'boolean | string' },
+      { name: 'aria-controls', type: 'string' },
     ],
     examples: [
-      '<ui-button>Click me</ui-button>',
-      '<ui-button variant="outline" size="sm">Cancel</ui-button>',
+      '<button uiButton type="submit">Save</button>',
+      '<a uiButton variant="outline" routerLink="/docs">Documentation</a>',
+      '<button uiButton size="icon" aria-label="Switch theme"><svg aria-hidden="true">…</svg></button>',
       '<ui-button variant="destructive" [disabled]="isLoading()">Delete</ui-button>',
     ],
   },
@@ -71,16 +78,25 @@ const components: Record<string, ComponentMeta> = {
     name: 'Badge',
     description: 'Badge component for labels and counts',
     dependencies: [],
-    variants: ['default', 'secondary', 'outline', 'destructive'],
-    inputs: [{ name: 'variant', type: 'string', default: 'default' }],
-    examples: ['<ui-badge>New</ui-badge>', '<ui-badge variant="outline">Draft</ui-badge>'],
+    variants: ['solid', 'secondary', 'outline', 'destructive', 'success', 'warning', 'info'],
+    inputs: [
+      { name: 'variant', type: 'string', default: 'solid' },
+      { name: 'class', type: 'string', default: '' },
+    ],
+    examples: [
+      '<ui-badge>New</ui-badge>',
+      '<ui-badge variant="success">Connected</ui-badge>',
+      '<ui-badge variant="warning">Needs attention</ui-badge>',
+    ],
   },
   card: {
     name: 'Card',
     description: 'Card container with header, content, and footer',
     dependencies: [],
     subComponents: ['card-header', 'card-title', 'card-description', 'card-content', 'card-footer'],
+    inputs: [{ name: 'class', type: 'string', default: '' }],
     examples: [
+      '<ui-card-content class="p-3 md:p-4">Every part merges class with cn()</ui-card-content>',
       `<ui-card>
   <ui-card-header>
     <ui-card-title>Title</ui-card-title>
@@ -99,9 +115,19 @@ const components: Record<string, ComponentMeta> = {
       { name: 'type', type: 'string', default: 'text' },
       { name: 'placeholder', type: 'string' },
       { name: 'disabled', type: 'boolean', default: false },
+      { name: 'size', type: 'string', default: 'md', options: ['sm', 'md', 'lg'] },
+      {
+        name: 'state',
+        type: 'string',
+        default: 'default',
+        options: ['default', 'error', 'success'],
+      },
+      { name: 'class', type: 'string', default: '' },
+      { name: 'aria-label', type: 'string' },
     ],
     examples: [
-      '<ui-input placeholder="Enter email" />',
+      '<ui-input placeholder="Enter email" aria-label="Email" />',
+      '<ui-input size="sm" class="w-24 font-mono" aria-label="Quantity" />',
       '<ui-input type="password" [disabled]="isDisabled()" />',
     ],
   },
@@ -133,8 +159,22 @@ const components: Record<string, ComponentMeta> = {
       { name: 'rows', type: 'number', default: 3 },
       { name: 'placeholder', type: 'string' },
       { name: 'disabled', type: 'boolean', default: false },
+      {
+        name: 'variant',
+        type: 'string',
+        default: 'default',
+        options: ['default', 'filled', 'ghost'],
+      },
+      { name: 'size', type: 'string', default: 'md', options: ['sm', 'md', 'lg'] },
+      {
+        name: 'state',
+        type: 'string',
+        default: 'default',
+        options: ['default', 'error', 'success'],
+      },
+      { name: 'class', type: 'string', default: '' },
     ],
-    examples: ['<ui-textarea placeholder="Enter message" [rows]="5" />'],
+    examples: ['<ui-textarea placeholder="Enter message" [rows]="5" class="font-mono" />'],
   },
   checkbox: {
     name: 'Checkbox',
@@ -316,26 +356,42 @@ const components: Record<string, ComponentMeta> = {
     name: 'Form Field',
     description: 'Form field wrapper with label, hint, and error',
     dependencies: ['ng-primitives/form-field'],
-    subComponents: ['form-field-label', 'form-field-hint', 'form-field-error'],
+    subComponents: ['label', 'hint', 'error'],
     examples: [
       `<ui-form-field>
-  <ui-form-field-label>Email</ui-form-field-label>
+  <ui-label>Email</ui-label>
   <ui-input type="email" />
-  <ui-form-field-hint>We'll never share your email</ui-form-field-hint>
-  <ui-form-field-error>Invalid email</ui-form-field-error>
+  <ui-hint>We'll never share your email</ui-hint>
+  <ui-error>Invalid email</ui-error>
 </ui-form-field>`,
+      '<ui-label htmlFor="team">Team</ui-label> <ui-input id="team" />',
     ],
   },
   dialog: {
     name: 'Dialog',
     description: 'Modal dialog with overlay, title, description and content',
     dependencies: ['ng-primitives/dialog'],
-    subComponents: ['dialog-overlay', 'dialog-content', 'dialog-title', 'dialog-description'],
+    subComponents: [
+      'dialog-overlay',
+      'dialog-content',
+      'dialog-title',
+      'dialog-description',
+      'ng-template[uiDialogRoot] (controlled, [(open)])',
+      'UiDialogService (open(template, { role, data }).closed)',
+    ],
     inputs: [
       { name: 'modal', type: 'boolean', default: true },
       { name: 'closeOnEscape', type: 'boolean', default: true },
     ],
     examples: [
+      `<ng-template uiDialogRoot [(open)]="editing" (closed)="onClosed($event)" let-close="close">
+  <div uiDialogOverlay></div>
+  <div uiDialogContent>
+    <h2 uiDialogTitle>Edit profile</h2>
+    <button uiButton (click)="close('saved')">Save</button>
+  </div>
+</ng-template>`,
+      `const confirmed = await inject(UiDialogService).open<boolean>(confirmTpl, { role: 'alertdialog' }).closed;`,
       `<button [uiDialog]="dialogTpl">Open Dialog</button>
 <ng-template #dialogTpl let-close="close">
   <div uiDialogOverlay></div>
@@ -547,9 +603,10 @@ const components: Record<string, ComponentMeta> = {
   },
   toast: {
     name: 'Toast',
-    description: 'Toast notification container with title, description and close button',
+    description:
+      'Toast notifications. Show them with UiToastService (show/success/error/warning/info/dismissAll); provideVoltToast() sets defaults.',
     dependencies: ['ng-primitives/toast'],
-    subComponents: ['toast-title', 'toast-description', 'toast-close'],
+    subComponents: ['toast-title', 'toast-description', 'toast-close', 'UiToastService'],
     inputs: [
       {
         name: 'variant',
@@ -559,10 +616,9 @@ const components: Record<string, ComponentMeta> = {
       },
     ],
     examples: [
-      `<ui-toast>
-  <ui-toast-title>Success</ui-toast-title>
-  <ui-toast-description>Your changes have been saved.</ui-toast-description>
-</ui-toast>`,
+      `private readonly toast = inject(UiToastService);
+save() { this.toast.success('Changes saved', { description: 'Your workspace has been updated.' }); }`,
+      `this.toast.error('Could not save');`,
     ],
   },
   'input-otp': {
@@ -826,6 +882,48 @@ const components: Record<string, ComponentMeta> = {
     examples: [
       `provideVoltTheme({ color: 'volt', style: 'sharp', dark: false })`,
       `applyVoltTheme({ color: 'ember', style: 'soft', dark: true })`,
+    ],
+  },
+  alert: {
+    name: 'Alert',
+    description:
+      'Inline feedback panel with optional icon and action. No live-region role by default; set role="status" or role="alert" when it appears after an action.',
+    dependencies: [],
+    variants: ['default', 'info', 'success', 'warning', 'destructive'],
+    subComponents: ['alert-title', 'alert-description'],
+    inputs: [
+      {
+        name: 'variant',
+        type: 'string',
+        default: 'default',
+        options: ['default', 'info', 'success', 'warning', 'destructive'],
+      },
+      { name: 'role', type: "'alert' | 'status' | null", default: null },
+      { name: 'class', type: 'string', default: '' },
+    ],
+    examples: [
+      `<ui-alert variant="warning">
+  <svg slot="icon" aria-hidden="true">…</svg>
+  <ui-alert-title>Connection needs attention</ui-alert-title>
+  <ui-alert-description>Reconnect your Cloudflare account.</ui-alert-description>
+  <button slot="action" uiButton variant="outline" size="sm">Reconnect</button>
+</ui-alert>`,
+    ],
+  },
+  spinner: {
+    name: 'Spinner',
+    description:
+      'Indeterminate loading indicator in the current text colour. Decorative by default; with a label it becomes role="status".',
+    dependencies: [],
+    sizes: ['sm', 'md', 'lg'],
+    inputs: [
+      { name: 'size', type: 'string', default: 'md', options: ['sm', 'md', 'lg'] },
+      { name: 'label', type: 'string', default: '' },
+      { name: 'class', type: 'string', default: '' },
+    ],
+    examples: [
+      '<button uiButton disabled><ui-spinner size="sm" /> Saving…</button>',
+      '<ui-spinner size="lg" label="Loading projects" />',
     ],
   },
 };

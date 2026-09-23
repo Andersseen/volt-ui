@@ -22,6 +22,7 @@ import {
 
 import type { NgpOrientation } from 'ng-primitives/common';
 import { injectFormControlState } from '../../form-control-state';
+import { cn } from '../../utils';
 
 @Component({
   selector: 'volt-slider',
@@ -50,7 +51,7 @@ import { injectFormControlState } from '../../form-control-state';
     },
   ],
   host: {
-    class: 'relative flex w-full touch-none select-none items-center',
+    '[class]': 'classes()',
     '(focusout)': 'onTouched()',
   },
   imports: [NgpSliderTrack, NgpSliderRange, NgpSliderThumb],
@@ -70,6 +71,12 @@ import { injectFormControlState } from '../../form-control-state';
   `,
 })
 export class VoltSlider implements ControlValueAccessor {
+  readonly class = input<string>('');
+
+  protected readonly classes = computed(() =>
+    cn('relative flex w-full touch-none select-none items-center', this.class())
+  );
+
   /** Access the slider state to wire up forms integration. */
   private readonly state = injectSliderState();
   protected readonly formControlState = injectFormControlState();

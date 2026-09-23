@@ -39,6 +39,37 @@
       </div>
 
       <div class="space-y-4">
+        <h3 class="font-semibold text-lg">{{ t('ui.section.example') }}</h3>
+        <div
+          class="border rounded-xl border-border/50 p-6 md:p-10 flex items-center justify-center bg-background/50 relative overflow-hidden"
+          data-testid="native-button-demo"
+        >
+          <div class="relative z-10 flex flex-wrap gap-4 items-center justify-center">
+            <button voltButton type="button">Save</button>
+            <a voltButton variant="outline" routerLink="/docs/components">Documentation</a>
+            <a
+              voltButton
+              variant="ghost"
+              href="https://github.com/Andersseen/volt-ui"
+              target="_blank"
+              rel="noopener"
+            >
+              GitHub
+            </a>
+            <button voltButton variant="ghost" size="icon" type="button" aria-label="Switch theme">
+              <lmn-chevron-right [size]="16" aria-hidden="true" />
+            </button>
+            <button voltButton type="button" [disabled]="saving()" (click)="save()">
+              @if (saving()) {
+                <volt-spinner size="sm" />
+              }
+              {{ saving() ? 'Saving…' : 'Save changes' }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-4">
         <h3 class="font-semibold text-lg">{{ t('components.button.statesSlots') }}</h3>
         <div
           class="border rounded-xl border-border/50 p-6 md:p-10 flex items-center justify-center bg-background/50 relative overflow-hidden"

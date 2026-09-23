@@ -159,4 +159,16 @@ describe('VoltCheckbox', () => {
 
     expect(fixture.componentInstance.checked).toBe(true);
   });
+
+  it('keeps a consumer id on the native checkbox only, so <label for> works', async () => {
+    const { container } = await render(
+      `<volt-checkbox id="terms" /><label for="terms">Accept terms</label>`,
+      { imports: [VoltCheckbox] }
+    );
+
+    expect(container.querySelectorAll('#terms')).toHaveLength(1);
+    const checkbox = screen.getByRole('checkbox', { name: 'Accept terms' });
+    await userEvent.setup().click(screen.getByText('Accept terms'));
+    expect(checkbox).toHaveAttribute('aria-checked', 'true');
+  });
 });

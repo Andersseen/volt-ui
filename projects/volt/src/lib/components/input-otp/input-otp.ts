@@ -19,6 +19,7 @@ import {
 } from 'ng-primitives/input-otp';
 import { VoltInputOtpSlot } from './input-otp-slot';
 import { injectFormControlState } from '../../form-control-state';
+import { cn } from '../../utils';
 
 @Component({
   selector: 'volt-input-otp',
@@ -36,7 +37,7 @@ import { injectFormControlState } from '../../form-control-state';
   // still accepts text but no slot ever fills.
   imports: [NgpInputOtpInput, VoltInputOtpSlot],
   host: {
-    class: 'flex items-center gap-2',
+    '[class]': 'classes()',
     '[attr.aria-invalid]': 'formControlState.invalid() ? "true" : null',
     '[attr.aria-disabled]': 'isDisabled()',
     '[attr.data-disabled]': 'isDisabled() ? "" : null',
@@ -68,6 +69,10 @@ import { injectFormControlState } from '../../form-control-state';
   `,
 })
 export class VoltInputOtp implements ControlValueAccessor {
+  readonly class = input<string>('');
+
+  protected readonly classes = computed(() => cn('flex items-center gap-2', this.class()));
+
   private readonly state = injectInputOtpState();
   protected readonly formControlState = injectFormControlState();
 

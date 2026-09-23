@@ -63,6 +63,10 @@ const PROPER_NOUNS = new Set([
   'Sage',
   'Dusk',
   'Glacier',
+  // Component names read the same in every locale, like every `components.*.title` value.
+  // Alert and Spinner (1.1) render their name directly until their Glossa keys exist.
+  'Alert',
+  'Spinner',
 ]);
 
 function templateSources(): { file: string; markup: string }[] {

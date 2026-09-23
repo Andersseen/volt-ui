@@ -41,7 +41,15 @@ function oklchToLinearSrgb(L, C, hDeg) {
   const g = -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s;
   const bl = -0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s;
 
-  return [r, g, bl].map(v => Math.min(1, Math.max(0, v)));
+  return [r, g, bl].map(v => quantize(Math.min(1, Math.max(0, v))));
+}
+
+// Browsers paint 8-bit sRGB, so a pair at 4.50:1 in exact maths can render at 4.47:1.
+// Round-trip each channel through its 8-bit sRGB encoding to audit what is actually drawn.
+function quantize(linear) {
+  const encoded = linear <= 0.0031308 ? 12.92 * linear : 1.055 * linear ** (1 / 2.4) - 0.055;
+  const byte = Math.round(encoded * 255) / 255;
+  return byte <= 0.04045 ? byte / 12.92 : ((byte + 0.055) / 1.055) ** 2.4;
 }
 
 // Relative luminance per WCAG: linear-light RGB, no extra gamma step needed
@@ -122,6 +130,14 @@ const PAIRS = [
   ['info-foreground', 'info', 4.5, 'text on info surface'],
   ['ring', 'background', 3, 'focus ring vs page (non-text UI, SC 1.4.11)'],
   ['input', 'background', 3, 'form field border vs page (non-text UI, SC 1.4.11)'],
+  // Status colours used as icon/border colour directly on the page (Alert icons, Input and
+  // Textarea success/error borders). Warning is deliberately absent: `--warning` is a fill
+  // colour below 3:1 on most light backgrounds and `--warning-foreground` fails on dusk, so no
+  // warning token is safe as an icon colour — Alert's warning icon inherits the text colour.
+  ['success', 'background', 3, 'success icon/border vs page (non-text UI, SC 1.4.11)'],
+  ['info', 'background', 3, 'info icon vs page (non-text UI, SC 1.4.11)'],
+  ['error', 'background', 3, 'error border vs page (non-text UI, SC 1.4.11)'],
+  ['destructive', 'background', 3, 'destructive icon vs page (non-text UI, SC 1.4.11)'],
 ];
 
 const COLORS = readdirSync(join(THEMES, 'colors'))

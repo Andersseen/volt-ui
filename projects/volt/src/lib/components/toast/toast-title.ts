@@ -1,11 +1,18 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { cn } from '../../utils';
 
 @Component({
   selector: 'volt-toast-title',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: 'text-sm font-semibold text-foreground',
+    '[class]': 'classes()',
   },
   template: `<ng-content />`,
 })
-export class VoltToastTitle {}
+export class VoltToastTitle {
+  readonly class = input<string>('');
+
+  protected readonly classes = computed(() =>
+    cn('text-sm font-semibold text-foreground', this.class())
+  );
+}

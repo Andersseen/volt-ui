@@ -1,5 +1,6 @@
 import { Directive, input, computed } from '@angular/core';
-import { NgpDialog } from 'ng-primitives/dialog';
+import { injectDialogRef, injectDialogState, NgpDialog } from 'ng-primitives/dialog';
+import { cn } from '../../utils';
 
 export type DrawerSide = 'left' | 'right' | 'top' | 'bottom';
 
@@ -35,8 +36,16 @@ export class VoltDrawerContent {
         'inset-x-0 bottom-0 w-full h-[300px] max-h-[85vh] border-t border-border slide-in-from-bottom data-[exit]:slide-out-to-bottom',
     };
 
-    const classes = [baseStyles, sideStyles[this.side()], this.class()].filter(Boolean).join(' ');
-
-    return classes;
+    return cn(baseStyles, sideStyles[this.side()], this.class());
   });
+
+  constructor() {
+    // NgpDialog defaults its role from the app-wide dialog config. A role passed per dialog to
+    // VoltDialogService.open() or voltDialogRoot lives on the dialog ref, so apply it here; a
+    // `role` bound on this element still wins.
+    const role = injectDialogRef().config.role;
+    if (role) {
+      injectDialogState()().role.set(role);
+    }
+  }
 }

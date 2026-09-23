@@ -11,6 +11,7 @@ import {
   provideToggleGroupItemState,
 } from 'ng-primitives/toggle-group';
 import { toggleGroupItemVariants, type ToggleGroupItemVariants } from './variants';
+import { cn } from '../../utils';
 
 @Component({
   selector: 'volt-toggle-group-item',
@@ -18,7 +19,7 @@ import { toggleGroupItemVariants, type ToggleGroupItemVariants } from './variant
   providers: [provideToggleGroupItemState()],
   imports: [NgpToggleGroupItem],
   host: {
-    class: 'inline-flex',
+    '[class]': 'hostClasses()',
   },
   template: `
     <button
@@ -33,6 +34,10 @@ import { toggleGroupItemVariants, type ToggleGroupItemVariants } from './variant
   `,
 })
 export class VoltToggleGroupItem {
+  readonly class = input<string>('');
+
+  protected readonly hostClasses = computed(() => cn('inline-flex', this.class()));
+
   private readonly toggleGroupState = injectToggleGroupState();
 
   readonly value = input.required<string>();

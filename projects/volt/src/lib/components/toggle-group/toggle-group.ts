@@ -15,6 +15,7 @@ import {
   provideToggleGroupState,
 } from 'ng-primitives/toggle-group';
 import { injectFormControlState } from '../../form-control-state';
+import { cn } from '../../utils';
 
 @Component({
   selector: 'volt-toggle-group',
@@ -28,7 +29,7 @@ import { injectFormControlState } from '../../form-control-state';
     },
   ],
   host: {
-    class: 'inline-flex items-center rounded-md border border-input bg-background p-1 shadow-sm',
+    '[class]': 'classes()',
     '[attr.aria-invalid]': 'formControlState.invalid() ? "true" : null',
     '(focusout)': 'onTouched()',
   },
@@ -48,6 +49,15 @@ import { injectFormControlState } from '../../form-control-state';
   template: `<ng-content />`,
 })
 export class VoltToggleGroup implements ControlValueAccessor {
+  readonly class = input<string>('');
+
+  protected readonly classes = computed(() =>
+    cn(
+      'inline-flex items-center rounded-md border border-input bg-background p-1 shadow-sm',
+      this.class()
+    )
+  );
+
   private readonly state = injectToggleGroupState();
   protected readonly formControlState = injectFormControlState();
 

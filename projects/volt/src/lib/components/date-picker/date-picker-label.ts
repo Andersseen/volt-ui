@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, computed } from '@angular/core';
 import { NgpDatePickerLabel } from 'ng-primitives/date-picker';
+import { cn } from '../../utils';
 
 @Component({
   selector: 'volt-date-picker-label',
@@ -11,11 +12,15 @@ import { NgpDatePickerLabel } from 'ng-primitives/date-picker';
     },
   ],
   host: {
-    class: 'text-sm font-medium',
+    '[class]': 'classes()',
   },
   template: `<ng-content />`,
 })
 export class VoltDatePickerLabel {
+  readonly class = input<string>('');
+
+  protected readonly classes = computed(() => cn('text-sm font-medium', this.class()));
+
   readonly id = input<string>();
   readonly ariaLive = input<string>('polite', { alias: 'aria-live' });
 }

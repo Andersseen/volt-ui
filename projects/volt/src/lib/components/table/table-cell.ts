@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, input, computed } from '@angular/core';
+import { cn } from '../../utils';
 
 @Component({
   selector: 'volt-table-cell',
@@ -12,7 +13,7 @@ import { ChangeDetectionStrategy, Component, input, computed } from '@angular/co
 export class VoltTableCell {
   readonly class = input<string>('');
 
-  protected readonly classes = computed(
-    () => 'table-cell p-4 align-middle [&:has([role=checkbox])]:pr-0 ' + this.class()
+  protected readonly classes = computed(() =>
+    cn('table-cell p-4 align-middle [&:has([role=checkbox])]:pr-0', this.class())
   );
 }

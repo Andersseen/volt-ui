@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { NgpToast } from 'ng-primitives/toast';
 import { toastVariants, type ToastVariants } from './variants';
+import { cn } from '../../utils';
 
 @Component({
   selector: 'volt-toast',
@@ -15,5 +16,9 @@ import { toastVariants, type ToastVariants } from './variants';
 export class VoltToast {
   readonly variant = input<ToastVariants['variant']>('default');
 
-  protected readonly classes = computed(() => toastVariants({ variant: this.variant() }));
+  readonly class = input<string>('');
+
+  protected readonly classes = computed(() =>
+    cn(toastVariants({ variant: this.variant() }), this.class())
+  );
 }

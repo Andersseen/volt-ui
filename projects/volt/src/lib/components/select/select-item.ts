@@ -1,5 +1,13 @@
-import { booleanAttribute, ChangeDetectionStrategy, Component, input } from '@angular/core';
+import {
+  booleanAttribute,
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  computed,
+} from '@angular/core';
 import { NgpSelectOption } from 'ng-primitives/select';
+import { forwardClassFromHost } from '../../host-forwarding';
+import { cn } from '../../utils';
 
 @Component({
   selector: 'volt-select-item',
@@ -10,7 +18,7 @@ import { NgpSelectOption } from 'ng-primitives/select';
       ngpSelectOption
       [ngpSelectOptionValue]="value()"
       [ngpSelectOptionDisabled]="disabled()"
-      class="group relative flex w-full cursor-pointer select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-muted focus:text-muted-foreground aria-disabled:pointer-events-none aria-disabled:opacity-50 transition-colors"
+      [class]="classes()"
     >
       <span class="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
         <svg
@@ -35,4 +43,18 @@ import { NgpSelectOption } from 'ng-primitives/select';
 export class VoltSelectItem {
   readonly value = input<unknown>(undefined);
   readonly disabled = input(false, { transform: booleanAttribute });
+
+  /** Classes for the inner element, merged over the defaults with `cn()`. */
+  readonly class = input<string>('');
+
+  protected readonly classes = computed(() =>
+    cn(
+      'group relative flex w-full cursor-pointer select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-muted focus:text-muted-foreground aria-disabled:pointer-events-none aria-disabled:opacity-50 transition-colors',
+      this.class()
+    )
+  );
+
+  constructor() {
+    forwardClassFromHost();
+  }
 }

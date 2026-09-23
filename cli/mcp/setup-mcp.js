@@ -122,21 +122,27 @@ button · badge · card · input · autofill · search · textarea · checkbox �
 select · tabs · accordion · avatar · separator · tooltip · navigation-menu · form-field ·
 dialog · popover · dropdown-menu · slider · range-slider · progress · breadcrumbs · sidebar ·
 toggle-group · meter · pagination · toast · input-otp · file-upload · combobox ·
-date-picker · listbox · toolbar · skeleton · table · resizable · theme
+date-picker · listbox · toolbar · skeleton · table · resizable · theme · alert · spinner
 
 ## Component import (CLI)
 \`\`\`ts
 import { UiButton } from './ui/button';
 import { UiCard, UiCardHeader, UiCardContent, UiCardFooter } from './ui/card';
-import { UiFormField, UiFormFieldLabel, UiFormFieldHint } from './ui/form-field';
+import { UiFormField, UiLabel, UiHint, UiError } from './ui/form-field';
+import { UiToastService } from './ui/toast';
 \`\`\`
 
 ## Template selectors
 \`\`\`html
 <!-- Components -->
-<ui-button variant="solid|outline|ghost|link|destructive" size="sm|md|lg|icon">
-<ui-card> <ui-card-header> <ui-card-title> <ui-card-content> <ui-card-footer>
-<ui-form-field> <ui-form-field-label> <ui-input> <ui-form-field-hint>
+<button uiButton variant="solid|outline|ghost|link|destructive" size="sm|md|lg|icon">
+<a uiButton routerLink="/docs">          <!-- links styled as buttons: never <a><ui-button> -->
+<ui-button variant="…" aria-label="…">   <!-- still supported; aria-* forwarded to its <button> -->
+<ui-card> <ui-card-header> <ui-card-title> <ui-card-content class="p-3"> <ui-card-footer>
+<ui-form-field> <ui-label> <ui-input size="sm|md|lg" state="default|error|success"> <ui-hint> <ui-error>
+<ui-badge variant="solid|secondary|outline|destructive|success|warning|info">
+<ui-alert variant="default|info|success|warning|destructive" role="status|alert"> <ui-alert-title> <ui-alert-description>
+<ui-spinner size="sm|md|lg" label="Loading…">
 <ui-tabs [(value)]="activeTab"> <ui-tabs-list> <ui-tabs-trigger value="x"> <ui-tabs-content value="x">
 <ui-accordion type="single|multiple" [collapsible]="true">
 <ui-select placeholder="…"> <ui-select-content> <ui-select-item value="x">
@@ -145,6 +151,7 @@ import { UiFormField, UiFormFieldLabel, UiFormFieldHint } from './ui/form-field'
 
 <!-- Attribute directives (overlays) -->
 <button [uiDialog]="tpl"> + <ng-template> with <div uiDialogContent>
+<ng-template uiDialogRoot [(open)]="isOpen" let-close="close">   <!-- state-controlled dialog -->
 <button [uiDrawer]="tpl"> + <ng-template> with <div uiDrawerContent side="left|right|top|bottom">
 <button uiPopover [uiPopover]="tpl"> + <ng-template> with <ui-popover-content>
 <button uiTooltip [uiTooltip]="tpl"> + <ng-template> with <ui-tooltip-content>
@@ -174,7 +181,10 @@ npx @voltui/cli list           # list all components
 3. Use signal inputs: \`readonly x = input<T>(default)\`.
 4. Boolean inputs must use \`booleanAttribute\`.
 5. Import copied components from \`'./ui/<component>'\`.
-6. Overlays are attribute-directive triggers + \`<ng-template>\` — never use \`<ui-dialog>\`, \`<ui-tooltip>\`, \`<ui-popover-trigger>\`, or \`<ui-dropdown-menu-trigger>\`.
+6. Overlays are attribute-directive triggers + \`<ng-template>\` — never use \`<ui-dialog>\`, \`<ui-tooltip>\`, \`<ui-popover-trigger>\`, or \`<ui-dropdown-menu-trigger>\`. For state-driven dialogs use \`<ng-template uiDialogRoot [(open)]>\` or \`UiDialogService.open()\`.
+7. Links that look like buttons are \`<a uiButton routerLink>\` / \`<a uiButton href>\`. Never put a button inside a link.
+8. \`class\` on any Volt component is merged with \`cn()\` onto the element that owns the styles (\`<ui-input class="w-24">\` styles the native input).
+9. Toasts: \`inject(UiToastService).success('Saved')\` — no template or ng-primitives import needed.
 
 ## AI tools
 MCP server at ${MCP_URL} — query it for component details, usage examples, and theme info.
@@ -200,11 +210,13 @@ You are working with **Volt UI**, an Angular v21 component library (shadcn/ui-in
 
 | Component | Import | Selectors | Notes |
 |-----------|--------|-----------|-------|
-| Button | \`./ui/button\` | \`ui-button\` | Variants: solid, outline, ghost, link, destructive |
-| Badge | \`./ui/badge\` | \`ui-badge\` | Variants: default, secondary, outline, destructive |
+| Button | \`./ui/button\` | \`button[uiButton]\`, \`a[uiButton]\`, \`ui-button\` | Variants: solid, outline, ghost, link, destructive. Use \`a[uiButton]\` for links |
+| Badge | \`./ui/badge\` | \`ui-badge\` | Variants: solid, secondary, outline, destructive, success, warning, info |
+| Alert | \`./ui/alert\` | \`ui-alert\` + title/description | Variants: default, info, success, warning, destructive. Opt-in \`role\` |
+| Spinner | \`./ui/spinner\` | \`ui-spinner\` | \`size\`; \`label\` makes it \`role="status"\` |
 | Autofill | \`./ui/autofill\` | \`[uiAutofill]\` directive | Emits \`autofillChange\` |
 | Card | \`./ui/card\` | \`ui-card\` + header/title/description/content/footer | Presentational |
-| Input | \`./ui/input\` | \`ui-input\` | CVA |
+| Input | \`./ui/input\` | \`ui-input\` | CVA; \`size\`, \`state\`, \`class\` style the native input |
 | Textarea | \`./ui/textarea\` | \`ui-textarea\` | CVA |
 | Checkbox | \`./ui/checkbox\` | \`ui-checkbox\` | CVA |
 | Radio | \`./ui/radio\` | \`ui-radio-group\`, \`ui-radio-item\` | CVA |
@@ -222,7 +234,7 @@ You are working with **Volt UI**, an Angular v21 component library (shadcn/ui-in
 | Progress | \`./ui/progress\` | \`ui-progress\` + label/value | |
 | Slider | \`./ui/slider\` | \`ui-slider\` | CVA |
 | Range Slider | \`./ui/range-slider\` | \`ui-range-slider\` | CVA, dual-thumb |
-| Form Field | \`./ui/form-field\` | \`ui-form-field\` + label/hint/error | |
+| Form Field | \`./ui/form-field\` | \`ui-form-field\`, \`ui-label\`, \`ui-hint\`, \`ui-error\` | Wires label/description ids |
 | Pagination | \`./ui/pagination\` | \`ui-pagination\` + first/previous/next/last/button | |
 | Table | \`./ui/table\` | \`ui-table\` + header/body/footer/row/head/cell/caption | |
 | Toolbar | \`./ui/toolbar\` | \`ui-toolbar\`, \`button[uiToolbarButton]\` | |
@@ -236,12 +248,12 @@ You are working with **Volt UI**, an Angular v21 component library (shadcn/ui-in
 | Resizable | \`./ui/resizable\` | \`ui-resizable\` + panel/handle | |
 | Sidebar | \`./ui/sidebar\` | \`ui-sidebar\` layout group | |
 | Theme | \`./ui/theme\` | \`provideVoltTheme\`, \`applyVoltTheme\` | |
-| Dialog | \`./ui/dialog\` | \`[uiDialog]\`, \`[uiDialogOverlay]\`, \`[uiDialogContent]\`, \`[uiDialogTitle]\`, \`[uiDialogDescription]\` | Template-based overlay |
+| Dialog | \`./ui/dialog\` | \`[uiDialog]\`, \`ng-template[uiDialogRoot]\`, \`[uiDialogOverlay]\`, \`[uiDialogContent]\`, \`[uiDialogTitle]\`, \`[uiDialogDescription]\` | Trigger, \`[(open)]\`-controlled, or \`UiDialogService.open()\` |
 | Drawer | \`./ui/drawer\` | \`[uiDrawer]\`, \`[uiDrawerOverlay]\`, \`[uiDrawerContent]\`, \`[uiDrawerTitle]\`, \`[uiDrawerDescription]\`, \`ui-drawer-close\` | Template-based overlay |
 | Popover | \`./ui/popover\` | \`[uiPopover]\`, \`ui-popover-content\` | Template-based overlay |
 | Tooltip | \`./ui/tooltip\` | \`[uiTooltip]\`, \`ui-tooltip-content\` | Template-based overlay |
 | Dropdown Menu | \`./ui/dropdown-menu\` | \`[uiDropdownMenu]\`, \`ui-dropdown-menu\` + item/label/separator | Template-based overlay |
-| Toast | \`./ui/toast\` | \`ui-toast\` + title/description/close | Use \`NgpToastManager\` |
+| Toast | \`./ui/toast\` | \`ui-toast\` + title/description/close | Use \`UiToastService\` (show/success/error/warning/info) |
 
 Known upstream caveats in \`ng-primitives\`: meter currently exposes \`aria-valuenow\` as a percentage for non-0..100 ranges, and progress currently reports \`aria-valuemin="0"\` even when \`min\` is customized.
 
@@ -255,14 +267,19 @@ Overlays are never used as element selectors. Use an attribute-directive trigger
   <div uiDialogContent>
     <h2 uiDialogTitle>Title</h2>
     <p uiDialogDescription>Description</p>
-    <ui-button (click)="close()">Close</ui-button>
+    <button uiButton (click)="close()">Close</button>
   </div>
 </ng-template>
+
+<!-- State-controlled: no trigger element -->
+<ng-template uiDialogRoot [(open)]="editing" let-close="close">…</ng-template>
 \`\`\`
 
 ## Button variants
 \`\`\`html
-<ui-button variant="solid|outline|ghost|link|destructive" size="sm|md|lg|icon">
+<button uiButton variant="solid|outline|ghost|link|destructive" size="sm|md|lg|icon">Save</button>
+<a uiButton variant="outline" routerLink="/docs">Docs</a>
+<button uiButton size="icon" aria-label="Close"><svg aria-hidden="true">…</svg></button>
 \`\`\`
 
 ## Card pattern
@@ -283,10 +300,10 @@ Overlays are never used as element selectors. Use an attribute-directive trigger
 ## Form field pattern
 \`\`\`html
 <ui-form-field>
-  <ui-form-field-label>Email</ui-form-field-label>
+  <ui-label>Email</ui-label>
   <ui-input type="email" placeholder="you@example.com" />
-  <ui-form-field-hint>We'll never share your email</ui-form-field-hint>
-  <ui-form-field-error>Email is required</ui-form-field-error>
+  <ui-hint>We'll never share your email</ui-hint>
+  <ui-error>Email is required</ui-error>
 </ui-form-field>
 \`\`\`
 
@@ -325,6 +342,8 @@ npx @voltui/cli list
 5. Boolean inputs must use \`booleanAttribute\`.
 6. Import from \`'./ui/<component>'\`.
 7. Never use \`<ui-dialog>\`, \`<ui-tooltip>\`, \`<ui-popover-trigger>\`, or \`<ui-dropdown-menu-trigger>\`.
+8. Never nest a button inside a link: use \`<a uiButton>\`.
+9. \`class\` is merged with \`cn()\` onto the element that owns the styles.
 `;
 
 const VOLT_UI_SKILL = `---
@@ -352,9 +371,9 @@ description: >
 - **Tailwind CSS v4** with semantic tokens (\`bg-primary\`, \`text-foreground\`, \`rounded-md\`).
 - **ng-primitives** provides accessible behavior (keyboard, focus, overlays, CVA).
 - **class-variance-authority (CVA)** drives component variants.
-- **Two consumption modes**:
-  1. **CLI / source-ownership (recommended)**: \`npx @voltui/cli add button\`. Files are copied into the consumer project (default \`src/app/ui\`) and become editable local code.
-  2. **NPM package**: \`npm install @voltui/components\` for shared themes/utilities.
+- **Two first-class consumption modes**:
+  1. **Package mode**: \`npm install @voltui/components\`, import \`VoltXxx\` from \`'@voltui/components'\`. Centralized updates, shared behavior, one version.
+  2. **Copy-and-own mode**: \`npx @voltui/cli add button\` copies source into the project (default \`src/app/ui\`) as editable \`UiXxx\` code.
 
 ## Naming conventions
 
@@ -428,15 +447,51 @@ accepted = new FormControl(false, { nonNullable: true });
 
 \`\`\`html
 <ui-form-field>
-  <ui-form-field-label>Email</ui-form-field-label>
+  <ui-label>Email</ui-label>
   <ui-input [formControl]="email" type="email" />
-  <ui-form-field-hint>We'll only use this for account updates.</ui-form-field-hint>
+  <ui-hint>We'll only use this for account updates.</ui-hint>
 </ui-form-field>
 
 <ui-checkbox [formControl]="accepted">Accept terms</ui-checkbox>
 \`\`\`
 
 ## Common patterns
+
+### Buttons and links
+
+\`\`\`html
+<button uiButton type="submit">Save</button>
+<a uiButton variant="outline" routerLink="/docs">Docs</a>
+<button uiButton size="icon" aria-label="Switch theme"><svg aria-hidden="true">…</svg></button>
+\`\`\`
+
+Never wrap \`<ui-button>\` in \`<a>\`. \`<ui-button>\` remains supported and forwards \`aria-label\`,
+\`aria-expanded\`, \`aria-controls\`, \`aria-pressed\`, \`aria-haspopup\`, \`aria-labelledby\`,
+\`aria-describedby\` to its inner \`<button>\`.
+
+### Styling
+
+\`class\` on every Volt component is merged with \`cn()\` (tailwind-merge) onto the element that owns
+the styles: \`<ui-card-content class="p-3">\` replaces \`p-6\`, \`<ui-input class="w-24">\` styles the
+native \`<input>\`.
+
+### Feedback
+
+\`\`\`ts
+private readonly toast = inject(UiToastService);
+this.toast.success('Changes saved');
+this.toast.error('Could not save', { description: 'Try again.' });
+\`\`\`
+
+\`\`\`html
+<ui-badge variant="success">Connected</ui-badge>
+<ui-alert variant="warning" role="status">
+  <ui-alert-title>Connection needs attention</ui-alert-title>
+  <ui-alert-description>Reconnect your account.</ui-alert-description>
+</ui-alert>
+<ui-spinner size="sm" />                       <!-- decorative -->
+<ui-spinner label="Loading projects" />        <!-- announced status -->
+\`\`\`
 
 ### Card
 
@@ -463,9 +518,19 @@ accepted = new FormControl(false, { nonNullable: true });
   <div uiDialogContent>
     <h2 uiDialogTitle>Confirm</h2>
     <p uiDialogDescription>Are you sure?</p>
-    <ui-button (click)="close()">Confirm</ui-button>
+    <button uiButton (click)="close()">Confirm</button>
   </div>
 </ng-template>
+
+<!-- Controlled by state, no trigger -->
+<ng-template uiDialogRoot [(open)]="editing" (closed)="onClosed($event)" let-close="close">
+  <div uiDialogOverlay></div>
+  <div uiDialogContent>…</div>
+</ng-template>
+\`\`\`
+
+\`\`\`ts
+const ok = await inject(UiDialogService).open<boolean>(confirmTpl, { role: 'alertdialog' }).closed;
 \`\`\`
 
 ### Tabs
@@ -499,6 +564,7 @@ accepted = new FormControl(false, { nonNullable: true });
 5. Boolean inputs must use \`booleanAttribute\`; number inputs should use \`numberAttribute\` when appropriate.
 6. For overlays, always use the attribute-directive trigger + \`<ng-template>\` pattern.
 7. Do not invent inputs. If unsure, call the MCP \`get_component\` tool.
+8. Links styled as buttons are \`<a uiButton>\`; never nest interactive elements.
 `;
 
 const VSCODE_SNIPPETS = {

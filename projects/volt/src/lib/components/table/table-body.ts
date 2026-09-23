@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, input, computed } from '@angular/core';
+import { cn } from '../../utils';
 
 @Component({
   selector: 'volt-table-body',
@@ -12,7 +13,7 @@ import { ChangeDetectionStrategy, Component, input, computed } from '@angular/co
 export class VoltTableBody {
   readonly class = input<string>('');
 
-  protected readonly classes = computed(
-    () => 'table-row-group [&_tr:last-child]:border-0 ' + this.class()
+  protected readonly classes = computed(() =>
+    cn('table-row-group [&_tr:last-child]:border-0', this.class())
   );
 }

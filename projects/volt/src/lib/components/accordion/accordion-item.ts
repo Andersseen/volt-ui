@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, computed } from '@angular/core';
 import { NgpAccordionItem, provideAccordionItemState } from 'ng-primitives/accordion';
+import { cn } from '../../utils';
 
 @Component({
   selector: 'volt-accordion-item',
@@ -7,7 +8,7 @@ import { NgpAccordionItem, provideAccordionItemState } from 'ng-primitives/accor
   imports: [],
   providers: [provideAccordionItemState()],
   host: {
-    class: 'border-b border-border/50',
+    '[class]': 'classes()',
   },
   hostDirectives: [
     {
@@ -18,5 +19,9 @@ import { NgpAccordionItem, provideAccordionItemState } from 'ng-primitives/accor
   template: ` <ng-content /> `,
 })
 export class VoltAccordionItem {
+  readonly class = input<string>('');
+
+  protected readonly classes = computed(() => cn('border-b border-border/50', this.class()));
+
   readonly value = input.required<string>();
 }

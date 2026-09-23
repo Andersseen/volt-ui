@@ -12,13 +12,14 @@ You are working in an Angular 21 application that consumes **Volt UI** component
 - Styling is **Tailwind CSS v4** with semantic tokens such as `bg-primary`, `text-foreground`, `rounded-md`, `shadow-sm`.
 - Variant logic uses **class-variance-authority (CVA)**.
 - Accessibility and interaction behavior come from **ng-primitives**.
-- Components are typically copied into the project via the CLI (`npx @voltui/cli`) and become editable local code.
+- Volt provides UI **atoms** (buttons, inputs, cards, badges, alerts…). The application keeps its own layouts, icons, motion, state and domain components.
+- Two first-class ways to consume it: the **package** (`@voltui/components`, `VoltXxx`, `volt-*`) or **copy-and-own** via the CLI (`npx @voltui/cli`, `UiXxx`, `ui-*`). Match whatever the project already does.
 
 ---
 
 ## How to add Volt UI to a project
 
-### 1. CLI / source-ownership workflow (recommended)
+### 1. Copy-and-own workflow (CLI)
 
 ```bash
 npx @voltui/cli init                    # creates src/app/ui
@@ -33,7 +34,13 @@ import { UiButton } from './ui/button';
 import { UiCard, UiCardContent, UiCardHeader } from './ui/card';
 ```
 
-### 2. NPM package workflow
+### 2. Package workflow (npm)
+
+Centralized updates and one shared version across apps. Import components directly:
+
+```ts
+import { VoltCard, VoltNativeButton, VoltToastService } from '@voltui/components';
+```
 
 ```bash
 npm install @voltui/components
@@ -89,48 +96,50 @@ Components use semantic Tailwind utilities; do not write `bg-[var(--primary)]`.
 
 ### Stable components
 
-| Component    | Import              | Selectors                                                                                                                                       | Notes                                                                                          |
-| ------------ | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| Button       | `./ui/button`       | `<ui-button>`                                                                                                                                   | Variants: `solid`, `outline`, `ghost`, `link`, `destructive`. Sizes: `sm`, `md`, `lg`, `icon`. |
-| Badge        | `./ui/badge`        | `<ui-badge>`                                                                                                                                    | Variants: `default`, `secondary`, `outline`, `destructive`.                                    |
-| Card         | `./ui/card`         | `<ui-card>`, `<ui-card-header>`, `<ui-card-title>`, `<ui-card-description>`, `<ui-card-content>`, `<ui-card-footer>`                            | Presentational container.                                                                      |
-| Checkbox     | `./ui/checkbox`     | `<ui-checkbox>`                                                                                                                                 | CVA. Inputs: `checked`, `disabled`, `indeterminate`.                                           |
-| Form Field   | `./ui/form-field`   | `<ui-form-field>`, `<ui-form-field-label>`, `<ui-form-field-hint>`, `<ui-form-field-error>`                                                     | Wraps label, input, hints.                                                                     |
-| Input        | `./ui/input`        | `<ui-input>`                                                                                                                                    | CVA. Inputs: `type`, `placeholder`, `disabled`.                                                |
-| Radio        | `./ui/radio`        | `<ui-radio-group>`, `<ui-radio-item>`                                                                                                           | CVA. Use `value` on group.                                                                     |
-| Separator    | `./ui/separator`    | `<ui-separator>`                                                                                                                                | `orientation` input.                                                                           |
-| Skeleton     | `./ui/skeleton`     | `<ui-skeleton>`                                                                                                                                 | `variant`, `width`, `height`.                                                                  |
-| Slider       | `./ui/slider`       | `<ui-slider>`                                                                                                                                   | CVA. `value`, `min`, `max`, `step`.                                                            |
-| Range Slider | `./ui/range-slider` | `<ui-range-slider>`                                                                                                                             | CVA, dual-thumb. `low`, `high`, `min`, `max`, `step`.                                          |
-| Switch       | `./ui/switch`       | `<ui-switch>`                                                                                                                                   | CVA. `checked`, `disabled`.                                                                    |
-| Textarea     | `./ui/textarea`     | `<ui-textarea>`                                                                                                                                 | CVA. `rows`, `placeholder`, `disabled`.                                                        |
-| Toggle       | `./ui/toggle`       | `<ui-toggle>`                                                                                                                                   | CVA. `pressed`, `disabled`.                                                                    |
-| Toggle Group | `./ui/toggle-group` | `<ui-toggle-group>`, `<ui-toggle-group-item>`                                                                                                   | CVA. `value`, `type`, `orientation`.                                                           |
-| Avatar       | `./ui/avatar`       | `<ui-avatar>`, `<img uiAvatarImage>`, `<ui-avatar-fallback>`                                                                                    | Image is an attribute directive on `<img>`.                                                    |
-| Breadcrumbs  | `./ui/breadcrumbs`  | `<ui-breadcrumbs>`, `<ui-breadcrumb-list>`, `<ui-breadcrumb-item>`, `<ui-breadcrumb-link>`, `<ui-breadcrumb-page>`, `<ui-breadcrumb-separator>` | Note singular `breadcrumb` in sub-selectors.                                                   |
-| Meter        | `./ui/meter`        | `<ui-meter>`, `<ui-meter-label>`, `<ui-meter-value>`, `<ui-meter-track>`, `<ui-meter-indicator>`                                                | `value`, `min`, `max`.                                                                         |
-| Progress     | `./ui/progress`     | `<ui-progress>`, `<ui-progress-label>`, `<ui-progress-value>`                                                                                   | `value`, `min`, `max`, `valueLabel`.                                                           |
+| Component    | Import              | Selectors                                                                                                                                       | Notes                                                                                                                    |
+| ------------ | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| Button       | `./ui/button`       | `<button uiButton>`, `<a uiButton>` (preferred), `<ui-button>`                                                                                  | Variants: `solid`, `outline`, `ghost`, `link`, `destructive`. Sizes: `sm`, `md`, `lg`, `icon`. Links use `<a uiButton>`. |
+| Badge        | `./ui/badge`        | `<ui-badge>`                                                                                                                                    | Variants: `solid`, `secondary`, `outline`, `destructive`, `success`, `warning`, `info`.                                  |
+| Card         | `./ui/card`         | `<ui-card>`, `<ui-card-header>`, `<ui-card-title>`, `<ui-card-description>`, `<ui-card-content>`, `<ui-card-footer>`                            | Presentational container.                                                                                                |
+| Checkbox     | `./ui/checkbox`     | `<ui-checkbox>`                                                                                                                                 | CVA. Inputs: `checked`, `disabled`, `indeterminate`.                                                                     |
+| Form Field   | `./ui/form-field`   | `<ui-form-field>`, `<ui-label>`, `<ui-hint>`, `<ui-error>`                                                                                      | Wires label and hint ids to the control. Outside a field use `<ui-label htmlFor>`.                                       |
+| Input        | `./ui/input`        | `<ui-input>`                                                                                                                                    | CVA. Inputs: `type`, `placeholder`, `disabled`, `size`, `state`, `class` (styles the native input).                      |
+| Radio        | `./ui/radio`        | `<ui-radio-group>`, `<ui-radio-item>`                                                                                                           | CVA. Use `value` on group.                                                                                               |
+| Separator    | `./ui/separator`    | `<ui-separator>`                                                                                                                                | `orientation` input.                                                                                                     |
+| Skeleton     | `./ui/skeleton`     | `<ui-skeleton>`                                                                                                                                 | `variant`, `width`, `height`.                                                                                            |
+| Slider       | `./ui/slider`       | `<ui-slider>`                                                                                                                                   | CVA. `value`, `min`, `max`, `step`.                                                                                      |
+| Range Slider | `./ui/range-slider` | `<ui-range-slider>`                                                                                                                             | CVA, dual-thumb. `low`, `high`, `min`, `max`, `step`.                                                                    |
+| Switch       | `./ui/switch`       | `<ui-switch>`                                                                                                                                   | CVA. `checked`, `disabled`.                                                                                              |
+| Textarea     | `./ui/textarea`     | `<ui-textarea>`                                                                                                                                 | CVA. `rows`, `placeholder`, `disabled`.                                                                                  |
+| Toggle       | `./ui/toggle`       | `<ui-toggle>`                                                                                                                                   | CVA. `pressed`, `disabled`.                                                                                              |
+| Toggle Group | `./ui/toggle-group` | `<ui-toggle-group>`, `<ui-toggle-group-item>`                                                                                                   | CVA. `value`, `type`, `orientation`.                                                                                     |
+| Avatar       | `./ui/avatar`       | `<ui-avatar>`, `<img uiAvatarImage>`, `<ui-avatar-fallback>`                                                                                    | Image is an attribute directive on `<img>`.                                                                              |
+| Breadcrumbs  | `./ui/breadcrumbs`  | `<ui-breadcrumbs>`, `<ui-breadcrumb-list>`, `<ui-breadcrumb-item>`, `<ui-breadcrumb-link>`, `<ui-breadcrumb-page>`, `<ui-breadcrumb-separator>` | Note singular `breadcrumb` in sub-selectors.                                                                             |
+| Meter        | `./ui/meter`        | `<ui-meter>`, `<ui-meter-label>`, `<ui-meter-value>`, `<ui-meter-track>`, `<ui-meter-indicator>`                                                | `value`, `min`, `max`.                                                                                                   |
+| Progress     | `./ui/progress`     | `<ui-progress>`, `<ui-progress-label>`, `<ui-progress-value>`                                                                                   | `value`, `min`, `max`, `valueLabel`.                                                                                     |
 
 Known upstream caveats in `ng-primitives`: meter currently exposes `aria-valuenow` as a percentage for non-0..100 ranges, and progress currently reports `aria-valuemin="0"` even when `min` is customized.
 
 ### Beta components
 
-| Component     | Import               | Selectors                                                                                                                                               | Notes                                                                   |
-| ------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
-| Accordion     | `./ui/accordion`     | `<ui-accordion>`, `<ui-accordion-item>`, `<ui-accordion-trigger>`, `<ui-accordion-content>`                                                             | `type` (`single`/`multiple`), `collapsible`.                            |
-| Dialog        | `./ui/dialog`        | `[uiDialog]`, `[uiDialogOverlay]`, `[uiDialogContent]`, `[uiDialogTitle]`, `[uiDialogDescription]`                                                      | Trigger is an attribute directive; content lives in an `<ng-template>`. |
-| Drawer        | `./ui/drawer`        | `[uiDrawer]`, `[uiDrawerOverlay]`, `[uiDrawerContent]`, `[uiDrawerTitle]`, `[uiDrawerDescription]`, `<ui-drawer-close>`                                 | `side`: `left`, `right`, `top`, `bottom`.                               |
-| Dropdown Menu | `./ui/dropdown-menu` | `[uiDropdownMenu]`, `<ui-dropdown-menu>`, `<ui-dropdown-menu-item>`, `<ui-dropdown-menu-label>`, `<ui-dropdown-menu-separator>`                         | Trigger references the menu template.                                   |
-| Input OTP     | `./ui/input-otp`     | `<ui-input-otp>`, `<ui-input-otp-slot>`                                                                                                                 | `value`, `length`, `pattern`.                                           |
-| Pagination    | `./ui/pagination`    | `<ui-pagination>`, `<ui-pagination-button>`, `<ui-pagination-first>`, `<ui-pagination-previous>`, `<ui-pagination-next>`, `<ui-pagination-last>`        | `page`, `pageCount`.                                                    |
-| Popover       | `./ui/popover`       | `[uiPopover]`, `<ui-popover-content>`                                                                                                                   | Trigger references content template.                                    |
-| Search        | `./ui/search`        | `<ui-search>`, `<ui-search-clear>`                                                                                                                      | Wrapper around an input.                                                |
-| Select        | `./ui/select`        | `<ui-select>`, `<ui-native-select>`, `<ui-select-content>`, `<ui-select-item>`, `<ui-select-label>`, `<ui-select-separator>`                            | CVA. `value`, `placeholder`, `disabled`.                                |
-| Table         | `./ui/table`         | `<ui-table>`, `<ui-table-header>`, `<ui-table-body>`, `<ui-table-footer>`, `<ui-table-row>`, `<ui-table-head>`, `<ui-table-cell>`, `<ui-table-caption>` | Semantic table.                                                         |
-| Tabs          | `./ui/tabs`          | `<ui-tabs>`, `<ui-tabs-list>`, `<ui-tabs-trigger>`, `<ui-tabs-content>`                                                                                 | Use `value` model, not `defaultValue`.                                  |
-| Toast         | `./ui/toast`         | `<ui-toast>`, `<ui-toast-title>`, `<ui-toast-description>`, `<ui-toast-close>`                                                                          | Use with `NgpToastManager`.                                             |
-| Toolbar       | `./ui/toolbar`       | `<ui-toolbar>`, `<button uiToolbarButton>`                                                                                                              | `orientation`.                                                          |
-| Tooltip       | `./ui/tooltip`       | `[uiTooltip]`, `<ui-tooltip-content>`                                                                                                                   | Trigger references content template.                                    |
+| Component     | Import               | Selectors                                                                                                                                               | Notes                                                                                             |
+| ------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| Alert         | `./ui/alert`         | `<ui-alert>`, `<ui-alert-title>`, `<ui-alert-description>`; `[slot=icon]`, `[slot=action]`                                                              | `variant`: `default`, `info`, `success`, `warning`, `destructive`. `role` is opt-in.              |
+| Accordion     | `./ui/accordion`     | `<ui-accordion>`, `<ui-accordion-item>`, `<ui-accordion-trigger>`, `<ui-accordion-content>`                                                             | `type` (`single`/`multiple`), `collapsible`.                                                      |
+| Dialog        | `./ui/dialog`        | `[uiDialog]`, `ng-template[uiDialogRoot]`, `[uiDialogOverlay]`, `[uiDialogContent]`, `[uiDialogTitle]`, `[uiDialogDescription]`; `UiDialogService`      | Trigger, `[(open)]`-controlled, or `UiDialogService.open()`. Content lives in an `<ng-template>`. |
+| Drawer        | `./ui/drawer`        | `[uiDrawer]`, `[uiDrawerOverlay]`, `[uiDrawerContent]`, `[uiDrawerTitle]`, `[uiDrawerDescription]`, `<ui-drawer-close>`                                 | `side`: `left`, `right`, `top`, `bottom`.                                                         |
+| Dropdown Menu | `./ui/dropdown-menu` | `[uiDropdownMenu]`, `<ui-dropdown-menu>`, `<ui-dropdown-menu-item>`, `<ui-dropdown-menu-label>`, `<ui-dropdown-menu-separator>`                         | Trigger references the menu template.                                                             |
+| Input OTP     | `./ui/input-otp`     | `<ui-input-otp>`, `<ui-input-otp-slot>`                                                                                                                 | `value`, `length`, `pattern`.                                                                     |
+| Pagination    | `./ui/pagination`    | `<ui-pagination>`, `<ui-pagination-button>`, `<ui-pagination-first>`, `<ui-pagination-previous>`, `<ui-pagination-next>`, `<ui-pagination-last>`        | `page`, `pageCount`.                                                                              |
+| Popover       | `./ui/popover`       | `[uiPopover]`, `<ui-popover-content>`                                                                                                                   | Trigger references content template.                                                              |
+| Spinner       | `./ui/spinner`       | `<ui-spinner>`                                                                                                                                          | `size`; `label` makes it an announced `role="status"`.                                            |
+| Search        | `./ui/search`        | `<ui-search>`, `<ui-search-clear>`                                                                                                                      | Wrapper around an input.                                                                          |
+| Select        | `./ui/select`        | `<ui-select>`, `<ui-native-select>`, `<ui-select-content>`, `<ui-select-item>`, `<ui-select-label>`, `<ui-select-separator>`                            | CVA. `value`, `placeholder`, `disabled`.                                                          |
+| Table         | `./ui/table`         | `<ui-table>`, `<ui-table-header>`, `<ui-table-body>`, `<ui-table-footer>`, `<ui-table-row>`, `<ui-table-head>`, `<ui-table-cell>`, `<ui-table-caption>` | Semantic table.                                                                                   |
+| Tabs          | `./ui/tabs`          | `<ui-tabs>`, `<ui-tabs-list>`, `<ui-tabs-trigger>`, `<ui-tabs-content>`                                                                                 | Use `value` model, not `defaultValue`.                                                            |
+| Toast         | `./ui/toast`         | `UiToastService`; `<ui-toast>`, `<ui-toast-title>`, `<ui-toast-description>`, `<ui-toast-close>` for custom content                                     | `inject(UiToastService).success('Saved')`.                                                        |
+| Toolbar       | `./ui/toolbar`       | `<ui-toolbar>`, `<button uiToolbarButton>`                                                                                                              | `orientation`.                                                                                    |
+| Tooltip       | `./ui/tooltip`       | `[uiTooltip]`, `<ui-tooltip-content>`                                                                                                                   | Trigger references content template.                                                              |
 
 ### Additional components
 
@@ -162,9 +171,27 @@ Overlays (dialog, drawer, popover, tooltip, dropdown-menu) are **template-based*
   <div uiDialogContent>
     <h2 uiDialogTitle>Confirm</h2>
     <p uiDialogDescription>Are you sure?</p>
-    <ui-button (click)="close()">Confirm</ui-button>
+    <button uiButton (click)="close()">Confirm</button>
   </div>
 </ng-template>
+```
+
+Controlled by application state (no trigger element):
+
+```html
+<ng-template uiDialogRoot [(open)]="editing" (closed)="onClosed($event)" let-close="close">
+  <div uiDialogOverlay></div>
+  <div uiDialogContent>
+    <h2 uiDialogTitle>Edit profile</h2>
+    <button uiButton (click)="close('saved')">Save</button>
+  </div>
+</ng-template>
+```
+
+Imperative confirm:
+
+```ts
+const ok = await inject(UiDialogService).open<boolean>(confirmTpl, { role: 'alertdialog' }).closed;
 ```
 
 ### Drawer
@@ -254,13 +281,32 @@ export class ExampleComponent {
 
 ## Common complete examples
 
-### Button with leading icon
+### Buttons and links
 
 ```html
-<ui-button>
-  <lmn-mail slot="leading" [size]="16" />
-  Login with Email
-</ui-button>
+<button uiButton type="submit">Save</button>
+<a uiButton variant="outline" routerLink="/docs">Documentation</a>
+<button uiButton variant="ghost" size="icon" aria-label="Switch theme">
+  <svg aria-hidden="true">…</svg>
+</button>
+```
+
+Never write `<a routerLink><ui-button>…</ui-button></a>` — it nests two interactive elements.
+
+### Feedback
+
+```ts
+private readonly toast = inject(UiToastService);
+this.toast.success('Changes saved');
+```
+
+```html
+<ui-badge variant="warning">Needs attention</ui-badge>
+<ui-alert variant="destructive" role="alert">
+  <ui-alert-title>Payment failed</ui-alert-title>
+  <ui-alert-description>Update your card.</ui-alert-description>
+</ui-alert>
+<ui-spinner label="Loading projects" />
 ```
 
 ### Card
@@ -285,10 +331,10 @@ export class ExampleComponent {
 
 ```html
 <ui-form-field>
-  <ui-form-field-label>Email</ui-form-field-label>
+  <ui-label>Email</ui-label>
   <ui-input [formControl]="email" type="email" placeholder="you@example.com" />
-  <ui-form-field-hint>We'll only use this for account updates.</ui-form-field-hint>
-  <ui-form-field-error>Invalid email</ui-form-field-error>
+  <ui-hint>We'll only use this for account updates.</ui-hint>
+  <ui-error>Invalid email</ui-error>
 </ui-form-field>
 ```
 
@@ -346,14 +392,16 @@ export class ExampleComponent {
 
 ## AI assistant rules
 
-1. **Use the CLI naming convention** (`ui-*` / `UiXxx`) in consumer projects unless the user explicitly imports from `@voltui/components`.
+1. **Match the project's mode**: `ui-*` / `UiXxx` from `./ui` for copied source, `volt-*` / `VoltXxx` from `@voltui/components` for package mode.
 2. **Do not invent inputs or outputs.** If unsure, check the source files or call the Volt UI MCP `get_component` tool.
 3. **Overlays are template-based.** Never write `<ui-dialog>`, `<ui-tooltip>`, `<ui-popover-trigger>`, or `<ui-dropdown-menu-trigger>` as element selectors.
 4. **Prefer signals** for component state and `model()` for two-way inputs.
 5. **Use semantic Tailwind tokens**; avoid `bg-[var(--foo)]`.
 6. **Boolean inputs** must use `booleanAttribute`; **number inputs** should use `numberAttribute` when appropriate.
 7. **Add `ReactiveFormsModule`** when wiring CVA components to `FormControl`.
-8. **Run checks** after changes: `pnpm typecheck`, `pnpm lint`, `pnpm test:run`, `pnpm build:lib`.
+8. **Never nest interactive elements**: links that look like buttons are `<a uiButton>`.
+9. **Customize with `class`**: it is merged with `cn()` onto the element that owns the styles (`<ui-card-content class="p-3">`, `<ui-input class="w-24">`).
+10. **Run checks** after changes: `pnpm typecheck`, `pnpm lint`, `pnpm test:run`, `pnpm build:lib`.
 
 ---
 

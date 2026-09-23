@@ -18,6 +18,21 @@
           <p class="text-sm text-muted-foreground">Enter your email address.</p>
         </div>
 
+        <div class="space-y-2" data-testid="input-sizes">
+          <volt-label htmlFor="qty">Quantity</volt-label>
+          <div class="flex items-center gap-2">
+            <volt-input id="qty" size="sm" class="w-24 font-mono" value="12" />
+            <volt-input size="md" aria-label="Medium input" placeholder="md" />
+            <volt-input size="lg" aria-label="Large input" placeholder="lg" />
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <volt-label htmlFor="username">Username</volt-label>
+          <volt-input id="username" state="success" value="volt" />
+          <volt-input state="error" aria-label="Invalid username" value="v!" />
+        </div>
+
         <div class="space-y-2">
           <volt-label htmlFor="file">File</volt-label>
           <volt-input type="file" id="file" />

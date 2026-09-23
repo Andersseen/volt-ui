@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { NgpMeterLabel } from 'ng-primitives/meter';
+import { cn } from '../../utils';
 
 @Component({
   selector: 'volt-meter-label',
@@ -11,8 +12,14 @@ import { NgpMeterLabel } from 'ng-primitives/meter';
     },
   ],
   host: {
-    class: 'block text-sm font-medium text-foreground',
+    '[class]': 'classes()',
   },
   template: `<ng-content />`,
 })
-export class VoltMeterLabel {}
+export class VoltMeterLabel {
+  readonly class = input<string>('');
+
+  protected readonly classes = computed(() =>
+    cn('block text-sm font-medium text-foreground', this.class())
+  );
+}

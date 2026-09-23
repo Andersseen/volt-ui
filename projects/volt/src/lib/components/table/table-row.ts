@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, input, computed } from '@angular/core';
+import { cn } from '../../utils';
 
 @Component({
   selector: 'volt-table-row',
@@ -12,9 +13,10 @@ import { ChangeDetectionStrategy, Component, input, computed } from '@angular/co
 export class VoltTableRow {
   readonly class = input<string>('');
 
-  protected readonly classes = computed(
-    () =>
-      'table-row border-b border-border transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted ' +
+  protected readonly classes = computed(() =>
+    cn(
+      'table-row border-b border-border transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted',
       this.class()
+    )
   );
 }

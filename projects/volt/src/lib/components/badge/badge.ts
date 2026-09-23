@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
-import { cn } from '../../utils';
 import { badgeVariants, type BadgeVariants } from './variants';
+import { cn } from '../../utils';
 
 @Component({
   selector: 'volt-badge',

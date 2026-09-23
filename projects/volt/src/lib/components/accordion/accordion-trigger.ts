@@ -1,12 +1,13 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { NgpAccordionTrigger } from 'ng-primitives/accordion';
+import { cn } from '../../utils';
 
 @Component({
   selector: 'volt-accordion-trigger',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgpAccordionTrigger],
   host: {
-    class: 'block w-full',
+    '[class]': 'classes()',
   },
   template: `
     <button
@@ -33,4 +34,8 @@ import { NgpAccordionTrigger } from 'ng-primitives/accordion';
     </button>
   `,
 })
-export class VoltAccordionTrigger {}
+export class VoltAccordionTrigger {
+  readonly class = input<string>('');
+
+  protected readonly classes = computed(() => cn('block w-full', this.class()));
+}

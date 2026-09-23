@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, computed } from '@angular/core';
 import { NgpComboboxButton } from 'ng-primitives/combobox';
+import { cn } from '../../utils';
 
 let nextComboboxButtonId = 0;
 
@@ -8,7 +9,7 @@ let nextComboboxButtonId = 0;
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgpComboboxButton],
   host: {
-    class: 'contents',
+    '[class]': 'classes()',
   },
   template: `
     <button
@@ -22,5 +23,9 @@ let nextComboboxButtonId = 0;
   `,
 })
 export class VoltComboboxButton {
+  readonly class = input<string>('');
+
+  protected readonly classes = computed(() => cn('contents', this.class()));
+
   readonly id = input(`volt-combobox-button-${++nextComboboxButtonId}`);
 }

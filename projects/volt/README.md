@@ -1,7 +1,11 @@
 # @voltui/components
 
-Accessible Angular components built on top of ng-primitives, with Volt UI themes and standalone
-imports.
+Angular UI atoms — buttons, inputs, cards, badges, alerts, overlays — built on signals, Tailwind
+CSS v4 and ng-primitives. They stay out of the way of your product's own layout and design.
+
+This package is one of Volt's two first-class workflows: import components from npm and receive
+fixes through semver updates. Prefer owning the source? `npx @voltui/cli add button` copies the
+same components into your project.
 
 ## Installation
 
@@ -28,19 +32,40 @@ bootstrapApplication(AppComponent, {
 ## Usage
 
 ```typescript
-import { Component } from '@angular/core';
-import { VoltButton, VoltSlider } from '@voltui/components';
+import { Component, inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import {
+  VoltCard,
+  VoltCardContent,
+  VoltInput,
+  VoltNativeButton,
+  VoltToastService,
+} from '@voltui/components';
 
 @Component({
   selector: 'app-example',
-  imports: [VoltButton, VoltSlider],
+  imports: [RouterLink, VoltCard, VoltCardContent, VoltInput, VoltNativeButton],
   template: `
-    <volt-button>Save</volt-button>
-    <volt-slider [value]="10" [min]="0" [max]="24" />
+    <volt-card>
+      <volt-card-content class="p-4 space-y-3">
+        <volt-input size="sm" class="w-40" aria-label="Project name" />
+        <button voltButton (click)="save()">Save</button>
+        <a voltButton variant="outline" routerLink="/docs">Docs</a>
+      </volt-card-content>
+    </volt-card>
   `,
 })
-export class ExampleComponent {}
+export class ExampleComponent {
+  private readonly toast = inject(VoltToastService);
+
+  save() {
+    this.toast.success('Saved');
+  }
+}
 ```
+
+`class` on any component is merged with `cn()` over the defaults and applied to the element that
+paints it, so `<volt-card-content class="p-4">` replaces the default padding.
 
 ## Tailwind CSS v4
 

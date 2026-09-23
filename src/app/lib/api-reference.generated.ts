@@ -37,15 +37,31 @@ export interface ComponentApi {
 export const ACCORDION_API: ComponentApi = {
   directives: [
     {
+      className: 'VoltAccordionContent',
+      selector: 'volt-accordion-content',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
+      outputs: [],
+    },
+    {
       className: 'VoltAccordionItem',
       selector: 'volt-accordion-item',
-      inputs: [{ name: 'value', type: 'string', required: true }],
+      inputs: [
+        { name: 'class', type: 'string', default: "''" },
+        { name: 'value', type: 'string', required: true },
+      ],
+      outputs: [],
+    },
+    {
+      className: 'VoltAccordionTrigger',
+      selector: 'volt-accordion-trigger',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
       outputs: [],
     },
     {
       className: 'VoltAccordion',
       selector: 'volt-accordion',
       inputs: [
+        { name: 'class', type: 'string', default: "''" },
         { name: 'type', type: 'NgpAccordionType', default: "'single'" },
         { name: 'collapsible', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
         { name: 'value', type: 'string | string[] | null', default: 'null' },
@@ -56,6 +72,40 @@ export const ACCORDION_API: ComponentApi = {
     },
   ],
   variants: undefined,
+};
+
+export const ALERT_API: ComponentApi = {
+  directives: [
+    {
+      className: 'VoltAlertDescription',
+      selector: 'volt-alert-description',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
+      outputs: [],
+    },
+    {
+      className: 'VoltAlertTitle',
+      selector: 'volt-alert-title',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
+      outputs: [],
+    },
+    {
+      className: 'VoltAlert',
+      selector: 'volt-alert',
+      inputs: [
+        { name: 'variant', type: "AlertVariants['variant']", default: "'default'" },
+        { name: 'role', type: 'AlertRole', default: 'null' },
+        { name: 'class', type: 'string', default: "''" },
+      ],
+      outputs: [],
+    },
+  ],
+  variants: [
+    {
+      name: 'variant',
+      options: ['default', 'info', 'success', 'warning', 'destructive'],
+      default: 'default',
+    },
+  ],
 };
 
 export const AUTOFILL_API: ComponentApi = {
@@ -75,7 +125,22 @@ export const AVATAR_API: ComponentApi = {
     {
       className: 'VoltAvatarFallback',
       selector: 'volt-avatar-fallback',
-      inputs: [{ name: 'delay', type: 'number', default: '0' }],
+      inputs: [
+        { name: 'class', type: 'string', default: "''" },
+        { name: 'delay', type: 'number', default: '0' },
+      ],
+      outputs: [],
+    },
+    {
+      className: 'VoltAvatarImage',
+      selector: 'img[voltAvatarImage]',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
+      outputs: [],
+    },
+    {
+      className: 'VoltAvatar',
+      selector: 'volt-avatar',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
       outputs: [],
     },
   ],
@@ -97,7 +162,7 @@ export const BADGE_API: ComponentApi = {
   variants: [
     {
       name: 'variant',
-      options: ['solid', 'secondary', 'outline', 'destructive'],
+      options: ['solid', 'secondary', 'outline', 'destructive', 'success', 'warning', 'info'],
       default: 'solid',
     },
   ],
@@ -106,9 +171,42 @@ export const BADGE_API: ComponentApi = {
 export const BREADCRUMBS_API: ComponentApi = {
   directives: [
     {
+      className: 'VoltBreadcrumbEllipsis',
+      selector: 'volt-breadcrumb-ellipsis',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
+      outputs: [],
+    },
+    {
+      className: 'VoltBreadcrumbItem',
+      selector: 'volt-breadcrumb-item',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
+      outputs: [],
+    },
+    {
       className: 'VoltBreadcrumbLink',
       selector: 'volt-breadcrumb-link',
-      inputs: [{ name: 'href', type: 'string', default: "'#'" }],
+      inputs: [
+        { name: 'href', type: 'string', default: "'#'" },
+        { name: 'class', type: 'string', default: "''" },
+      ],
+      outputs: [],
+    },
+    {
+      className: 'VoltBreadcrumbList',
+      selector: 'volt-breadcrumb-list',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
+      outputs: [],
+    },
+    {
+      className: 'VoltBreadcrumbPage',
+      selector: 'volt-breadcrumb-page',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
+      outputs: [],
+    },
+    {
+      className: 'VoltBreadcrumbSeparator',
+      selector: 'volt-breadcrumb-separator',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
       outputs: [],
     },
   ],
@@ -127,6 +225,34 @@ export const BUTTON_API: ComponentApi = {
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
         { name: 'class', type: 'string', default: "''" },
         { name: 'customClass', type: 'string', default: "''" },
+        { name: 'aria-label', type: 'string | null | undefined', default: 'undefined' },
+        { name: 'aria-labelledby', type: 'string | null | undefined', default: 'undefined' },
+        { name: 'aria-describedby', type: 'string | null | undefined', default: 'undefined' },
+        {
+          name: 'aria-expanded',
+          type: 'string | null',
+          default: 'null',
+          transform: 'toAriaString',
+        },
+        { name: 'aria-pressed', type: 'string | null', default: 'null', transform: 'toAriaString' },
+        { name: 'aria-controls', type: 'string | null | undefined', default: 'undefined' },
+        {
+          name: 'aria-haspopup',
+          type: 'string | null',
+          default: 'null',
+          transform: 'toAriaString',
+        },
+      ],
+      outputs: [],
+    },
+    {
+      className: 'VoltNativeButton',
+      selector: 'button[voltButton], a[voltButton]',
+      inputs: [
+        { name: 'variant', type: "ButtonVariants['variant']", default: "'solid'" },
+        { name: 'size', type: "ButtonVariants['size']", default: "'md'" },
+        { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
+        { name: 'class', type: 'string', default: "''" },
       ],
       outputs: [],
     },
@@ -139,6 +265,48 @@ export const BUTTON_API: ComponentApi = {
     },
     { name: 'size', options: ['sm', 'md', 'lg', 'icon'], default: 'md' },
   ],
+};
+
+export const CARD_API: ComponentApi = {
+  directives: [
+    {
+      className: 'VoltCard',
+      selector: 'volt-card',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
+      outputs: [],
+    },
+    {
+      className: 'VoltCardHeader',
+      selector: 'volt-card-header',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
+      outputs: [],
+    },
+    {
+      className: 'VoltCardTitle',
+      selector: 'volt-card-title',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
+      outputs: [],
+    },
+    {
+      className: 'VoltCardDescription',
+      selector: 'volt-card-description',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
+      outputs: [],
+    },
+    {
+      className: 'VoltCardContent',
+      selector: 'volt-card-content',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
+      outputs: [],
+    },
+    {
+      className: 'VoltCardFooter',
+      selector: 'volt-card-footer',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
+      outputs: [],
+    },
+  ],
+  variants: undefined,
 };
 
 export const CHECKBOX_API: ComponentApi = {
@@ -168,6 +336,7 @@ export const COMBOBOX_API: ComponentApi = {
       className: 'VoltComboboxButton',
       selector: 'volt-combobox-button',
       inputs: [
+        { name: 'class', type: 'string', default: "''" },
         { name: 'id', type: 'string', default: '`volt-combobox-button-${++nextComboboxButtonId}`' },
       ],
       outputs: [],
@@ -176,6 +345,7 @@ export const COMBOBOX_API: ComponentApi = {
       className: 'VoltComboboxDropdown',
       selector: 'volt-combobox-dropdown',
       inputs: [
+        { name: 'class', type: 'string', default: "''" },
         {
           name: 'id',
           type: 'string',
@@ -187,13 +357,17 @@ export const COMBOBOX_API: ComponentApi = {
     {
       className: 'VoltComboboxInput',
       selector: 'input[voltComboboxInput]',
-      inputs: [{ name: 'id', type: 'unknown' }],
+      inputs: [
+        { name: 'class', type: 'string', default: "''" },
+        { name: 'id', type: 'unknown' },
+      ],
       outputs: [],
     },
     {
       className: 'VoltComboboxOption',
       selector: 'volt-combobox-option',
       inputs: [
+        { name: 'class', type: 'string', default: "''" },
         { name: 'value', type: 'unknown', required: true },
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
         { name: 'index', type: 'number | undefined' },
@@ -204,6 +378,7 @@ export const COMBOBOX_API: ComponentApi = {
       className: 'VoltCombobox',
       selector: 'volt-combobox',
       inputs: [
+        { name: 'class', type: 'string', default: "''" },
         { name: 'id', type: 'string', default: '`volt-combobox-${++nextComboboxId}`' },
         { name: 'label', type: 'string' },
         { name: 'value', type: 'unknown' },
@@ -242,19 +417,50 @@ export const COMBOBOX_API: ComponentApi = {
 export const DATE_PICKER_API: ComponentApi = {
   directives: [
     {
+      className: 'VoltDatePickerCell',
+      selector: 'volt-date-picker-cell',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
+      outputs: [],
+    },
+    {
+      className: 'VoltDatePickerDateButton',
+      selector: 'volt-date-picker-date-button',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
+      outputs: [],
+    },
+    {
+      className: 'VoltDatePickerGrid',
+      selector: 'volt-date-picker-grid',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
+      outputs: [],
+    },
+    {
       className: 'VoltDatePickerLabel',
       selector: 'volt-date-picker-label',
       inputs: [
+        { name: 'class', type: 'string', default: "''" },
         { name: 'id', type: 'string' },
-        { name: 'ariaLive', type: 'string', default: "'polite'" },
-        { name: 'aria-live', type: 'unknown' },
+        { name: 'aria-live', type: 'string', default: "'polite'" },
       ],
+      outputs: [],
+    },
+    {
+      className: 'VoltDatePickerNextMonth',
+      selector: 'volt-date-picker-next-month',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
+      outputs: [],
+    },
+    {
+      className: 'VoltDatePickerPreviousMonth',
+      selector: 'volt-date-picker-previous-month',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
       outputs: [],
     },
     {
       className: 'VoltDatePicker',
       selector: 'volt-date-picker',
       inputs: [
+        { name: 'class', type: 'string', default: "''" },
         { name: 'min', type: 'Date' },
         { name: 'max', type: 'Date' },
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
@@ -272,6 +478,7 @@ export const DATE_PICKER_API: ComponentApi = {
       className: 'VoltDateRangePicker',
       selector: 'volt-date-range-picker',
       inputs: [
+        { name: 'class', type: 'string', default: "''" },
         { name: 'min', type: 'Date' },
         { name: 'max', type: 'Date' },
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
@@ -304,9 +511,38 @@ export const DIALOG_API: ComponentApi = {
       outputs: [],
     },
     {
+      className: 'VoltDialogDescription',
+      selector: '[voltDialogDescription]',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
+      outputs: [],
+    },
+    {
       className: 'VoltDialogOverlay',
       selector: '[voltDialogOverlay]',
-      inputs: [{ name: 'closeOnClick', type: 'unknown' }],
+      inputs: [
+        { name: 'class', type: 'string', default: "''" },
+        { name: 'closeOnClick', type: 'unknown' },
+      ],
+      outputs: [],
+    },
+    {
+      className: 'VoltDialogRoot',
+      selector: 'ng-template[voltDialogRoot]',
+      inputs: [
+        { name: 'open', type: 'boolean', default: 'false' },
+        { name: 'role', type: 'VoltDialogRole', default: "'dialog'" },
+        { name: 'closeOnEscape', type: 'boolean', default: 'true', transform: 'booleanAttribute' },
+        { name: 'closeOnClick', type: 'boolean', default: 'true', transform: 'booleanAttribute' },
+      ],
+      outputs: [
+        { name: 'openChange', type: 'boolean' },
+        { name: 'closed', type: 'R | undefined' },
+      ],
+    },
+    {
+      className: 'VoltDialogTitle',
+      selector: '[voltDialogTitle]',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
       outputs: [],
     },
     {
@@ -325,6 +561,12 @@ export const DIALOG_API: ComponentApi = {
 export const DRAWER_API: ComponentApi = {
   directives: [
     {
+      className: 'VoltDrawerClose',
+      selector: 'volt-drawer-close',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
+      outputs: [],
+    },
+    {
       className: 'VoltDrawerContent',
       selector: '[voltDrawerContent]',
       inputs: [
@@ -336,9 +578,24 @@ export const DRAWER_API: ComponentApi = {
       outputs: [],
     },
     {
+      className: 'VoltDrawerDescription',
+      selector: '[voltDrawerDescription]',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
+      outputs: [],
+    },
+    {
       className: 'VoltDrawerOverlay',
       selector: '[voltDrawerOverlay]',
-      inputs: [{ name: 'closeOnClick', type: 'unknown' }],
+      inputs: [
+        { name: 'class', type: 'string', default: "''" },
+        { name: 'closeOnClick', type: 'unknown' },
+      ],
+      outputs: [],
+    },
+    {
+      className: 'VoltDrawerTitle',
+      selector: '[voltDrawerTitle]',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
       outputs: [],
     },
     {
@@ -360,8 +617,21 @@ export const DROPDOWN_MENU_API: ComponentApi = {
       className: 'VoltDropdownMenuItem',
       selector: 'volt-dropdown-menu-item',
       inputs: [
+        { name: 'class', type: 'string', default: "''" },
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
       ],
+      outputs: [],
+    },
+    {
+      className: 'VoltDropdownMenuLabel',
+      selector: 'volt-dropdown-menu-label',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
+      outputs: [],
+    },
+    {
+      className: 'VoltDropdownMenuSeparator',
+      selector: 'volt-dropdown-menu-separator',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
       outputs: [],
     },
     {
@@ -372,6 +642,7 @@ export const DROPDOWN_MENU_API: ComponentApi = {
         { name: 'placement', type: 'NgpMenuPlacement', default: "'right-start'" },
         { name: 'offset', type: 'number', default: '4' },
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
+        { name: 'class', type: 'string', default: "''" },
       ],
       outputs: [],
     },
@@ -407,6 +678,12 @@ export const DROPDOWN_MENU_API: ComponentApi = {
       ],
       outputs: [],
     },
+    {
+      className: 'VoltDropdownMenu',
+      selector: 'volt-dropdown-menu',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
+      outputs: [],
+    },
   ],
   variants: undefined,
 };
@@ -417,6 +694,7 @@ export const FILE_UPLOAD_API: ComponentApi = {
       className: 'VoltFileDropzone',
       selector: 'volt-file-dropzone',
       inputs: [
+        { name: 'class', type: 'string', default: "''" },
         { name: 'fileTypes', type: 'string | string[]' },
         { name: 'multiple', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
         { name: 'directory', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
@@ -452,12 +730,31 @@ export const FILE_UPLOAD_API: ComponentApi = {
 export const FORM_FIELD_API: ComponentApi = {
   directives: [
     {
+      className: 'VoltError',
+      selector: 'volt-error',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
+      outputs: [],
+    },
+    {
+      className: 'VoltHint',
+      selector: 'volt-hint',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
+      outputs: [],
+    },
+    {
       className: 'VoltLabel',
       selector: 'volt-label',
       inputs: [
         { name: 'error', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
         { name: 'htmlFor', type: 'string', default: "''" },
+        { name: 'class', type: 'string', default: "''" },
       ],
+      outputs: [],
+    },
+    {
+      className: 'VoltFormField',
+      selector: 'volt-form-field',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
       outputs: [],
     },
   ],
@@ -476,7 +773,11 @@ export const INPUT_API: ComponentApi = {
         { name: 'placeholder', type: 'string', default: "''" },
         { name: 'autocomplete', type: 'string', default: "''" },
         { name: 'ariaLabel', type: 'string', default: "''" },
+        { name: 'aria-label', type: 'string | undefined', default: 'undefined' },
         { name: 'value', type: 'string', default: "''" },
+        { name: 'size', type: "InputVariants['size']", default: "'md'" },
+        { name: 'state', type: "InputVariants['state']", default: "'default'" },
+        { name: 'class', type: 'string', default: "''" },
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
         { name: 'readonly', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
         { name: 'required', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
@@ -484,15 +785,25 @@ export const INPUT_API: ComponentApi = {
       outputs: [{ name: 'valueChange', type: 'string' }],
     },
   ],
-  variants: undefined,
+  variants: [
+    { name: 'size', options: ['sm', 'md', 'lg'], default: 'md' },
+    { name: 'state', options: ['default', 'error', 'success'], default: 'default' },
+  ],
 };
 
 export const INPUT_OTP_API: ComponentApi = {
   directives: [
     {
+      className: 'VoltInputOtpSlot',
+      selector: 'volt-input-otp-slot',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
+      outputs: [],
+    },
+    {
       className: 'VoltInputOtp',
       selector: 'volt-input-otp',
       inputs: [
+        { name: 'class', type: 'string', default: "''" },
         { name: 'value', type: 'string', default: "''" },
         { name: 'length', type: 'number', default: '6', transform: 'numberAttribute' },
         { name: 'pattern', type: 'string', default: "'[0-9]'" },
@@ -519,7 +830,10 @@ export const LISTBOX_API: ComponentApi = {
     {
       className: 'VoltListboxHeader',
       selector: 'volt-listbox-header',
-      inputs: [{ name: 'id', type: 'string' }],
+      inputs: [
+        { name: 'class', type: 'string', default: "''" },
+        { name: 'id', type: 'string' },
+      ],
       outputs: [],
     },
     {
@@ -530,13 +844,21 @@ export const LISTBOX_API: ComponentApi = {
         { name: 'value', type: 'T', required: true },
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
         { name: 'inset', type: "ListboxOptionVariants['inset']", default: 'false' },
+        { name: 'class', type: 'string', default: "''" },
       ],
+      outputs: [],
+    },
+    {
+      className: 'VoltListboxSection',
+      selector: 'volt-listbox-section',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
       outputs: [],
     },
     {
       className: 'VoltListbox',
       selector: 'volt-listbox',
       inputs: [
+        { name: 'class', type: 'string', default: "''" },
         { name: 'id', type: 'string' },
         { name: 'mode', type: 'NgpSelectionMode', default: "'single'" },
         { name: 'value', type: 'T[]', default: '[]' },
@@ -552,15 +874,37 @@ export const LISTBOX_API: ComponentApi = {
 export const METER_API: ComponentApi = {
   directives: [
     {
+      className: 'VoltMeterIndicator',
+      selector: 'volt-meter-indicator',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
+      outputs: [],
+    },
+    {
       className: 'VoltMeterLabel',
       selector: 'volt-meter-label',
-      inputs: [{ name: 'id', type: 'unknown' }],
+      inputs: [
+        { name: 'class', type: 'string', default: "''" },
+        { name: 'id', type: 'unknown' },
+      ],
+      outputs: [],
+    },
+    {
+      className: 'VoltMeterTrack',
+      selector: 'volt-meter-track',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
+      outputs: [],
+    },
+    {
+      className: 'VoltMeterValue',
+      selector: 'volt-meter-value',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
       outputs: [],
     },
     {
       className: 'VoltMeter',
       selector: 'volt-meter',
       inputs: [
+        { name: 'class', type: 'string', default: "''" },
         { name: 'value', type: 'number', default: '0', transform: 'numberAttribute' },
         { name: 'min', type: 'number', default: '0', transform: 'numberAttribute' },
         { name: 'max', type: 'number', default: '100', transform: 'numberAttribute' },
@@ -578,6 +922,7 @@ export const NAVIGATION_MENU_API: ComponentApi = {
       className: 'VoltNavigationMenuContentItem',
       selector: 'volt-navigation-menu-content-item',
       inputs: [
+        { name: 'class', type: 'string', default: "''" },
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
       ],
       outputs: [],
@@ -586,6 +931,7 @@ export const NAVIGATION_MENU_API: ComponentApi = {
       className: 'VoltNavigationMenuContent',
       selector: 'volt-navigation-menu-content',
       inputs: [
+        { name: 'class', type: 'string', default: "''" },
         { name: 'orientation', type: "'vertical' | 'horizontal'", default: "'vertical'" },
         { name: 'wrap', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
       ],
@@ -594,13 +940,17 @@ export const NAVIGATION_MENU_API: ComponentApi = {
     {
       className: 'VoltNavigationMenuItem',
       selector: 'volt-navigation-menu-item',
-      inputs: [{ name: 'value', type: 'string' }],
+      inputs: [
+        { name: 'class', type: 'string', default: "''" },
+        { name: 'value', type: 'string' },
+      ],
       outputs: [],
     },
     {
       className: 'VoltNavigationMenuLink',
       selector: 'a[voltNavigationMenuLink]',
       inputs: [
+        { name: 'class', type: 'string', default: "''" },
         { name: 'active', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
       ],
@@ -609,13 +959,17 @@ export const NAVIGATION_MENU_API: ComponentApi = {
     {
       className: 'VoltNavigationMenuList',
       selector: 'volt-navigation-menu-list',
-      inputs: [{ name: 'wrap', type: 'boolean', default: 'false', transform: 'booleanAttribute' }],
+      inputs: [
+        { name: 'class', type: 'string', default: "''" },
+        { name: 'wrap', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
+      ],
       outputs: [],
     },
     {
       className: 'VoltNavigationMenuTrigger',
       selector: 'volt-navigation-menu-trigger',
       inputs: [
+        { name: 'class', type: 'string', default: "''" },
         { name: 'content', type: 'NgpOverlayContent<unknown>', required: true },
         { name: 'placement', type: 'NavigationMenuPlacement', default: "'bottom-start'" },
         { name: 'offset', type: 'number', default: '4' },
@@ -629,6 +983,7 @@ export const NAVIGATION_MENU_API: ComponentApi = {
       className: 'VoltNavigationMenu',
       selector: 'volt-navigation-menu',
       inputs: [
+        { name: 'class', type: 'string', default: "''" },
         { name: 'orientation', type: "'horizontal' | 'vertical'", default: "'horizontal'" },
         { name: 'showDelay', type: 'number', default: '200' },
         { name: 'hideDelay', type: 'number', default: '150' },
@@ -646,6 +1001,7 @@ export const PAGINATION_API: ComponentApi = {
       className: 'VoltPaginationButton',
       selector: 'volt-pagination-button',
       inputs: [
+        { name: 'class', type: 'string', default: "''" },
         { name: 'page', type: 'number', default: '{ transform: numberAttribute }', required: true },
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
         { name: 'variant', type: "PaginationButtonVariants['variant']", default: "'default'" },
@@ -656,6 +1012,7 @@ export const PAGINATION_API: ComponentApi = {
       className: 'VoltPaginationFirst',
       selector: 'volt-pagination-first',
       inputs: [
+        { name: 'class', type: 'string', default: "''" },
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
       ],
       outputs: [],
@@ -664,6 +1021,7 @@ export const PAGINATION_API: ComponentApi = {
       className: 'VoltPaginationLast',
       selector: 'volt-pagination-last',
       inputs: [
+        { name: 'class', type: 'string', default: "''" },
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
       ],
       outputs: [],
@@ -672,6 +1030,7 @@ export const PAGINATION_API: ComponentApi = {
       className: 'VoltPaginationNext',
       selector: 'volt-pagination-next',
       inputs: [
+        { name: 'class', type: 'string', default: "''" },
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
       ],
       outputs: [],
@@ -680,6 +1039,7 @@ export const PAGINATION_API: ComponentApi = {
       className: 'VoltPaginationPrevious',
       selector: 'volt-pagination-previous',
       inputs: [
+        { name: 'class', type: 'string', default: "''" },
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
       ],
       outputs: [],
@@ -688,6 +1048,7 @@ export const PAGINATION_API: ComponentApi = {
       className: 'VoltPagination',
       selector: 'volt-pagination',
       inputs: [
+        { name: 'class', type: 'string', default: "''" },
         { name: 'page', type: 'number', default: '1' },
         { name: 'pageCount', type: 'number', default: '0', transform: 'numberAttribute' },
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
@@ -707,6 +1068,12 @@ export const POPOVER_API: ComponentApi = {
         { name: 'padding', type: 'number | undefined', default: '4' },
         { name: 'hidden', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
       ],
+      outputs: [],
+    },
+    {
+      className: 'VoltPopoverContent',
+      selector: 'volt-popover-content',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
       outputs: [],
     },
     {
@@ -754,13 +1121,23 @@ export const PROGRESS_API: ComponentApi = {
     {
       className: 'VoltProgressLabel',
       selector: 'volt-progress-label',
-      inputs: [{ name: 'id', type: 'unknown' }],
+      inputs: [
+        { name: 'class', type: 'string', default: "''" },
+        { name: 'id', type: 'unknown' },
+      ],
+      outputs: [],
+    },
+    {
+      className: 'VoltProgressValue',
+      selector: 'volt-progress-value',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
       outputs: [],
     },
     {
       className: 'VoltProgress',
       selector: 'volt-progress',
       inputs: [
+        { name: 'class', type: 'string', default: "''" },
         { name: 'value', type: 'number | null', default: 'null', transform: 'numberAttribute' },
         { name: 'min', type: 'number', default: '0', transform: 'numberAttribute' },
         { name: 'max', type: 'number', default: '100', transform: 'numberAttribute' },
@@ -782,6 +1159,7 @@ export const RADIO_API: ComponentApi = {
       className: 'VoltRadioGroup',
       selector: 'volt-radio-group',
       inputs: [
+        { name: 'class', type: 'string', default: "''" },
         { name: 'id', type: 'string' },
         { name: 'orientation', type: 'NgpOrientation', default: "'vertical'" },
         { name: 'value', type: 'string | null', default: 'null' },
@@ -798,6 +1176,7 @@ export const RADIO_API: ComponentApi = {
       className: 'VoltRadioItem',
       selector: 'volt-radio-item',
       inputs: [
+        { name: 'class', type: 'string', default: "''" },
         { name: 'value', type: 'string', required: true },
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
       ],
@@ -813,6 +1192,7 @@ export const RANGE_SLIDER_API: ComponentApi = {
       className: 'VoltRangeSlider',
       selector: 'volt-range-slider',
       inputs: [
+        { name: 'class', type: 'string', default: "''" },
         { name: 'low', type: 'number', default: '0', transform: 'numberAttribute' },
         { name: 'high', type: 'number', default: '100', transform: 'numberAttribute' },
         { name: 'min', type: 'number', default: '0', transform: 'numberAttribute' },
@@ -838,6 +1218,7 @@ export const RESIZABLE_API: ComponentApi = {
       className: 'VoltResizableHandle',
       selector: 'volt-resizable-handle',
       inputs: [
+        { name: 'class', type: 'string', default: "''" },
         { name: 'orientation', type: "'horizontal' | 'vertical'", default: "'horizontal'" },
         { name: 'maxSize', type: 'number | undefined', default: 'undefined', transform: 'value' },
       ],
@@ -862,6 +1243,27 @@ export const RESIZABLE_API: ComponentApi = {
   variants: undefined,
 };
 
+export const SEARCH_API: ComponentApi = {
+  directives: [
+    {
+      className: 'VoltSearchClear',
+      selector: 'volt-search-clear',
+      inputs: [
+        { name: 'aria-label', type: 'string | undefined', default: 'undefined' },
+        { name: 'class', type: 'string', default: "''" },
+      ],
+      outputs: [],
+    },
+    {
+      className: 'VoltSearch',
+      selector: 'volt-search',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
+      outputs: [],
+    },
+  ],
+  variants: undefined,
+};
+
 export const SELECT_API: ComponentApi = {
   directives: [
     {
@@ -869,7 +1271,14 @@ export const SELECT_API: ComponentApi = {
       selector: 'select[voltNativeSelect]',
       inputs: [
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
+        { name: 'class', type: 'string', default: "''" },
       ],
+      outputs: [],
+    },
+    {
+      className: 'VoltSelectContent',
+      selector: 'volt-select-content',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
       outputs: [],
     },
     {
@@ -878,7 +1287,20 @@ export const SELECT_API: ComponentApi = {
       inputs: [
         { name: 'value', type: 'unknown', default: 'undefined' },
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
+        { name: 'class', type: 'string', default: "''" },
       ],
+      outputs: [],
+    },
+    {
+      className: 'VoltSelectLabel',
+      selector: 'volt-select-label',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
+      outputs: [],
+    },
+    {
+      className: 'VoltSelectSeparator',
+      selector: 'volt-select-separator',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
       outputs: [],
     },
     {
@@ -887,6 +1309,8 @@ export const SELECT_API: ComponentApi = {
       inputs: [
         { name: 'placeholder', type: 'string', default: "'Select an option'" },
         { name: 'ariaLabel', type: 'string', default: "''" },
+        { name: 'aria-label', type: 'string | undefined', default: 'undefined' },
+        { name: 'class', type: 'string', default: "''" },
         { name: 'value', type: 'unknown', default: 'undefined' },
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
         { name: 'multiple', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
@@ -917,7 +1341,10 @@ export const SEPARATOR_API: ComponentApi = {
     {
       className: 'VoltSeparator',
       selector: 'volt-separator',
-      inputs: [{ name: 'orientation', type: "'horizontal' | 'vertical'", default: "'horizontal'" }],
+      inputs: [
+        { name: 'orientation', type: "'horizontal' | 'vertical'", default: "'horizontal'" },
+        { name: 'class', type: 'string', default: "''" },
+      ],
       outputs: [],
     },
   ],
@@ -947,6 +1374,7 @@ export const SLIDER_API: ComponentApi = {
       className: 'VoltSlider',
       selector: 'volt-slider',
       inputs: [
+        { name: 'class', type: 'string', default: "''" },
         { name: 'id', type: 'string' },
         { name: 'value', type: 'number', default: '0', transform: 'numberAttribute' },
         { name: 'min', type: 'number', default: '0', transform: 'numberAttribute' },
@@ -962,14 +1390,32 @@ export const SLIDER_API: ComponentApi = {
   variants: undefined,
 };
 
+export const SPINNER_API: ComponentApi = {
+  directives: [
+    {
+      className: 'VoltSpinner',
+      selector: 'volt-spinner',
+      inputs: [
+        { name: 'size', type: "SpinnerVariants['size']", default: "'md'" },
+        { name: 'label', type: 'string', default: "''" },
+        { name: 'class', type: 'string', default: "''" },
+      ],
+      outputs: [],
+    },
+  ],
+  variants: [{ name: 'size', options: ['sm', 'md', 'lg'], default: 'md' }],
+};
+
 export const SWITCH_API: ComponentApi = {
   directives: [
     {
       className: 'VoltSwitch',
       selector: 'volt-switch',
       inputs: [
+        { name: 'class', type: 'string', default: "''" },
         { name: 'id', type: 'string', default: '`volt-switch-${++nextSwitchId}`' },
         { name: 'ariaLabel', type: 'string', default: "''" },
+        { name: 'aria-label', type: 'string | undefined', default: 'undefined' },
         { name: 'checked', type: 'boolean', default: 'false' },
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
       ],
@@ -1038,19 +1484,32 @@ export const TABS_API: ComponentApi = {
     {
       className: 'VoltTabsContent',
       selector: 'volt-tabs-content',
-      inputs: [{ name: 'value', type: 'string', required: true }],
+      inputs: [
+        { name: 'class', type: 'string', default: "''" },
+        { name: 'value', type: 'string', required: true },
+      ],
+      outputs: [],
+    },
+    {
+      className: 'VoltTabsList',
+      selector: 'volt-tabs-list',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
       outputs: [],
     },
     {
       className: 'VoltTabsTrigger',
       selector: 'volt-tabs-trigger',
-      inputs: [{ name: 'value', type: 'string', required: true }],
+      inputs: [
+        { name: 'class', type: 'string', default: "''" },
+        { name: 'value', type: 'string', required: true },
+      ],
       outputs: [],
     },
     {
       className: 'VoltTabs',
       selector: 'volt-tabs',
       inputs: [
+        { name: 'class', type: 'string', default: "''" },
         { name: 'value', type: 'string | undefined', default: 'undefined' },
         { name: 'orientation', type: "'horizontal' | 'vertical'", default: "'horizontal'" },
         {
@@ -1088,6 +1547,8 @@ export const TEXTAREA_API: ComponentApi = {
         { name: 'readonly', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
         { name: 'required', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
         { name: 'value', type: 'string', default: "''" },
+        { name: 'aria-label', type: 'string | undefined', default: 'undefined' },
+        { name: 'class', type: 'string', default: "''" },
       ],
       outputs: [{ name: 'valueChange', type: 'string' }],
     },
@@ -1095,7 +1556,7 @@ export const TEXTAREA_API: ComponentApi = {
   variants: [
     { name: 'variant', options: ['default', 'filled', 'ghost'], default: 'default' },
     { name: 'size', options: ['sm', 'md', 'lg'], default: 'md' },
-    { name: 'state', options: ['default', 'error'], default: 'default' },
+    { name: 'state', options: ['default', 'error', 'success'], default: 'default' },
   ],
 };
 
@@ -1104,13 +1565,28 @@ export const TOAST_API: ComponentApi = {
     {
       className: 'VoltToastClose',
       selector: 'volt-toast-close',
-      inputs: [],
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
       outputs: [{ name: 'closeChange', type: 'void' }],
+    },
+    {
+      className: 'VoltToastDescription',
+      selector: 'volt-toast-description',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
+      outputs: [],
+    },
+    {
+      className: 'VoltToastTitle',
+      selector: 'volt-toast-title',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
+      outputs: [],
     },
     {
       className: 'VoltToast',
       selector: 'volt-toast',
-      inputs: [{ name: 'variant', type: "ToastVariants['variant']", default: "'default'" }],
+      inputs: [
+        { name: 'variant', type: "ToastVariants['variant']", default: "'default'" },
+        { name: 'class', type: 'string', default: "''" },
+      ],
       outputs: [],
     },
   ],
@@ -1149,6 +1625,7 @@ export const TOGGLE_GROUP_API: ComponentApi = {
       className: 'VoltToggleGroupItem',
       selector: 'volt-toggle-group-item',
       inputs: [
+        { name: 'class', type: 'string', default: "''" },
         { name: 'value', type: 'string', required: true },
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
         { name: 'variant', type: "ToggleGroupItemVariants['variant']", default: "'default'" },
@@ -1160,6 +1637,7 @@ export const TOGGLE_GROUP_API: ComponentApi = {
       className: 'VoltToggleGroup',
       selector: 'volt-toggle-group',
       inputs: [
+        { name: 'class', type: 'string', default: "''" },
         { name: 'value', type: 'string[]', default: '[]' },
         { name: 'type', type: "'single' | 'multiple'", default: "'single'" },
         { name: 'orientation', type: "'horizontal' | 'vertical'", default: "'horizontal'" },
@@ -1185,13 +1663,19 @@ export const TOOLBAR_API: ComponentApi = {
     {
       className: 'VoltToolbarButton',
       selector: '[voltToolbarButton]',
-      inputs: [{ name: 'disabled', type: 'unknown' }],
+      inputs: [
+        { name: 'class', type: 'string', default: "''" },
+        { name: 'disabled', type: 'unknown' },
+      ],
       outputs: [],
     },
     {
       className: 'VoltToolbar',
       selector: 'volt-toolbar',
-      inputs: [{ name: 'orientation', type: 'NgpOrientation', default: "'horizontal'" }],
+      inputs: [
+        { name: 'class', type: 'string', default: "''" },
+        { name: 'orientation', type: 'NgpOrientation', default: "'horizontal'" },
+      ],
       outputs: [],
     },
   ],
@@ -1207,6 +1691,12 @@ export const TOOLTIP_API: ComponentApi = {
         { name: 'padding', type: 'number | undefined', default: '4' },
         { name: 'hidden', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
       ],
+      outputs: [],
+    },
+    {
+      className: 'VoltTooltipContent',
+      selector: 'volt-tooltip-content',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
       outputs: [],
     },
     {
@@ -1258,11 +1748,47 @@ export const SIDEBAR_API: ComponentApi = {
       inputs: [
         { name: 'width', type: 'string' },
         { name: 'collapsedWidth', type: 'string' },
+        { name: 'class', type: 'string', default: "''" },
+      ],
+      outputs: [],
+    },
+    {
+      className: 'VoltSidebarHeader',
+      selector: 'volt-sidebar-header',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
+      outputs: [],
+    },
+    {
+      className: 'VoltSidebarContent',
+      selector: 'volt-sidebar-content',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
+      outputs: [],
+    },
+    {
+      className: 'VoltSidebarGroup',
+      selector: 'volt-sidebar-group',
+      inputs: [
         { name: 'label', type: 'string' },
+        { name: 'class', type: 'string', default: "''" },
+      ],
+      outputs: [],
+    },
+    {
+      className: 'VoltSidebarItem',
+      selector: 'volt-sidebar-item',
+      inputs: [
         { name: 'routerLink', type: 'string', required: true },
         { name: 'queryParams', type: 'Record<string, string> | undefined', default: 'undefined' },
+        { name: 'label', type: 'string', required: true },
         { name: 'exact', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
+        { name: 'class', type: 'string', default: "''" },
       ],
+      outputs: [],
+    },
+    {
+      className: 'VoltSidebarFooter',
+      selector: 'volt-sidebar-footer',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
       outputs: [],
     },
   ],

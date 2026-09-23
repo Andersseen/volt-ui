@@ -142,4 +142,15 @@ describe('VoltSwitch', () => {
 
     expect(fixture.componentInstance.enabled).toBe(true);
   });
+
+  it('names the native switch from aria-label written on the host', async () => {
+    const { container } = await render(`<volt-switch id="notify" aria-label="Notifications" />`, {
+      imports: [VoltSwitch],
+    });
+
+    const control = screen.getByRole('switch', { name: 'Notifications' });
+    expect(control).toHaveAttribute('id', 'notify');
+    expect(container.querySelector('volt-switch')).not.toHaveAttribute('aria-label');
+    expect(container.querySelectorAll('#notify')).toHaveLength(1);
+  });
 });

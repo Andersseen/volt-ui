@@ -11,9 +11,18 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NgpTextarea } from 'ng-primitives/textarea';
+import { uniqueId } from 'ng-primitives/utils';
 import { injectFormControlState } from '../../form-control-state';
+import { forwardAttributesFromHost, forwardClassFromHost } from '../../host-forwarding';
 import { textareaVariants, type TextareaVariants } from './variants';
+import { cn } from '../../utils';
 
+/**
+ * Multi-line text input bound with `[(value)]`, `formControl` or `ngModel`.
+ *
+ * `class`, `id` and `aria-label` belong to the native `<textarea>`: they are applied there and
+ * removed from the host.
+ */
 @Component({
   selector: 'volt-textarea',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -28,14 +37,15 @@ import { textareaVariants, type TextareaVariants } from './variants';
   template: `
     <textarea
       ngpTextarea
-      [id]="id()"
+      [id]="controlId()"
       [name]="name()"
       [placeholder]="placeholder()"
       [readonly]="readonly()"
       [required]="required()"
       [disabled]="isDisabled()"
       [class]="classes()"
-      [attr.aria-invalid]="state() === 'error' || formControlState.invalid() ? 'true' : null"
+      [attr.aria-label]="ariaLabel() || null"
+      [attr.aria-invalid]="invalid() ? 'true' : null"
       [style.resize]="resize()"
       [attr.rows]="rows()"
       [value]="value()"
@@ -59,6 +69,13 @@ export class VoltTextarea implements ControlValueAccessor {
   readonly readonly = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly required = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly value = model('');
+  readonly ariaLabel = input<string | undefined>(undefined, { alias: 'aria-label' });
+  /** Classes for the native `<textarea>`, merged over the variants with `cn()`. */
+  readonly class = input<string>('');
+
+  /** A generated id keeps `<volt-label>` / FormField associations working without one. */
+  private readonly generatedId = uniqueId('volt-textarea');
+  protected readonly controlId = computed(() => this.id() || this.generatedId);
 
   private readonly controlDisabled = signal(false);
   protected readonly isDisabled = computed(() => this.disabled() || this.controlDisabled());
@@ -67,12 +84,25 @@ export class VoltTextarea implements ControlValueAccessor {
   protected onTouched: () => void = () => {};
 
   protected readonly classes = computed(() =>
-    textareaVariants({
-      variant: this.variant(),
-      size: this.size(),
-      state: this.state(),
-    })
+    cn(
+      textareaVariants({
+        variant: this.variant(),
+        size: this.size(),
+        state: this.state(),
+      }),
+      this.class()
+    )
   );
+
+  constructor() {
+    forwardClassFromHost();
+    forwardAttributesFromHost('id', 'aria-label');
+  }
+
+  /** Not a `computed`: Forms' touched/invalid flags are not signals. */
+  protected invalid(): boolean {
+    return this.state() === 'error' || this.formControlState.invalid();
+  }
 
   protected onInput(event: Event): void {
     const nextValue = (event.target as HTMLTextAreaElement).value;

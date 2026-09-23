@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { VoltButton } from 'volt';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { VoltButton, VoltNativeButton, VoltSpinner } from 'volt';
 import { ApiReference } from '../../../../components/api-reference';
 import { CodePanel } from '../../../../components/code-panel';
 import { BUTTON_API } from '../../../../lib/api-reference.generated';
@@ -12,7 +13,10 @@ import { injectAppI18n } from '../../../../i18n/i18n';
   selector: 'app-button-demo',
   standalone: true,
   imports: [
+    RouterLink,
     VoltButton,
+    VoltNativeButton,
+    VoltSpinner,
     CodePanel,
     ApiReference,
     LmnChevronRightIcon,
@@ -30,4 +34,11 @@ export default class ButtonDemo {
   readonly buttonCode = BUTTON_SNIPPET;
   readonly buttonUsage = BUTTON_USAGE;
   readonly buttonApi = BUTTON_API;
+
+  protected readonly saving = signal(false);
+
+  protected save(): void {
+    this.saving.set(true);
+    setTimeout(() => this.saving.set(false), 1500);
+  }
 }

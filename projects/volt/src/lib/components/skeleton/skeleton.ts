@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { skeletonVariants, type SkeletonVariants } from './variants';
+import { cn } from '../../utils';
 
 @Component({
   selector: 'volt-skeleton',
@@ -17,7 +18,7 @@ export class VoltSkeleton {
   readonly width = input<string>('100%');
   readonly height = input<string>('1rem');
 
-  protected readonly classes = computed(
-    () => skeletonVariants({ variant: this.variant() }) + ' ' + this.class()
+  protected readonly classes = computed(() =>
+    cn(skeletonVariants({ variant: this.variant() }), this.class())
   );
 }

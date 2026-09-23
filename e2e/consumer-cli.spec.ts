@@ -28,5 +28,30 @@ test.describe('volt add CLI consumer fixture', () => {
     const cliButton = page.getByTestId('cli-button');
     await expect(cliButton).toBeVisible();
     await expect(cliButton).toHaveText('CLI-copied button');
+
+    // 1.1 surface after the ui* transform.
+    await expect(page.getByRole('link', { name: 'Docs' })).toHaveAttribute(
+      'data-variant',
+      'outline'
+    );
+    const px = (testId: string, selector: string, prop: string) =>
+      page
+        .getByTestId(testId)
+        .locator(selector)
+        .first()
+        .evaluate((el, p) => getComputedStyle(el).getPropertyValue(p), prop);
+    expect(
+      await page
+        .getByTestId('cli-card-content')
+        .evaluate(el => getComputedStyle(el).getPropertyValue('padding-top'))
+    ).toBe('12px');
+    expect(await px('cli-input', 'input', 'width')).toBe('96px');
+    await expect(page.getByRole('textbox', { name: 'Quantity' })).toBeVisible();
+    await expect(page.getByRole('status').filter({ hasText: 'Copied' })).toBeVisible();
+    await expect(page.getByRole('status').filter({ hasText: 'Loading' })).toBeAttached();
+
+    await page.getByTestId('cli-toast').click();
+    await expect(page.getByRole('status').filter({ hasText: 'CLI toast' })).toBeVisible();
+    expect(runtimeErrors).toEqual([]);
   });
 });
