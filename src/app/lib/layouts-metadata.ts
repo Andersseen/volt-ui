@@ -1,4 +1,4 @@
-import type { TranslationKey } from '../i18n/i18n';
+import type { PlainTranslationKey } from '../i18n/i18n';
 
 /**
  * The layouts catalog.
@@ -19,12 +19,12 @@ export interface LayoutMetadata {
   /** Route segment under `/docs/layouts/`. */
   readonly slug: string;
   readonly path: string;
-  readonly labelKey: TranslationKey;
+  readonly labelKey: PlainTranslationKey;
   readonly category: LayoutCategory['id'];
   /** One line for the sidebar and the gallery card. */
-  readonly taglineKey: TranslationKey;
+  readonly taglineKey: PlainTranslationKey;
   /** The arrangement in words, for the visitor deciding whether this is their shape. */
-  readonly structureKey: TranslationKey;
+  readonly structureKey: PlainTranslationKey;
   /** Volt components the layout is assembled from, linked back to their own docs. */
   readonly atoms: readonly LayoutAtom[];
 }
@@ -36,7 +36,7 @@ export interface LayoutAtom {
 
 export interface LayoutCategory {
   readonly id: string;
-  readonly labelKey: TranslationKey;
+  readonly labelKey: PlainTranslationKey;
 }
 
 export const LAYOUT_CATEGORIES: readonly LayoutCategory[] = [

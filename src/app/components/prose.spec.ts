@@ -16,15 +16,15 @@ describe('Prose', () => {
     expect(screen.getByText(/control the theme at runtime/)).toBeInTheDocument();
   });
 
-  it('substitutes params before splitting, so a slot can carry an identifier', async () => {
+  it('marks up a message the caller translated with params', async () => {
+    // The caller's typed `t()` substitutes the params; Prose only splits the result, so a
+    // slot can still carry an identifier.
     await render(Prose, {
       providers: [provideRouter([])],
-      componentInputs: {
-        key: 'ui.codePanel.copyNoteDep',
-        params: { dep: 'ng-primitives/slider' },
-      },
+      componentInputs: { text: 'The component uses `ng-primitives/slider`.' },
     });
 
-    expect(screen.getByText(/ng-primitives\/slider/)).toBeInTheDocument();
+    const code = screen.getByText('ng-primitives/slider');
+    expect(code.tagName).toBe('CODE');
   });
 });

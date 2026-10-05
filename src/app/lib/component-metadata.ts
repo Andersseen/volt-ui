@@ -1,4 +1,4 @@
-import type { TranslationKey } from '../i18n/i18n';
+import type { PlainTranslationKey } from '../i18n/i18n';
 
 export type ComponentStability = 'stable' | 'beta' | 'experimental';
 
@@ -10,16 +10,16 @@ export type ComponentStability = 'stable' | 'beta' | 'experimental';
  */
 export interface ComponentMetadata {
   name: string;
-  labelKey: TranslationKey;
+  labelKey: PlainTranslationKey;
   path: string;
-  descriptionKey: TranslationKey;
+  descriptionKey: PlainTranslationKey;
   /** Set only where the full name does not fit a sidebar row. */
-  shortLabelKey?: TranslationKey;
+  shortLabelKey?: PlainTranslationKey;
   stability: ComponentStability;
 }
 
 export interface ComponentMetadataGroup {
-  titleKey: TranslationKey;
+  titleKey: PlainTranslationKey;
   components: ComponentMetadata[];
 }
 

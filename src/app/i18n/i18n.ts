@@ -1,5 +1,5 @@
-import { createHttpMessageLoader, defineRemoteI18n, type MessageParams } from '@etyma/core';
-import { injectI18n, type EtymaI18n } from '@etyma/angular';
+import { createHttpMessageLoader, defineRemoteI18n } from '@etyma/core';
+import { injectI18n } from '@etyma/angular';
 
 import contract from './etyma.generated';
 
@@ -39,6 +39,24 @@ export const appI18n = defineRemoteI18n({
 });
 
 export type TranslationKey = (typeof appI18n.keys)[number];
-export type TranslationParams = MessageParams;
 
-export const injectAppI18n = (): EtymaI18n<TranslationKey> => injectI18n(appI18n);
+/**
+ * The params each parameterized message needs, from the generated contract: its
+ * `{$variables}` by name, and their value types where an MF2 function proves one
+ * (`{$year :number}` takes a number, not a `Date`). Keys without variables are absent.
+ */
+type TranslationParamsMap = NonNullable<(typeof appI18n)['messageParams']>;
+
+/**
+ * A key whose message has no variables, so `t(key)` needs nothing else.
+ *
+ * Static data — the sidebar, the component catalog, block and layout metadata — holds
+ * labels, and a label never takes params. Typing those fields as every `TranslationKey`
+ * would let one hold `language.current`, which `t()` cannot be called with on its own;
+ * this type is the honest one, and it follows the contract when Glossa adds a variable.
+ */
+export type PlainTranslationKey = Exclude<TranslationKey, keyof TranslationParamsMap>;
+
+// No return annotation: `EtymaI18n<TranslationKey>` would default its second type
+// argument and silently erase every per-key param type the contract carries.
+export const injectAppI18n = () => injectI18n(appI18n);

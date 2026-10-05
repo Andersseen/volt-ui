@@ -57,8 +57,7 @@ const MCP_URL = 'https://volt-ui.pages.dev/api/mcp';
               </h3>
               <p class="text-sm text-muted-foreground mt-1">
                 <app-prose
-                  key="guide.mcpPage.mcpBody"
-                  [params]="{ url: mcpUrl }"
+                  [text]="t('guide.mcpPage.mcpBody', { url: mcpUrl })"
                   codeClass="bg-muted px-1 rounded"
                 />
               </p>
