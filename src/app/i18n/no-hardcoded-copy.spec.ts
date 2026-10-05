@@ -205,7 +205,7 @@ function literalCopy(markup: string): string[] {
   }
 
   for (const match of scope.matchAll(
-    /(?<![[\w])(title|description|placeholder|aria-label|alt|label)="([^"]*)"/g
+    /(?<![[\w])(title|description|placeholder|aria-label|alt|label|text)="([^"]*)"/g
   )) {
     // A static attribute holding an interpolation is already translated.
     if (/[A-Za-z]{2}/.test(match[2]) && !match[2].includes('{{')) {

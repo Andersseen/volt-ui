@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { injectAppI18n, type TranslationKey } from '../../../i18n/i18n';
+import { injectAppI18n, type PlainTranslationKey } from '../../../i18n/i18n';
 import { RouterLink } from '@angular/router';
 import { Prose } from '../../../components/prose';
 
@@ -9,11 +9,11 @@ import { Prose } from '../../../components/prose';
  */
 interface RoadmapItem {
   order: number;
-  titleKey: TranslationKey;
+  titleKey: PlainTranslationKey;
   scope: 'Library' | 'Docs site';
   status: 'Next' | 'Planned' | 'Exploring';
-  summaryKey: TranslationKey;
-  detailKeys: readonly TranslationKey[];
+  summaryKey: PlainTranslationKey;
+  detailKeys: readonly PlainTranslationKey[];
 }
 
 @Component({

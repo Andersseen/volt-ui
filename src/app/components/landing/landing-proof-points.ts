@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { injectAppI18n, type TranslationKey } from '../../i18n/i18n';
+import { injectAppI18n, type PlainTranslationKey } from '../../i18n/i18n';
 import { SITE_STATS } from '../../lib/generated/site-stats';
 import { MOTION } from '../../lib/motion';
 import { Reveal } from '../reveal';
@@ -8,7 +8,7 @@ import { Reveal } from '../reveal';
 interface ProofPoint {
   readonly value: string;
   /** Typed, so a renamed key breaks the build rather than one language's page. */
-  readonly key: TranslationKey;
+  readonly key: PlainTranslationKey;
 }
 
 @Component({

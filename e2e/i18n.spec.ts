@@ -49,9 +49,12 @@ test.describe('Localised site', () => {
   });
 
   test('redirects duplicate source-locale URLs to the unprefixed route', async ({ page }) => {
-    await page.goto('/en/docs?tab=api#usage');
+    // Not `/en/docs`: Volt's own `/docs` redirects to `/docs/introduction`, and an Angular
+    // `redirectTo` drops the query and fragment — so that URL could never end where this
+    // asserts, and only passed against `vite preview` by catching the URL mid-navigation.
+    await page.goto('/en/docs/themes?tab=api#usage');
 
-    await expect(page).toHaveURL(/\/docs\?tab=api#usage$/);
+    await expect(page).toHaveURL(/\/docs\/themes\?tab=api#usage$/);
     await expect(page.locator('html')).toHaveAttribute('lang', 'en');
   });
 
@@ -155,12 +158,12 @@ test.describe('Localised site', () => {
     expect(await ukrainian.text()).toContain('Документація');
   });
 
+  // Etyma 0.1.0 briefly reset translated SSR output to the source locale during hydration.
+  // 0.1.1 fixed it by transferring the active locale with its catalogs, but this test kept a
+  // stale `test.fail` until 0.5 — it only runs against Wrangler, which CI does not use. It
+  // now guards that transfer.
   test('hydrates without a source-language flash or mismatch', async ({ page }) => {
     test.skip(!RUNS_SSR, 'Hydration transfer is only meaningful against the SSR server.');
-    test.fail(
-      RUNS_SSR,
-      'Etyma 0.1.0 briefly resets translated SSR output to the source locale during hydration.'
-    );
 
     const problems: string[] = [];
 

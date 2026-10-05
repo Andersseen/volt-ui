@@ -1,4 +1,4 @@
-import type { TranslationKey } from '../i18n/i18n';
+import type { PlainTranslationKey } from '../i18n/i18n';
 
 /**
  * The blocks catalog.
@@ -17,21 +17,21 @@ import type { TranslationKey } from '../i18n/i18n';
  */
 export interface BlockCategory {
   readonly id: string;
-  readonly labelKey: TranslationKey;
+  readonly labelKey: PlainTranslationKey;
   /** Shown once above the category, so the cards underneath do not each re-explain it. */
-  readonly blurbKey: TranslationKey;
+  readonly blurbKey: PlainTranslationKey;
 }
 
 export interface BlockMetadata {
   /** Route segment under `/docs/blocks/`. */
   readonly slug: string;
   readonly path: string;
-  readonly labelKey: TranslationKey;
+  readonly labelKey: PlainTranslationKey;
   readonly category: BlockCategory['id'];
   /** One line for the gallery card. */
-  readonly taglineKey: TranslationKey;
+  readonly taglineKey: PlainTranslationKey;
   /** What actually moves, in the visitor's terms. Shown on the block's own page. */
-  readonly motionKey: TranslationKey;
+  readonly motionKey: PlainTranslationKey;
   /** Volt components the block is built from, linked back to their own docs. */
   readonly atoms: readonly BlockAtom[];
 }
@@ -42,7 +42,7 @@ export interface BlockAtom {
 }
 
 export interface BlockGroup {
-  readonly headingKey: TranslationKey;
+  readonly headingKey: PlainTranslationKey;
   readonly blocks: readonly BlockMetadata[];
 }
 
@@ -264,8 +264,8 @@ export const BLOCK_GROUPS: readonly BlockGroup[] = BLOCK_CATEGORIES.map(category
  * missing, and finding out later is worse than being told now.
  */
 export const UPCOMING_BLOCKS: readonly {
-  readonly labelKey: TranslationKey;
-  readonly taglineKey: TranslationKey;
+  readonly labelKey: PlainTranslationKey;
+  readonly taglineKey: PlainTranslationKey;
 }[] = [
   {
     labelKey: 'blocks.upcoming.logoCloud.label',

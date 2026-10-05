@@ -337,7 +337,7 @@ When adding or editing a component, both snippet files must be updated.
 
 ```bash
 pnpm lint          # ESLint for .ts and .html
-pnpm typecheck     # tsc --noEmit
+pnpm typecheck     # tsc --noEmit, then ngc for strict template checks
 pnpm test:run      # Vitest unit tests
 pnpm build:lib     # ng-packagr library build
 pnpm test:e2e:ci   # Build + Playwright smoke tests

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { LmnPackageIcon, LmnShieldIcon, LmnSparklesIcon } from 'lumen-icons';
-import { injectAppI18n, type TranslationKey } from '../../i18n/i18n';
+import { injectAppI18n, type PlainTranslationKey } from '../../i18n/i18n';
 import { VoltBadge, VoltCard, VoltCardContent, VoltCardHeader } from 'volt';
 import { SITE_STATS } from '../../lib/generated/site-stats';
 import { MOTION } from '../../lib/motion';
@@ -10,8 +10,8 @@ import { Reveal } from '../reveal';
 interface Feature {
   readonly icon: string;
   /** Typed, so a renamed key breaks the build rather than the Spanish page. */
-  readonly titleKey: TranslationKey;
-  readonly bodyKey: TranslationKey;
+  readonly titleKey: PlainTranslationKey;
+  readonly bodyKey: PlainTranslationKey;
   readonly detail: string;
 }
 

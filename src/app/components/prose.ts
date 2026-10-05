@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { injectAppI18n, type TranslationKey, type TranslationParams } from '../i18n/i18n';
+import { injectAppI18n, type PlainTranslationKey } from '../i18n/i18n';
 
 type SegmentKind = 'text' | 'code' | 'strong' | 'link';
 
@@ -36,6 +36,11 @@ const MARKED = /`([^`]+)`|\*\*([^*]+)\*\*|\[([^\]]+)\]\(([^)]+)\)/g;
  * There is no escape sequence. None of the site's copy contains a literal backtick, a
  * doubled asterisk or a bracket-paren pair, and an unpaired mark renders as itself rather
  * than breaking the sentence.
+ *
+ * A message with variables is translated by the caller and handed over as `text`:
+ * `<app-prose [text]="t('guide.mcpPage.mcpBody', { url })" />`. The caller's `t()` checks
+ * that key and its params together; a `key` input beside an independent `params` bag
+ * could not, since any key could then be paired with any params.
  */
 @Component({
   selector: 'app-prose',
@@ -67,8 +72,10 @@ const MARKED = /`([^`]+)`|\*\*([^*]+)\*\*|\[([^\]]+)\]\(([^)]+)\)/g;
 export class Prose {
   private readonly translations = injectAppI18n();
 
-  readonly key = input.required<TranslationKey>();
-  readonly params = input<TranslationParams | undefined>(undefined);
+  /** A message with no variables. Set this or `text`. */
+  readonly key = input<PlainTranslationKey>();
+  /** An already translated message, for one with variables. Set this or `key`. */
+  readonly text = input<string>();
   readonly codeClass = input<string>('px-1.5 py-0.5 bg-muted rounded');
   readonly strongClass = input<string>('text-foreground font-medium');
   readonly linkClass = input<string>('text-primary underline-offset-4 hover:underline');
@@ -81,7 +88,8 @@ export class Prose {
   }
 
   protected readonly segments = computed<ProseSegment[]>(() => {
-    const source = this.translations.t(this.key(), this.params());
+    const key = this.key();
+    const source = this.text() ?? (key === undefined ? '' : this.translations.t(key));
     const segments: ProseSegment[] = [];
     let cursor = 0;
 

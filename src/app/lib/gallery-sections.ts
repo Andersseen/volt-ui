@@ -1,7 +1,7 @@
 import type { DocsSidebarGroup } from '../components/docs-sidebar-nav';
 import { BLOCK_GROUPS } from './blocks-metadata';
 import { LAYOUT_GROUPS } from './layouts-metadata';
-import type { TranslationKey } from '../i18n/i18n';
+import type { PlainTranslationKey } from '../i18n/i18n';
 
 /**
  * The two halves of the gallery.
@@ -24,10 +24,10 @@ export interface GallerySection {
    * strings can only ever be shown in English — keeping the key here is what lets the same
    * definition serve all three languages.
    */
-  readonly labelKey: TranslationKey;
-  readonly titleKey: TranslationKey;
-  readonly descriptionKey: TranslationKey;
-  readonly browseKey: TranslationKey;
+  readonly labelKey: PlainTranslationKey;
+  readonly titleKey: PlainTranslationKey;
+  readonly descriptionKey: PlainTranslationKey;
+  readonly browseKey: PlainTranslationKey;
   readonly groups: readonly DocsSidebarGroup[];
 }
 

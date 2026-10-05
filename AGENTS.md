@@ -84,9 +84,11 @@ Translation content is managed by **Glossa**, not this repo:
   store production translation content locally, and does not have a sync script, client, or
   cache for it — `@etyma/core`'s HTTP loader talks to Glossa's public delivery endpoint
   directly.
-- The typed key contract (`src/app/i18n/etyma.generated.ts`) is generated at `vite dev`/
+- The typed message contract (`src/app/i18n/etyma.generated.ts`) is generated at `vite dev`/
   `vite build` time by `@etyma/tooling`'s `etymaRemoteContract()` plugin, wired in
-  `vite.config.ts`. It is committed (keys only, no translation values) so `pnpm typecheck`,
+  `vite.config.ts`. It carries the exact keys, the `{$variables}` each source message takes,
+  and the raw MF2 functions they reach (`{$year :number}`) — never translation values. It is
+  committed so `pnpm typecheck`,
   the editor's TS server, and a build during a Glossa outage all still have a last-known
   contract. **Do not hand-edit it.** After a source-locale key is added or removed through
   Glossa, restart `pnpm dev` or run `pnpm build` so Etyma refreshes it — there is no watcher
@@ -97,14 +99,21 @@ Translation content is managed by **Glossa**, not this repo:
   (see `.env.example`); the token is a developer/agent secret, never committed, never bundled
   into the site, and not required for the site itself to build or run. Read a translation
   before overwriting it — Glossa has revision/concurrency protection.
-- `t()` is typed against the generated contract, so `t('nav.dcos')` does not compile.
+- `t()` is typed against the generated contract, so `t('nav.dcos')` does not compile, nor do
+  `t('language.current')` without `{ name }` or `t('footer.rights', { year: new Date() })`.
+  `pnpm typecheck` runs `ngc` as well as `tsc` so this reaches template calls too; `tsc`
+  alone never reads a template. `src/app/i18n/i18n.typecheck.ts` keeps those guarantees
+  from silently eroding — don't annotate `injectAppI18n()`'s return type, which would erase
+  the per-key params.
 - Static data — the component catalog, the blocks and layouts metadata, the sidebar — carries
-  `TranslationKey` fields (`labelKey`, `descriptionKey`, …), never text. A `const` has no
+  `PlainTranslationKey` fields (`labelKey`, `descriptionKey`, …), never text: keys whose
+  message has no variables, so `t(item.labelKey)` is always callable. A `const` has no
   injector and so can never call `t()` itself.
 - A sentence containing inline code, emphasis or a link stays **one** key and uses
   `<app-prose>`, which reads Markdown-style marks: `` `code` ``, `**bold**`,
   `[text](/docs/path)`. Splitting a sentence at its markup produces fragments no translator
-  can reassemble.
+  can reassemble. A message with variables is translated by the caller, which checks its
+  params: `<app-prose [text]="t('guide.mcpPage.mcpBody', { url })" />`.
 - `src/app/i18n/__fixtures__/{en,es,uk}.json` is a **test-only** snapshot the unit test
   suite mocks `fetch` against (see `test-setup.ts`), so component specs that render real
   copy don't need a live Glossa connection. It is never imported by production code and can

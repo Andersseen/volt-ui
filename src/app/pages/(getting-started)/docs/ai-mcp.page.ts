@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { LmnCheckIcon, LmnExternalLinkIcon, LmnListIcon, LmnSparklesIcon } from 'lumen-icons';
 import { Prose } from '../../../components/prose';
-import { injectAppI18n, type TranslationKey } from '../../../i18n/i18n';
+import { injectAppI18n, type PlainTranslationKey } from '../../../i18n/i18n';
 
 const MCP_URL = 'https://volt-ui.pages.dev/api/mcp';
 
@@ -25,8 +25,7 @@ const MCP_URL = 'https://volt-ui.pages.dev/api/mcp';
             <h3 class="font-semibold">{{ t('guide.aiMcpPage.whatTitle') }}</h3>
             <p class="text-sm text-muted-foreground mt-1">
               <app-prose
-                key="guide.aiMcpPage.whatBody"
-                [params]="{ url: mcpUrl }"
+                [text]="t('guide.aiMcpPage.whatBody', { url: mcpUrl })"
                 codeClass="bg-muted px-1 rounded"
               />
             </p>
@@ -198,7 +197,7 @@ export default class AiMcpPage {
     },
   ];
 
-  readonly examplePromptKeys: readonly TranslationKey[] = [
+  readonly examplePromptKeys: readonly PlainTranslationKey[] = [
     'guide.aiMcpPage.examples.e1',
     'guide.aiMcpPage.examples.e2',
     'guide.aiMcpPage.examples.e3',

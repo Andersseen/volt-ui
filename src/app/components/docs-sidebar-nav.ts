@@ -9,7 +9,7 @@ import {
 } from 'ng-primitives/dialog';
 import { LmnChevronRightIcon, LmnXIcon } from 'lumen-icons';
 import type { ComponentStability } from '../lib/component-metadata';
-import { injectAppI18n, type TranslationKey } from '../i18n/i18n';
+import { injectAppI18n, type PlainTranslationKey } from '../i18n/i18n';
 
 /*
  * Keys, not text. Most sidebars on the site are built from a static catalog const, which
@@ -19,13 +19,13 @@ import { injectAppI18n, type TranslationKey } from '../i18n/i18n';
  */
 export interface DocsSidebarLink {
   path: string;
-  labelKey: TranslationKey;
+  labelKey: PlainTranslationKey;
   exact?: boolean;
   stability?: ComponentStability;
 }
 
 export interface DocsSidebarGroup {
-  headingKey?: TranslationKey;
+  headingKey?: PlainTranslationKey;
   links: DocsSidebarLink[];
 }
 
