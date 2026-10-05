@@ -274,7 +274,7 @@ Volt UI ships three complementary ways to give AI assistants correct context:
 
 | Tool                    | What it is                                                                                           | Install                                              |
 | ----------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
-| 🧠 **Skill**            | Auto-discovered by Claude Code / OpenCode in a workspace                                             | `npx volt-ui-mcp claude`                             |
+| 🧠 **Skill**            | Auto-discovered by Claude Code / OpenCode in a workspace                                             | `npx @voltui/mcp claude`                             |
 | 🛰️ **MCP server**       | `list_components`, `get_component`, `get_usage_example`, `get_theme_info`, `generate_cli_command`, … | [`/api/mcp`](https://volt-ui.andersseen.dev/api/mcp) |
 | 📋 **Prompt reference** | Single file to paste into any LLM chat                                                               | [`VOLT_UI_PROMPT.md`](./VOLT_UI_PROMPT.md)           |
 

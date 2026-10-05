@@ -10,7 +10,7 @@
     },
     "volt-ui": {
       "command": "npx",
-      "args": ["-y", "volt-ui-mcp"]
+      "args": ["-y", "@voltui/mcp"]
     }
   }
 }

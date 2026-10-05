@@ -29,12 +29,12 @@ mismatch _between_ two of them, so a partial read tells you nothing.
 # 1. Local versions (what the repo thinks it is)
 node -p "require('./projects/volt/package.json').version"   # @voltui/components
 node -p "require('./cli/package.json').version"             # @voltui/cli
-node -p "require('./cli/mcp/package.json').version"         # volt-ui-mcp
+node -p "require('./cli/mcp/package.json').version"         # @voltui/mcp
 
 # 2. What is actually on npm
 npm view @voltui/components version
 npm view @voltui/cli version
-npm view volt-ui-mcp version
+npm view @voltui/mcp version
 
 # 3. GitHub Releases (tags are components-vX / cli-vX / mcp-vX)
 gh release list --limit 10
