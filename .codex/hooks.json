@@ -1,0 +1,25 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node '/Users/andriipap/Andersseen/Web/Projects/volt-ui/.codex/hooks/ripple-check.mjs'"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node '/Users/andriipap/Andersseen/Web/Projects/volt-ui/.codex/hooks/ai-docs-gate.mjs'"
+          }
+        ]
+      }
+    ]
+  }
+}
