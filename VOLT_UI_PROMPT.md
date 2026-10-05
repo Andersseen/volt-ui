@@ -409,7 +409,7 @@ this.toast.success('Changes saved');
 
 Volt UI exposes a **spec-compliant MCP server** over Streamable HTTP at `https://volt-ui.pages.dev/api/mcp`.
 
-- **Setup helper**: `npx volt-ui-mcp` (installs config for Claude, Cursor, Windsurf, Copilot, VS Code)
+- **Setup helper**: `npx @voltui/mcp` (installs config for Claude, Cursor, Windsurf, Copilot, VS Code)
 - **CLI**: `npx @voltui/cli`
 - **Local skill**: `.agents/skills/volt-ui/SKILL.md` (auto-discovered by OpenCode / Claude Code)
 - **Prompt reference**: `VOLT_UI_PROMPT.md` (this file)

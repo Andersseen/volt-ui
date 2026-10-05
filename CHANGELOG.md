@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- **MCP installer moved under the `@voltui` scope.** `volt-ui-mcp` is now published as
+  `@voltui/mcp` (`npx @voltui/mcp claude`), alongside `@voltui/components` and `@voltui/cli`.
+  The old unscoped package stays on npm at 0.2.0 and is deprecated in favour of the new name.
+
 ## [1.1.0] - 2026-09-23
 
 **Volt UI 1.1 — Consumer DX.** Driven by an audit of real apps built on Volt (DevFlare, ForgeCMS,

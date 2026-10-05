@@ -21,7 +21,10 @@ never double-publishes.
 | -------------------- | ---------------------------- | ------------------------------------------------------- | ------------------- |
 | `@voltui/components` | `projects/volt/package.json` | [npm](https://www.npmjs.com/package/@voltui/components) | `components-vX.Y.Z` |
 | `@voltui/cli`        | `cli/package.json`           | [npm](https://www.npmjs.com/package/@voltui/cli)        | `cli-vX.Y.Z`        |
-| `volt-ui-mcp`        | `cli/mcp/package.json`       | [npm](https://www.npmjs.com/package/volt-ui-mcp)        | `mcp-vX.Y.Z`        |
+| `@voltui/mcp`        | `cli/mcp/package.json`       | [npm](https://www.npmjs.com/package/@voltui/mcp)        | `mcp-vX.Y.Z`        |
+
+`@voltui/mcp` was published as the unscoped `volt-ui-mcp` up to 0.2.0. That name is
+deprecated on npm and no longer released from this repo.
 
 ## One-time setup: `NPM_TOKEN`
 

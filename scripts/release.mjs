@@ -38,7 +38,7 @@ const PACKAGES = [
     tagPrefix: 'cli',
   },
   {
-    name: 'volt-ui-mcp',
+    name: '@voltui/mcp',
     label: 'MCP installer',
     versionFile: 'cli/mcp/package.json',
     publish: 'pnpm publish:mcp',

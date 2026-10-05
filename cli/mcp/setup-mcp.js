@@ -7,9 +7,9 @@
  * the Volt UI MCP server hosted at https://volt-ui.pages.dev/api/mcp
  *
  * Usage:
- *   npx volt-ui-mcp            # interactive
- *   npx volt-ui-mcp claude     # install directly for one agent
- *   npx volt-ui-mcp cursor copilot  # install for multiple agents
+ *   npx @voltui/mcp            # interactive
+ *   npx @voltui/mcp claude     # install directly for one agent
+ *   npx @voltui/mcp cursor copilot  # install for multiple agents
  */
 
 'use strict';
@@ -548,7 +548,7 @@ const ok = await inject(UiDialogService).open<boolean>(confirmTpl, { role: 'aler
 
 ## AI tools integration
 
-- **MCP server**: \`${MCP_URL}\` is a spec-compliant Streamable HTTP MCP server, already configured in this project's \`.mcp.json\` by \`npx volt-ui-mcp\`. It exposes tools, resources, and prompts:
+- **MCP server**: \`${MCP_URL}\` is a spec-compliant Streamable HTTP MCP server, already configured in this project's \`.mcp.json\` by \`npx @voltui/mcp\`. It exposes tools, resources, and prompts:
   - Tools: \`list_components\`, \`get_component\`, \`get_usage_example\`, \`get_theme_info\`, \`get_project_info\`, \`generate_cli_command\`.
   - Resources: \`component://<name>\`, \`theme://info\`, \`project://info\`.
   - Prompts: \`generate-volt-ui-component\`, \`volt-ui-troubleshooting\`.

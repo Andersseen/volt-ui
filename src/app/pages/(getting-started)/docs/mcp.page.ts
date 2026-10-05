@@ -95,7 +95,7 @@ const MCP_URL = 'https://volt-ui.pages.dev/api/mcp';
         </h2>
         <p class="text-muted-foreground">{{ t('guide.mcpPage.quickStartLede') }}</p>
         <div class="bg-[#1e1e1e] rounded-lg p-4 font-mono text-sm text-zinc-300 overflow-x-auto">
-          <code>npx volt-ui-mcp</code>
+          <code>npx @voltui/mcp</code>
         </div>
         <p class="text-sm text-muted-foreground">{{ t('guide.mcpPage.quickStartNote') }}</p>
       </div>

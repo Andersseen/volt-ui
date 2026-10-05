@@ -314,8 +314,8 @@ const confirmed = await inject(UiDialogService).open<boolean>(this.confirmTpl(),
   - Tools: `list_components`, `get_component`, `get_usage_example`, `get_theme_info`, `get_project_info`, `generate_cli_command`.
   - Resources: `component://<name>`, `theme://info`, `project://info`.
   - Prompts: `generate-volt-ui-component`, `volt-ui-troubleshooting`.
-- **Local setup**: `npx volt-ui-mcp claude` writes the project-level MCP config to `.mcp.json` (Claude Code's `http` transport) and installs this skill at `.claude/skills/volt-ui/SKILL.md` in the consumer project. Other targets (`cursor`, `windsurf`, `copilot`, `vscode`) write their own MCP/rules/snippet files.
-- **Local skill**: this file is not auto-discovered on its own — it must be installed into a location the agent scans (`.claude/skills/volt-ui/SKILL.md` for Claude Code, `.agents/skills/volt-ui/SKILL.md` for OpenCode) via `npx volt-ui-mcp` or by copying it manually.
+- **Local setup**: `npx @voltui/mcp claude` writes the project-level MCP config to `.mcp.json` (Claude Code's `http` transport) and installs this skill at `.claude/skills/volt-ui/SKILL.md` in the consumer project. Other targets (`cursor`, `windsurf`, `copilot`, `vscode`) write their own MCP/rules/snippet files.
+- **Local skill**: this file is not auto-discovered on its own — it must be installed into a location the agent scans (`.claude/skills/volt-ui/SKILL.md` for Claude Code, `.agents/skills/volt-ui/SKILL.md` for OpenCode) via `npx @voltui/mcp` or by copying it manually.
 - **CLI**: `npx @voltui/cli list` shows available components; `npx @voltui/cli add <name>` copies source.
 
 ## Rules for generating Volt UI code

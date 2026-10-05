@@ -716,7 +716,7 @@ const ok = await inject(UiDialogService).open<boolean>(confirmTpl, { role: 'aler
 
 ## AI tools integration
 
-- **MCP server**: \`${MCP_URL}\` is a spec-compliant Streamable HTTP MCP server, already configured in this project's \`.mcp.json\` by \`npx volt-ui-mcp\`. It exposes tools, resources, and prompts:
+- **MCP server**: \`${MCP_URL}\` is a spec-compliant Streamable HTTP MCP server, already configured in this project's \`.mcp.json\` by \`npx @voltui/mcp\`. It exposes tools, resources, and prompts:
   - Tools: \`list_components\`, \`get_component\`, \`get_usage_example\`, \`get_theme_info\`, \`get_project_info\`, \`generate_cli_command\`.
   - Resources: \`component://<name>\`, \`theme://info\`, \`project://info\`.
   - Prompts: \`generate-volt-ui-component\`, \`volt-ui-troubleshooting\`.
@@ -871,7 +871,7 @@ export default defineEventHandler(async event => {
         mcpNative: setup.mcpNative,
         setupUrl: `${MCP_URL}/setup?agent=${key}`,
       })),
-      cli: 'npx volt-ui-mcp',
+      cli: 'npx @voltui/mcp',
     };
   }
 
