@@ -134,7 +134,7 @@
     "lint-staged": "^17.6.0",
     "ng-packagr": "^21.2.7",
     "playwright": "^1.60.0",
-    "postcss": "^8.5.26",
+    "postcss": "^8.5.28",
     "prettier": "^3.9.6",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "~5.9.2",
