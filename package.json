@@ -90,7 +90,7 @@
     "@etyma/angular": "0.5.0",
     "@etyma/core": "0.5.0",
     "@floating-ui/dom": "^1.6.0",
-    "@modelcontextprotocol/sdk": "^1.29.0",
+    "@modelcontextprotocol/sdk": "^1.32.0",
     "angular-movement": "^0.8.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
