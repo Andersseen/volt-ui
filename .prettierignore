@@ -14,3 +14,4 @@ wrangler.toml
 # Written by etymaRemoteContract on every vite dev/build; formatting it would make each
 # build rewrite the committed file.
 src/app/i18n/etyma.generated.ts
+.agentyx.lock.json
