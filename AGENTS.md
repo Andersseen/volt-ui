@@ -166,3 +166,17 @@ When updating component APIs, selectors, or examples, keep all of these in sync 
 - `src/server/routes/mcp.ts` and `src/server/routes/mcp/setup.ts` (same constants, mirrored for the hosted `/api/mcp/setup` endpoint)
 - `VOLT_UI_PROMPT.md`
 - `src/app/lib/snippets/usage.ts`
+
+## Agentyx harness
+
+[Agentyx](https://www.npmjs.com/package/@agentyx/cli) (`@agentyx/cli`, dev dependency) installs generic engineering skills into
+`.agents/skills/` (Codex, Kimi) and `.claude/skills/` (Claude Code), plus `context7`, `playwright` and `codebase-memory` MCP entries and a
+`SessionStart` doctor hook. Configuration is `.agentyx.json`; ownership is `.agentyx.lock.json`. It manages the _coding-agent harness_ only.
+
+- It **complements** the repo-specific tooling above (`/new-component`, `/run-plan`, the reviewers, the ripple-check and ai-docs-gate hooks,
+  `specs/`). Where they overlap, this file and `specs/GUARDRAILS.md` win.
+- It is unrelated to Volt's product MCP (`src/server/routes/mcp.ts`, `cli/mcp/`) and to `pnpm check:ai-docs`. Never route Volt's AI docs through it.
+- `chrome-devtools` stays **disabled** in the Agentyx config. Use the `.mcp.json` entry only for tasks that need browser inspection (perf traces).
+- `agentyx install` rewrites the `playwright` and `codebase-memory` entries in `.mcp.json`, `.codex/config.toml` and `.kimi-code/mcp.json`
+  (dropping `--browser chromium`, and pointing at a global `codebase-memory-mcp` binary instead of `npx`). The committed versions are
+  deliberately the repo's originals, so do not blindly re-run `agentyx install`: use `--dry-run` and restore those two entries afterwards.

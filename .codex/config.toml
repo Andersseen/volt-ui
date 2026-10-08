@@ -1,47 +1,33 @@
 [mcp_servers.angular-cli]
+args = [ "--no-install", "ng", "mcp" ]
 command = "npx"
-args = [
-    "--no-install",
-    "ng",
-    "mcp",
-]
 
 [mcp_servers.chrome-devtools]
+args = [ "-y", "chrome-devtools-mcp@latest" ]
 command = "npx"
-args = [
-    "-y",
-    "chrome-devtools-mcp@latest",
-]
 
 [mcp_servers.codebase-memory]
 command = "npx"
-args = [
-    "-y",
-    "codebase-memory-mcp",
-]
+args = [ "-y", "codebase-memory-mcp" ]
+
+[mcp_servers.context7]
+enabled = true
+url = "https://mcp.context7.com/mcp"
 
 [mcp_servers.github]
 url = "https://api.githubcopilot.com/mcp/"
 
 [mcp_servers.glossa]
-url = "https://glossa.andersseen.dev/mcp"
 bearer_token_env_var = "GLOSSA_TOKEN"
+url = "https://glossa.andersseen.dev/mcp"
 
 [mcp_servers.ngp-mcp]
+args = [ "--no-install", "ngp-mcp" ]
 command = "npx"
-args = [
-    "--no-install",
-    "ngp-mcp",
-]
 
 [mcp_servers.playwright]
 command = "npx"
-args = [
-    "-y",
-    "@playwright/mcp@latest",
-    "--browser",
-    "chromium",
-]
+args = [ "-y", "@playwright/mcp@latest", "--browser", "chromium" ]
 
 [mcp_servers.volt-ui]
 url = "https://volt-ui.pages.dev/api/mcp"

@@ -1,5 +1,44 @@
 {
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/ripple-check.mjs\""
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "npx",
+            "args": ["--no-install", "agentyx", "doctor", "--hook"],
+            "statusMessage": "agentyx:session-doctor-bootstrap"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/ai-docs-gate.mjs\""
+          }
+        ]
+      }
+    ]
+  },
   "permissions": {
+    "additionalDirectories": [
+      "/Users/andriipap/Andersseen/Web/Projects/volt-ui/projects/volt/src/lib/components/button"
+    ],
     "allow": [
       "Bash(npx ng:*)",
       "Bash(mkdir -p /Users/andriipap/Andersseen/Web/Projects/volt-ui/projects/volt/src/lib/sidebar)",
@@ -57,32 +96,6 @@
       "Write(./public/manifest.json)",
       "Edit(./pnpm-lock.yaml)",
       "Write(./pnpm-lock.yaml)"
-    ],
-    "additionalDirectories": [
-      "/Users/andriipap/Andersseen/Web/Projects/volt-ui/projects/volt/src/lib/components/button"
-    ]
-  },
-  "hooks": {
-    "PostToolUse": [
-      {
-        "matcher": "Edit|Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/ripple-check.mjs\""
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/ai-docs-gate.mjs\""
-          }
-        ]
-      }
     ]
   }
 }
