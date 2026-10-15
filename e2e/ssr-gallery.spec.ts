@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { BLOCKS } from '../src/app/lib/blocks-metadata';
 import { LAYOUTS } from '../src/app/lib/layouts-metadata';
+import { RECIPES } from '../src/app/lib/recipes-metadata';
 
 /**
  * SSR → hydration → interaction for every Block and Layout.
@@ -16,6 +17,7 @@ test.skip(process.env['E2E_SERVER'] !== 'wrangler', 'needs the built worker (E2E
 const ROUTES = [
   ...BLOCKS.map(block => block.path),
   ...LAYOUTS.map(layout => layout.path),
+  ...RECIPES.map(recipe => recipe.path),
   '/docs/components/empty-state',
 ];
 

@@ -21,6 +21,14 @@ export default defineConfig({
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
+    // Focus and dialog behaviour differ per engine. CI installs Chromium only, so the others are
+    // opt-in: `E2E_ALL_BROWSERS=1 pnpm test:e2e:consumer`.
+    ...(process.env['E2E_ALL_BROWSERS']
+      ? [
+          { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
+          { name: 'webkit', use: { ...devices['Desktop Safari'] } },
+        ]
+      : []),
   ],
   webServer: {
     command: `pnpm exec vite --config e2e/consumer-cli/vite.config.ts --host 127.0.0.1 --port ${port} --strictPort`,

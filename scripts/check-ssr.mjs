@@ -17,6 +17,7 @@ import { fileURLToPath } from 'node:url';
 import { BLOCKS } from '../src/app/lib/blocks-metadata.ts';
 import { LAYOUTS } from '../src/app/lib/layouts-metadata.ts';
 import { COMPONENTS } from '../src/app/lib/component-metadata.ts';
+import { RECIPES } from '../src/app/lib/recipes-metadata.ts';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const portArg = process.argv.indexOf('--port');
@@ -37,6 +38,7 @@ const KNOWN = new Map([
 const routes = [
   ...BLOCKS.map(b => b.path),
   ...LAYOUTS.map(l => l.path),
+  ...RECIPES.map(r => r.path),
   '/docs/components',
   ...COMPONENTS.map(c => c.path),
 ];
@@ -77,7 +79,9 @@ try {
     if (res.status !== 200) failures.push(`${route}: HTTP ${res.status}`);
     if (errors.length) {
       const reason = KNOWN.get(route);
-      (reason ? known : failures).push(`${route}: ${errors[0].trim()}${reason ? `  (known: ${reason})` : ''}`);
+      (reason ? known : failures).push(
+        `${route}: ${errors[0].trim()}${reason ? `  (known: ${reason})` : ''}`
+      );
     }
   }
 } finally {

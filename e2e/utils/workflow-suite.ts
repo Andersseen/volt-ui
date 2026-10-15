@@ -147,7 +147,9 @@ export function defineWorkflowSuite(label: string, entry: string): void {
     }) => {
       await open(page);
       const opener = page.getByRole('button', { name: 'Edit Borealis' });
-      await opener.click();
+      // Focus it first: Safari does not focus a button on click, so there would be nothing to restore.
+      await opener.focus();
+      await page.keyboard.press('Enter');
       const editor = page.getByRole('dialog', { name: 'Edit Borealis' });
       await editor.getByRole('textbox', { name: 'Owner' }).fill('Changed');
 
@@ -223,7 +225,8 @@ export function defineWorkflowSuite(label: string, entry: string): void {
       expect(await page.evaluate(() => window.__workflow.calls.remove)).toBe(0);
     });
 
-    test('the whole delete path works from the keyboard', async ({ page }) => {
+    test('the whole delete path works from the keyboard', async ({ page, browserName }) => {
+      test.skip(browserName === 'webkit', 'Tab skips buttons by default in macOS WebKit');
       await open(page);
       await page.getByRole('button', { name: 'Delete Cinder' }).focus();
       await page.keyboard.press('Enter');
