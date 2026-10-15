@@ -105,6 +105,25 @@ describe('sidebar layout', () => {
     expect(screen.getByRole('link', { name: /Home/ })).toHaveAttribute('href', '/home');
   });
 
+  it('keep an accessible name on every link when the sidebar is collapsed to icons', async () => {
+    const { fixture } = await render(SidebarSlotsFixture, {
+      providers: [provideRouter([])],
+    });
+    const service = TestBed.inject(VoltSidebarService);
+
+    service.setCollapsed(true);
+    await fixture.whenStable();
+
+    // Only the icon is rendered now; the name has to come from the label, not from visible text.
+    const link = screen.getByRole('link', { name: 'Home' });
+    expect(link).toHaveAttribute('href', '/home');
+
+    service.setCollapsed(false);
+    await fixture.whenStable();
+    // Expanded, the visible text names the link; no redundant aria-label on top of it.
+    expect(screen.getByRole('link', { name: /Home/ })).not.toHaveAttribute('aria-label');
+  });
+
   it('resolve the sidebar width from the inputs and fall back to the custom property', async () => {
     const { fixture } = await render(SidebarSlotsFixture, {
       providers: [provideRouter([])],

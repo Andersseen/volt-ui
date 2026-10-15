@@ -228,21 +228,21 @@ export class MyComponent {}`;
 export const BREADCRUMBS_USAGE = `import { Component } from '@angular/core';
 import {
   VoltBreadcrumbs,
-  VoltBreadcrumbsList,
-  VoltBreadcrumbsItem,
-  VoltBreadcrumbsLink,
-  VoltBreadcrumbsPage,
-  VoltBreadcrumbsSeparator,
+  VoltBreadcrumbList,
+  VoltBreadcrumbItem,
+  VoltBreadcrumbLink,
+  VoltBreadcrumbPage,
+  VoltBreadcrumbSeparator,
 } from '@voltui/components';
 
 @Component({
   imports: [
     VoltBreadcrumbs,
-    VoltBreadcrumbsList,
-    VoltBreadcrumbsItem,
-    VoltBreadcrumbsLink,
-    VoltBreadcrumbsPage,
-    VoltBreadcrumbsSeparator,
+    VoltBreadcrumbList,
+    VoltBreadcrumbItem,
+    VoltBreadcrumbLink,
+    VoltBreadcrumbPage,
+    VoltBreadcrumbSeparator,
   ],
   template: \`
     <volt-breadcrumbs>
