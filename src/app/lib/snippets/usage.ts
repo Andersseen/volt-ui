@@ -28,12 +28,30 @@ import { VoltButton, VoltNativeButton, VoltSpinner } from '@voltui/components';
       {{ saving ? 'Saving…' : 'Save' }}
     </button>
 
+    <!-- Pending: aria-disabled keeps keyboard focus on the button (a disabled one drops it to
+         <body>). Volt only dims it — it does NOT block clicks or Enter/Space, so the handler
+         must guard the action itself. -->
+    <button voltButton type="submit" [attr.aria-disabled]="saving ? 'true' : null" (click)="save()">
+      {{ saving ? 'Saving…' : 'Save' }}
+    </button>
+
+    <!-- Blocked but explained: still focusable, so aria-describedby can say why -->
+    <button voltButton variant="destructive" type="button" aria-disabled="true" aria-describedby="why">
+      Delete
+    </button>
+    <p id="why">The last administrator cannot be deleted.</p>
+
     <!-- <volt-button> is still supported; ARIA inputs are forwarded to its inner <button> -->
     <volt-button variant="destructive" aria-describedby="delete-hint">Delete</volt-button>
   \`,
 })
 export class MyComponent {
   saving = false;
+
+  save() {
+    if (this.saving) return; // aria-disabled does not do this for you
+    // …
+  }
 }`;
 
 export const BADGE_USAGE = `import { Component } from '@angular/core';
@@ -228,21 +246,21 @@ export class MyComponent {}`;
 export const BREADCRUMBS_USAGE = `import { Component } from '@angular/core';
 import {
   VoltBreadcrumbs,
-  VoltBreadcrumbsList,
-  VoltBreadcrumbsItem,
-  VoltBreadcrumbsLink,
-  VoltBreadcrumbsPage,
-  VoltBreadcrumbsSeparator,
+  VoltBreadcrumbList,
+  VoltBreadcrumbItem,
+  VoltBreadcrumbLink,
+  VoltBreadcrumbPage,
+  VoltBreadcrumbSeparator,
 } from '@voltui/components';
 
 @Component({
   imports: [
     VoltBreadcrumbs,
-    VoltBreadcrumbsList,
-    VoltBreadcrumbsItem,
-    VoltBreadcrumbsLink,
-    VoltBreadcrumbsPage,
-    VoltBreadcrumbsSeparator,
+    VoltBreadcrumbList,
+    VoltBreadcrumbItem,
+    VoltBreadcrumbLink,
+    VoltBreadcrumbPage,
+    VoltBreadcrumbSeparator,
   ],
   template: \`
     <volt-breadcrumbs>
@@ -276,6 +294,8 @@ import {
   VoltNativeButton,
   type VoltDialogContext,
 } from '@voltui/components';
+
+declare function deleteProject(): Promise<void>; // your own async call
 
 @Component({
   imports: [
@@ -311,6 +331,25 @@ import {
       </form>
     </ng-template>
 
+    <!-- 2b. Pending: [dismissible] is live. While a request runs, Escape and an overlay click do
+         nothing; close() and [(open)] still work. initialFocus (a CSS selector inside the
+         content) puts focus on the safe action instead of the first tabbable element. -->
+    <ng-template
+      voltDialogRoot
+      role="alertdialog"
+      [(open)]="deleting"
+      [dismissible]="!pending"
+      initialFocus="[data-cancel]"
+      let-close="close"
+    >
+      <div voltDialogOverlay></div>
+      <div voltDialogContent>
+        <h2 voltDialogTitle>Delete project?</h2>
+        <button voltButton data-cancel variant="outline" [disabled]="pending" (click)="close()">Cancel</button>
+        <button voltButton variant="destructive" [disabled]="pending" (click)="confirmDelete(close)">Delete</button>
+      </div>
+    </ng-template>
+
     <!-- 3. Confirm: open from code and await the answer -->
     <button voltButton variant="destructive" (click)="remove()">Delete project</button>
     <ng-template #confirmTpl let-close="close">
@@ -329,6 +368,18 @@ export class MyComponent {
   private readonly confirmTpl = viewChild.required<TemplateRef<VoltDialogContext<boolean>>>('confirmTpl');
 
   readonly editing = signal(false);
+  readonly deleting = signal(false);
+  pending = false;
+
+  async confirmDelete(close: (result?: unknown) => void) {
+    this.pending = true;
+    try {
+      await deleteProject(); // your own async call
+      close('deleted');
+    } finally {
+      this.pending = false;
+    }
+  }
 
   onEdited(result: unknown) {
     console.log('closed with', result);
@@ -350,11 +401,11 @@ import {
   VoltDropdownMenuLabel,
   VoltDropdownMenuSeparator,
 } from '@voltui/components';
-import { VoltButton } from '@voltui/components';
+import { VoltNativeButton } from '@voltui/components';
 
 @Component({
   imports: [
-    VoltButton,
+    VoltNativeButton,
     VoltDropdownMenu,
     VoltDropdownMenuTrigger,
     VoltDropdownMenuItem,
@@ -362,9 +413,7 @@ import { VoltButton } from '@voltui/components';
     VoltDropdownMenuSeparator,
   ],
   template: \`
-    <button [voltDropdownMenu]="menuTpl" volt-button>
-      <volt-button variant="outline">Open Menu</volt-button>
-    </button>
+    <button voltButton variant="outline" [voltDropdownMenu]="menuTpl">Open Menu</button>
 
     <ng-template #menuTpl>
       <volt-dropdown-menu>
@@ -983,13 +1032,13 @@ import {
   VoltDrawerDescription,
   VoltDrawerOverlay,
   VoltDrawerClose,
-  VoltButton,
+  VoltNativeButton,
 } from '@voltui/components';
 
 @Component({
-  imports: [VoltDrawer, VoltDrawerContent, VoltDrawerTitle, VoltDrawerDescription, VoltDrawerOverlay, VoltDrawerClose, VoltButton],
+  imports: [VoltDrawer, VoltDrawerContent, VoltDrawerTitle, VoltDrawerDescription, VoltDrawerOverlay, VoltDrawerClose, VoltNativeButton],
   template: \`
-    <button volt-button [voltDrawer]="drawerTpl">Open Drawer</button>
+    <button voltButton [voltDrawer]="drawerTpl">Open Drawer</button>
 
     <ng-template #drawerTpl let-close="close">
       <div voltDrawerOverlay></div>
@@ -1164,9 +1213,53 @@ import { VoltAlert, VoltAlertTitle, VoltAlertDescription, VoltNativeButton } fro
     <volt-alert variant="info">
       <volt-alert-title>New version available</volt-alert-title>
     </volt-alert>
+
+    <!-- A failed request: role="alert" interrupts once. Keep what the user typed and offer retry;
+         do not also put aria-live on a parent, which would read it twice. -->
+    <volt-alert variant="destructive" role="alert">
+      <volt-alert-title>Could not save</volt-alert-title>
+      <volt-alert-description>Your changes are still here. Try again.</volt-alert-description>
+      <button slot="action" voltButton variant="outline" size="sm">Retry</button>
+    </volt-alert>
   \`,
 })
 export class MyComponent {}`;
+
+export const EMPTY_STATE_USAGE = `import { Component } from '@angular/core';
+import {
+  VoltEmptyState,
+  VoltEmptyStateTitle,
+  VoltEmptyStateDescription,
+  VoltNativeButton,
+} from '@voltui/components';
+
+@Component({
+  imports: [VoltEmptyState, VoltEmptyStateTitle, VoltEmptyStateDescription, VoltNativeButton],
+  template: \`
+    <!-- Empty collection: icon and actions are optional -->
+    <volt-empty-state>
+      <svg slot="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z" />
+      </svg>
+      <volt-empty-state-title>No projects yet</volt-empty-state-title>
+      <volt-empty-state-description>Create your first project to get started.</volt-empty-state-description>
+      <div slot="actions">
+        <button voltButton>Create project</button>
+      </div>
+    </volt-empty-state>
+
+    <!-- No results: same component, different words and a way out -->
+    <volt-empty-state>
+      <volt-empty-state-title>No matches for "{{ query }}"</volt-empty-state-title>
+      <div slot="actions">
+        <button voltButton variant="outline" (click)="query = ''">Clear search</button>
+      </div>
+    </volt-empty-state>
+  \`,
+})
+export class MyComponent {
+  query = 'invoices';
+}`;
 
 export const SPINNER_USAGE = `import { Component } from '@angular/core';
 import { VoltSpinner, VoltNativeButton } from '@voltui/components';
@@ -1180,10 +1273,16 @@ import { VoltSpinner, VoltNativeButton } from '@voltui/components';
       Saving…
     </button>
 
-    <!-- Standalone status: announced politely as "Loading projects" -->
-    <div class="grid place-items-center py-12" aria-busy="true">
-      <volt-spinner size="lg" label="Loading projects" />
-    </div>
+    <!-- Standalone status: announced politely as "Loading projects". Set aria-busy on the region
+         that is being replaced, not on the spinner. -->
+    <section aria-busy="true" aria-label="Projects">
+      <div class="grid place-items-center py-12">
+        <volt-spinner size="lg" label="Loading projects" />
+      </div>
+    </section>
+
+    <!-- A spinner next to visible text is decorative: giving it a label as well would announce
+         "Saving… Saving" twice. One status message per change. -->
 
     <!-- Inline, in the current text colour -->
     <p class="text-muted-foreground"><volt-spinner size="sm" /> Syncing</p>

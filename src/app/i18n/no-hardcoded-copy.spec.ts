@@ -13,7 +13,7 @@ import { describe, expect, it } from 'vitest';
  * Two kinds of text are deliberately NOT translated, and the rule for telling them apart
  * is structural rather than a judgement call:
  *
- *  - **Product source** — `src/app/blocks/` and `src/app/layouts/` are read with Vite's
+ *  - **Product source** — `src/app/blocks/`, `src/app/layouts/` and `src/app/recipes/` are read with Vite's
  *    `?raw` and shown as code to copy. A `t()` call in there would break the moment it
  *    landed in a consumer's project, which has no Volt docs i18n setup.
  *  - **Specimens** — the live demo projected into `<app-code-panel>`, and the miniatures
@@ -37,6 +37,7 @@ const EXEMPT = [
   // Copied wholesale into a consumer's project by the CLI; a `t()` here would break there.
   'blocks/',
   'layouts/',
+  'recipes/',
   // Miniature live renders of every component and block, for the catalog and gallery cards.
   'components/component-preview.ts',
   'components/block-thumbnail.ts',
@@ -67,6 +68,12 @@ const PROPER_NOUNS = new Set([
   // Alert and Spinner (1.1) render their name directly until their Glossa keys exist.
   'Alert',
   'Spinner',
+  'Empty State',
+  // Recipe names (specs/plans/v1.2.md "Glossa keys pending").
+  'Recipes',
+  'Settings form',
+  'Async search',
+  'Data table',
 ]);
 
 function templateSources(): { file: string; markup: string }[] {

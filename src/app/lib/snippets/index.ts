@@ -175,6 +175,9 @@ import alertTitleSource from '../../../../projects/volt/src/lib/components/alert
 import alertDescriptionSource from '../../../../projects/volt/src/lib/components/alert/alert-description.ts?raw';
 import alertVariantsSource from '../../../../projects/volt/src/lib/components/alert/variants.ts?raw';
 
+import emptyStateSource from '../../../../projects/volt/src/lib/components/empty-state/empty-state.ts?raw';
+import emptyStateTitleSource from '../../../../projects/volt/src/lib/components/empty-state/empty-state-title.ts?raw';
+import emptyStateDescriptionSource from '../../../../projects/volt/src/lib/components/empty-state/empty-state-description.ts?raw';
 import spinnerSource from '../../../../projects/volt/src/lib/components/spinner/spinner.ts?raw';
 import spinnerVariantsSource from '../../../../projects/volt/src/lib/components/spinner/variants.ts?raw';
 
@@ -425,6 +428,12 @@ export const ALERT_SNIPPET = join(
   ['alert-title.ts', alertTitleSource],
   ['alert-description.ts', alertDescriptionSource],
   ['variants.ts', alertVariantsSource]
+);
+
+export const EMPTY_STATE_SNIPPET = join(
+  ['empty-state.ts', emptyStateSource],
+  ['empty-state-title.ts', emptyStateTitleSource],
+  ['empty-state-description.ts', emptyStateDescriptionSource]
 );
 
 export const SPINNER_SNIPPET = join(

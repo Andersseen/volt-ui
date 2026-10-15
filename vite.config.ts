@@ -36,6 +36,37 @@ function rawTypeScriptPlugin(): Plugin {
 }
 
 /**
+ * Makes Angular's browser-only hooks actually browser-only in the server bundle.
+ *
+ * `afterNextRender`/`afterEveryRender` return early when `ngServerMode` is truthy, and Angular
+ * 21 compiled that guard into internal chunks (`_effect-chunk2.mjs`, `_debug_node-chunk.mjs`,
+ * `_dom_renderer-chunk.mjs`, …). Analog's own `serverModePlugin` rewrites `ngServerMode` only in
+ * files named `core.mjs` and `platform-server.mjs`, so in the Cloudflare worker those chunks see
+ * an undefined global and *run browser hooks on the server* — `window is not defined` from every
+ * component that correctly puts its `window` access inside `afterNextRender`.
+ *
+ * Mirrors Analog's approach for the remaining `@angular/*` chunks. Server build only.
+ */
+function serverModeChunksPlugin(): Plugin {
+  return {
+    name: 'volt-server-mode-chunks',
+    enforce: 'pre',
+    transform(code, id, options) {
+      if (
+        options?.ssr &&
+        /node_modules\/@angular\/(core|common|forms|platform-browser)\/fesm2022\/[^/]+\.mjs$/.test(
+          id
+        ) &&
+        /\bngServerMode\b/.test(code)
+      ) {
+        return { code: code.replace(/\bngServerMode\b/g, 'true'), map: null };
+      }
+      return null;
+    },
+  };
+}
+
+/**
  * Stops the browser caching a stale route table in dev.
  *
  * `@analogjs/router` builds the route table with `import.meta.glob`, so Vite inlines the
@@ -82,6 +113,7 @@ export default defineConfig(() => ({
   },
   plugins: [
     freshRouteTablePlugin(),
+    serverModeChunksPlugin(),
     rawTypeScriptPlugin(),
     etymaRemoteContract({
       source: `${GLOSSA_I18N_BASE}/en.json`,

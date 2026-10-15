@@ -11,8 +11,14 @@ import {
   VoltAvatar,
   VoltAvatarFallback,
   VoltBadge,
-  VoltButton,
+  VoltBreadcrumbItem,
+  VoltBreadcrumbLink,
+  VoltBreadcrumbList,
+  VoltBreadcrumbPage,
+  VoltBreadcrumbSeparator,
+  VoltBreadcrumbs,
   VoltCard,
+  VoltNativeButton,
   VoltInput,
   VoltSeparator,
   VoltSidebar,
@@ -84,7 +90,13 @@ interface Order {
     VoltAvatarFallback,
     VoltSeparator,
     VoltBadge,
-    VoltButton,
+    VoltBreadcrumbItem,
+    VoltBreadcrumbLink,
+    VoltBreadcrumbList,
+    VoltBreadcrumbPage,
+    VoltBreadcrumbSeparator,
+    VoltBreadcrumbs,
+    VoltNativeButton,
     VoltCard,
     VoltInput,
     VoltTable,
@@ -105,7 +117,14 @@ interface Order {
          your app the shell is the page: use h-screen and drop the border. -->
     <div class="relative flex h-[640px] overflow-hidden border border-border bg-background">
       <div class="absolute left-4 top-3 z-10 md:hidden">
-        <button volt-button variant="outline" size="icon" (click)="sidebar.toggleMobile()">
+        <button
+          voltButton
+          variant="outline"
+          size="icon"
+          aria-label="Open navigation"
+          [attr.aria-expanded]="sidebar.isMobileOpen()"
+          (click)="sidebar.toggleMobile()"
+        >
           <lmn-menu [size]="16" />
         </button>
       </div>
@@ -185,7 +204,7 @@ interface Order {
         <!-- Top bar: collapse control, breadcrumb, and whatever your app puts on the right. -->
         <header class="flex h-14 shrink-0 items-center gap-2 border-b border-border px-4 md:px-6">
           <button
-            volt-button
+            voltButton
             variant="ghost"
             size="icon"
             class="hidden h-8 w-8 md:inline-flex"
@@ -195,11 +214,17 @@ interface Order {
             <lmn-menu [size]="16" />
           </button>
 
-          <nav class="hidden items-center gap-2 text-sm text-muted-foreground md:flex">
-            <span>Dashboard</span>
-            <span aria-hidden="true">/</span>
-            <span class="font-medium text-foreground">Overview</span>
-          </nav>
+          <volt-breadcrumbs class="hidden min-w-0 md:block">
+            <volt-breadcrumb-list>
+              <volt-breadcrumb-item>
+                <volt-breadcrumb-link href="#">Dashboard</volt-breadcrumb-link>
+              </volt-breadcrumb-item>
+              <volt-breadcrumb-separator />
+              <volt-breadcrumb-item>
+                <volt-breadcrumb-page>Overview</volt-breadcrumb-page>
+              </volt-breadcrumb-item>
+            </volt-breadcrumb-list>
+          </volt-breadcrumbs>
 
           <div class="ml-auto flex items-center gap-2">
             <volt-input class="hidden w-56 sm:block" placeholder="Search…" ariaLabel="Search" />
@@ -211,6 +236,16 @@ interface Order {
 
         <!-- Content area. This is the part you replace. -->
         <main class="min-h-0 flex-1 space-y-6 overflow-auto bg-muted/20 p-4 md:p-6">
+          <!-- Page heading and the actions that belong to the whole page. Long translated titles
+               wrap instead of pushing the actions off screen. -->
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <h1 class="min-w-0 text-balance text-2xl font-semibold tracking-tight">Overview</h1>
+            <div class="flex flex-wrap gap-2">
+              <button voltButton variant="outline" size="sm" type="button">Export</button>
+              <button voltButton size="sm" type="button">New order</button>
+            </div>
+          </div>
+
           <section class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             @for (stat of stats; track stat.label) {
               <volt-card class="p-4">
@@ -228,12 +263,19 @@ interface Order {
 
           <section class="space-y-4">
             <div class="flex items-center justify-between gap-4">
-              <h2 class="text-lg font-semibold tracking-tight">Recent orders</h2>
-              <volt-button variant="outline" size="sm">View all</volt-button>
+              <h2 id="recent-orders" class="text-lg font-semibold tracking-tight">Recent orders</h2>
+              <button voltButton variant="outline" size="sm" type="button">View all</button>
             </div>
 
             <volt-card class="overflow-hidden">
-              <div class="overflow-x-auto">
+              <!-- Focusable and named so a keyboard user can scroll a table that is wider than a
+                   phone; without tabindex the overflow is reachable by mouse only. -->
+              <div
+                class="overflow-x-auto"
+                role="region"
+                aria-labelledby="recent-orders"
+                tabindex="0"
+              >
                 <volt-table>
                   <volt-table-header>
                     <volt-table-row>

@@ -7,6 +7,63 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+**Volt UI 1.2 — Application DX & Composition** (not yet released: the version bump is a separate,
+one-line PR so merging this work does not publish). Where 1.1 improved individual atoms, 1.2 tests
+how they compose into real application workflows and fixes what that exposed. Backwards compatible;
+see [MIGRATION.md](./MIGRATION.md).
+
+### Added
+
+- **Async-safe dialogs.** `<ng-template voltDialogRoot [dismissible]="!saving()">` and
+  `VoltDialogRef.dismissible` switch Escape and overlay-click dismissal on and off _while the
+  dialog is open_ — `closeOnEscape` / `closeOnClick` are only read when it opens, so they could not
+  express "pending". `close()` and `[(open)]` still close it. `VoltDialogService.open()` also takes
+  `dismissible: false` to start pinned.
+- **`initialFocus`** (a CSS selector) on `voltDialogRoot` and `VoltDialogOptions`, so a destructive
+  confirmation can focus _Cancel_ instead of whichever control comes first in the DOM.
+- **`aria-disabled` styling on `voltButton`.** `aria-disabled="true"` dims the button and shows
+  `not-allowed` without removing it from the tab order, so `aria-describedby` can explain why.
+  Volt does **not** block clicks or Enter/Space for it — guard the handler (`if (blocked()) return;`).
+  `disabled` is unchanged.
+- **`VoltEmptyState`** (beta): `volt-empty-state` with optional `[slot=icon]`, `volt-empty-state-title`,
+  `volt-empty-state-description` and `[slot=actions]`. Plain content: no live-region role, no
+  implied error. `npx @voltui/cli add empty-state`.
+- **Recipes** (platform, not in `@voltui/components`): tested, copyable _Settings form_ (validation,
+  first-invalid focus, single pending save, failure keeps edits, retry, cancel to last saved),
+  _Async search_ (stale-response protection, selection kept by id, error → retry) and _Data table_
+  (loading, sort with `aria-sort`, filter, pagination, empty vs no results, error → retry).
+- **Application-workflow benchmark** (`e2e/consumer`, `e2e/consumer-cli`): one admin CRUD screen built
+  only from public APIs and run against both the npm package and `volt add` output — sort, filter,
+  pagination, edit dialog with server validation, nested discard confirmation, pending delete with
+  failure and retry, keyboard-only path.
+- Gates: `pnpm check:copied-source` (compiles every Block, Layout and Recipe as a consumer would),
+  `pnpm check:ssr` (server-renders the whole site in the Cloudflare worker and fails on any logged
+  error), `pnpm test:e2e:ssr` (hydration), a reduced-motion audit of every Block, and a guard that
+  every `Volt*` symbol in a usage snippet is a real export.
+
+### Fixed
+
+- **`window is not defined` from `afterNextRender` in the Cloudflare worker** (AppDashboard, HeroSplit,
+  Resizable). Analog rewrites `ngServerMode` only in `core.mjs`/`platform-server.mjs`; Angular 21 keeps
+  the guard in internal chunks, so browser-only hooks ran on the server. `vite.config.ts` now rewrites
+  it in the remaining `@angular/*` chunks.
+- **Sidebar:** links keep an accessible name (`aria-label`) when the sidebar is collapsed to icons.
+- **`<button volt-button>` in examples** was an inert attribute (the selector is element-only) and
+  rendered an unstyled button. Fixed in the Admin Dashboard and Sidebar layouts and the Dropdown Menu
+  and Drawer usage snippets; `pnpm check:docs-completeness` now fails if it returns.
+- **Block, Layout and Recipe source shown to copy** imported from the docs-only `volt` alias. It now
+  shows `@voltui/components`, and the install command is derived from the source's imports.
+- Breadcrumbs usage snippet imported `VoltBreadcrumbs*` names that do not exist.
+- **Admin Dashboard layout:** named mobile-navigation trigger with `aria-expanded`, a single page
+  heading with an actions area, real breadcrumbs, a keyboard-scrollable labelled table region.
+
+### Known limitations
+
+- `NgpListbox` (ng-primitives 0.110.2) calls `window.getComputedStyle` in `ngAfterContentInit`; Listbox
+  logs `window is not defined` when server-rendered in a worker. The page still renders. Upstream.
+- The mobile Sidebar sets `aria-modal` without trapping focus. Left for the Quartz-backed rewrite.
+- `VoltError` is `role="alert"`; an `<volt-alert role="alert">` next to it announces twice. Use one.
+
 ### Changed
 
 - **MCP installer moved under the `@voltui` scope.** `volt-ui-mcp` is now published as

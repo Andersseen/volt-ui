@@ -122,7 +122,7 @@ button · badge · card · input · autofill · search · textarea · checkbox �
 select · tabs · accordion · avatar · separator · tooltip · navigation-menu · form-field ·
 dialog · popover · dropdown-menu · slider · range-slider · progress · breadcrumbs · sidebar ·
 toggle-group · meter · pagination · toast · input-otp · file-upload · combobox ·
-date-picker · listbox · toolbar · skeleton · table · resizable · theme · alert · spinner
+date-picker · listbox · toolbar · skeleton · table · resizable · theme · alert · spinner · empty-state
 
 ## Component import (CLI)
 \`\`\`ts
@@ -143,6 +143,7 @@ import { UiToastService } from './ui/toast';
 <ui-badge variant="solid|secondary|outline|destructive|success|warning|info">
 <ui-alert variant="default|info|success|warning|destructive" role="status|alert"> <ui-alert-title> <ui-alert-description>
 <ui-spinner size="sm|md|lg" label="Loading…">
+<ui-empty-state> <ui-empty-state-title> <ui-empty-state-description> <div slot="actions">
 <ui-tabs [(value)]="activeTab"> <ui-tabs-list> <ui-tabs-trigger value="x"> <ui-tabs-content value="x">
 <ui-accordion type="single|multiple" [collapsible]="true">
 <ui-select placeholder="…"> <ui-select-content> <ui-select-item value="x">
@@ -214,6 +215,7 @@ You are working with **Volt UI**, an Angular v21 component library (shadcn/ui-in
 | Badge | \`./ui/badge\` | \`ui-badge\` | Variants: solid, secondary, outline, destructive, success, warning, info |
 | Alert | \`./ui/alert\` | \`ui-alert\` + title/description | Variants: default, info, success, warning, destructive. Opt-in \`role\` |
 | Spinner | \`./ui/spinner\` | \`ui-spinner\` | \`size\`; \`label\` makes it \`role="status"\` |
+| Empty State | \`./ui/empty-state\` | \`ui-empty-state\` + title/description | Optional \`[slot=icon]\`, \`[slot=actions]\`; plain content |
 | Autofill | \`./ui/autofill\` | \`[uiAutofill]\` directive | Emits \`autofillChange\` |
 | Card | \`./ui/card\` | \`ui-card\` + header/title/description/content/footer | Presentational |
 | Input | \`./ui/input\` | \`ui-input\` | CVA; \`size\`, \`state\`, \`class\` style the native input |
@@ -529,6 +531,16 @@ this.toast.error('Could not save', { description: 'Try again.' });
 </ng-template>
 \`\`\`
 
+While a request is pending, pin the dialog and put focus on the safe action:
+
+\`\`\`html
+<ng-template uiDialogRoot role="alertdialog" [(open)]="deleting" [dismissible]="!pending()"
+             initialFocus="[data-cancel]" let-close="close">…</ng-template>
+\`\`\`
+
+\`[dismissible]\` is live (Escape and overlay click do nothing while \`false\`); \`close()\` always works.
+\`closeOnEscape\`/\`closeOnClick\` are only read when the dialog opens.
+
 \`\`\`ts
 const ok = await inject(UiDialogService).open<boolean>(confirmTpl, { role: 'alertdialog' }).closed;
 \`\`\`
@@ -565,6 +577,18 @@ const ok = await inject(UiDialogService).open<boolean>(confirmTpl, { role: 'aler
 6. For overlays, always use the attribute-directive trigger + \`<ng-template>\` pattern.
 7. Do not invent inputs. If unsure, call the MCP \`get_component\` tool.
 8. Links styled as buttons are \`<a uiButton>\`; never nest interactive elements.
+
+## Blocks, Layouts and Recipes are copied, not imported
+
+They live on the docs site (\`/docs/blocks\`, \`/docs/layouts\`, \`/docs/recipes/*\`), not in
+\`@voltui/components\`. Copy the source into the app and import Volt from \`@voltui/components\`. Never
+import an \`AppDashboard\`, \`SettingsLayout\` or \`SettingsFormRecipe\` from the package. Recipes
+(settings form, async search, data table) show behaviour — validation, pending, failure, retry — using
+ordinary Angular signals around the atoms.
+
+Blocked-but-focusable actions use \`aria-disabled="true"\` (+ \`aria-describedby\` for the reason) on
+\`uiButton\`; Volt only dims it, so guard the handler yourself. Use \`disabled\` to leave the tab order.
+
 `;
 
 const VSCODE_SNIPPETS = {

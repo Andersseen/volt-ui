@@ -16,7 +16,7 @@
  * Usage: node scripts/docs-completeness-check.mjs
  * Exit code: 1 if any non-exempt gap is found, 0 otherwise.
  */
-import { readFileSync, readdirSync } from 'node:fs';
+import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -79,6 +79,33 @@ for (const name of components) {
     if (!hasPage) gaps.push({ name, kind: 'demo-page', detail: `no ${name}.page.ts found under src/app/pages` });
   }
 }
+
+// `voltButton` is the only attribute spelling. `<button volt-button>` is an inert attribute —
+// the `volt-button` selector is element-only — so it renders an unstyled button.
+const INERT_ATTRIBUTE = /<(?:button|a)\b[^>]*?\svolt-button(?=[\s>=])/g;
+const SCAN_ROOTS = ['src', 'cli', '.agents', 'projects', 'README.md', 'VOLT_UI_PROMPT.md'];
+const SCAN_EXT = /\.(ts|html|md|js|mjs)$/;
+function scan(path) {
+  const stat = statSync(path, { throwIfNoEntry: false });
+  if (!stat) return;
+  if (stat.isDirectory()) {
+    for (const e of readdirSync(path)) {
+      if (e === 'node_modules' || e === 'dist' || e.startsWith('.angular')) continue;
+      scan(join(path, e));
+    }
+  } else if (SCAN_EXT.test(path) && !path.endsWith('docs-completeness-check.mjs')) {
+    const text = readFileSync(path, 'utf8');
+    for (const m of text.matchAll(INERT_ATTRIBUTE)) {
+      const line = text.slice(0, m.index).split('\n').length;
+      gaps.push({
+        name: path.replace(ROOT + '/', ''),
+        kind: 'inert-attribute',
+        detail: `line ${line}: <button volt-button> is inert, use voltButton`,
+      });
+    }
+  }
+}
+for (const r of SCAN_ROOTS) scan(join(ROOT, r));
 
 console.log(`Checked ${components.length} public-api exports.`);
 console.log(`Gaps: ${gaps.length}\n`);

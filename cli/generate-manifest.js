@@ -19,6 +19,12 @@ const COMPONENT_METADATA = {
     description: 'Inline feedback panels',
     stability: 'beta',
   },
+  'empty-state': {
+    group: 'Feedback',
+    label: 'Empty State',
+    description: 'Empty collection and no-results panels',
+    stability: 'beta',
+  },
   autofill: {
     group: 'Forms',
     label: 'Autofill',

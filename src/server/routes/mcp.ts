@@ -382,8 +382,11 @@ const components: Record<string, ComponentMeta> = {
     inputs: [
       { name: 'modal', type: 'boolean', default: true },
       { name: 'closeOnEscape', type: 'boolean', default: true },
+      { name: 'dismissible', type: 'boolean', default: true },
+      { name: 'initialFocus', type: 'string', default: '' },
     ],
     examples: [
+      `<ng-template uiDialogRoot role="alertdialog" [(open)]="deleting" [dismissible]="!pending()" initialFocus="[data-cancel]" let-close="close">…</ng-template>`,
       `<ng-template uiDialogRoot [(open)]="editing" (closed)="onClosed($event)" let-close="close">
   <div uiDialogOverlay></div>
   <div uiDialogContent>
@@ -908,6 +911,21 @@ save() { this.toast.success('Changes saved', { description: 'Your workspace has 
   <ui-alert-description>Reconnect your Cloudflare account.</ui-alert-description>
   <button slot="action" uiButton variant="outline" size="sm">Reconnect</button>
 </ui-alert>`,
+    ],
+  },
+  'empty-state': {
+    name: 'Empty State',
+    description:
+      'Centred panel for an empty collection or a search with no results: optional icon, title, description and actions. Plain content (no live-region role) and not an error state — pair with Alert for failures.',
+    dependencies: [],
+    inputs: [{ name: 'class', type: 'string', default: '' }],
+    examples: [
+      `<ui-empty-state>
+  <svg slot="icon" aria-hidden="true">…</svg>
+  <ui-empty-state-title>No projects yet</ui-empty-state-title>
+  <ui-empty-state-description>Create your first project to get started.</ui-empty-state-description>
+  <div slot="actions"><button uiButton>Create project</button></div>
+</ui-empty-state>`,
     ],
   },
   spinner: {

@@ -2,6 +2,7 @@
  * Layout sources, read straight off disk by Vite's `?raw` import — see `blocks.ts` for
  * why the code on the page is the code running above it rather than a copy.
  */
+import { toConsumerSource } from './consumer-source';
 import adminDashboardSource from '../../layouts/admin-dashboard/admin-dashboard.ts?raw';
 import analyticsSource from '../../layouts/analytics/analytics.ts?raw';
 import chatSource from '../../layouts/chat/chat.ts?raw';
@@ -12,12 +13,12 @@ import settingsSource from '../../layouts/settings/settings.ts?raw';
 import signUpSource from '../../layouts/sign-up/sign-up.ts?raw';
 import topNavSource from '../../layouts/top-nav/top-nav.ts?raw';
 
-export const ADMIN_DASHBOARD_LAYOUT = adminDashboardSource;
-export const TOP_NAV_LAYOUT = topNavSource;
-export const ANALYTICS_LAYOUT = analyticsSource;
-export const SETTINGS_LAYOUT = settingsSource;
-export const PROFILE_LAYOUT = profileSource;
-export const KANBAN_LAYOUT = kanbanSource;
-export const CHAT_LAYOUT = chatSource;
-export const LOGIN_LAYOUT = loginSource;
-export const SIGN_UP_LAYOUT = signUpSource;
+export const ADMIN_DASHBOARD_LAYOUT = toConsumerSource(adminDashboardSource);
+export const TOP_NAV_LAYOUT = toConsumerSource(topNavSource);
+export const ANALYTICS_LAYOUT = toConsumerSource(analyticsSource);
+export const SETTINGS_LAYOUT = toConsumerSource(settingsSource);
+export const PROFILE_LAYOUT = toConsumerSource(profileSource);
+export const KANBAN_LAYOUT = toConsumerSource(kanbanSource);
+export const CHAT_LAYOUT = toConsumerSource(chatSource);
+export const LOGIN_LAYOUT = toConsumerSource(loginSource);
+export const SIGN_UP_LAYOUT = toConsumerSource(signUpSource);

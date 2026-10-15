@@ -1,3 +1,28 @@
+# Upgrade notes — 1.1 → 1.2
+
+1.2.0 is a minor release: nothing is removed or renamed. Two behaviours are worth knowing.
+
+| Before (1.1)                                                            | After (1.2)                                                            | What to do                                                                                                                   |
+| ----------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| Collapsed `volt-sidebar-item` links had no accessible name (icon only). | They carry `aria-label` from `label` while collapsed.                  | Nothing. Selectors that matched a link by visible text only while collapsed now also match by name.                          |
+| `buttonVariants()` ignored `aria-disabled`.                             | `aria-disabled="true"` dims the button and shows `cursor-not-allowed`. | Nothing for `disabled`. If you styled `[aria-disabled]` yourself, remove your copy. Volt still does **not** block the click. |
+
+## Recommended, not required
+
+| Instead of                                                                  | Prefer (1.2)                                                                                             |
+| --------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `[closeOnEscape]="!saving()"` on `voltDialogRoot` (read only at open time)  | `[dismissible]="!saving()"` — applies while the dialog is open.                                          |
+| Disabling the Cancel/Save buttons and hoping focus survives                 | `aria-disabled` + a guard in the handler for the button that holds focus (see the Settings form recipe). |
+| A hand-rolled "nothing here" card                                           | `<volt-empty-state>`.                                                                                    |
+| `<button volt-button>` (never worked: `volt-button` is an element selector) | `<button voltButton>`.                                                                                   |
+
+## Copying Blocks, Layouts and Recipes
+
+The source shown on the site now imports from `@voltui/components` (it used to show the docs-only
+`volt` alias). If you copied one earlier, change `from 'volt'` to `from '@voltui/components'`.
+
+---
+
 # Upgrade notes — 1.0 → 1.1
 
 1.1.0 is a minor release: nothing is removed or renamed, and existing templates compile unchanged.

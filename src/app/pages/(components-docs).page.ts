@@ -3,6 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { DocsPageShell } from '../components/docs-page-shell';
 import type { DocsSidebarGroup } from '../components/docs-sidebar-nav';
 import { COMPONENT_GROUPS } from '../lib/component-metadata';
+import { RECIPES } from '../lib/recipes-metadata';
 import { injectAppI18n } from '../i18n/i18n';
 
 @Component({
@@ -38,8 +39,14 @@ export default class ComponentsLayout {
       links: group.components.map(component => ({
         path: component.path,
         labelKey: component.shortLabelKey ?? component.labelKey,
+        label: component.label,
         stability: component.stability,
       })),
     })),
+    // Pending Glossa keys (specs/plans/v1.2.md): the heading and recipe names are literal.
+    {
+      heading: 'Recipes',
+      links: RECIPES.map(recipe => ({ path: recipe.path, label: recipe.label })),
+    },
   ];
 }

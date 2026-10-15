@@ -1,4 +1,6 @@
-import { render } from '@testing-library/angular';
+import { render, screen, within } from '@testing-library/angular';
+import { TestBed } from '@angular/core/testing';
+import { VoltSidebarService } from 'volt';
 import { provideRouter } from '@angular/router';
 import { describe, expect, it } from 'vitest';
 import type { Type } from '@angular/core';
@@ -52,5 +54,69 @@ describe('layouts', () => {
     const host = fixture.nativeElement as HTMLElement;
 
     expect(host.querySelector('h1, h2')).not.toBeNull();
+  });
+});
+
+/**
+ * Accessible-name audit shared by every layout: a control a screen reader announces as just
+ * "button" or "link" is a defect, and icon-only controls are where it happens.
+ */
+const nameOf = (el: HTMLElement): string =>
+  (
+    el.getAttribute('aria-label') ??
+    (el.getAttribute('aria-labelledby')
+      ? (el.ownerDocument.getElementById(el.getAttribute('aria-labelledby')!)?.textContent ?? '')
+      : '') ??
+    ''
+  ).trim() ||
+  (el.textContent ?? '').trim() ||
+  [...((el as HTMLButtonElement).labels ?? [])]
+    .map(l => l.textContent ?? '')
+    .join(' ')
+    .trim() ||
+  (el.getAttribute('title') ?? '').trim() ||
+  (el.querySelector('img[alt]')?.getAttribute('alt') ?? '').trim();
+
+describe('layout accessibility', () => {
+  it.each(LAYOUTS)('names every button and link in the %s layout', async (_name, component) => {
+    const { fixture } = await renderLayout(component);
+    const unnamed = [
+      ...(fixture.nativeElement as HTMLElement).querySelectorAll<HTMLElement>(
+        'button, a[href], [role="button"]'
+      ),
+    ].filter(el => !nameOf(el));
+
+    expect(unnamed.map(el => el.outerHTML.slice(0, 120))).toEqual([]);
+  });
+});
+
+describe('admin dashboard layout', () => {
+  it('gives the mobile navigation trigger a name and exposes its state', async () => {
+    await renderLayout(AdminDashboardLayout);
+    const trigger = screen.getByRole('button', { name: 'Open navigation' });
+
+    expect(trigger).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  it('has one page heading, a labelled breadcrumb trail and a keyboard-scrollable table', async () => {
+    await renderLayout(AdminDashboardLayout);
+
+    expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1);
+    expect(screen.getByRole('navigation', { name: /breadcrumb/i })).toBeInTheDocument();
+    const region = screen.getByRole('region', { name: 'Recent orders' });
+    expect(region).toHaveAttribute('tabindex', '0');
+    expect(region.querySelector('[role="table"], table')).not.toBeNull();
+  });
+
+  it('keeps link names when the sidebar collapses to icons', async () => {
+    const { fixture } = await renderLayout(AdminDashboardLayout);
+    TestBed.inject(VoltSidebarService).setCollapsed(true);
+    await fixture.whenStable();
+
+    for (const name of ['Dashboard', 'Analytics', 'Customers', 'Messages', 'Settings']) {
+      expect(
+        within(screen.getByRole('complementary')).getByRole('link', { name })
+      ).toBeInTheDocument();
+    }
   });
 });

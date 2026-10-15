@@ -30,6 +30,10 @@ import { buttonVariants, type ButtonVariants } from './variants';
  * `disabled` only applies to `<button>`. HTML has no disabled link, and faking one with
  * `pointer-events` leaves it reachable by keyboard; render a disabled `<button voltButton>` or drop
  * the link instead.
+ *
+ * To keep a blocked action focusable so `aria-describedby` can explain why, use
+ * `aria-disabled="true"` instead of `disabled`. Volt only dims it; it does **not** stop clicks or
+ * Enter/Space, so guard the handler yourself (`if (blocked()) return;`).
  */
 @Directive({
   selector: 'button[voltButton], a[voltButton]',

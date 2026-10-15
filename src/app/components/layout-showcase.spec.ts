@@ -48,7 +48,9 @@ describe('LayoutShowcase', () => {
     await renderHost();
 
     expect(screen.getByRole('heading', { name: /layout source/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /copy/i })).toBeInTheDocument();
+    // One copy button for the source, one for the install command shown above it.
+    expect(screen.getAllByRole('button', { name: /copy/i })).toHaveLength(2);
+    expect(screen.getByText(/^pnpm add @voltui\/components/)).toBeInTheDocument();
   });
 
   it('points at the blocks gallery for anyone who wanted a finished section', async () => {

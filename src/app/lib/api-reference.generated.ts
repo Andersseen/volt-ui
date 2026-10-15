@@ -533,6 +533,8 @@ export const DIALOG_API: ComponentApi = {
         { name: 'role', type: 'VoltDialogRole', default: "'dialog'" },
         { name: 'closeOnEscape', type: 'boolean', default: 'true', transform: 'booleanAttribute' },
         { name: 'closeOnClick', type: 'boolean', default: 'true', transform: 'booleanAttribute' },
+        { name: 'initialFocus', type: 'string | undefined', default: 'undefined' },
+        { name: 'dismissible', type: 'boolean', default: 'true', transform: 'booleanAttribute' },
       ],
       outputs: [
         { name: 'openChange', type: 'boolean' },
@@ -681,6 +683,30 @@ export const DROPDOWN_MENU_API: ComponentApi = {
     {
       className: 'VoltDropdownMenu',
       selector: 'volt-dropdown-menu',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
+      outputs: [],
+    },
+  ],
+  variants: undefined,
+};
+
+export const EMPTY_STATE_API: ComponentApi = {
+  directives: [
+    {
+      className: 'VoltEmptyStateDescription',
+      selector: 'volt-empty-state-description',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
+      outputs: [],
+    },
+    {
+      className: 'VoltEmptyStateTitle',
+      selector: 'volt-empty-state-title',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
+      outputs: [],
+    },
+    {
+      className: 'VoltEmptyState',
+      selector: 'volt-empty-state',
       inputs: [{ name: 'class', type: 'string', default: "''" }],
       outputs: [],
     },

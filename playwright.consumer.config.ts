@@ -5,7 +5,7 @@ const baseURL = `http://127.0.0.1:${port}`;
 
 export default defineConfig({
   testDir: './e2e',
-  testMatch: /consumer\.spec\.ts/,
+  testMatch: /consumer(-workflow)?\.spec\.ts/,
   fullyParallel: false,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
@@ -21,6 +21,14 @@ export default defineConfig({
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
+    // Focus and dialog behaviour differ per engine. CI installs Chromium only, so the others are
+    // opt-in: `E2E_ALL_BROWSERS=1 pnpm test:e2e:consumer`.
+    ...(process.env['E2E_ALL_BROWSERS']
+      ? [
+          { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
+          { name: 'webkit', use: { ...devices['Desktop Safari'] } },
+        ]
+      : []),
   ],
   webServer: {
     command: `pnpm exec vite --config e2e/consumer/vite.config.ts --host 127.0.0.1 --port ${port} --strictPort`,

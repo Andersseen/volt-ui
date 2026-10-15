@@ -211,6 +211,7 @@ export class VoltSidebarGroup {
       [voltTooltip]="label()"
       placement="right"
       [disabled]="!sidebarService.isCollapsed()"
+      [attr.aria-label]="sidebarService.isCollapsed() ? label() : null"
       [routerLink]="routerLink()"
       [queryParams]="queryParams()"
       routerLinkActive="bg-accent text-accent-foreground font-medium active"

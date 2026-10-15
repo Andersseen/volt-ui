@@ -19,6 +19,17 @@ export interface VoltDialogOptions<T = unknown> {
   closeOnEscape?: boolean;
   /** Close when the overlay (`voltDialogOverlay`) is clicked. Defaults to `true`. */
   closeOnClick?: boolean;
+  /**
+   * CSS selector, relative to the dialog content, of the element that receives focus on open —
+   * `[data-cancel]` for a destructive confirmation. Without it focus goes to the first tabbable
+   * element. Falls back to that default when nothing matches.
+   */
+  initialFocus?: string;
+  /**
+   * Start with user dismissal (Escape, overlay click) disabled. Toggle later through
+   * `VoltDialogRef.dismissible`. Defaults to `true`.
+   */
+  dismissible?: boolean;
   /** Close on router navigation and browser back/forward. */
   closeOnNavigation?: boolean;
   /** Unique dialog id. Generated when omitted. */
@@ -52,6 +63,19 @@ export class VoltDialogRef<R = unknown> {
 
   get id(): string {
     return this.ref.id;
+  }
+
+  /**
+   * Whether Escape and overlay clicks may dismiss the dialog. Set it to `false` while an async
+   * operation is pending and back to `true` once the outcome is known. Only user dismissal is
+   * affected: `close()` always works, so the owner stays in control.
+   */
+  get dismissible(): boolean {
+    return !this.ref.disableClose;
+  }
+
+  set dismissible(value: boolean) {
+    this.ref.disableClose = !value;
   }
 
   close(result?: R): Promise<void> {
@@ -88,12 +112,15 @@ export class VoltDialogService {
     content: TemplateRef<VoltDialogContext<R>> | Type<unknown>,
     options: VoltDialogOptions<T> = {}
   ): VoltDialogRef<R> {
+    const { dismissible, ...rest } = options;
     const ref = this.manager.open(content as TemplateRef<never>, {
-      ...options,
+      ...rest,
       data: options.data as T,
     }) as NgpDialogRef<unknown, R>;
 
-    return new VoltDialogRef<R>(ref);
+    const voltRef = new VoltDialogRef<R>(ref);
+    if (dismissible === false) voltRef.dismissible = false;
+    return voltRef;
   }
 
   /** Closes every open dialog, innermost first. */

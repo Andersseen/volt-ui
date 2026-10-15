@@ -59,6 +59,15 @@ export class VoltDialogRoot<R = unknown> {
   readonly role = input<VoltDialogRole>('dialog');
   readonly closeOnEscape = input<boolean, unknown>(true, { transform: booleanAttribute });
   readonly closeOnClick = input<boolean, unknown>(true, { transform: booleanAttribute });
+  /** CSS selector of the element to focus on open (see {@link VoltDialogOptions.initialFocus}). */
+  readonly initialFocus = input<string | undefined>(undefined);
+  /**
+   * Live switch for user dismissal (Escape, overlay click). Bind it to your pending flag —
+   * `[dismissible]="!saving()"` — and the dialog stays put until the outcome is known. Unlike
+   * `closeOnEscape`/`closeOnClick` (read once when the dialog opens) it applies while open.
+   * `close()` and `[(open)]` still close it.
+   */
+  readonly dismissible = input<boolean, unknown>(true, { transform: booleanAttribute });
   /** Emits the close result (or `undefined`) every time the dialog closes. */
   readonly closed = output<R | undefined>();
 
@@ -71,6 +80,11 @@ export class VoltDialogRoot<R = unknown> {
       if (this.isBrowser) {
         untracked(() => queueMicrotask(() => this.sync()));
       }
+    });
+
+    effect(() => {
+      const dismissible = this.dismissible();
+      if (this.ref) this.ref.dismissible = dismissible;
     });
 
     inject(DestroyRef).onDestroy(() => {
@@ -90,6 +104,8 @@ export class VoltDialogRoot<R = unknown> {
         role: this.role(),
         closeOnEscape: this.closeOnEscape(),
         closeOnClick: this.closeOnClick(),
+        dismissible: this.dismissible(),
+        initialFocus: this.initialFocus(),
         viewContainerRef: this.viewContainerRef,
       });
       this.ref = ref;

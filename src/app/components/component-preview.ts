@@ -4,6 +4,9 @@ import {
   VoltAccordionContent,
   VoltAccordionItem,
   VoltAccordionTrigger,
+  VoltAlert,
+  VoltAlertDescription,
+  VoltAlertTitle,
   VoltAvatar,
   VoltAvatarFallback,
   VoltBadge,
@@ -20,6 +23,9 @@ import {
   VoltCardTitle,
   VoltCheckbox,
   VoltCombobox,
+  VoltEmptyState,
+  VoltEmptyStateDescription,
+  VoltEmptyStateTitle,
   VoltFileDropzone,
   VoltFormField,
   VoltHint,
@@ -48,6 +54,7 @@ import {
   VoltSelectItem,
   VoltSeparator,
   VoltSkeleton,
+  VoltSpinner,
   VoltSlider,
   VoltSwitch,
   VoltTable,
@@ -140,6 +147,13 @@ import {
     VoltSelectItem,
     VoltSeparator,
     VoltSkeleton,
+    VoltSpinner,
+    VoltAlert,
+    VoltAlertTitle,
+    VoltAlertDescription,
+    VoltEmptyState,
+    VoltEmptyStateTitle,
+    VoltEmptyStateDescription,
     VoltSlider,
     VoltSwitch,
     VoltTable,
@@ -564,6 +578,34 @@ import {
             </volt-table-row>
           </volt-table-body>
         </volt-table>
+      }
+
+      @case ('alert') {
+        <volt-alert variant="info" class="px-3 py-2">
+          <div class="grid gap-0.5">
+            <volt-alert-title class="text-xs">Heads up</volt-alert-title>
+            <volt-alert-description class="text-[11px]"
+              >A new version is out.</volt-alert-description
+            >
+          </div>
+        </volt-alert>
+      }
+
+      @case ('spinner') {
+        <div class="flex items-center gap-3">
+          <volt-spinner size="sm" />
+          <volt-spinner size="md" />
+          <volt-spinner size="lg" class="text-primary" />
+        </div>
+      }
+
+      @case ('empty-state') {
+        <volt-empty-state class="gap-1 px-4 py-3">
+          <volt-empty-state-title class="text-xs">No projects yet</volt-empty-state-title>
+          <volt-empty-state-description class="text-[11px]"
+            >Create one to start.</volt-empty-state-description
+          >
+        </volt-empty-state>
       }
 
       @case ('resizable') {

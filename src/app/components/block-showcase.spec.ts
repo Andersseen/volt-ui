@@ -49,6 +49,8 @@ describe('BlockShowcase', () => {
     await renderHost();
 
     expect(screen.getByRole('heading', { name: /block source/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /copy/i })).toBeInTheDocument();
+    // One copy button for the source, one for the install command shown above it.
+    expect(screen.getAllByRole('button', { name: /copy/i })).toHaveLength(2);
+    expect(screen.getByText(/^pnpm add @voltui\/components/)).toBeInTheDocument();
   });
 });

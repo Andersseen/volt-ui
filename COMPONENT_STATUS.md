@@ -13,8 +13,10 @@ Volt UI `1.1.0` is stable. Status labels describe the current confidence level f
 ## Release Groups
 
 - **Stable**: every 1.0 component. The 1.0 surface ships entirely stable.
-- **Beta**: `alert`, `spinner` (added in 1.1). Their APIs follow the 1.x promise; `beta` only means
-  they have not yet had a release of real-world use.
+- **Beta**: `alert`, `spinner` (added in 1.1), `empty-state` (added in 1.2). Their APIs follow the 1.x promise;
+  `beta` only means they have not yet had a release of real-world use. 1.2 exercised `alert` and `spinner` in
+  the application-workflow benchmark (package and CLI) and needed no API change; they are promotion candidates
+  for 1.3 if consumers report none.
 - **Experimental**: none.
 
 ## Table
@@ -35,6 +37,7 @@ Volt UI `1.1.0` is stable. Status labels describe the current confidence level f
 | dialog          | stable | n/a                       | Escape covered in e2e                           | trigger, controlled and service-opened dialogs: focus trap/return, outside click covered | yes  | unit + e2e          |
 | drawer          | stable | n/a                       | Escape covered in e2e                           | focus trap/return, outside click covered                                                 | yes  | unit + e2e          |
 | dropdown-menu   | stable | n/a                       | Arrow/Home/End/Enter covered                    | Escape, outside click, focus covered                                                     | yes  | unit + e2e          |
+| empty-state     | beta   | n/a                       | n/a (static content)                            | plain content, no live-region role                                                       | yes  | unit + e2e workflow |
 | file-upload     | stable | output-based API          | native input behavior                           | real-browser drag/drop covered                                                           | yes  | unit + e2e          |
 | form-field      | stable | projected-control wiring  | label/description semantics                     | n/a                                                                                      | yes  | unit                |
 | input           | stable | full CVA contract         | native input                                    | focus-visible styles                                                                     | yes  | unit + e2e docs     |
