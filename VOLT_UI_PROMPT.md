@@ -189,6 +189,23 @@ Controlled by application state (no trigger element):
 </ng-template>
 ```
 
+While a request is pending, pin the dialog and put focus on the safe action:
+
+```html
+<ng-template
+  uiDialogRoot
+  role="alertdialog"
+  [(open)]="deleting"
+  [dismissible]="!pending()"
+  initialFocus="[data-cancel]"
+  let-close="close"
+  >…</ng-template
+>
+```
+
+`[dismissible]` is live (Escape and overlay click do nothing while `false`); `close()` always works.
+`closeOnEscape`/`closeOnClick` are only read when the dialog opens.
+
 Imperative confirm:
 
 ```ts
@@ -446,3 +463,15 @@ When unsure, call the MCP `get_component` tool or read the `component://<name>` 
 - **Form value not updating**: ensure the component is a CVA component and `ReactiveFormsModule` is imported.
 - **Styles missing**: import `@voltui/components/themes.css` after Tailwind.
 - **Dark mode not working**: `provideVoltTheme` toggles the `.dark` class; Tailwind `dark:` variant follows it.
+
+## Blocks, Layouts and Recipes are copied, not imported
+
+They live on the docs site (`/docs/blocks`, `/docs/layouts`, `/docs/recipes/*`), not in
+`@voltui/components`. Copy the source into the app and import Volt from `@voltui/components`. Never
+write `import { … } from '@voltui/components'` for an `AppDashboard`, `SettingsLayout` or
+`SettingsFormRecipe`. Recipes (settings form, async search, data table) show behaviour — validation,
+pending, failure, retry — using ordinary Angular signals around the atoms.
+
+Blocked-but-focusable actions use `aria-disabled="true"` (+ `aria-describedby` for the reason) on
+`uiButton`; Volt only dims it, so guard the handler yourself (`if (blocked()) return;`). Use `disabled`
+when the control should leave the tab order.

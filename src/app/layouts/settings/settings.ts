@@ -37,6 +37,10 @@ interface Preference {
  *
  * The section list is navigation, so it is a `nav` of links in real use. Here they are
  * buttons driving local state, because a documentation page has nowhere to route to.
+ *
+ * This is structure only. It deliberately holds no save state: validation, a pending request,
+ * failure and retry are behaviour, and live in the "Settings form" recipe
+ * (/docs/recipes/settings-form), which you can drop into the form column of this layout.
  */
 @Component({
   selector: 'app-settings-layout',

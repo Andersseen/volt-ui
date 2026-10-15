@@ -17,7 +17,16 @@ Angular UI atoms that stay out of the way of your product's own design — built
 
 <br/>
 
-### ⚡ v1.1 — Consumer DX
+### ⚡ v1.2 — Application DX & Composition _(in preparation)_
+
+**Atoms that survive real application workflows.** Dialogs can stay put while a request is pending
+(`[dismissible]`, `initialFocus`), `<button voltButton aria-disabled>` keeps a blocked action focusable
+and explained, `EmptyState` joins the catalog, and three tested **recipes** — settings form, async
+search, data table — show validation, pending, failure and retry around the existing atoms. Blocks and
+layouts now show copy-ready `@voltui/components` source and are compiled as a consumer would.
+Backwards compatible with 1.1 · **[release notes](./CHANGELOG.md)** · **[upgrade notes](./MIGRATION.md)**
+
+### v1.1 — Consumer DX
 
 **Built from what real apps ran into.** `class` now reliably styles the element you expect on every
 component, `<a voltButton routerLink>` replaces `<a><volt-button>`, forms get sizes and states,
@@ -224,7 +233,7 @@ promised. We have made peace with that.</sub>
 | -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Forms & inputs**   | `input` · `textarea` · `checkbox` · `radio` · `select` · `combobox` · `listbox` · `switch` · `slider` · `toggle` · `toggle-group` · `input-otp` · `form-field` · `autofill` · `file-upload` · `date-picker` · `search` |
 | **Actions**          | `button` (+ `voltButton` on `<button>` / `<a>`) · `toolbar`                                                                                                                                                            |
-| **Feedback**         | `alert` · `spinner` · `badge` · `toast`                                                                                                                                                                                |
+| **Feedback**         | `alert` · `spinner` · `empty-state` · `badge` · `toast`                                                                                                                                                                |
 | **Overlays**         | `dialog` · `drawer` · `popover` · `tooltip` · `dropdown-menu`                                                                                                                                                          |
 | **Navigation**       | `navigation-menu` · `breadcrumbs` · `pagination` · `tabs` · `accordion`                                                                                                                                                |
 | **Data display**     | `table` · `avatar` · `card` · `meter` · `progress` · `skeleton` · `separator`                                                                                                                                          |

@@ -382,8 +382,11 @@ const components: Record<string, ComponentMeta> = {
     inputs: [
       { name: 'modal', type: 'boolean', default: true },
       { name: 'closeOnEscape', type: 'boolean', default: true },
+      { name: 'dismissible', type: 'boolean', default: true },
+      { name: 'initialFocus', type: 'string', default: '' },
     ],
     examples: [
+      `<ng-template uiDialogRoot role="alertdialog" [(open)]="deleting" [dismissible]="!pending()" initialFocus="[data-cancel]" let-close="close">…</ng-template>`,
       `<ng-template uiDialogRoot [(open)]="editing" (closed)="onClosed($event)" let-close="close">
   <div uiDialogOverlay></div>
   <div uiDialogContent>

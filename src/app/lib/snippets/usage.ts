@@ -28,12 +28,30 @@ import { VoltButton, VoltNativeButton, VoltSpinner } from '@voltui/components';
       {{ saving ? 'Saving…' : 'Save' }}
     </button>
 
+    <!-- Pending: aria-disabled keeps keyboard focus on the button (a disabled one drops it to
+         <body>). Volt only dims it — it does NOT block clicks or Enter/Space, so the handler
+         must guard the action itself. -->
+    <button voltButton type="submit" [attr.aria-disabled]="saving ? 'true' : null" (click)="save()">
+      {{ saving ? 'Saving…' : 'Save' }}
+    </button>
+
+    <!-- Blocked but explained: still focusable, so aria-describedby can say why -->
+    <button voltButton variant="destructive" type="button" aria-disabled="true" aria-describedby="why">
+      Delete
+    </button>
+    <p id="why">The last administrator cannot be deleted.</p>
+
     <!-- <volt-button> is still supported; ARIA inputs are forwarded to its inner <button> -->
     <volt-button variant="destructive" aria-describedby="delete-hint">Delete</volt-button>
   \`,
 })
 export class MyComponent {
   saving = false;
+
+  save() {
+    if (this.saving) return; // aria-disabled does not do this for you
+    // …
+  }
 }`;
 
 export const BADGE_USAGE = `import { Component } from '@angular/core';
@@ -277,6 +295,8 @@ import {
   type VoltDialogContext,
 } from '@voltui/components';
 
+declare function deleteProject(): Promise<void>; // your own async call
+
 @Component({
   imports: [
     VoltDialog,
@@ -311,6 +331,25 @@ import {
       </form>
     </ng-template>
 
+    <!-- 2b. Pending: [dismissible] is live. While a request runs, Escape and an overlay click do
+         nothing; close() and [(open)] still work. initialFocus (a CSS selector inside the
+         content) puts focus on the safe action instead of the first tabbable element. -->
+    <ng-template
+      voltDialogRoot
+      role="alertdialog"
+      [(open)]="deleting"
+      [dismissible]="!pending"
+      initialFocus="[data-cancel]"
+      let-close="close"
+    >
+      <div voltDialogOverlay></div>
+      <div voltDialogContent>
+        <h2 voltDialogTitle>Delete project?</h2>
+        <button voltButton data-cancel variant="outline" [disabled]="pending" (click)="close()">Cancel</button>
+        <button voltButton variant="destructive" [disabled]="pending" (click)="confirmDelete(close)">Delete</button>
+      </div>
+    </ng-template>
+
     <!-- 3. Confirm: open from code and await the answer -->
     <button voltButton variant="destructive" (click)="remove()">Delete project</button>
     <ng-template #confirmTpl let-close="close">
@@ -329,6 +368,18 @@ export class MyComponent {
   private readonly confirmTpl = viewChild.required<TemplateRef<VoltDialogContext<boolean>>>('confirmTpl');
 
   readonly editing = signal(false);
+  readonly deleting = signal(false);
+  pending = false;
+
+  async confirmDelete(close: (result?: unknown) => void) {
+    this.pending = true;
+    try {
+      await deleteProject(); // your own async call
+      close('deleted');
+    } finally {
+      this.pending = false;
+    }
+  }
 
   onEdited(result: unknown) {
     console.log('closed with', result);
@@ -1162,6 +1213,14 @@ import { VoltAlert, VoltAlertTitle, VoltAlertDescription, VoltNativeButton } fro
     <volt-alert variant="info">
       <volt-alert-title>New version available</volt-alert-title>
     </volt-alert>
+
+    <!-- A failed request: role="alert" interrupts once. Keep what the user typed and offer retry;
+         do not also put aria-live on a parent, which would read it twice. -->
+    <volt-alert variant="destructive" role="alert">
+      <volt-alert-title>Could not save</volt-alert-title>
+      <volt-alert-description>Your changes are still here. Try again.</volt-alert-description>
+      <button slot="action" voltButton variant="outline" size="sm">Retry</button>
+    </volt-alert>
   \`,
 })
 export class MyComponent {}`;
@@ -1214,10 +1273,16 @@ import { VoltSpinner, VoltNativeButton } from '@voltui/components';
       Saving…
     </button>
 
-    <!-- Standalone status: announced politely as "Loading projects" -->
-    <div class="grid place-items-center py-12" aria-busy="true">
-      <volt-spinner size="lg" label="Loading projects" />
-    </div>
+    <!-- Standalone status: announced politely as "Loading projects". Set aria-busy on the region
+         that is being replaced, not on the spinner. -->
+    <section aria-busy="true" aria-label="Projects">
+      <div class="grid place-items-center py-12">
+        <volt-spinner size="lg" label="Loading projects" />
+      </div>
+    </section>
+
+    <!-- A spinner next to visible text is decorative: giving it a label as well would announce
+         "Saving… Saving" twice. One status message per change. -->
 
     <!-- Inline, in the current text colour -->
     <p class="text-muted-foreground"><volt-spinner size="sm" /> Syncing</p>

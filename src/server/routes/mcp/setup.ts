@@ -699,6 +699,16 @@ this.toast.error('Could not save', { description: 'Try again.' });
 </ng-template>
 \`\`\`
 
+While a request is pending, pin the dialog and put focus on the safe action:
+
+\`\`\`html
+<ng-template uiDialogRoot role="alertdialog" [(open)]="deleting" [dismissible]="!pending()"
+             initialFocus="[data-cancel]" let-close="close">…</ng-template>
+\`\`\`
+
+\`[dismissible]\` is live (Escape and overlay click do nothing while \`false\`); \`close()\` always works.
+\`closeOnEscape\`/\`closeOnClick\` are only read when the dialog opens.
+
 \`\`\`ts
 const ok = await inject(UiDialogService).open<boolean>(confirmTpl, { role: 'alertdialog' }).closed;
 \`\`\`
@@ -735,6 +745,18 @@ const ok = await inject(UiDialogService).open<boolean>(confirmTpl, { role: 'aler
 6. For overlays, always use the attribute-directive trigger + \`<ng-template>\` pattern.
 7. Do not invent inputs. If unsure, call the MCP \`get_component\` tool.
 8. Links styled as buttons are \`<a uiButton>\`; never nest interactive elements.
+
+## Blocks, Layouts and Recipes are copied, not imported
+
+They live on the docs site (\`/docs/blocks\`, \`/docs/layouts\`, \`/docs/recipes/*\`), not in
+\`@voltui/components\`. Copy the source into the app and import Volt from \`@voltui/components\`. Never
+import an \`AppDashboard\`, \`SettingsLayout\` or \`SettingsFormRecipe\` from the package. Recipes
+(settings form, async search, data table) show behaviour — validation, pending, failure, retry — using
+ordinary Angular signals around the atoms.
+
+Blocked-but-focusable actions use \`aria-disabled="true"\` (+ \`aria-describedby\` for the reason) on
+\`uiButton\`; Volt only dims it, so guard the handler yourself. Use \`disabled\` to leave the tab order.
+
 `;
 
 // Cursor / Windsurf accept a bare `url` entry.
