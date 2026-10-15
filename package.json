@@ -57,7 +57,10 @@
     "check:ai-docs": "node cli/generate-manifest.js && node cli/check-ai-docs-sync.js",
     "generate:api-reference": "node scripts/generate-api-reference.mjs",
     "check:docs-completeness": "node scripts/docs-completeness-check.mjs",
-    "check:contrast": "node scripts/contrast-audit.mjs"
+    "check:contrast": "node scripts/contrast-audit.mjs",
+    "check:ssr": "node scripts/check-ssr.mjs",
+    "test:e2e:ssr": "E2E_SERVER=wrangler E2E_PORT=8799 playwright test e2e/ssr-gallery.spec.ts --project=chromium",
+    "check:copied-source": "pnpm build:lib && node scripts/check-copied-source.mjs"
   },
   "lint-staged": {
     "*.{ts,html}": [

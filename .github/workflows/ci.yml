@@ -45,11 +45,17 @@ jobs:
       - name: Check generated AI and component documentation
         run: pnpm check:ai-docs
 
+      - name: Check docs completeness and colour contrast
+        run: pnpm check:docs-completeness && pnpm check:contrast
+
       - name: Run unit tests with enforced coverage
         run: pnpm test:coverage
 
       - name: Build library
         run: pnpm build:lib
+
+      - name: Compile copied Blocks and Layouts in a consumer workspace
+        run: node scripts/check-copied-source.mjs
 
       - name: Check CLI package
         run: pnpm pack:cli
@@ -65,6 +71,12 @@ jobs:
 
       - name: Run e2e smoke tests
         run: pnpm test:e2e:ci
+
+      - name: Server-render the gallery in the Cloudflare worker
+        run: pnpm check:ssr
+
+      - name: Hydrate the gallery in the Cloudflare worker
+        run: pnpm test:e2e:ssr
 
       - name: Run consumer fixture e2e tests
         run: pnpm test:e2e:consumer

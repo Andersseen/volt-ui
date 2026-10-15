@@ -2,7 +2,7 @@
 // Regenerate with: pnpm stats (structural only) or pnpm stats:full (re-runs the suite).
 export const SITE_STATS = {
   version: '1.1.0',
-  components: 43,
+  components: 44,
   layouts: 1,
   tests: 653,
   colorPresets: 5,

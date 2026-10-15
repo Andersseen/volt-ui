@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { categoryFor, type BlockMetadata } from '../lib/blocks-metadata';
+import { externalPackages } from '../lib/snippets/consumer-source';
 import { CodePanel } from './code-panel';
 import { injectAppI18n } from '../i18n/i18n';
 
@@ -58,6 +59,7 @@ import { injectAppI18n } from '../i18n/i18n';
       <app-code-panel
         [title]="t('gallery.blockSource')"
         [code]="code()"
+        [cliCommand]="installCommand()"
         [description]="t('gallery.blockSourceNote')"
       />
 
@@ -77,6 +79,18 @@ export class BlockShowcase {
 
   readonly block = input.required<BlockMetadata>();
   readonly code = input.required<string>();
+
+  /**
+   * The packages the copied file imports, read off the source itself so a new dependency
+   * cannot be left out of the instructions.
+   */
+  protected readonly installCommand = computed(() =>
+    [
+      'pnpm add',
+      '@voltui/components',
+      ...externalPackages(this.code()).filter(p => p !== '@voltui/components'),
+    ].join(' ')
+  );
 
   /** Names the category above the title, so a block page says where it sits in the set. */
   protected readonly category = computed(() => categoryFor(this.block()));
