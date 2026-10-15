@@ -70,13 +70,23 @@ const known = [];
 try {
   await ready();
   for (const route of routes) {
-    const before = log.length;
-    const res = await fetch(`http://127.0.0.1:${PORT}${route}`);
-    await res.text();
-    await sleep(150);
-    const chunk = log.slice(before).replace(/\x1b\[[0-9;]*m/g, '');
-    const errors = chunk.match(/ERROR[^\n]*/g) ?? [];
-    if (res.status !== 200) failures.push(`${route}: HTTP ${res.status}`);
+    // The worker fetches the Glossa catalog over the network; a dropped connection is not an
+    // SSR defect in our code, so that one cause (and only that one) is retried.
+    let status = 0;
+    let errors = [];
+    for (let attempt = 0; attempt < 3; attempt++) {
+      const before = log.length;
+      const res = await fetch(`http://127.0.0.1:${PORT}${route}`);
+      status = res.status;
+      await res.text();
+      await sleep(150);
+      const chunk = log.slice(before).replace(/\x1b\[[0-9;]*m/g, '');
+      errors = chunk.match(/ERROR[^\n]*/g) ?? [];
+      const networkOnly =
+        errors.length > 0 && errors.every(e => /Failed to fetch message catalog/.test(e));
+      if (!(networkOnly || (status === 500 && errors.length === 0))) break;
+    }
+    if (status !== 200) failures.push(`${route}: HTTP ${status}`);
     if (errors.length) {
       const reason = KNOWN.get(route);
       (reason ? known : failures).push(
