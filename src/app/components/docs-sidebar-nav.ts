@@ -28,6 +28,8 @@ export interface DocsSidebarLink {
 
 export interface DocsSidebarGroup {
   headingKey?: PlainTranslationKey;
+  /** Locale-invariant heading, same caveat as `DocsSidebarLink.label`. */
+  heading?: string;
   links: DocsSidebarLink[];
 }
 
@@ -68,6 +70,10 @@ export interface DocsSidebarGroup {
         @if (group.headingKey; as headingKey) {
           <h5 class="font-medium text-xs mt-4 text-muted-foreground uppercase tracking-wider">
             {{ t(headingKey) }}
+          </h5>
+        } @else if (group.heading) {
+          <h5 class="font-medium text-xs mt-4 text-muted-foreground uppercase tracking-wider">
+            {{ group.heading }}
           </h5>
         }
         <ul class="space-y-1 mt-2 border-l border-border/50 ml-2 pl-4">
@@ -125,6 +131,12 @@ export interface DocsSidebarGroup {
                 class="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider mt-3 mb-1"
               >
                 {{ t(headingKey) }}
+              </p>
+            } @else if (group.heading) {
+              <p
+                class="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider mt-3 mb-1"
+              >
+                {{ group.heading }}
               </p>
             }
             @for (link of group.links; track link.path) {

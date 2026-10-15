@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Compiles what the Blocks and Layouts "copy" button hands a visitor, in a workspace that has
+ * Compiles what the Blocks, Layouts and Recipes "copy" button hands a visitor, in a workspace that has
  * none of this repository's context: no `volt` alias, no docs-app paths. `@voltui/components`
  * resolves to the built library (`dist/volt`, run `pnpm build:lib` first), the same artifact
  * `npm pack` ships.
@@ -28,7 +28,7 @@ if (!existsSync(join(LIB, 'package.json'))) {
 rmSync(OUT, { recursive: true, force: true });
 
 let copied = 0;
-for (const kind of ['blocks', 'layouts']) {
+for (const kind of ['blocks', 'layouts', 'recipes']) {
   const dir = join(ROOT, 'src/app', kind);
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
     if (!entry.isDirectory()) continue;
@@ -74,7 +74,7 @@ writeFileSync(
   )
 );
 
-console.log(`Compiling ${copied} copied block/layout sources against dist/volt…`);
+console.log(`Compiling ${copied} copied block/layout/recipe sources against dist/volt…`);
 try {
   execFileSync(join(ROOT, 'node_modules/.bin/ngc'), ['-p', join(OUT, 'tsconfig.json')], {
     cwd: ROOT,
@@ -84,4 +84,4 @@ try {
   console.error('\nCopied source does not compile in a consumer workspace.');
   process.exit(1);
 }
-console.log('Every copied block and layout compiles.');
+console.log('Every copied block, layout and recipe compiles.');

@@ -1,7 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import * as blocks from './blocks';
 import * as layouts from './layouts';
-import { externalPackages, importSpecifiers, toConsumerSource } from './consumer-source';
+import * as recipes from './recipes';
+import {
+  externalPackages,
+  importSpecifiers,
+  packageName,
+  toConsumerSource,
+} from './consumer-source';
 
 /**
  * What the copy button hands a visitor must work in a project that has none of this
@@ -10,11 +16,15 @@ import { externalPackages, importSpecifiers, toConsumerSource } from './consumer
  */
 const ALLOWED_PACKAGES = new Set(['@voltui/components', 'lumen-icons', 'angular-movement']);
 
-const SOURCES = [...Object.entries(blocks), ...Object.entries(layouts)] as [string, string][];
+const SOURCES = [
+  ...Object.entries(blocks),
+  ...Object.entries(layouts),
+  ...Object.entries(recipes),
+] as [string, string][];
 
-describe('consumer-ready block and layout source', () => {
-  it('covers every block and layout', () => {
-    expect(SOURCES.length).toBeGreaterThanOrEqual(20);
+describe('consumer-ready block, layout and recipe source', () => {
+  it('covers every block, layout and recipe', () => {
+    expect(SOURCES.length).toBeGreaterThanOrEqual(23);
   });
 
   it.each(SOURCES)('%s imports only public packages', (_name, source) => {
@@ -23,9 +33,7 @@ describe('consumer-ready block and layout source', () => {
       expect(specifier.startsWith('.'), `${_name} has relative import ${specifier}`).toBe(false);
       expect(specifier).not.toMatch(/^(src|app)\//);
       if (!specifier.startsWith('@angular/')) {
-        expect(ALLOWED_PACKAGES, `${_name} imports ${specifier}`).toContain(
-          externalPackages(`from '${specifier}'`)[0]
-        );
+        expect(ALLOWED_PACKAGES, `${_name} imports ${specifier}`).toContain(packageName(specifier));
       }
     }
   });
