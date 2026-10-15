@@ -1,6 +1,7 @@
-import { Directive, input, computed } from '@angular/core';
+import { afterNextRender, computed, Directive, ElementRef, inject, input } from '@angular/core';
 import { injectDialogRef, injectDialogState, NgpDialog } from 'ng-primitives/dialog';
 import { cn } from '../../utils';
+import type { VoltDialogRole } from './dialog-service';
 
 @Directive({
   selector: '[voltDialogContent]',
@@ -29,9 +30,20 @@ export class VoltDialogContent {
     // NgpDialog defaults its role from the app-wide dialog config. A role passed per dialog to
     // VoltDialogService.open() or voltDialogRoot lives on the dialog ref, so apply it here; a
     // `role` bound on this element still wins.
-    const role = injectDialogRef().config.role;
-    if (role) {
-      injectDialogState()().role.set(role);
+    const config = injectDialogRef().config as { role?: VoltDialogRole; initialFocus?: string };
+    if (config.role) {
+      injectDialogState()().role.set(config.role);
+    }
+
+    // The focus trap moves focus to the first tabbable element in its own `afterNextRender`,
+    // registered before this constructor runs. This hook runs after it and only overrides the
+    // default when the dialog asked for a specific element.
+    const selector = config.initialFocus;
+    if (selector) {
+      const host = inject<ElementRef<HTMLElement>>(ElementRef).nativeElement;
+      afterNextRender({
+        write: () => host.querySelector<HTMLElement>(selector)?.focus(),
+      });
     }
   }
 }

@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import {
   VoltAvatar,
+  VoltNativeButton,
   VoltSeparator,
   VoltSidebar,
   VoltSidebarContent,
@@ -38,6 +39,7 @@ import { injectAppI18n } from '../../../../i18n/i18n';
     VoltSidebarHeader,
     VoltSidebarItem,
     VoltAvatar,
+    VoltNativeButton,
     VoltSeparator,
     LmnHomeIcon,
     LmnSettingsIcon,
@@ -55,7 +57,7 @@ import { injectAppI18n } from '../../../../i18n/i18n';
     >
       <!-- Trigger for Mobile Sidebar -->
       <div class="absolute top-4 left-4 z-10 md:hidden">
-        <button volt-button variant="outline" size="icon" (click)="sidebarService.toggleMobile()">
+        <button voltButton variant="outline" size="icon" (click)="sidebarService.toggleMobile()">
           <lmn-menu />
         </button>
       </div>
@@ -76,7 +78,7 @@ import { injectAppI18n } from '../../../../i18n/i18n';
             </div>
             @if (!sidebarService.isCollapsed()) {
               <button
-                volt-button
+                voltButton
                 variant="ghost"
                 size="icon"
                 class="h-6 w-6 shrink-0"
@@ -168,7 +170,7 @@ import { injectAppI18n } from '../../../../i18n/i18n';
         <div class="h-14 border-b border-border flex items-center px-4 md:px-6">
           <div class="hidden md:flex items-center gap-2 text-sm text-muted-foreground">
             <button
-              volt-button
+              voltButton
               variant="ghost"
               size="icon"
               class="h-8 w-8"

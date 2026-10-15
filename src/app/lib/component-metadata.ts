@@ -10,9 +10,13 @@ export type ComponentStability = 'stable' | 'beta' | 'experimental';
  */
 export interface ComponentMetadata {
   name: string;
-  labelKey: PlainTranslationKey;
+  /** Translated page title. Prefer this; `label` exists only until the Glossa key does. */
+  labelKey?: PlainTranslationKey;
+  /** The component's own name, identical in every locale (e.g. `Alert`). */
+  label?: string;
   path: string;
-  descriptionKey: PlainTranslationKey;
+  /** Absent only while the Glossa key is pending (see specs/plans/v1.2.md). */
+  descriptionKey?: PlainTranslationKey;
   /** Set only where the full name does not fit a sidebar row. */
   shortLabelKey?: PlainTranslationKey;
   stability: ComponentStability;
@@ -320,6 +324,16 @@ export const COMPONENT_GROUPS: ComponentMetadataGroup[] = [
         path: '/docs/components/table',
         descriptionKey: 'catalog.table.description',
         stability: 'stable',
+      },
+      // Added after 1.0. Component names read the same in every locale; the descriptions need
+      // Glossa keys (specs/plans/v1.2.md "Glossa keys pending"), so the cards omit them for now.
+      { name: 'alert', label: 'Alert', path: '/docs/components/alert', stability: 'beta' },
+      { name: 'spinner', label: 'Spinner', path: '/docs/components/spinner', stability: 'beta' },
+      {
+        name: 'empty-state',
+        label: 'Empty State',
+        path: '/docs/components/empty-state',
+        stability: 'beta',
       },
     ],
   },

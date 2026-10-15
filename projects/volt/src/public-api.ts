@@ -42,6 +42,7 @@ export * from './lib/components/table';
 export * from './lib/components/resizable';
 export * from './lib/components/alert';
 export * from './lib/components/spinner';
+export * from './lib/components/empty-state';
 
 // Layouts
 export * from './lib/layouts/sidebar';

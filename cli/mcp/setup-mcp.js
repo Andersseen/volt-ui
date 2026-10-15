@@ -122,7 +122,7 @@ button · badge · card · input · autofill · search · textarea · checkbox �
 select · tabs · accordion · avatar · separator · tooltip · navigation-menu · form-field ·
 dialog · popover · dropdown-menu · slider · range-slider · progress · breadcrumbs · sidebar ·
 toggle-group · meter · pagination · toast · input-otp · file-upload · combobox ·
-date-picker · listbox · toolbar · skeleton · table · resizable · theme · alert · spinner
+date-picker · listbox · toolbar · skeleton · table · resizable · theme · alert · spinner · empty-state
 
 ## Component import (CLI)
 \`\`\`ts
@@ -143,6 +143,7 @@ import { UiToastService } from './ui/toast';
 <ui-badge variant="solid|secondary|outline|destructive|success|warning|info">
 <ui-alert variant="default|info|success|warning|destructive" role="status|alert"> <ui-alert-title> <ui-alert-description>
 <ui-spinner size="sm|md|lg" label="Loading…">
+<ui-empty-state> <ui-empty-state-title> <ui-empty-state-description> <div slot="actions">
 <ui-tabs [(value)]="activeTab"> <ui-tabs-list> <ui-tabs-trigger value="x"> <ui-tabs-content value="x">
 <ui-accordion type="single|multiple" [collapsible]="true">
 <ui-select placeholder="…"> <ui-select-content> <ui-select-item value="x">
@@ -214,6 +215,7 @@ You are working with **Volt UI**, an Angular v21 component library (shadcn/ui-in
 | Badge | \`./ui/badge\` | \`ui-badge\` | Variants: solid, secondary, outline, destructive, success, warning, info |
 | Alert | \`./ui/alert\` | \`ui-alert\` + title/description | Variants: default, info, success, warning, destructive. Opt-in \`role\` |
 | Spinner | \`./ui/spinner\` | \`ui-spinner\` | \`size\`; \`label\` makes it \`role="status"\` |
+| Empty State | \`./ui/empty-state\` | \`ui-empty-state\` + title/description | Optional \`[slot=icon]\`, \`[slot=actions]\`; plain content |
 | Autofill | \`./ui/autofill\` | \`[uiAutofill]\` directive | Emits \`autofillChange\` |
 | Card | \`./ui/card\` | \`ui-card\` + header/title/description/content/footer | Presentational |
 | Input | \`./ui/input\` | \`ui-input\` | CVA; \`size\`, \`state\`, \`class\` style the native input |

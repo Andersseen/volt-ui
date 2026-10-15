@@ -65,7 +65,7 @@ import { injectAppI18n } from '../../../../i18n/i18n';
                   </div>
                   <div class="p-3">
                     <div class="flex items-center justify-between gap-2">
-                      <h3 class="font-medium group-hover:text-primary">{{ t(item.labelKey) }}</h3>
+                      <h3 class="font-medium group-hover:text-primary">{{ itemLabel(item) }}</h3>
                       <span
                         class="shrink-0 rounded-full px-2 py-0.5 text-[11px] font-medium leading-none"
                         [class]="stabilityClass(item.stability)"
@@ -73,7 +73,9 @@ import { injectAppI18n } from '../../../../i18n/i18n';
                         {{ stabilityLabel(item.stability) }}
                       </span>
                     </div>
-                    <p class="text-xs text-muted-foreground">{{ t(item.descriptionKey) }}</p>
+                    @if (item.descriptionKey; as descriptionKey) {
+                      <p class="text-xs text-muted-foreground">{{ t(descriptionKey) }}</p>
+                    }
                   </div>
                 </a>
               }
@@ -92,6 +94,10 @@ export default class ComponentsIndexPage {
   readonly groups = COMPONENT_GROUPS;
 
   protected readonly stagger = MOTION.stagger;
+
+  protected itemLabel(item: ComponentMetadata): string {
+    return item.labelKey ? this.t(item.labelKey) : (item.label ?? item.name);
+  }
 
   protected stabilityLabel(stability: ComponentMetadata['stability']): string {
     return this.t(`catalog.stability.${stability}`);

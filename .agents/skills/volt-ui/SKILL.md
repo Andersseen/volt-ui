@@ -116,6 +116,7 @@ Known upstream caveats in `ng-primitives`: meter currently exposes `aria-valueno
 | Pagination    | `./ui/pagination`    | `<ui-pagination>`, `<ui-pagination-button>`, `<ui-pagination-first>`, `<ui-pagination-previous>`, `<ui-pagination-next>`, `<ui-pagination-last>`   | Components           | `page`, `pageCount`                                                   |
 | Popover       | `./ui/popover`       | `[uiPopover]`, `<ui-popover-content>`                                                                                                              | Mixed                | `placement`, `offset`, `disabled`                                     |
 | Spinner       | `./ui/spinner`       | `<ui-spinner>`                                                                                                                                     | Component            | `size`, `label` (makes it `role="status"`)                            |
+| Empty State   | `./ui/empty-state`   | `<ui-empty-state>`, `<ui-empty-state-title>`, `<ui-empty-state-description>`                                                                       | Components           | slots `icon`, `actions` (all optional)                                |
 | Search        | `./ui/search`        | `<ui-search>`, `<ui-search-clear>`                                                                                                                 | Components           | —                                                                     |
 | Select        | `./ui/select`        | `<ui-select>`, `<ui-native-select>`, `<ui-select-content>`, `<ui-select-item>`, `<ui-select-label>`, `<ui-select-separator>`                       | Components (CVA)     | `value`, `placeholder`, `disabled`                                    |
 | Table         | `./ui/table`         | `<ui-table>` + header/body/row/head/cell/caption/footer                                                                                            | Components           | —                                                                     |
@@ -239,6 +240,12 @@ save() {
 </ui-alert>
 
 <ui-spinner label="Loading projects" />
+
+<ui-empty-state>
+  <ui-empty-state-title>No projects yet</ui-empty-state-title>
+  <ui-empty-state-description>Create your first project to get started.</ui-empty-state-description>
+  <div slot="actions"><button uiButton>Create project</button></div>
+</ui-empty-state>
 ```
 
 Alerts have no live-region role by default; add `role="status"` (polite) or `role="alert"`

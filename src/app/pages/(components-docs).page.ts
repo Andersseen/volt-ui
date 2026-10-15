@@ -38,6 +38,7 @@ export default class ComponentsLayout {
       links: group.components.map(component => ({
         path: component.path,
         labelKey: component.shortLabelKey ?? component.labelKey,
+        label: component.label,
         stability: component.stability,
       })),
     })),

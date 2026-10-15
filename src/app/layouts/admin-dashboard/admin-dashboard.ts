@@ -13,6 +13,7 @@ import {
   VoltBadge,
   VoltButton,
   VoltCard,
+  VoltNativeButton,
   VoltInput,
   VoltSeparator,
   VoltSidebar,
@@ -85,6 +86,7 @@ interface Order {
     VoltSeparator,
     VoltBadge,
     VoltButton,
+    VoltNativeButton,
     VoltCard,
     VoltInput,
     VoltTable,
@@ -105,7 +107,7 @@ interface Order {
          your app the shell is the page: use h-screen and drop the border. -->
     <div class="relative flex h-[640px] overflow-hidden border border-border bg-background">
       <div class="absolute left-4 top-3 z-10 md:hidden">
-        <button volt-button variant="outline" size="icon" (click)="sidebar.toggleMobile()">
+        <button voltButton variant="outline" size="icon" (click)="sidebar.toggleMobile()">
           <lmn-menu [size]="16" />
         </button>
       </div>
@@ -185,7 +187,7 @@ interface Order {
         <!-- Top bar: collapse control, breadcrumb, and whatever your app puts on the right. -->
         <header class="flex h-14 shrink-0 items-center gap-2 border-b border-border px-4 md:px-6">
           <button
-            volt-button
+            voltButton
             variant="ghost"
             size="icon"
             class="hidden h-8 w-8 md:inline-flex"

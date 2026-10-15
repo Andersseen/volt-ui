@@ -291,3 +291,66 @@ describe('VoltNativeButton (voltButton)', () => {
     expect(button.lastElementChild).toBe(screen.getByTestId('trail'));
   });
 });
+
+describe('VoltNativeButton with aria-disabled', () => {
+  @Component({
+    imports: [VoltNativeButton],
+    template: `
+      <button
+        voltButton
+        variant="destructive"
+        [attr.aria-disabled]="blocked() ? 'true' : null"
+        aria-describedby="why"
+        (click)="onDelete()"
+      >
+        Delete
+      </button>
+      <p id="why">The last admin cannot be deleted.</p>
+    `,
+  })
+  class Host {
+    readonly blocked = signal(true);
+    readonly deleted = vi.fn();
+    onDelete(): void {
+      // Volt does not block activation for aria-disabled: guarding is the caller's job.
+      if (this.blocked()) return;
+      this.deleted();
+    }
+  }
+
+  it('stays keyboard-focusable and exposes the reason', async () => {
+    const user = userEvent.setup();
+    await render(Host);
+    await user.tab();
+
+    const button = screen.getByRole('button', { name: 'Delete' });
+    expect(button).toHaveFocus();
+    expect(button).toHaveAttribute('aria-disabled', 'true');
+    expect(button).not.toBeDisabled();
+    expect(button).toHaveAccessibleDescription('The last admin cannot be deleted.');
+  });
+
+  it('carries the disabled visual treatment without disabling pointer events', async () => {
+    await render(Host);
+    const cls = screen.getByRole('button', { name: 'Delete' }).className;
+
+    expect(cls).toContain('aria-disabled:opacity-50');
+    expect(cls).toContain('aria-disabled:cursor-not-allowed');
+    expect(cls).not.toContain('aria-disabled:pointer-events-none');
+  });
+
+  it('still fires click and keyboard activation — the handler decides', async () => {
+    const user = userEvent.setup();
+    const { fixture } = await render(Host);
+    const button = screen.getByRole('button', { name: 'Delete' });
+
+    await user.click(button);
+    button.focus();
+    await user.keyboard('{Enter}');
+    expect(fixture.componentInstance.deleted).not.toHaveBeenCalled();
+
+    fixture.componentInstance.blocked.set(false);
+    await user.click(button);
+    expect(fixture.componentInstance.deleted).toHaveBeenCalledTimes(1);
+  });
+});

@@ -19,7 +19,9 @@ import { injectAppI18n, type PlainTranslationKey } from '../i18n/i18n';
  */
 export interface DocsSidebarLink {
   path: string;
-  labelKey: PlainTranslationKey;
+  labelKey?: PlainTranslationKey;
+  /** Locale-invariant label (a component name) for entries whose Glossa key does not exist yet. */
+  label?: string;
   exact?: boolean;
   stability?: ComponentStability;
 }
@@ -77,7 +79,7 @@ export interface DocsSidebarGroup {
                 [routerLinkActiveOptions]="{ exact: link.exact ?? false }"
                 class="flex items-center justify-between gap-2 px-2 py-1 text-sm rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
               >
-                <span class="truncate">{{ t(link.labelKey) }}</span>
+                <span class="truncate">{{ linkLabel(link) }}</span>
                 @if (link.stability; as stability) {
                   <span
                     class="shrink-0 rounded-full px-1.5 py-0.5 text-[10px] font-medium leading-none"
@@ -133,7 +135,7 @@ export interface DocsSidebarGroup {
                 (click)="close()"
                 class="flex items-center justify-between gap-3 px-3 py-2.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
               >
-                <span>{{ t(link.labelKey) }}</span>
+                <span>{{ linkLabel(link) }}</span>
                 @if (link.stability; as stability) {
                   <span
                     class="rounded-full px-1.5 py-0.5 text-[10px] font-medium leading-none"
@@ -167,6 +169,10 @@ export class DocsSidebarNav {
   readonly groups = input.required<readonly DocsSidebarGroup[]>();
 
   /** The row is narrow, so `experimental` gets an abbreviation the others do not need. */
+  protected linkLabel(link: DocsSidebarLink): string {
+    return link.labelKey ? this.t(link.labelKey) : (link.label ?? '');
+  }
+
   protected stabilityLabel(stability: ComponentStability): string {
     return stability === 'experimental'
       ? this.t('catalog.stability.experimentalShort')

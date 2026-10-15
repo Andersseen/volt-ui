@@ -350,11 +350,11 @@ import {
   VoltDropdownMenuLabel,
   VoltDropdownMenuSeparator,
 } from '@voltui/components';
-import { VoltButton } from '@voltui/components';
+import { VoltNativeButton } from '@voltui/components';
 
 @Component({
   imports: [
-    VoltButton,
+    VoltNativeButton,
     VoltDropdownMenu,
     VoltDropdownMenuTrigger,
     VoltDropdownMenuItem,
@@ -362,9 +362,7 @@ import { VoltButton } from '@voltui/components';
     VoltDropdownMenuSeparator,
   ],
   template: \`
-    <button [voltDropdownMenu]="menuTpl" volt-button>
-      <volt-button variant="outline">Open Menu</volt-button>
-    </button>
+    <button voltButton variant="outline" [voltDropdownMenu]="menuTpl">Open Menu</button>
 
     <ng-template #menuTpl>
       <volt-dropdown-menu>
@@ -983,13 +981,13 @@ import {
   VoltDrawerDescription,
   VoltDrawerOverlay,
   VoltDrawerClose,
-  VoltButton,
+  VoltNativeButton,
 } from '@voltui/components';
 
 @Component({
-  imports: [VoltDrawer, VoltDrawerContent, VoltDrawerTitle, VoltDrawerDescription, VoltDrawerOverlay, VoltDrawerClose, VoltButton],
+  imports: [VoltDrawer, VoltDrawerContent, VoltDrawerTitle, VoltDrawerDescription, VoltDrawerOverlay, VoltDrawerClose, VoltNativeButton],
   template: \`
-    <button volt-button [voltDrawer]="drawerTpl">Open Drawer</button>
+    <button voltButton [voltDrawer]="drawerTpl">Open Drawer</button>
 
     <ng-template #drawerTpl let-close="close">
       <div voltDrawerOverlay></div>
@@ -1167,6 +1165,42 @@ import { VoltAlert, VoltAlertTitle, VoltAlertDescription, VoltNativeButton } fro
   \`,
 })
 export class MyComponent {}`;
+
+export const EMPTY_STATE_USAGE = `import { Component } from '@angular/core';
+import {
+  VoltEmptyState,
+  VoltEmptyStateTitle,
+  VoltEmptyStateDescription,
+  VoltNativeButton,
+} from '@voltui/components';
+
+@Component({
+  imports: [VoltEmptyState, VoltEmptyStateTitle, VoltEmptyStateDescription, VoltNativeButton],
+  template: \`
+    <!-- Empty collection: icon and actions are optional -->
+    <volt-empty-state>
+      <svg slot="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z" />
+      </svg>
+      <volt-empty-state-title>No projects yet</volt-empty-state-title>
+      <volt-empty-state-description>Create your first project to get started.</volt-empty-state-description>
+      <div slot="actions">
+        <button voltButton>Create project</button>
+      </div>
+    </volt-empty-state>
+
+    <!-- No results: same component, different words and a way out -->
+    <volt-empty-state>
+      <volt-empty-state-title>No matches for "{{ query }}"</volt-empty-state-title>
+      <div slot="actions">
+        <button voltButton variant="outline" (click)="query = ''">Clear search</button>
+      </div>
+    </volt-empty-state>
+  \`,
+})
+export class MyComponent {
+  query = 'invoices';
+}`;
 
 export const SPINNER_USAGE = `import { Component } from '@angular/core';
 import { VoltSpinner, VoltNativeButton } from '@voltui/components';

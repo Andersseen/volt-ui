@@ -67,6 +67,7 @@ const PROPER_NOUNS = new Set([
   // Alert and Spinner (1.1) render their name directly until their Glossa keys exist.
   'Alert',
   'Spinner',
+  'Empty State',
 ]);
 
 function templateSources(): { file: string; markup: string }[] {
