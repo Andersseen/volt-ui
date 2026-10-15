@@ -17,7 +17,7 @@ Angular UI atoms that stay out of the way of your product's own design — built
 
 <br/>
 
-### ⚡ v1.2 — Application DX & Composition _(in preparation)_
+### ⚡ v1.2 — Application DX & Composition
 
 **Atoms that survive real application workflows.** Dialogs can stay put while a request is pending
 (`[dismissible]`, `initialFocus`), `<button voltButton aria-disabled>` keeps a blocked action focusable
