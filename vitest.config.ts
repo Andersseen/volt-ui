@@ -21,6 +21,11 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
+    // Every render loads three Etyma catalogs (~0.6s locally). On a shared CI runner running ~100
+    // files in parallel that approaches the 5s default and fails the same few tests at random.
+    // This bounds a hang, it does not relax any assertion.
+    testTimeout: 20_000,
+    hookTimeout: 20_000,
     setupFiles: ['./test-setup.ts'],
     include: ['src/**/*.spec.ts', 'projects/volt/src/**/*.spec.ts', 'cli/**/*.spec.js'],
     coverage: {
