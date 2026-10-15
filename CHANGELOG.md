@@ -7,8 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-**Volt UI 1.2 — Application DX & Composition** (not yet released: the version bump is a separate,
-one-line PR so merging this work does not publish). Where 1.1 improved individual atoms, 1.2 tests
+## [1.2.0] - 2026-10-15
+
+**Volt UI 1.2 — Application DX & Composition**. Where 1.1 improved individual atoms, 1.2 tests
 how they compose into real application workflows and fixes what that exposed. Backwards compatible;
 see [MIGRATION.md](./MIGRATION.md).
 
