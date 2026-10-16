@@ -8,7 +8,8 @@
  * perfectly good 200 page. Only the worker's own log shows it — which is how
  * AppDashboard/HeroSplit failed in production while every status-code check stayed green.
  *
- * Requires `pnpm build`. Usage: node scripts/check-ssr.mjs [--port 8799]
+ * Requires `pnpm build`. Usage: node scripts/check-ssr.mjs [--port 8799] [--shard 2/4]
+ * `--shard i/n` checks every n-th route, so CI can split the run across jobs.
  */
 import { spawn } from 'node:child_process';
 import { existsSync } from 'node:fs';
@@ -50,13 +51,22 @@ for (const route of KNOWN.keys()) {
   }
 }
 
-const routes = [
+const shardArg = process.argv.indexOf('--shard');
+const [shardIndex, shardCount] =
+  shardArg > -1 ? process.argv[shardArg + 1].split('/').map(Number) : [1, 1];
+if (!(shardCount >= 1 && shardIndex >= 1 && shardIndex <= shardCount)) {
+  console.error('--shard must look like 2/4');
+  process.exit(1);
+}
+
+const allRoutes = [
   ...BLOCKS.map(b => b.path),
   ...LAYOUTS.map(l => l.path),
   ...RECIPES.map(r => r.path),
   '/docs/components',
   ...COMPONENTS.map(c => c.path),
 ];
+const routes = allRoutes.filter((_, i) => i % shardCount === shardIndex - 1);
 
 if (!existsSync(join(ROOT, 'dist/analog/public'))) {
   console.error('dist/analog/public is missing — run "pnpm build" first.');
@@ -129,7 +139,9 @@ try {
   server.kill('SIGTERM');
 }
 
-console.log(`Server-rendered ${routes.length} routes in the worker.`);
+console.log(
+  `Server-rendered ${routes.length} of ${allRoutes.length} routes in the worker (shard ${shardIndex}/${shardCount}).`
+);
 for (const k of known) console.log(`  known  ${k}`);
 if (failures.length) {
   console.error('\nSSR errors:');
