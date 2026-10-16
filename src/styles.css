@@ -98,6 +98,11 @@
   scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
 }
 
+/* The boot skeleton in index.html covers the page until this stylesheet applies. */
+#volt-boot {
+  display: none;
+}
+
 /* Display headings on the landing page: tight tracking and leading for large sizes. */
 @utility landing-display {
   letter-spacing: -0.035em;
