@@ -29,14 +29,14 @@ mismatch _between_ two of them, so a partial read tells you nothing.
 # 1. Local versions (what the repo thinks it is)
 node -p "require('./projects/volt/package.json').version"   # @voltui/components
 node -p "require('./cli/package.json').version"             # @voltui/cli
-node -p "require('./cli/mcp/package.json').version"         # @voltui/mcp
+node -p "require('./cli/agent/package.json').version"         # @voltui/agent
 
 # 2. What is actually on npm
 npm view @voltui/components version
 npm view @voltui/cli version
-npm view @voltui/mcp version
+npm view @voltui/agent version
 
-# 3. GitHub Releases (tags are components-vX / cli-vX / mcp-vX)
+# 3. GitHub Releases (tags are components-vX / cli-vX / agent-vX)
 gh release list --limit 10
 
 # 4. Did a run even happen for the tip of main?

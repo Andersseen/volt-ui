@@ -1,21 +1,25 @@
 {
-  "name": "@voltui/mcp",
-  "version": "0.4.0",
-  "description": "Setup Volt UI MCP server for Claude, Cursor, Windsurf, and GitHub Copilot",
+  "name": "@voltui/agent",
+  "version": "0.5.0",
+  "description": "Set up Volt UI for AI coding agents: the MCP server, skill and rules for Claude Code, Cursor, Windsurf and GitHub Copilot",
   "homepage": "https://volt-ui.andersseen.dev/docs/ai-mcp",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Andersseen/volt-ui.git",
-    "directory": "cli/mcp"
+    "directory": "cli/agent"
   },
   "bugs": {
     "url": "https://github.com/Andersseen/volt-ui/issues"
   },
   "bin": {
-    "volt-ui-mcp": "setup-mcp.js"
+    "volt-ui-agent": "setup-agent.js"
   },
   "files": [
-    "setup-mcp.js"
+    "setup-agent.js",
+    "installer.js",
+    "content.js",
+    "README.md",
+    "LICENSE"
   ],
   "keywords": [
     "mcp",
@@ -26,10 +30,12 @@
     "cursor",
     "windsurf",
     "copilot",
-    "ai"
+    "ai",
+    "skills",
+    "agent"
   ],
   "license": "MIT",
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   }
 }

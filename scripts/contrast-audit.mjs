@@ -172,7 +172,9 @@ const failures = results.filter(r => !r.pass);
 const asJson = process.argv.includes('--json');
 
 if (asJson) {
-  console.log(JSON.stringify({ checked: results.length, failed: failures.length, results }, null, 2));
+  console.log(
+    JSON.stringify({ checked: results.length, failed: failures.length, results }, null, 2)
+  );
 } else {
   console.log(
     `Checked ${COLORS.length} colors x 2 modes x ${PAIRS.length} pairs = ${results.length} checks`

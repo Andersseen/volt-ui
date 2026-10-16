@@ -9,8 +9,7 @@
       "args": ["-y", "@ng-primitives/mcp"]
     },
     "volt-ui": {
-      "command": "npx",
-      "args": ["-y", "@voltui/mcp"]
+      "httpUrl": "https://volt-ui.pages.dev/api/mcp"
     }
   }
 }

@@ -69,14 +69,21 @@ for (const name of components) {
   const upper = toUpperSnake(name);
 
   const hasSnippet = new RegExp(`\\b${upper}_SNIPPET\\b`).test(snippetsIndexSrc);
-  if (!hasSnippet) gaps.push({ name, kind: 'snippet', detail: `${upper}_SNIPPET missing from snippets/index.ts` });
+  if (!hasSnippet)
+    gaps.push({ name, kind: 'snippet', detail: `${upper}_SNIPPET missing from snippets/index.ts` });
 
   const hasUsage = new RegExp(`\\b${upper}_USAGE\\b`).test(snippetsUsageSrc);
-  if (!hasUsage) gaps.push({ name, kind: 'usage', detail: `${upper}_USAGE missing from snippets/usage.ts` });
+  if (!hasUsage)
+    gaps.push({ name, kind: 'usage', detail: `${upper}_USAGE missing from snippets/usage.ts` });
 
   if (!DEMO_PAGE_EXEMPT.has(name)) {
     const hasPage = allPageFiles.some(f => f.endsWith(`/${name}.page.ts`));
-    if (!hasPage) gaps.push({ name, kind: 'demo-page', detail: `no ${name}.page.ts found under src/app/pages` });
+    if (!hasPage)
+      gaps.push({
+        name,
+        kind: 'demo-page',
+        detail: `no ${name}.page.ts found under src/app/pages`,
+      });
   }
 }
 
@@ -113,7 +120,9 @@ for (const g of gaps) {
   console.log(`  [${g.kind}] ${g.name}: ${g.detail}`);
 }
 if (gaps.length === 0) {
-  console.log('Every public-api export has a snippet, a usage example, and a demo page (or is exempt).');
+  console.log(
+    'Every public-api export has a snippet, a usage example, and a demo page (or is exempt).'
+  );
 }
 
 process.exit(gaps.length > 0 ? 1 : 0);

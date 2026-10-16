@@ -7,7 +7,7 @@
  * Supported clients: Claude Desktop, Cursor, Windsurf, GitHub Copilot, etc.
  *
  * Endpoint: https://volt-ui.pages.dev/api/mcp
- * Setup:    npx @voltui/mcp
+ * Setup:    npx @voltui/agent
  */
 
 import {
@@ -1144,12 +1144,12 @@ const projectInfo = {
   packages: {
     components: '@voltui/components',
     cli: '@voltui/cli',
-    mcp: '@voltui/mcp',
+    agent: '@voltui/agent',
   },
   install: {
     npm: 'npm install @voltui/components',
     cli: 'npx @voltui/cli init',
-    mcp: 'npx @voltui/mcp',
+    agent: 'npx @voltui/agent',
   },
   architecture: {
     components: 'standalone',
@@ -1613,7 +1613,7 @@ function discoveryResponse(): Response {
         protocol: 'Model Context Protocol (Streamable HTTP)',
         transport: 'Streamable HTTP',
         setup: {
-          cli: 'npx @voltui/mcp',
+          cli: 'npx @voltui/agent',
           configUrl: `${base}/setup`,
           agents: ['claude', 'cursor', 'windsurf', 'copilot', 'vscode'].map(agent => ({
             agent,

@@ -46,7 +46,7 @@ function mcpTsKeys() {
 
 function cliImportKeys(src) {
   // Matches `./ui/name` in plain markdown and \`./ui/name\` inside JS template
-  // literals (cli/mcp/setup-mcp.js escapes backticks since it embeds this
+  // literals (cli/agent/content.js escapes backticks since it embeds this
   // content inside its own template-literal strings).
   const keys = new Set();
   const re = /\\?`\.\/ui\/([a-z0-9-]+)\\?`/g;
@@ -66,7 +66,7 @@ function promptKeys() {
 }
 
 function installerKeys() {
-  const src = readFile('cli/mcp/setup-mcp.js');
+  const src = readFile('cli/agent/content.js');
 
   // CURSOR_RULES ships a middot-separated plain list rather than a table.
   const cursorMatch = src.match(/## Components\n([\s\S]*?)\n\n/);
@@ -89,7 +89,7 @@ const sources = {
   'src/server/routes/mcp.ts': mcpTsKeys,
   '.agents/skills/volt-ui/SKILL.md': skillKeys,
   'VOLT_UI_PROMPT.md': promptKeys,
-  'cli/mcp/setup-mcp.js': installerKeys,
+  'cli/agent/content.js': installerKeys,
 };
 
 const truth = manifestKeys();
