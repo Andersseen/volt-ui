@@ -69,6 +69,10 @@ jobs:
       - name: Compile copied Blocks and Layouts in a consumer workspace
         run: node scripts/check-copied-source.mjs
 
+      # The CLI package bundles the manifest; unit tests used to generate it as a side effect.
+      - name: Generate the CLI manifest
+        run: pnpm manifest
+
       - name: Check CLI package
         run: pnpm pack:cli
 
