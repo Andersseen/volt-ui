@@ -43,7 +43,7 @@ describe('application shell', () => {
     );
   });
 
-  it('renders grouped documentation navigation with stability labels', async () => {
+  it('renders grouped documentation navigation, badging only non-stable entries', async () => {
     await render(DocsPageShell, {
       providers: [provideRouter([])],
       componentInputs: {
@@ -72,7 +72,7 @@ describe('application shell', () => {
 
     expect(screen.getByRole('complementary', { name: 'Components' })).toBeInTheDocument();
     expect(screen.getByText('Component catalog')).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /Inputstable/i })).toHaveAttribute(
+    expect(screen.getAllByRole('link', { name: 'Input' })[0]).toHaveAttribute(
       'href',
       '/docs/components/input'
     );

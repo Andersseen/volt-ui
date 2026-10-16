@@ -15,11 +15,13 @@ import { cn } from '../../utils';
   },
   template: `
     <ng-content />
-    <span class="sr-only">Close</span>
+    <span class="sr-only">{{ label() }}</span>
   `,
 })
 export class VoltDrawerClose {
   readonly class = input<string>('');
+  /** Accessible name for the icon-only button. Pass a translated string on a localized site. */
+  readonly label = input('Close');
 
   protected readonly classes = computed(() =>
     cn(

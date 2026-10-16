@@ -124,6 +124,53 @@
       "browse": "Browse components",
       "star": "Star on GitHub",
       "body": "Explore {$components} components, accessible layouts, {$themes} theme combinations, and an AI-ready workflow."
+    },
+    "pillars": {
+      "aiTitle": "Ready for your AI agent",
+      "aiBody": "One command gives Claude Code, Cursor, Windsurf or Copilot the component catalog, the selectors and the rules, so generated code uses Volt the way you would."
+    },
+    "playground": {
+      "eyebrow": "Theme playground",
+      "title": "One set of components. Every look your brand needs.",
+      "subtitle": "Pick a palette and a shape. These are the real presets on real Volt components: the same tokens your app gets from `provideVoltTheme()`.",
+      "pause": "Pause the palette tour",
+      "play": "Resume the palette tour",
+      "cta": "Build your own theme"
+    },
+    "steps": {
+      "nav": "Workflow steps",
+      "install": {
+        "label": "Install",
+        "title": "Add components with one command.",
+        "body": "The CLI resolves the dependencies between components and writes readable files into `src/app/ui`. No runtime to install, nothing to configure first."
+      },
+      "compose": {
+        "label": "Compose",
+        "title": "Use them like Angular code you wrote.",
+        "body": "Standalone components, signal inputs and OnPush everywhere. Import them from `./ui` and they behave like the rest of your app."
+      },
+      "theme": {
+        "label": "Theme",
+        "title": "Set the brand once, at bootstrap.",
+        "body": "`provideVoltTheme()` sets the palette, the shape and dark mode on the server and in the browser, so the first paint is already on brand."
+      },
+      "own": {
+        "label": "Customize",
+        "title": "Change any line. There is nothing to eject.",
+        "body": "Variants live in a CVA file next to each component, and classes merge through `cn()`. Add a size, rename an input, delete what you don't need."
+      },
+      "agents": {
+        "label": "Automate",
+        "title": "Let your agent write it the Volt way.",
+        "body": "`npx @voltui/agent` installs the MCP server, a skill and editor rules, so Claude Code, Cursor or Copilot reach for the right selector the first time."
+      }
+    },
+    "showcase": {
+      "eyebrow": "The component library",
+      "title": "Every piece a product needs, already wired.",
+      "subtitle": "Forms, overlays, navigation and data display: each one keyboard-ready, themeable and yours to edit. These are rendered live.",
+      "previous": "Previous components",
+      "next": "Next components"
     }
   },
   "guide": {
@@ -198,7 +245,8 @@
       "overlayLede": "Dialog, drawer, popover, tooltip, and dropdown-menu use an attribute-directive trigger that references an `<ng-template>` containing the overlay content.",
       "catalogLede": "Every component in Volt UI 1.0.0 is **stable** — a settled API, tests that assert the component's own behavior, and documented usage. The **beta** label stays in the system for components added after 1.0; nothing carries it today. See",
       "versioningLink": "Versioning & stability",
-      "catalogLedeTail": "for the full policy."
+      "catalogLedeTail": "for the full policy.",
+      "catalogSummary": "Components marked **stable** have a settled API, tests that assert their own behavior, and documented usage. **Beta** marks recent additions whose API may still change in a minor release. The full policy is in [Versioning & stability](/docs/versioning)."
     },
     "themesPage": {
       "title": "Themes",
@@ -265,7 +313,13 @@
       "cnMerge": "Because it's `tailwind-merge` underneath, `class=\"bg-red-500\"` reliably overrides the variant's own background utility instead of producing two conflicting `bg-*` classes in the final output.",
       "colorsTitle": "Colors and shape vs. structure",
       "cvaLede": "Components with visual variants (button, badge, toast, ...) split styling into a sibling `variants.ts` using [class-variance-authority](https://cva.style/docs). The component itself only computes which variant is active — it never hardcodes conditional classes in the template:",
-      "colorsLede": "Before editing a component's Tailwind classes to change a color or a border-radius, check whether a [theme preset](/docs/themes) already covers it — `bg-primary`, `rounded-md`, and `shadow-lg` all resolve through `--volt-*` tokens that already vary per color/style preset. Hardcoding `bg-indigo-600` in a copied component opts that one component out of theme switching; reach for a custom color or style preset instead when the change should apply everywhere. Component edits are for **structural** changes — new variants, new slots, different markup — that no token could express."
+      "colorsLede": "Before editing a component's Tailwind classes to change a color or a border-radius, check whether a [theme preset](/docs/themes) already covers it — `bg-primary`, `rounded-md`, and `shadow-lg` all resolve through `--volt-*` tokens that already vary per color/style preset. Hardcoding `bg-indigo-600` in a copied component opts that one component out of theme switching; reach for a custom color or style preset instead when the change should apply everywhere. Component edits are for **structural** changes — new variants, new slots, different markup — that no token could express.",
+      "cvaLedeHead": "Components with visual variants (button, badge, toast, ...) split styling into a sibling `variants.ts` using",
+      "cvaLink": "class-variance-authority",
+      "cvaLedeTail": "{{. The component itself only computes which variant is active — it never hardcodes conditional classes in the template:}}",
+      "colorsLedeHead": "Before editing a component's Tailwind classes to change a color or a border-radius, check whether a",
+      "themePresetLink": "theme preset",
+      "colorsLedeTail": "already covers it — `bg-primary`, `rounded-md`, and `shadow-lg` all resolve through `--volt-*` tokens that already vary per color/style preset. Hardcoding `bg-indigo-600` in a copied component opts that one component out of theme switching; reach for a custom color or style preset instead when the change should apply everywhere. Component edits are for **structural** changes — new variants, new slots, different markup — that no token could express."
     },
     "versioningPage": {
       "title": "Versioning & Stability",
@@ -566,6 +620,14 @@
     },
     "codeEditor": {
       "loading": "Loading editor…"
+    },
+    "docs": {
+      "onThisPage": "On this page",
+      "previous": "Previous",
+      "next": "Next",
+      "pager": "Previous and next pages",
+      "breadcrumb": "Breadcrumb",
+      "closeNav": "Close navigation"
     }
   },
   "components": {

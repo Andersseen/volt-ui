@@ -29,7 +29,7 @@ import { injectAppI18n } from '../i18n/i18n';
     <!-- overflow-x-clip, not overflow-hidden: it still contains the decorative blurs
          but does not create a scroll container, which would silently disable the
          preview panel's position: sticky. -->
-    <main class="relative z-10 overflow-x-clip pb-24">
+    <div class="relative z-10 overflow-x-clip pb-24">
       <section class="relative border-b border-border/50">
         <div class="theme-grid pointer-events-none absolute inset-0 -z-10"></div>
         <div
@@ -83,7 +83,7 @@ import { injectAppI18n } from '../i18n/i18n';
 
         <app-theme-studio-preview />
       </section>
-    </main>
+    </div>
   `,
   styles: `
     .theme-grid {

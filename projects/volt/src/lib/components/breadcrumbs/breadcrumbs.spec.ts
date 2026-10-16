@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { describe, it, expect } from 'vitest';
-import { render } from '@testing-library/angular';
+import { render, screen } from '@testing-library/angular';
 import { VoltBreadcrumbs } from './breadcrumbs';
 
 @Component({
@@ -23,5 +23,13 @@ describe('VoltBreadcrumbs', () => {
     const nav = container.querySelector('nav');
     expect(nav).toBeInTheDocument();
     expect(nav).toHaveAttribute('aria-label', 'breadcrumb');
+  });
+
+  it('takes a translated landmark name', async () => {
+    await render(`<volt-breadcrumbs ariaLabel="Ruta de navegación"></volt-breadcrumbs>`, {
+      imports: [VoltBreadcrumbs],
+    });
+
+    expect(screen.getByRole('navigation', { name: 'Ruta de navegación' })).toBeInTheDocument();
   });
 });

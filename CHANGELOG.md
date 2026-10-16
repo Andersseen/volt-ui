@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added — `@voltui/components`
+
+- **Translatable accessible names** for the two parts that hard-coded English: `volt-breadcrumbs`
+  takes `ariaLabel` (default `breadcrumb`) and `volt-drawer-close` takes `label` (default
+  `Close`). Found while localizing the docs site.
+
 ### Changed — `@voltui/mcp` is now `@voltui/agent`
 
 The installer is renamed because it installs more than MCP config: the skill, rules and snippets as

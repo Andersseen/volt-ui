@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { DocsPageShell } from '../components/docs-page-shell';
-import type { DocsSidebarGroup } from '../components/docs-sidebar-nav';
+import type { DocsSidebarGroup } from '../components/docs/docs-nav-list';
 import { COMPONENT_GROUPS } from '../lib/component-metadata';
 import { RECIPES } from '../lib/recipes-metadata';
 import { injectAppI18n } from '../i18n/i18n';

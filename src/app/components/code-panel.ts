@@ -69,7 +69,7 @@ import { injectAppI18n } from '../i18n/i18n';
                    (max-w-md and friends) without shrinking full-width demos.
                    min-w-0 stops a wide demo from stretching the whole frame on
                    mobile — the demo's own scroll container handles it instead. -->
-              <div class="w-full min-w-0 [&>*]:mx-auto">
+              <div class="w-full min-w-0 [&>*]:mx-auto" data-toc-ignore>
                 <ng-content />
               </div>
             </div>
