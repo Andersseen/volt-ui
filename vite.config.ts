@@ -1,10 +1,14 @@
+import { fileURLToPath } from 'node:url';
 import analog from '@analogjs/platform';
 import tailwindcss from '@tailwindcss/vite';
 import { etymaRemoteContract, etymaRemoteValidation } from '@etyma/tooling/vite';
 import { defineConfig, Plugin } from 'vite';
 import { resolve } from 'path';
 import { readFileSync } from 'fs';
-import { catalogUrl, I18N_PROJECT } from './src/app/i18n/project';
+import { catalogUrl, I18N_PROJECT } from './src/app/i18n/project.ts';
+
+/** This config's directory (the package is ESM, so there is no `__dirname`). */
+const ROOT = fileURLToPath(new URL('.', import.meta.url));
 
 /**
  * Ensures that ?raw imports of TypeScript files are always served as raw
@@ -104,6 +108,27 @@ function freshRouteTablePlugin(): Plugin {
   };
 }
 
+/**
+ * Analog always pre-bundles `front-matter` for its Markdown content routes. This site has none
+ * and does not install it, so Vite warned on every start that it could not resolve it.
+ */
+function noMarkdownDepsPlugin(): Plugin {
+  const strip = (deps?: { include?: string[] }) => {
+    if (deps?.include) {
+      deps.include = deps.include.filter(dep => dep !== 'front-matter');
+    }
+  };
+  return {
+    name: 'volt:no-front-matter',
+    configResolved(config) {
+      strip(config.optimizeDeps);
+      for (const environment of Object.values(config.environments ?? {})) {
+        strip(environment.optimizeDeps);
+      }
+    },
+  };
+}
+
 export default defineConfig(() => ({
   // Expose PUBLIC_* env vars to import.meta.env (not a Vite default prefix).
   envPrefix: ['VITE_', 'PUBLIC_'],
@@ -112,13 +137,14 @@ export default defineConfig(() => ({
   },
   plugins: [
     freshRouteTablePlugin(),
+    noMarkdownDepsPlugin(),
     serverModeChunksPlugin(),
     rawTypeScriptPlugin(),
     // Both read src/app/i18n/project.ts, so the contract and the validation can never be pointed
     // at different catalogs.
     etymaRemoteContract({
       source: catalogUrl(I18N_PROJECT.sourceLocale),
-      output: resolve(__dirname, 'src/app/i18n/etyma.generated.ts'),
+      output: resolve(ROOT, 'src/app/i18n/etyma.generated.ts'),
     }),
     // Every published locale through Etyma's validator: missing keys, invalid MessageFormat 2 and
     // variable mismatches fail `vite build` (and only warn in `vite dev`).
@@ -141,7 +167,7 @@ export default defineConfig(() => ({
   resolve: {
     dedupe: ['@analogjs/router'],
     alias: {
-      volt: resolve(__dirname, 'projects/volt/src/public-api.ts'),
+      volt: resolve(ROOT, 'projects/volt/src/public-api.ts'),
     },
   },
 }));

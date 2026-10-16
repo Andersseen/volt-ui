@@ -1,6 +1,10 @@
+import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vitest/config';
 import angular from '@analogjs/vite-plugin-angular';
 import { resolve } from 'path';
+
+/** This config's directory (the package is ESM, so there is no `__dirname`). */
+const ROOT = fileURLToPath(new URL('.', import.meta.url));
 
 export default defineConfig({
   plugins: [
@@ -15,7 +19,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      volt: resolve(__dirname, 'projects/volt/src/public-api.ts'),
+      volt: resolve(ROOT, 'projects/volt/src/public-api.ts'),
     },
   },
   test: {

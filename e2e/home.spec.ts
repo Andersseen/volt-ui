@@ -16,16 +16,20 @@ test.describe('Official landing page', () => {
     await expect(page.getByRole('heading', { name: 'Own the source' })).toBeVisible();
   });
 
-  test('builds the hero showcase out of real Volt components', async ({ page }) => {
-    const showcase = page.locator('.hero-showcase');
+  test('shows the source next to the real component it renders', async ({ page }) => {
+    const card = page.locator('.hero-source');
 
-    await expect(showcase.getByText('Built with Volt UI components')).toBeVisible();
+    // The card's point is that the code and the rendered component are the same thing, so
+    // change the attribute and assert on both, not on decorative copy.
+    await expect(card.locator('pre')).toContainText('<volt-button variant="solid">');
+    await expect(card.locator('.stage volt-button')).toBeVisible();
 
-    // The point of the panel is that it is the library itself rather than a mockup,
-    // so assert on actual component elements, not on decorative copy.
-    await expect(showcase.locator('volt-input')).toBeVisible();
-    await expect(showcase.locator('volt-switch')).toBeVisible();
-    await expect(showcase.locator('volt-slider')).toBeVisible();
+    await card.getByRole('radio', { name: 'outline' }).click();
+    await expect(card.locator('pre')).toContainText('variant="outline"');
+
+    await card.getByRole('radio', { name: 'switch' }).click();
+    await expect(card.locator('.stage volt-switch')).toBeVisible();
+    await expect(card).toContainText('npx @voltui/cli add switch');
   });
 
   test('keeps the complete landing page inside a mobile viewport', async ({ page }) => {

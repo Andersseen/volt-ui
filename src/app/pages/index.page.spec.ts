@@ -2,12 +2,24 @@ import { By } from '@angular/platform-browser';
 import { EtymaI18n } from '@etyma/angular';
 import { provideRouter, RouterLink } from '@angular/router';
 import { render, screen } from '@testing-library/angular';
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { SITE_STATS } from '../lib/generated/site-stats';
 import Home from './index.page';
 
 describe('official landing page', () => {
+  afterEach(() => vi.restoreAllMocks());
+
   it('runs the five sections in order and presents the primary journeys', async () => {
+    // Reduced motion: the stats show their real values instead of waiting to count up on scroll.
+    vi.spyOn(window, 'matchMedia').mockImplementation(
+      query =>
+        ({
+          matches: query.includes('reduce'),
+          media: query,
+          addEventListener: () => undefined,
+          removeEventListener: () => undefined,
+        }) as unknown as MediaQueryList
+    );
     await render(Home, { providers: [provideRouter([])] });
 
     // The page itself only composes sections, so this asserts the running order holds:

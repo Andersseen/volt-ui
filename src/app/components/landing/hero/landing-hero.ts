@@ -1,17 +1,17 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { VoltThreads } from '../../effects/volt-threads';
 import { HeroCopy } from './hero-copy';
-import { HeroShowcase } from './hero-showcase';
+import { HeroSource } from './hero-source';
 
 /**
- * The landing hero: threads of current behind the value proposition and a live panel of Volt
- * components. The threads converge between the two columns, react to the pointer and burst on
+ * The landing hero: threads of current behind the value proposition, and a card that shows the
+ * source you would own next to the real component it renders. The threads converge between the two columns, react to the pointer and burst on
  * click; the copy and panel enter with a CSS animation that starts at first paint.
  */
 @Component({
   selector: 'app-landing-hero',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [VoltThreads, HeroCopy, HeroShowcase],
+  imports: [VoltThreads, HeroCopy, HeroSource],
   template: `
     <section class="hero relative isolate overflow-hidden border-b border-border/60">
       <div class="hero-grid pointer-events-none absolute inset-0 -z-10"></div>
@@ -22,7 +22,7 @@ import { HeroShowcase } from './hero-showcase';
         class="relative mx-auto grid min-h-[min(88vh,56rem)] max-w-7xl items-center gap-14 px-4 py-20 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:py-24"
       >
         <app-hero-copy />
-        <app-hero-showcase class="reveal-up reveal-delay-3" />
+        <app-hero-source class="reveal-up reveal-delay-3" />
       </div>
     </section>
   `,

@@ -1,5 +1,6 @@
 import { provideRouter } from '@angular/router';
 import { render, screen } from '@testing-library/angular';
+import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { INSTALL_COMMAND, InstallCommand } from './install-command';
 import { LandingHero } from './landing-hero';
@@ -33,14 +34,22 @@ describe('landing hero', () => {
     expect(screen.getByRole('button', { name: 'Copy the install command' })).toBeInTheDocument();
   });
 
-  it('builds the showcase panel out of real Volt components', async () => {
+  it('shows the source next to the real component, and keeps them in step', async () => {
+    const user = userEvent.setup();
     const { container } = await render(LandingHero, { providers: [provideRouter([])] });
+    const card = container.querySelector('.hero-source')!;
 
-    // The panel's whole argument is that it is the library rather than a picture of it.
-    const showcase = container.querySelector('.hero-showcase')!;
-    expect(showcase.querySelector('volt-input')).not.toBeNull();
-    expect(showcase.querySelector('volt-switch')).not.toBeNull();
-    expect(showcase.querySelector('volt-slider')).not.toBeNull();
+    expect(card.querySelector('pre')).toHaveTextContent('<volt-button variant="solid">');
+    expect(card.querySelector('.stage volt-button')).not.toBeNull();
+
+    await user.click(screen.getByRole('radio', { name: 'outline' }));
+    expect(card.querySelector('pre')).toHaveTextContent('variant="outline"');
+    expect(card.querySelector('.stage volt-button button')).toHaveClass('border-input');
+
+    await user.click(screen.getByRole('radio', { name: 'switch' }));
+    expect(card.querySelector('pre')).toHaveTextContent('[checked]="true"');
+    expect(card.querySelector('.stage volt-switch')).not.toBeNull();
+    expect(card).toHaveTextContent('npx @voltui/cli add switch');
   });
 
   it('draws the threads behind the hero, hidden from assistive tech', async () => {
