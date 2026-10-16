@@ -80,7 +80,7 @@ import { ShowcaseCard } from './showcase-card';
         }
       </ul>
 
-      <div class="mx-auto max-w-7xl px-4 sm:px-6">
+      <div class="mx-auto mt-6 max-w-7xl px-4 sm:px-6">
         <volt-button variant="outline" [routerLink]="path('/docs/components')">
           {{ t('catalog.browse') }}
         </volt-button>
@@ -93,7 +93,12 @@ import { ShowcaseCard } from './showcase-card';
       --edge: 1rem;
       padding-inline: var(--edge);
       scroll-padding-inline: var(--edge);
-      scrollbar-width: thin;
+      /* The arrows, swipe and trackpad all scroll it; a scrollbar under the cards is noise. */
+      scrollbar-width: none;
+    }
+
+    .track::-webkit-scrollbar {
+      display: none;
     }
 
     @media (min-width: 640px) {

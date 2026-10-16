@@ -49,12 +49,12 @@ import { COLOR_PRESETS, swatch, type ColorPreset } from '../../../lib/theme-pres
       (valueChange)="choose($event)"
     >
       @for (name of colors; track name) {
-        <volt-toggle-group-item [value]="name" size="lg">
+        <volt-toggle-group-item [value]="name">
           <span
             class="mr-2 h-3.5 w-3.5 shrink-0 rounded-full ring-2 ring-background"
             [style.background]="swatchOf(name)"
           ></span>
-          <span class="font-mono text-sm">{{ name }}</span>
+          <span class="font-mono text-xs">{{ name }}</span>
         </volt-toggle-group-item>
       }
     </volt-toggle-group>

@@ -6,6 +6,7 @@ import { CodeWindow } from '../code-window';
 @Component({
   selector: 'app-theme-snippet',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: 'block' },
   imports: [CodeWindow],
   template: `
     <app-code-window file="app.config.ts">
