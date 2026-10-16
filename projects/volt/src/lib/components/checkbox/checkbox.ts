@@ -6,7 +6,6 @@ import {
   forwardRef,
   input,
   model,
-  output,
   signal,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -80,7 +79,6 @@ export class VoltCheckbox implements ControlValueAccessor {
   readonly id = input(`volt-checkbox-${++nextCheckboxId}`);
   readonly checked = model(false);
   readonly indeterminate = model(false);
-  readonly indeterminateChange = output<boolean>();
   readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly required = input<boolean, unknown>(false, { transform: booleanAttribute });
 
@@ -101,8 +99,8 @@ export class VoltCheckbox implements ControlValueAccessor {
   }
 
   protected onIndeterminateChange(value: boolean): void {
+    // model() emits `indeterminateChange` itself; a second output of that name is an error in Angular 22.
     this.indeterminate.set(value);
-    this.indeterminateChange.emit(value);
   }
 
   writeValue(value: boolean | null | undefined): void {

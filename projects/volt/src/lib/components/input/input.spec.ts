@@ -1,4 +1,4 @@
-import { Component, input, model } from '@angular/core';
+import { Component, input, model, signal } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/angular';
@@ -212,18 +212,19 @@ describe('VoltInput', () => {
     it('applies a bound class to the native input and updates it', async () => {
       @Component({
         imports: [VoltInput],
-        template: `<volt-input [class]="cls" aria-label="Qty" />`,
+        template: `<volt-input [class]="cls()" aria-label="Qty" />`,
       })
       class BoundClass {
-        cls = 'w-24';
+        // A signal, not a field: components are OnPush by default from Angular 22, so a plain
+        // property change is never picked up by a host that is not marked dirty.
+        cls = signal('w-24');
       }
 
       const { fixture } = await render(BoundClass);
       const native = screen.getByRole('textbox', { name: 'Qty' });
       expect(native).toHaveClass('w-24');
 
-      fixture.componentInstance.cls = 'w-32 font-mono';
-      fixture.changeDetectorRef.markForCheck();
+      fixture.componentInstance.cls.set('w-32 font-mono');
       fixture.detectChanges();
       expect(native).toHaveClass('w-32', 'font-mono');
       expect(native).not.toHaveClass('w-24');
