@@ -1,7 +1,8 @@
 import { provideRouter } from '@angular/router';
 import { render, screen } from '@testing-library/angular';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { INSTALL_COMMAND, LandingHero } from './landing-hero';
+import { INSTALL_COMMAND, InstallCommand } from './install-command';
+import { LandingHero } from './landing-hero';
 
 describe('landing hero', () => {
   afterEach(() => {
@@ -13,26 +14,23 @@ describe('landing hero', () => {
     await render(LandingHero, { providers: [provideRouter([])] });
 
     expect(screen.getByText(INSTALL_COMMAND)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Copy install command' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Copy the install command' })).toBeInTheDocument();
   });
 
   it('copies the CLI command and exposes a temporary success label', async () => {
     vi.useFakeTimers();
     const writeText = vi.fn().mockResolvedValue(undefined);
-    Object.defineProperty(navigator, 'clipboard', {
-      configurable: true,
-      value: { writeText },
-    });
+    Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText } });
 
-    const { fixture } = await render(LandingHero, { providers: [provideRouter([])] });
-    await fixture.componentInstance.copyInstallCommand();
+    const { fixture } = await render(InstallCommand);
+    await fixture.componentInstance.copy();
     fixture.detectChanges();
     expect(writeText).toHaveBeenCalledWith(INSTALL_COMMAND);
-    expect(screen.getByRole('button', { name: 'Command copied' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Copied' })).toBeInTheDocument();
 
     await vi.advanceTimersByTimeAsync(1800);
     fixture.detectChanges();
-    expect(screen.getByRole('button', { name: 'Copy install command' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Copy the install command' })).toBeInTheDocument();
   });
 
   it('builds the showcase panel out of real Volt components', async () => {
@@ -43,5 +41,11 @@ describe('landing hero', () => {
     expect(showcase.querySelector('volt-input')).not.toBeNull();
     expect(showcase.querySelector('volt-switch')).not.toBeNull();
     expect(showcase.querySelector('volt-slider')).not.toBeNull();
+  });
+
+  it('draws the threads behind the hero, hidden from assistive tech', async () => {
+    const { container } = await render(LandingHero, { providers: [provideRouter([])] });
+
+    expect(container.querySelector('app-volt-threads')).toHaveAttribute('aria-hidden', 'true');
   });
 });

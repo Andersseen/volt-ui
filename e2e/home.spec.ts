@@ -46,7 +46,7 @@ test.describe('Official landing page', () => {
     // silently clipped by `overflow-hidden` on <main> — which is exactly how the
     // hero column used to run past the right edge on a phone. Assert the far edge
     // of the install command bar stays inside the viewport instead.
-    const copyCommand = page.getByRole('button', { name: 'Copy install command' });
+    const copyCommand = page.getByRole('button', { name: 'Copy the install command' });
     const box = await copyCommand.boundingBox();
     expect(box).not.toBeNull();
     expect(box!.x + box!.width).toBeLessThanOrEqual(390);

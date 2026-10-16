@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { LandingCta } from '../components/landing/landing-cta';
-import { LandingHero } from '../components/landing/landing-hero';
+import { LandingHero } from '../components/landing/hero/landing-hero';
 import { LandingPillars } from '../components/landing/pillars/landing-pillars';
 import { LandingPlayground } from '../components/landing/playground/landing-playground';
 import { LandingProofPoints } from '../components/landing/landing-proof-points';
