@@ -1,6 +1,6 @@
 <div align="center">
 
-<a href="https://volt-ui.andersseen.dev">
+<a href="https://voltui.dev">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="./docs/hero-dark.png" />
     <source media="(prefers-color-scheme: light)" srcset="./docs/hero-light.png" />
@@ -33,7 +33,7 @@ component, `<a voltButton routerLink>` replaces `<a><volt-button>`, forms get si
 toasts and state-driven dialogs no longer need ng-primitives APIs, and `Alert` + `Spinner` join the
 catalog. Fully backwards compatible with 1.0.<br/>
 See the **[release notes](./CHANGELOG.md)** · **[upgrade notes](./MIGRATION.md)** ·
-**[versioning policy](https://volt-ui.andersseen.dev/docs/versioning)**
+**[versioning policy](https://voltui.dev/docs/versioning)**
 
 <br/>
 
@@ -42,14 +42,14 @@ See the **[release notes](./CHANGELOG.md)** · **[upgrade notes](./MIGRATION.md)
 [![Angular 21](https://img.shields.io/badge/Angular-21-DD0031?style=for-the-badge&logo=angular&logoColor=white)](https://angular.dev)
 [![Tailwind v4](https://img.shields.io/badge/Tailwind-v4-38BDF8?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
 
-[![Components](https://img.shields.io/badge/components-42-8B5CF6?style=for-the-badge)](https://volt-ui.andersseen.dev/docs/components)
+[![Components](https://img.shields.io/badge/components-42-8B5CF6?style=for-the-badge)](https://voltui.dev/docs/components)
 [![CI](https://img.shields.io/github/actions/workflow/status/Andersseen/volt-ui/ci.yml?style=for-the-badge&logo=githubactions&logoColor=white&label=CI&branch=main)](https://github.com/Andersseen/volt-ui/actions/workflows/ci.yml)
 [![License MIT](https://img.shields.io/badge/license-MIT-22C55E?style=for-the-badge)](./LICENSE)
 [![Stars](https://img.shields.io/github/stars/Andersseen/volt-ui?style=for-the-badge&logo=github&logoColor=white&color=F59E0B)](https://github.com/Andersseen/volt-ui/stargazers)
 
 <br/>
 
-**[🌐 Live Docs](https://volt-ui.andersseen.dev)** · **[📦 Components](https://volt-ui.andersseen.dev/docs/components)** · **[🎨 Theme Builder](https://volt-ui.andersseen.dev/create-theme)** · **[🤖 AI / MCP](https://volt-ui.andersseen.dev/api/mcp)** · **[📖 Docs](https://volt-ui.andersseen.dev/docs/introduction)**
+**[🌐 Live Docs](https://voltui.dev)** · **[📦 Components](https://voltui.dev/docs/components)** · **[🎨 Theme Builder](https://voltui.dev/create-theme)** · **[🤖 AI / MCP](https://voltui.dev/api/mcp)** · **[📖 Docs](https://voltui.dev/docs/introduction)**
 
 </div>
 
@@ -209,7 +209,7 @@ Themes are CSS custom properties mapped into Tailwind v4 via `@theme inline`. Co
 </tr>
 </table>
 
-> 🎛️ Mix and match live in the **[Theme Builder →](https://volt-ui.andersseen.dev/create-theme)** — generate a
+> 🎛️ Mix and match live in the **[Theme Builder →](https://voltui.dev/create-theme)** — generate a
 > contrast-checked palette in one click, or import one from
 > [Palette Crafter](https://palette-crafter.andersseen.dev).
 
@@ -291,11 +291,11 @@ bootstrapApplication(AppComponent, {
 
 Volt UI ships three complementary ways to give AI assistants correct context:
 
-| Tool                    | What it is                                                                                           | Install                                              |
-| ----------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
-| 🧠 **Skill**            | Auto-discovered by Claude Code / OpenCode in a workspace                                             | `npx @voltui/agent claude`                           |
-| 🛰️ **MCP server**       | `list_components`, `get_component`, `get_usage_example`, `get_theme_info`, `generate_cli_command`, … | [`/api/mcp`](https://volt-ui.andersseen.dev/api/mcp) |
-| 📋 **Prompt reference** | Single file to paste into any LLM chat                                                               | [`VOLT_UI_PROMPT.md`](./VOLT_UI_PROMPT.md)           |
+| Tool                    | What it is                                                                                           | Install                                    |
+| ----------------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------ |
+| 🧠 **Skill**            | Auto-discovered by Claude Code / OpenCode in a workspace                                             | `npx @voltui/agent claude`                 |
+| 🛰️ **MCP server**       | `list_components`, `get_component`, `get_usage_example`, `get_theme_info`, `generate_cli_command`, … | [`/api/mcp`](https://voltui.dev/api/mcp)   |
+| 📋 **Prompt reference** | Single file to paste into any LLM chat                                                               | [`VOLT_UI_PROMPT.md`](./VOLT_UI_PROMPT.md) |
 
 ---
 
@@ -319,7 +319,7 @@ reference this release shipped against.
 
 All components remain available through the package and CLI; the status label
 communicates **confidence, not availability**. See
-**[docs/versioning](https://volt-ui.andersseen.dev/docs/versioning)** for the full
+**[docs/versioning](https://voltui.dev/docs/versioning)** for the full
 semver promise and support policy.
 
 Full status table: **[COMPONENT_STATUS.md](./COMPONENT_STATUS.md)**.
@@ -360,7 +360,7 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) and [AGENTS.md](./AGENTS.md) for conven
 
 Built with ⚡ by [Andersseen](https://github.com/Andersseen) · [MIT License](./LICENSE)
 
-**[🌐 volt-ui.andersseen.dev](https://volt-ui.andersseen.dev)**
+**[🌐 voltui.dev](https://voltui.dev)**
 
 <sub><a href="#-volt-ui">↑ Back to top</a></sub>
 

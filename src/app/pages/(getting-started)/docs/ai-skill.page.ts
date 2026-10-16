@@ -133,7 +133,7 @@ export default class AiSkillPage {
   protected readonly t = this.translations.t;
 
   readonly skillContent = skillMarkdown;
-  readonly installCommand = `mkdir -p .agents/skills/volt-ui && curl -fsSL https://volt-ui.pages.dev/.agents/skills/volt-ui/SKILL.md -o .agents/skills/volt-ui/SKILL.md`;
+  readonly installCommand = 'npx @voltui/agent claude';
   readonly installCopied = signal(false);
   readonly skillCopied = signal(false);
 

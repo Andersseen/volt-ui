@@ -30,4 +30,4 @@ command = "npx"
 args = [ "-y", "@playwright/mcp@latest", "--browser", "chromium" ]
 
 [mcp_servers.volt-ui]
-url = "https://volt-ui.pages.dev/api/mcp"
+url = "https://voltui.dev/api/mcp"

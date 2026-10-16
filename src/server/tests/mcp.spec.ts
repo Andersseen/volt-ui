@@ -1,7 +1,8 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js';
-import { createMcpServer } from '../routes/mcp';
+import { WebStandardStreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js';
+import { createMcpServer, withStreamableAccept } from '../routes/mcp';
 
 describe('Volt UI MCP Server', () => {
   let client: Client;
@@ -96,5 +97,48 @@ describe('Volt UI MCP Server', () => {
     expect(text).toContain('Volt UI');
     expect(text).toContain('OnPush');
     expect(text).toContain('Tailwind CSS');
+  });
+});
+
+describe('HTTP transport', () => {
+  const initialize = {
+    jsonrpc: '2.0',
+    id: 1,
+    method: 'initialize',
+    params: {
+      protocolVersion: '2025-03-26',
+      capabilities: {},
+      clientInfo: { name: 'test-client', version: '1.0.0' },
+    },
+  };
+
+  async function post(accept: string | null) {
+    const headers = new Headers({ 'content-type': 'application/json' });
+    if (accept !== null) headers.set('accept', accept);
+    const request = await withStreamableAccept(
+      new Request('https://voltui.dev/api/mcp', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(initialize),
+      })
+    );
+    const transport = new WebStandardStreamableHTTPServerTransport({
+      sessionIdGenerator: undefined,
+      enableJsonResponse: true,
+    });
+    await createMcpServer().connect(transport);
+    return transport.handleRequest(request);
+  }
+
+  it.each([
+    ['both types', 'application/json, text/event-stream'],
+    ['only JSON', 'application/json'],
+    ['a wildcard', '*/*'],
+    ['no Accept header', null],
+  ])('answers initialize when the client sends %s', async (_label, accept) => {
+    const response = await post(accept);
+    expect(response.status).toBe(200);
+    const body = await response.json();
+    expect(body.result.serverInfo.name).toBe('volt-ui');
   });
 });

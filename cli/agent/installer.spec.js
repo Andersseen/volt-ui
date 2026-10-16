@@ -202,6 +202,117 @@ describe('arguments', () => {
   });
 });
 
+describe('codex, gemini and opencode', () => {
+  it('codex: a TOML block with # markers, and the skill', async () => {
+    mkdirSync(join(dir, '.codex'));
+    writeFileSync(join(dir, '.codex/config.toml'), '[mcp_servers.mine]\nurl = "https://x"\n');
+    await go('codex');
+    const toml = read('.codex/config.toml');
+    expect(toml).toContain('[mcp_servers.mine]');
+    expect(toml).toContain(`[mcp_servers.volt-ui]\nurl = "${DEFAULT_MCP_URL}"`);
+    expect(toml).toContain('# volt-ui:begin');
+    expect(read('.agents/skills/volt-ui/SKILL.md')).toMatch(/^---\nname: volt-ui\n/);
+  });
+
+  it('codex: leaves a [mcp_servers.volt-ui] table the user wrote alone', async () => {
+    mkdirSync(join(dir, '.codex'));
+    const own = '[mcp_servers.volt-ui]\nurl = "https://example.test/mcp"\n';
+    writeFileSync(join(dir, '.codex/config.toml'), own);
+    await go('codex');
+    expect(read('.codex/config.toml')).toBe(own);
+    expect(logs.join('\n')).toMatch(/kept\s+\.codex\/config\.toml/);
+  });
+
+  it('gemini: httpUrl in settings.json and a GEMINI.md block', async () => {
+    await go('gemini');
+    expect(readJson('.gemini/settings.json')).toEqual({
+      mcpServers: { 'volt-ui': { httpUrl: DEFAULT_MCP_URL } },
+    });
+    expect(read('GEMINI.md')).toContain(BLOCK_START);
+  });
+
+  it('opencode: a remote mcp entry; uninstall removes the file it created', async () => {
+    await go('opencode');
+    expect(readJson('opencode.json').mcp['volt-ui']).toEqual({
+      type: 'remote',
+      url: DEFAULT_MCP_URL,
+      enabled: true,
+    });
+    await go('opencode', '--uninstall');
+    expect(existsSync(join(dir, 'opencode.json'))).toBe(false);
+  });
+});
+
+describe('the endpoint', () => {
+  it('is voltui.dev', () => {
+    expect(DEFAULT_MCP_URL).toBe('https://voltui.dev/api/mcp');
+  });
+
+  it('a re-run moves a config that still points at the old host', async () => {
+    mkdirSync(join(dir, '.cursor'));
+    writeFileSync(
+      join(dir, '.cursor/mcp.json'),
+      JSON.stringify({
+        mcpServers: { 'volt-ui': { type: 'url', url: 'https://volt-ui.pages.dev/api/mcp' } },
+      })
+    );
+    await go('cursor');
+    expect(readJson('.cursor/mcp.json').mcpServers['volt-ui'].url).toBe(DEFAULT_MCP_URL);
+  });
+});
+
+describe('doctor', () => {
+  const ok = () =>
+    Promise.resolve(
+      new Response(
+        JSON.stringify({ result: { serverInfo: { name: 'volt-ui', version: '1.0.0' } } })
+      )
+    );
+  const doctor = (fetch, ...args) =>
+    run(['doctor', ...args, '--dir', dir], { isTTY: false, fetch });
+
+  it('is healthy after setup', async () => {
+    await go('claude', 'cursor');
+    logs.length = 0;
+    expect(await doctor(ok)).toBe(0);
+    expect(logs.join('\n')).toMatch(/ok\s+volt-ui 1\.0\.0/);
+    expect(logs.join('\n')).toContain('All good.');
+  });
+
+  it('only reads: it never writes or creates files', async () => {
+    await doctor(ok, 'claude');
+    expect(existsSync(join(dir, '.mcp.json'))).toBe(false);
+  });
+
+  it('reports missing agents and exits 1 when nothing is installed', async () => {
+    expect(await doctor(ok)).toBe(1);
+    expect(logs.join('\n')).toMatch(/No Volt UI agent files/);
+  });
+
+  it('flags an outdated file and a missing one', async () => {
+    await go('claude');
+    writeFileSync(join(dir, '.claude/skills/volt-ui/SKILL.md'), 'stale');
+    rmSync(join(dir, '.mcp.json'));
+    logs.length = 0;
+    expect(await doctor(ok, 'claude')).toBe(1);
+    expect(logs.join('\n')).toMatch(/outdated\s+\.claude\/skills/);
+    expect(logs.join('\n')).toMatch(/missing\s+\.mcp\.json/);
+  });
+
+  it('reports an endpoint that rejects the client, and --offline skips the check', async () => {
+    await go('claude');
+    const rejected = () => Promise.resolve(new Response('{}', { status: 406 }));
+    logs.length = 0;
+    expect(await doctor(rejected, 'claude')).toBe(1);
+    expect(logs.join('\n')).toMatch(/failed\s+HTTP 406/);
+    expect(await doctor(rejected, 'claude', '--offline')).toBe(0);
+  });
+
+  it('rejects --uninstall and --dry-run', async () => {
+    expect(await doctor(ok, '--dry-run')).toBe(2);
+  });
+});
+
 describe('package', () => {
   it('ships every file the installer requires', () => {
     expect(pkg.files).toEqual(

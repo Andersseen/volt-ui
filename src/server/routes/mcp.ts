@@ -6,7 +6,7 @@
  *
  * Supported clients: Claude Desktop, Cursor, Windsurf, GitHub Copilot, etc.
  *
- * Endpoint: https://volt-ui.pages.dev/api/mcp
+ * Endpoint: https://voltui.dev/api/mcp
  * Setup:    npx @voltui/agent
  */
 
@@ -1140,7 +1140,7 @@ const projectInfo = {
   framework: 'Angular v21',
   primitives: 'ng-primitives',
   styling: 'Tailwind CSS v4',
-  docs: 'https://volt-ui.pages.dev',
+  docs: 'https://voltui.dev',
   packages: {
     components: '@voltui/components',
     cli: '@voltui/cli',
@@ -1581,8 +1581,9 @@ export function createMcpServer(): McpServer {
 // ---------------------------------------------------------------------------
 
 const allowedOrigins = new Set([
+  'https://voltui.dev',
+  'https://www.voltui.dev',
   'https://volt-ui.pages.dev',
-  'https://volt-ui.dev',
   'http://localhost:5173',
   'http://localhost:3000',
   'http://127.0.0.1:5173',
@@ -1601,11 +1602,37 @@ const corsHeaders: Record<string, string> = {
 };
 
 // ---------------------------------------------------------------------------
+// Accept header
+//
+// The Streamable HTTP transport answers 406 unless `Accept` lists both application/json and
+// text/event-stream. A client that sends both can still arrive here without them: the request is
+// rebuilt on the way through the Worker, and an intermediary may rewrite Accept. This server
+// replies with plain JSON (`enableJsonResponse`), so both types are always acceptable — state it
+// ourselves instead of rejecting a compliant client.
+// ---------------------------------------------------------------------------
+
+const STREAMABLE_ACCEPT = 'application/json, text/event-stream';
+
+export async function withStreamableAccept(request: Request): Promise<Request> {
+  const accept = request.headers.get('accept') ?? '';
+  if (accept.includes('application/json') && accept.includes('text/event-stream')) return request;
+
+  const headers = new Headers(request.headers);
+  headers.set('accept', STREAMABLE_ACCEPT);
+  const hasBody = request.method !== 'GET' && request.method !== 'HEAD';
+  return new Request(request.url, {
+    method: request.method,
+    headers,
+    body: hasBody ? await request.text() : undefined,
+  });
+}
+
+// ---------------------------------------------------------------------------
 // Human-readable discovery response
 // ---------------------------------------------------------------------------
 
 function discoveryResponse(): Response {
-  const base = 'https://volt-ui.pages.dev/api/mcp';
+  const base = 'https://voltui.dev/api/mcp';
   return new Response(
     JSON.stringify(
       {
@@ -1615,7 +1642,16 @@ function discoveryResponse(): Response {
         setup: {
           cli: 'npx @voltui/agent',
           configUrl: `${base}/setup`,
-          agents: ['claude', 'cursor', 'windsurf', 'copilot', 'vscode'].map(agent => ({
+          agents: [
+            'claude',
+            'cursor',
+            'windsurf',
+            'copilot',
+            'codex',
+            'gemini',
+            'opencode',
+            'vscode',
+          ].map(agent => ({
             agent,
             configUrl: `${base}/setup?agent=${agent}`,
           })),
@@ -1674,7 +1710,7 @@ export default defineEventHandler(async event => {
   }
 
   // POST/DELETE are handled by the MCP transport.
-  const request = toWebRequest(event);
+  const request = await withStreamableAccept(toWebRequest(event));
   const transport = new WebStandardStreamableHTTPServerTransport({
     sessionIdGenerator: undefined, // stateless mode
     enableJsonResponse: true, // return JSON instead of SSE for POSTs

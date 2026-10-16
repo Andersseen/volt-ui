@@ -1,6 +1,6 @@
 import { expect, test } from './fixtures';
 
-const ORIGIN = 'https://volt-ui.andersseen.dev';
+const ORIGIN = 'https://voltui.dev';
 const RUNS_SSR = process.env['E2E_SERVER'] === 'wrangler';
 // Locale content is fetched as JSON from Glossa at runtime, not bundled as a per-locale JS
 // chunk - see AGENTS.md "Site copy and translations". `pathname` ignores origin, so this

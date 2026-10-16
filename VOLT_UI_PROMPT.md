@@ -466,11 +466,12 @@ this.toast.success('Changes saved');
 
 ## MCP / AI tools
 
-Volt UI exposes a **spec-compliant MCP server** over Streamable HTTP at `https://volt-ui.pages.dev/api/mcp`.
+Volt UI exposes a **spec-compliant MCP server** over Streamable HTTP at `https://voltui.dev/api/mcp`.
 
-- **Setup helper**: `npx @voltui/agent` (installs config for Claude, Cursor, Windsurf, Copilot, VS Code)
+- **Setup helper**: `npx @voltui/agent <agent>` writes the MCP config, skill and rules for `claude`, `cursor`, `windsurf`, `copilot`, `codex`, `gemini`, `opencode` or `vscode` (snippets). It is safe to re-run, and `--uninstall` removes only what it wrote.
+- **Check the setup**: `npx @voltui/agent doctor` reports outdated or missing files and tests that the MCP endpoint answers.
 - **CLI**: `npx @voltui/cli`
-- **Local skill**: `.agents/skills/volt-ui/SKILL.md` (auto-discovered by OpenCode / Claude Code)
+- **Skill**: installed by `npx @voltui/agent claude` (to `.claude/skills/volt-ui/`) or `codex` / `opencode` (to `.agents/skills/volt-ui/`), auto-discovered by those agents
 - **Prompt reference**: `VOLT_UI_PROMPT.md` (this file)
 
 Available MCP tools:

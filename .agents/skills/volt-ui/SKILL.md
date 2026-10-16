@@ -375,7 +375,7 @@ const confirmed = await inject(UiDialogService).open<boolean>(this.confirmTpl(),
 
 ## AI tools integration
 
-- **MCP server**: `https://volt-ui.pages.dev/api/mcp` is a spec-compliant Streamable HTTP MCP server. It exposes tools, resources, and prompts:
+- **MCP server**: `https://voltui.dev/api/mcp` is a spec-compliant Streamable HTTP MCP server. It exposes tools, resources, and prompts:
   - Tools: `list_components`, `get_component`, `get_usage_example`, `get_theme_info`, `get_project_info`, `generate_cli_command`.
   - Resources: `component://<name>`, `theme://info`, `project://info`.
   - Prompts: `generate-volt-ui-component`, `volt-ui-troubleshooting`.

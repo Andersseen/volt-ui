@@ -196,7 +196,7 @@ jobs:
       contents: read
     environment:
       name: production
-      url: https://volt-ui.andersseen.dev
+      url: https://voltui.dev
 
     steps:
       - name: Checkout repository

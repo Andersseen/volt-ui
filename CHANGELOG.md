@@ -58,6 +58,27 @@ Also in this release of the installer (toward 1.0):
 - **Copilot** also gets `.vscode/mcp.json`, so VS Code connects to the MCP server instead of only
   reading instructions.
 - Tests for every agent, idempotency, merge, dry-run and uninstall; a README; `LICENSE`; Node 20+.
+- **Three more agents:** `codex` (`.codex/config.toml` block + skill), `gemini` (`.gemini/settings.json`
+  `httpUrl` + `GEMINI.md`) and `opencode` (`opencode.json` remote MCP + skill). An existing
+  `[mcp_servers.volt-ui]` table in Codex's config is left alone.
+- **`npx @voltui/agent doctor`** checks the installed files against what the package would write
+  (`ok` / `outdated` / `missing` / `invalid`) and sends the endpoint a real MCP `initialize`.
+  `--offline` skips the network. Read-only; exits 1 on a problem.
+- **The endpoint is `https://voltui.dev/api/mcp`.** Re-running the installer moves a config that still
+  points at `volt-ui.pages.dev` (the old host keeps answering).
+
+### Fixed — hosted MCP endpoint
+
+- **`/api/mcp` answered `406 Not Acceptable` to clients that send both `Accept` types** in the
+  deployed Worker (it passed locally). The handler now states the `Accept` the transport requires
+  itself — every reply is plain JSON — and a test posts `initialize` with both, one, a wildcard and
+  no `Accept`. `/api/mcp/setup` lists the three new agents.
+
+### Changed — docs site
+
+- `/docs/ai-skill` installs with `npx @voltui/agent claude` instead of a `curl` into
+  `.agents/skills/`; `/docs/ai-mcp` renders the manual config it already described (the block was
+  empty), lists the new agents and `doctor`. All links and the canonical origin use `voltui.dev`.
 - **One source for installer content.** `cli/agent/content.js` feeds both the installer and the hosted
   `/api/mcp/setup` endpoint (`pnpm generate:mcp-content`, checked by `pnpm check:generated`), replacing
   two hand-mirrored copies.

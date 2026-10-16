@@ -1,6 +1,6 @@
 /**
  * GET /api/mcp/setup
- * GET /api/mcp/setup?agent=claude|cursor|copilot|vscode
+ * GET /api/mcp/setup?agent=claude|cursor|windsurf|copilot|codex|gemini|opencode|vscode
  *
  * Returns per-agent setup configuration so the CLI (or a user)
  * can grab the exact files/content to install without needing
@@ -132,6 +132,73 @@ const agentSetups: Record<string, AgentSetup> = {
       'Reload the VS Code window; start the volt-ui server from the MCP view if prompted.',
       'The instructions file gives Copilot Chat context even where MCP is unavailable.',
     ],
+  },
+
+  codex: {
+    label: 'OpenAI Codex',
+    description: 'Connects Codex to the Volt UI MCP server and installs the Volt UI skill.',
+    mcpNative: true,
+    files: [
+      {
+        path: '.codex/config.toml',
+        description:
+          'Codex project config (append; skip if it already has a [mcp_servers.volt-ui] table)',
+        content: `[mcp_servers.volt-ui]\nurl = "${MCP_URL}"\n`,
+        format: 'text',
+      },
+      {
+        path: '.agents/skills/volt-ui/SKILL.md',
+        description: 'Volt UI skill, auto-discovered by Codex from .agents/skills/<name>/',
+        content: VOLT_UI_SKILL,
+        format: 'text',
+      },
+    ],
+    notes: ['Codex reads .codex/config.toml only for projects you have marked as trusted.'],
+  },
+
+  gemini: {
+    label: 'Gemini CLI',
+    description: 'Connects Gemini CLI to the Volt UI MCP server and adds Volt UI context.',
+    mcpNative: true,
+    files: [
+      {
+        path: '.gemini/settings.json',
+        description: 'Gemini CLI settings (merge into existing file if it exists)',
+        content: { mcpServers: { 'volt-ui': { httpUrl: MCP_URL } } },
+        format: 'json',
+      },
+      {
+        path: 'GEMINI.md',
+        description: 'Volt UI context for Gemini CLI (append to an existing file)',
+        content: COPILOT_INSTRUCTIONS,
+        format: 'text',
+      },
+    ],
+    notes: ['Restart Gemini CLI; `/mcp` lists the connected servers.'],
+  },
+
+  opencode: {
+    label: 'OpenCode',
+    description: 'Connects OpenCode to the Volt UI MCP server and installs the Volt UI skill.',
+    mcpNative: true,
+    files: [
+      {
+        path: 'opencode.json',
+        description: 'OpenCode config (merge into existing file if it exists)',
+        content: {
+          $schema: 'https://opencode.ai/config.json',
+          mcp: { 'volt-ui': { type: 'remote', url: MCP_URL, enabled: true } },
+        },
+        format: 'json',
+      },
+      {
+        path: '.agents/skills/volt-ui/SKILL.md',
+        description: 'Volt UI skill, auto-discovered by OpenCode from .agents/skills/<name>/',
+        content: VOLT_UI_SKILL,
+        format: 'text',
+      },
+    ],
+    notes: ['Restart OpenCode for the MCP server and skill to load.'],
   },
 
   vscode: {

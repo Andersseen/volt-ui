@@ -31,12 +31,23 @@ const BLOCK_START =
   '<!-- volt-ui:begin (managed by @voltui/agent — edits inside are overwritten) -->';
 const BLOCK_END = '<!-- volt-ui:end -->';
 
+// A block lives inside a file the user also edits, so its markers must be a comment in that file's
+// own syntax: HTML for Markdown rules files, `#` for TOML.
+const MARKERS = {
+  html: { start: BLOCK_START, end: BLOCK_END },
+  hash: {
+    start: '# volt-ui:begin (managed by @voltui/agent — edits inside are overwritten)',
+    end: '# volt-ui:end',
+  },
+};
+const markersOf = spec => MARKERS[spec.style ?? 'html'];
+
 // ---------------------------------------------------------------------------
 // Agent plans
 //
 // An agent is a list of files. `kind` decides how an existing file is treated:
 //   json   merged into the existing JSON (the user's other keys survive)
-//   block  a delimited block inside a file the user also edits
+//   block  a delimited block inside a file the user also edits (`style`: html | hash comment markers)
 //   owned  a file that is entirely Volt's (rewritten each run, deleted on uninstall)
 // ---------------------------------------------------------------------------
 
@@ -112,6 +123,52 @@ function buildAgents(mcpUrl) {
         'The instructions file gives Copilot Chat context even where MCP is unavailable.',
       ],
     },
+    codex: {
+      label: 'OpenAI Codex',
+      files: [
+        {
+          path: '.codex/config.toml',
+          kind: 'block',
+          style: 'hash',
+          content: `[mcp_servers.volt-ui]\nurl = "${mcpUrl}"`,
+          unlessPresent: /^\s*\[mcp_servers\.(?:"volt-ui"|volt-ui)\]/m,
+        },
+        { path: '.agents/skills/volt-ui/SKILL.md', kind: 'owned', content: VOLT_UI_SKILL },
+      ],
+      notes: [
+        'Codex reads .codex/config.toml only for projects you have marked as trusted.',
+        'Restart Codex for the MCP server and skill to load.',
+      ],
+    },
+    gemini: {
+      label: 'Gemini CLI',
+      files: [
+        {
+          path: '.gemini/settings.json',
+          kind: 'json',
+          content: { mcpServers: { 'volt-ui': { httpUrl: mcpUrl } } },
+          owns: ['mcpServers', 'volt-ui'],
+        },
+        { path: 'GEMINI.md', kind: 'block', content: COPILOT_INSTRUCTIONS },
+      ],
+      notes: ['Restart Gemini CLI; `/mcp` lists the connected servers.'],
+    },
+    opencode: {
+      label: 'OpenCode',
+      files: [
+        {
+          path: 'opencode.json',
+          kind: 'json',
+          content: {
+            $schema: 'https://opencode.ai/config.json',
+            mcp: { 'volt-ui': { type: 'remote', url: mcpUrl, enabled: true } },
+          },
+          owns: ['mcp', 'volt-ui'],
+        },
+        { path: '.agents/skills/volt-ui/SKILL.md', kind: 'owned', content: VOLT_UI_SKILL },
+      ],
+      notes: ['Restart OpenCode for the MCP server and skill to load.'],
+    },
     vscode: {
       label: 'VS Code (snippets)',
       files: [snippets],
@@ -169,13 +226,13 @@ function parseJsonStrict(file, text) {
   }
 }
 
-function wrapBlock(content) {
-  return `${BLOCK_START}\n${content.trim()}\n${BLOCK_END}\n`;
+function wrapBlock(content, { start, end }) {
+  return `${start}\n${content.trim()}\n${end}\n`;
 }
 
-function blockPattern() {
+function blockPattern({ start, end }) {
   const esc = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  return new RegExp(`${esc(BLOCK_START)}[\\s\\S]*?${esc(BLOCK_END)}\\n?`);
+  return new RegExp(`${esc(start)}[\\s\\S]*?${esc(end)}\\n?`);
 }
 
 function install(file, spec, dryRun) {
@@ -191,11 +248,16 @@ function install(file, spec, dryRun) {
   }
 
   if (spec.kind === 'block') {
-    const block = wrapBlock(spec.content);
+    const markers = markersOf(spec);
+    const block = wrapBlock(spec.content, markers);
     let next;
     if (existing === null) next = block;
-    else if (blockPattern().test(existing)) next = existing.replace(blockPattern(), () => block);
-    else next = existing.replace(/\s*$/, '\n\n') + block;
+    else if (blockPattern(markers).test(existing)) {
+      next = existing.replace(blockPattern(markers), () => block);
+    } else if (spec.unlessPresent?.test(existing)) {
+      // The user already configures this by hand; a second copy would be a duplicate TOML table.
+      return 'kept';
+    } else next = existing.replace(/\s*$/, '\n\n') + block;
     if (existing === next) return 'unchanged';
     write(file, next, dryRun);
     return existing === null ? 'created' : 'updated';
@@ -218,16 +280,19 @@ function uninstall(file, spec, dryRun) {
     delete json[group][key];
     if (!Object.keys(json[group]).length) delete json[group];
     if (!dryRun) {
-      if (Object.keys(json).length) write(file, JSON.stringify(json, null, 2) + '\n', false);
+      // A lone `$schema` is what this installer wrote into a file it created; nothing of the user's.
+      const left = Object.keys(json).filter(k => k !== '$schema');
+      if (left.length) write(file, JSON.stringify(json, null, 2) + '\n', false);
       else fs.rmSync(file);
     }
     return 'removed';
   }
 
   if (spec.kind === 'block') {
-    if (!blockPattern().test(existing)) return 'absent';
+    const markers = markersOf(spec);
+    if (!blockPattern(markers).test(existing)) return 'absent';
     const next = existing
-      .replace(blockPattern(), '')
+      .replace(blockPattern(markers), '')
       .replace(/\n{3,}/g, '\n\n')
       .trim();
     if (!dryRun) {
@@ -248,26 +313,33 @@ function uninstall(file, spec, dryRun) {
 const HELP = `Volt UI agent setup (@voltui/agent ${VERSION})
 
 Usage: npx @voltui/agent [agent...] [options]
+       npx @voltui/agent doctor [agent...] [options]
 
-Agents: claude, cursor, windsurf, copilot, vscode
+Agents: claude, cursor, windsurf, copilot, codex, gemini, opencode, vscode
         With no agent and no --all, you are asked which to set up.
+
+doctor  checks what is installed: files up to date, and the MCP endpoint answering.
+        With no agent it checks every agent that has files in the project.
 
 Options:
   --all             set up every agent
   --dir <path>      project directory (default: current directory)
   --url <url>       MCP endpoint to write (default: ${DEFAULT_MCP_URL})
   --dry-run         print what would change, write nothing
+  --offline         doctor: skip the MCP endpoint check
   --uninstall       remove what this installer wrote (your other config is kept)
   -y, --yes         never prompt; with no agent given, set up every agent
   -v, --version     print the version
   -h, --help        print this help
 
-Exit codes: 0 ok · 1 failed · 2 bad usage`;
+Exit codes: 0 ok · 1 failed (doctor: a problem was found) · 2 bad usage`;
 
 class UsageError extends Error {}
 
 function parseArgs(argv, agentKeys) {
   const opts = {
+    command: 'setup',
+    offline: false,
     agents: [],
     all: false,
     dir: null,
@@ -300,12 +372,15 @@ function parseArgs(argv, agentKeys) {
     if (flag === '--all') opts.all = true;
     else if (flag === '--dry-run') opts.dryRun = true;
     else if (flag === '--uninstall') opts.uninstall = true;
+    else if (flag === '--offline') opts.offline = true;
     else if (flag === '-y' || flag === '--yes') opts.yes = true;
     else if (flag === '-h' || flag === '--help') opts.help = true;
     else if (flag === '-v' || flag === '--version') opts.version = true;
     else if (flag === '--dir') opts.dir = next('--dir');
     else if (flag === '--url') opts.url = next('--url');
     else if (arg.startsWith('-')) throw new UsageError(`Unknown option: ${arg}`);
+    else if (arg === 'doctor' && opts.command === 'setup' && !opts.agents.length)
+      opts.command = 'doctor';
     else if (agentKeys.includes(arg)) opts.agents.push(arg);
     else throw new UsageError(`Unknown agent: ${arg}. Available: ${agentKeys.join(', ')}.`);
   }
@@ -318,6 +393,9 @@ function parseArgs(argv, agentKeys) {
     if (u.protocol !== 'https:' && u.protocol !== 'http:') throw new Error();
   } catch {
     throw new UsageError(`--url must be an http(s) URL, got: ${opts.url}`);
+  }
+  if (opts.command === 'doctor' && (opts.uninstall || opts.dryRun)) {
+    throw new UsageError('doctor only reads; --uninstall and --dry-run do not apply to it.');
   }
   opts.agents = [...new Set(opts.agents)];
   return opts;
@@ -352,6 +430,87 @@ async function promptAgents(rl, agents, out) {
 }
 
 // ---------------------------------------------------------------------------
+// doctor
+// ---------------------------------------------------------------------------
+
+const FILE_STATE = {
+  unchanged: 'ok',
+  kept: 'ok (your own entry)',
+  updated: 'outdated',
+  created: 'missing',
+};
+
+/** Ask the endpoint for an MCP `initialize`, the way a real client does. */
+async function pingEndpoint(url, fetchImpl) {
+  const response = await fetchImpl(url, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json', accept: 'application/json, text/event-stream' },
+    body: JSON.stringify({
+      jsonrpc: '2.0',
+      id: 1,
+      method: 'initialize',
+      params: {
+        protocolVersion: '2025-03-26',
+        capabilities: {},
+        clientInfo: { name: '@voltui/agent doctor', version: VERSION },
+      },
+    }),
+    signal: AbortSignal.timeout(10_000),
+  });
+  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  const json = await response.json();
+  const server = json?.result?.serverInfo;
+  if (!server) throw new Error(json?.error?.message ?? 'not an MCP initialize response');
+  return `${server.name} ${server.version}`;
+}
+
+async function doctor({ agents, selected, projectDir, opts, out, fetchImpl }) {
+  out.log(`Checking: ${projectDir}`);
+  let problems = 0;
+
+  const keys = selected.length
+    ? selected
+    : Object.keys(agents).filter(key =>
+        agents[key].files.some(spec => fs.existsSync(path.join(projectDir, spec.path)))
+      );
+  if (!keys.length) {
+    out.log('\nNo Volt UI agent files found here. Set one up with: npx @voltui/agent <agent>');
+    return 1;
+  }
+
+  for (const key of keys) {
+    out.log(`\n${agents[key].label}`);
+    for (const spec of agents[key].files) {
+      let state;
+      try {
+        state = FILE_STATE[install(path.join(projectDir, spec.path), spec, true)];
+      } catch (err) {
+        state = `invalid — ${err.message}`;
+      }
+      if (!state.startsWith('ok')) problems++;
+      out.log(`  ${state.padEnd(10)} ${spec.path}`);
+    }
+  }
+
+  if (!opts.offline) {
+    out.log(`\nMCP endpoint: ${opts.url}`);
+    try {
+      out.log(`  ok         ${await pingEndpoint(opts.url, fetchImpl)}`);
+    } catch (err) {
+      problems++;
+      out.log(`  failed     ${err.message}`);
+    }
+  }
+
+  if (problems) {
+    out.log(`\n${problems} problem(s). Re-run \`npx @voltui/agent <agent>\` to repair the files.`);
+    return 1;
+  }
+  out.log('\nAll good.');
+  return 0;
+}
+
+// ---------------------------------------------------------------------------
 // Entry point
 // ---------------------------------------------------------------------------
 
@@ -377,6 +536,20 @@ async function run(argv, env = {}) {
     const agents = buildAgents(opts.url);
     let selected = opts.all ? Object.keys(agents) : opts.agents;
     let projectDir = opts.dir ? path.resolve(cwd, opts.dir) : cwd;
+
+    if (opts.command === 'doctor') {
+      if (!fs.existsSync(projectDir) || !fs.statSync(projectDir).isDirectory()) {
+        throw new UsageError(`Project directory does not exist: ${projectDir}`);
+      }
+      return await doctor({
+        agents,
+        selected,
+        projectDir,
+        opts,
+        out,
+        fetchImpl: env.fetch ?? fetch,
+      });
+    }
 
     if (!selected.length) {
       if (opts.yes) selected = Object.keys(agents);
