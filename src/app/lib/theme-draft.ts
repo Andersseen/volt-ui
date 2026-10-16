@@ -1,3 +1,4 @@
+import type { PlainTranslationKey } from '../i18n/i18n';
 import type { ColorToken, ModePalette } from './palette';
 
 /**
@@ -23,8 +24,9 @@ export interface ThemeDraft {
 
 export interface ColorField {
   key: ColorToken;
-  label: string;
-  description: string;
+  /** Translation keys, resolved where the field is rendered. */
+  labelKey: PlainTranslationKey;
+  descriptionKey: PlainTranslationKey;
 }
 
 export const tokenNames: Record<ColorToken, string> = {
@@ -52,27 +54,112 @@ export const tokenNames: Record<ColorToken, string> = {
 };
 
 export const colorFields: ColorField[] = [
-  { key: 'background', label: 'Background', description: 'Page canvas' },
-  { key: 'foreground', label: 'Foreground', description: 'Main text' },
-  { key: 'surface', label: 'Surface', description: 'Cards and panels' },
-  { key: 'surfaceForeground', label: 'Surface text', description: 'Text on surfaces' },
-  { key: 'muted', label: 'Muted', description: 'Subtle fills' },
-  { key: 'mutedForeground', label: 'Muted text', description: 'Secondary text' },
-  { key: 'border', label: 'Border', description: 'Lines and outlines' },
-  { key: 'input', label: 'Input', description: 'Form borders' },
-  { key: 'ring', label: 'Ring', description: 'Focus color' },
-  { key: 'primary', label: 'Primary', description: 'Main action' },
-  { key: 'primaryForeground', label: 'Primary text', description: 'Text on primary' },
-  { key: 'secondary', label: 'Secondary', description: 'Secondary action' },
-  { key: 'secondaryForeground', label: 'Secondary text', description: 'Text on secondary' },
-  { key: 'success', label: 'Success', description: 'Positive state' },
-  { key: 'successForeground', label: 'Success text', description: 'Text on success' },
-  { key: 'warning', label: 'Warning', description: 'Caution state' },
-  { key: 'warningForeground', label: 'Warning text', description: 'Text on warning' },
-  { key: 'error', label: 'Error', description: 'Error state' },
-  { key: 'errorForeground', label: 'Error text', description: 'Text on error' },
-  { key: 'info', label: 'Info', description: 'Informational state' },
-  { key: 'infoForeground', label: 'Info text', description: 'Text on info' },
+  {
+    key: 'background',
+    labelKey: 'themeStudio.tokens.fields.background.label',
+    descriptionKey: 'themeStudio.tokens.fields.background.description',
+  },
+  {
+    key: 'foreground',
+    labelKey: 'themeStudio.tokens.fields.foreground.label',
+    descriptionKey: 'themeStudio.tokens.fields.foreground.description',
+  },
+  {
+    key: 'surface',
+    labelKey: 'themeStudio.tokens.fields.surface.label',
+    descriptionKey: 'themeStudio.tokens.fields.surface.description',
+  },
+  {
+    key: 'surfaceForeground',
+    labelKey: 'themeStudio.tokens.fields.surfaceForeground.label',
+    descriptionKey: 'themeStudio.tokens.fields.surfaceForeground.description',
+  },
+  {
+    key: 'muted',
+    labelKey: 'themeStudio.tokens.fields.muted.label',
+    descriptionKey: 'themeStudio.tokens.fields.muted.description',
+  },
+  {
+    key: 'mutedForeground',
+    labelKey: 'themeStudio.tokens.fields.mutedForeground.label',
+    descriptionKey: 'themeStudio.tokens.fields.mutedForeground.description',
+  },
+  {
+    key: 'border',
+    labelKey: 'themeStudio.tokens.fields.border.label',
+    descriptionKey: 'themeStudio.tokens.fields.border.description',
+  },
+  {
+    key: 'input',
+    labelKey: 'themeStudio.tokens.fields.input.label',
+    descriptionKey: 'themeStudio.tokens.fields.input.description',
+  },
+  {
+    key: 'primary',
+    labelKey: 'themeStudio.tokens.fields.primary.label',
+    descriptionKey: 'themeStudio.tokens.fields.primary.description',
+  },
+  {
+    key: 'primaryForeground',
+    labelKey: 'themeStudio.tokens.fields.primaryForeground.label',
+    descriptionKey: 'themeStudio.tokens.fields.primaryForeground.description',
+  },
+  {
+    key: 'secondary',
+    labelKey: 'themeStudio.tokens.fields.secondary.label',
+    descriptionKey: 'themeStudio.tokens.fields.secondary.description',
+  },
+  {
+    key: 'secondaryForeground',
+    labelKey: 'themeStudio.tokens.fields.secondaryForeground.label',
+    descriptionKey: 'themeStudio.tokens.fields.secondaryForeground.description',
+  },
+  {
+    key: 'success',
+    labelKey: 'themeStudio.tokens.fields.success.label',
+    descriptionKey: 'themeStudio.tokens.fields.success.description',
+  },
+  {
+    key: 'successForeground',
+    labelKey: 'themeStudio.tokens.fields.successForeground.label',
+    descriptionKey: 'themeStudio.tokens.fields.successForeground.description',
+  },
+  {
+    key: 'warning',
+    labelKey: 'themeStudio.tokens.fields.warning.label',
+    descriptionKey: 'themeStudio.tokens.fields.warning.description',
+  },
+  {
+    key: 'warningForeground',
+    labelKey: 'themeStudio.tokens.fields.warningForeground.label',
+    descriptionKey: 'themeStudio.tokens.fields.warningForeground.description',
+  },
+  {
+    key: 'error',
+    labelKey: 'themeStudio.tokens.fields.error.label',
+    descriptionKey: 'themeStudio.tokens.fields.error.description',
+  },
+  {
+    key: 'errorForeground',
+    labelKey: 'themeStudio.tokens.fields.errorForeground.label',
+    descriptionKey: 'themeStudio.tokens.fields.errorForeground.description',
+  },
+  {
+    key: 'info',
+    labelKey: 'themeStudio.tokens.fields.info.label',
+    descriptionKey: 'themeStudio.tokens.fields.info.description',
+  },
+  {
+    key: 'infoForeground',
+    labelKey: 'themeStudio.tokens.fields.infoForeground.label',
+    descriptionKey: 'themeStudio.tokens.fields.infoForeground.description',
+  },
+  // Last, so every other row pairs a color with the text that sits on it.
+  {
+    key: 'ring',
+    labelKey: 'themeStudio.tokens.fields.ring.label',
+    descriptionKey: 'themeStudio.tokens.fields.ring.description',
+  },
 ];
 
 export const presets: Record<PresetName, Omit<ThemeDraft, 'name'>> = {

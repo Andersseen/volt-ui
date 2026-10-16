@@ -871,7 +871,93 @@
       "title": "Токени кольору",
       "lede": "Редагуйте світлу й темну палітри окремо.",
       "light": "Світла",
-      "dark": "Темна"
+      "dark": "Темна",
+      "fields": {
+        "background": {
+          "label": "Тло",
+          "description": "Полотно сторінки"
+        },
+        "foreground": {
+          "label": "Текст",
+          "description": "Основний текст"
+        },
+        "surface": {
+          "label": "Поверхня",
+          "description": "Картки й панелі"
+        },
+        "surfaceForeground": {
+          "label": "Текст поверхні",
+          "description": "Текст на поверхнях"
+        },
+        "muted": {
+          "label": "Приглушений",
+          "description": "Ледь помітні заливки"
+        },
+        "mutedForeground": {
+          "label": "Приглушений текст",
+          "description": "Другорядний текст"
+        },
+        "border": {
+          "label": "Межа",
+          "description": "Лінії та контури"
+        },
+        "input": {
+          "label": "Поле",
+          "description": "Межі форм"
+        },
+        "ring": {
+          "label": "Кільце",
+          "description": "Колір фокуса"
+        },
+        "primary": {
+          "label": "Основний",
+          "description": "Головна дія"
+        },
+        "primaryForeground": {
+          "label": "Текст основного",
+          "description": "Текст на основному"
+        },
+        "secondary": {
+          "label": "Вторинний",
+          "description": "Другорядна дія"
+        },
+        "secondaryForeground": {
+          "label": "Текст вторинного",
+          "description": "Текст на вторинному"
+        },
+        "success": {
+          "label": "Успіх",
+          "description": "Позитивний стан"
+        },
+        "successForeground": {
+          "label": "Текст успіху",
+          "description": "Текст на успіху"
+        },
+        "warning": {
+          "label": "Попередження",
+          "description": "Стан обережності"
+        },
+        "warningForeground": {
+          "label": "Текст попередження",
+          "description": "Текст на попередженні"
+        },
+        "error": {
+          "label": "Помилка",
+          "description": "Стан помилки"
+        },
+        "errorForeground": {
+          "label": "Текст помилки",
+          "description": "Текст на помилці"
+        },
+        "info": {
+          "label": "Інфо",
+          "description": "Інформаційний стан"
+        },
+        "infoForeground": {
+          "label": "Текст інфо",
+          "description": "Текст на інфо"
+        }
+      }
     },
     "shape": {
       "title": "Форма та відчуття",

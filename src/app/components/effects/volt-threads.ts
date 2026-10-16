@@ -29,7 +29,10 @@ interface Spark {
 }
 
 const FALLBACK_COLOR = '#7c5cff';
-const SPARK_EVERY_MS = 1400;
+const SPARK_EVERY_MS = 1800;
+/** How much of the pointer's offset the charge follows, and how quickly (per second). */
+const FOLLOW = 0.12;
+const EASE_PER_SECOND = 1.6;
 
 /** Deterministic pseudo-random numbers, so the composition is the same on every visit. */
 function seeded(seed: number): () => number {
@@ -91,7 +94,7 @@ export class VoltThreads {
     const threads: Thread[] = Array.from({ length: this.count() }, () => ({
       amplitude: 0.16 + random() * 0.26,
       frequency: 1.1 + random() * 1.8,
-      speed: 0.18 + random() * 0.32,
+      speed: 0.1 + random() * 0.18,
       phase: random() * Math.PI * 2,
       tilt: (random() - 0.5) * 0.5,
     }));
@@ -230,7 +233,7 @@ export class VoltThreads {
           thread: Math.floor(Math.random() * threads.length),
           distance: 0,
           direction: Math.random() < 0.5 ? -1 : 1,
-          speed: 380 + Math.random() * 320,
+          speed: 220 + Math.random() * 160,
         });
       }
     };
@@ -239,9 +242,11 @@ export class VoltThreads {
     const tick = (now: number) => {
       const delta = Math.min((now - previous) / 1000, 0.05);
       previous = now;
-      pinchX += (targetX - pinchX) * 0.06;
-      pinchY += (targetY - pinchY) * 0.06;
-      surge *= 0.94;
+      // Exponential easing on real elapsed time: the same glide at 60 Hz and 120 Hz.
+      const ease = 1 - Math.exp(-delta * EASE_PER_SECOND);
+      pinchX += (targetX - pinchX) * ease;
+      pinchY += (targetY - pinchY) * ease;
+      surge *= Math.exp(-delta * 1.4);
       if (now - lastSpark > SPARK_EVERY_MS) {
         lastSpark = now;
         spawn(1);
@@ -270,8 +275,8 @@ export class VoltThreads {
       const baseX = width * this.pinchX();
       const baseY = height * this.pinchY();
       // Lean toward the pointer without following it all the way.
-      targetX = baseX + (event.clientX - box.left - baseX) * 0.25;
-      targetY = baseY + (event.clientY - box.top - baseY) * 0.25;
+      targetX = baseX + (event.clientX - box.left - baseX) * FOLLOW;
+      targetY = baseY + (event.clientY - box.top - baseY) * FOLLOW;
     };
     const onLeave = () => {
       targetX = width * this.pinchX();
