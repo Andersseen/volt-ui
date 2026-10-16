@@ -83,7 +83,7 @@ export class VoltDatePicker implements ControlValueAccessor {
 
   constructor() {
     effect(() => {
-      this.datePickerState().disabled.set(this.isDisabled());
+      this.datePickerState().setDisabled(this.isDisabled());
     });
 
     // The NgpDatePicker host directive owns the selected date — the `date` model above

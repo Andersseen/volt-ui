@@ -77,7 +77,7 @@ export class VoltListbox<T = unknown> implements ControlValueAccessor {
 
   constructor() {
     effect(() => {
-      this.listboxState()?.disabled.set(this.isDisabled());
+      this.listboxState()?.setDisabled(this.isDisabled());
     });
 
     this.listbox.valueChange.subscribe(value => {
@@ -90,7 +90,7 @@ export class VoltListbox<T = unknown> implements ControlValueAccessor {
     const nextValue = value ?? [];
     // Write into the primitive's state, not the `value` model — the model is only the
     // public alias for it, so setting it here left `[formControl]` selections invisible.
-    this.listboxState()?.value.set(nextValue);
+    this.listboxState()?.setValue(nextValue);
   }
 
   registerOnChange(fn: (value: T[]) => void): void {
