@@ -2,7 +2,7 @@
   "name": "@voltui/agent",
   "version": "0.5.0",
   "description": "Set up Volt UI for AI coding agents: the MCP server, skill and rules for Claude Code, Cursor, Windsurf and GitHub Copilot",
-  "homepage": "https://volt-ui.andersseen.dev/docs/ai-mcp",
+  "homepage": "https://voltui.dev/docs/ai-mcp",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Andersseen/volt-ui.git",

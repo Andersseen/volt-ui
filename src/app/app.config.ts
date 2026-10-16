@@ -21,7 +21,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     provideEtyma(appI18n),
     provideEtymaAnalog({
-      origin: 'https://volt-ui.andersseen.dev',
+      origin: 'https://voltui.dev',
     }),
     // Every angular-movement directive inherits these unless it overrides them, so the
     // docs site has one motion signature instead of per-template magic numbers. The

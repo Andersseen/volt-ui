@@ -8,7 +8,7 @@
  * reads a generated copy (`pnpm generate:mcp-content`). Edit here, never in the generated file.
  */
 
-const DEFAULT_MCP_URL = 'https://volt-ui.pages.dev/api/mcp';
+const DEFAULT_MCP_URL = 'https://voltui.dev/api/mcp';
 
 /** @param {string} MCP_URL endpoint written into the rules/instructions */
 function buildContent(MCP_URL) {

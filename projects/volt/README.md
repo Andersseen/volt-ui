@@ -92,5 +92,5 @@ provideVoltTheme({ color: 'ember', style: 'soft', dark: true });
 
 ## Links
 
-- Documentation: https://volt-ui.pages.dev
+- Documentation: https://voltui.dev
 - Package: https://www.npmjs.com/package/@voltui/components

@@ -3,7 +3,7 @@ import { injectAppI18n } from '../../../i18n/i18n';
 import { RouterLink } from '@angular/router';
 import { Prose } from '../../../components/prose';
 
-const MCP_URL = 'https://volt-ui.pages.dev/api/mcp';
+const MCP_URL = 'https://voltui.dev/api/mcp';
 
 @Component({
   selector: 'app-mcp-docs',

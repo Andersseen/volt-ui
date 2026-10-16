@@ -3,7 +3,7 @@ import { LmnCheckIcon, LmnExternalLinkIcon, LmnListIcon, LmnSparklesIcon } from 
 import { Prose } from '../../../components/prose';
 import { injectAppI18n, type PlainTranslationKey } from '../../../i18n/i18n';
 
-const MCP_URL = 'https://volt-ui.pages.dev/api/mcp';
+const MCP_URL = 'https://voltui.dev/api/mcp';
 
 @Component({
   selector: 'app-ai-mcp-page',
@@ -55,6 +55,11 @@ const MCP_URL = 'https://volt-ui.pages.dev/api/mcp';
             <code><span class="text-zinc-500"># multiple</span></code>
           </div>
           <div><code>npx @voltui/agent cursor copilot</code></div>
+          <div><code>npx @voltui/agent codex gemini opencode</code></div>
+          <div>
+            <code><span class="text-zinc-500"># check what is installed</span></code>
+          </div>
+          <div><code>npx @voltui/agent doctor</code></div>
         </div>
       </div>
 
@@ -150,9 +155,9 @@ const MCP_URL = 'https://volt-ui.pages.dev/api/mcp';
           {{ t('guide.aiMcpPage.manualTitle') }}
         </h2>
         <p class="text-muted-foreground text-sm">{{ t('guide.aiMcpPage.manualLede') }}</p>
-        <div
+        <pre
           class="bg-[#1e1e1e] rounded-lg p-4 font-mono text-sm text-zinc-300 overflow-x-auto"
-        ></div>
+        ><code>{{ manualConfig }}</code></pre>
       </div>
     </div>
   `,
