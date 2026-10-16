@@ -14,27 +14,18 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  verify:
-    name: Verify · lint · typecheck · test · build · e2e
+  # The pipeline used to be one 15-20 minute serial job. These run side by side; `verify` at the end
+  # keeps the old check name so branch protection and `deploy` need no change. The slow server-render
+  # and e2e suites are sharded: wall time is the slowest shard, not the sum.
+
+  static:
+    name: Lint · typecheck · generated files · docs
     runs-on: ubuntu-latest
     permissions:
       contents: read
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v6
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v7
-        with:
-          node-version: 22
-          cache: pnpm
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup
 
       - name: Lint
         run: pnpm lint
@@ -51,14 +42,36 @@ jobs:
       - name: Check docs completeness and colour contrast
         run: pnpm check:docs-completeness && pnpm check:contrast
 
+  unit:
+    name: Unit tests (coverage enforced)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup
+
       - name: Run unit tests with enforced coverage
         run: pnpm test:coverage
+
+  packages:
+    name: Library, CLI and agent packages · consumer e2e
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup
 
       - name: Build library
         run: pnpm build:lib
 
       - name: Compile copied Blocks and Layouts in a consumer workspace
         run: node scripts/check-copied-source.mjs
+
+      # The CLI package bundles the manifest; unit tests used to generate it as a side effect.
+      - name: Generate the CLI manifest
+        run: pnpm manifest
 
       - name: Check CLI package
         run: pnpm pack:cli
@@ -72,27 +85,107 @@ jobs:
       - name: Install Playwright Chromium
         run: pnpm exec playwright install --with-deps chromium
 
-      - name: Run e2e smoke tests
-        run: pnpm test:e2e:ci
-
-      - name: Server-render the gallery in the Cloudflare worker
-        run: pnpm check:ssr
-
-      - name: Hydrate the gallery in the Cloudflare worker
-        run: pnpm test:e2e:ssr
-
       - name: Run consumer fixture e2e tests
         run: pnpm test:e2e:consumer
 
       - name: Run CLI consumer fixture e2e tests
         run: pnpm test:e2e:consumer-cli
 
-      - name: Upload build artifacts
+  build:
+    name: Build docs app
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup
+
+      - name: Build application
+        run: pnpm build
+
+      - name: Upload build for the e2e and SSR jobs
         uses: actions/upload-artifact@v7
         with:
           name: build-files
-          path: dist/analog/public
+          path: dist
+          include-hidden-files: true # .well-known and .nitro live under dist
           retention-days: 1
+
+  e2e:
+    name: Docs e2e (${{ matrix.shard }}/2)
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2]
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup
+
+      - name: Download build
+        uses: actions/download-artifact@v8
+        with:
+          name: build-files
+          path: dist
+
+      - name: Install Playwright Chromium
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Run e2e smoke tests
+        run: pnpm exec playwright test --project=chromium --shard=${{ matrix.shard }}/2
+        env:
+          E2E_SERVER: preview
+          E2E_PORT: 5174
+
+  ssr:
+    name: Server render and hydration (${{ matrix.shard }}/4)
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup
+
+      - name: Download build
+        uses: actions/download-artifact@v8
+        with:
+          name: build-files
+          path: dist
+
+      - name: Install Playwright Chromium
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Server-render the gallery in the Cloudflare worker
+        run: pnpm check:ssr --shard ${{ matrix.shard }}/4
+
+      - name: Hydrate the gallery in the Cloudflare worker
+        run: pnpm exec playwright test e2e/ssr-gallery.spec.ts --project=chromium --shard=${{ matrix.shard }}/4
+        env:
+          E2E_SERVER: wrangler
+          E2E_PORT: 8799
+
+  # One required check, whatever the number of jobs above.
+  verify:
+    name: Verify · lint · typecheck · test · build · e2e
+    needs: [static, unit, packages, build, e2e, ssr]
+    if: always()
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - name: Every job must have succeeded
+        env:
+          RESULTS: ${{ join(needs.*.result, ' ') }}
+        run: |
+          echo "job results: $RESULTS"
+          for r in $RESULTS; do [ "$r" = "success" ] || exit 1; done
 
   deploy:
     name: Deploy to Cloudflare Pages
