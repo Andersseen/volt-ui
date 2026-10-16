@@ -1,11 +1,10 @@
 import analog from '@analogjs/platform';
 import tailwindcss from '@tailwindcss/vite';
-import { etymaRemoteContract } from '@etyma/tooling/vite';
+import { etymaRemoteContract, etymaRemoteValidation } from '@etyma/tooling/vite';
 import { defineConfig, Plugin } from 'vite';
 import { resolve } from 'path';
 import { readFileSync } from 'fs';
-
-const GLOSSA_I18N_BASE = 'https://glossa.andersseen.dev/i18n/volt-ui';
+import { catalogUrl, I18N_PROJECT } from './src/app/i18n/project';
 
 /**
  * Ensures that ?raw imports of TypeScript files are always served as raw
@@ -115,9 +114,18 @@ export default defineConfig(() => ({
     freshRouteTablePlugin(),
     serverModeChunksPlugin(),
     rawTypeScriptPlugin(),
+    // Both read src/app/i18n/project.ts, so the contract and the validation can never be pointed
+    // at different catalogs.
     etymaRemoteContract({
-      source: `${GLOSSA_I18N_BASE}/en.json`,
+      source: catalogUrl(I18N_PROJECT.sourceLocale),
       output: resolve(__dirname, 'src/app/i18n/etyma.generated.ts'),
+    }),
+    // Every published locale through Etyma's validator: missing keys, invalid MessageFormat 2 and
+    // variable mismatches fail `vite build` (and only warn in `vite dev`).
+    etymaRemoteValidation({
+      remote: I18N_PROJECT.remote,
+      locales: I18N_PROJECT.locales,
+      sourceLocale: I18N_PROJECT.sourceLocale,
     }),
     tailwindcss(),
     analog({

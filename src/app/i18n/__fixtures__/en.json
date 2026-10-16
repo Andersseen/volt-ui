@@ -264,12 +264,8 @@
       "cnLede": "Most components expose a `class` input that flows through `cn()` — `clsx` for conditional joining, `tailwind-merge` to resolve conflicts so the last utility wins instead of both ending up in the class list:",
       "cnMerge": "Because it's `tailwind-merge` underneath, `class=\"bg-red-500\"` reliably overrides the variant's own background utility instead of producing two conflicting `bg-*` classes in the final output.",
       "colorsTitle": "Colors and shape vs. structure",
-      "cvaLedeHead": "Components with visual variants (button, badge, toast, ...) split styling into a sibling `variants.ts` using",
-      "cvaLink": "class-variance-authority",
-      "cvaLedeTail": ". The component itself only computes which variant is active — it never hardcodes conditional classes in the template:",
-      "colorsLedeHead": "Before editing a component's Tailwind classes to change a color or a border-radius, check whether a",
-      "themePresetLink": "theme preset",
-      "colorsLedeTail": "already covers it — `bg-primary`, `rounded-md`, and `shadow-lg` all resolve through `--volt-*` tokens that already vary per color/style preset. Hardcoding `bg-indigo-600` in a copied component opts that one component out of theme switching; reach for a custom color or style preset instead when the change should apply everywhere. Component edits are for **structural** changes — new variants, new slots, different markup — that no token could express."
+      "cvaLede": "Components with visual variants (button, badge, toast, ...) split styling into a sibling `variants.ts` using [class-variance-authority](https://cva.style/docs). The component itself only computes which variant is active — it never hardcodes conditional classes in the template:",
+      "colorsLede": "Before editing a component's Tailwind classes to change a color or a border-radius, check whether a [theme preset](/docs/themes) already covers it — `bg-primary`, `rounded-md`, and `shadow-lg` all resolve through `--volt-*` tokens that already vary per color/style preset. Hardcoding `bg-indigo-600` in a copied component opts that one component out of theme switching; reach for a custom color or style preset instead when the change should apply everywhere. Component edits are for **structural** changes — new variants, new slots, different markup — that no token could express."
     },
     "versioningPage": {
       "title": "Versioning & Stability",
