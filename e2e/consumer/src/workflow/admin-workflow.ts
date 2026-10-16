@@ -653,7 +653,16 @@ export class AdminWorkflow {
       this.toast.success('Project deleted');
       await this.load();
       // The row that held focus is gone; put focus somewhere meaningful, not on <body>.
-      queueMicrotask(() => document.querySelector<HTMLElement>('main h1')?.focus());
+      // Wait for the dialog to leave the DOM: its own focus restore (to the row that no longer
+      // exists) runs on close and would otherwise take the focus straight back.
+      const focusHeading = (): void => {
+        if (document.querySelector('[role="alertdialog"]')) {
+          requestAnimationFrame(focusHeading);
+          return;
+        }
+        requestAnimationFrame(() => document.querySelector<HTMLElement>('main h1')?.focus());
+      };
+      focusHeading();
     } catch (error) {
       this.deleting.set(false);
       this.deleteError.set((error as Error).message);

@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from './fixtures';
 
 test.describe('Blocks gallery', () => {
   test('walks from the header into a block and back to the component it uses', async ({ page }) => {

@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from './fixtures';
 
 test.describe('Site navigation', () => {
   test('connects the main desktop journeys without a full reload', async ({ page }) => {
