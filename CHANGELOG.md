@@ -25,12 +25,13 @@ Also in this release of the installer (toward 1.0):
 - **Copilot** also gets `.vscode/mcp.json`, so VS Code connects to the MCP server instead of only
   reading instructions.
 - Tests for every agent, idempotency, merge, dry-run and uninstall; a README; `LICENSE`; Node 20+.
-- **One source for installer content.** `cli/mcp/content.js` feeds both the installer and the hosted
+- **One source for installer content.** `cli/agent/content.js` feeds both the installer and the hosted
   `/api/mcp/setup` endpoint (`pnpm generate:mcp-content`, checked by `pnpm check:generated`), replacing
   two hand-mirrored copies.
 
-**Volt UI 1.3 — Async Data & Angular Integration** (prepared; the version bump lands in a separate
-release PR, as for 1.2). Backwards compatible; see [MIGRATION.md](./MIGRATION.md).
+## [1.3.0] - 2026-10-16
+
+**Volt UI 1.3 — Async Data & Angular Integration**. Backwards compatible; see [MIGRATION.md](./MIGRATION.md).
 
 ### Added
 
