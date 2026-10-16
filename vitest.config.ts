@@ -20,6 +20,9 @@ export default defineConfig({
   },
   test: {
     globals: true,
+    // Vitest blanks every CSS import by default, `?raw` included. The theme presets are read as
+    // text by src/app/lib/theme-presets.ts, so those files have to come through as written.
+    css: { include: [/projects\/volt\/src\/themes\/((colors|styles)\/[\w-]+|core)\.css/] },
     environment: 'jsdom',
     // Every render loads three Etyma catalogs (~0.6s locally). On a shared CI runner running ~100
     // files in parallel that approaches the 5s default and fails the same few tests at random.

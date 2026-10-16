@@ -124,6 +124,46 @@
       "browse": "Browse components",
       "star": "Star on GitHub",
       "body": "Explore {$components} components, accessible layouts, {$themes} theme combinations, and an AI-ready workflow."
+    },
+    "pillars": {
+      "aiTitle": "Ready for your AI agent",
+      "aiBody": "One command gives Claude Code, Cursor, Windsurf or Copilot the component catalog, the selectors and the rules, so generated code uses Volt the way you would."
+    },
+    "playground": {
+      "eyebrow": "Theme playground",
+      "title": "One set of components. Every look your brand needs.",
+      "subtitle": "Pick a palette and a shape. These are the real presets on real Volt components: the same tokens your app gets from `provideVoltTheme()`.",
+      "pause": "Pause the palette tour",
+      "play": "Resume the palette tour",
+      "cta": "Build your own theme"
+    },
+    "steps": {
+      "nav": "Workflow steps",
+      "install": {
+        "label": "Install",
+        "title": "Add components with one command.",
+        "body": "The CLI resolves the dependencies between components and writes readable files into `src/app/ui`. No runtime to install, nothing to configure first."
+      },
+      "compose": {
+        "label": "Compose",
+        "title": "Use them like Angular code you wrote.",
+        "body": "Standalone components, signal inputs and OnPush everywhere. Import them from `./ui` and they behave like the rest of your app."
+      },
+      "theme": {
+        "label": "Theme",
+        "title": "Set the brand once, at bootstrap.",
+        "body": "`provideVoltTheme()` sets the palette, the shape and dark mode on the server and in the browser, so the first paint is already on brand."
+      },
+      "own": {
+        "label": "Customize",
+        "title": "Change any line. There is nothing to eject.",
+        "body": "Variants live in a CVA file next to each component, and classes merge through `cn()`. Add a size, rename an input, delete what you don't need."
+      },
+      "agents": {
+        "label": "Automate",
+        "title": "Let your agent write it the Volt way.",
+        "body": "`npx @voltui/agent` installs the MCP server, a skill and editor rules, so Claude Code, Cursor or Copilot reach for the right selector the first time."
+      }
     }
   },
   "guide": {

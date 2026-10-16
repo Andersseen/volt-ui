@@ -16,6 +16,7 @@ import {
 import {
   VoltBadge,
   VoltButton,
+  VoltCard,
   VoltCheckbox,
   VoltFormField,
   VoltInput,
@@ -52,6 +53,7 @@ export const INSTALL_COMMAND = 'npx @voltui/cli add button dialog form-field';
     MoveLoopDirective,
     VoltBadge,
     VoltButton,
+    VoltCard,
     VoltCheckbox,
     VoltFormField,
     VoltInput,
@@ -128,8 +130,8 @@ export const INSTALL_COMMAND = 'npx @voltui/cli add button dialog form-field';
               </volt-button>
             </div>
 
-            <div
-              class="reveal-up reveal-delay-4 mt-7 flex max-w-xl items-center gap-2 rounded-lg border border-border/70 bg-background/90 p-2 pl-4 text-left shadow-xl shadow-black/5 backdrop-blur"
+            <volt-card
+              class="reveal-up reveal-delay-4 mt-7 flex max-w-xl items-center gap-2 bg-background/90 p-2 pl-4 text-left shadow-xl shadow-black/5 backdrop-blur"
             >
               <lmn-terminal [size]="16" class="shrink-0 text-primary" />
               <code class="min-w-0 flex-1 truncate font-mono text-xs sm:text-sm">
@@ -152,14 +154,14 @@ export const INSTALL_COMMAND = 'npx @voltui/cli add button dialog form-field';
                   <lmn-copy [size]="16" />
                 }
               </volt-button>
-            </div>
+            </volt-card>
           </div>
 
           <!-- Real Volt components, not a mockup: whatever theme preset the visitor
                picks in the header re-skins this panel live. -->
           <div class="hero-showcase reveal-up reveal-delay-3 min-w-0">
-            <div
-              class="rounded-xl border border-border/70 bg-surface/80 p-5 shadow-2xl shadow-black/10 backdrop-blur-xl sm:p-6"
+            <volt-card
+              class="border-border/70 bg-surface/80 p-5 shadow-2xl shadow-black/10 backdrop-blur-xl sm:p-6"
             >
               <div class="mb-5 flex items-center justify-between gap-3">
                 <div class="min-w-0">
@@ -227,7 +229,7 @@ export const INSTALL_COMMAND = 'npx @voltui/cli add button dialog form-field';
                   </div>
                 </div>
               </div>
-            </div>
+            </volt-card>
           </div>
         </div>
       </div>
@@ -261,12 +263,12 @@ export const INSTALL_COMMAND = 'npx @voltui/cli add button dialog form-field';
     }
 
     @media (min-width: 1024px) {
-      .hero-showcase > div {
+      .hero-showcase > volt-card {
         transform: rotateY(-4deg) rotateX(2deg);
         transition: transform 400ms cubic-bezier(0.22, 1, 0.36, 1);
       }
 
-      .hero-showcase:hover > div {
+      .hero-showcase:hover > volt-card {
         transform: rotateY(0deg) rotateX(0deg);
       }
     }
@@ -313,8 +315,8 @@ export const INSTALL_COMMAND = 'npx @voltui/cli add button dialog form-field';
         animation: none;
       }
 
-      .hero-showcase > div,
-      .hero-showcase:hover > div {
+      .hero-showcase > volt-card,
+      .hero-showcase:hover > volt-card {
         transform: none;
         transition: none;
       }

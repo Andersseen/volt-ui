@@ -124,6 +124,46 @@
       "browse": "Ver componentes",
       "star": "Dar una estrella en GitHub",
       "body": "Explora {$components} componentes, layouts accesibles, {$themes} combinaciones de tema y un flujo listo para IA."
+    },
+    "pillars": {
+      "aiTitle": "Lista para tu agente de IA",
+      "aiBody": "Un comando da a Claude Code, Cursor, Windsurf o Copilot el catálogo de componentes, los selectores y las reglas, para que el código generado use Volt como lo harías tú."
+    },
+    "playground": {
+      "eyebrow": "Laboratorio de temas",
+      "title": "Un solo conjunto de componentes. Todos los estilos que tu marca necesita.",
+      "subtitle": "Elige una paleta y una forma. Son los presets reales sobre componentes reales de Volt: los mismos tokens que tu app recibe de `provideVoltTheme()`.",
+      "pause": "Pausar el recorrido de paletas",
+      "play": "Reanudar el recorrido de paletas",
+      "cta": "Crea tu propio tema"
+    },
+    "steps": {
+      "nav": "Pasos del flujo de trabajo",
+      "install": {
+        "label": "Instala",
+        "title": "Añade componentes con un solo comando.",
+        "body": "La CLI resuelve las dependencias entre componentes y escribe archivos legibles en `src/app/ui`. Sin runtime que instalar ni nada que configurar antes."
+      },
+      "compose": {
+        "label": "Compón",
+        "title": "Úsalos como código Angular que escribiste tú.",
+        "body": "Componentes standalone, inputs con signals y OnPush en todas partes. Impórtalos desde `./ui` y se comportan como el resto de tu app."
+      },
+      "theme": {
+        "label": "Tematiza",
+        "title": "Define la marca una sola vez, al arrancar.",
+        "body": "`provideVoltTheme()` aplica la paleta, la forma y el modo oscuro en el servidor y en el navegador, así que el primer render ya lleva tu marca."
+      },
+      "own": {
+        "label": "Personaliza",
+        "title": "Cambia cualquier línea. No hay nada que expulsar.",
+        "body": "Las variantes viven en un archivo CVA junto a cada componente y las clases se combinan con `cn()`. Añade un tamaño, renombra un input, borra lo que no necesites."
+      },
+      "agents": {
+        "label": "Automatiza",
+        "title": "Deja que tu agente lo escriba al estilo Volt.",
+        "body": "`npx @voltui/agent` instala el servidor MCP, una skill y reglas para el editor, para que Claude Code, Cursor o Copilot usen el selector correcto a la primera."
+      }
     }
   },
   "guide": {
