@@ -37,7 +37,10 @@ function parseAddArgs(args, manifest) {
       targetDir = candidate;
       break;
     } else {
-      const available = Object.keys(manifest.components).sort().slice(0, 12).join(', ');
+      const available = Object.keys(manifest.components)
+        .sort()
+        .slice(0, 12)
+        .join(', ');
       console.error(`❌ Component "${candidate}" not found.`);
       console.error(`Run "volt list" to see all components. Available examples: ${available}`);
       process.exit(1);
@@ -54,9 +57,7 @@ async function main() {
   if (command === 'add') {
     if (args.length < 2) {
       console.error('❌ Please specify at least one component name.');
-      console.log(
-        'Usage: volt add <component-name>... [target-dir] [--install] [--dry-run] [--force]'
-      );
+      console.log('Usage: volt add <component-name>... [target-dir] [--install] [--dry-run] [--force]');
       process.exit(1);
     }
 
@@ -103,11 +104,7 @@ async function main() {
     }
 
     if (flags.install) {
-      console.log(
-        flags['dry-run']
-          ? `\n🔎 Runtime dependencies would be installed.`
-          : `\n✅ Runtime dependencies installed.`
-      );
+      console.log(flags['dry-run'] ? `\n🔎 Runtime dependencies would be installed.` : `\n✅ Runtime dependencies installed.`);
     } else {
       const firstResult = results[0];
       console.log(`\n⚠️  Ensure runtime dependencies are installed:`);
@@ -153,16 +150,10 @@ async function main() {
     console.log('');
     console.log('Usage:');
     console.log('  volt init [target-dir]                Initialize volt/ui in your project');
-    console.log(
-      '  volt add <component>... [target-dir]  Add one or more components to your project'
-    );
+    console.log('  volt add <component>... [target-dir]  Add one or more components to your project');
     console.log('  volt add <component>... [target-dir] --dry-run  Preview files without writing');
-    console.log(
-      '  volt add <component>... [target-dir] --force    Overwrite existing component files'
-    );
-    console.log(
-      '  volt add <component>... --install     Add component(s) and install runtime deps'
-    );
+    console.log('  volt add <component>... [target-dir] --force    Overwrite existing component files');
+    console.log('  volt add <component>... --install     Add component(s) and install runtime deps');
     console.log('  volt list                             List all available components');
     console.log('  volt list --status=stable             List components by stability');
     console.log('  volt list --json                      Print component metadata as JSON');
