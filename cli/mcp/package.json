@@ -1,7 +1,7 @@
 {
   "name": "@voltui/mcp",
   "version": "0.4.0",
-  "description": "Setup Volt UI MCP server for Claude, Cursor, Windsurf, and GitHub Copilot",
+  "description": "Set up the Volt UI MCP server and AI context files for Claude Code, Cursor, Windsurf and GitHub Copilot",
   "homepage": "https://volt-ui.andersseen.dev/docs/ai-mcp",
   "repository": {
     "type": "git",
@@ -15,7 +15,11 @@
     "volt-ui-mcp": "setup-mcp.js"
   },
   "files": [
-    "setup-mcp.js"
+    "setup-mcp.js",
+    "installer.js",
+    "content.js",
+    "README.md",
+    "LICENSE"
   ],
   "keywords": [
     "mcp",
@@ -30,6 +34,6 @@
   ],
   "license": "MIT",
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   }
 }

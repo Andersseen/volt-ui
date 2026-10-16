@@ -56,6 +56,7 @@
     "stats:full": "node scripts/generate-site-stats.mjs --with-tests",
     "check:ai-docs": "node cli/generate-manifest.js && node cli/check-ai-docs-sync.js",
     "generate:api-reference": "node scripts/generate-api-reference.mjs",
+    "generate:mcp-content": "node scripts/generate-mcp-content.mjs",
     "check:generated": "node scripts/check-generated.mjs",
     "check:docs-completeness": "node scripts/docs-completeness-check.mjs",
     "check:contrast": "node scripts/contrast-audit.mjs",

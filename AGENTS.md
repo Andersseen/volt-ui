@@ -157,13 +157,13 @@ The repo provides three complementary ways to give AI assistants context about V
 2. **MCP server** — `src/server/routes/mcp.ts` is a spec-compliant Streamable HTTP MCP server (tools: `list_components`, `get_component`, `get_usage_example`, `get_theme_info`, `get_project_info`, `generate_cli_command`; resources: `component://<name>`, `theme://info`, `project://info`; prompts: `generate-volt-ui-component`, `volt-ui-troubleshooting`). Production endpoint: `https://volt-ui.pages.dev/api/mcp`. `npx @voltui/mcp claude` writes it to `.mcp.json` at the consumer's repo root (Claude Code's project-level MCP config, `"type": "http"`); `cursor`/`windsurf` targets write their own client-specific config. Claude Desktop does not support remote MCP servers via `claude_desktop_config.json` — add them through Settings → Connectors instead.
 3. **Prompt reference** — `VOLT_UI_PROMPT.md` is a single-file prompt that can be pasted into any LLM chat to get correct selectors, examples, and rules for Volt UI components.
 
-The single installer script lives at `cli/mcp/setup-mcp.js` (published as `@voltui/mcp`; the root `package.json` bin/`setup:mcp` script point there too — don't recreate a second copy).
+The single installer lives at `cli/mcp/setup-mcp.js` (content in `cli/mcp/content.js`, tests in `cli/mcp/setup-mcp.spec.js`) (published as `@voltui/mcp`; the root `package.json` bin/`setup:mcp` script point there too — don't recreate a second copy).
 
 When updating component APIs, selectors, or examples, keep all of these in sync (run `pnpm check:ai-docs` to catch component list drift automatically):
 
 - `.agents/skills/volt-ui/SKILL.md`
-- `cli/mcp/setup-mcp.js` (`VOLT_UI_SKILL`, `CURSOR_RULES`, `COPILOT_INSTRUCTIONS`, `VSCODE_SNIPPETS`)
-- `src/server/routes/mcp.ts` and `src/server/routes/mcp/setup.ts` (same constants, mirrored for the hosted `/api/mcp/setup` endpoint)
+- `cli/mcp/content.js` (`VOLT_UI_SKILL`, `CURSOR_RULES`, `COPILOT_INSTRUCTIONS`, `VSCODE_SNIPPETS`), then run `pnpm generate:mcp-content`: `src/server/routes/mcp/content.generated.ts` is generated from it for the hosted `/api/mcp/setup` endpoint (never hand-edit it; `pnpm check:generated` fails on drift)
+- `src/server/routes/mcp.ts`
 - `VOLT_UI_PROMPT.md`
 - `src/app/lib/snippets/usage.ts`
 
