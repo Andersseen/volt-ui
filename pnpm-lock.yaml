@@ -48,8 +48,8 @@ importers:
         specifier: 0.5.0
         version: 0.5.0(@angular/common@22.2.2(@angular/core@22.2.2(@angular/compiler@22.2.2)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.2(@angular/compiler@22.2.2)(rxjs@7.8.2))
       '@etyma/core':
-        specifier: 0.5.0
-        version: 0.5.0
+        specifier: 0.6.0
+        version: 0.6.0
       '@floating-ui/dom':
         specifier: ^1.6.0
         version: 1.7.6
@@ -1372,6 +1372,10 @@ packages:
 
   '@etyma/core@0.5.0':
     resolution: {integrity: sha512-6z8m4aWt+2H4l2/qUwd8q0lOGJa9+eTHAAxyg5scXCT5vueb0Dql+MMpmray43ZQdxXI5/4XTQ3T01cp+cA4gQ==}
+    engines: {node: '>=22.22.0'}
+
+  '@etyma/core@0.6.0':
+    resolution: {integrity: sha512-CEpfFjPduqA1yEBr7EqVkBPElq6lXjhfoEeQcdNB23ylFySYoTDuf/YNY31JjKF3iNQRXILfGXV1EqTkoa/UDw==}
     engines: {node: '>=22.22.0'}
 
   '@etyma/tooling@0.5.0':
@@ -7651,6 +7655,10 @@ snapshots:
       tslib: 2.8.1
 
   '@etyma/core@0.5.0':
+    dependencies:
+      messageformat: 4.0.0
+
+  '@etyma/core@0.6.0':
     dependencies:
       messageformat: 4.0.0
 
