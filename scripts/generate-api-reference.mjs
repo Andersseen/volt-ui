@@ -11,7 +11,8 @@
  * Usage: node scripts/generate-api-reference.mjs
  * Writes: src/app/lib/api-reference.generated.ts
  */
-import { writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
+import { format, resolveConfig } from 'prettier';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { listComponentDirs, processComponentDir, toUpperSnake } from './lib/api-extract.mjs';
@@ -125,5 +126,24 @@ export interface ComponentApi {
 
 `;
 
-writeFileSync(OUT_FILE, header + entries.join('\n\n') + '\n');
-console.log(`Wrote ${entries.length} component API entries to ${OUT_FILE}`);
+// The committed file is prettier-formatted (lint-staged), so format here too or `--check` would
+// report a diff that is only whitespace.
+const config = (await resolveConfig(OUT_FILE)) ?? {};
+const output = await format(header + entries.join('\n\n') + '\n', {
+  ...config,
+  filepath: OUT_FILE,
+});
+
+// `--check`: write nothing, fail if the committed reference no longer matches the source.
+if (process.argv.includes('--check')) {
+  if (readFileSync(OUT_FILE, 'utf8') !== output) {
+    console.error(
+      `[api-reference] ${OUT_FILE} is stale.\nRun \`pnpm generate:api-reference\` and commit the result.`
+    );
+    process.exit(1);
+  }
+  console.log('[api-reference] up to date');
+} else {
+  writeFileSync(OUT_FILE, output);
+  console.log(`Wrote ${entries.length} component API entries to ${OUT_FILE}`);
+}

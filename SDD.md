@@ -1,8 +1,8 @@
 # Volt UI — Software Design Document (SDD)
 
-**Version:** 1.0.0  
+**Version:** the one in `projects/volt/package.json` (not repeated here)  
 **Status:** Stable  
-**Last updated:** 2026-08-06  
+**Last updated:** 2026-10-16  
 **Maintainers:** Volt UI contributors
 
 > Post-v1 design proposal (2026-09-07): [`specs/v2/README.md`](specs/v2/README.md)
@@ -22,19 +22,19 @@ The project exists because the Angular ecosystem lacks a shadcn/ui equivalent: e
 ### 1.1 Core idea
 
 - **For Angular:** first-class support for Angular 21+ (zoneless, standalone components, signals).
-- **Copy-paste ownership:** components are copied into the consumer project via a CLI, so teams can customize markup, styles, and behavior.
+- **Two first-class ways to consume it:** import the components from `@voltui/components`, or copy their source into your project with the CLI and own it. Both are supported for the whole 1.x line.
 - **Primitive-based accessibility:** accessibility and interaction logic come from [ng-primitives](https://ng-primitives.dev), the Angular equivalent of Radix UI.
 - **Tailwind-first styling:** styles are built with Tailwind CSS v4 and `class-variance-authority` (CVA), making variants fast to author and consistent.
 - **Theme engine:** multiple color and style presets, switchable at runtime, backed by CSS custom properties.
 
 ### 1.2 Distribution model
 
-Volt UI has two consumption paths:
+Volt UI has two consumption paths. They are equals; pick per project.
 
-1. **CLI / copy-paste workflow (recommended):** install `@voltui/cli`, run `volt init`, then `volt add <component>`. Source files are copied into the consumer's `src/app/ui/` folder, renamed from `volt-*` / `Volt*` to `ui-*` / `Ui*`, and wired to local imports.
-2. **npm package workflow:** install `@voltui/components` to reuse the theme CSS, theme provider, and a small set of utilities directly. Full package component consumption is advanced and secondary to source ownership.
+1. **Package mode:** install `@voltui/components` and import the `Volt*` components, theme CSS and theme provider directly. Upgrades are a version bump; you style with `class` and the theme tokens.
+2. **Copy-and-own mode:** install `@voltui/cli`, run `volt init`, then `volt add <component>`. Source files are copied into the consumer's `src/app/ui/` folder, renamed from `volt-*` / `Volt*` to `ui-*` / `Ui*` (selectors, class names and shared helpers alike, by one generic transform), and wired to local imports. You own the code and its upgrades.
 
-The library is **not** a traditional drop-in component package for every component; the source-code ownership model is the primary design choice.
+Neither is a fallback for the other. Both are exercised on every change by the same consumer fixtures (`e2e/consumer` for the package, `e2e/consumer-cli` for the copy), so a feature that works in one and not the other fails CI.
 
 ---
 
@@ -44,7 +44,7 @@ The library is **not** a traditional drop-in component package for every compone
 
 - Provide a shadcn/ui-like experience for Angular developers.
 - Keep components accessible by default through ng-primitives.
-- Make components easy to customize because the source lives in the consumer project.
+- Make components easy to customize: through `class` and tokens in package mode, and because the source lives in the consumer project in copy-and-own mode.
 - Support multiple visual presets (colors + styles) without changing component code.
 - Offer a first-class CLI for scaffolding and adding components.
 - Maintain a docs site with live demos, source snippets, and usage examples.
@@ -52,7 +52,7 @@ The library is **not** a traditional drop-in component package for every compone
 
 ### 2.2 Non-Goals
 
-- Be a locked, black-box UI kit (consumers are expected to edit the copied code).
+- Be a locked, black-box UI kit: whichever mode you use, every component takes `class` and theme tokens, and copy-and-own mode hands you the source.
 - Support Angular versions older than v21.
 - Maintain a Tailwind v3 configuration (`tailwind.config.js` is intentionally absent).
 - Provide every possible component variant out of the box; variants are templates consumers can extend.
@@ -113,22 +113,25 @@ The library is **not** a traditional drop-in component package for every compone
 
 ## 4. Tech Stack
 
-| Layer           | Technology                        | Version          | Purpose                                                                 |
-| --------------- | --------------------------------- | ---------------- | ----------------------------------------------------------------------- |
-| Framework       | Angular                           | ^21.2.2          | UI framework, zoneless change detection, standalone components, signals |
-| Docs / SSR      | AnalogJS                          | ^2.6.1           | File-based routing, SSR, Nitro preset for Cloudflare Pages              |
-| Build tool      | Vite                              | ^7.3.1           | Dev server and production builds                                        |
-| Styling         | Tailwind CSS                      | ^4.3.0           | CSS-only configuration, `@theme inline`                                 |
-| Primitives      | ng-primitives                     | 0.110.2          | Accessible behaviors (button, dialog, select, tabs, etc.)               |
-| Variants        | class-variance-authority          | ^0.7.1           | Type-safe component variants                                            |
-| Class merging   | clsx + tailwind-merge             | ^2.1.1 / ^3.5.0  | Conditional and deduplicated class strings                              |
-| Forms           | @angular/forms                    | ^21.2.2          | ControlValueAccessor integration                                        |
-| Positioning     | @floating-ui/dom                  | ^1.6.0           | Overlay positioning                                                     |
-| Icons           | lumen-icons                       | ^0.1.0           | Icon set                                                                |
-| Testing (unit)  | Vitest + @testing-library/angular | ^4.1.8 / ^19.2.1 | Component unit tests                                                    |
-| Testing (e2e)   | Playwright                        | ^1.60.0          | Browser and consumer fixture tests                                      |
-| Package manager | pnpm                              | 10.30.1          | Workspace dependency management                                         |
-| Deploy          | Wrangler / Cloudflare Pages       | ^4.72.0          | Docs app hosting                                                        |
+Versions live in `package.json` (the workspace) and `projects/volt/package.json` (the published
+library's peer ranges); they are deliberately not repeated here, where they only ever went stale.
+
+| Layer           | Technology                        | Purpose                                                                 |
+| --------------- | --------------------------------- | ----------------------------------------------------------------------- |
+| Framework       | Angular                           | UI framework, zoneless change detection, standalone components, signals |
+| Docs / SSR      | AnalogJS                          | File-based routing, SSR, Nitro preset for Cloudflare Pages              |
+| Build tool      | Vite                              | Dev server and production builds                                        |
+| Styling         | Tailwind CSS                      | CSS-only configuration, `@theme inline`                                 |
+| Primitives      | ng-primitives                     | Accessible behaviors (button, dialog, select, tabs, etc.), pinned       |
+| Variants        | class-variance-authority          | Type-safe component variants                                            |
+| Class merging   | clsx + tailwind-merge             | Conditional and deduplicated class strings                              |
+| Forms           | @angular/forms                    | ControlValueAccessor integration                                        |
+| Positioning     | @floating-ui/dom                  | Overlay positioning                                                     |
+| Icons           | lumen-icons                       | Icon set                                                                |
+| Testing (unit)  | Vitest + @testing-library/angular | Component unit tests                                                    |
+| Testing (e2e)   | Playwright                        | Browser and consumer fixture tests                                      |
+| Package manager | pnpm                              | Workspace dependency management                                         |
+| Deploy          | Wrangler / Cloudflare Pages       | Docs app hosting                                                        |
 
 ---
 

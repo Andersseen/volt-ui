@@ -1,6 +1,6 @@
 # Component Status
 
-Volt UI `1.1.0` is stable. Status labels describe the current confidence level for the copy-paste workflow, not a permanent promise — a `beta` label means more hardening may land in a minor release, not that the API can break outside a major.
+Volt UI is stable (the current version is the one in `projects/volt/package.json`; it is not repeated here). Status labels describe the current confidence level for the copy-paste workflow, not a permanent promise — a `beta` label means more hardening may land in a minor release, not that the API can break outside a major.
 
 > Naming note: this is the independent Angular Volt UI project under `@voltui`, not PrimeVue Volt UI.
 
@@ -13,10 +13,15 @@ Volt UI `1.1.0` is stable. Status labels describe the current confidence level f
 ## Release Groups
 
 - **Stable**: every 1.0 component. The 1.0 surface ships entirely stable.
-- **Beta**: `alert`, `spinner` (added in 1.1), `empty-state` (added in 1.2). Their APIs follow the 1.x promise;
-  `beta` only means they have not yet had a release of real-world use. 1.2 exercised `alert` and `spinner` in
-  the application-workflow benchmark (package and CLI) and needed no API change; they are promotion candidates
-  for 1.3 if consumers report none.
+- **Beta**: `spinner` (added in 1.1) and `empty-state` (added in 1.2). Their APIs follow the 1.x promise;
+  `beta` only means they have not yet had a release of real-world use. `alert` (added in 1.1) was promoted to
+  stable in 1.3: Agentyx and ForgeCMS ship it on 1.1.x, 1.2's application-workflow benchmark exercised it through
+  both the package and the CLI, and the 1.3 re-audit found no API or accessibility change to make. Spinner and
+  empty-state have no external consumer yet (the consumers that show a spinner or an empty panel still carry
+  their own, from before 1.1/1.2), so that is upgrade debt rather than evidence — they stay beta.
+- **Where this is written.** The status column below is the only hand-maintained copy. `cli/generate-manifest.js`
+  reads it (so `volt list --status=stable` and the MCP server agree) and `src/app/lib/product-facts.spec.ts`
+  fails if the docs catalog disagrees.
 - **Experimental**: none.
 
 ## Table
@@ -24,7 +29,7 @@ Volt UI `1.1.0` is stable. Status labels describe the current confidence level f
 | Component       | Status | Forms support             | Keyboard support                                | Overlay/focus behavior                                                                   | Docs | Tests               |
 | --------------- | ------ | ------------------------- | ----------------------------------------------- | ---------------------------------------------------------------------------------------- | ---- | ------------------- |
 | accordion       | stable | n/a                       | via ng-primitives                               | n/a                                                                                      | yes  | unit                |
-| alert           | beta   | n/a                       | n/a (static content)                            | opt-in `role="status"` / `"alert"`                                                       | yes  | unit + e2e consumer |
+| alert           | stable | n/a                       | n/a (static content)                            | opt-in `role="status"` / `"alert"`                                                       | yes  | unit + e2e consumer |
 | autofill        | stable | n/a                       | n/a                                             | n/a                                                                                      | yes  | unit                |
 | avatar          | stable | n/a                       | n/a                                             | n/a                                                                                      | yes  | unit                |
 | badge           | stable | n/a                       | n/a                                             | n/a                                                                                      | yes  | unit                |

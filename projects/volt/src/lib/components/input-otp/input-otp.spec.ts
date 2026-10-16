@@ -1,9 +1,9 @@
-import { Component, input, signal } from '@angular/core';
+import { Component, input, runInInjectionContext, signal } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { describe, it, expect, vi } from 'vitest';
 import { fireEvent, render } from '@testing-library/angular';
-import { NgpInputOtp } from 'ng-primitives/input-otp';
+import { injectInputOtpState } from 'ng-primitives/input-otp';
 import { VoltInputOtp, VoltInputOtpSlot } from './';
 
 @Component({
@@ -117,13 +117,23 @@ describe('VoltInputOtp', () => {
       componentInputs: { disabled: true, length: 4 },
     });
 
-    // NgpInputOtp is applied via hostDirectives on VoltInputOtp's own host element,
-    // so it shares the same injector — read its state directly rather than relying on
-    // a downstream DOM effect (the hidden input's own separate [disabled] binding
-    // would mask this: it's already correctly disabled regardless of this bug).
+    // The primitive is created by VoltInputOtp's own constructor, so its state is provided on
+    // that element's injector — read it directly rather than relying on a downstream DOM effect
+    // (the hidden input's own separate [disabled] binding would mask this: it's already
+    // correctly disabled regardless of this bug).
     const otpDebugEl = fixture.debugElement.query(By.directive(VoltInputOtp));
-    const primitive = otpDebugEl.injector.get(NgpInputOtp);
-    expect(primitive.state.disabled()).toBe(true);
+    const state = runInInjectionContext(otpDebugEl.injector, () => injectInputOtpState()());
+    expect(state.disabled()).toBe(true);
+  });
+
+  it("applies Volt's own defaults to the primitive, not the primitive's", async () => {
+    const { fixture } = await render(InputOtpTestWrapper, { componentInputs: { length: 4 } });
+
+    const otpDebugEl = fixture.debugElement.query(By.directive(VoltInputOtp));
+    const state = runInInjectionContext(otpDebugEl.injector, () => injectInputOtpState()());
+    expect(state.placeholder()).toBe('○');
+    expect(state.inputMode()).toBe('numeric');
+    expect(state.pattern()).toBe('[0-9]');
   });
 
   it('advances the active slot as characters are typed and retreats on delete', async () => {

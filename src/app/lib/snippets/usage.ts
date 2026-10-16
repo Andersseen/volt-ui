@@ -244,21 +244,28 @@ import { VoltAvatar, VoltAvatarImage, VoltAvatarFallback } from '@voltui/compone
 export class MyComponent {}`;
 
 export const BREADCRUMBS_USAGE = `import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import {
   VoltBreadcrumbs,
   VoltBreadcrumbList,
   VoltBreadcrumbItem,
   VoltBreadcrumbLink,
+  VoltNativeBreadcrumbLink,
   VoltBreadcrumbPage,
   VoltBreadcrumbSeparator,
 } from '@voltui/components';
 
+// <volt-breadcrumb-link href> renders its own <a>: right for a plain URL.
+// <a voltBreadcrumbLink> styles the anchor YOU write, so RouterLink (or any other
+// anchor directive) can own it. Volt never imports the router.
 @Component({
   imports: [
+    RouterLink,
     VoltBreadcrumbs,
     VoltBreadcrumbList,
     VoltBreadcrumbItem,
     VoltBreadcrumbLink,
+    VoltNativeBreadcrumbLink,
     VoltBreadcrumbPage,
     VoltBreadcrumbSeparator,
   ],
@@ -270,7 +277,7 @@ import {
         </volt-breadcrumb-item>
         <volt-breadcrumb-separator />
         <volt-breadcrumb-item>
-          <volt-breadcrumb-link href="/docs">Docs</volt-breadcrumb-link>
+          <a voltBreadcrumbLink routerLink="/docs" [queryParams]="{ tab: 'guides' }">Docs</a>
         </volt-breadcrumb-item>
         <volt-breadcrumb-separator />
         <volt-breadcrumb-item>
@@ -852,10 +859,11 @@ import { VoltFileDropzone } from '@voltui/components';
 })
 export class MyComponent {}`;
 
-export const COMBOBOX_USAGE = `import { Component } from '@angular/core';
+export const COMBOBOX_USAGE = `import { Component, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { VoltCombobox } from '@voltui/components';
 
+// 1. A list you already have: Volt narrows it by label as the user types.
 @Component({
   imports: [ReactiveFormsModule, VoltCombobox],
   template: \`
@@ -864,9 +872,62 @@ import { VoltCombobox } from '@voltui/components';
     </volt-combobox>
   \`,
 })
-export class MyComponent {
+export class LocalExample {
   framework = new FormControl<string | null>(null);
   frameworks = ['Angular', 'React', 'Vue', 'Svelte'];
+}
+
+interface Person {
+  id: number;
+  name: string;
+}
+
+declare function searchPeople(query: string): Promise<Person[]>; // your own API call
+
+// 2. A server decides what matches: filterMode="manual" renders \`items\` exactly as supplied,
+// (queryChange) reports what the user typed, and your code owns the request. Volt never
+// fetches, debounces or cancels. Never combine server results with the default local filter.
+@Component({
+  imports: [ReactiveFormsModule, VoltCombobox],
+  template: \`
+    <volt-combobox
+      label="Owner"
+      filterMode="manual"
+      [items]="results()"
+      [loading]="loading()"
+      loadingText="Searching…"
+      [emptyText]="'No one matches ' + query()"
+      [itemLabel]="label"
+      [compareWith]="sameId"
+      [trackByFn]="byId"
+      [formControl]="owner"
+      (queryChange)="search($event)"
+    />
+  \`,
+})
+export class RemoteExample {
+  owner = new FormControl<Person | null>(null);
+  results = signal<Person[]>([]);
+  loading = signal(false);
+  query = signal('');
+
+  label = (person: unknown) => (person as Person).name;
+  sameId = (a: unknown, b: unknown) => (a as Person | null)?.id === (b as Person | null)?.id;
+  byId = (_index: number, person: unknown) => (person as Person).id;
+
+  private latest = 0;
+
+  async search(query: string) {
+    this.query.set(query);
+    const mine = ++this.latest; // latest wins: a slow answer to "a" must not replace the one to "al"
+    this.loading.set(true);
+    try {
+      const people = await searchPeople(query);
+      if (mine === this.latest) this.results.set(people);
+    } finally {
+      if (mine === this.latest) this.loading.set(false);
+    }
+  }
 }`;
 
 export const DATE_PICKER_USAGE = `import { Component, computed, signal } from '@angular/core';

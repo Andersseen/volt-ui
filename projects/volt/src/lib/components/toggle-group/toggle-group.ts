@@ -85,7 +85,7 @@ export class VoltToggleGroup implements ControlValueAccessor {
 
   writeValue(value: string[] | null | undefined): void {
     const nextValue = value ?? [];
-    this.state().value.set(nextValue);
+    this.state().setValue(nextValue);
   }
 
   registerOnChange(fn: (value: string[]) => void): void {

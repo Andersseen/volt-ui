@@ -63,7 +63,7 @@ describe('CLI Core', () => {
 
     it('should rewrite Volt element tags inside inline templates', () => {
       const output = core.transformContent(
-        "template: `<volt-toast [variant]=\"v\"><volt-toast-title>x</volt-toast-title></volt-toast>`"
+        'template: `<volt-toast [variant]="v"><volt-toast-title>x</volt-toast-title></volt-toast>`'
       );
       expect(output).toContain('<ui-toast [variant]="v">');
       expect(output).toContain('<ui-toast-title>x</ui-toast-title></ui-toast>');
@@ -211,7 +211,10 @@ describe('CLI Core', () => {
 
     it('should flag a project with the dependency installed but no stylesheet import', () => {
       mkdirSync(testDir, { recursive: true });
-      writeFileSync(join(testDir, 'package.json'), JSON.stringify({ dependencies: { tailwindcss: '^4.0.0' } }));
+      writeFileSync(
+        join(testDir, 'package.json'),
+        JSON.stringify({ dependencies: { tailwindcss: '^4.0.0' } })
+      );
 
       const tailwind = core.detectTailwindSetup(testDir);
       expect(tailwind.hasTailwindDependency).toBe(true);
@@ -301,11 +304,11 @@ describe('CLI Core', () => {
       mkdirSync(join(testDir, 'button'), { recursive: true });
       writeFileSync(join(testDir, 'button', 'button.ts'), 'user-owned code');
 
-      expect(() => core.copyComponent('button', testDir, manifest)).toThrow(/Refusing to overwrite/);
-
-      expect(readFileSync(join(testDir, 'button', 'button.ts'), 'utf-8')).toBe(
-        'user-owned code'
+      expect(() => core.copyComponent('button', testDir, manifest)).toThrow(
+        /Refusing to overwrite/
       );
+
+      expect(readFileSync(join(testDir, 'button', 'button.ts'), 'utf-8')).toBe('user-owned code');
     });
 
     it('should overwrite existing files when force is enabled', async () => {
@@ -357,6 +360,38 @@ describe('CLI Core', () => {
 
       const content = readFileSync(join(testDir, 'checkbox', 'checkbox.ts'), 'utf-8');
       expect(content).toContain("from '../form-control-state'");
+    });
+
+    it('should copy aria-invalid.ts flat for Input, which re-asserts aria-invalid after ng-primitives', async () => {
+      const result = await core.copyComponent('input', testDir, manifest);
+      expect(result.sharedFiles).toContain('aria-invalid.ts');
+      expect(existsSync(join(testDir, 'aria-invalid.ts'))).toBe(true);
+
+      const content = readFileSync(join(testDir, 'input', 'input.ts'), 'utf-8');
+      expect(content).toContain("from '../aria-invalid'");
+      expect(content).toContain('[uiAriaInvalid]');
+
+      // The shared file is renamed to match, or the import above would not resolve.
+      const shared = readFileSync(join(testDir, 'aria-invalid.ts'), 'utf-8');
+      expect(shared).toContain('export class UiAriaInvalid');
+      expect(shared).toContain("selector: '[uiAriaInvalid]'");
+      expect(shared).not.toMatch(/\bVolt[A-Z]|\bvolt[A-Z]/);
+    });
+
+    it('should copy the native breadcrumb directive with the ui prefix and its shared classes', async () => {
+      await core.copyComponent('breadcrumbs', testDir, manifest);
+
+      const native = readFileSync(
+        join(testDir, 'breadcrumbs', 'native-breadcrumbs-link.ts'),
+        'utf-8'
+      );
+      expect(native).toContain("selector: 'a[uiBreadcrumbLink]'");
+      expect(native).toContain('export class UiNativeBreadcrumbLink');
+      expect(native).not.toMatch(/\bVolt[A-Z]|\bvolt[A-Z]/);
+      expect(existsSync(join(testDir, 'breadcrumbs', 'breadcrumbs-link-variants.ts'))).toBe(true);
+
+      const index = readFileSync(join(testDir, 'breadcrumbs', 'index.ts'), 'utf-8');
+      expect(index).toContain('UiNativeBreadcrumbLink');
     });
 
     it('should not fail re-adding a shared file when a prior add already copied it', async () => {
@@ -486,7 +521,9 @@ describe('CLI Core', () => {
       expect(output).toContain('Forms');
       expect(output).toContain('button');
       expect(output).toContain('Interactive buttons');
-      expect(output).not.toContain('dialog');
+      // Dialog is a 1.0 component, so it is stable and listed; spinner is beta and is not.
+      expect(output).toContain('dialog');
+      expect(output).not.toContain('spinner');
     });
 
     it('should print list metadata as JSON', () => {

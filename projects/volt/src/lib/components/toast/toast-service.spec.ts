@@ -1,7 +1,7 @@
 import { ApplicationRef, Component, inject, PLATFORM_ID } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { afterEach, describe, expect, it } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/angular';
+import { render, screen, waitFor, within } from '@testing-library/angular';
 import userEvent from '@testing-library/user-event';
 import { provideVoltToast, VoltToastService } from './toast-service';
 
@@ -35,7 +35,17 @@ describe('VoltToastService', () => {
     await renderHost();
     await userEvent.setup().click(screen.getByRole('button', { name: 'Save' }));
 
-    const toast = await screen.findByRole('status');
+    // ng-primitives >= 0.12x gives the toast container its own `role="status"` live region; the
+    // toast adds no second one (it would announce twice), only an error escalates to "alert".
+    const region = await waitFor(() => {
+      const found = document.querySelector<HTMLElement>('[data-ngp-toast-container]');
+      expect(found).not.toBeNull();
+      return found as HTMLElement;
+    });
+    expect(region).toHaveAttribute('role', 'status');
+    expect(within(region).queryByRole('status')).toBeNull();
+    const toast = region.querySelector('volt-toast') as HTMLElement;
+    expect(toast).not.toHaveAttribute('role');
     expect(toast).toHaveTextContent('Changes saved');
     expect(toast).toHaveTextContent('Workspace updated.');
     expect(toast).toHaveClass('bg-success/10');

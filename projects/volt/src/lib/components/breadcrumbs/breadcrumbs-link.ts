@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, input, computed } from '@angular/co
 import { NgpBreadcrumbLink } from 'ng-primitives/breadcrumbs';
 import { forwardClassFromHost } from '../../host-forwarding';
 import { cn } from '../../utils';
+import { BREADCRUMB_LINK_CLASSES } from './breadcrumbs-link-variants';
 
 @Component({
   selector: 'volt-breadcrumb-link',
@@ -17,9 +18,7 @@ export class VoltBreadcrumbLink {
   readonly href = input<string>('#');
   readonly class = input<string>('');
 
-  protected readonly classes = computed(() =>
-    cn('transition-colors hover:text-foreground', this.class())
-  );
+  protected readonly classes = computed(() => cn(BREADCRUMB_LINK_CLASSES, this.class()));
 
   constructor() {
     forwardClassFromHost();

@@ -277,6 +277,16 @@ bootstrapApplication(AppComponent, {
 
 ---
 
+### Server search, router links, native HTML
+
+- **Searching a server:** `<volt-combobox filterMode="manual" [items]="results()" [loading]="loading()" (queryChange)="search($event)" />`.
+  Your code fetches (and makes the latest response win); the combobox renders what you give it.
+  The default `filterMode="local"` narrows a list you already have.
+- **Angular Router breadcrumbs:** `<a voltBreadcrumbLink routerLink="/admin">Admin</a>`.
+- **Use Volt when it adds reusable styling or behaviour; use native HTML when the browser already
+  gives you the right primitive** — `<details>`, `<input type="file">`, or `<select voltNativeSelect>`
+  for a plain dropdown.
+
 ## 🤖 AI Tools for Consumers
 
 Volt UI ships three complementary ways to give AI assistants correct context:
@@ -291,7 +301,7 @@ Volt UI ships three complementary ways to give AI assistants correct context:
 
 ## 📈 Stability & Roadmap
 
-Current status: **`1.1.0` — stable. The public API is locked; 1.1 only adds to it.**
+Current status: **stable. The public API is locked; every `1.x` release only adds to it.** The current version is on [npm](https://www.npmjs.com/package/@voltui/components) and in [`CHANGELOG.md`](./CHANGELOG.md).
 
 Component inputs, outputs, and selectors follow semantic versioning as of `1.0.0`:
 breaking changes only happen in a major version bump, new features land in minors, and

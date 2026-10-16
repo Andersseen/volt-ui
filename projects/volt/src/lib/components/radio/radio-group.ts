@@ -72,7 +72,7 @@ export class VoltRadioGroup implements ControlValueAccessor {
 
   constructor() {
     effect(() => {
-      this.state().disabled.set(this.isDisabled());
+      this.state().setDisabled(this.isDisabled());
     });
 
     effect(() => {
@@ -93,7 +93,7 @@ export class VoltRadioGroup implements ControlValueAccessor {
   writeValue(value: string | null | undefined): void {
     const nextValue = value ?? null;
     this.isWritingValue = true;
-    this.state().value.set(nextValue);
+    this.state().setValue(nextValue);
     this.isWritingValue = false;
   }
 
@@ -107,6 +107,6 @@ export class VoltRadioGroup implements ControlValueAccessor {
 
   setDisabledState(isDisabled: boolean): void {
     this.controlDisabled.set(isDisabled);
-    this.state().disabled.set(this.isDisabled());
+    this.state().setDisabled(this.isDisabled());
   }
 }

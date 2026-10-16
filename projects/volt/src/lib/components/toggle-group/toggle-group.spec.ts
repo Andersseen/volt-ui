@@ -51,12 +51,17 @@ describe('VoltToggleGroup', () => {
       componentInputs: { type: 'multiple' },
     });
 
-    const bold = screen.getByRole('radio', { name: /Bold/i });
-    const italic = screen.getByRole('radio', { name: /Italic/i });
+    // ng-primitives >= 0.12x: independent toggles are buttons with aria-pressed. `radio` would
+    // promise "exactly one", which multiple mode does not.
+    const bold = screen.getByRole('button', { name: /Bold/i });
+    const italic = screen.getByRole('button', { name: /Italic/i });
+    expect(bold).toHaveAttribute('aria-pressed', 'false');
 
     await user.click(bold);
     await user.click(italic);
 
+    expect(bold).toHaveAttribute('aria-pressed', 'true');
+    expect(italic).toHaveAttribute('aria-pressed', 'true');
     expect(fixture.componentInstance.value()).toEqual(['bold', 'italic']);
   });
 

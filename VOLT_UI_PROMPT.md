@@ -135,7 +135,7 @@ Known upstream caveats in `ng-primitives`: meter currently exposes `aria-valueno
 | Spinner       | `./ui/spinner`       | `<ui-spinner>`                                                                                                                                          | `size`; `label` makes it an announced `role="status"`.                                            |
 | Empty State   | `./ui/empty-state`   | `<ui-empty-state>`, `<ui-empty-state-title>`, `<ui-empty-state-description>`                                                                            | Optional `[slot=icon]` and `[slot=actions]`; plain content, not a live region.                    |
 | Search        | `./ui/search`        | `<ui-search>`, `<ui-search-clear>`                                                                                                                      | Wrapper around an input.                                                                          |
-| Select        | `./ui/select`        | `<ui-select>`, `<ui-native-select>`, `<ui-select-content>`, `<ui-select-item>`, `<ui-select-label>`, `<ui-select-separator>`                            | CVA. `value`, `placeholder`, `disabled`.                                                          |
+| Select        | `./ui/select`        | `<ui-select>`, `<select uiNativeSelect>`, `<ui-select-content>`, `<ui-select-item>`, `<ui-select-label>`, `<ui-select-separator>`                       | CVA. `value`, `placeholder`, `disabled`.                                                          |
 | Table         | `./ui/table`         | `<ui-table>`, `<ui-table-header>`, `<ui-table-body>`, `<ui-table-footer>`, `<ui-table-row>`, `<ui-table-head>`, `<ui-table-cell>`, `<ui-table-caption>` | Semantic table.                                                                                   |
 | Tabs          | `./ui/tabs`          | `<ui-tabs>`, `<ui-tabs-list>`, `<ui-tabs-trigger>`, `<ui-tabs-content>`                                                                                 | Use `value` model, not `defaultValue`.                                                            |
 | Toast         | `./ui/toast`         | `UiToastService`; `<ui-toast>`, `<ui-toast-title>`, `<ui-toast-description>`, `<ui-toast-close>` for custom content                                     | `inject(UiToastService).success('Saved')`.                                                        |
@@ -310,6 +310,47 @@ export class ExampleComponent {
 ```
 
 Never write `<a routerLink><ui-button>…</ui-button></a>` — it nests two interactive elements.
+
+### Search and navigation
+
+Local list → the default. Server/API search → `filterMode="manual"` plus `(queryChange)`. Never pass
+server results to the default local filter: it hides rows whose label does not contain the typed text.
+
+```html
+<!-- A list you already have: Ui narrows it by label as the user types. -->
+<ui-combobox [(value)]="framework" [items]="frameworks" />
+
+<!-- A server decides what matches: items are rendered exactly as supplied. -->
+<ui-combobox
+  label="Owner"
+  filterMode="manual"
+  [items]="results()"
+  [loading]="loading()"
+  loadingText="Searching…"
+  [emptyText]="'No matches for ' + query()"
+  [itemLabel]="label"
+  [compareWith]="sameId"
+  [(value)]="owner"
+  (queryChange)="search($event)"
+/>
+```
+
+`(queryChange)` is the text the user typed — not the value, and not the label written back after a
+selection, so it is safe to start a request from. The application owns the request: debounce it, make
+the latest response win, show errors. The combobox never fetches. `loading` shows a row and is
+announced once through the combobox's own live region; do not add a second `role="status"`.
+
+Angular Router breadcrumbs: put the directive on your own anchor so `routerLink` owns navigation.
+
+```html
+<a uiBreadcrumbLink routerLink="/admin" [queryParams]="{ tab: 'users' }">Admin</a>
+<ui-breadcrumb-link href="/docs">Docs</ui-breadcrumb-link>
+<!-- plain URL only -->
+```
+
+Prefer native HTML where the browser already has the right primitive: `<select uiNativeSelect>` (an
+attribute on a real `<select>`; there is no `<ui-native-select>` element), `<details>`/`<summary>`,
+`<input type="file">`. Use Ui when it adds reusable styling or behaviour you would otherwise copy.
 
 ### Feedback
 

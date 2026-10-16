@@ -38,6 +38,8 @@ import avatarFallbackSource from '../../../../projects/volt/src/lib/components/a
 import breadcrumbsSource from '../../../../projects/volt/src/lib/components/breadcrumbs/breadcrumbs.ts?raw';
 import breadcrumbsItemSource from '../../../../projects/volt/src/lib/components/breadcrumbs/breadcrumbs-item.ts?raw';
 import breadcrumbsLinkSource from '../../../../projects/volt/src/lib/components/breadcrumbs/breadcrumbs-link.ts?raw';
+import nativeBreadcrumbsLinkSource from '../../../../projects/volt/src/lib/components/breadcrumbs/native-breadcrumbs-link.ts?raw';
+import breadcrumbsLinkVariantsSource from '../../../../projects/volt/src/lib/components/breadcrumbs/breadcrumbs-link-variants.ts?raw';
 import breadcrumbsListSource from '../../../../projects/volt/src/lib/components/breadcrumbs/breadcrumbs-list.ts?raw';
 import breadcrumbsPageSource from '../../../../projects/volt/src/lib/components/breadcrumbs/breadcrumbs-page.ts?raw';
 import breadcrumbsSeparatorSource from '../../../../projects/volt/src/lib/components/breadcrumbs/breadcrumbs-separator.ts?raw';
@@ -242,6 +244,8 @@ export const BREADCRUMBS_SNIPPET = join(
   ['breadcrumbs-list.ts', breadcrumbsListSource],
   ['breadcrumbs-item.ts', breadcrumbsItemSource],
   ['breadcrumbs-link.ts', breadcrumbsLinkSource],
+  ['native-breadcrumbs-link.ts', nativeBreadcrumbsLinkSource],
+  ['breadcrumbs-link-variants.ts', breadcrumbsLinkVariantsSource],
   ['breadcrumbs-page.ts', breadcrumbsPageSource],
   ['breadcrumbs-separator.ts', breadcrumbsSeparatorSource],
   ['breadcrumbs-ellipsis.ts', breadcrumbsEllipsisSource]

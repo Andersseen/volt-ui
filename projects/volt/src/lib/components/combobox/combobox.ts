@@ -10,6 +10,7 @@ import {
   forwardRef,
   input,
   model,
+  output,
   signal,
   TemplateRef,
   viewChild,
@@ -28,6 +29,8 @@ import { VoltComboboxOption } from './combobox-option';
 import { cn } from '../../utils';
 
 let nextComboboxId = 0;
+
+export type VoltComboboxFilterMode = 'local' | 'manual';
 
 @Component({
   selector: 'volt-combobox',
@@ -106,8 +109,31 @@ let nextComboboxId = 0;
       <div
         *ngpComboboxPortal
         ngpComboboxDropdown
+        [attr.aria-busy]="loading() ? 'true' : null"
         class="absolute top-full left-0 z-50 mt-1 max-h-[240px] w-[var(--ngp-combobox-width)] overflow-y-auto rounded-md border border-border bg-surface p-1 text-surface-foreground shadow-md outline-none"
       >
+        @if (loading()) {
+          <div
+            class="flex items-center gap-2 px-2 py-1.5 text-sm text-muted-foreground"
+            role="presentation"
+            data-combobox-loading
+            aria-hidden="true"
+          >
+            <svg
+              class="size-4 animate-spin motion-reduce:animate-none"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              aria-hidden="true"
+            >
+              <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+            </svg>
+            {{ loadingText() }}
+          </div>
+        }
         @for (item of filteredItems(); track trackByFn()($index, item)) {
           <volt-combobox-option [value]="item" [index]="$index">
             <ng-container
@@ -115,12 +141,29 @@ let nextComboboxId = 0;
             />
           </volt-combobox-option>
         } @empty {
-          <div class="px-2 py-1.5 text-sm text-muted-foreground">No results found.</div>
+          @if (!loading()) {
+            <div
+              class="px-2 py-1.5 text-sm text-muted-foreground"
+              role="presentation"
+              data-combobox-empty
+              aria-hidden="true"
+            >
+              {{ emptyText() }}
+            </div>
+          }
         }
       </div>
     </div>
 
-    <ng-template #defaultTemplate let-item>{{ item }}</ng-template>
+    <!--
+      One polite live region per combobox, outside the portalled dropdown. The visible loading and
+      empty rows above are aria-hidden: this is the only place they are announced.
+    -->
+    <span class="sr-only" role="status" aria-live="polite" aria-atomic="true">
+      {{ statusMessage() }}
+    </span>
+
+    <ng-template #defaultTemplate let-item>{{ itemLabel()(item) }}</ng-template>
   `,
 })
 export class VoltCombobox implements ControlValueAccessor {
@@ -148,7 +191,34 @@ export class VoltCombobox implements ControlValueAccessor {
   readonly scrollToOption = input<((index: number) => void) | undefined>(undefined);
   readonly allOptions = input<unknown[] | undefined>(undefined);
 
+  /**
+   * The options to show. With `filterMode="local"` (default) they are narrowed by `itemLabel` as
+   * the user types. With `"manual"` they are rendered exactly as supplied.
+   */
   readonly items = input<unknown[]>([]);
+  /**
+   * Who narrows `items` while the user types.
+   *
+   * - `local` (default): Volt keeps the items whose label contains the typed text.
+   * - `manual`: `items` are already the answer (a server search, a filtered store). Listen to
+   *   `(queryChange)`, fetch, and pass the results back; Volt never filters them again.
+   */
+  readonly filterMode = input<VoltComboboxFilterMode>('local');
+  /** Show a loading row (and announce it). Only meaningful with `filterMode="manual"`, but harmless otherwise. */
+  readonly loading = input<boolean, unknown>(false, { transform: booleanAttribute });
+  readonly loadingText = input<string>('Loading…');
+  /** Shown when there are no options and nothing is loading. Interpolate the query yourself for "No matches for …". */
+  readonly emptyText = input<string>('No results found.');
+  /** Announced to screen readers when results arrive for a typed query. */
+  readonly resultsText = input<(count: number) => string>(count =>
+    count === 1 ? '1 result available.' : `${count} results available.`
+  );
+  /**
+   * The text the user typed into the field. Emits on typing only — never when Volt writes the
+   * selected option's label back into the input after a selection or a close — so it is safe to
+   * start a request from it. It is not the value: that is `value` / `(valueChange)`.
+   */
+  readonly queryChange = output<string>();
   readonly placeholder = input<string>('Select...');
   readonly itemLabel = input<(item: unknown) => string>(item =>
     typeof item === 'string' ? item : String(item)
@@ -159,6 +229,10 @@ export class VoltCombobox implements ControlValueAccessor {
   private readonly inputRef = viewChild('inputRef', { read: ElementRef<HTMLInputElement> });
 
   protected readonly filteredItems = computed(() => {
+    if (this.filterMode() === 'manual') {
+      return this.items();
+    }
+
     const filter = this.filter().trim().toLowerCase();
 
     if (!filter) {
@@ -170,6 +244,17 @@ export class VoltCombobox implements ControlValueAccessor {
   protected readonly isDisabled = computed(() => this.disabled() || this.controlDisabled());
 
   protected readonly filter = signal('');
+  /** What the user typed since the dropdown last closed; '' while the input just shows the selection. */
+  private readonly typedQuery = signal('');
+  private readonly open = signal(false);
+
+  protected readonly statusMessage = computed(() => {
+    if (!this.open()) return '';
+    if (this.loading()) return this.loadingText();
+    if (!this.typedQuery().trim()) return '';
+    const count = this.filteredItems().length;
+    return count ? this.resultsText()(count) : this.emptyText();
+  });
   private readonly controlDisabled = signal(false);
   private onChange: (value: unknown) => void = () => {};
   protected onTouched: () => void = () => {};
@@ -192,7 +277,10 @@ export class VoltCombobox implements ControlValueAccessor {
   }
 
   protected onFilterChange(event: Event, combobox: NgpCombobox): void {
-    this.filter.set((event.target as HTMLInputElement).value);
+    const text = (event.target as HTMLInputElement).value;
+    this.filter.set(text);
+    this.typedQuery.set(text);
+    this.queryChange.emit(text);
     void combobox.openDropdown();
   }
 
@@ -203,7 +291,9 @@ export class VoltCombobox implements ControlValueAccessor {
   }
 
   protected onOpenChange(open: boolean): void {
+    this.open.set(open);
     if (!open) {
+      this.typedQuery.set('');
       this.syncFilterWithValue();
     }
   }

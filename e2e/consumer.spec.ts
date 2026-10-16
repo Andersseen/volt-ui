@@ -65,9 +65,12 @@ test.describe('npm consumer fixture', () => {
 
     const popoverTrigger = page.getByTestId('popover-trigger');
     await openAndExpectBox(page, 'popover-trigger', 'popover-content');
-    await expect(popoverTrigger).toBeFocused();
+    // ng-primitives >= 0.12x moves focus into a popover (role="dialog") when it opens, and hands
+    // it back to the trigger when it closes. Earlier versions left focus on the trigger.
+    await expect(page.getByTestId('popover-content')).toBeFocused();
     await expectInViewport(page, page.getByTestId('popover-content'), 'popover content');
     await expectEscapeCloses(page, page.getByTestId('popover-content'));
+    await expect(popoverTrigger).toBeFocused();
     await openAndExpectBox(page, 'popover-trigger', 'popover-content');
     await expectOutsideClickCloses(page, page.getByTestId('popover-content'));
 
@@ -167,7 +170,9 @@ test.describe('npm consumer fixture', () => {
     await page.getByTestId('toast-trigger').click();
     expect(toastErrors).toEqual([]);
     await expectBox(page.getByTestId('toast'), 'toast');
-    await expect(page.getByTestId('toast')).toHaveAttribute('role', 'status');
+    // Announced by the container's live region, not by a second `status` on the toast itself.
+    await expect(page.getByTestId('toast')).not.toHaveAttribute('role');
+    await expect(page.locator('[data-ngp-toast-container]')).toHaveAttribute('role', 'status');
     await page.getByTestId('toast').hover();
     await page.waitForTimeout(600);
     await expect(page.getByTestId('toast')).toBeVisible();
@@ -318,6 +323,8 @@ test.describe('npm consumer — 1.1 regressions from real apps', () => {
     await expect(page.getByRole('status').filter({ hasText: 'Loading projects' })).toBeAttached();
 
     await page.getByTestId('service-toast-success').click();
+    // The toast container is the polite live region (ng-primitives); a non-error toast adds no
+    // second `status` of its own, so there is exactly one match.
     const toast = page.getByRole('status').filter({ hasText: 'Copied to clipboard' });
     await expect(toast).toBeVisible();
     await page.getByTestId('service-toast-error').click();

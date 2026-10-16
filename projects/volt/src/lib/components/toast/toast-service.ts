@@ -23,7 +23,7 @@ export type VoltToastPlacement =
 export interface VoltToastOptions {
   title?: string;
   description?: string;
-  /** `error` is announced with `role="alert"`, every other variant with `role="status"`. */
+  /** `error` is announced with `role="alert"`; every other variant through the container's polite `role="status"` live region. */
   variant?: VoltToastVariant;
   /** Milliseconds before the toast hides itself. Defaults to the configured duration. */
   duration?: number;

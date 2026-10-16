@@ -129,6 +129,10 @@ describe('navigation menu components', () => {
       expect(screen.getByRole('link', { name: 'Analytics' })).toBeInTheDocument()
     );
 
+    // The content is in the DOM before the trigger's own open state has settled; on a slow runner
+    // an Escape sent in that gap is ignored (the primitive only handles it while `open`). Wait for
+    // the state a user would see, not just the markup.
+    await waitFor(() => expect(products).toHaveAttribute('aria-expanded', 'true'));
     await user.keyboard('{Escape}');
 
     await waitFor(() =>

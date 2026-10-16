@@ -1,3 +1,32 @@
+# Upgrade notes — 1.2 → 1.3
+
+1.3.0 is a minor release: nothing is removed or renamed. ng-primitives moved from 0.110 to 0.131,
+and a few things it changed are visible. Volt kept its own contract wherever it could (native
+`voltButton` still honours an `aria-disabled` you write; `state="error"` still sets `aria-invalid`).
+
+| Before (1.2)                                                         | After (1.3)                                                                                           | What to do                                                                                   |
+| -------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `volt-toast` had `role="status"`; the container had none.            | The container is the `role="status"` live region; the toast has no role of its own (errors: `alert`). | Tests that did `getByRole('status')` for the toast now match the container. Query inside it. |
+| `volt-toggle-group type="multiple"` items were `role="radio"`.       | They are buttons with `aria-pressed`.                                                                 | Update role queries to `button`.                                                             |
+| Listbox focus left no option active until ArrowDown.                 | The selected (else first) option is active as soon as the list has focus.                             | Nothing; ArrowDown now moves from that option.                                               |
+| A popover kept focus on its trigger.                                 | Focus moves into the popover and returns to the trigger on close.                                     | Nothing, unless a test asserted trigger focus while open.                                    |
+| Combobox object items without a template rendered `[object Object]`. | They render `itemLabel(item)`.                                                                        | Nothing.                                                                                     |
+
+## Recommended, not required
+
+| Instead of                                                       | Prefer (1.3)                                                                                                                |
+| ---------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `(input)` on `volt-combobox` to catch typing, then your own list | `filterMode="manual"` + `(queryChange)` + `[loading]` (see the Async Search recipe).                                        |
+| A hand-rolled `<a routerLink>` crumb                             | `<a voltBreadcrumbLink routerLink="…">`.                                                                                    |
+| A hand-styled `<select>`                                         | `<select voltNativeSelect>` (an attribute on a real `<select>`).                                                            |
+| `<volt-button>` + `[disabled]` for "Saving…"                     | `<button voltButton [disabled]="saving()">` with `<volt-spinner size="sm" />` inside. No `loading` input exists on purpose. |
+
+Copy-and-own users: re-run `volt add combobox breadcrumbs input textarea` (they now also copy
+`aria-invalid.ts`). Use native HTML where the browser already has the right primitive (`<details>`,
+`<input type="file">`); Volt is for what you would otherwise restyle or rebuild.
+
+---
+
 # Upgrade notes — 1.1 → 1.2
 
 1.2.0 is a minor release: nothing is removed or renamed. Two behaviours are worth knowing.

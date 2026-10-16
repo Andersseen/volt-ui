@@ -1,7 +1,7 @@
 import { describeClassContract } from '../../testing/class-contract';
 import { VoltAlert, VoltAlertDescription, VoltAlertTitle } from './components/alert';
 import { VoltBadge } from './components/badge';
-import { VoltBreadcrumbLink } from './components/breadcrumbs';
+import { VoltBreadcrumbLink, VoltNativeBreadcrumbLink } from './components/breadcrumbs';
 import { VoltButton, VoltNativeButton } from './components/button';
 import {
   VoltCard,
@@ -202,6 +202,15 @@ describeClassContract({
   target: q('button'),
   conflict: ['h-9', 'h-10'],
   keep: ['inline-flex', 'bg-primary'],
+});
+
+describeClassContract({
+  name: 'VoltNativeBreadcrumbLink',
+  template: cls => `<a voltBreadcrumbLink href="/docs" class="${cls}">Docs</a>`,
+  imports: [VoltNativeBreadcrumbLink],
+  target: q('a'),
+  conflict: ['transition-none', 'transition-colors'],
+  keep: [],
 });
 
 describeClassContract({

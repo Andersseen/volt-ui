@@ -228,9 +228,16 @@ const components: Record<string, ComponentMeta> = {
   },
   select: {
     name: 'Select',
-    description: 'Dropdown select with options',
+    description:
+      'Dropdown select with options. For a real <select> use the `select[uiNativeSelect]` attribute directive (NOT a <ui-native-select> element) — the browser already has the right primitive.',
     dependencies: ['ng-primitives/select'],
-    subComponents: ['select-content', 'select-item', 'select-label', 'select-separator'],
+    subComponents: [
+      'select-content',
+      'select-item',
+      'select-label',
+      'select-separator',
+      'native-select',
+    ],
     inputs: [
       { name: 'value', type: 'string' },
       { name: 'placeholder', type: 'string' },
@@ -244,6 +251,10 @@ const components: Record<string, ComponentMeta> = {
     <ui-select-item value="2">Option 2</ui-select-item>
   </ui-select-content>
 </ui-select>`,
+      `<select uiNativeSelect aria-label="Status" [formControl]="status">
+  <option value="all">All</option>
+  <option value="open">Open</option>
+</select>`,
     ],
   },
   tabs: {
@@ -495,12 +506,14 @@ const components: Record<string, ComponentMeta> = {
   },
   breadcrumbs: {
     name: 'Breadcrumbs',
-    description: 'Navigation breadcrumbs with items, links, ellipsis and separators',
+    description:
+      'Navigation breadcrumbs with items, links, ellipsis and separators. <ui-breadcrumb-link href> is for plain URLs; put `a[uiBreadcrumbLink]` on your own anchor when RouterLink (or any anchor directive) must own navigation.',
     dependencies: ['ng-primitives/breadcrumbs'],
     subComponents: [
       'breadcrumbs-list',
       'breadcrumbs-item',
       'breadcrumbs-link',
+      'native-breadcrumbs-link',
       'breadcrumbs-page',
       'breadcrumbs-separator',
       'breadcrumbs-ellipsis',
@@ -511,6 +524,10 @@ const components: Record<string, ComponentMeta> = {
   <ui-breadcrumb-separator />
   <ui-breadcrumb-item><ui-breadcrumb-page>Current</ui-breadcrumb-page></ui-breadcrumb-item>
 </ui-breadcrumbs>`,
+      `<!-- Angular Router: the anchor is yours, so routerLink / queryParams / fragment / routerLinkActive just work -->
+<ui-breadcrumb-item>
+  <a uiBreadcrumbLink routerLink="/admin" [queryParams]="{ tab: 'users' }" routerLinkActive ariaCurrentWhenActive="page">Admin</a>
+</ui-breadcrumb-item>`,
     ],
   },
   sidebar: {
@@ -658,12 +675,25 @@ save() { this.toast.success('Changes saved', { description: 'Your workspace has 
   },
   combobox: {
     name: 'Combobox',
-    description: 'Autocomplete / searchable select with dropdown and options',
+    description:
+      'Autocomplete / searchable select with dropdown and options. Default `filterMode="local"` narrows `items` by label as the user types. For server/API search use `filterMode="manual"` + `(queryChange)`: items are rendered exactly as supplied and the application owns the request (never combine server results with the local filter).',
     dependencies: ['ng-primitives/combobox'],
     subComponents: ['combobox-input', 'combobox-button', 'combobox-dropdown', 'combobox-option'],
     inputs: [
       { name: 'value', type: 'any' },
       { name: 'items', type: 'any[]', default: [] },
+      {
+        name: 'filterMode',
+        type: 'string',
+        default: 'local',
+        options: ['local', 'manual'],
+      },
+      { name: 'loading', type: 'boolean', default: false },
+      { name: 'loadingText', type: 'string', default: 'Loading…' },
+      { name: 'emptyText', type: 'string', default: 'No results found.' },
+      { name: 'resultsText', type: '(count: number) => string' },
+      { name: 'itemLabel', type: '(item) => string' },
+      { name: 'compareWith', type: '(a, b) => boolean', default: 'Object.is' },
       { name: 'multiple', type: 'boolean', default: false },
       { name: 'disabled', type: 'boolean', default: false },
       { name: 'placeholder', type: 'string', default: 'Select...' },
@@ -678,6 +708,18 @@ save() { this.toast.success('Changes saved', { description: 'Your workspace has 
       `<ui-combobox [(value)]="selected" [items]="items">
   <ng-template let-item>{{ item.label }}</ng-template>
 </ui-combobox>`,
+      `<!-- Server-side search: (queryChange) is the typed text only; fetch, debounce and latest-wins are yours -->
+<ui-combobox
+  label="Owner"
+  filterMode="manual"
+  [items]="results()"
+  [loading]="loading()"
+  [emptyText]="'No matches for ' + query()"
+  [itemLabel]="label"
+  [compareWith]="sameId"
+  [(value)]="owner"
+  (queryChange)="search($event)"
+/>`,
     ],
   },
   'date-picker': {

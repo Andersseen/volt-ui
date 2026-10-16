@@ -12,6 +12,7 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NgpTextarea } from 'ng-primitives/textarea';
 import { uniqueId } from 'ng-primitives/utils';
+import { VoltAriaInvalid } from '../../aria-invalid';
 import { injectFormControlState } from '../../form-control-state';
 import { forwardAttributesFromHost, forwardClassFromHost } from '../../host-forwarding';
 import { textareaVariants, type TextareaVariants } from './variants';
@@ -26,7 +27,7 @@ import { cn } from '../../utils';
 @Component({
   selector: 'volt-textarea',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgpTextarea],
+  imports: [NgpTextarea, VoltAriaInvalid],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -46,6 +47,7 @@ import { cn } from '../../utils';
       [class]="classes()"
       [attr.aria-label]="ariaLabel() || null"
       [attr.aria-invalid]="invalid() ? 'true' : null"
+      [voltAriaInvalid]="invalid()"
       [style.resize]="resize()"
       [attr.rows]="rows()"
       [value]="value()"

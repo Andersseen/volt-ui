@@ -118,7 +118,7 @@ Known upstream caveats in `ng-primitives`: meter currently exposes `aria-valueno
 | Spinner       | `./ui/spinner`       | `<ui-spinner>`                                                                                                                                     | Component            | `size`, `label` (makes it `role="status"`)                            |
 | Empty State   | `./ui/empty-state`   | `<ui-empty-state>`, `<ui-empty-state-title>`, `<ui-empty-state-description>`                                                                       | Components           | slots `icon`, `actions` (all optional)                                |
 | Search        | `./ui/search`        | `<ui-search>`, `<ui-search-clear>`                                                                                                                 | Components           | —                                                                     |
-| Select        | `./ui/select`        | `<ui-select>`, `<ui-native-select>`, `<ui-select-content>`, `<ui-select-item>`, `<ui-select-label>`, `<ui-select-separator>`                       | Components (CVA)     | `value`, `placeholder`, `disabled`                                    |
+| Select        | `./ui/select`        | `<ui-select>`, `<select uiNativeSelect>`, `<ui-select-content>`, `<ui-select-item>`, `<ui-select-label>`, `<ui-select-separator>`                  | Components (CVA)     | `value`, `placeholder`, `disabled`                                    |
 | Table         | `./ui/table`         | `<ui-table>` + header/body/row/head/cell/caption/footer                                                                                            | Components           | —                                                                     |
 | Tabs          | `./ui/tabs`          | `<ui-tabs>`, `<ui-tabs-list>`, `<ui-tabs-trigger>`, `<ui-tabs-content>`                                                                            | Components           | `value` (model), `orientation`                                        |
 | Toast         | `./ui/toast`         | `UiToastService` (`show`, `success`, `error`, `warning`, `info`, `dismissAll`); `<ui-toast>` + title/description/close for custom content          | Service + Components | `title`, `description`, `variant`, `duration`, `placement`            |
@@ -218,6 +218,47 @@ the element that owns the styles, so conflicting utilities replace the default:
 
 Wrappers around one native control (`ui-input`, `ui-textarea`, `ui-select`, `ui-label`, `ui-hint`,
 `ui-error`) move a static `class`, `id` and `aria-label` from the host to that control.
+
+### Search and navigation
+
+Local list → the default. Server/API search → `filterMode="manual"` plus `(queryChange)`. Never pass
+server results to the default local filter: it hides rows whose label does not contain the typed text.
+
+```html
+<!-- A list you already have: Ui narrows it by label as the user types. -->
+<ui-combobox [(value)]="framework" [items]="frameworks" />
+
+<!-- A server decides what matches: items are rendered exactly as supplied. -->
+<ui-combobox
+  label="Owner"
+  filterMode="manual"
+  [items]="results()"
+  [loading]="loading()"
+  loadingText="Searching…"
+  [emptyText]="'No matches for ' + query()"
+  [itemLabel]="label"
+  [compareWith]="sameId"
+  [(value)]="owner"
+  (queryChange)="search($event)"
+/>
+```
+
+`(queryChange)` is the text the user typed — not the value, and not the label written back after a
+selection, so it is safe to start a request from. The application owns the request: debounce it, make
+the latest response win, show errors. The combobox never fetches. `loading` shows a row and is
+announced once through the combobox's own live region; do not add a second `role="status"`.
+
+Angular Router breadcrumbs: put the directive on your own anchor so `routerLink` owns navigation.
+
+```html
+<a uiBreadcrumbLink routerLink="/admin" [queryParams]="{ tab: 'users' }">Admin</a>
+<ui-breadcrumb-link href="/docs">Docs</ui-breadcrumb-link>
+<!-- plain URL only -->
+```
+
+Prefer native HTML where the browser already has the right primitive: `<select uiNativeSelect>` (an
+attribute on a real `<select>`; there is no `<ui-native-select>` element), `<details>`/`<summary>`,
+`<input type="file">`. Use Ui when it adds reusable styling or behaviour you would otherwise copy.
 
 ### Feedback
 

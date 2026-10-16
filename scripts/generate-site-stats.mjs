@@ -6,6 +6,8 @@
  *   node scripts/generate-site-stats.mjs              # structural facts only (fast)
  *   node scripts/generate-site-stats.mjs --with-tests # also re-runs the suite for the test count
  *
+ *   node scripts/generate-site-stats.mjs --check      # write nothing; exit 1 if the committed file is stale
+ *
  * The structural facts (component count, preset counts) are cheap and exact, so they
  * regenerate on every dev/build. The test count needs a real run, so it refreshes only
  * on --with-tests and is otherwise carried over from the previously generated file.
@@ -86,14 +88,29 @@ export const SITE_STATS = {
 } as const;
 `;
 
-mkdirSync(dirname(OUTPUT), { recursive: true });
-
 let previous = '';
 try {
   previous = readFileSync(OUTPUT, 'utf8');
 } catch {
   previous = '';
 }
+
+// CI path: the dev/build hooks rewrite this file, which would hide a forgotten commit. `--check`
+// only compares. The test count is carried over, so a release bump or a component added without
+// running `pnpm stats` is the only way to fail here.
+if (process.argv.includes('--check')) {
+  if (previous !== contents) {
+    console.error(
+      `[site-stats] ${OUTPUT} is stale (library ${version}, ${components} components, ${layouts} layouts).\n` +
+        'Run `pnpm stats` and commit the result.'
+    );
+    process.exit(1);
+  }
+  console.log('[site-stats] up to date');
+  process.exit(0);
+}
+
+mkdirSync(dirname(OUTPUT), { recursive: true });
 
 if (previous !== contents) {
   writeFileSync(OUTPUT, contents);

@@ -11,6 +11,7 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NgpInput } from 'ng-primitives/input';
 import { uniqueId } from 'ng-primitives/utils';
+import { VoltAriaInvalid } from '../../aria-invalid';
 import { injectFormControlState } from '../../form-control-state';
 import { forwardAttributesFromHost, forwardClassFromHost } from '../../host-forwarding';
 import { inputVariants, type InputVariants } from './variants';
@@ -27,7 +28,7 @@ const HOST_CLASSES = 'block w-full';
 @Component({
   selector: 'volt-input',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgpInput],
+  imports: [NgpInput, VoltAriaInvalid],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -52,6 +53,7 @@ const HOST_CLASSES = 'block w-full';
       [disabled]="isDisabled()"
       [value]="value()"
       [attr.aria-invalid]="invalid() ? 'true' : null"
+      [voltAriaInvalid]="invalid()"
       [attr.data-size]="size()"
       [class]="classes()"
       (input)="onInput($event)"

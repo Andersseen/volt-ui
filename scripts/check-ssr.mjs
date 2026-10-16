@@ -30,10 +30,25 @@ const PORT = portArg > -1 ? Number(process.argv[portArg + 1]) : 8799;
 const KNOWN = new Map([
   [
     '/docs/components',
-    'ng-primitives 0.110.2 NgpListbox calls window.getComputedStyle in ngAfterContentInit (scrollIntoViewIfNeeded) — upstream',
+    'ng-primitives 0.128+ NgpCollapsible calls `new MutationObserver` on subscribe when an item is open; the docs index renders an open Accordion item — upstream, no Volt-level guard (Listbox, which had the same kind of entry before 0.131, no longer does)',
   ],
-  ['/docs/components/listbox', 'same upstream NgpListbox call'],
 ]);
+
+// Never allowlist these, whatever upstream does next. Listbox carried an entry here until
+// ng-primitives 0.131 stopped touching `window` in its lifecycle; this keeps it from coming back
+// quietly. Blocks, layouts and recipes are ours to fix, so they are covered too.
+const NEVER_ALLOWLISTED = [
+  /^\/docs\/components\/(listbox|select|combobox|dialog|drawer|popover|tooltip|dropdown-menu)$/,
+  /^\/docs\/(blocks|layouts|recipes)\//,
+];
+for (const route of KNOWN.keys()) {
+  if (NEVER_ALLOWLISTED.some(pattern => pattern.test(route))) {
+    console.error(
+      `${route} must not be in KNOWN: fix the server render instead of allowlisting it.`
+    );
+    process.exit(1);
+  }
+}
 
 const routes = [
   ...BLOCKS.map(b => b.path),
