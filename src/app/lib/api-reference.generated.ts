@@ -210,6 +210,12 @@ export const BREADCRUMBS_API: ComponentApi = {
       outputs: [],
     },
     {
+      className: 'VoltBreadcrumbs',
+      selector: 'volt-breadcrumbs',
+      inputs: [{ name: 'ariaLabel', type: 'string', default: "'breadcrumb'" }],
+      outputs: [],
+    },
+    {
       className: 'VoltNativeBreadcrumbLink',
       selector: 'a[voltBreadcrumbLink]',
       inputs: [{ name: 'class', type: 'string', default: "''" }],
@@ -586,7 +592,10 @@ export const DRAWER_API: ComponentApi = {
     {
       className: 'VoltDrawerClose',
       selector: 'volt-drawer-close',
-      inputs: [{ name: 'class', type: 'string', default: "''" }],
+      inputs: [
+        { name: 'class', type: 'string', default: "''" },
+        { name: 'label', type: 'string', default: "'Close'" },
+      ],
       outputs: [],
     },
     {

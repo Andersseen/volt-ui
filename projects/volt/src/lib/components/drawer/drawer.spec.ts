@@ -51,4 +51,13 @@ describe('VoltDrawer', () => {
     const close = screen.getByRole('button', { name: 'Close' });
     expect(close).toHaveAttribute('tabindex', '0');
   });
+
+  it('takes a translated accessible name for the close control', async () => {
+    await render(`<volt-drawer-close label="Cerrar" />`, {
+      imports: [VoltDrawerClose],
+      providers: [{ provide: NgpDialogRef, useValue: { close: () => undefined } }],
+    });
+
+    expect(screen.getByRole('button', { name: 'Cerrar' })).toBeInTheDocument();
+  });
 });
