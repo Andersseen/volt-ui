@@ -6,6 +6,7 @@ import {
   effect,
   forwardRef,
   input,
+  model,
   signal,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -15,6 +16,7 @@ import {
   provideToggleGroupState,
 } from 'ng-primitives/toggle-group';
 import { injectFormControlState } from '../../form-control-state';
+import { mirrorValue } from '../../mirror-value';
 import { cn } from '../../utils';
 
 @Component({
@@ -37,13 +39,11 @@ import { cn } from '../../utils';
     {
       directive: NgpToggleGroup,
       inputs: [
-        'ngpToggleGroupValue: value',
         'ngpToggleGroupType: type',
         'ngpToggleGroupOrientation: orientation',
         'ngpToggleGroupDisabled: disabled',
         'ngpToggleGroupAllowDeselection: allowDeselection',
       ],
-      outputs: ['ngpToggleGroupValueChange: valueChange'],
     },
   ],
   template: `<ng-content />`,
@@ -61,7 +61,8 @@ export class VoltToggleGroup implements ControlValueAccessor {
   private readonly state = injectToggleGroupState();
   protected readonly formControlState = injectFormControlState();
 
-  readonly value = input<string[]>([]);
+  /** Pressed item values. A static `value` is the initial state; `[(value)]` keeps it in sync. */
+  readonly value = model<string[]>([]);
   readonly type = input<'single' | 'multiple'>('single');
   readonly orientation = input<'horizontal' | 'vertical'>('horizontal');
   readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
@@ -78,14 +79,14 @@ export class VoltToggleGroup implements ControlValueAccessor {
       this.state().setDisabled(this.isDisabled());
     });
 
-    this.state().valueChange.subscribe(value => {
+    mirrorValue(this.value, this.state, value => {
+      this.value.set(value);
       this.onChange(value);
     });
   }
 
   writeValue(value: string[] | null | undefined): void {
-    const nextValue = value ?? [];
-    this.state().setValue(nextValue);
+    this.value.set(value ?? []);
   }
 
   registerOnChange(fn: (value: string[]) => void): void {

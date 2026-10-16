@@ -1016,20 +1016,28 @@ export class MyComponent {
   selected = new FormControl(['angular'], { nonNullable: true });
 }`;
 
-export const TOOLBAR_USAGE = `import { Component } from '@angular/core';
+export const TOOLBAR_USAGE = `import { Component, signal } from '@angular/core';
 import { VoltToolbar, VoltToolbarButton } from '@voltui/components';
 
 @Component({
   imports: [VoltToolbar, VoltToolbarButton],
   template: \`
-    <volt-toolbar>
-      <button voltToolbarButton>Bold</button>
-      <button voltToolbarButton>Italic</button>
-      <button voltToolbarButton>Save</button>
+    <volt-toolbar aria-label="Formatting">
+      <!-- Formatting buttons are toggles: aria-pressed carries their state. -->
+      <button voltToolbarButton type="button" [attr.aria-pressed]="bold()" (click)="bold.set(!bold())">
+        Bold
+      </button>
+      <button voltToolbarButton type="button" [attr.aria-pressed]="italic()" (click)="italic.set(!italic())">
+        Italic
+      </button>
+      <button voltToolbarButton type="button">Save</button>
     </volt-toolbar>
   \`,
 })
-export class MyComponent {}`;
+export class MyComponent {
+  readonly bold = signal(false);
+  readonly italic = signal(false);
+}`;
 
 export const SKELETON_USAGE = `import { Component } from '@angular/core';
 import { VoltSkeleton } from '@voltui/components';

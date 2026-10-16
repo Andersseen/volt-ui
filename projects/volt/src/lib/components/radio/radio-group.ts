@@ -6,12 +6,14 @@ import {
   effect,
   forwardRef,
   input,
+  model,
   signal,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { injectRadioGroupState, NgpRadioGroup, provideRadioGroupState } from 'ng-primitives/radio';
 import type { NgpOrientation } from 'ng-primitives/common';
 import { injectFormControlState } from '../../form-control-state';
+import { mirrorValue } from '../../mirror-value';
 import { cn } from '../../utils';
 
 @Component({
@@ -38,12 +40,10 @@ import { cn } from '../../utils';
       directive: NgpRadioGroup,
       inputs: [
         'id: id',
-        'ngpRadioGroupValue: value',
         'ngpRadioGroupDisabled: disabled',
         'ngpRadioGroupOrientation: orientation',
         'ngpRadioGroupCompareWith: compareWith',
       ],
-      outputs: ['ngpRadioGroupValueChange: valueChange'],
     },
   ],
   template: ` <ng-content /> `,
@@ -58,7 +58,8 @@ export class VoltRadioGroup implements ControlValueAccessor {
 
   readonly id = input<string>();
   readonly orientation = input<NgpOrientation>('vertical');
-  readonly value = input<string | null>(null);
+  /** The selected value. A static `value` is the initial selection; `[(value)]` keeps it in sync. */
+  readonly value = model<string | null>(null);
   readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly compareWith = input<(a: string | null, b: string | null) => boolean>(Object.is);
 
@@ -67,34 +68,20 @@ export class VoltRadioGroup implements ControlValueAccessor {
 
   private onChange: (value: string | null) => void = () => {};
   protected onTouched: () => void = () => {};
-  private isWritingValue = false;
-  private hasObservedStateValue = false;
 
   constructor() {
     effect(() => {
       this.state().setDisabled(this.isDisabled());
     });
 
-    effect(() => {
-      const value = this.state().value();
-
-      if (this.isWritingValue) {
-        return;
-      }
-
-      if (this.hasObservedStateValue) {
-        this.onChange(value);
-      }
-
-      this.hasObservedStateValue = true;
+    mirrorValue(this.value, this.state, value => {
+      this.value.set(value);
+      this.onChange(value);
     });
   }
 
   writeValue(value: string | null | undefined): void {
-    const nextValue = value ?? null;
-    this.isWritingValue = true;
-    this.state().setValue(nextValue);
-    this.isWritingValue = false;
+    this.value.set(value ?? null);
   }
 
   registerOnChange(fn: (value: string | null) => void): void {

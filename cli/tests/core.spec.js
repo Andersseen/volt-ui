@@ -419,6 +419,14 @@ describe('CLI Core', () => {
       const content = readFileSync(join(testDir, 'input', 'input.ts'), 'utf-8');
       expect(content).toContain("from '../host-forwarding'");
     });
+
+    it('should copy mirror-value.ts flat for components that own their value', async () => {
+      const result = await core.copyComponent('radio', testDir, manifest);
+      expect(result.sharedFiles).toContain('mirror-value.ts');
+      expect(existsSync(join(testDir, 'mirror-value.ts'))).toBe(true);
+      const content = readFileSync(join(testDir, 'radio', 'radio-group.ts'), 'utf-8');
+      expect(content).toContain("from '../mirror-value'");
+    });
   });
 
   describe('CLI integration', () => {

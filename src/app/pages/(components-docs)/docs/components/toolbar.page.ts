@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { VoltToolbar, VoltToolbarButton } from 'volt';
 import { CodePanel } from '../../../../components/code-panel';
 import { ApiReference } from '../../../../components/api-reference';
@@ -27,10 +27,24 @@ import { injectAppI18n } from '../../../../i18n/i18n';
         <div
           class="p-8 border border-border rounded-lg bg-card/30 flex items-center justify-center"
         >
-          <volt-toolbar>
-            <button voltToolbarButton>Bold</button>
-            <button voltToolbarButton>Italic</button>
-            <button voltToolbarButton>Save</button>
+          <volt-toolbar aria-label="Formatting">
+            <button
+              voltToolbarButton
+              type="button"
+              [attr.aria-pressed]="bold()"
+              (click)="bold.set(!bold())"
+            >
+              Bold
+            </button>
+            <button
+              voltToolbarButton
+              type="button"
+              [attr.aria-pressed]="italic()"
+              (click)="italic.set(!italic())"
+            >
+              Italic
+            </button>
+            <button voltToolbarButton type="button">Save</button>
           </volt-toolbar>
         </div>
       </app-code-panel>
@@ -56,4 +70,7 @@ export default class ToolbarDemo {
   readonly toolbarApi = TOOLBAR_API;
   readonly code = TOOLBAR_SNIPPET;
   readonly usage = TOOLBAR_USAGE;
+
+  protected readonly bold = signal(false);
+  protected readonly italic = signal(false);
 }

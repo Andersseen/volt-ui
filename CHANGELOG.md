@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.1] - 2026-10-16
+
+Patch release: components that froze or hid their state since the ng-primitives 0.131 upgrade in
+1.3.0. No API removed; every fix is a behavior a consumer could already reasonably expect.
+
+### Fixed
+
+- **`volt-radio-group`, `volt-toggle-group`, `volt-slider` and `volt-listbox` froze when given a
+  static initial value** (`value="a"`): a click emitted but the selection never moved. ng-primitives
+  now latches a primitive into controlled mode the first time its `value` input is defined, and
+  Volt forwarded `value` straight to it. Volt now owns `value` and mirrors it into the primitive
+  without emitting, so a static value, `[(value)]` and forms all work. Existing specs only bound
+  `[(value)]` or a form control, which is why they stayed green; a new contract spec
+  (`static-value.spec.ts`) covers the static case for every value component.
+- **`volt-toggle` showed no pressed state in the `outline` variant**, and only a near-invisible
+  one in `default`/`ghost` on dark themes. Pressed toggles now use the primary color (tint, text,
+  and border for `outline`).
+- **`volt-toggle` and `volt-toggle-group-item` dropped `aria-label`**, so icon-only toggles had no
+  accessible name. Both now forward it to the native button, like `volt-switch` and
+  `volt-checkbox`.
+- **`[voltToolbarButton]` gains a pressed style** for `aria-pressed`, and the docs demo uses
+  toggle buttons for Bold and Italic.
+- **CLI:** copies the new shared `mirror-value.ts` with the components that use it.
+
 ### Added — `@voltui/components`
 
 - **`volt-checkbox` takes an accessible name** through `ariaLabel` / `aria-label`, forwarded to
