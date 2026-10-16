@@ -1,4 +1,4 @@
-export { VoltCombobox } from './combobox';
+export { VoltCombobox, type VoltComboboxFilterMode } from './combobox';
 export { VoltComboboxInput } from './combobox-input';
 export { VoltComboboxButton } from './combobox-button';
 export { VoltComboboxDropdown } from './combobox-dropdown';
