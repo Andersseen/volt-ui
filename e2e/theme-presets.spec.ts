@@ -1,4 +1,5 @@
-import { test, expect, type Page } from '@playwright/test';
+import { test, expect } from './fixtures';
+import type { Page } from '@playwright/test';
 
 /**
  * v0.8 Phase 1 requirement: "Verify every component respects .dark +

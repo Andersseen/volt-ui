@@ -1,4 +1,5 @@
-import { test, expect, type Page } from '@playwright/test';
+import { test, expect } from './fixtures';
+import type { Page } from '@playwright/test';
 
 /**
  * Drag-and-drop is the one part of the file-upload surface that unit tests can only

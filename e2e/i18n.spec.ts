@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from './fixtures';
 
 const ORIGIN = 'https://volt-ui.andersseen.dev';
 const RUNS_SSR = process.env['E2E_SERVER'] === 'wrangler';
