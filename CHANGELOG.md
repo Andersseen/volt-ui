@@ -7,6 +7,53 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+**Volt UI 1.3 — Async Data & Angular Integration** (prepared; the version bump lands in a separate
+release PR, as for 1.2). Backwards compatible; see [MIGRATION.md](./MIGRATION.md).
+
+### Added
+
+- **Server-side Combobox search.** `filterMode="manual"` renders `items` exactly as supplied (the
+  default `"local"` is unchanged and still narrows them by label). `(queryChange)` emits the text
+  the user typed — never the label Volt writes back after a selection — so it is safe to start a
+  request from. `loading`, `loadingText`, `emptyText` and `resultsText` cover the dropdown states,
+  announced once through a single polite live region; the visible rows are `aria-hidden`. Volt owns
+  no networking, debounce or cancellation: the application does, and the Async Search recipe shows
+  latest-response-wins.
+- **`a[voltBreadcrumbLink]`** (`VoltNativeBreadcrumbLink`): breadcrumb styling on your own anchor, so
+  `routerLink`, `queryParams`, `fragment`, `routerLinkActive` and `ariaCurrentWhenActive` just work.
+  Volt does not import the router. `<volt-breadcrumb-link href>` stays for plain URLs and shares the
+  same classes.
+- **`VoltAriaInvalid`** (internal helper, copied by the CLI as `aria-invalid.ts`).
+
+### Changed
+
+- **ng-primitives 0.110.2 → 0.131.2** (peer `^0.131.2`; Angular 21 and 22 both supported). Volt's
+  public API is unchanged; see MIGRATION for the behaviour upstream changed.
+- **Alert is stable** (was beta). No API change.
+- Combobox options without a template now render `itemLabel(item)` instead of `[object Object]`.
+- Toast: a non-error `volt-toast` no longer sets its own `role="status"`; the toast container is the
+  live region. Errors still use `role="alert"`.
+- The CLI now transforms shared helper files (`aria-invalid.ts`, …) like components.
+
+### Fixed
+
+- `volt list --status=…` and the MCP server labelled 24 stable components `beta`: stability is now
+  read from `COMPONENT_STATUS.md`, the only hand-maintained copy, and `pnpm manifest` fails for a
+  component with no row.
+- AI docs listed a non-existent `<ui-native-select>` element; it is `<select uiNativeSelect>`.
+- `VoltInput`/`VoltTextarea` `state="error"` kept `aria-invalid` after ng-primitives began clearing it.
+- Listbox no longer touches `window` during server rendering (fixed upstream); the SSR gate's
+  Listbox exception is gone and cannot be re-added.
+- Deprecated ng-primitives setters (`state.disabled.set(...)`) are no longer used.
+
+### Tooling
+
+- `pnpm check:generated` (CI and release) fails when `site-stats.ts` or `api-reference.generated.ts`
+  is stale; `product-facts.spec.ts` ties version, component count, stability labels and the
+  package/copy-and-own positioning together.
+- Consumer fixtures `e2e/consumer*/async.html`: a relation picker and Router breadcrumbs, through the
+  package and through `volt add`.
+
 ## [1.2.0] - 2026-10-15
 
 **Volt UI 1.2 — Application DX & Composition**. Where 1.1 improved individual atoms, 1.2 tests

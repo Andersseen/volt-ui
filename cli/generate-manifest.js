@@ -311,7 +311,8 @@ function scanComponents(dir, category) {
 
     components[entry.name] = {
       category,
-      group: COMPONENT_METADATA[entry.name]?.group || (category === 'layouts' ? 'Layout' : 'Components'),
+      group:
+        COMPONENT_METADATA[entry.name]?.group || (category === 'layouts' ? 'Layout' : 'Components'),
       label: COMPONENT_METADATA[entry.name]?.label || titleFromName(entry.name),
       description: COMPONENT_METADATA[entry.name]?.description || '',
       stability: stabilityOf(entry.name),
@@ -354,10 +355,7 @@ const allComponentNames = new Set(Object.keys(components));
 
 // Second pass: populate dependencies now that every component is known.
 for (const [name, meta] of Object.entries(components)) {
-  const componentDir = path.join(
-    meta.category === 'layouts' ? LAYOUTS_DIR : COMPONENTS_DIR,
-    name
-  );
+  const componentDir = path.join(meta.category === 'layouts' ? LAYOUTS_DIR : COMPONENTS_DIR, name);
   meta.dependencies = extractDependencies(componentDir, meta.category, name, allComponentNames);
 }
 

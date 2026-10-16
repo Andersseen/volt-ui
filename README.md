@@ -277,6 +277,16 @@ bootstrapApplication(AppComponent, {
 
 ---
 
+### Server search, router links, native HTML
+
+- **Searching a server:** `<volt-combobox filterMode="manual" [items]="results()" [loading]="loading()" (queryChange)="search($event)" />`.
+  Your code fetches (and makes the latest response win); the combobox renders what you give it.
+  The default `filterMode="local"` narrows a list you already have.
+- **Angular Router breadcrumbs:** `<a voltBreadcrumbLink routerLink="/admin">Admin</a>`.
+- **Use Volt when it adds reusable styling or behaviour; use native HTML when the browser already
+  gives you the right primitive** — `<details>`, `<input type="file">`, or `<select voltNativeSelect>`
+  for a plain dropdown.
+
 ## 🤖 AI Tools for Consumers
 
 Volt UI ships three complementary ways to give AI assistants correct context:

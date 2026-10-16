@@ -63,7 +63,7 @@ describe('CLI Core', () => {
 
     it('should rewrite Volt element tags inside inline templates', () => {
       const output = core.transformContent(
-        "template: `<volt-toast [variant]=\"v\"><volt-toast-title>x</volt-toast-title></volt-toast>`"
+        'template: `<volt-toast [variant]="v"><volt-toast-title>x</volt-toast-title></volt-toast>`'
       );
       expect(output).toContain('<ui-toast [variant]="v">');
       expect(output).toContain('<ui-toast-title>x</ui-toast-title></ui-toast>');
@@ -211,7 +211,10 @@ describe('CLI Core', () => {
 
     it('should flag a project with the dependency installed but no stylesheet import', () => {
       mkdirSync(testDir, { recursive: true });
-      writeFileSync(join(testDir, 'package.json'), JSON.stringify({ dependencies: { tailwindcss: '^4.0.0' } }));
+      writeFileSync(
+        join(testDir, 'package.json'),
+        JSON.stringify({ dependencies: { tailwindcss: '^4.0.0' } })
+      );
 
       const tailwind = core.detectTailwindSetup(testDir);
       expect(tailwind.hasTailwindDependency).toBe(true);
@@ -301,11 +304,11 @@ describe('CLI Core', () => {
       mkdirSync(join(testDir, 'button'), { recursive: true });
       writeFileSync(join(testDir, 'button', 'button.ts'), 'user-owned code');
 
-      expect(() => core.copyComponent('button', testDir, manifest)).toThrow(/Refusing to overwrite/);
-
-      expect(readFileSync(join(testDir, 'button', 'button.ts'), 'utf-8')).toBe(
-        'user-owned code'
+      expect(() => core.copyComponent('button', testDir, manifest)).toThrow(
+        /Refusing to overwrite/
       );
+
+      expect(readFileSync(join(testDir, 'button', 'button.ts'), 'utf-8')).toBe('user-owned code');
     });
 
     it('should overwrite existing files when force is enabled', async () => {
@@ -518,7 +521,9 @@ describe('CLI Core', () => {
       expect(output).toContain('Forms');
       expect(output).toContain('button');
       expect(output).toContain('Interactive buttons');
-      expect(output).not.toContain('dialog');
+      // Dialog is a 1.0 component, so it is stable and listed; spinner is beta and is not.
+      expect(output).toContain('dialog');
+      expect(output).not.toContain('spinner');
     });
 
     it('should print list metadata as JSON', () => {

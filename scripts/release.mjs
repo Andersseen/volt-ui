@@ -46,10 +46,9 @@ const PACKAGES = [
   },
 ];
 
-const sha =
-  process.env.GITHUB_SHA || execSync('git rev-parse HEAD').toString().trim();
+const sha = process.env.GITHUB_SHA || execSync('git rev-parse HEAD').toString().trim();
 
-const versionOf = (file) => JSON.parse(readFileSync(file, 'utf8')).version;
+const versionOf = file => JSON.parse(readFileSync(file, 'utf8')).version;
 
 /** Returns the list of versions already published to npm (empty if unpublished). */
 function publishedVersions(name) {
@@ -96,9 +95,7 @@ for (const pkg of PACKAGES) {
     const tag = `${pkg.tagPrefix}-v${version}`;
     const title = `${pkg.name} v${version}`;
     // `gh release create` creates the tag at --target and the GitHub Release.
-    run(
-      `gh release create "${tag}" --target "${sha}" --title "${title}" --generate-notes`,
-    );
+    run(`gh release create "${tag}" --target "${sha}" --title "${title}" --generate-notes`);
     console.log(`✓ ${tag} published + released`);
     released += 1;
   } catch (err) {
@@ -109,7 +106,7 @@ for (const pkg of PACKAGES) {
 
 console.log(
   `\n${released} package(s) ${DRY_RUN ? 'would be ' : ''}released.` +
-    (released === 0 && !failed ? ' Nothing to do — all versions are current.' : ''),
+    (released === 0 && !failed ? ' Nothing to do — all versions are current.' : '')
 );
 
 if (failed) process.exit(1);

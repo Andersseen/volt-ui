@@ -816,7 +816,9 @@ const VSCODE_SNIPPETS = {
   'Volt UI Skeleton': {
     prefix: ['volt-skeleton', 'ui-skeleton'],
     description: 'Volt UI Skeleton',
-    body: ['<ui-skeleton variant="${1|text,circle,rectangle|}" width="${2:120px}" height="${3:16px}" />'],
+    body: [
+      '<ui-skeleton variant="${1|text,circle,rectangle|}" width="${2:120px}" height="${3:16px}" />',
+    ],
   },
   'Volt UI Table': {
     prefix: ['volt-table', 'ui-table'],

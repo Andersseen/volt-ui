@@ -34,6 +34,22 @@ const KNOWN = new Map([
   ],
 ]);
 
+// Never allowlist these, whatever upstream does next. Listbox carried an entry here until
+// ng-primitives 0.131 stopped touching `window` in its lifecycle; this keeps it from coming back
+// quietly. Blocks, layouts and recipes are ours to fix, so they are covered too.
+const NEVER_ALLOWLISTED = [
+  /^\/docs\/components\/(listbox|select|combobox|dialog|drawer|popover|tooltip|dropdown-menu)$/,
+  /^\/docs\/(blocks|layouts|recipes)\//,
+];
+for (const route of KNOWN.keys()) {
+  if (NEVER_ALLOWLISTED.some(pattern => pattern.test(route))) {
+    console.error(
+      `${route} must not be in KNOWN: fix the server render instead of allowlisting it.`
+    );
+    process.exit(1);
+  }
+}
+
 const routes = [
   ...BLOCKS.map(b => b.path),
   ...LAYOUTS.map(l => l.path),

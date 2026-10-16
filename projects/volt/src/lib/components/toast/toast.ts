@@ -9,7 +9,9 @@ import { cn } from '../../utils';
   hostDirectives: [NgpToast],
   host: {
     '[class]': 'classes()',
-    '[attr.role]': 'variant() === "error" ? "alert" : "status"',
+    // The toast container is already a polite live region (`role="status"`, ng-primitives >= 0.12x).
+    // A second `status` on every toast announced twice, so only an error escalates, to "alert".
+    '[attr.role]': 'variant() === "error" ? "alert" : null',
   },
   template: `<ng-content />`,
 })

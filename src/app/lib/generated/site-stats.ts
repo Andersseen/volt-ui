@@ -4,7 +4,7 @@ export const SITE_STATS = {
   version: '1.2.0',
   components: 44,
   layouts: 1,
-  tests: 800,
+  tests: 831,
   colorPresets: 5,
   stylePresets: 5,
   themeCombos: 25,

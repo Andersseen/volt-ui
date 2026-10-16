@@ -35,7 +35,12 @@ const RUNTIME_DEPENDENCIES = [
 // manifest's dependency detector only resolves components/layouts imports, so these are
 // tracked and copied separately, flat into the target dir (sibling to each component's
 // own subfolder), since that's what the rewritten `../utils` import path expects.
-const SHARED_LIB_FILES = ['utils.ts', 'form-control-state.ts', 'host-forwarding.ts', 'aria-invalid.ts'];
+const SHARED_LIB_FILES = [
+  'utils.ts',
+  'form-control-state.ts',
+  'host-forwarding.ts',
+  'aria-invalid.ts',
+];
 
 // ---------------------------------------------------------------------------
 // Package manager detection
