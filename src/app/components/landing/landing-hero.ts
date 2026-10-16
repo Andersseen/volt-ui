@@ -142,7 +142,7 @@ export const INSTALL_COMMAND = 'npx @voltui/cli add button dialog form-field';
                 size="icon"
                 class="shrink-0"
                 [moveWhileTap]="press"
-                [attr.aria-label]="copied() ? 'Command copied' : 'Copy install command'"
+                [aria-label]="copied() ? 'Command copied' : 'Copy install command'"
                 (click)="copyInstallCommand()"
               >
                 <span class="sr-only">
@@ -188,7 +188,7 @@ export const INSTALL_COMMAND = 'npx @voltui/cli add button dialog form-field';
                       {{ t('landing.hero.publicThemeHint') }}
                     </p>
                   </div>
-                  <volt-switch [checked]="true" [attr.aria-label]="t('landing.hero.publicTheme')" />
+                  <volt-switch [checked]="true" [aria-label]="t('landing.hero.publicTheme')" />
                 </div>
 
                 <div>
@@ -219,10 +219,7 @@ export const INSTALL_COMMAND = 'npx @voltui/cli add button dialog form-field';
                     {{ t('landing.hero.reset') }}
                   </volt-button>
                   <div class="flex items-center gap-2 pl-1">
-                    <volt-checkbox
-                      [checked]="true"
-                      [attr.aria-label]="t('landing.hero.autoSync')"
-                    />
+                    <volt-checkbox [checked]="true" [aria-label]="t('landing.hero.autoSync')" />
                     <span class="text-xs text-muted-foreground">{{
                       t('landing.hero.autoSync')
                     }}</span>

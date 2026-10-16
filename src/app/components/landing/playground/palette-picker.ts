@@ -28,9 +28,7 @@ import { COLOR_PRESETS, swatch, type ColorPreset } from '../../../lib/theme-pres
         <volt-button
           variant="ghost"
           size="icon"
-          [attr.aria-label]="
-            touring() ? t('landing.playground.pause') : t('landing.playground.play')
-          "
+          [aria-label]="touring() ? t('landing.playground.pause') : t('landing.playground.play')"
           (click)="toggleTour.emit()"
         >
           @if (touring()) {

@@ -164,6 +164,13 @@
         "title": "Let your agent write it the Volt way.",
         "body": "`npx @voltui/agent` installs the MCP server, a skill and editor rules, so Claude Code, Cursor or Copilot reach for the right selector the first time."
       }
+    },
+    "showcase": {
+      "eyebrow": "The component library",
+      "title": "Every piece a product needs, already wired.",
+      "subtitle": "Forms, overlays, navigation and data display: each one keyboard-ready, themeable and yours to edit. These are rendered live.",
+      "previous": "Previous components",
+      "next": "Next components"
     }
   },
   "guide": {

@@ -43,10 +43,10 @@ import { StepsIndex } from './steps-index';
           (selected)="goTo($event)"
         />
 
-        <ol class="space-y-20 lg:space-y-32">
+        <ol class="space-y-10 lg:space-y-16">
           @for (step of steps; track step.id; let i = $index) {
             <li [id]="'step-' + step.id" [attr.data-step]="step.id" class="scroll-mt-28">
-              <app-step-item [step]="step" [position]="i + 1" />
+              <app-step-item class="step-curve" [step]="step" [position]="i + 1" />
             </li>
           }
         </ol>
@@ -68,6 +68,43 @@ import { StepsIndex } from './steps-index';
         </volt-button>
       </div>
     </section>
+  `,
+  styles: `
+    /*
+     * The steps ride a curve: a card arrives tilted back from below, lies flat while it is
+     * read, and tips away as it leaves — like cards on a turning wheel. Scroll-driven CSS,
+     * so it tracks the scrollbar exactly and needs no JavaScript; static where unsupported.
+     */
+    @supports (animation-timeline: view()) {
+      .step-curve {
+        transform-origin: 50% 50%;
+        animation: step-curve linear both;
+        animation-timeline: view();
+        animation-range: entry 0% exit 100%;
+      }
+    }
+
+    @keyframes step-curve {
+      0% {
+        opacity: 0.25;
+        transform: perspective(1400px) translateY(80px) rotateX(22deg) scale(0.92);
+      }
+      35%,
+      60% {
+        opacity: 1;
+        transform: perspective(1400px) translateY(0) rotateX(0) scale(1);
+      }
+      100% {
+        opacity: 0.35;
+        transform: perspective(1400px) translateY(-60px) rotateX(-18deg) scale(0.94);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .step-curve {
+        animation: none;
+      }
+    }
   `,
 })
 export class LandingSteps {

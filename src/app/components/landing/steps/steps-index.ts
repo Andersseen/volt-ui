@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
-import { VoltButton } from 'volt';
+import { VoltNativeButton } from 'volt';
 import { injectAppI18n } from '../../../i18n/i18n';
 import type { Step } from './steps';
 
@@ -7,13 +7,15 @@ import type { Step } from './steps';
 @Component({
   selector: 'app-steps-index',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [VoltButton],
+  imports: [VoltNativeButton],
   template: `
     <nav [attr.aria-label]="t('landing.steps.nav')">
       <ol class="space-y-1 border-l border-border">
         @for (step of steps(); track step.id; let i = $index) {
           <li>
-            <volt-button
+            <button
+              voltButton
+              type="button"
               variant="ghost"
               [class]="itemClass(step.id)"
               [attr.aria-current]="active() === step.id ? 'step' : null"
@@ -21,7 +23,7 @@ import type { Step } from './steps';
             >
               <span class="font-mono text-xs text-muted-foreground">0{{ i + 1 }}</span>
               {{ t(step.labelKey) }}
-            </volt-button>
+            </button>
           </li>
         }
       </ol>

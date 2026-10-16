@@ -50,7 +50,7 @@ import { ShowcaseCard } from './showcase-card';
             variant="outline"
             size="icon"
             [disabled]="atStart()"
-            [attr.aria-label]="t('landing.showcase.previous')"
+            [aria-label]="t('landing.showcase.previous')"
             (click)="step(-1)"
           >
             <lmn-arrow-left [size]="20" />
@@ -59,7 +59,7 @@ import { ShowcaseCard } from './showcase-card';
             variant="outline"
             size="icon"
             [disabled]="atEnd()"
-            [attr.aria-label]="t('landing.showcase.next')"
+            [aria-label]="t('landing.showcase.next')"
             (click)="step(1)"
           >
             <lmn-arrow-right [size]="20" />
@@ -71,7 +71,7 @@ import { ShowcaseCard } from './showcase-card';
         #track
         tabindex="0"
         [attr.aria-label]="t('landing.showcase.eyebrow')"
-        class="track mt-12 flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth px-4 pb-6 sm:px-6 lg:px-[max(1.5rem,calc((100vw-80rem)/2+1.5rem))]"
+        class="track mt-12 flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth pb-6"
       >
         @for (component of components; track component.name) {
           <li class="w-[85%] shrink-0 snap-start sm:w-[22rem]">
@@ -88,9 +88,24 @@ import { ShowcaseCard } from './showcase-card';
     </section>
   `,
   styles: `
+    /* One edge for padding and snapping, aligned with the page's max-w-7xl content column. */
     .track {
+      --edge: 1rem;
+      padding-inline: var(--edge);
+      scroll-padding-inline: var(--edge);
       scrollbar-width: thin;
-      scroll-padding-inline: 1rem;
+    }
+
+    @media (min-width: 640px) {
+      .track {
+        --edge: 1.5rem;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .track {
+        --edge: max(1.5rem, calc((100vw - 80rem) / 2 + 1.5rem));
+      }
     }
 
     .track:focus-visible {

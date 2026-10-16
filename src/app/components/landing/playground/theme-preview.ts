@@ -68,7 +68,7 @@ import { presetStyle, type ColorPreset, type StylePreset } from '../../../lib/th
               {{ t('landing.hero.publicThemeHint') }}
             </p>
           </div>
-          <volt-switch [checked]="true" [attr.aria-label]="t('landing.hero.publicTheme')" />
+          <volt-switch [checked]="true" [aria-label]="t('landing.hero.publicTheme')" />
         </div>
 
         <volt-progress [value]="64">
@@ -82,7 +82,7 @@ import { presetStyle, type ColorPreset, type StylePreset } from '../../../lib/th
           <volt-button size="sm">{{ t('landing.hero.save') }}</volt-button>
           <volt-button size="sm" variant="outline">{{ t('landing.hero.reset') }}</volt-button>
           <div class="flex items-center gap-2 pl-1">
-            <volt-checkbox [checked]="true" [attr.aria-label]="t('landing.hero.autoSync')" />
+            <volt-checkbox [checked]="true" [aria-label]="t('landing.hero.autoSync')" />
             <span class="text-xs text-muted-foreground">{{ t('landing.hero.autoSync') }}</span>
           </div>
         </div>

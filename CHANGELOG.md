@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added — `@voltui/components`
+
+- **`volt-checkbox` takes an accessible name** through `ariaLabel` / `aria-label`, forwarded to
+  the native button exactly like `volt-switch`. A checkbox beside plain text (no `<label>`) had
+  no way to be named.
+
 ### Changed — `@voltui/mcp` is now `@voltui/agent`
 
 The installer is renamed because it installs more than MCP config: the skill, rules and snippets as
