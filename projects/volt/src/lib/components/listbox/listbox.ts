@@ -60,7 +60,7 @@ export class VoltListbox<T = unknown> implements ControlValueAccessor {
   );
 
   private readonly listbox = inject<NgpListbox<T>>(NgpListbox);
-  private readonly listboxState = injectListboxState<NgpListbox<T>>();
+  private readonly listboxState = injectListboxState<T>();
   protected readonly formControlState = injectFormControlState();
 
   readonly id = input<string>();

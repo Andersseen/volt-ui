@@ -94,7 +94,8 @@ export class VoltDatePicker implements ControlValueAccessor {
   }
 
   writeValue(value: Date | undefined | null): void {
-    this.datePickerState().date.set(value ?? undefined);
+    // `emit: false`: a form write must sync the calendar without echoing back into the control.
+    this.datePickerState().select(value ?? (undefined as unknown as Date), false, { emit: false });
   }
 
   registerOnChange(fn: (value: Date | undefined) => void): void {

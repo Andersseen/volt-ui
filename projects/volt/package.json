@@ -30,7 +30,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "tailwind-merge": "^3.0.0",
-    "ng-primitives": "^0.110.2",
+    "ng-primitives": "^0.131.2",
     "@floating-ui/dom": "^1.6.0"
   },
   "exports": {

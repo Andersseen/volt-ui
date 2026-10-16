@@ -8,7 +8,7 @@ import {
   input,
   isDevMode,
 } from '@angular/core';
-import { ngpButton } from 'ng-primitives/button';
+import { ngpFocusVisible, ngpInteractions } from 'ng-primitives/interactions';
 import { forwardAttributesFromHost } from '../../host-forwarding';
 import { cn } from '../../utils';
 import { buttonVariants, type ButtonVariants } from './variants';
@@ -41,6 +41,8 @@ import { buttonVariants, type ButtonVariants } from './variants';
     '[class]': 'classes()',
     '[attr.data-variant]': 'variant()',
     '[attr.data-size]': 'size()',
+    '[attr.disabled]': 'nativeDisabled() ? "" : null',
+    '[attr.data-disabled]': 'nativeDisabled() ? "" : null',
   },
 })
 export class VoltNativeButton {
@@ -53,13 +55,19 @@ export class VoltNativeButton {
   readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly class = input<string>('');
 
+  protected readonly nativeDisabled = computed(() => this.isButton && this.disabled());
+
   protected readonly classes = computed(() =>
     cn(buttonVariants({ variant: this.variant(), size: this.size() }), this.class())
   );
 
   constructor() {
-    // Hover/press/focus-visible data attributes and the native `disabled` attribute.
-    ngpButton({ disabled: computed(() => this.isButton && this.disabled()) });
+    // Hover/press/focus-visible data attributes. `NgpButton` is deliberately not used here:
+    // since ng-primitives 0.12x it owns `aria-disabled` and clears it whenever the button is not
+    // "soft" disabled, which would erase an `aria-disabled` the consumer writes on the element.
+    // That attribute is the consumer's (see above), so only the interaction state is borrowed.
+    ngpInteractions({ hover: true, press: true, disabled: this.nativeDisabled });
+    ngpFocusVisible({ disabled: this.nativeDisabled });
 
     if (!this.isButton) {
       // A static `disabled` on <a> means nothing to the browser or assistive tech; drop it so

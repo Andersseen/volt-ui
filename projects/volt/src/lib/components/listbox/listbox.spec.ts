@@ -94,8 +94,20 @@ describe('listbox components', () => {
     const { fixture } = await render(ListboxFormsFixture);
     const listbox = screen.getByRole('listbox', { name: 'Framework form' });
 
+    // ng-primitives >= 0.12x activates the selected option (else the first) as soon as the
+    // options register, so keyboard focus lands on a visible active option instead of nothing.
+    // ArrowDown therefore moves from Angular to React; it no longer "enters" the list.
     listbox.focus();
-    await user.keyboard('{ArrowDown}{Enter}');
+    await fixture.whenStable();
+    expect(listbox).toHaveAttribute(
+      'aria-activedescendant',
+      screen.getByRole('option', { name: 'Angular' }).id
+    );
+
+    await user.keyboard('{Enter}');
     expect(fixture.componentInstance.control.value).toEqual(['angular']);
+
+    await user.keyboard('{ArrowDown}{Enter}');
+    expect(fixture.componentInstance.control.value).toEqual(['react']);
   });
 });
