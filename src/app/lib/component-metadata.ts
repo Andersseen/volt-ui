@@ -327,7 +327,7 @@ export const COMPONENT_GROUPS: ComponentMetadataGroup[] = [
       },
       // Added after 1.0. Component names read the same in every locale; the descriptions need
       // Glossa keys (specs/plans/v1.2.md "Glossa keys pending"), so the cards omit them for now.
-      { name: 'alert', label: 'Alert', path: '/docs/components/alert', stability: 'beta' },
+      { name: 'alert', label: 'Alert', path: '/docs/components/alert', stability: 'stable' },
       { name: 'spinner', label: 'Spinner', path: '/docs/components/spinner', stability: 'beta' },
       {
         name: 'empty-state',

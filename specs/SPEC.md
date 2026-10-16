@@ -1,8 +1,8 @@
 # Volt UI — Product Spec (Spec-Driven Development)
 
-**Current version:** 1.1.0 (see [plans/v1.1.md](plans/v1.1.md))
+**Current version:** the one in `projects/volt/package.json` (kept out of this file on purpose; see the latest [`plans/`](plans/) file for what it shipped)
 **Status:** Release ladder complete — Volt UI is stable.
-**Last updated:** 2026-08-06
+**Last updated:** 2026-10-16
 
 > Post-v1 planning update (2026-09-07): see [`v2/README.md`](v2/README.md) for the
 > proposed next direction and executable plans. It recommends deferring the headless

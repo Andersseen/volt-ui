@@ -5,277 +5,250 @@ const path = require('path');
 const COMPONENTS_DIR = path.resolve(__dirname, '../projects/volt/src/lib/components');
 const LAYOUTS_DIR = path.resolve(__dirname, '../projects/volt/src/lib/layouts');
 const OUTPUT = path.resolve(__dirname, '../public/manifest.json');
+const STATUS_FILE = path.resolve(__dirname, '../COMPONENT_STATUS.md');
+
+/**
+ * Stability is read from COMPONENT_STATUS.md, the one place it is written by hand. It used to be
+ * repeated here, where 24 stable components were still labelled `beta` long after 1.0 — `volt list
+ * --status=stable` and the MCP server read this manifest. A component with no row fails the run, so
+ * adding one without recording its status (ripple effect 6) is caught by `pnpm manifest`.
+ */
+function readStabilityTable() {
+  const table = {};
+  for (const line of fs.readFileSync(STATUS_FILE, 'utf-8').split('\n')) {
+    const row = line.match(/^\|\s*([a-z][a-z-]*)\s*\|\s*(stable|beta|experimental)\s*\|/);
+    if (row) table[row[1]] = row[2];
+  }
+  return table;
+}
+
+const STABILITY = readStabilityTable();
 
 const COMPONENT_METADATA = {
   accordion: {
     group: 'Display',
     label: 'Accordion',
     description: 'Collapsible panels',
-    stability: 'beta',
   },
   alert: {
     group: 'Feedback',
     label: 'Alert',
     description: 'Inline feedback panels',
-    stability: 'beta',
   },
   'empty-state': {
     group: 'Feedback',
     label: 'Empty State',
     description: 'Empty collection and no-results panels',
-    stability: 'beta',
   },
   autofill: {
     group: 'Forms',
     label: 'Autofill',
     description: 'Browser autofill detection',
-    stability: 'beta',
   },
   avatar: {
     group: 'Display',
     label: 'Avatar',
     description: 'User images',
-    stability: 'stable',
   },
   badge: {
     group: 'Display',
     label: 'Badge',
     description: 'Status indicators',
-    stability: 'stable',
   },
   breadcrumbs: {
     group: 'Navigation',
     label: 'Breadcrumbs',
     description: 'Path trail',
-    stability: 'stable',
   },
   button: {
     group: 'Forms',
     label: 'Button',
     description: 'Interactive buttons',
-    stability: 'stable',
   },
   card: {
     group: 'Display',
     label: 'Card',
     description: 'Content containers',
-    stability: 'stable',
   },
   checkbox: {
     group: 'Forms',
     label: 'Checkbox',
     description: 'Boolean selection',
-    stability: 'stable',
   },
   combobox: {
     group: 'Forms',
     label: 'Combobox',
     description: 'Searchable select',
-    stability: 'beta',
   },
   'date-picker': {
     group: 'Controls',
     label: 'Date Picker',
     description: 'Calendar input',
-    stability: 'beta',
   },
   dialog: {
     group: 'Overlays',
     label: 'Dialog',
     description: 'Modal dialogs',
-    stability: 'beta',
   },
   drawer: {
     group: 'Overlays',
     label: 'Drawer',
     description: 'Slide-in panels',
-    stability: 'beta',
   },
   'dropdown-menu': {
     group: 'Overlays',
     label: 'Dropdown Menu',
     description: 'Action menus',
-    stability: 'beta',
   },
   'file-upload': {
     group: 'Forms',
     label: 'File Upload',
     description: 'Upload controls',
-    stability: 'beta',
   },
   'form-field': {
     group: 'Forms',
     label: 'Form Field',
     description: 'Labels, hints, and errors',
-    stability: 'stable',
   },
   input: {
     group: 'Forms',
     label: 'Input',
     description: 'Text input fields',
-    stability: 'stable',
   },
   'input-otp': {
     group: 'Forms',
     label: 'Input OTP',
     description: 'PIN code input',
-    stability: 'beta',
   },
   listbox: {
     group: 'Controls',
     label: 'Listbox',
     description: 'Selection list',
-    stability: 'beta',
   },
   meter: {
     group: 'Display',
     label: 'Meter',
     description: 'Known-range values',
-    stability: 'stable',
   },
   'navigation-menu': {
     group: 'Navigation',
     label: 'Navigation Menu',
     description: 'Navbar with dropdowns',
-    stability: 'beta',
   },
   pagination: {
     group: 'Controls',
     label: 'Pagination',
     description: 'Page navigation',
-    stability: 'beta',
   },
   popover: {
     group: 'Overlays',
     label: 'Popover',
     description: 'Floating panels',
-    stability: 'beta',
   },
   progress: {
     group: 'Display',
     label: 'Progress',
     description: 'Task completion',
-    stability: 'stable',
   },
   radio: {
     group: 'Forms',
     label: 'Radio',
     description: 'Single-select options',
-    stability: 'stable',
   },
   'range-slider': {
     group: 'Forms',
     label: 'Range Slider',
     description: 'Dual-thumb range selection',
-    stability: 'beta',
   },
   resizable: {
     group: 'Layout',
     label: 'Resizable',
     description: 'Resizable panels',
-    stability: 'beta',
   },
   search: {
     group: 'Forms',
     label: 'Search',
     description: 'Search with clear action',
-    stability: 'beta',
   },
   select: {
     group: 'Forms',
     label: 'Select',
     description: 'Dropdown selection',
-    stability: 'beta',
   },
   separator: {
     group: 'Display',
     label: 'Separator',
     description: 'Visual dividers',
-    stability: 'stable',
   },
   sidebar: {
     group: 'Layout',
     label: 'Sidebar',
     description: 'Application sidebar layout',
-    stability: 'beta',
   },
   skeleton: {
     group: 'Display',
     label: 'Skeleton',
     description: 'Loading placeholders',
-    stability: 'stable',
   },
   spinner: {
     group: 'Feedback',
     label: 'Spinner',
     description: 'Loading indicator',
-    stability: 'beta',
   },
   slider: {
     group: 'Forms',
     label: 'Slider',
     description: 'Range input',
-    stability: 'stable',
   },
   switch: {
     group: 'Forms',
     label: 'Switch',
     description: 'On/off controls',
-    stability: 'stable',
   },
   table: {
     group: 'Display',
     label: 'Table',
     description: 'Data tables',
-    stability: 'beta',
   },
   tabs: {
     group: 'Navigation',
     label: 'Tabs',
     description: 'Tabbed interface',
-    stability: 'beta',
   },
   textarea: {
     group: 'Forms',
     label: 'Textarea',
     description: 'Multi-line input',
-    stability: 'stable',
   },
   theme: {
     group: 'Theming',
     label: 'Theme',
     description: 'Document-level theme provider',
-    stability: 'beta',
   },
   toast: {
     group: 'Overlays',
     label: 'Toast',
     description: 'Notifications',
-    stability: 'beta',
   },
   toggle: {
     group: 'Controls',
     label: 'Toggle',
     description: 'Pressed state button',
-    stability: 'stable',
   },
   'toggle-group': {
     group: 'Controls',
     label: 'Toggle Group',
     description: 'Grouped toggle controls',
-    stability: 'stable',
   },
   toolbar: {
     group: 'Controls',
     label: 'Toolbar',
     description: 'Grouped actions',
-    stability: 'beta',
   },
   tooltip: {
     group: 'Overlays',
     label: 'Tooltip',
     description: 'Hover information',
-    stability: 'beta',
   },
 };
 
@@ -312,6 +285,16 @@ function resolveInternalImport(importPath, currentCategory, currentName) {
   return null;
 }
 
+function stabilityOf(name) {
+  const stability = STABILITY[name];
+  if (!stability) {
+    throw new Error(
+      `COMPONENT_STATUS.md has no row for "${name}". Add one (stable | beta | experimental) — see specs/GUARDRAILS.md ripple effect 6.`
+    );
+  }
+  return stability;
+}
+
 function scanComponents(dir, category) {
   const entries = fs.readdirSync(dir, { withFileTypes: true });
   const components = {};
@@ -331,7 +314,7 @@ function scanComponents(dir, category) {
       group: COMPONENT_METADATA[entry.name]?.group || (category === 'layouts' ? 'Layout' : 'Components'),
       label: COMPONENT_METADATA[entry.name]?.label || titleFromName(entry.name),
       description: COMPONENT_METADATA[entry.name]?.description || '',
-      stability: COMPONENT_METADATA[entry.name]?.stability || 'experimental',
+      stability: stabilityOf(entry.name),
       files,
       dependencies: [],
     };

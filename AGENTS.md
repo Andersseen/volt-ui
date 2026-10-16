@@ -15,7 +15,7 @@ Volt UI is an Angular component library inspired by shadcn/ui, built on top of [
 - AnalogJS 2.6 (docs app, SSR, file router)
 - Vite 7 + `@tailwindcss/vite`
 - Tailwind CSS v4 (CSS-only configuration, no `tailwind.config.js`)
-- ng-primitives 0.110.2 (primitive behaviors / accessibility)
+- ng-primitives (primitive behaviors / accessibility; pinned in `package.json`, peer range in `projects/volt/package.json`)
 - class-variance-authority (CVA) for component variants
 - Vitest + `@testing-library/angular` + Playwright
 

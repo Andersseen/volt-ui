@@ -101,6 +101,7 @@ npx @voltui/cli list           # list all components
 7. Links that look like buttons are \`<a uiButton routerLink>\` / \`<a uiButton href>\`. Never put a button inside a link.
 8. \`class\` on any Volt component is merged with \`cn()\` onto the element that owns the styles (\`<ui-input class="w-24">\` styles the native input).
 9. Toasts: \`inject(UiToastService).success('Saved')\` — no template or ng-primitives import needed.
+10. Server-side search: \`<ui-combobox filterMode="manual" [items]="results()" [loading]="loading()" (queryChange)="search($event)" />\` — the app fetches (latest response wins); never feed server results to the default local filter. Router breadcrumbs: \`<a uiBreadcrumbLink routerLink="…">\`. Native selects: \`<select uiNativeSelect>\`.
 
 ## AI tools
 MCP server at ${MCP_URL} — query it for component details, usage examples, and theme info.
@@ -140,7 +141,7 @@ You are working with **Volt UI**, an Angular v21 component library (shadcn/ui-in
 | Switch | \`./ui/switch\` | \`ui-switch\` | CVA |
 | Toggle | \`./ui/toggle\` | \`ui-toggle\` | CVA |
 | Toggle Group | \`./ui/toggle-group\` | \`ui-toggle-group\`, \`ui-toggle-group-item\` | CVA |
-| Select | \`./ui/select\` | \`ui-select\` + content/item/label/separator/native-select | CVA |
+| Select | \`./ui/select\` | \`ui-select\` + content/item/label/separator + \`<select uiNativeSelect>\` (attribute, not an element) | CVA |
 | Tabs | \`./ui/tabs\` | \`ui-tabs\` + list/trigger/content | Use \`value\` model, not \`defaultValue\` |
 | Accordion | \`./ui/accordion\` | \`ui-accordion\` + item/trigger/content | \`type\`, \`collapsible\` |
 | Avatar | \`./ui/avatar\` | \`ui-avatar\`, \`<img uiAvatarImage>\`, \`ui-avatar-fallback\` | Image is directive |
@@ -261,6 +262,7 @@ npx @voltui/cli list
 7. Never use \`<ui-dialog>\`, \`<ui-tooltip>\`, \`<ui-popover-trigger>\`, or \`<ui-dropdown-menu-trigger>\`.
 8. Never nest a button inside a link: use \`<a uiButton>\`.
 9. \`class\` is merged with \`cn()\` onto the element that owns the styles.
+10. Server-side search: \`<ui-combobox filterMode="manual" (queryChange)="search($event)">\` (the app fetches; never combine with the local filter). Router breadcrumbs: \`<a uiBreadcrumbLink routerLink>\`. Native selects: \`<select uiNativeSelect>\`.
 `;
 
 const VSCODE_SNIPPETS = {
@@ -644,6 +646,46 @@ Never wrap \`<ui-button>\` in \`<a>\`. \`<ui-button>\` remains supported and for
 \`class\` on every Volt component is merged with \`cn()\` (tailwind-merge) onto the element that owns
 the styles: \`<ui-card-content class="p-3">\` replaces \`p-6\`, \`<ui-input class="w-24">\` styles the
 native \`<input>\`.
+
+### Search and navigation
+
+Local list → the default. Server/API search → \`filterMode="manual"\` plus \`(queryChange)\`. Never pass
+server results to the default local filter: it hides rows whose label does not contain the typed text.
+
+\`\`\`html
+<!-- A list you already have: Ui narrows it by label as the user types. -->
+<ui-combobox [(value)]="framework" [items]="frameworks" />
+
+<!-- A server decides what matches: items are rendered exactly as supplied. -->
+<ui-combobox
+  label="Owner"
+  filterMode="manual"
+  [items]="results()"
+  [loading]="loading()"
+  loadingText="Searching…"
+  [emptyText]="'No matches for ' + query()"
+  [itemLabel]="label"
+  [compareWith]="sameId"
+  [(value)]="owner"
+  (queryChange)="search($event)"
+/>
+\`\`\`
+
+\`(queryChange)\` is the text the user typed — not the value, and not the label written back after a
+selection, so it is safe to start a request from. The application owns the request: debounce it, make
+the latest response win, show errors. The combobox never fetches. \`loading\` shows a row and is
+announced once through the combobox's own live region; do not add a second \`role="status"\`.
+
+Angular Router breadcrumbs: put the directive on your own anchor so \`routerLink\` owns navigation.
+
+\`\`\`html
+<a uiBreadcrumbLink routerLink="/admin" [queryParams]="{ tab: 'users' }">Admin</a>
+<ui-breadcrumb-link href="/docs">Docs</ui-breadcrumb-link> <!-- plain URL only -->
+\`\`\`
+
+Prefer native HTML where the browser already has the right primitive: \`<select uiNativeSelect>\` (an
+attribute on a real \`<select>\`; there is no \`<ui-native-select>\` element), \`<details>\`/\`<summary>\`,
+\`<input type="file">\`. Use Ui when it adds reusable styling or behaviour you would otherwise copy.
 
 ### Feedback
 
