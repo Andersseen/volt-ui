@@ -1,6 +1,6 @@
 {
   "name": "@voltui/mcp",
-  "version": "0.4.1",
+  "version": "0.4.0",
   "description": "Setup Volt UI MCP server for Claude, Cursor, Windsurf, and GitHub Copilot",
   "homepage": "https://volt-ui.andersseen.dev/docs/ai-mcp",
   "repository": {
