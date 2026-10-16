@@ -108,7 +108,7 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@agentyx/cli": "^0.9.0",
+    "@agentyx/cli": "^0.20.0",
     "@analogjs/vite-plugin-angular": "^2.8.0",
     "@angular-eslint/eslint-plugin": "^22.6.0",
     "@angular-eslint/eslint-plugin-template": "^22.6.0",

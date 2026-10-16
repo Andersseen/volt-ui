@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "entries": [
     {
       "kind": "skill",
@@ -183,6 +183,16 @@
     },
     {
       "kind": "skill",
+      "path": ".agents/skills/design-system-practice/SKILL.md",
+      "skill": "design-system-practice",
+      "targets": [
+        "codex",
+        "kimi"
+      ],
+      "hash": "054ca6f531b29eaf9d4c00573fac5924a6e1aab03fad192ca9a4d47400a0439a"
+    },
+    {
+      "kind": "skill",
       "path": ".agents/skills/e2e-testing/SKILL.md",
       "skill": "e2e-testing",
       "targets": [
@@ -230,6 +240,16 @@
         "kimi"
       ],
       "hash": "14ef02d1b397841fd245fafe01365f4c5a1cc7bbe43403a355306b288bb03374"
+    },
+    {
+      "kind": "skill",
+      "path": ".agents/skills/interaction-design/SKILL.md",
+      "skill": "interaction-design",
+      "targets": [
+        "codex",
+        "kimi"
+      ],
+      "hash": "e03ae6c30534ce16fe814070a6644f1550a4ac697de4885b4f5ddf2923e63839"
     },
     {
       "kind": "skill",
@@ -403,6 +423,36 @@
     },
     {
       "kind": "skill",
+      "path": ".agents/skills/ui-visual-design/SKILL.md",
+      "skill": "ui-visual-design",
+      "targets": [
+        "codex",
+        "kimi"
+      ],
+      "hash": "4e8f23124f833060b3da1eedb0b8b45b0ccebd9d861305894dcec3953cdf0c75"
+    },
+    {
+      "kind": "skill",
+      "path": ".agents/skills/ux-usability/SKILL.md",
+      "skill": "ux-usability",
+      "targets": [
+        "codex",
+        "kimi"
+      ],
+      "hash": "e5126b8a4881b23387005db89b7e6f93c0d16a90da4eca1bbd6ccda2a8b21862"
+    },
+    {
+      "kind": "skill",
+      "path": ".agents/skills/ux-writing/SKILL.md",
+      "skill": "ux-writing",
+      "targets": [
+        "codex",
+        "kimi"
+      ],
+      "hash": "bb700acc6351f1cdbfadedce0c1fc88665f4529c75cc41f25277cccde370fc26"
+    },
+    {
+      "kind": "skill",
       "path": ".agents/skills/verification/SKILL.md",
       "skill": "verification",
       "targets": [
@@ -410,6 +460,16 @@
         "kimi"
       ],
       "hash": "9e44d108ee0c611ceab8acce49e7ffcbfa9ce8f4fcb3075965d99633f3f9789e"
+    },
+    {
+      "kind": "skill",
+      "path": ".agents/skills/visual-verification/SKILL.md",
+      "skill": "visual-verification",
+      "targets": [
+        "codex",
+        "kimi"
+      ],
+      "hash": "b2d26337c7e26caaed43f0a3196255b0782813c24a305faadaf4454810808937"
     },
     {
       "kind": "skill",
@@ -435,12 +495,15 @@
       "kind": "hook",
       "path": ".claude/settings.json",
       "hooks": [
+        "observe-session-end",
+        "observe-session-start",
+        "observe-tool-use",
         "session-doctor-bootstrap"
       ],
       "targets": [
         "claude"
       ],
-      "hash": "0793a883422ec20acf44f648a50889364742c8bf9de3d87401df3b14c50cea85",
+      "hash": "f3e4aa14070346e64f7b364d1e9b70601a3d402fc0f3bb4df3c5b06e5984e752",
       "created": false
     },
     {
@@ -607,6 +670,15 @@
     },
     {
       "kind": "skill",
+      "path": ".claude/skills/design-system-practice/SKILL.md",
+      "skill": "design-system-practice",
+      "targets": [
+        "claude"
+      ],
+      "hash": "054ca6f531b29eaf9d4c00573fac5924a6e1aab03fad192ca9a4d47400a0439a"
+    },
+    {
+      "kind": "skill",
       "path": ".claude/skills/e2e-testing/SKILL.md",
       "skill": "e2e-testing",
       "targets": [
@@ -649,6 +721,15 @@
         "claude"
       ],
       "hash": "14ef02d1b397841fd245fafe01365f4c5a1cc7bbe43403a355306b288bb03374"
+    },
+    {
+      "kind": "skill",
+      "path": ".claude/skills/interaction-design/SKILL.md",
+      "skill": "interaction-design",
+      "targets": [
+        "claude"
+      ],
+      "hash": "e03ae6c30534ce16fe814070a6644f1550a4ac697de4885b4f5ddf2923e63839"
     },
     {
       "kind": "skill",
@@ -805,12 +886,48 @@
     },
     {
       "kind": "skill",
+      "path": ".claude/skills/ui-visual-design/SKILL.md",
+      "skill": "ui-visual-design",
+      "targets": [
+        "claude"
+      ],
+      "hash": "4e8f23124f833060b3da1eedb0b8b45b0ccebd9d861305894dcec3953cdf0c75"
+    },
+    {
+      "kind": "skill",
+      "path": ".claude/skills/ux-usability/SKILL.md",
+      "skill": "ux-usability",
+      "targets": [
+        "claude"
+      ],
+      "hash": "e5126b8a4881b23387005db89b7e6f93c0d16a90da4eca1bbd6ccda2a8b21862"
+    },
+    {
+      "kind": "skill",
+      "path": ".claude/skills/ux-writing/SKILL.md",
+      "skill": "ux-writing",
+      "targets": [
+        "claude"
+      ],
+      "hash": "bb700acc6351f1cdbfadedce0c1fc88665f4529c75cc41f25277cccde370fc26"
+    },
+    {
+      "kind": "skill",
       "path": ".claude/skills/verification/SKILL.md",
       "skill": "verification",
       "targets": [
         "claude"
       ],
       "hash": "9e44d108ee0c611ceab8acce49e7ffcbfa9ce8f4fcb3075965d99633f3f9789e"
+    },
+    {
+      "kind": "skill",
+      "path": ".claude/skills/visual-verification/SKILL.md",
+      "skill": "visual-verification",
+      "targets": [
+        "claude"
+      ],
+      "hash": "b2d26337c7e26caaed43f0a3196255b0782813c24a305faadaf4454810808937"
     },
     {
       "kind": "skill",
@@ -845,6 +962,21 @@
       "created": false
     },
     {
+      "kind": "hook",
+      "path": ".codex/hooks.json",
+      "hooks": [
+        "observe-session-end",
+        "observe-session-start",
+        "observe-tool-use",
+        "session-doctor-bootstrap"
+      ],
+      "targets": [
+        "codex"
+      ],
+      "hash": "d1b6e085d30bbf8dce01a66a3ed470f28f787cb7f6e4cf5809e92646b79e7d97",
+      "created": false
+    },
+    {
       "kind": "mcp",
       "path": ".kimi-code/mcp.json",
       "servers": [
@@ -872,5 +1004,597 @@
       "hash": "d779d3b2ac3aceaf7db7b30b27ee399183f127fca0dc6e79065bca1a7b315f07",
       "created": false
     }
-  ]
+  ],
+  "resolution": {
+    "agentyxVersion": "0.20.0",
+    "configHash": "f2ef8a40f5fd8e53de211bf0c6f0e1c657376066911a8ae46d35c715fff15c60",
+    "targets": [
+      "claude",
+      "codex",
+      "kimi"
+    ],
+    "skills": [
+      {
+        "name": "engineering-principles",
+        "hash": "e7573e73b93fbbce857bbe2927904ebc7022e31b5607edc49586da75751835f2",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "technical"
+          }
+        ]
+      },
+      {
+        "name": "code-quality",
+        "hash": "c7fef0865643838f0c375d2a7523bbc724d14e45b3329b8ae43215519ba5b12b",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "technical"
+          }
+        ]
+      },
+      {
+        "name": "api-design",
+        "hash": "01b1dc1bf367367097909f3ec6267fe67083053ce1c503d0c34caa42135e70d7",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "technical"
+          }
+        ]
+      },
+      {
+        "name": "code-review",
+        "hash": "87e989466034507de357f2abe0c2b0930304baaa6006bbd6cf24d5723334ce8f",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "technical"
+          }
+        ]
+      },
+      {
+        "name": "typescript-strict",
+        "hash": "3e1b5e768d18ec1b2ebe7e367cb018849258ca7fc1c946030cc6c5c0713cc76d",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "typescript"
+          }
+        ]
+      },
+      {
+        "name": "typescript-modeling",
+        "hash": "2fb54d99e8374f46b3402d1d16d389c19b86daeb29326ff108bbb01b1ad055c8",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "typescript"
+          }
+        ]
+      },
+      {
+        "name": "typescript-modern",
+        "hash": "180fcced2a14811110a4d3e8762927c60e617fda843c138ee707171a820c2d62",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "typescript"
+          }
+        ]
+      },
+      {
+        "name": "angular-modern",
+        "hash": "55008e44e2bb6c9a5956fa85a203dc0fe6405e327c7ed7eefdbb84742269e3db",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "angular"
+          }
+        ]
+      },
+      {
+        "name": "angular-signals",
+        "hash": "622176a55c4a13b08ce0bf969fb27437e46b0d999ce901c3a0391ce192ae491f",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "angular"
+          }
+        ]
+      },
+      {
+        "name": "angular-architecture",
+        "hash": "4ffc2b2003f86329467b53d09cd47cdc7abd5e3c4548ea9e11f9ce1c026b0aa8",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "angular"
+          }
+        ]
+      },
+      {
+        "name": "angular-testing",
+        "hash": "a9c74c31f2ed728e2bd556c30e61ee17d666e4ab7607ffc1d9207b71ab5f491c",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "angular"
+          }
+        ]
+      },
+      {
+        "name": "test-strategy",
+        "hash": "e68899774dfa833b19e29d6224e8f375b5263b242bf5be1548c342ce2f4e93d3",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "testing"
+          }
+        ]
+      },
+      {
+        "name": "test-doubles",
+        "hash": "928a7ef4e9f8f76ccaaf0b7b577386c974077985fe7fa066dae4276bfc744037",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "testing"
+          }
+        ]
+      },
+      {
+        "name": "e2e-testing",
+        "hash": "f07c9ae381e916d93c6ee67c32be8eac76482f19fcfbbe9ca6116af9c3036113",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "testing"
+          }
+        ]
+      },
+      {
+        "name": "flaky-tests",
+        "hash": "d567f98325047a258658b44bf8993060256ae1ccf5e8570d183805e533e47481",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "testing"
+          }
+        ]
+      },
+      {
+        "name": "performance-profiling",
+        "hash": "c6244f5f058cf7fafdd01bde7381c2da6704c405006bf506a1f2028239f94368",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "performance"
+          }
+        ]
+      },
+      {
+        "name": "web-vitals",
+        "hash": "3ac9588d3fe2adc76c122a5548b8a085d96f172f6f1303d06a813c0b09b46ca2",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "performance"
+          }
+        ]
+      },
+      {
+        "name": "query-performance",
+        "hash": "c567a36433e8f4469279e1ed9fb6df704d69eea6caf110678dc763d4d8ca0a44",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "performance"
+          }
+        ]
+      },
+      {
+        "name": "ui-visual-design",
+        "hash": "4e8f23124f833060b3da1eedb0b8b45b0ccebd9d861305894dcec3953cdf0c75",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "ui-ux"
+          }
+        ]
+      },
+      {
+        "name": "ux-usability",
+        "hash": "e5126b8a4881b23387005db89b7e6f93c0d16a90da4eca1bbd6ccda2a8b21862",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "ui-ux"
+          }
+        ]
+      },
+      {
+        "name": "interaction-design",
+        "hash": "e03ae6c30534ce16fe814070a6644f1550a4ac697de4885b4f5ddf2923e63839",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "ui-ux"
+          }
+        ]
+      },
+      {
+        "name": "design-system-practice",
+        "hash": "054ca6f531b29eaf9d4c00573fac5924a6e1aab03fad192ca9a4d47400a0439a",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "ui-ux"
+          }
+        ]
+      },
+      {
+        "name": "ux-writing",
+        "hash": "bb700acc6351f1cdbfadedce0c1fc88665f4529c75cc41f25277cccde370fc26",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "ui-ux"
+          }
+        ]
+      },
+      {
+        "name": "visual-verification",
+        "hash": "b2d26337c7e26caaed43f0a3196255b0782813c24a305faadaf4454810808937",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "ui-ux"
+          }
+        ]
+      },
+      {
+        "name": "semantic-html",
+        "hash": "e96528d96c138da5f1eb1b79297a3f3bb0e099068e1cc3593e0ae53b2a71a9e2",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "accessibility"
+          }
+        ]
+      },
+      {
+        "name": "aria-patterns",
+        "hash": "08337f8e76a3ccd0e3abb2b6f35d4016e49de0e156fef134306d76919aa68535",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "accessibility"
+          }
+        ]
+      },
+      {
+        "name": "keyboard-navigation",
+        "hash": "6e51625b1ac621dd8f27d9e438fa23f0ef5e4bbf4e8b3726151f621bc7ae46f8",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "accessibility"
+          }
+        ]
+      },
+      {
+        "name": "technical-writing",
+        "hash": "ca84bf3458cce4b591b4b3bb1bcdf6b7f573a17eb4f7c29325d74445e498e9e5",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "documentation"
+          }
+        ]
+      },
+      {
+        "name": "api-documentation",
+        "hash": "dff47f81855956f4c93b892f9671a88363df84e4cd40a11bde89ddaaac6e8e36",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "documentation"
+          }
+        ]
+      },
+      {
+        "name": "decision-records",
+        "hash": "07e385ae70f481ce4535994ee9f58552c163c9f0b1738765c9439ca1f1cee168",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "documentation"
+          }
+        ]
+      },
+      {
+        "name": "commit-hygiene",
+        "hash": "ca501d59eeee6e0bda83cc7baf17050ca3740568433490faabd40581346d71b7",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "git"
+          }
+        ]
+      },
+      {
+        "name": "branching-strategy",
+        "hash": "138eda6f5f394a4f009bcaabaa6032d536374afb50797dab13efd7b72bc6740a",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "git"
+          }
+        ]
+      },
+      {
+        "name": "pull-requests",
+        "hash": "23ec8995490bc82cfcff509986bfc968df9f46c6106c907fd8cd94616699e721",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "git"
+          }
+        ]
+      },
+      {
+        "name": "ci-pipelines",
+        "hash": "9474badebf768a298f0952dc96169c16e780f460907548b4ff1d2862d834a4cb",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "devops"
+          }
+        ]
+      },
+      {
+        "name": "containerization",
+        "hash": "6961c314ef6b5f4720c49e562cf2c38cc6aafd0d8391dd71b18ad307dbba226d",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "devops"
+          }
+        ]
+      },
+      {
+        "name": "deployment-safety",
+        "hash": "6ca80c005327918caac27684f95702ffc2b8718d4513c48263c65caa7279d773",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "devops"
+          }
+        ]
+      },
+      {
+        "name": "infrastructure-as-code",
+        "hash": "14ef02d1b397841fd245fafe01365f4c5a1cc7bbe43403a355306b288bb03374",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "devops"
+          }
+        ]
+      },
+      {
+        "name": "context-efficient-development",
+        "hash": "3b0279048858e62857f7bab721554690d6601f8dd1d7c208dec2d952ea01370f",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "efficiency"
+          }
+        ]
+      },
+      {
+        "name": "concise-output",
+        "hash": "9393b8594a3fc63a288fb6b4a82312c9cc57d539b7bf49cd709a913937e9e2af",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "efficiency"
+          }
+        ]
+      },
+      {
+        "name": "targeted-exploration",
+        "hash": "f953693a6ac3b874ad0d036e38d1d8a1886d70785db40b8f1a77e24019786116",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "efficiency"
+          }
+        ]
+      },
+      {
+        "name": "focused-verification",
+        "hash": "af0d9709dc7ad838bf82507785473657fd1620466d4178da351022dee83d39f5",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "efficiency"
+          }
+        ]
+      },
+      {
+        "name": "brainstorming",
+        "hash": "9e18ebcd4c0a60ee0945283b181a76210d06936da2bb4852a2aea6188130b754",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "agentic"
+          }
+        ]
+      },
+      {
+        "name": "planning",
+        "hash": "b1611eaa6a1f454c4c3a698a93afbd6a5f09445e61345ad14496a143ca169790",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "agentic"
+          }
+        ]
+      },
+      {
+        "name": "systematic-debugging",
+        "hash": "9cfc2371df6cd1d999352131198a44cc2a6456b88a30ad760e2f747dbbeb7a5a",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "agentic"
+          }
+        ]
+      },
+      {
+        "name": "verification",
+        "hash": "9e44d108ee0c611ceab8acce49e7ffcbfa9ce8f4fcb3075965d99633f3f9789e",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "agentic"
+          }
+        ]
+      },
+      {
+        "name": "parallel-work",
+        "hash": "ddf2862b7320095eead3f954ab4dafbcf8324ea644135461362aaf503c28899d",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "agentic"
+          }
+        ]
+      },
+      {
+        "name": "worktree-workflow",
+        "hash": "7cc1d9d3a92dcaab15e3fc6c59980628c75b094cff280d698c2c0c9b701b4ba2",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "agentic"
+          }
+        ]
+      },
+      {
+        "name": "subagent-driven-development",
+        "hash": "86695f6c1f346d9399e31bfec0054da47f8d4284110b9f277f28ea5e9e741bda",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "agentic"
+          }
+        ]
+      },
+      {
+        "name": "requesting-code-review",
+        "hash": "87a63cba4f1b30db4fe28815d7fc0e94ee260b97ba10c60aef5de84da8b55b1a",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "agentic"
+          }
+        ]
+      }
+    ],
+    "mcpServers": [
+      {
+        "name": "context7",
+        "hash": "0843a6650bb4720cafee49aaf8990ce43dad4a3707f7b2d38887721dda31b8d4",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "angular"
+          }
+        ]
+      },
+      {
+        "name": "playwright",
+        "hash": "89934ec91ec653e6f0649dc7785d907c9c68d3e7931e58c3451a6ea09d384494",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "testing"
+          },
+          {
+            "kind": "pack",
+            "name": "ui-ux"
+          }
+        ]
+      },
+      {
+        "name": "codebase-memory",
+        "hash": "124d3bede6bd9f836736fc4fd3f8e619aca7b6008f3f9bf540f1039518d200f3",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "efficiency"
+          }
+        ]
+      }
+    ],
+    "tools": [
+      {
+        "name": "rtk",
+        "hash": "362a6c48f1128f8a0865bf9ed1fc20ea5ca6ce69f66df6ef669570a08918dfd3",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "efficiency"
+          }
+        ]
+      }
+    ],
+    "hooks": [
+      {
+        "name": "session-doctor-bootstrap",
+        "hash": "470811c79243512808e0b9eec21f86cc843d04846d391b644cd443a1505c8a24",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "efficiency"
+          }
+        ]
+      },
+      {
+        "name": "observe-session-start",
+        "hash": "f618f8a879632e9ad7463e9d21d69462cc24d86ca0a3c55ed1536b6596f5c00e",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "efficiency"
+          }
+        ]
+      },
+      {
+        "name": "observe-session-end",
+        "hash": "0a892aecbd7ba827f838668b7621d189be473f8856cd4fd2d04ea7087a79dd69",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "efficiency"
+          }
+        ]
+      },
+      {
+        "name": "observe-tool-use",
+        "hash": "c5594fd64bfb6908a9bb9a15e7a9cac9fee252f6a92cd60e4f1fd0890ea91c50",
+        "origins": [
+          {
+            "kind": "pack",
+            "name": "efficiency"
+          }
+        ]
+      }
+    ],
+    "agents": []
+  }
 }
