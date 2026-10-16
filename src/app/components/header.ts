@@ -26,7 +26,7 @@ import { SITE_STATS } from '../lib/generated/site-stats';
   template: `
     <header class="sticky top-0 z-50 bg-background/70 backdrop-blur-xl border-b border-border/40">
       <div
-        class="max-w-6xl mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between gap-2"
+        class="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-2"
       >
         <div class="flex items-center gap-3 shrink-0">
           <a

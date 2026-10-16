@@ -15,13 +15,22 @@ import { LandingWorkflow } from '../components/landing/landing-workflow';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [LandingHero, LandingProofPoints, LandingFeatures, LandingWorkflow, LandingCta],
   template: `
-    <main class="relative z-10 overflow-hidden">
+    <!-- Ambient light: landing only, so documentation reads on a plain background. -->
+    <div aria-hidden="true" class="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+      <div
+        class="absolute -top-[20%] -left-[10%] h-[50%] w-[50%] rounded-[100%] bg-primary/20 opacity-50 mix-blend-screen blur-[120px]"
+      ></div>
+      <div
+        class="absolute top-[60%] -right-[10%] h-[60%] w-[40%] rounded-[100%] bg-primary/20 opacity-30 mix-blend-screen blur-[120px]"
+      ></div>
+    </div>
+    <div class="relative z-10 overflow-hidden">
       <app-landing-hero />
       <app-landing-proof-points />
       <app-landing-features />
       <app-landing-workflow />
       <app-landing-cta />
-    </main>
+    </div>
   `,
 })
 export default class Home {}

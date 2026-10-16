@@ -10,7 +10,7 @@ import { injectAppI18n } from '../i18n/i18n';
   template: `
     <footer class="border-t border-border/50 bg-muted/15 py-10 relative z-10">
       <div
-        class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row justify-between items-center gap-5 text-sm text-muted-foreground"
+        class="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-5 text-sm text-muted-foreground"
       >
         <div class="flex items-center gap-3">
           <img src="favicon.svg" alt="" class="h-7 w-7 rounded-lg" />

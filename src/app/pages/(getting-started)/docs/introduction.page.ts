@@ -9,6 +9,7 @@ import {
   VoltCardTitle,
 } from 'volt';
 import { Prose, INLINE_CODE_SM } from '../../../components/prose';
+import { COMPONENTS } from '../../../lib/component-metadata';
 
 @Component({
   selector: 'app-introduction-page',
@@ -294,24 +295,22 @@ import { Prose, INLINE_CODE_SM } from '../../../components/prose';
       <!-- Component catalog -->
       <div class="space-y-4">
         <h2 class="text-xl font-semibold tracking-tight">{{ t('guide.intro.catalogTitle') }}</h2>
-        <p class="text-muted-foreground">
-          <app-prose key="guide.intro.catalogLede" />
-          <a [routerLink]="path('/docs/versioning')" class="underline hover:text-foreground">{{
-            t('guide.intro.versioningLink')
-          }}</a>
-          {{ t('guide.intro.catalogLedeTail') }}
-        </p>
+        <app-prose class="block text-muted-foreground" key="guide.intro.catalogSummary" />
 
-        <div class="p-4 rounded-lg border border-border bg-muted/30">
-          <h3 class="font-medium text-green-600 mb-2">{{ t('guide.intro.stableLabel') }}</h3>
-          <p class="text-sm text-muted-foreground mb-2">{{ t('guide.intro.stableBody') }}</p>
-          <div class="font-mono text-xs text-muted-foreground">
-            accordion, autofill, avatar, badge, breadcrumbs, button, card, checkbox, combobox,
-            date-picker, dialog, drawer, dropdown-menu, file-upload, form-field, input, input-otp,
-            listbox, meter, native-select, navigation-menu, pagination, popover, progress, radio,
-            range-slider, resizable, search, select, separator, sidebar, skeleton, slider, switch,
-            table, tabs, textarea, theme, toast, toggle, toggle-group, toolbar, tooltip
-          </div>
+        <!-- Derived from the component catalog, so a new or promoted component can't be missed. -->
+        <div class="grid gap-4 md:grid-cols-2">
+          <volt-card class="p-4">
+            <h3 class="mb-2 font-medium text-success">{{ t('guide.intro.stableLabel') }}</h3>
+            <p class="mb-3 text-sm text-muted-foreground">{{ t('guide.intro.stableBody') }}</p>
+            <p class="font-mono text-xs leading-5 text-muted-foreground">{{ stableNames }}</p>
+          </volt-card>
+          @if (betaNames) {
+            <volt-card class="p-4">
+              <h3 class="mb-2 font-medium text-info">{{ t('catalog.beta') }}</h3>
+              <p class="mb-3 text-sm text-muted-foreground">{{ t('catalog.betaBody') }}</p>
+              <p class="font-mono text-xs leading-5 text-muted-foreground">{{ betaNames }}</p>
+            </volt-card>
+          }
         </div>
       </div>
 
@@ -356,4 +355,14 @@ export default class IntroductionPage {
 
   protected readonly inlineCode = INLINE_CODE_SM;
   protected readonly path = this.translations.path;
+
+  protected readonly stableNames = namesWith('stable');
+  protected readonly betaNames = namesWith('beta');
+}
+
+function namesWith(stability: (typeof COMPONENTS)[number]['stability']): string {
+  return COMPONENTS.filter(component => component.stability === stability)
+    .map(component => component.name)
+    .sort()
+    .join(', ');
 }

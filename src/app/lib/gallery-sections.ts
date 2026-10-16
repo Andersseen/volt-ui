@@ -1,4 +1,4 @@
-import type { DocsSidebarGroup } from '../components/docs-sidebar-nav';
+import type { DocsSidebarGroup } from '../components/docs/docs-nav-list';
 import { BLOCK_GROUPS } from './blocks-metadata';
 import { LAYOUT_GROUPS } from './layouts-metadata';
 import type { PlainTranslationKey } from '../i18n/i18n';
