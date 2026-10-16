@@ -264,12 +264,8 @@
       "cnLede": "La mayoría de componentes exponen una entrada `class` que pasa por `cn()`: `clsx` para unir condicionalmente y `tailwind-merge` para resolver conflictos, de modo que gane la última utilidad en vez de acabar las dos en la lista de clases:",
       "cnMerge": "Como por debajo es `tailwind-merge`, `class=\"bg-red-500\"` sobrescribe de forma fiable la utilidad de fondo de la propia variante en vez de producir dos clases `bg-*` en conflicto en la salida final.",
       "colorsTitle": "Color y forma frente a estructura",
-      "cvaLedeHead": "Los componentes con variantes visuales (button, badge, toast, ...) separan el estilo en un `variants.ts` hermano usando",
-      "cvaLink": "class-variance-authority",
-      "cvaLedeTail": ". El componente en sí solo calcula qué variante está activa; nunca escribe clases condicionales a mano en la plantilla:",
-      "colorsLedeHead": "Antes de editar las clases de Tailwind de un componente para cambiar un color o un radio de borde, comprueba si un",
-      "themePresetLink": "preset de tema",
-      "colorsLedeTail": "ya lo cubre: `bg-primary`, `rounded-md` y `shadow-lg` se resuelven todos a través de tokens `--volt-*` que ya varían según el preset de color o de estilo. Escribir `bg-indigo-600` a mano en un componente copiado deja a ese componente fuera del cambio de tema; recurre a un preset de color o de estilo propio cuando el cambio deba aplicarse en todas partes. Las ediciones de componente son para cambios **estructurales** —nuevas variantes, nuevos slots, marcado distinto— que ningún token podría expresar."
+      "cvaLede": "Los componentes con variantes visuales (button, badge, toast, ...) separan el estilo en un `variants.ts` hermano usando [class-variance-authority](https://cva.style/docs). El componente en sí solo calcula qué variante está activa; nunca escribe clases condicionales a mano en la plantilla:",
+      "colorsLede": "Antes de editar las clases de Tailwind de un componente para cambiar un color o un radio de borde, comprueba si un [preset de tema](/docs/themes) ya lo cubre: `bg-primary`, `rounded-md` y `shadow-lg` se resuelven todos a través de tokens `--volt-*` que ya varían según el preset de color o de estilo. Escribir `bg-indigo-600` a mano en un componente copiado deja a ese componente fuera del cambio de tema; recurre a un preset de color o de estilo propio cuando el cambio deba aplicarse en todas partes. Las ediciones de componente son para cambios **estructurales** —nuevas variantes, nuevos slots, marcado distinto— que ningún token podría expresar."
     },
     "versioningPage": {
       "title": "Versionado y estabilidad",

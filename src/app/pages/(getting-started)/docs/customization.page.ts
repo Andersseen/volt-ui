@@ -1,12 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { injectAppI18n } from '../../../i18n/i18n';
-import { RouterLink } from '@angular/router';
 import { Prose } from '../../../components/prose';
 
 @Component({
   selector: 'app-customization-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [Prose, RouterLink],
+  imports: [Prose],
   template: `
     <div class="space-y-8">
       <div>
@@ -54,14 +53,7 @@ export const buttonVariants = cva('...', {{ '{' }}
           {{ t('guide.customizationPage.cvaTitle') }}
         </h2>
         <p class="text-muted-foreground">
-          <app-prose key="guide.customizationPage.cvaLedeHead" />
-          <a
-            href="https://cva.style/docs"
-            target="_blank"
-            rel="noopener"
-            class="text-primary underline-offset-4 hover:underline"
-            >{{ t('guide.customizationPage.cvaLink') }}</a
-          >{{ t('guide.customizationPage.cvaLedeTail') }}
+          <app-prose key="guide.customizationPage.cvaLede" />
         </p>
 
         <div
@@ -114,13 +106,7 @@ export function cn(...inputs: ClassValue[]): string {{ '{' }}
           {{ t('guide.customizationPage.colorsTitle') }}
         </h2>
         <p class="text-muted-foreground">
-          {{ t('guide.customizationPage.colorsLedeHead') }}
-          <a
-            [routerLink]="path('/docs/themes')"
-            class="text-primary underline-offset-4 hover:underline"
-            >{{ t('guide.customizationPage.themePresetLink') }}</a
-          >
-          <app-prose key="guide.customizationPage.colorsLedeTail" />
+          <app-prose key="guide.customizationPage.colorsLede" />
         </p>
       </div>
     </div>
@@ -130,5 +116,4 @@ export default class CustomizationPage {
   private readonly translations = injectAppI18n();
 
   protected readonly t = this.translations.t;
-  protected readonly path = this.translations.path;
 }

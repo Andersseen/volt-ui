@@ -2,12 +2,13 @@ import { createHttpMessageLoader, defineRemoteI18n } from '@etyma/core';
 import { injectI18n } from '@etyma/angular';
 
 import contract from './etyma.generated';
+import { catalogUrl, I18N_PROJECT } from './project';
 
-export const LOCALES = ['en', 'es', 'uk'] as const;
+export const LOCALES = I18N_PROJECT.locales;
 
 export type Locale = (typeof LOCALES)[number];
 
-export const SOURCE_LOCALE: Locale = 'en';
+export const SOURCE_LOCALE: Locale = I18N_PROJECT.sourceLocale;
 
 export const LOCALE_NAMES: Readonly<Record<Locale, string>> = {
   en: 'English',
@@ -21,11 +22,9 @@ export const LOCALE_SHORT: Readonly<Record<Locale, string>> = {
   uk: 'UA',
 };
 
-// Translation content is owned by Glossa, not this repo. See AGENTS.md "Translations" for
-// the agent workflow (Glossa MCP) and how to refresh `etyma.generated.ts` after a key change.
-const GLOSSA_I18N_BASE = 'https://glossa.andersseen.dev/i18n/volt-ui';
-
-const remoteLoader = createHttpMessageLoader(locale => `${GLOSSA_I18N_BASE}/${locale}.json`);
+// Translation content is owned by Glossa, not this repo. See AGENTS.md "Site copy and
+// translations" for the agent workflow (Glossa MCP) and how to refresh `etyma.generated.ts`.
+const remoteLoader = createHttpMessageLoader(catalogUrl);
 
 export const appI18n = defineRemoteI18n({
   locales: LOCALES,
