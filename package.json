@@ -3,10 +3,10 @@
   "version": "1.2.0",
   "bin": {
     "volt": "./cli/bin/volt",
-    "volt-ui-mcp": "./cli/mcp/setup-mcp.js"
+    "volt-ui-agent": "./cli/agent/setup-agent.js"
   },
   "scripts": {
-    "setup:mcp": "node cli/mcp/setup-mcp.js",
+    "setup:agent": "node cli/agent/setup-agent.js",
     "start": "vite",
     "dev": "vite",
     "predev": "node cli/generate-manifest.js && node scripts/generate-site-stats.mjs",
@@ -32,7 +32,7 @@
     "test:e2e:consumer-cli": "pnpm build:lib && playwright test -c playwright.consumer-cli.config.ts",
     "test:e2e:ui": "playwright test --ui",
     "test:all": "pnpm lint && pnpm typecheck && pnpm check:generated && pnpm check:ai-docs && pnpm test:coverage && pnpm build:lib && pnpm test:e2e:ci && pnpm test:e2e:consumer && pnpm test:e2e:consumer-cli",
-    "release:check": "pnpm stats:full && pnpm check:generated && pnpm lint && pnpm typecheck && pnpm check:ai-docs && pnpm test:coverage && pnpm pack:lib && pnpm pack:cli && pnpm pack:mcp",
+    "release:check": "pnpm stats:full && pnpm check:generated && pnpm lint && pnpm typecheck && pnpm check:ai-docs && pnpm test:coverage && pnpm pack:lib && pnpm pack:cli && pnpm pack:agent",
     "release:minor": "pnpm release:check",
     "lint": "eslint . --ext .ts,.html",
     "lint:fix": "eslint . --ext .ts,.html --fix",
@@ -46,10 +46,10 @@
     "build:lib": "ng build volt",
     "pack:lib": "pnpm build:lib && cd dist/volt && npm --cache ../../.npm-cache pack --dry-run",
     "pack:cli": "cd cli && node prepare-package.js && npm --cache ../.npm-cache pack --dry-run && node prepare-package.js --clean",
-    "pack:mcp": "cd cli/mcp && npm --cache ../../.npm-cache pack --dry-run",
+    "pack:agent": "cd cli/agent && npm --cache ../../.npm-cache pack --dry-run",
     "publish:lib": "ng build volt && cd dist/volt && npm publish --access public",
     "publish:cli": "cd cli && node prepare-package.js && npm --cache ../.npm-cache publish --access public && node prepare-package.js --clean",
-    "publish:mcp": "cd cli/mcp && npm publish --access public",
+    "publish:agent": "cd cli/agent && npm publish --access public",
     "prepare": "husky",
     "manifest": "node cli/generate-manifest.js",
     "stats": "node scripts/generate-site-stats.mjs",

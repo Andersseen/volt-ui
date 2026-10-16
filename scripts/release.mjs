@@ -38,11 +38,11 @@ const PACKAGES = [
     tagPrefix: 'cli',
   },
   {
-    name: '@voltui/mcp',
-    label: 'MCP installer',
-    versionFile: 'cli/mcp/package.json',
-    publish: 'pnpm publish:mcp',
-    tagPrefix: 'mcp',
+    name: '@voltui/agent',
+    label: 'Agent installer (skills + MCP)',
+    versionFile: 'cli/agent/package.json',
+    publish: 'pnpm publish:agent',
+    tagPrefix: 'agent',
   },
 ];
 

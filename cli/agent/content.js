@@ -1,10 +1,10 @@
 'use strict';
 
 /**
- * Content the @voltui/mcp installer writes into a consumer project: Cursor rules, Copilot
+ * Content the @voltui/agent installer writes into a consumer project: Cursor rules, Copilot
  * instructions, the Claude Code skill and the VS Code snippets.
  *
- * Single source for both the installer (setup-mcp.js) and the hosted /api/mcp/setup endpoint, which
+ * Single source for both the installer (setup-agent.js) and the hosted /api/mcp/setup endpoint, which
  * reads a generated copy (`pnpm generate:mcp-content`). Edit here, never in the generated file.
  */
 
@@ -514,7 +514,7 @@ const ok = await inject(UiDialogService).open<boolean>(confirmTpl, { role: 'aler
 
 ## AI tools integration
 
-- **MCP server**: \`${MCP_URL}\` is a spec-compliant Streamable HTTP MCP server, already configured in this project's \`.mcp.json\` by \`npx @voltui/mcp\`. It exposes tools, resources, and prompts:
+- **MCP server**: \`${MCP_URL}\` is a spec-compliant Streamable HTTP MCP server, already configured in this project's \`.mcp.json\` by \`npx @voltui/agent\`. It exposes tools, resources, and prompts:
   - Tools: \`list_components\`, \`get_component\`, \`get_usage_example\`, \`get_theme_info\`, \`get_project_info\`, \`generate_cli_command\`.
   - Resources: \`component://<name>\`, \`theme://info\`, \`project://info\`.
   - Prompts: \`generate-volt-ui-component\`, \`volt-ui-troubleshooting\`.

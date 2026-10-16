@@ -1,18 +1,18 @@
 /**
- * Volt UI MCP Setup (@voltui/mcp)
+ * Volt UI agent setup (@voltui/agent)
  *
  * Configures AI agents to use the Volt UI MCP server and writes the Volt UI context files
  * (skill, rules, snippets) into a project.
  *
  * Usage:
- *   npx @voltui/mcp                      interactive
- *   npx @voltui/mcp claude               one agent
- *   npx @voltui/mcp cursor copilot       several agents
- *   npx @voltui/mcp --all --yes          every agent, no prompts
- *   npx @voltui/mcp claude --dry-run     show what would be written
- *   npx @voltui/mcp claude --uninstall   remove what the installer wrote
+ *   npx @voltui/agent                      interactive
+ *   npx @voltui/agent claude               one agent
+ *   npx @voltui/agent cursor copilot       several agents
+ *   npx @voltui/agent --all --yes          every agent, no prompts
+ *   npx @voltui/agent claude --dry-run     show what would be written
+ *   npx @voltui/agent claude --uninstall   remove what the installer wrote
  *
- * Run `npx @voltui/mcp --help` for every flag.
+ * Run `npx @voltui/agent --help` for every flag.
  *
  * Re-running is safe: JSON configs are merged, files shared with the user (rules, instructions) get
  * a delimited block that is replaced in place, and files the installer owns are rewritten.
@@ -28,7 +28,7 @@ const { DEFAULT_MCP_URL, buildContent } = require('./content');
 const VERSION = require('./package.json').version;
 
 const BLOCK_START =
-  '<!-- volt-ui:begin (managed by @voltui/mcp — edits inside are overwritten) -->';
+  '<!-- volt-ui:begin (managed by @voltui/agent — edits inside are overwritten) -->';
 const BLOCK_END = '<!-- volt-ui:end -->';
 
 // ---------------------------------------------------------------------------
@@ -245,9 +245,9 @@ function uninstall(file, spec, dryRun) {
 // Arguments
 // ---------------------------------------------------------------------------
 
-const HELP = `Volt UI MCP setup (@voltui/mcp ${VERSION})
+const HELP = `Volt UI agent setup (@voltui/agent ${VERSION})
 
-Usage: npx @voltui/mcp [agent...] [options]
+Usage: npx @voltui/agent [agent...] [options]
 
 Agents: claude, cursor, windsurf, copilot, vscode
         With no agent and no --all, you are asked which to set up.

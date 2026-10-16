@@ -1,13 +1,13 @@
-# @voltui/mcp
+# @voltui/agent
 
 Connects your AI coding agent to the [Volt UI](https://volt-ui.andersseen.dev) MCP server and
 installs the Volt UI context files it needs (skill, rules, snippets) into your project.
 
 ```bash
-npx @voltui/mcp                  # interactive
-npx @voltui/mcp claude           # one agent
-npx @voltui/mcp cursor copilot   # several
-npx @voltui/mcp --all --yes      # every agent, no prompts
+npx @voltui/agent                  # interactive
+npx @voltui/agent claude           # one agent
+npx @voltui/agent cursor copilot   # several
+npx @voltui/agent --all --yes      # every agent, no prompts
 ```
 
 Requires Node 20 or newer. No dependencies.
@@ -54,10 +54,10 @@ Exit codes: `0` ok · `1` failed (for example an unparseable config) · `2` bad 
 ## Removing it
 
 ```bash
-npx @voltui/mcp claude --uninstall
+npx @voltui/agent claude --uninstall
 ```
 
 ## Links
 
 [Documentation](https://volt-ui.andersseen.dev/docs/ai-mcp) ·
-[Source](https://github.com/Andersseen/volt-ui/tree/main/cli/mcp) · MIT
+[Source](https://github.com/Andersseen/volt-ui/tree/main/cli/agent) · MIT

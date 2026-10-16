@@ -134,7 +134,9 @@ function extractSignals(src) {
     // `input(x, { alias: 'aria-label' })` is bound by its alias, so that is the documented name.
     const aliasMatch = optionsRaw?.match(/alias:\s*'([^']+)'/);
     const publicName = aliasMatch?.[1] ?? name;
-    const type = generic ? splitGenericTopLevel(generic)[0].trim() : inferTypeFromLiteral(defaultRaw);
+    const type = generic
+      ? splitGenericTopLevel(generic)[0].trim()
+      : inferTypeFromLiteral(defaultRaw);
 
     if (kind === 'input') {
       inputs.push({

@@ -64,7 +64,7 @@ jobs:
         run: pnpm build:lib
 
       - name: Validate all publishable packages
-        run: pnpm pack:lib && pnpm pack:cli && pnpm pack:mcp
+        run: pnpm pack:lib && pnpm pack:cli && pnpm pack:agent
 
       - name: Install Playwright Chromium
         run: pnpm exec playwright install --with-deps chromium

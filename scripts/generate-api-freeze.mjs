@@ -48,12 +48,17 @@ function renderComponentSection(name, directives, variants) {
   const lines = [`### \`${name}\``, ''];
 
   for (const d of directives) {
-    lines.push(`**${d.className}** — selector: \`${escapePipes(d.selector ?? '(none found)')}\``, '');
+    lines.push(
+      `**${d.className}** — selector: \`${escapePipes(d.selector ?? '(none found)')}\``,
+      ''
+    );
 
     if (d.inputs.length > 0) {
       lines.push('| Input | Type | Default | Transform |', '| --- | --- | --- | --- |');
       for (const i of d.inputs) {
-        lines.push(`| \`${i.name}\` | ${fmtType(i.type)} | ${fmtDefault(i)} | ${i.transform ?? ''} |`);
+        lines.push(
+          `| \`${i.name}\` | ${fmtType(i.type)} | ${fmtDefault(i)} | ${i.transform ?? ''} |`
+        );
       }
       lines.push('');
     }

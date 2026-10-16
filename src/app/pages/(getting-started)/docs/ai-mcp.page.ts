@@ -40,7 +40,7 @@ const MCP_URL = 'https://volt-ui.pages.dev/api/mcp';
         </h2>
         <p class="text-muted-foreground">{{ t('guide.aiMcpPage.setupLede') }}</p>
         <div class="bg-[#1e1e1e] rounded-lg p-4 font-mono text-sm text-zinc-300 overflow-x-auto">
-          <code>npx @voltui/mcp</code>
+          <code>npx @voltui/agent</code>
         </div>
         <p class="text-sm text-muted-foreground">{{ t('guide.aiMcpPage.setupNote') }}</p>
         <div
@@ -49,12 +49,12 @@ const MCP_URL = 'https://volt-ui.pages.dev/api/mcp';
           <div>
             <code><span class="text-zinc-500"># one agent</span></code>
           </div>
-          <div><code>npx @voltui/mcp claude</code></div>
-          <div><code>npx @voltui/mcp cursor</code></div>
+          <div><code>npx @voltui/agent claude</code></div>
+          <div><code>npx @voltui/agent cursor</code></div>
           <div>
             <code><span class="text-zinc-500"># multiple</span></code>
           </div>
-          <div><code>npx @voltui/mcp cursor copilot</code></div>
+          <div><code>npx @voltui/agent cursor copilot</code></div>
         </div>
       </div>
 
@@ -76,7 +76,7 @@ const MCP_URL = 'https://volt-ui.pages.dev/api/mcp';
             </div>
             <p class="text-sm text-muted-foreground">{{ t('guide.aiMcpPage.claudeBody') }}</p>
             <div class="bg-[#1e1e1e] rounded p-2 font-mono text-xs text-zinc-300 overflow-x-auto">
-              <code>npx @voltui/mcp claude</code>
+              <code>npx @voltui/agent claude</code>
             </div>
             <p class="text-xs text-muted-foreground">
               <app-prose key="guide.aiMcpPage.claudeWrites" />
@@ -97,7 +97,7 @@ const MCP_URL = 'https://volt-ui.pages.dev/api/mcp';
               <app-prose key="guide.aiMcpPage.cursorBody" />
             </p>
             <div class="bg-[#1e1e1e] rounded p-2 font-mono text-xs text-zinc-300 overflow-x-auto">
-              <code>npx @voltui/mcp cursor</code>
+              <code>npx @voltui/agent cursor</code>
             </div>
             <p class="text-xs text-muted-foreground">
               <app-prose key="guide.aiMcpPage.cursorWrites" />
@@ -116,7 +116,7 @@ const MCP_URL = 'https://volt-ui.pages.dev/api/mcp';
             </div>
             <p class="text-sm text-muted-foreground">{{ t('guide.aiMcpPage.windsurfBody') }}</p>
             <div class="bg-[#1e1e1e] rounded p-2 font-mono text-xs text-zinc-300 overflow-x-auto">
-              <code>npx @voltui/mcp windsurf</code>
+              <code>npx @voltui/agent windsurf</code>
             </div>
             <p class="text-xs text-muted-foreground">
               <app-prose key="guide.aiMcpPage.windsurfWrites" />
@@ -135,7 +135,7 @@ const MCP_URL = 'https://volt-ui.pages.dev/api/mcp';
             </div>
             <p class="text-sm text-muted-foreground">{{ t('guide.aiMcpPage.copilotBody') }}</p>
             <div class="bg-[#1e1e1e] rounded p-2 font-mono text-xs text-zinc-300 overflow-x-auto">
-              <code>npx @voltui/mcp copilot</code>
+              <code>npx @voltui/agent copilot</code>
             </div>
             <p class="text-xs text-muted-foreground">
               <app-prose key="guide.aiMcpPage.copilotWrites" />

@@ -7,7 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Changed — `@voltui/mcp` installer (toward 1.0)
+### Changed — `@voltui/mcp` is now `@voltui/agent`
+
+The installer is renamed because it installs more than MCP config: the skill, rules and snippets as
+well. `npx @voltui/agent claude` replaces `npx @voltui/mcp claude`; arguments are unchanged. The new
+package starts at `0.5.0` (a package cannot be renamed on npm); `@voltui/mcp` is deprecated and gets
+no further releases. The bin is `volt-ui-agent`, the folder `cli/agent/`, release tags `agent-vX.Y.Z`.
+
+Also in this release of the installer (toward 1.0):
 
 - **Safe to re-run.** JSON configs are merged, `.cursorrules` and `copilot-instructions.md` get a
   delimited `volt-ui:begin/end` block that is replaced in place (your own text is never touched; they

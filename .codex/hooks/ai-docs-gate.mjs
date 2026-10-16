@@ -45,7 +45,7 @@ function main(input) {
         '',
         'Sync the component list across the files listed in AGENTS.md "AI tools for consumers":',
         '- `.agents/skills/volt-ui/SKILL.md`',
-        '- `cli/mcp/content.js` (VOLT_UI_SKILL, CURSOR_RULES, COPILOT_INSTRUCTIONS, VSCODE_SNIPPETS), then `pnpm generate:mcp-content`',
+        '- `cli/agent/content.js` (VOLT_UI_SKILL, CURSOR_RULES, COPILOT_INSTRUCTIONS, VSCODE_SNIPPETS), then `pnpm generate:mcp-content`',
         '- `src/server/routes/mcp.ts`',
         '- `VOLT_UI_PROMPT.md`',
         '- `src/app/lib/snippets/usage.ts`',

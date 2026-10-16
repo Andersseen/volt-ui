@@ -176,7 +176,7 @@ export default defineEventHandler(async event => {
         mcpNative: setup.mcpNative,
         setupUrl: `${MCP_URL}/setup?agent=${key}`,
       })),
-      cli: 'npx @voltui/mcp',
+      cli: 'npx @voltui/agent',
     };
   }
 

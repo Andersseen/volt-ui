@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-/** Entry point of `npx @voltui/mcp`. The installer itself lives in installer.js. */
+/** Entry point of `npx @voltui/agent`. The installer itself lives in installer.js. */
 
 'use strict';
 

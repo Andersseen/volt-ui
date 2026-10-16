@@ -67,7 +67,7 @@ jobs:
         run: pnpm pack:lib
 
       - name: Check MCP installer package
-        run: pnpm pack:mcp
+        run: pnpm pack:agent
 
       - name: Install Playwright Chromium
         run: pnpm exec playwright install --with-deps chromium

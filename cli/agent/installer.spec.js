@@ -195,7 +195,7 @@ describe('arguments', () => {
 
   it('--help and --version print and exit 0', async () => {
     expect(await run(['--help'])).toBe(0);
-    expect(logs.join('\n')).toMatch(/Usage: npx @voltui\/mcp/);
+    expect(logs.join('\n')).toMatch(/Usage: npx @voltui\/agent/);
     logs.length = 0;
     expect(await run(['--version'])).toBe(0);
     expect(logs).toEqual([pkg.version]);
@@ -205,7 +205,7 @@ describe('arguments', () => {
 describe('package', () => {
   it('ships every file the installer requires', () => {
     expect(pkg.files).toEqual(
-      expect.arrayContaining(['setup-mcp.js', 'installer.js', 'content.js'])
+      expect.arrayContaining(['setup-agent.js', 'installer.js', 'content.js'])
     );
   });
 });
