@@ -7,8 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-**Volt UI 1.3 — Async Data & Angular Integration** (prepared; the version bump lands in a separate
-release PR, as for 1.2). Backwards compatible; see [MIGRATION.md](./MIGRATION.md).
+## [1.3.0] - 2026-10-16
+
+**Volt UI 1.3 — Async Data & Angular Integration**. Backwards compatible; see [MIGRATION.md](./MIGRATION.md).
 
 ### Added
 
