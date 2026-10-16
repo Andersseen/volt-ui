@@ -1173,7 +1173,93 @@
       "title": "Color Tokens",
       "lede": "Edit light and dark palettes independently.",
       "light": "Light",
-      "dark": "Dark"
+      "dark": "Dark",
+      "fields": {
+        "background": {
+          "label": "Background",
+          "description": "Page canvas"
+        },
+        "foreground": {
+          "label": "Foreground",
+          "description": "Main text"
+        },
+        "surface": {
+          "label": "Surface",
+          "description": "Cards and panels"
+        },
+        "surfaceForeground": {
+          "label": "Surface text",
+          "description": "Text on surfaces"
+        },
+        "muted": {
+          "label": "Muted",
+          "description": "Subtle fills"
+        },
+        "mutedForeground": {
+          "label": "Muted text",
+          "description": "Secondary text"
+        },
+        "border": {
+          "label": "Border",
+          "description": "Lines and outlines"
+        },
+        "input": {
+          "label": "Input",
+          "description": "Form borders"
+        },
+        "ring": {
+          "label": "Ring",
+          "description": "Focus color"
+        },
+        "primary": {
+          "label": "Primary",
+          "description": "Main action"
+        },
+        "primaryForeground": {
+          "label": "Primary text",
+          "description": "Text on primary"
+        },
+        "secondary": {
+          "label": "Secondary",
+          "description": "Secondary action"
+        },
+        "secondaryForeground": {
+          "label": "Secondary text",
+          "description": "Text on secondary"
+        },
+        "success": {
+          "label": "Success",
+          "description": "Positive state"
+        },
+        "successForeground": {
+          "label": "Success text",
+          "description": "Text on success"
+        },
+        "warning": {
+          "label": "Warning",
+          "description": "Caution state"
+        },
+        "warningForeground": {
+          "label": "Warning text",
+          "description": "Text on warning"
+        },
+        "error": {
+          "label": "Error",
+          "description": "Error state"
+        },
+        "errorForeground": {
+          "label": "Error text",
+          "description": "Text on error"
+        },
+        "info": {
+          "label": "Info",
+          "description": "Informational state"
+        },
+        "infoForeground": {
+          "label": "Info text",
+          "description": "Text on info"
+        }
+      }
     },
     "shape": {
       "title": "Shape & Feel",

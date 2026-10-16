@@ -39,6 +39,8 @@ import { SITE_STATS } from '../lib/generated/site-stats';
               <div class="absolute inset-0 bg-primary opacity-20"></div>
               <img
                 src="favicon.svg"
+                width="32"
+                height="32"
                 [alt]="t('nav.logoAlt')"
                 class="w-full h-full object-cover relative z-10"
               />

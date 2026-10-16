@@ -171,4 +171,19 @@ describe('VoltCheckbox', () => {
     await userEvent.setup().click(screen.getByText('Accept terms'));
     expect(checkbox).toHaveAttribute('aria-checked', 'true');
   });
+
+  it('names the native checkbox from aria-label written on the host', async () => {
+    const { container } = await render(`<volt-checkbox aria-label="Auto-sync" />`, {
+      imports: [VoltCheckbox],
+    });
+
+    expect(screen.getByRole('checkbox', { name: 'Auto-sync' })).toBeInTheDocument();
+    expect(container.querySelector('volt-checkbox')).not.toHaveAttribute('aria-label');
+  });
+
+  it('names the native checkbox from the ariaLabel input', async () => {
+    await render(`<volt-checkbox ariaLabel="Remember me" />`, { imports: [VoltCheckbox] });
+
+    expect(screen.getByRole('checkbox', { name: 'Remember me' })).toBeInTheDocument();
+  });
 });

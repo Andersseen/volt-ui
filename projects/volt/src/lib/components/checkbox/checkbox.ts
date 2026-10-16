@@ -35,6 +35,7 @@ let nextCheckboxId = 0;
       [ngpCheckboxIndeterminate]="indeterminate()"
       [ngpCheckboxDisabled]="isDisabled()"
       [ngpCheckboxRequired]="required()"
+      [attr.aria-label]="ariaLabel() || ariaLabelAttribute() || null"
       [attr.aria-invalid]="formControlState.invalid() ? 'true' : null"
       (ngpCheckboxCheckedChange)="onCheckedChange($event)"
       (ngpCheckboxIndeterminateChange)="onIndeterminateChange($event)"
@@ -77,6 +78,11 @@ export class VoltCheckbox implements ControlValueAccessor {
   protected readonly formControlState = injectFormControlState();
 
   readonly id = input(`volt-checkbox-${++nextCheckboxId}`);
+  /** Accessible name for a checkbox without a visible `<label>`. */
+  readonly ariaLabel = input('');
+  /** Same as `ariaLabel`, for the attribute spelling consumers write naturally. */
+  // eslint-disable-next-line @angular-eslint/no-input-rename -- mirrors VoltSwitch: `ariaLabel` owns the camelCase name
+  readonly ariaLabelAttribute = input<string | undefined>(undefined, { alias: 'aria-label' });
   readonly checked = model(false);
   readonly indeterminate = model(false);
   readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
@@ -89,8 +95,8 @@ export class VoltCheckbox implements ControlValueAccessor {
   protected onTouched: () => void = () => {};
 
   constructor() {
-    // The id belongs to the native button; a copy on the host would duplicate it.
-    forwardAttributesFromHost('id');
+    // Both belong to the native button; a copy on the host would duplicate them.
+    forwardAttributesFromHost('id', 'aria-label');
   }
 
   protected onCheckedChange(value: boolean): void {

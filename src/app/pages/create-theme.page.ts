@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { VoltBadge } from 'volt';
+import { VoltThreads } from '../components/effects/volt-threads';
 import { ThemeStudioOutput } from '../components/theme-studio/theme-studio-output';
 import { ThemeStudioPreview } from '../components/theme-studio/theme-studio-preview';
 import { ThemeStudioSetup } from '../components/theme-studio/theme-studio-setup';
@@ -19,6 +20,7 @@ import { injectAppI18n } from '../i18n/i18n';
   providers: [ThemeStudioStore],
   imports: [
     VoltBadge,
+    VoltThreads,
     ThemeStudioOutput,
     ThemeStudioPreview,
     ThemeStudioSetup,
@@ -30,25 +32,34 @@ import { injectAppI18n } from '../i18n/i18n';
          but does not create a scroll container, which would silently disable the
          preview panel's position: sticky. -->
     <div class="relative z-10 overflow-x-clip pb-24">
-      <section class="relative border-b border-border/50">
+      <section class="relative isolate overflow-hidden border-b border-border/50">
         <div class="theme-grid pointer-events-none absolute inset-0 -z-10"></div>
-        <div
-          class="pointer-events-none absolute -top-24 left-1/3 -z-10 h-72 w-72 rounded-full bg-primary/15 blur-[100px]"
-        ></div>
-        <div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20">
+        <app-volt-threads
+          class="studio-threads -z-10"
+          [count]="6"
+          [intensity]="0.85"
+          [pinchX]="0.78"
+          [pinchY]="0.5"
+          [color]="store.theme().light.primary"
+        />
+        <div class="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28">
           <div class="max-w-3xl">
-            <div class="flex flex-wrap items-center gap-2">
+            <div class="reveal-up flex flex-wrap items-center gap-2">
               <volt-badge
                 variant="outline"
-                class="rounded-full border-primary/25 bg-background/75 text-primary backdrop-blur"
+                class="rounded-full border-primary/25 bg-background/60 text-primary backdrop-blur"
                 >{{ t('themeStudio.page.eyebrow') }}</volt-badge
               >
               <span class="text-sm text-muted-foreground">{{ t('themeStudio.page.badge') }}</span>
             </div>
-            <h1 class="mt-5 text-4xl font-semibold tracking-tight text-foreground sm:text-6xl">
+            <h1
+              class="studio-title landing-display reveal-up reveal-delay-1 mt-6 text-5xl font-bold sm:text-7xl"
+            >
               {{ t('themeStudio.page.title') }}
             </h1>
-            <p class="mt-5 max-w-2xl text-lg leading-8 text-muted-foreground">
+            <p
+              class="reveal-up reveal-delay-2 mt-6 max-w-2xl text-lg leading-8 text-muted-foreground"
+            >
               {{ t('themeStudio.page.lede') }}
             </p>
           </div>
@@ -86,6 +97,23 @@ import { injectAppI18n } from '../i18n/i18n';
     </div>
   `,
   styles: `
+    /* Same title treatment as the landing hero: full ink fading toward the brand color. */
+    .studio-title {
+      background: linear-gradient(
+        to bottom,
+        var(--foreground) 35%,
+        color-mix(in oklch, var(--foreground) 55%, var(--primary))
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    /* The charge sits to the right of the title; the threads fade before they reach the text. */
+    .studio-threads {
+      mask-image: radial-gradient(ellipse 55% 80% at 78% 50%, black 25%, transparent 75%);
+    }
+
     .theme-grid {
       background-image:
         linear-gradient(
@@ -105,6 +133,8 @@ import { injectAppI18n } from '../i18n/i18n';
 })
 export default class CreateThemePage {
   private readonly translations = injectAppI18n();
+  /** The draft being edited; the header's threads are drawn in its primary color. */
+  protected readonly store = inject(ThemeStudioStore);
 
   protected readonly t = this.translations.t;
 }

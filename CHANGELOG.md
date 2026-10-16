@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added — `@voltui/components`
 
+- **`volt-checkbox` takes an accessible name** through `ariaLabel` / `aria-label`, forwarded to
+  the native button exactly like `volt-switch`. A checkbox beside plain text (no `<label>`) had
+  no way to be named.
 - **Translatable accessible names** for the two parts that hard-coded English: `volt-breadcrumbs`
   takes `ariaLabel` (default `breadcrumb`) and `volt-drawer-close` takes `label` (default
   `Close`). Found while localizing the docs site.

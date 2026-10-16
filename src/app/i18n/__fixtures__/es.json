@@ -871,7 +871,93 @@
       "title": "Tokens de color",
       "lede": "Edita las paletas clara y oscura de forma independiente.",
       "light": "Claro",
-      "dark": "Oscuro"
+      "dark": "Oscuro",
+      "fields": {
+        "background": {
+          "label": "Fondo",
+          "description": "Lienzo de la página"
+        },
+        "foreground": {
+          "label": "Texto",
+          "description": "Texto principal"
+        },
+        "surface": {
+          "label": "Superficie",
+          "description": "Tarjetas y paneles"
+        },
+        "surfaceForeground": {
+          "label": "Texto de superficie",
+          "description": "Texto sobre superficies"
+        },
+        "muted": {
+          "label": "Atenuado",
+          "description": "Rellenos suaves"
+        },
+        "mutedForeground": {
+          "label": "Texto atenuado",
+          "description": "Texto secundario"
+        },
+        "border": {
+          "label": "Borde",
+          "description": "Líneas y contornos"
+        },
+        "input": {
+          "label": "Campo",
+          "description": "Bordes de formulario"
+        },
+        "ring": {
+          "label": "Anillo",
+          "description": "Color de foco"
+        },
+        "primary": {
+          "label": "Primario",
+          "description": "Acción principal"
+        },
+        "primaryForeground": {
+          "label": "Texto primario",
+          "description": "Texto sobre primario"
+        },
+        "secondary": {
+          "label": "Secundario",
+          "description": "Acción secundaria"
+        },
+        "secondaryForeground": {
+          "label": "Texto secundario",
+          "description": "Texto sobre secundario"
+        },
+        "success": {
+          "label": "Éxito",
+          "description": "Estado positivo"
+        },
+        "successForeground": {
+          "label": "Texto de éxito",
+          "description": "Texto sobre éxito"
+        },
+        "warning": {
+          "label": "Aviso",
+          "description": "Estado de precaución"
+        },
+        "warningForeground": {
+          "label": "Texto de aviso",
+          "description": "Texto sobre aviso"
+        },
+        "error": {
+          "label": "Error",
+          "description": "Estado de error"
+        },
+        "errorForeground": {
+          "label": "Texto de error",
+          "description": "Texto sobre error"
+        },
+        "info": {
+          "label": "Info",
+          "description": "Estado informativo"
+        },
+        "infoForeground": {
+          "label": "Texto de info",
+          "description": "Texto sobre info"
+        }
+      }
     },
     "shape": {
       "title": "Forma y textura",

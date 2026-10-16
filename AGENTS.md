@@ -62,6 +62,25 @@ pnpm test:all
 - Export every public component from `projects/volt/src/public-api.ts`.
 - The docs app imports the library via the `volt` alias (mapped to `projects/volt/src/public-api.ts`).
 
+## Docs site rules
+
+These apply to everything under `src/app/` (the official site), not to the library itself.
+
+- **The site is built from Volt UI atoms only.** Every UI brick — button, link-as-button,
+  card, panel, badge, chip, input, toggle, tabs, progress, separator — is a Volt component
+  (`volt-button`, `a[voltButton]`, `volt-card`, `volt-badge`, `volt-toggle-group`, …). Never
+  hand-style a `<button>`, an `<a class="inline-flex … rounded-md">` or a bordered `<div>` card
+  in a page. Layout (grid, flex, spacing), typography and purely decorative marks (a swatch, a
+  divider line) are fine. If an atom is missing or cannot express what the site needs, fix or
+  extend the library first (its own ripple effects apply) — the site is Volt's showcase, and a
+  custom brick there hides exactly the gap a consumer would hit.
+- **Small components, single responsibility.** One component does one job. Split a section into
+  an orchestrator that owns state, effects and layout, and presentational children that take
+  `input()`s and emit `output()`s; keep static data (steps, items, code samples) in its own file.
+  If a template grows past roughly 80 lines, or a file mixes state, browser observers and markup
+  for several pieces, split it. Group a section's parts in one folder (see
+  `src/app/components/landing/{pillars,playground,steps}/`).
+
 ## Theme system
 
 - Theme tokens are CSS custom properties in `projects/volt/src/themes/core.css`.

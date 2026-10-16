@@ -328,6 +328,8 @@ export const CHECKBOX_API: ComponentApi = {
       selector: 'volt-checkbox',
       inputs: [
         { name: 'id', type: 'string', default: '`volt-checkbox-${++nextCheckboxId}`' },
+        { name: 'ariaLabel', type: 'string', default: "''" },
+        { name: 'aria-label', type: 'string | undefined', default: 'undefined' },
         { name: 'checked', type: 'boolean', default: 'false' },
         { name: 'indeterminate', type: 'boolean', default: 'false' },
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
