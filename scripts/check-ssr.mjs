@@ -65,6 +65,22 @@ async function ready() {
   throw new Error('wrangler did not start:\n' + log);
 }
 
+// The worker logs asynchronously, so a route's error can land after its response (and after a
+// fixed sleep) and get blamed on the NEXT route — '/docs/components' (known listbox error)
+// was showing up as '/docs/components/button'. Wait until the log stops growing.
+async function quiet(idleMs = 400, maxMs = 5000) {
+  const start = Date.now();
+  let last = log.length;
+  let since = Date.now();
+  while (Date.now() - start < maxMs) {
+    await sleep(100);
+    if (log.length !== last) {
+      last = log.length;
+      since = Date.now();
+    } else if (Date.now() - since >= idleMs) return;
+  }
+}
+
 const failures = [];
 const known = [];
 try {
@@ -79,7 +95,7 @@ try {
       const res = await fetch(`http://127.0.0.1:${PORT}${route}`);
       status = res.status;
       await res.text();
-      await sleep(150);
+      await quiet();
       const chunk = log.slice(before).replace(/\x1b\[[0-9;]*m/g, '');
       errors = chunk.match(/ERROR[^\n]*/g) ?? [];
       const networkOnly =
