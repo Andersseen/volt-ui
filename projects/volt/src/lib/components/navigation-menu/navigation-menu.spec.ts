@@ -65,6 +65,9 @@ class NavigationMenuFixture {}
 
 const trigger = (name: RegExp) => screen.getByRole('button', { name });
 
+// waitFor's default 1s is too tight when ~100 spec files run in parallel under coverage on a CI runner.
+const SLOW = { timeout: 5000 };
+
 describe('navigation menu components', () => {
   it('render navigation and native link semantics', async () => {
     await render(NavigationMenuFixture);
@@ -125,19 +128,21 @@ describe('navigation menu components', () => {
     const products = trigger(/Products/i);
 
     await user.click(products);
-    await waitFor(() =>
-      expect(screen.getByRole('link', { name: 'Analytics' })).toBeInTheDocument()
+    await waitFor(
+      () => expect(screen.getByRole('link', { name: 'Analytics' })).toBeInTheDocument(),
+      SLOW
     );
 
     // The content is in the DOM before the trigger's own open state has settled; on a slow runner
     // an Escape sent in that gap is ignored (the primitive only handles it while `open`). Wait for
     // the state a user would see, not just the markup.
-    await waitFor(() => expect(products).toHaveAttribute('aria-expanded', 'true'));
+    await waitFor(() => expect(products).toHaveAttribute('aria-expanded', 'true'), SLOW);
     await user.keyboard('{Escape}');
 
-    await waitFor(() =>
-      expect(screen.queryByRole('link', { name: 'Analytics' })).not.toBeInTheDocument()
+    await waitFor(
+      () => expect(screen.queryByRole('link', { name: 'Analytics' })).not.toBeInTheDocument(),
+      SLOW
     );
-    await waitFor(() => expect(products).toHaveAttribute('aria-expanded', 'false'));
+    await waitFor(() => expect(products).toHaveAttribute('aria-expanded', 'false'), SLOW);
   });
 });
