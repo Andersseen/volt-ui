@@ -39,17 +39,24 @@ execFileSync('node', [CLI_BIN, 'add', ...componentNames, TARGET_DIR, '--force'],
 // e2e/consumer/src/workflow. Here it goes through the CLI's own source transform and is pointed
 // at the freshly copied ./ui, so the copy-and-own path runs exactly the same screen.
 const { transformContent } = createRequire(import.meta.url)(join(REPO_ROOT, 'cli/lib/core.js'));
-const WORKFLOW_SRC = join(REPO_ROOT, 'e2e/consumer/src/workflow');
-const WORKFLOW_OUT = join(__dirname, 'src/workflow');
-mkdirSync(WORKFLOW_OUT, { recursive: true });
-for (const file of ['admin-workflow.ts', 'main.ts']) {
-  const source = readFileSync(join(WORKFLOW_SRC, file), 'utf-8')
-    .replace(/from\s+(['"])@voltui\/components\1/g, "from 'volt'")
-    .replace(/from\s+(['"])\.\.\/styles\.css\1/g, "from '../styles.css'");
-  const transformed = transformContent(source)
-    .replace(/from\s+'\.\/index'/g, "from '../ui'")
-    .replace(/import\s+'\.\.\/styles\.css'/g, "import '../styles.css'");
-  writeFileSync(join(WORKFLOW_OUT, file), transformed);
+// The async-data fixture (relation picker + router breadcrumbs) follows the same path.
+const FIXTURES = [
+  { src: 'workflow', files: ['admin-workflow.ts', 'main.ts'] },
+  { src: 'async', files: ['async-data.ts', 'main.ts'] },
+];
+for (const { src, files } of FIXTURES) {
+  const fixtureSrc = join(REPO_ROOT, 'e2e/consumer/src', src);
+  const fixtureOut = join(__dirname, 'src', src);
+  mkdirSync(fixtureOut, { recursive: true });
+  for (const file of files) {
+    const source = readFileSync(join(fixtureSrc, file), 'utf-8')
+      .replace(/from\s+(['"])@voltui\/components\1/g, "from 'volt'")
+      .replace(/from\s+(['"])\.\.\/styles\.css\1/g, "from '../styles.css'");
+    const transformed = transformContent(source)
+      .replace(/from\s+'\.\/index'/g, "from '../ui'")
+      .replace(/import\s+'\.\.\/styles\.css'/g, "import '../styles.css'");
+    writeFileSync(join(fixtureOut, file), transformed);
+  }
 }
 
 console.log('Done.');

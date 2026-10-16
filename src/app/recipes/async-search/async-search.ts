@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   DestroyRef,
   inject,
   input,
@@ -13,15 +14,14 @@ import {
   VoltFormField,
   VoltLabel,
   VoltNativeButton,
-  VoltSpinner,
 } from 'volt';
 
 /**
- * RECIPE — Async search with selection.
+ * RECIPE — Server-side search with selection.
  *
- * `VoltCombobox` filters a list you already have. Searching a server is the other half: the list
- * arrives later, may fail, and may arrive out of order. The combobox stays exactly as it is; this
- * recipe adds the missing states *around* it.
+ * `VoltCombobox` filters a list you already have. When a server decides what matches, say so with
+ * `filterMode="manual"`: the combobox renders `items` exactly as you supply them, reports typing
+ * through `(queryChange)`, and shows `loading` / empty states. It never fetches anything.
  *
  *   idle → loading → results | empty | error → (retry)
  *
@@ -29,15 +29,15 @@ import {
  *   - Stale responses lose. Every search takes a ticket; a response only lands if its ticket is
  *     still the latest. Typing "an" then "ang" can finish as "ang", "an", and the list must still
  *     say "ang". (An AbortController is the same idea at the network layer; the ticket is what
- *     protects you when your data source cannot be aborted.)
+ *     protects you when your data source cannot be aborted.) This lives in YOUR code on purpose:
+ *     a UI atom should not own request policy.
  *   - The selection is kept by id, in its own signal. New result arrays contain new objects, and
  *     a failed or empty search must not erase the person already chosen.
- *   - The input never re-renders: loading, empty and error text live in a status line beside it,
- *     so focus and the caret stay where the user left them.
+ *   - `(queryChange)` is the typed text only. Choosing an option writes its label back into the
+ *     input, and that does not emit — so selecting never triggers another request.
  *
- * `VoltCombobox` also narrows `items` by label as you type, so a server that matches on something
- * other than the label (an email, an alias) will see those rows hidden. Make `itemLabel` return
- * the text you search on, or search on the label.
+ * Do not pass server results to the default (`local`) filter: a server that matches on an email
+ * or an alias would see those rows hidden again by their label.
  *
  * Replace `fakeSearch` with your service call.
  */
@@ -72,8 +72,6 @@ export const fakeSearch: SearchPeople = query =>
     }, 250)
   );
 
-type Status = 'idle' | 'loading' | 'results' | 'empty' | 'error';
-
 @Component({
   selector: 'app-async-search-recipe',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -84,25 +82,26 @@ type Status = 'idle' | 'loading' | 'results' | 'empty' | 'error';
     VoltFormField,
     VoltLabel,
     VoltNativeButton,
-    VoltSpinner,
   ],
   template: `
     <div class="mx-auto max-w-md space-y-3">
       <volt-form-field>
         <volt-label>Owner</volt-label>
-        <!--
-          The combobox reports typing through the native input event, which bubbles to its host.
-        -->
         <volt-combobox
           label="Owner"
           placeholder="Search people…"
+          filterMode="manual"
           [items]="results()"
+          [loading]="loading()"
+          loadingText="Searching…"
+          [emptyText]="emptyText()"
+          [resultsText]="resultsText"
           [itemLabel]="label"
           [trackByFn]="byId"
           [compareWith]="sameId"
           [value]="selected()"
           (valueChange)="select($event)"
-          (input)="onType($any($event.target).value)"
+          (queryChange)="onType($event)"
         >
           <ng-template let-person>
             <span class="font-medium">{{ person.name }}</span>
@@ -111,25 +110,7 @@ type Status = 'idle' | 'loading' | 'results' | 'empty' | 'error';
         </volt-combobox>
       </volt-form-field>
 
-      <!-- Polite status line; its text changes, the element does not. -->
-      <p class="min-h-5 text-sm text-muted-foreground" role="status" aria-live="polite">
-        @switch (status()) {
-          @case ('loading') {
-            <span class="inline-flex items-center gap-2">
-              <volt-spinner size="sm" />
-              Searching…
-            </span>
-          }
-          @case ('results') {
-            {{ results().length }} {{ results().length === 1 ? 'person' : 'people' }} found
-          }
-          @case ('empty') {
-            No one matches "{{ query() }}".
-          }
-        }
-      </p>
-
-      @if (status() === 'error') {
+      @if (error()) {
         <volt-alert variant="destructive" role="alert">
           <volt-alert-description>{{ error() }}</volt-alert-description>
           <button
@@ -161,16 +142,25 @@ export class AsyncSearchRecipe {
   /** Wait this long after the last keystroke before searching. */
   readonly debounceMs = input(150);
 
-  protected readonly status = signal<Status>('idle');
+  protected readonly loading = signal(false);
   protected readonly results = signal<Person[]>([]);
   protected readonly selected = signal<Person | null>(null);
   protected readonly query = signal('');
   protected readonly error = signal('');
 
+  protected readonly emptyText = computed(() => {
+    if (this.error()) return 'The search failed.';
+    return this.query().trim()
+      ? `No one matches "${this.query().trim()}".`
+      : 'Start typing to search.';
+  });
+
   protected readonly label = (item: unknown) => (item as Person).name;
   protected readonly byId = (_index: number, item: unknown) => (item as Person).id;
   protected readonly sameId = (a: unknown, b: unknown) =>
     (a as Person | null)?.id === (b as Person | null)?.id;
+  protected readonly resultsText = (count: number) =>
+    `${count} ${count === 1 ? 'person' : 'people'} found`;
 
   /** Latest-wins ticket. Only the response that holds it may write state. */
   private ticket = 0;
@@ -183,6 +173,7 @@ export class AsyncSearchRecipe {
     });
   }
 
+  /** `(queryChange)`: what the user typed. Choosing an option does not come through here. */
   protected onType(value: string): void {
     this.query.set(value);
     clearTimeout(this.timer);
@@ -191,7 +182,8 @@ export class AsyncSearchRecipe {
     if (!value.trim()) {
       this.ticket++;
       this.results.set([]);
-      this.status.set('idle');
+      this.error.set('');
+      this.loading.set(false);
       return;
     }
     this.timer = setTimeout(() => void this.run(value), this.debounceMs());
@@ -201,23 +193,24 @@ export class AsyncSearchRecipe {
     void this.run(this.query());
   }
 
-  /** The combobox echoes the chosen label back into the input; that is not a new search. */
   protected select(value: unknown): void {
     this.selected.set((value as Person | undefined) ?? null);
   }
 
   private async run(query: string): Promise<void> {
     const mine = ++this.ticket;
-    this.status.set('loading');
+    this.loading.set(true);
+    this.error.set('');
     try {
       const people = await this.search()(query);
       if (mine !== this.ticket) return; // a newer search owns the screen
       this.results.set(people);
-      this.status.set(people.length ? 'results' : 'empty');
     } catch (error) {
       if (mine !== this.ticket) return;
+      this.results.set([]);
       this.error.set((error as Error).message);
-      this.status.set('error');
+    } finally {
+      if (mine === this.ticket) this.loading.set(false);
     }
   }
 }

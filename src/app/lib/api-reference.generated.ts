@@ -209,6 +209,12 @@ export const BREADCRUMBS_API: ComponentApi = {
       inputs: [{ name: 'class', type: 'string', default: "''" }],
       outputs: [],
     },
+    {
+      className: 'VoltNativeBreadcrumbLink',
+      selector: 'a[voltBreadcrumbLink]',
+      inputs: [{ name: 'class', type: 'string', default: "''" }],
+      outputs: [],
+    },
   ],
   variants: undefined,
 };
@@ -396,6 +402,16 @@ export const COMBOBOX_API: ComponentApi = {
         },
         { name: 'allOptions', type: 'unknown[] | undefined', default: 'undefined' },
         { name: 'items', type: 'unknown[]', default: '[]' },
+        { name: 'filterMode', type: 'VoltComboboxFilterMode', default: "'local'" },
+        { name: 'loading', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
+        { name: 'loadingText', type: 'string', default: "'Loading…'" },
+        { name: 'emptyText', type: 'string', default: "'No results found.'" },
+        {
+          name: 'resultsText',
+          type: '(count: number) => string',
+          default:
+            "count =>\n    count === 1 ? '1 result available.' : `${count} results available.`",
+        },
         { name: 'placeholder', type: 'string', default: "'Select...'" },
         {
           name: 'itemLabel',
@@ -408,7 +424,10 @@ export const COMBOBOX_API: ComponentApi = {
           default: '(_i, item) => item',
         },
       ],
-      outputs: [{ name: 'valueChange', type: 'unknown' }],
+      outputs: [
+        { name: 'valueChange', type: 'unknown' },
+        { name: 'queryChange', type: 'string' },
+      ],
     },
   ],
   variants: undefined,
@@ -844,7 +863,7 @@ export const INPUT_OTP_API: ComponentApi = {
       ],
       outputs: [
         { name: 'valueChange', type: 'string' },
-        { name: 'complete', type: 'unknown' },
+        { name: 'complete', type: 'string' },
       ],
     },
   ],

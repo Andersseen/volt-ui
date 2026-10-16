@@ -35,7 +35,7 @@ const RUNTIME_DEPENDENCIES = [
 // manifest's dependency detector only resolves components/layouts imports, so these are
 // tracked and copied separately, flat into the target dir (sibling to each component's
 // own subfolder), since that's what the rewritten `../utils` import path expects.
-const SHARED_LIB_FILES = ['utils.ts', 'form-control-state.ts', 'host-forwarding.ts'];
+const SHARED_LIB_FILES = ['utils.ts', 'form-control-state.ts', 'host-forwarding.ts', 'aria-invalid.ts'];
 
 // ---------------------------------------------------------------------------
 // Package manager detection
@@ -188,7 +188,9 @@ function copySharedFileIfNeeded(sharedFile, targetDir, options = {}) {
     fs.mkdirSync(targetDir, { recursive: true });
   }
 
-  fs.copyFileSync(sourcePath, targetPath);
+  // Shared files go through the same transform as components: one that declares a directive
+  // (aria-invalid.ts) must be renamed to match the `ui*` identifiers its callers are rewritten to.
+  fs.writeFileSync(targetPath, transformContent(fs.readFileSync(sourcePath, 'utf-8')));
   return targetPath;
 }
 

@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { fireEvent, render, screen, waitFor } from '@testing-library/angular';
+import { render, screen, waitFor } from '@testing-library/angular';
 import userEvent from '@testing-library/user-event';
 import { AsyncSearchRecipe, type Person, type SearchPeople } from './async-search';
 
@@ -22,118 +22,139 @@ function manual() {
 async function setup() {
   const { search, pending } = manual();
   const { fixture } = await render(AsyncSearchRecipe, { inputs: { search, debounceMs: 0 } });
+  const user = userEvent.setup();
   const box = screen.getByRole('combobox', { name: 'Owner' });
-  // The recipe listens to the native input event, exactly as a user's typing produces it.
-  const type = (value: string) => {
-    (box as HTMLInputElement).value = value;
-    fireEvent.input(box, { target: { value } });
-  };
-  return { search, pending, box, type, fixture };
+  return { search, pending, box, user, fixture };
 }
 
-describe('Async search recipe', () => {
-  it('goes idle → loading → results', async () => {
-    const { pending, type } = await setup();
-    expect(screen.getByRole('status')).toHaveTextContent('');
+const status = () => screen.getByRole('status');
 
-    type('a');
+describe('Async search recipe (remote VoltCombobox)', () => {
+  it('goes idle → loading → results, announced through one live region', async () => {
+    const { pending, user, box } = await setup();
+
+    await user.click(box);
+    expect(status()).toHaveTextContent('');
+
+    await user.type(box, 'a');
     await waitFor(() => expect(pending['a']).toBeDefined());
-    expect(screen.getByRole('status')).toHaveTextContent('Searching…');
+    expect(status()).toHaveTextContent('Searching…');
+    expect(screen.getByRole('listbox')).toHaveAttribute('aria-busy', 'true');
 
     pending['a'].resolve([ADA, ALAN]);
-    await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('2 people found'));
+    await waitFor(() => expect(status()).toHaveTextContent('2 people found'));
+    expect(screen.getAllByRole('option')).toHaveLength(2);
   });
 
   it('never lets an older response replace a newer one', async () => {
-    const { pending, type, fixture } = await setup();
+    const { pending, user, box, fixture } = await setup();
 
-    type('a');
+    await user.type(box, 'a');
     await waitFor(() => expect(pending['a']).toBeDefined());
-    type('al');
+    await user.type(box, 'l');
     await waitFor(() => expect(pending['al']).toBeDefined());
 
     // B ("al") finishes first, then A ("a") finishes late with a bigger list.
     pending['al'].resolve([ALAN]);
-    await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('1 person found'));
+    await waitFor(() => expect(status()).toHaveTextContent('1 person found'));
     pending['a'].resolve([ADA, ALAN]);
-    // Let the late response run its continuation and the view settle before asserting.
     await new Promise(resolve => setTimeout(resolve));
     await fixture.whenStable();
-    fixture.detectChanges();
 
-    expect(screen.getByRole('status')).toHaveTextContent('1 person found');
-    expect(screen.getByRole('status')).not.toHaveTextContent('2 people');
+    expect(status()).toHaveTextContent('1 person found');
+    expect(screen.getAllByRole('option')).toHaveLength(1);
   });
 
-  it('says so when nothing matches', async () => {
-    const { pending, type } = await setup();
-    type('zzz');
+  it('says so when nothing matches, using the query', async () => {
+    const { pending, user, box } = await setup();
+    await user.type(box, 'zzz');
     await waitFor(() => expect(pending['zzz']).toBeDefined());
     pending['zzz'].resolve([]);
 
-    await waitFor(() =>
-      expect(screen.getByRole('status')).toHaveTextContent('No one matches "zzz".')
-    );
+    await waitFor(() => expect(status()).toHaveTextContent('No one matches "zzz".'));
+    expect(screen.queryAllByRole('option')).toHaveLength(0);
+  });
+
+  it('does not filter server results a second time by their label', async () => {
+    const { pending, user, box } = await setup();
+    await user.type(box, 'turing');
+    await waitFor(() => expect(pending['turing']).toBeDefined());
+    // The server matched on something other than the name; the label does not contain "turing".
+    pending['turing'].resolve([{ id: '9', name: 'A. M. T.', role: 'Alias match' }]);
+
+    expect(await screen.findByRole('option', { name: /A\. M\. T\./ })).toBeInTheDocument();
   });
 
   it('reports an error and retries the same query', async () => {
-    const { search, pending, type } = await setup();
-    type('boom');
+    const { search, pending, user, box } = await setup();
+    await user.type(box, 'boom');
     await waitFor(() => expect(pending['boom']).toBeDefined());
     pending['boom'].reject(new Error('The directory is unavailable.'));
 
     const alert = await screen.findByRole('alert');
     expect(alert).toHaveTextContent('The directory is unavailable.');
 
-    await userEvent.setup().click(screen.getByRole('button', { name: 'Retry' }));
-    expect(search).toHaveBeenCalledTimes(2);
+    await user.click(screen.getByRole('button', { name: 'Retry' }));
+    expect(search).toHaveBeenCalledTimes(5); // b, bo, boo, boom, then the retry
     expect(search).toHaveBeenLastCalledWith('boom');
     pending['boom'].resolve([ADA]);
     await waitFor(() => expect(screen.queryByRole('alert')).toBeNull());
-    expect(screen.getByRole('status')).toHaveTextContent('1 person found');
+  });
+
+  it('selects with the keyboard and does not search again for the echoed label', async () => {
+    const { search, pending, user, box } = await setup();
+
+    await user.type(box, 'a');
+    await waitFor(() => expect(pending['a']).toBeDefined());
+    pending['a'].resolve([ADA, ALAN]);
+    await screen.findByRole('option', { name: /Ada Lovelace/ });
+
+    await user.keyboard('{ArrowDown}{Enter}');
+
+    expect(screen.getByTestId('selection')).toHaveTextContent('Selected: Alan Turing');
+    expect(box).toHaveValue('Alan Turing');
+    // Give a (wrongly) echoed query time to start a request.
+    await new Promise(resolve => setTimeout(resolve, 20));
+    expect(search).toHaveBeenCalledTimes(1);
   });
 
   it('keeps the selection through an empty search, an error, and clearing the box', async () => {
-    const { pending, type, box } = await setup();
-    const user = userEvent.setup();
+    const { pending, user, box } = await setup();
 
-    type('a');
+    await user.type(box, 'a');
     await waitFor(() => expect(pending['a']).toBeDefined());
     pending['a'].resolve([ADA, ALAN]);
-    await screen.findByText('2 people found');
-
     await user.click(await screen.findByRole('option', { name: /Ada Lovelace/ }));
     expect(screen.getByTestId('selection')).toHaveTextContent('Selected: Ada Lovelace');
 
-    type('boom');
+    // Emptying the box starts a new query; it does not unselect anybody.
+    await user.clear(box);
+    expect(screen.getByTestId('selection')).toHaveTextContent('Selected: Ada Lovelace');
+
+    await user.type(box, 'boom');
     await waitFor(() => expect(pending['boom']).toBeDefined());
     pending['boom'].reject(new Error('down'));
     await screen.findByRole('alert');
     expect(screen.getByTestId('selection')).toHaveTextContent('Selected: Ada Lovelace');
 
-    type('');
+    await user.clear(box);
     expect(screen.getByTestId('selection')).toHaveTextContent('Selected: Ada Lovelace');
-    expect(box).toBeInTheDocument();
   });
 
   it('keeps the same input element (and so focus) across loading changes', async () => {
-    const { pending, type, box } = await setup();
-    box.focus();
-
-    type('a');
+    const { pending, user, box } = await setup();
+    await user.type(box, 'a');
     await waitFor(() => expect(pending['a']).toBeDefined());
     pending['a'].resolve([ADA]);
-    await screen.findByText('1 person found');
+    await screen.findByRole('option', { name: /Ada Lovelace/ });
 
     expect(screen.getByRole('combobox', { name: 'Owner' })).toBe(box);
     expect(box).toHaveFocus();
   });
 
   it('ignores a response that arrives after the component is destroyed', async () => {
-    const { search, pending } = manual();
-    const { fixture } = await render(AsyncSearchRecipe, { inputs: { search, debounceMs: 0 } });
-    const box = screen.getByRole('combobox', { name: 'Owner' });
-    fireEvent.input(box, { target: { value: 'a' } });
+    const { pending, user, box, fixture } = await setup();
+    await user.type(box, 'a');
     await waitFor(() => expect(pending['a']).toBeDefined());
 
     fixture.destroy();

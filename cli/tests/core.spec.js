@@ -359,6 +359,38 @@ describe('CLI Core', () => {
       expect(content).toContain("from '../form-control-state'");
     });
 
+    it('should copy aria-invalid.ts flat for Input, which re-asserts aria-invalid after ng-primitives', async () => {
+      const result = await core.copyComponent('input', testDir, manifest);
+      expect(result.sharedFiles).toContain('aria-invalid.ts');
+      expect(existsSync(join(testDir, 'aria-invalid.ts'))).toBe(true);
+
+      const content = readFileSync(join(testDir, 'input', 'input.ts'), 'utf-8');
+      expect(content).toContain("from '../aria-invalid'");
+      expect(content).toContain('[uiAriaInvalid]');
+
+      // The shared file is renamed to match, or the import above would not resolve.
+      const shared = readFileSync(join(testDir, 'aria-invalid.ts'), 'utf-8');
+      expect(shared).toContain('export class UiAriaInvalid');
+      expect(shared).toContain("selector: '[uiAriaInvalid]'");
+      expect(shared).not.toMatch(/\bVolt[A-Z]|\bvolt[A-Z]/);
+    });
+
+    it('should copy the native breadcrumb directive with the ui prefix and its shared classes', async () => {
+      await core.copyComponent('breadcrumbs', testDir, manifest);
+
+      const native = readFileSync(
+        join(testDir, 'breadcrumbs', 'native-breadcrumbs-link.ts'),
+        'utf-8'
+      );
+      expect(native).toContain("selector: 'a[uiBreadcrumbLink]'");
+      expect(native).toContain('export class UiNativeBreadcrumbLink');
+      expect(native).not.toMatch(/\bVolt[A-Z]|\bvolt[A-Z]/);
+      expect(existsSync(join(testDir, 'breadcrumbs', 'breadcrumbs-link-variants.ts'))).toBe(true);
+
+      const index = readFileSync(join(testDir, 'breadcrumbs', 'index.ts'), 'utf-8');
+      expect(index).toContain('UiNativeBreadcrumbLink');
+    });
+
     it('should not fail re-adding a shared file when a prior add already copied it', async () => {
       await core.copyComponent('button', testDir, manifest);
       const utilsContent = readFileSync(join(testDir, 'utils.ts'), 'utf-8');

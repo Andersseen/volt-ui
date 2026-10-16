@@ -4,6 +4,7 @@ import {
   VoltBreadcrumbList,
   VoltBreadcrumbItem,
   VoltBreadcrumbLink,
+  VoltNativeBreadcrumbLink,
   VoltBreadcrumbPage,
   VoltBreadcrumbSeparator,
 } from 'volt';
@@ -22,6 +23,7 @@ import { injectAppI18n } from '../../../../i18n/i18n';
     VoltBreadcrumbList,
     VoltBreadcrumbItem,
     VoltBreadcrumbLink,
+    VoltNativeBreadcrumbLink,
     VoltBreadcrumbPage,
     VoltBreadcrumbSeparator,
     CodePanel,
