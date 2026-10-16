@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NgpToggle } from 'ng-primitives/toggle';
+import { forwardAttributesFromHost } from '../../host-forwarding';
 import { injectFormControlState } from '../../form-control-state';
 import { toggleVariants, type ToggleVariants } from './variants';
 
@@ -35,6 +36,7 @@ import { toggleVariants, type ToggleVariants } from './variants';
       [class]="classes()"
       [attr.data-disabled]="isDisabled() ? '' : null"
       [attr.aria-invalid]="formControlState.invalid() ? 'true' : null"
+      [attr.aria-label]="ariaLabel() || ariaLabelAttribute() || null"
     >
       <ng-content />
     </button>
@@ -47,6 +49,11 @@ export class VoltToggle implements ControlValueAccessor {
   readonly size = input<ToggleVariants['size']>('md');
   readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly pressed = model<boolean>(false);
+  /** Accessible name — required for an icon-only toggle. Lands on the native button. */
+  readonly ariaLabel = input('');
+  /** Same as `ariaLabel`, for the attribute spelling consumers write naturally. */
+  // eslint-disable-next-line @angular-eslint/no-input-rename -- mirrors VoltSwitch: `ariaLabel` owns the camelCase name
+  readonly ariaLabelAttribute = input<string | undefined>(undefined, { alias: 'aria-label' });
 
   private readonly controlDisabled = signal(false);
   protected readonly isDisabled = computed(() => this.disabled() || this.controlDisabled());
@@ -60,6 +67,11 @@ export class VoltToggle implements ControlValueAccessor {
 
   private onChange: (value: boolean) => void = () => {};
   protected onTouched: () => void = () => {};
+
+  constructor() {
+    // The name belongs to the native button; a copy on the host would be a second, unfocusable one.
+    forwardAttributesFromHost('aria-label');
+  }
 
   protected onSelectedChange(value: boolean): void {
     this.pressed.set(value);

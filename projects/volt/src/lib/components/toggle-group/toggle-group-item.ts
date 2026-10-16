@@ -11,6 +11,7 @@ import {
   provideToggleGroupItemState,
 } from 'ng-primitives/toggle-group';
 import { toggleGroupItemVariants, type ToggleGroupItemVariants } from './variants';
+import { forwardAttributesFromHost } from '../../host-forwarding';
 import { cn } from '../../utils';
 
 @Component({
@@ -27,6 +28,7 @@ import { cn } from '../../utils';
       [ngpToggleGroupItemValue]="value()"
       [ngpToggleGroupItemDisabled]="isDisabled()"
       [class]="classes()"
+      [attr.aria-label]="ariaLabel() || null"
       type="button"
     >
       <ng-content />
@@ -41,6 +43,9 @@ export class VoltToggleGroupItem {
   private readonly toggleGroupState = injectToggleGroupState();
 
   readonly value = input.required<string>();
+  /** Accessible name — required for an icon-only item. Lands on the native button. */
+
+  readonly ariaLabel = input<string | undefined>(undefined, { alias: 'aria-label' });
   readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly variant = input<ToggleGroupItemVariants['variant']>('default');
   readonly size = input<ToggleGroupItemVariants['size']>('md');
@@ -51,4 +56,8 @@ export class VoltToggleGroupItem {
   protected readonly classes = computed(() =>
     toggleGroupItemVariants({ variant: this.variant(), size: this.size() })
   );
+
+  constructor() {
+    forwardAttributesFromHost('aria-label');
+  }
 }

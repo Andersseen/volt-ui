@@ -4,6 +4,7 @@ import {
   Component,
   computed,
   effect,
+  untracked,
   forwardRef,
   input,
   numberAttribute,
@@ -40,14 +41,12 @@ import { cn } from '../../utils';
       directive: NgpSlider,
       inputs: [
         'id: id',
-        'ngpSliderValue: value',
         'ngpSliderMin: min',
         'ngpSliderMax: max',
         'ngpSliderStep: step',
         'ngpSliderDisabled: disabled',
         'ngpSliderOrientation: orientation',
       ],
-      outputs: ['ngpSliderValueChange: valueChange'],
     },
   ],
   host: {
@@ -94,6 +93,7 @@ export class VoltSlider implements ControlValueAccessor {
   private readonly controlDisabled = signal(false);
   private readonly isDisabled = computed(() => this.disabled() || this.controlDisabled());
 
+  private writtenByForm = false;
   private onChange: (value: number) => void = () => {};
   protected onTouched: () => void = () => {};
 
@@ -102,12 +102,28 @@ export class VoltSlider implements ControlValueAccessor {
       this.state().setDisabled(this.isDisabled());
     });
 
-    this.state().valueChange.subscribe(value => this.onChange(value));
+    // Like mirrorValue, but the template's `value` (default 0) must not overwrite what a form
+    // control wrote first: `value` is an input here, not a model the form could also set.
+    let first = true;
+    effect(() => {
+      const next = this.value();
+      untracked(() => {
+        if (!(first && this.writtenByForm)) {
+          this.state().setValue(next, { emit: false });
+        }
+        first = false;
+      });
+    });
+    this.state().valueChange.subscribe(value => {
+      this.valueChange.emit(value);
+      this.onChange(value);
+    });
   }
 
   writeValue(value: number | null | undefined): void {
     if (value != null) {
-      this.state().setValue(value);
+      this.writtenByForm = true;
+      this.state().setValue(value, { emit: false });
     }
   }
 

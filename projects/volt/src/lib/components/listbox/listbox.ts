@@ -5,7 +5,6 @@ import {
   computed,
   effect,
   forwardRef,
-  inject,
   input,
   model,
   signal,
@@ -14,6 +13,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { injectListboxState, NgpListbox, provideListboxState } from 'ng-primitives/listbox';
 import type { NgpSelectionMode } from 'ng-primitives/common';
 import { injectFormControlState } from '../../form-control-state';
+import { mirrorValue } from '../../mirror-value';
 import { cn } from '../../utils';
 
 @Component({
@@ -33,11 +33,9 @@ import { cn } from '../../utils';
       inputs: [
         'id',
         'ngpListboxMode: mode',
-        'ngpListboxValue: value',
         'ngpListboxDisabled: disabled',
         'ngpListboxCompareWith: compareWith',
       ],
-      outputs: ['ngpListboxValueChange: valueChange'],
     },
   ],
   host: {
@@ -59,7 +57,6 @@ export class VoltListbox<T = unknown> implements ControlValueAccessor {
     )
   );
 
-  private readonly listbox = inject<NgpListbox<T>>(NgpListbox);
   private readonly listboxState = injectListboxState<T>();
   protected readonly formControlState = injectFormControlState();
 
@@ -80,17 +77,19 @@ export class VoltListbox<T = unknown> implements ControlValueAccessor {
       this.listboxState()?.setDisabled(this.isDisabled());
     });
 
-    this.listbox.valueChange.subscribe(value => {
-      this.value.set(value);
-      this.onChange(value);
-    });
+    mirrorValue(
+      this.value,
+      () => this.listboxState()!,
+      value => {
+        this.value.set(value);
+        this.onChange(value);
+      }
+    );
   }
 
   writeValue(value: T[] | null | undefined): void {
-    const nextValue = value ?? [];
-    // Write into the primitive's state, not the `value` model — the model is only the
-    // public alias for it, so setting it here left `[formControl]` selections invisible.
-    this.listboxState()?.setValue(nextValue);
+    // The model is mirrored into the primitive's state, so setting it is enough.
+    this.value.set(value ?? []);
   }
 
   registerOnChange(fn: (value: T[]) => void): void {

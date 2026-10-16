@@ -153,4 +153,31 @@ describe('VoltToggle', () => {
 
     expect(fixture.componentInstance.pressed).toBe(true);
   });
+
+  it('shows the pressed state in every variant, not only through aria-pressed', async () => {
+    const { container } = await render(
+      `<volt-toggle [pressed]="true" aria-label="Default">D</volt-toggle>
+       <volt-toggle variant="outline" [pressed]="true" aria-label="Outline">O</volt-toggle>
+       <volt-toggle variant="ghost" [pressed]="true" aria-label="Ghost">G</volt-toggle>`,
+      { imports: [VoltToggle] }
+    );
+
+    // The outline variant used to reset its pressed background to transparent, so a pressed
+    // and an unpressed toggle looked identical.
+    const buttons = [...container.querySelectorAll('button')];
+    expect(buttons).toHaveLength(3);
+    for (const button of buttons) {
+      expect(button).toHaveAttribute('aria-pressed', 'true');
+      expect(button.className).toMatch(/data-\[selected\]:text-primary/);
+    }
+  });
+
+  it('names the native button from aria-label written on the host', async () => {
+    const { container } = await render(`<volt-toggle aria-label="Toggle bold">B</volt-toggle>`, {
+      imports: [VoltToggle],
+    });
+
+    expect(screen.getByRole('button', { name: 'Toggle bold' })).toBeInTheDocument();
+    expect(container.querySelector('volt-toggle')).not.toHaveAttribute('aria-label');
+  });
 });

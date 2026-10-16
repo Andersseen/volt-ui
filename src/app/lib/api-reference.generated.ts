@@ -1226,7 +1226,7 @@ export const RADIO_API: ComponentApi = {
           default: 'Object.is',
         },
       ],
-      outputs: [{ name: 'valueChange', type: 'unknown' }],
+      outputs: [{ name: 'valueChange', type: 'string | null' }],
     },
     {
       className: 'VoltRadioItem',
@@ -1665,6 +1665,8 @@ export const TOGGLE_API: ComponentApi = {
         { name: 'size', type: "ToggleVariants['size']", default: "'md'" },
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
         { name: 'pressed', type: 'boolean', default: 'false' },
+        { name: 'ariaLabel', type: 'string', default: "''" },
+        { name: 'aria-label', type: 'string | undefined', default: 'undefined' },
       ],
       outputs: [{ name: 'pressedChange', type: 'boolean' }],
     },
@@ -1683,6 +1685,7 @@ export const TOGGLE_GROUP_API: ComponentApi = {
       inputs: [
         { name: 'class', type: 'string', default: "''" },
         { name: 'value', type: 'string', required: true },
+        { name: 'aria-label', type: 'string | undefined', default: 'undefined' },
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
         { name: 'variant', type: "ToggleGroupItemVariants['variant']", default: "'default'" },
         { name: 'size', type: "ToggleGroupItemVariants['size']", default: "'md'" },
@@ -1705,7 +1708,7 @@ export const TOGGLE_GROUP_API: ComponentApi = {
           transform: 'booleanAttribute',
         },
       ],
-      outputs: [{ name: 'valueChange', type: 'unknown' }],
+      outputs: [{ name: 'valueChange', type: 'string[]' }],
     },
   ],
   variants: [

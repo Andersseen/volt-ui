@@ -238,4 +238,13 @@ describe('VoltToggleGroup', () => {
 
     expect(fixture.componentInstance.changes).toEqual([['bold']]);
   });
+
+  it('names an icon-only item from aria-label written on the host', async () => {
+    await render(
+      `<volt-toggle-group><volt-toggle-group-item value="left" aria-label="Align left">L</volt-toggle-group-item></volt-toggle-group>`,
+      { imports: [VoltToggleGroup, VoltToggleGroupItem] }
+    );
+
+    expect(screen.getByRole('radio', { name: 'Align left' })).toBeInTheDocument();
+  });
 });

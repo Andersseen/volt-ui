@@ -115,7 +115,10 @@ try {
     // SSR defect in our code, so that one cause (and only that one) is retried.
     let status = 0;
     let errors = [];
-    for (let attempt = 0; attempt < 3; attempt++) {
+    // A dropped connection on a CI runner can last a few seconds, so back off between tries
+    // (0.5s, 1s, 2s, 4s) instead of retrying into the same outage.
+    for (let attempt = 0; attempt < 5; attempt++) {
+      if (attempt > 0) await sleep(500 * 2 ** (attempt - 1));
       const before = log.length;
       const res = await fetch(`http://127.0.0.1:${PORT}${route}`);
       status = res.status;

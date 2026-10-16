@@ -22,7 +22,7 @@ export class VoltToolbarButton {
 
   protected readonly classes = computed(() =>
     cn(
-      'inline-flex h-8 items-center justify-center rounded-sm px-3 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+      'inline-flex h-8 items-center justify-center rounded-sm px-3 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring aria-pressed:bg-primary/15 aria-pressed:text-primary data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
       this.class()
     )
   );

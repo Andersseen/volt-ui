@@ -40,6 +40,7 @@ const SHARED_LIB_FILES = [
   'form-control-state.ts',
   'host-forwarding.ts',
   'aria-invalid.ts',
+  'mirror-value.ts',
 ];
 
 // ---------------------------------------------------------------------------
