@@ -57,8 +57,7 @@ writeFileSync(
         moduleResolution: 'bundler',
         noEmit: true,
         types: [],
-        // The only mapping a consumer has: the package. No `volt`, no `src/…`.
-        baseUrl: '.',
+        // The only mapping a consumer has: the package. No `volt`, no `src/…`. (No `baseUrl`: deprecated in TS 6; `paths` resolve against this tsconfig.)
         paths: { '@voltui/components': [LIB] },
         typeRoots: [],
       },
