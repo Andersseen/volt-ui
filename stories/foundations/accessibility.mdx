@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Foundations/Accessibility" />
+
+# Accessibility
+
+Accessibility is part of each component's contract, not a finishing touch. Volt does not claim a blanket conformance level: what each component guarantees is written on its page and checked by its tests.
+
+## Where the behaviour comes from
+
+Interactive widgets (dialog, select, combobox, tabs, accordion, menus, sliders and so on) are built on [ng-primitives](https://ng-primitives.dev), which provides the roles, states and keyboard handling. Volt styles them and adds the focus-visible treatment. Where the browser has a native element, Volt keeps it: `voltButton` styles a real `<button>` or `<a>`, so the element that is focused and announced is the one you wrote.
+
+## Things Volt expects from you
+
+- **Names.** Controls without visible text need an accessible name: `aria-label` on an icon button, `ariaLabel` on a switch or slider, a label for every input. Form Field wires a label, hint and error to its control for you.
+- **`disabled` or `aria-disabled`.** `disabled` removes a control from the tab order. `aria-disabled="true"` only dims it and keeps focus, so it can explain itself with `aria-describedby`. Volt does not block clicks on an `aria-disabled` control: guard the handler.
+- **Modal focus.** Dialog and Drawer trap focus while open, return it to the trigger on close, and close on Escape and on an outside click. Give each a title.
+- **Live regions.** Alerts have no live-region role until you opt in with `role="status"` or `role="alert"`. Error toasts are announced as alerts.
+- **Colour is not the message.** Pair status colours with text.
+
+## Using the tools here
+
+Open the **Accessibility** panel under a story to run axe-core against it. Treat the result as a development aid: automated checks find a fraction of real problems, so keyboard and screen-reader testing still matter. Each component page lists the keyboard and focus behaviour that the repository's tests cover.

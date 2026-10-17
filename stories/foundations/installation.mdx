@@ -1,0 +1,57 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Foundations/Installation" />
+
+# Installation
+
+Volt UI needs an Angular application with Tailwind CSS v4. There are two ways to use it; [package vs copy-and-own](?path=/docs/foundations-package-vs-copy-and-own--docs) explains how to choose.
+
+## Package mode
+
+```bash
+npm install @voltui/components
+```
+
+Import Tailwind and the Volt themes once, in your global stylesheet:
+
+```css
+@import 'tailwindcss';
+@import '@voltui/components/themes.css';
+```
+
+The theme stylesheet registers the compiled component bundle as a Tailwind `@source`, so every utility the components use is generated, and it aligns Tailwind's `dark:` variant with the `.dark` class Volt toggles.
+
+Import components where you use them:
+
+```ts
+import { VoltCard, VoltCardContent, VoltNativeButton } from '@voltui/components';
+
+@Component({
+  imports: [VoltCard, VoltCardContent, VoltNativeButton],
+  template: `
+    <volt-card>
+      <volt-card-content class="p-4">
+        <button voltButton variant="outline" type="button">Save</button>
+      </volt-card-content>
+    </volt-card>
+  `,
+})
+export class ExampleComponent {}
+```
+
+## Copy-and-own mode
+
+```bash
+npx @voltui/cli init
+npx @voltui/cli add button card dialog
+```
+
+The CLI copies the component source into your project (`src/app/ui` by default) and renames `Volt*` to `Ui*` and `volt-*` to `ui-*`. Copied components need these runtime dependencies:
+
+```bash
+npm install ng-primitives class-variance-authority clsx tailwind-merge
+```
+
+## More
+
+The full getting-started guide, including AI tooling, is at [voltui.dev](https://voltui.dev).

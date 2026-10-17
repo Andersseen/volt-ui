@@ -1,0 +1,29 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Foundations/Introduction" />
+
+# Volt UI
+
+Volt UI is an Angular component library inspired by shadcn/ui and built on [ng-primitives](https://ng-primitives.dev). The behaviour and accessibility of each widget come from ng-primitives; Volt adds the styling, the theme system and a consistent API.
+
+This Storybook is the **component reference**: every public component, its states, its accessibility notes and its API, rendered from the real library. The main documentation lives at [voltui.dev](https://voltui.dev), which has the getting-started guides, the blocks and layouts gallery, recipes, the theme builder and the MCP and AI documentation.
+
+## What you will find here
+
+- **Components**: one documentation page per component, grouped as on voltui.dev (Forms & Inputs, Controls, Navigation, Overlays, Display, Layout). Each page reads top to bottom: when to use it, installation, a basic example, variants and states, accessibility notes, the API and an interactive playground.
+- **Theme toolbar**: the colour preset, style preset and light/dark switches in the toolbar restyle every story with the same attributes a real application sets. See [Theming](?path=/docs/foundations-theming--docs).
+- **Viewports and accessibility**: the toolbar offers mobile, tablet and desktop viewports, and the Accessibility panel runs axe-core against the current story.
+
+## Principles
+
+- **Angular, current and zoneless.** Standalone components, `OnPush`, signal APIs (`input()`, `output()`, `model()`), and no NgModules. No zone.js is needed.
+- **Tailwind CSS v4.** Components use semantic utilities (`bg-primary`, `rounded-md`) backed by CSS custom properties, so a preset swap restyles everything.
+- **Native first.** Where the browser already has the right element, Volt styles it: `voltButton` on a real `<button>` or `<a>`, `voltNativeSelect` on a real `<select>`.
+- **Stable by contract.** The public API follows semantic versioning. Every component is labelled stable or beta in its page and in `COMPONENT_STATUS.md`.
+
+## Where to go next
+
+- [Installation](?path=/docs/foundations-installation--docs)
+- [Package vs copy-and-own](?path=/docs/foundations-package-vs-copy-and-own--docs)
+- [Theming](?path=/docs/foundations-theming--docs)
+- [Accessibility](?path=/docs/foundations-accessibility--docs)

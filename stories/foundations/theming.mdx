@@ -1,0 +1,39 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Foundations/Theming" />
+
+# Theming
+
+Volt's theme is a set of CSS custom properties. Tailwind v4 maps them into semantic utilities with `@theme inline`, so components use `bg-primary`, `text-foreground`, `rounded-md` and `shadow-sm` rather than fixed colours. Changing a preset restyles every component without touching component code.
+
+## Presets
+
+A theme is a colour preset, a style preset and an appearance:
+
+- **Colour presets:** `volt`, `ember`, `sage`, `dusk`, `glacier`
+- **Style presets:** `sharp`, `soft`, `brutal`, `ghost`, `retro`
+- **Appearance:** light or dark
+
+They are applied to the document root as `data-color`, `data-style` and a `.dark` class.
+
+## In an application
+
+Import the themes once (see [Installation](?path=/docs/foundations-installation--docs)), then provide a theme at bootstrap:
+
+```ts
+import { provideVoltTheme } from '@voltui/components';
+
+bootstrapApplication(AppComponent, {
+  providers: [provideVoltTheme({ color: 'volt', style: 'sharp', dark: false })],
+});
+```
+
+To change it at runtime, call `applyVoltTheme({ color: 'ember', dark: true })`. It only sets the attributes you pass. `provideVoltTheme` reads the platform document, so server-rendered pages carry the theme too.
+
+## In this Storybook
+
+The **Colour preset**, **Style preset** and **Appearance** items in the toolbar call `applyVoltTheme` with the same values and load the same stylesheets as voltui.dev, so there is no Storybook-only theme. Open any component and switch presets to check how it behaves in all 5 × 5 combinations and in dark mode.
+
+## Custom palettes
+
+Build a contrast-checked palette in the [Theme Builder](https://voltui.dev/create-theme) and import it as another colour preset.
