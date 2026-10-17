@@ -21,6 +21,7 @@ import {
 import { McpServer, ResourceTemplate } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { WebStandardStreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js';
 import { z } from 'zod';
+import { ANGULAR_SUPPORT, RESPONSIBILITIES } from './mcp/responsibilities.generated';
 
 // ---------------------------------------------------------------------------
 // Component metadata (inlined — CF Workers have no filesystem access)
@@ -669,7 +670,7 @@ save() { this.toast.success('Changes saved', { description: 'Your workspace has 
       { name: 'disabled', type: 'boolean', default: false },
     ],
     examples: [
-      '<button ui-file-upload (selected)="onFiles($event)">Upload</button>',
+      '<button uiButton uiFileUpload multiple (selected)="onFiles($event)">Upload</button>',
       '<ui-file-dropzone (selected)="onDrop($event)">Drop files here</ui-file-dropzone>',
     ],
   },
@@ -1020,7 +1021,7 @@ function buildSystemContext(): string {
     '',
     '## Project context',
     '',
-    '- Volt UI is an Angular 21 component library inspired by shadcn/ui and built on top of ng-primitives.',
+    `- Volt UI is an Angular component library (Angular ${ANGULAR_SUPPORT}) inspired by shadcn/ui and built on top of ng-primitives.`,
     '- Components are standalone, use OnPush change detection, and prefer signals (`input()`, `output()`, `model()`, `computed()`).',
     '- Styling uses Tailwind CSS v4 with semantic tokens such as `bg-primary`, `text-foreground`, `rounded-md`, `shadow-sm`.',
     '- Variant logic uses class-variance-authority (CVA).',
@@ -1137,7 +1138,7 @@ function buildSystemContext(): string {
 const projectInfo = {
   name: 'Volt UI',
   type: 'angular-component-library',
-  framework: 'Angular v21',
+  framework: `Angular ${ANGULAR_SUPPORT}`,
   primitives: 'ng-primitives',
   styling: 'Tailwind CSS v4',
   docs: 'https://voltui.dev',
@@ -1184,18 +1185,101 @@ function getComponentClassName(comp: ComponentMeta): string {
   return `Ui${comp.name.replace(/\s/g, '')}`;
 }
 
-function getUsageExample(key: string) {
+/** How the consumer uses Volt: the package (`Volt*`, `volt-*`) or CLI-copied source (`Ui*`, `ui-*`). */
+export type DistributionMode = 'package' | 'copy';
+
+/**
+ * The metadata above is written in copy-mode names (what `@voltui/cli add` produces). For a project
+ * in package mode the same facts are true under the package's names, so rename rather than keep a
+ * second copy: `ui-card` → `volt-card`, `uiButton` → `voltButton`, `UiCard` → `VoltCard`.
+ */
+export function forMode<T>(value: T, mode: DistributionMode | undefined): T {
+  if (mode !== 'package') return value;
+  const rename = (text: string) =>
+    text
+      .replace(/\bui-(?=[a-z])/g, 'volt-')
+      .replace(/(?<![A-Za-z])ui(?=[A-Z])/g, 'volt')
+      .replace(/\bUi(?=[A-Z])/g, 'Volt');
+  const walk = (v: unknown): unknown =>
+    typeof v === 'string'
+      ? rename(v)
+      : Array.isArray(v)
+        ? v.map(walk)
+        : v && typeof v === 'object'
+          ? Object.fromEntries(Object.entries(v).map(([k, val]) => [k, walk(val)]))
+          : v;
+  return walk(value) as T;
+}
+
+/** What the component is for and where it stops — generated from the Storybook guides. */
+function responsibilityOf(key: string) {
+  return RESPONSIBILITIES[key];
+}
+
+function getUsageExample(key: string, mode?: DistributionMode) {
   const comp = getComponent(key);
   if (!comp) return undefined;
-  const className = getComponentClassName(comp);
+  const base = getComponentClassName(comp);
+  const pkgClass = base.replace(/^Ui/, 'Volt');
+  const imports = {
+    npm: `import { ${pkgClass} } from '@voltui/components';`,
+    cli: `import { ${base} } from './ui/${key}';`,
+  };
   return {
     component: key,
-    imports: {
-      npm: `import { ${className} } from '@voltui/components';`,
-      cli: `import { ${className} } from './ui/${key}';`,
-    },
-    examples: comp.examples ?? [],
+    mode: mode ?? 'both',
+    imports:
+      mode === 'package' ? { npm: imports.npm } : mode === 'copy' ? { cli: imports.cli } : imports,
+    examples: forMode(comp.examples ?? [], mode),
   };
+}
+
+const STOP_WORDS = new Set([
+  'the',
+  'and',
+  'for',
+  'with',
+  'that',
+  'this',
+  'from',
+  'into',
+  'when',
+  'what',
+  'need',
+  'want',
+  'user',
+  'users',
+  'should',
+  'would',
+  'can',
+  'how',
+  'use',
+  'using',
+  'make',
+  'build',
+  'show',
+]);
+
+/** Candidates for an intent, best first. A plain keyword score over the generated responsibilities. */
+export function findComponents(intent: string, opts: { category?: string; limit?: number } = {}) {
+  const words = [...new Set(intent.toLowerCase().match(/[a-z][a-z-]{2,}/g) ?? [])].filter(
+    w => !STOP_WORDS.has(w)
+  );
+  const hits = (text: string) => words.filter(w => text.includes(w)).length;
+  return Object.entries(RESPONSIBILITIES)
+    .filter(([key]) => key in components)
+    .filter(([, r]) => !opts.category || r.category.toLowerCase() === opts.category.toLowerCase())
+    .map(([key, r]) => ({
+      key,
+      score:
+        hits(`${key} ${r.title}`.toLowerCase()) * 4 +
+        hits(r.summary.toLowerCase()) * 2 +
+        hits(r.useWhen.join(' ').toLowerCase()),
+      ...r,
+    }))
+    .filter(c => c.score > 0)
+    .sort((a, b) => b.score - a.score || a.key.localeCompare(b.key))
+    .slice(0, opts.limit ?? 6);
 }
 
 // ---------------------------------------------------------------------------
@@ -1225,24 +1309,79 @@ export function createMcpServer(): McpServer {
   server.registerTool(
     'list_components',
     {
-      description: 'List all available Volt UI components with their names and descriptions.',
+      description:
+        'List Volt UI components with their category, status (stable/beta) and what each is for. Filter by category or status.',
+      inputSchema: {
+        category: z
+          .string()
+          .optional()
+          .describe('Forms & Inputs, Controls, Navigation, Overlays, Display or Layout.'),
+        status: z.enum(['stable', 'beta', 'experimental']).optional(),
+      },
     },
-    async () => ({
+    async ({ category, status }) => ({
       content: [
         {
           type: 'text',
           text: JSON.stringify(
-            Object.entries(components).map(([key, comp]) => ({
-              name: key,
-              displayName: comp.name,
-              description: comp.description,
-            })),
+            Object.entries(components)
+              .map(([key, comp]) => {
+                const r = responsibilityOf(key);
+                return {
+                  name: key,
+                  displayName: comp.name,
+                  description: comp.description,
+                  category: r?.category,
+                  status: r?.status,
+                  responsibility: r?.summary,
+                };
+              })
+              .filter(c => !category || c.category?.toLowerCase() === category.toLowerCase())
+              .filter(c => !status || c.status === status),
             null,
             2
           ),
         },
       ],
     })
+  );
+
+  server.registerTool(
+    'find_components',
+    {
+      description:
+        'Find the Volt UI components that fit a need, best first, each with what it is for, when to use it, what it is NOT for and its neighbours. Use this before building UI by hand, then get_component for the exact API.',
+      inputSchema: {
+        intent: z
+          .string()
+          .min(2)
+          .describe(
+            'What the UI must do, e.g. "confirm a destructive action" or "search a list from the server".'
+          ),
+        category: z.string().optional(),
+        limit: z.number().int().min(1).max(15).optional(),
+      },
+    },
+    async ({ intent, category, limit }) => {
+      const matches = findComponents(intent, { category, limit });
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(
+              matches.length
+                ? matches
+                : {
+                    matches: [],
+                    hint: 'Nothing matched. Try list_components, or describe the responsibility with other words. If Volt has no component for it, say so rather than rebuilding an atom.',
+                  },
+              null,
+              2
+            ),
+          },
+        ],
+      };
+    }
   );
 
   server.registerTool(
@@ -1257,9 +1396,15 @@ export function createMcpServer(): McpServer {
           .refine(val => componentKeys.includes(val), {
             message: `Unknown component. Valid: ${componentKeys.join(', ')}`,
           }),
+        mode: z
+          .enum(['package', 'copy'])
+          .optional()
+          .describe(
+            'The project\'s distribution mode: "package" returns volt-* selectors and Volt* classes, "copy" returns ui-* and Ui*. Omit to get the copy-mode names.'
+          ),
       },
     },
-    async ({ name }) => {
+    async ({ name, mode }) => {
       const comp = getComponent(name);
       if (!comp) {
         return {
@@ -1273,7 +1418,20 @@ export function createMcpServer(): McpServer {
         };
       }
       return {
-        content: [{ type: 'text', text: JSON.stringify(comp, null, 2) }],
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(
+              {
+                ...forMode(comp, mode),
+                mode: mode ?? 'copy',
+                responsibility: responsibilityOf(name),
+              },
+              null,
+              2
+            ),
+          },
+        ],
       };
     }
   );
@@ -1289,10 +1447,14 @@ export function createMcpServer(): McpServer {
           .refine(val => componentKeys.includes(val), {
             message: `Unknown component. Valid: ${componentKeys.join(', ')}`,
           }),
+        mode: z
+          .enum(['package', 'copy'])
+          .optional()
+          .describe("The project's distribution mode; omit for both import styles."),
       },
     },
-    async ({ component }) => {
-      const example = getUsageExample(component);
+    async ({ component, mode }) => {
+      const example = getUsageExample(component, mode);
       if (!example) {
         return {
           content: [

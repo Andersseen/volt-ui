@@ -468,3 +468,159 @@ export const COMPONENT_GUIDES = {
     ],
   },
 };
+
+/**
+ * Where a component stops and its neighbours start. Read by the MCP `find_components` tool and the
+ * generated catalog in the `volt-ui-component-selection` agent skill, so an assistant choosing
+ * between two similar components has the same answer the Storybook pages give a person.
+ *
+ * Only components that are routinely confused with another need an entry.
+ *
+ * @type {Record<string, { notFor: string[]; related: string[] }>}
+ */
+export const COMPONENT_RELATIONS = {
+  button: {
+    notFor: ['A link to another page that is not styled as an action: use a plain anchor.'],
+    related: ['toggle', 'dropdown-menu'],
+  },
+  select: {
+    notFor: [
+      'A short fixed list where a native control is enough: use the native select directive.',
+      'A list the user searches by typing or that comes from a server: use Combobox.',
+    ],
+    related: ['combobox', 'listbox', 'radio'],
+  },
+  combobox: {
+    notFor: [
+      'A fixed list the application only needs a native select for.',
+      'Choosing a command: use Dropdown Menu.',
+    ],
+    related: ['select', 'listbox', 'search'],
+  },
+  listbox: {
+    notFor: ['A value inside a form that collapses after choosing: use Select.'],
+    related: ['select', 'combobox'],
+  },
+  checkbox: {
+    notFor: ['A setting that takes effect immediately: use Switch.'],
+    related: ['switch', 'toggle', 'radio'],
+  },
+  switch: {
+    notFor: ['A choice submitted with a form or an "I agree": use Checkbox.'],
+    related: ['checkbox', 'toggle'],
+  },
+  radio: {
+    notFor: ['More than a handful of options: use Select.'],
+    related: ['select', 'checkbox', 'toggle-group'],
+  },
+  toggle: {
+    notFor: ['An on/off setting: use Switch. A value in a form: use Checkbox.'],
+    related: ['toggle-group', 'switch', 'checkbox'],
+  },
+  'toggle-group': {
+    notFor: ['Switching between views of a page: use Tabs.'],
+    related: ['toggle', 'radio', 'toolbar', 'tabs'],
+  },
+  slider: {
+    notFor: ['A low–high pair: use Range Slider.'],
+    related: ['range-slider', 'progress'],
+  },
+  'range-slider': {
+    notFor: ['A single number: use Slider.'],
+    related: ['slider'],
+  },
+  tabs: {
+    notFor: [
+      'Navigation where the URL owns the selection (deep links, middle-click): use real anchors.',
+      'Panels that are really separate pages.',
+    ],
+    related: ['navigation-menu', 'toggle-group', 'accordion'],
+  },
+  accordion: {
+    notFor: ['Switching between mutually exclusive views: use Tabs.'],
+    related: ['tabs'],
+  },
+  'navigation-menu': {
+    notFor: ['Persistent application chrome with sections: use Sidebar.'],
+    related: ['sidebar', 'tabs', 'breadcrumbs'],
+  },
+  sidebar: {
+    notFor: ['A top-level menu with flyout content: use Navigation Menu.'],
+    related: ['navigation-menu', 'drawer'],
+  },
+  dialog: {
+    notFor: [
+      'Content that does not need a decision: use a Popover or inline content.',
+      'A secondary panel or small-screen navigation: use Drawer.',
+    ],
+    related: ['drawer', 'popover', 'alert'],
+  },
+  drawer: {
+    notFor: ['A decision that must block the page: use Dialog.'],
+    related: ['dialog', 'sidebar'],
+  },
+  popover: {
+    notFor: ['A hint that only names a control: use Tooltip.', 'A command list: use Dropdown Menu.'],
+    related: ['tooltip', 'dropdown-menu', 'dialog'],
+  },
+  tooltip: {
+    notFor: ['Essential information, or anything interactive: put it on the page or use Popover.'],
+    related: ['popover'],
+  },
+  'dropdown-menu': {
+    notFor: ['Choosing a value for a field: use Select.'],
+    related: ['select', 'popover'],
+  },
+  toast: {
+    notFor: ['An error the user must read or act on: use Alert or a Dialog.'],
+    related: ['alert'],
+  },
+  alert: {
+    notFor: ['A transient "saved" confirmation: use Toast.'],
+    related: ['toast', 'empty-state', 'dialog'],
+  },
+  spinner: {
+    notFor: ['Content with a known layout: use Skeleton.'],
+    related: ['skeleton', 'progress'],
+  },
+  skeleton: {
+    notFor: ['An unknown-duration wait with no shape: use Spinner.'],
+    related: ['spinner'],
+  },
+  progress: {
+    notFor: ['A measured quantity within a known range (disk usage): use Meter.'],
+    related: ['meter', 'spinner'],
+  },
+  meter: {
+    notFor: ['Progress toward completion: use Progress.'],
+    related: ['progress'],
+  },
+  badge: {
+    notFor: ['A full sentence of status: use text or Alert.'],
+    related: ['alert', 'avatar'],
+  },
+  'empty-state': {
+    notFor: ['An error or warning about the page: use Alert.'],
+    related: ['alert', 'skeleton'],
+  },
+  table: {
+    notFor: ['Sorting, filtering, paging and selection logic: that belongs to the application.'],
+    related: ['pagination'],
+  },
+  pagination: {
+    notFor: ['Endless lists that load as you scroll.'],
+    related: ['table'],
+  },
+  'form-field': {
+    notFor: ['Anything that is not a labelled form control.'],
+    related: ['input', 'textarea', 'select'],
+  },
+  input: {
+    notFor: ['A choice from a list: use Select, Combobox or Radio.'],
+    related: ['textarea', 'form-field', 'search'],
+  },
+  search: {
+    notFor: ['Searching a server-backed list for a value: use Combobox with manual filtering.'],
+    related: ['input', 'combobox'],
+  },
+};

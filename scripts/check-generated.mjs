@@ -7,6 +7,7 @@
  *   site-stats.ts          library version, component/layout/preset counts   (pnpm stats)
  *   api-reference.generated.ts   every component's inputs, outputs, variants  (pnpm generate:api-reference)
  *   mcp/content.generated.ts   installer content served by /api/mcp/setup     (pnpm generate:mcp-content)
+ *   mcp/responsibilities.generated.ts, the skill catalog, .agents/skills/volt-ui*  (pnpm generate:agent-skills)
  *   public/{robots.txt,sitemap.xml,llms.txt}  crawler files                    (pnpm generate:seo-files)
  *   stories/components/*.mdx   Storybook component pages                      (pnpm generate:storybook-docs)
  *   specs/dogfood-inventory.md  where the site itself uses each atom           (pnpm generate:dogfood)
@@ -22,6 +23,7 @@ const CHECKS = [
   ['scripts/generate-site-stats.mjs', 'pnpm stats'],
   ['scripts/generate-api-reference.mjs', 'pnpm generate:api-reference'],
   ['scripts/generate-mcp-content.mjs', 'pnpm generate:mcp-content'],
+  ['scripts/generate-agent-skills.mjs', 'pnpm generate:agent-skills'],
   ['scripts/generate-storybook-docs.mjs', 'pnpm generate:storybook-docs'],
   ['scripts/generate-seo-files.mjs', 'pnpm generate:seo-files'],
   ['scripts/check-dogfood.mjs', 'pnpm generate:dogfood'],

@@ -233,21 +233,46 @@ pnpm test:storybook    # Playwright smoke tests against dist/storybook (build fi
 
 ## AI tools for consumers
 
-The repo provides three complementary ways to give AI assistants context about Volt UI. None of these are auto-discovered by a consumer project on their own — they must be installed via `npx @voltui/agent <agent>` (or copied manually):
+The architecture is one rule: **the MCP server tells agents what Volt contains; the skills teach them
+when and how to use it.** Nothing is copied from one to the other.
 
-1. **Skill** — `.agents/skills/volt-ui/SKILL.md` is the source of truth for the skill content. `npx @voltui/agent claude` installs an inlined copy (`VOLT_UI_SKILL` in `cli/agent/setup-agent.js`) into the consumer's `.claude/skills/volt-ui/SKILL.md`, where Claude Code auto-discovers it. For OpenCode, copy the same file to `.agents/skills/volt-ui/SKILL.md` in the consumer project.
-2. **MCP server** — `src/server/routes/mcp.ts` is a spec-compliant Streamable HTTP MCP server (tools: `list_components`, `get_component`, `get_usage_example`, `get_theme_info`, `get_project_info`, `generate_cli_command`; resources: `component://<name>`, `theme://info`, `project://info`; prompts: `generate-volt-ui-component`, `volt-ui-troubleshooting`). Production endpoint: `https://voltui.dev/api/mcp`. `npx @voltui/agent claude` writes it to `.mcp.json` at the consumer's repo root (Claude Code's project-level MCP config, `"type": "http"`); `cursor`/`windsurf` targets write their own client-specific config. Claude Desktop does not support remote MCP servers via `claude_desktop_config.json` — add them through Settings → Connectors instead.
-3. **Prompt reference** — `VOLT_UI_PROMPT.md` is a single-file prompt that can be pasted into any LLM chat to get correct selectors, examples, and rules for Volt UI components.
+1. **MCP server** (`src/server/routes/mcp.ts`, Streamable HTTP, `https://voltui.dev/api/mcp`) — the
+   factual source: `list_components`, `find_components` (by intent, with `useWhen`/`notFor`/
+   `related`), `get_component`, `get_usage_example` (both take `mode: package | copy`),
+   `get_theme_info`, `get_project_info`, `generate_cli_command`; resources `component://<name>`,
+   `theme://info`, `project://info`; prompts `generate-volt-ui-component`, `volt-ui-troubleshooting`.
+   Responsibility metadata and the supported Angular range are **generated**
+   (`src/server/routes/mcp/responsibilities.generated.ts`), never hand-written there.
+2. **Skills** (`cli/agent/skills/<name>/SKILL.md`, the only copy) — short, single-responsibility
+   playbooks: `volt-ui` (router), `volt-ui-adoption`, `volt-ui-component-selection`, `volt-ui-forms`,
+   `volt-ui-overlays`, `volt-ui-styling`, `volt-ui-distribution`. They do not carry a component API.
+   Each ends with a `volt:digest` section: that is all a rules-file agent (Cursor, Windsurf, Copilot,
+   Gemini CLI) receives. Add a skill only for a genuinely independent workflow; the expected set is in
+   `cli/check-ai-docs-sync.js`.
+3. **Installer** (`cli/agent/`, `@voltui/agent`) — `npx @voltui/agent <agent>` writes the MCP entry
+   and, per agent, the skills (Claude Code `.claude/skills/`, Codex and OpenCode `.agents/skills/`) or
+   a routing block (`.cursorrules`, `.windsurfrules`, `copilot-instructions.md`, `GEMINI.md`).
+   `content.js` holds only executable generation (the block, the snippets); `skills.js` reads the
+   skill files.
+4. **Prompt reference** — `VOLT_UI_PROMPT.md`, a single file to paste into a chat LLM with no MCP.
+   Its component catalog is generated from the library source.
 
-The single installer lives at `cli/agent/setup-agent.js` (content in `cli/agent/content.js`, tests in `cli/agent/installer.spec.js`) (published as `@voltui/agent`; the root `package.json` bin/`setup:agent` script point there too — don't recreate a second copy).
+Generated pieces — never hand-edit, `pnpm check:generated` fails on drift:
 
-When updating component APIs, selectors, or examples, keep all of these in sync (run `pnpm check:ai-docs` to catch component list drift automatically):
+- `pnpm generate:agent-skills` → the catalog in `volt-ui-component-selection`, the catalog in
+  `VOLT_UI_PROMPT.md`, `mcp/responsibilities.generated.ts`, and the `.agents/skills/volt-ui*` copies
+  (for agents working in this repo).
+- `pnpm generate:mcp-content` → `mcp/content.generated.ts`, the hosted `/api/mcp/setup` payload.
 
-- `.agents/skills/volt-ui/SKILL.md`
-- `cli/agent/content.js` (`VOLT_UI_SKILL`, `CURSOR_RULES`, `COPILOT_INSTRUCTIONS`, `VSCODE_SNIPPETS`), then run `pnpm generate:mcp-content`: `src/server/routes/mcp/content.generated.ts` is generated from it for the hosted `/api/mcp/setup` endpoint (never hand-edit it; `pnpm check:generated` fails on drift)
-- `src/server/routes/mcp.ts`
-- `VOLT_UI_PROMPT.md`
-- `src/app/lib/snippets/usage.ts`
+Responsibility data (what a component is for, where it stops) comes from one place:
+`stories/_docs/component-guides.mjs` (`COMPONENT_GUIDES` + `COMPONENT_RELATIONS`) and
+`COMPONENT_STATUS.md`. Edit those, not the AI files.
+
+`pnpm check:ai-docs` compares everything an AI tool reads with the library itself — the selectors it
+declares, what it exports, its peer dependencies, `COMPONENT_STATUS.md` — and fails on an unknown
+element or directive, an import that does not exist, a `Ui*` name used for the package, a component
+called `beta` that is `stable`, a hard-coded Angular major, a skill set that is not the expected one,
+or a skill that grew past its budget.
 
 ## Agentyx harness
 
