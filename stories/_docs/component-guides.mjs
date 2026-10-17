@@ -560,7 +560,10 @@ export const COMPONENT_RELATIONS = {
     related: ['dialog', 'sidebar'],
   },
   popover: {
-    notFor: ['A hint that only names a control: use Tooltip.', 'A command list: use Dropdown Menu.'],
+    notFor: [
+      'A hint that only names a control: use Tooltip.',
+      'A command list: use Dropdown Menu.',
+    ],
     related: ['tooltip', 'dropdown-menu', 'dialog'],
   },
   tooltip: {

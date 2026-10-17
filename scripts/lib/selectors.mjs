@@ -64,11 +64,19 @@ export function publicExports() {
         return;
       }
     }
-    for (const m of src.matchAll(/export\s+(?:abstract\s+)?(?:class|const|function|interface|type|enum)\s+(\w+)/g)) {
+    for (const m of src.matchAll(
+      /export\s+(?:abstract\s+)?(?:class|const|function|interface|type|enum)\s+(\w+)/g
+    )) {
       names.add(m[1]);
     }
     for (const m of src.matchAll(/export\s*\{([^}]*)\}\s*from\s*'([^']+)'/g)) {
-      for (const n of m[1].split(',')) names.add(n.trim().split(/\s+as\s+/).pop());
+      for (const n of m[1].split(','))
+        names.add(
+          n
+            .trim()
+            .split(/\s+as\s+/)
+            .pop()
+        );
     }
     for (const m of src.matchAll(/export\s*\*\s*from\s*'(\.[^']+)'/g)) {
       const base = file.endsWith('index.ts') ? dirname(file) : dirname(file);
