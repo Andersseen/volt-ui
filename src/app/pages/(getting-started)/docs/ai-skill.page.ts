@@ -1,14 +1,33 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { LmnCheckIcon, LmnCopyIcon, LmnDownloadIcon } from 'lumen-icons';
+import { VoltNativeButton } from 'volt';
 import skillMarkdown from '../../../../../.agents/skills/volt-ui/SKILL.md?raw';
+
+/** The skills the installer writes, read from their files so the page cannot list a stale set. */
+const SKILL_FILES = import.meta.glob('../../../../../cli/agent/skills/*/SKILL.md', {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+}) as Record<string, string>;
+
+function describeSkill(text: string): { name: string; description: string } {
+  const front = text.match(/^---\n([\s\S]*?)\n---/)?.[1] ?? '';
+  const name = front.match(/^name:\s*(.+)$/m)?.[1]?.trim() ?? '';
+  const description = (front.match(/^description:\s*>?\s*\n?([\s\S]*)$/m)?.[1] ?? '')
+    .split('\n')
+    .map(line => line.trim())
+    .filter(Boolean)
+    .join(' ');
+  return { name, description };
+}
 import { Prose } from '../../../components/prose';
-import { injectAppI18n } from '../../../i18n/i18n';
+import { injectAppI18n, type PlainTranslationKey } from '../../../i18n/i18n';
 
 @Component({
   selector: 'app-ai-skill-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [Prose, RouterLink, LmnCopyIcon, LmnCheckIcon, LmnDownloadIcon],
+  imports: [Prose, RouterLink, VoltNativeButton, LmnCopyIcon, LmnCheckIcon, LmnDownloadIcon],
   template: `
     <div class="space-y-8 max-w-3xl">
       <!-- Header -->
@@ -35,11 +54,7 @@ import { injectAppI18n } from '../../../i18n/i18n';
           <code>{{ installCommand }}</code>
         </div>
         <div class="flex flex-wrap gap-3">
-          <button
-            type="button"
-            (click)="copyInstallCommand()"
-            class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
-          >
+          <button voltButton size="sm" type="button" class="gap-1.5" (click)="copyInstallCommand()">
             @if (installCopied()) {
               <lmn-check [size]="16" />
               <span>{{ t('guide.aiSkillPage.copiedCmd') }}</span>
@@ -50,18 +65,24 @@ import { injectAppI18n } from '../../../i18n/i18n';
           </button>
 
           <button
+            voltButton
+            variant="outline"
+            size="sm"
             type="button"
+            class="gap-1.5"
             (click)="downloadSkill()"
-            class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium border border-border bg-background rounded-md hover:bg-accent hover:text-accent-foreground transition-colors"
           >
             <lmn-download [size]="16" />
             <span>{{ t('guide.aiSkillPage.downloadSkill') }}</span>
           </button>
 
           <button
+            voltButton
+            variant="outline"
+            size="sm"
             type="button"
+            class="gap-1.5"
             (click)="copySkill()"
-            class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium border border-border bg-background rounded-md hover:bg-accent hover:text-accent-foreground transition-colors"
           >
             @if (skillCopied()) {
               <lmn-check [size]="16" />
@@ -80,30 +101,24 @@ import { injectAppI18n } from '../../../i18n/i18n';
           {{ t('guide.aiSkillPage.coversTitle') }}
         </h2>
         <ul class="space-y-2 text-muted-foreground">
-          <li class="flex items-start gap-2">
-            <span class="text-primary mt-0.5">•</span>
-            <span><app-prose key="guide.aiSkillPage.coversStack" /></span>
-          </li>
-          <li class="flex items-start gap-2">
-            <span class="text-primary mt-0.5">•</span>
-            <span><app-prose key="guide.aiSkillPage.coversNaming" /></span>
-          </li>
-          <li class="flex items-start gap-2">
-            <span class="text-primary mt-0.5">•</span>
-            <span><app-prose key="guide.aiSkillPage.coversCatalog" /></span>
-          </li>
-          <li class="flex items-start gap-2">
-            <span class="text-primary mt-0.5">•</span>
-            <span><app-prose key="guide.aiSkillPage.coversOverlays" /></span>
-          </li>
-          <li class="flex items-start gap-2">
-            <span class="text-primary mt-0.5">•</span>
-            <span><app-prose key="guide.aiSkillPage.coversForms" /></span>
-          </li>
-          <li class="flex items-start gap-2">
-            <span class="text-primary mt-0.5">•</span>
-            <span><app-prose key="guide.aiSkillPage.coversTheme" /></span>
-          </li>
+          @for (key of coverKeys; track key) {
+            <li class="flex items-start gap-2">
+              <span class="text-primary mt-0.5">•</span>
+              <span><app-prose [key]="key" /></span>
+            </li>
+          }
+        </ul>
+        <h3 class="text-lg font-semibold">{{ t('guide.aiSkillPage.listTitle') }}</h3>
+        <p class="text-sm text-muted-foreground">
+          {{ t('guide.aiSkillPage.count', { count: skills.length }) }}
+        </p>
+        <ul class="grid gap-3 sm:grid-cols-2">
+          @for (skill of skills; track skill.name) {
+            <li class="rounded-lg border border-border p-3">
+              <code class="text-sm font-medium">{{ skill.name }}</code>
+              <p class="mt-1 text-xs text-muted-foreground">{{ skill.description }}</p>
+            </li>
+          }
         </ul>
       </div>
 
@@ -133,6 +148,19 @@ export default class AiSkillPage {
   protected readonly t = this.translations.t;
 
   readonly skillContent = skillMarkdown;
+  readonly skills = Object.values(SKILL_FILES)
+    .map(describeSkill)
+    .sort((a, b) =>
+      a.name === 'volt-ui' ? -1 : b.name === 'volt-ui' ? 1 : a.name.localeCompare(b.name)
+    );
+  readonly coverKeys: readonly PlainTranslationKey[] = [
+    'guide.aiSkillPage.coversAdoption',
+    'guide.aiSkillPage.coversSelection',
+    'guide.aiSkillPage.coversForms',
+    'guide.aiSkillPage.coversOverlays',
+    'guide.aiSkillPage.coversStyling',
+    'guide.aiSkillPage.coversDistribution',
+  ];
   readonly installCommand = 'npx @voltui/agent claude';
   readonly installCopied = signal(false);
   readonly skillCopied = signal(false);

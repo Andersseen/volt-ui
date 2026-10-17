@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, input, signal } from '@angular/core';
-import { VoltTabs, VoltTabsContent, VoltTabsList, VoltTabsTrigger } from 'volt';
+import { VoltNativeButton, VoltTabs, VoltTabsContent, VoltTabsList, VoltTabsTrigger } from 'volt';
 import { LmnCheckIcon, LmnCopyIcon } from 'lumen-icons';
 import { CodeEditor } from './code-editor';
 import { CopyButton } from './copy-button';
@@ -10,6 +10,7 @@ import { injectAppI18n } from '../i18n/i18n';
   selector: 'app-code-panel',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    VoltNativeButton,
     CommonModule,
     CodeEditor,
     CopyButton,
@@ -36,9 +37,12 @@ import { injectAppI18n } from '../i18n/i18n';
           <span class="text-sm text-muted-foreground">{{ t('ui.codePanel.installCli') }}</span>
           <code class="text-sm font-mono text-foreground">{{ cliCommand() }}</code>
           <button
+            voltButton
+            variant="ghost"
+            size="sm"
             type="button"
             (click)="copyCliCommand()"
-            class="ml-auto inline-flex items-center gap-1 px-2 py-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
+            class="ml-auto h-7 gap-1 px-2 text-muted-foreground"
           >
             @if (cliCopied()) {
               <lmn-check [size]="14" class="text-success" />

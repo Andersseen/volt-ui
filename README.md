@@ -17,13 +17,14 @@ Angular UI atoms that stay out of the way of your product's own design — built
 
 <br/>
 
-### ⚡ v1.3 — Async Data & Angular Integration
+### ⚡ v1.3 — Async data, Angular 22 and verified behavior
 
 **Volt UI meets real application data.** `volt-combobox` can search a server (`filterMode="manual"`,
-`(queryChange)`, `loading`), breadcrumbs take your own router anchors (`a[voltBreadcrumbLink]`), and
-the docs now cover the async-search recipe end to end. Backwards compatible ·
-**[release notes](./CHANGELOG.md)** · **[upgrade notes](./MIGRATION.md)** ·
-**[versioning policy](https://voltui.dev/docs/versioning)**
+`(queryChange)`, `loading`) and breadcrumbs take your own router anchors (`a[voltBreadcrumbLink]`).
+**Angular 21.2 and 22 are both supported**, each verified against the packed package in an isolated
+project, and every stateful component is exercised in real browsers (Chromium, Firefox, WebKit), not
+only in jsdom. Backwards compatible · **[release notes](./CHANGELOG.md)** ·
+**[upgrade notes](./MIGRATION.md)** · **[versioning policy](https://voltui.dev/docs/versioning)**
 
 The site is available in **English, Spanish and Ukrainian**, and every component now has an
 interactive **[Storybook](https://storybook.voltui.dev)** reference with live controls, all theme
@@ -33,7 +34,7 @@ presets and an accessibility panel.
 
 [![npm — components](https://img.shields.io/npm/v/@voltui/components?style=for-the-badge&logo=npm&logoColor=white&label=components&color=6366F1)](https://www.npmjs.com/package/@voltui/components)
 [![npm — cli](https://img.shields.io/npm/v/@voltui/cli?style=for-the-badge&logo=npm&logoColor=white&label=cli&color=6366F1)](https://www.npmjs.com/package/@voltui/cli)
-[![Angular 21](https://img.shields.io/badge/Angular-21-DD0031?style=for-the-badge&logo=angular&logoColor=white)](https://angular.dev)
+[![Angular 21 · 22](https://img.shields.io/badge/Angular-21%20%C2%B7%2022-DD0031?style=for-the-badge&logo=angular&logoColor=white)](https://angular.dev)
 [![Tailwind v4](https://img.shields.io/badge/Tailwind-v4-38BDF8?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
 
 [![Components](https://img.shields.io/badge/components-44-8B5CF6?style=for-the-badge)](https://voltui.dev/docs/components)
@@ -68,7 +69,7 @@ There are two first-class ways to use it. Pick per project; both are supported f
 - 🎨 Restyle through **Tailwind v4 tokens** and `class` instead of fighting a theming API.
 - ♿ Keyboard, focus and ARIA behavior come from ng-primitives, on the native elements you write.
 
-> **Why it exists** — Angular has strong headless and enterprise UI options, but few focused on the shadcn-style _"copy the component and own it"_ workflow. Volt UI fills that gap with modern Angular 21 patterns: standalone components, `OnPush`, signals, zoneless compatibility, `ng-primitives` accessibility behavior, and Tailwind v4 tokens.
+> **Why it exists** — Angular has strong headless and enterprise UI options, but few focused on the shadcn-style _"copy the component and own it"_ workflow. Volt UI fills that gap with modern Angular patterns (21.2+ and 22): standalone components, `OnPush`, signals, zoneless compatibility, `ng-primitives` accessibility behavior, and Tailwind v4 tokens.
 
 > _Naming note: this project is not affiliated with PrimeVue Volt UI. Here, Volt UI is an independent Angular implementation for the `@voltui` packages and CLI._
 
@@ -84,7 +85,7 @@ There are two first-class ways to use it. Pick per project; both are supported f
 | 🧩 **44 components**           | Forms, overlays, feedback, navigation, data display — see the [catalog](#-component-catalog).               |
 | 📚 **Storybook reference**     | Every component's states, controls, themes and API at [storybook.voltui.dev](https://storybook.voltui.dev). |
 | 🛰️ **Zoneless & signal-first** | `input()` / `output()` / `model()` / `computed()`, `OnPush` everywhere.                                     |
-| 🤖 **AI-ready**                | Ships an MCP server, a skill, and a prompt reference so assistants use it correctly.                        |
+| 🤖 **AI-ready**                | An MCP server for the facts, seven focused skills for the decisions, and a prompt reference.                |
 
 ---
 
@@ -93,7 +94,7 @@ There are two first-class ways to use it. Pick per project; both are supported f
 ### Package mode
 
 ```bash
-npm install @voltui/components
+npm install @voltui/components @angular/cdk
 ```
 
 ```css
@@ -244,7 +245,7 @@ promised. We have made peace with that.</sub>
 copies, and get fixes and features through normal semver updates.
 
 ```bash
-npm install @voltui/components
+npm install @voltui/components @angular/cdk
 ```
 
 Import themes once — that single line is all Tailwind v4 needs:
@@ -284,13 +285,18 @@ bootstrapApplication(AppComponent, {
 
 ## 🤖 AI Tools for Consumers
 
-Volt UI ships three complementary ways to give AI assistants correct context:
+**The MCP server tells an assistant what Volt contains; the skills teach it when and how to use it.**
+Exact selectors, inputs and status always come from the server, never from a copy in a skill.
 
-| Tool                    | What it is                                                                                           | Install                                    |
-| ----------------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------ |
-| 🧠 **Skill**            | Auto-discovered by Claude Code / OpenCode in a workspace                                             | `npx @voltui/agent claude`                 |
-| 🛰️ **MCP server**       | `list_components`, `get_component`, `get_usage_example`, `get_theme_info`, `generate_cli_command`, … | [`/api/mcp`](https://voltui.dev/api/mcp)   |
-| 📋 **Prompt reference** | Single file to paste into any LLM chat                                                               | [`VOLT_UI_PROMPT.md`](./VOLT_UI_PROMPT.md) |
+| Tool                    | What it is                                                                                                                            | Install                                    |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
+| 🛰️ **MCP server**       | `list_components`, `find_components` (by intent), `get_component`, `get_usage_example` (`mode: package \| copy`), `get_theme_info`, … | [`/api/mcp`](https://voltui.dev/api/mcp)   |
+| 🧠 **Skills**           | Seven single-responsibility playbooks: adoption, component selection, forms, overlays, styling, distribution, plus a router           | `npx @voltui/agent claude`                 |
+| 📋 **Prompt reference** | Single file to paste into any LLM chat with no MCP                                                                                    | [`VOLT_UI_PROMPT.md`](./VOLT_UI_PROMPT.md) |
+
+`npx @voltui/agent` supports Claude Code, Codex, OpenCode, Cursor, Windsurf, Gemini CLI and GitHub
+Copilot: agents that load skills get all of them, the others a short rules block with the same
+digests. See [`cli/agent`](./cli/agent/README.md).
 
 ---
 
@@ -321,14 +327,17 @@ Full status table: **[COMPONENT_STATUS.md](./COMPONENT_STATUS.md)**.
 
 ### Compatibility policy
 
-The `1.x` line targets Angular `^21.2` and Node 20 or newer. Volt UI supports the
-latest declared Angular major only; widening that range requires consumer-fixture
-verification and is never assumed from a successful build. Each supported Angular
-major is documented with migration notes or release notes before a major is dropped.
+The `1.x` line supports Angular `^21.2 || ^22` and Node 20 or newer. A range is only widened after
+the **packed** package has been installed into an isolated Angular project of that major, compiled
+with its own `ng build` and exercised in a browser (`pnpm check:angular-compat <major>`); a green
+build in this repository is never taken as proof. `@angular/cdk` and `@angular/router` are peers —
+install the CDK at the same major as `@angular/core`. Each supported Angular major is documented
+with migration or release notes before it is dropped.
 
-Coverage is measured against the complete library source, CLI core and hosted
-MCP route. Every component family requires a real behavior spec, while overlays
-and keyboard workflows are additionally exercised in Playwright.
+Coverage is a safety floor, not the quality metric: a component is verified when its public
+behavior is observed through the DOM and, where it matters, in a real browser. See
+[`specs/TESTING.md`](./specs/TESTING.md) and the generated
+[behavioral-contract map](./specs/behavioral-contracts.md).
 
 ---
 
@@ -342,7 +351,10 @@ pnpm typecheck      # type check
 pnpm lint           # lint
 pnpm test:run       # unit tests (Vitest)
 pnpm build:lib      # build the Angular library
-pnpm test:e2e:ci    # Playwright e2e
+pnpm test:e2e:ci    # Playwright e2e (docs site)
+pnpm test:e2e:contracts   # component contracts in Chromium, Firefox and WebKit
+pnpm check:angular-compat 22   # packed tarball on Angular 21 or 22
+pnpm check:dogfood  # voltui.dev must use Volt for what Volt provides
 pnpm manifest       # regenerate the CLI manifest after component changes
 ```
 

@@ -4,6 +4,7 @@ import {
   Component,
   computed,
   effect,
+  untracked,
   forwardRef,
   input,
   numberAttribute,
@@ -20,7 +21,6 @@ import {
   NgpRangeSliderTrack,
   provideRangeSliderState,
 } from 'ng-primitives/slider';
-import { merge } from 'rxjs';
 
 import type { NgpOrientation } from 'ng-primitives/common';
 import { injectFormControlState } from '../../form-control-state';
@@ -41,15 +41,12 @@ import { cn } from '../../utils';
     {
       directive: NgpRangeSlider,
       inputs: [
-        'ngpRangeSliderLow: low',
-        'ngpRangeSliderHigh: high',
         'ngpRangeSliderMin: min',
         'ngpRangeSliderMax: max',
         'ngpRangeSliderStep: step',
         'ngpRangeSliderDisabled: disabled',
         'ngpRangeSliderOrientation: orientation',
       ],
-      outputs: ['ngpRangeSliderLowChange: lowChange', 'ngpRangeSliderHighChange: highChange'],
     },
   ],
   host: {
@@ -104,6 +101,7 @@ export class VoltRangeSlider implements ControlValueAccessor {
   private readonly controlDisabled = signal(false);
   private readonly isDisabled = computed(() => this.disabled() || this.controlDisabled());
 
+  private writtenByForm = false;
   private onChange: (value: [number, number]) => void = () => {};
   protected onTouched: () => void = () => {};
 
@@ -112,9 +110,46 @@ export class VoltRangeSlider implements ControlValueAccessor {
       this.state().setDisabled(this.isDisabled());
     });
 
-    merge(this.state().lowChange, this.state().highChange)
-      .pipe(takeUntilDestroyed())
-      .subscribe(() => this.onChange([this.state().low(), this.state().high()]));
+    // Volt owns `low`/`high` and writes them into the primitive without emitting, never binding
+    // the primitive's own inputs: ng-primitives latches into controlled mode the first time
+    // they are defined, which froze a static `[low]="20"` after the first keystroke. The
+    // template's defaults must not overwrite what a form control wrote first.
+    let first = true;
+    effect(() => {
+      const low = this.low();
+      const high = this.high();
+      untracked(() => {
+        if (!(first && this.writtenByForm)) {
+          this.writeRange(low, high);
+        }
+        first = false;
+      });
+    });
+
+    this.state()
+      .lowChange.pipe(takeUntilDestroyed())
+      .subscribe(low => {
+        this.lowChange.emit(low);
+        this.onChange([low, this.state().high()]);
+      });
+    this.state()
+      .highChange.pipe(takeUntilDestroyed())
+      .subscribe(high => {
+        this.highChange.emit(high);
+        this.onChange([this.state().low(), high]);
+      });
+  }
+
+  /** The primitive clamps `low` to `high` and the reverse, so the order depends on the direction. */
+  private writeRange(low: number, high: number): void {
+    const state = this.state();
+    if (low > state.high()) {
+      state.setHighValue(high, { emit: false });
+      state.setLowValue(low, { emit: false });
+    } else {
+      state.setLowValue(low, { emit: false });
+      state.setHighValue(high, { emit: false });
+    }
   }
 
   writeValue(value: [number, number] | null | undefined): void {
@@ -122,9 +157,8 @@ export class VoltRangeSlider implements ControlValueAccessor {
       return;
     }
 
-    const [low, high] = value;
-    this.state().setLowValue(low);
-    this.state().setHighValue(high);
+    this.writtenByForm = true;
+    this.writeRange(value[0], value[1]);
   }
 
   registerOnChange(fn: (value: [number, number]) => void): void {

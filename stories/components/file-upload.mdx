@@ -50,9 +50,8 @@ import { VoltFileDropzone } from '@voltui/components';
 @Component({
   imports: [VoltFileDropzone],
   template: `
-    <volt-file-dropzone multiple>
-      Drop files here or click to upload
-    </volt-file-dropzone>
+    <!-- The dropzone takes dropped files; pair it with a [voltFileUpload] button to browse. -->
+    <volt-file-dropzone multiple>Drop files here</volt-file-dropzone>
   `,
 })
 export class MyComponent {}

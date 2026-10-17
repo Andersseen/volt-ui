@@ -1234,6 +1234,9 @@ export const RADIO_API: ComponentApi = {
       inputs: [
         { name: 'class', type: 'string', default: "''" },
         { name: 'value', type: 'string', required: true },
+        { name: 'id', type: 'string' },
+        { name: 'ariaLabel', type: 'string', default: "''" },
+        { name: 'aria-label', type: 'string | undefined', default: 'undefined' },
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
       ],
       outputs: [],

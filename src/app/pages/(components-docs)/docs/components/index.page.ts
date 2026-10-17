@@ -88,27 +88,31 @@ import {
                 <a
                   [routerLink]="item.path"
                   [appReveal]="(i % 3) * stagger"
-                  class="group flex flex-col overflow-hidden rounded-lg border border-border transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5"
+                  class="group block rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 >
-                  <div
-                    class="flex h-28 items-center justify-center overflow-hidden border-b border-border bg-muted/20 px-4 transition-colors group-hover:bg-muted/35"
+                  <volt-card
+                    class="flex h-full flex-col overflow-hidden shadow-none transition-all duration-200 group-hover:-translate-y-0.5 group-hover:border-primary/50 group-hover:shadow-lg group-hover:shadow-primary/5"
                   >
-                    <app-component-preview [name]="item.name" />
-                  </div>
-                  <div class="p-3">
-                    <div class="flex items-center justify-between gap-2">
-                      <h3 class="font-medium group-hover:text-primary">{{ itemLabel(item) }}</h3>
-                      <span
-                        class="shrink-0 rounded-full px-2 py-0.5 text-[11px] font-medium leading-none"
-                        [class]="stabilityClass(item.stability)"
-                      >
-                        {{ stabilityLabel(item.stability) }}
-                      </span>
+                    <div
+                      class="flex h-28 items-center justify-center overflow-hidden border-b border-border bg-muted/20 px-4 transition-colors group-hover:bg-muted/35"
+                    >
+                      <app-component-preview [name]="item.name" />
                     </div>
-                    @if (item.descriptionKey; as descriptionKey) {
-                      <p class="text-xs text-muted-foreground">{{ t(descriptionKey) }}</p>
-                    }
-                  </div>
+                    <div class="p-3">
+                      <div class="flex items-center justify-between gap-2">
+                        <h3 class="font-medium group-hover:text-primary">{{ itemLabel(item) }}</h3>
+                        <span
+                          class="shrink-0 rounded-full px-2 py-0.5 text-[11px] font-medium leading-none"
+                          [class]="stabilityClass(item.stability)"
+                        >
+                          {{ stabilityLabel(item.stability) }}
+                        </span>
+                      </div>
+                      @if (item.descriptionKey; as descriptionKey) {
+                        <p class="text-xs text-muted-foreground">{{ t(descriptionKey) }}</p>
+                      }
+                    </div>
+                  </volt-card>
                 </a>
               }
             </div>

@@ -1,7 +1,7 @@
 {
   "name": "@voltui/agent",
-  "version": "0.5.0",
-  "description": "Set up Volt UI for AI coding agents: the MCP server, skill and rules for Claude Code, Cursor, Windsurf and GitHub Copilot",
+  "version": "0.6.0",
+  "description": "Set up Volt UI for AI coding agents: the MCP server, single-responsibility skills and rules for Claude Code, Codex, OpenCode, Cursor, Windsurf, Gemini CLI and GitHub Copilot",
   "homepage": "https://voltui.dev/docs/ai-mcp",
   "repository": {
     "type": "git",
@@ -18,6 +18,8 @@
     "setup-agent.js",
     "installer.js",
     "content.js",
+    "skills.js",
+    "skills",
     "README.md",
     "LICENSE"
   ],

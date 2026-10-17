@@ -85,6 +85,17 @@ describe('VoltRadio', () => {
     expect(radios[0]).toHaveAttribute('aria-checked', 'true');
   });
 
+  it('answers the arrow keys that match its default vertical layout', async () => {
+    const user = userEvent.setup();
+    await render(RadioTestWrapper);
+
+    await user.tab();
+    await user.keyboard('{ArrowDown}');
+    expect(screen.getByRole('radio', { name: 'Option B' })).toHaveFocus();
+    await user.keyboard('{ArrowUp}');
+    expect(screen.getByRole('radio', { name: 'Option A' })).toHaveFocus();
+  });
+
   it('should work with reactive forms', async () => {
     const user = userEvent.setup();
 
@@ -202,5 +213,34 @@ describe('VoltRadio', () => {
     await user.click(screen.getByRole('radio', { name: 'Option A' }));
 
     expect(fixture.componentInstance.changes).toEqual(['a']);
+  });
+
+  it('is named by an external <label for>, and clicking that label selects the item', async () => {
+    const user = userEvent.setup();
+    await render(
+      `<volt-radio-group>
+         <div><volt-radio-item id="plan-free" value="free" /><label for="plan-free">Free plan</label></div>
+         <div><volt-radio-item id="plan-pro" value="pro" /><label for="plan-pro">Pro plan</label></div>
+       </volt-radio-group>`,
+      { imports: [VoltRadioGroup, VoltRadioItem] }
+    );
+
+    const pro = screen.getByRole('radio', { name: 'Pro plan' });
+    expect(pro).toHaveAttribute('id', 'plan-pro');
+    await user.click(screen.getByText('Pro plan'));
+    expect(pro).toHaveAttribute('aria-checked', 'true');
+  });
+
+  it('is named by aria-label when there is no visible label', async () => {
+    await render(
+      `<volt-radio-group>
+         <volt-radio-item value="a" aria-label="Option A" />
+         <volt-radio-item value="b" ariaLabel="Option B" />
+       </volt-radio-group>`,
+      { imports: [VoltRadioGroup, VoltRadioItem] }
+    );
+
+    expect(screen.getByRole('radio', { name: 'Option A' })).toBeInTheDocument();
+    expect(screen.getByRole('radio', { name: 'Option B' })).toBeInTheDocument();
   });
 });

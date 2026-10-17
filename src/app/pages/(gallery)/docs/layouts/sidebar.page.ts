@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import {
   VoltAvatar,
+  VoltCard,
   VoltNativeButton,
   VoltSeparator,
   VoltSidebar,
@@ -39,6 +40,7 @@ import { injectAppI18n } from '../../../../i18n/i18n';
     VoltSidebarHeader,
     VoltSidebarItem,
     VoltAvatar,
+    VoltCard,
     VoltNativeButton,
     VoltSeparator,
     LmnHomeIcon,
@@ -188,27 +190,19 @@ import { injectAppI18n } from '../../../../i18n/i18n';
 
         <div class="p-6">
           <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            <div
-              class="rounded-xl border border-border bg-card text-card-foreground shadow p-6 h-32 flex items-center justify-center"
-            >
+            <volt-card class="p-6 h-32 flex items-center justify-center">
               <span class="text-muted-foreground">Widget 1</span>
-            </div>
-            <div
-              class="rounded-xl border border-border bg-card text-card-foreground shadow p-6 h-32 flex items-center justify-center"
-            >
+            </volt-card>
+            <volt-card class="p-6 h-32 flex items-center justify-center">
               <span class="text-muted-foreground">Widget 2</span>
-            </div>
-            <div
-              class="rounded-xl border border-border bg-card text-card-foreground shadow p-6 h-32 flex items-center justify-center"
-            >
+            </volt-card>
+            <volt-card class="p-6 h-32 flex items-center justify-center">
               <span class="text-muted-foreground">Widget 3</span>
-            </div>
+            </volt-card>
           </div>
-          <div
-            class="mt-4 rounded-xl border border-border bg-card text-card-foreground shadow p-6 min-h-[400px] flex items-center justify-center"
-          >
+          <volt-card class="mt-4 flex min-h-[400px] items-center justify-center p-6">
             <span class="text-muted-foreground">Main Content Plot</span>
-          </div>
+          </volt-card>
         </div>
       </div>
     </div>

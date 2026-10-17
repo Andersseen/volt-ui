@@ -233,7 +233,9 @@ export class VoltCombobox implements ControlValueAccessor {
       return this.items();
     }
 
-    const filter = this.filter().trim().toLowerCase();
+    // Filter by what the user typed, not by the input's text: with a value selected the input
+    // shows its label, and filtering by that would offer nothing but the current selection.
+    const filter = this.typedQuery().trim().toLowerCase();
 
     if (!filter) {
       return this.items();
@@ -243,7 +245,6 @@ export class VoltCombobox implements ControlValueAccessor {
   });
   protected readonly isDisabled = computed(() => this.disabled() || this.controlDisabled());
 
-  protected readonly filter = signal('');
   /** What the user typed since the dropdown last closed; '' while the input just shows the selection. */
   private readonly typedQuery = signal('');
   private readonly open = signal(false);
@@ -263,7 +264,6 @@ export class VoltCombobox implements ControlValueAccessor {
     effect(() => {
       const value = this.value();
       const label = this.getValueLabel(value);
-      this.filter.set(label);
 
       const input = this.inputRef();
       if (input) {
@@ -278,7 +278,6 @@ export class VoltCombobox implements ControlValueAccessor {
 
   protected onFilterChange(event: Event, combobox: NgpCombobox): void {
     const text = (event.target as HTMLInputElement).value;
-    this.filter.set(text);
     this.typedQuery.set(text);
     this.queryChange.emit(text);
     void combobox.openDropdown();
@@ -317,7 +316,6 @@ export class VoltCombobox implements ControlValueAccessor {
   private syncFilterWithValue(): void {
     const value = this.value();
     const label = this.getValueLabel(value);
-    this.filter.set(label);
 
     const input = this.inputRef();
     if (input) {

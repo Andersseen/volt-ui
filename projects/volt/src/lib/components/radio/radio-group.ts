@@ -73,6 +73,11 @@ export class VoltRadioGroup implements ControlValueAccessor {
     effect(() => {
       this.state().setDisabled(this.isDisabled());
     });
+    // Volt's `orientation` defaults to 'vertical', the primitive's to 'horizontal': forwarding
+    // only the input left an unbound group laid out as a column that answered Left/Right.
+    effect(() => {
+      this.state().setOrientation(this.orientation());
+    });
 
     mirrorValue(this.value, this.state, value => {
       this.value.set(value);

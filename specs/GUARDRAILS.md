@@ -6,20 +6,22 @@ If a rule seems to conflict with your task, STOP and record it in the plan's
 
 ## Hard rules (never violate)
 
-| #   | Rule                                                                                                                                                                  |
-| --- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | **pnpm only.** Never run `npm install` / `yarn` inside the repo.                                                                                                      |
-| 2   | **No `tailwind.config.js`.** Tailwind v4 is CSS-configured (`@theme inline`). Its absence is intentional.                                                             |
-| 3   | **No NgModules.** Standalone components, `ChangeDetectionStrategy.OnPush`, signals API (`input()`, `output()`, `model()`, `computed()`).                              |
-| 4   | Boolean inputs always: `input<boolean, unknown>(false, { transform: booleanAttribute })`. Numeric inputs use `numberAttribute`.                                       |
-| 5   | Never edit generated/output dirs: `dist/`, `coverage/`, `playwright-report/`, `test-results/`, `public/manifest.json` (regenerate with `pnpm manifest`).              |
-| 6   | Library selectors are `volt-*`, classes `Volt*`. Never hand-write `ui-*` in the library — the CLI does that transform for consumers.                                  |
-| 7   | Library code (`projects/volt/`) must never import from the docs app (`src/`). Components must stay copyable standalone.                                               |
-| 8   | No zone.js reliance in tests: the repo is zoneless. Don't use `fakeAsync`/`tick`; use `await` + `fixture.whenStable()` / testing-library `userEvent`.                 |
-| 9   | SSR safety: no `document`/`window`/`localStorage` access at component construction or in field initializers. Guard with `afterNextRender()` or `isPlatformBrowser()`. |
-| 10  | No new npm dependencies without writing the justification in the active plan file first.                                                                              |
-| 11  | Never publish to npm or deploy unless the plan's release phase explicitly says so.                                                                                    |
-| 12  | Stay inside the active plan's scope. Work belonging to another minor → add a note to THAT plan file; do not do it.                                                    |
+| #   | Rule                                                                                                                                                                      |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | **pnpm only.** Never run `npm install` / `yarn` inside the repo.                                                                                                          |
+| 2   | **No `tailwind.config.js`.** Tailwind v4 is CSS-configured (`@theme inline`). Its absence is intentional.                                                                 |
+| 3   | **No NgModules.** Standalone components, `ChangeDetectionStrategy.OnPush`, signals API (`input()`, `output()`, `model()`, `computed()`).                                  |
+| 4   | Boolean inputs always: `input<boolean, unknown>(false, { transform: booleanAttribute })`. Numeric inputs use `numberAttribute`.                                           |
+| 5   | Never edit generated/output dirs: `dist/`, `coverage/`, `playwright-report/`, `test-results/`, `public/manifest.json` (regenerate with `pnpm manifest`).                  |
+| 6   | Library selectors are `volt-*`, classes `Volt*`. Never hand-write `ui-*` in the library — the CLI does that transform for consumers.                                      |
+| 7   | Library code (`projects/volt/`) must never import from the docs app (`src/`). Components must stay copyable standalone.                                                   |
+| 8   | No zone.js reliance in tests: the repo is zoneless. Don't use `fakeAsync`/`tick`; use `await` + `fixture.whenStable()` / testing-library `userEvent`.                     |
+| 9   | SSR safety: no `document`/`window`/`localStorage` access at component construction or in field initializers. Guard with `afterNextRender()` or `isPlatformBrowser()`.     |
+| 10  | No new npm dependencies without writing the justification in the active plan file first.                                                                                  |
+| 11  | Never publish to npm or deploy unless the plan's release phase explicitly says so.                                                                                        |
+| 12  | Stay inside the active plan's scope. Work belonging to another minor → add a note to THAT plan file; do not do it.                                                        |
+| 13  | **Coverage is a side effect, not a goal.** Never add a test only to raise a coverage number, never assert on internals; observe the public contract (`specs/TESTING.md`). |
+| 14  | The official site uses Volt for every responsibility Volt owns (`pnpm check:dogfood`); never import `ng-primitives` under `src/app`. See AGENTS.md "Volt-first".          |
 
 ## Required ripple effects (when you touch component files)
 

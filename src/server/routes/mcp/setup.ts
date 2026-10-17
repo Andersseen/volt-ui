@@ -13,7 +13,8 @@ import {
   MCP_URL,
   CURSOR_RULES,
   COPILOT_INSTRUCTIONS,
-  VOLT_UI_SKILL,
+  VOLT_UI_SKILLS,
+  WINDSURF_RULES,
   VSCODE_SNIPPETS,
 } from './content.generated';
 
@@ -39,11 +40,20 @@ const MCP_ENTRY_CLAUDE = { type: 'http', url: MCP_URL };
 // VS Code's `.vscode/mcp.json` (Copilot Chat) uses `http` under a `servers` key.
 const MCP_ENTRY_VSCODE = { type: 'http', url: MCP_URL };
 
+/** One file per skill in the directory the agent scans (`.claude/skills` or `.agents/skills`). */
+const skillFiles = (dir: string, agent: string): FileSpec[] =>
+  Object.entries(VOLT_UI_SKILLS).map(([name, content]) => ({
+    path: `${dir}/${name}/SKILL.md`,
+    description: `Volt UI skill, auto-discovered by ${agent} from ${dir}/<name>/`,
+    content: content as string,
+    format: 'text',
+  }));
+
 const agentSetups: Record<string, AgentSetup> = {
   claude: {
     label: 'Claude Code',
     description:
-      'Connects Claude Code to the Volt UI MCP server and installs the Volt UI skill so it can query components, examples, and theme info.',
+      'Connects Claude Code to the Volt UI MCP server and installs the Volt UI skills so it can query components, examples, and theme info.',
     mcpNative: true,
     files: [
       {
@@ -53,15 +63,10 @@ const agentSetups: Record<string, AgentSetup> = {
         content: { mcpServers: { 'volt-ui': MCP_ENTRY_CLAUDE } },
         format: 'json',
       },
-      {
-        path: '.claude/skills/volt-ui/SKILL.md',
-        description: 'Volt UI skill, auto-discovered by Claude Code from .claude/skills/<name>/',
-        content: VOLT_UI_SKILL,
-        format: 'text',
-      },
+      ...skillFiles('.claude/skills', 'Claude Code'),
     ],
     notes: [
-      'Restart Claude Code for the MCP server and skill to load.',
+      'Restart Claude Code for the MCP server and skills to load.',
       'Claude Desktop: remote MCP servers are added via Settings -> Connectors, not by editing claude_desktop_config.json.',
     ],
   },
@@ -98,6 +103,13 @@ const agentSetups: Record<string, AgentSetup> = {
         description: 'Windsurf MCP config',
         content: { mcpServers: { 'volt-ui': MCP_ENTRY } },
         format: 'json',
+      },
+      {
+        path: '.windsurfrules',
+        description:
+          'Volt UI rules (append to an existing file): Windsurf reads a rules file, not skills',
+        content: WINDSURF_RULES,
+        format: 'text',
       },
     ],
     notes: ['Restart Windsurf after adding the config.'],
@@ -136,7 +148,7 @@ const agentSetups: Record<string, AgentSetup> = {
 
   codex: {
     label: 'OpenAI Codex',
-    description: 'Connects Codex to the Volt UI MCP server and installs the Volt UI skill.',
+    description: 'Connects Codex to the Volt UI MCP server and installs the Volt UI skills.',
     mcpNative: true,
     files: [
       {
@@ -146,12 +158,7 @@ const agentSetups: Record<string, AgentSetup> = {
         content: `[mcp_servers.volt-ui]\nurl = "${MCP_URL}"\n`,
         format: 'text',
       },
-      {
-        path: '.agents/skills/volt-ui/SKILL.md',
-        description: 'Volt UI skill, auto-discovered by Codex from .agents/skills/<name>/',
-        content: VOLT_UI_SKILL,
-        format: 'text',
-      },
+      ...skillFiles('.agents/skills', 'Codex'),
     ],
     notes: ['Codex reads .codex/config.toml only for projects you have marked as trusted.'],
   },
@@ -179,7 +186,7 @@ const agentSetups: Record<string, AgentSetup> = {
 
   opencode: {
     label: 'OpenCode',
-    description: 'Connects OpenCode to the Volt UI MCP server and installs the Volt UI skill.',
+    description: 'Connects OpenCode to the Volt UI MCP server and installs the Volt UI skills.',
     mcpNative: true,
     files: [
       {
@@ -191,14 +198,9 @@ const agentSetups: Record<string, AgentSetup> = {
         },
         format: 'json',
       },
-      {
-        path: '.agents/skills/volt-ui/SKILL.md',
-        description: 'Volt UI skill, auto-discovered by OpenCode from .agents/skills/<name>/',
-        content: VOLT_UI_SKILL,
-        format: 'text',
-      },
+      ...skillFiles('.agents/skills', 'OpenCode'),
     ],
-    notes: ['Restart OpenCode for the MCP server and skill to load.'],
+    notes: ['Restart OpenCode for the MCP server and skills to load.'],
   },
 
   vscode: {

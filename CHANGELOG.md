@@ -7,6 +7,70 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.2] - 2026-10-17
+
+Patch release: behavioural fixes found by testing the consumer contract in real browsers and in
+isolated Angular 21 and 22 projects, and Angular 22 support. No API removed; every fix is behaviour a
+consumer could already reasonably expect. `@voltui/agent` ships its own minor, `0.6.0` (below).
+
+### Fixed — `@voltui/components`
+
+- **The package could not be installed into an Angular 22 app.** The peer range was `^21.2.0`, so npm
+  stopped with `ERESOLVE`, although the package compiles and passes every browser contract on 22.
+  Peers are now `^21.2.0 || ^22.0.0`. Two peers the package really needs are now declared:
+  `@angular/router` (imported by the bundle) and `@angular/cdk` (a peer of `ng-primitives`; left to
+  npm it resolves to the newest CDK, which an older Angular cannot run — install it at the same major
+  as `@angular/core`). Both Angular 21.2 and 22 are verified against the packed tarball in a project
+  outside the repository (`pnpm check:angular-compat`).
+- **`volt-range-slider`, `volt-date-picker`, `volt-date-range-picker` and `volt-pagination` froze on a
+  static value** — the same ng-primitives controlled-mode latch that hit four components in 1.3.0.
+  `[low]="20"`, `[date]="d"`, `[startDate]`, `[page]="1"` rendered correctly and then ignored every
+  interaction; `[(date)]` never received a calendar click. Volt now owns the value and mirrors it into
+  the primitive without emitting.
+- **`volt-combobox` with a selected value offered only that option when opened** (local filtering
+  filtered by the input's text, which is the selected label). It filters by what the user typed.
+- **`volt-radio-group` answered Left/Right in a column.** The default `vertical` orientation never
+  reached the primitive when the input was not bound; ArrowUp/ArrowDown did nothing.
+- **`volt-radio-item` had no accessible name** when labelled with `<label for>` or `aria-label`:
+  `aria-labelledby` pointed at an empty span and the `id` sat on the host element. `id`, `aria-label`
+  and `ariaLabel` now go to the radio button, like `volt-checkbox`.
+- **`volt-date-picker-previous-month` / `-next-month` were not buttons** — a custom element with no
+  role and no tab stop, unreachable from the keyboard. They now carry `role="button"`, `tabindex`
+  and Enter/Space activation.
+- **`volt-date-picker` never marked a form control touched**, and showed the current month when a
+  form set a date in another one. It now reports touched when focus leaves the calendar and brings a
+  programmatically set date's month into view.
+- **`voltTooltip` ignored its documented defaults** (300 ms show, 100 ms hide, 8 px offset,
+  `useTextContent` off) and used the primitive's own (0 ms, 500 ms, 4 px, on). The documented
+  defaults now apply.
+- **A pressed `volt-toggle` failed WCAG AA contrast** (primary text on a primary tint). Pressed text
+  uses the foreground colour.
+- File upload docs promised "click to upload" on a dropzone that only takes drops; the picker is the
+  `voltFileUpload` button.
+
+### Changed — `@voltui/agent` 0.6.0
+
+The monolithic skill is split into single-responsibility skills (`volt-ui` router, `-adoption`,
+`-component-selection`, `-forms`, `-overlays`, `-styling`, `-distribution`) that never copy a
+component API. **The MCP server tells agents what Volt contains; the skills teach when and how to use
+it.** Claude Code, Codex and OpenCode get every skill; Cursor, Windsurf (new `.windsurfrules`),
+Copilot and Gemini CLI get a short block of the same skills' digests. The MCP server gains
+`find_components` (by intent, with `useWhen` / `notFor` / `related`), category and status on
+`list_components`, and `mode: package | copy` on `get_component` / `get_usage_example` —
+`get_usage_example` used to tell agents to `import { UiButton } from '@voltui/components'`, a name the
+package does not export. `VOLT_UI_PROMPT.md`'s catalog is generated from the library source; it had
+listed Alert, Dialog and Tabs as beta and an `<ui-file-upload>` element that never existed.
+
+### Internal
+
+- A real-browser component contract suite (`e2e/contracts`, Chromium · Firefox · WebKit) against the
+  built package; Storybook state stories, interaction and axe tests; `check:dogfood`;
+  `specs/TESTING.md`, `specs/state-ownership.md` and a generated `specs/behavioral-contracts.md`.
+- `check:ai-docs` compares AI-facing content with the library (selectors, exports, status, peer range)
+  instead of only the component list.
+- The Release workflow generates the CLI manifest before packing (the run after #174 failed with
+  "Missing public/manifest.json").
+
 ## [1.3.1] - 2026-10-16
 
 Patch release: components that froze or hid their state since the ng-primitives 0.131 upgrade in

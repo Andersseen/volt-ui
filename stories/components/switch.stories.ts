@@ -1,5 +1,5 @@
 import { moduleMetadata, type Meta, type StoryObj } from '@storybook/angular-vite';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { VoltLabel, VoltSwitch } from 'volt';
 
 const meta: Meta<VoltSwitch> = {
@@ -48,4 +48,30 @@ export const WithFormControl: Story = {
       </div>
       <p class="text-muted-foreground mt-2 text-sm">Value: {{ enabled.value }}</p>`,
   }),
+};
+
+export const Invalid: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'A required switch that was touched while off reports `aria-invalid="true"`.',
+      },
+    },
+  },
+  render: () => {
+    const consent = new FormControl(false, {
+      nonNullable: true,
+      validators: [Validators.requiredTrue],
+    });
+    consent.markAsTouched();
+    return {
+      props: { consent },
+      template: `
+        <div class="flex items-center gap-2">
+          <volt-switch id="consent-invalid" [formControl]="consent" />
+          <volt-label htmlFor="consent-invalid">Share anonymous usage data</volt-label>
+        </div>
+        <p class="mt-2 text-sm text-destructive">This setting is required.</p>`,
+    };
+  },
 };

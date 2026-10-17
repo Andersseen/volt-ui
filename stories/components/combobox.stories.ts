@@ -1,6 +1,7 @@
 import { signal } from '@angular/core';
 import { moduleMetadata, type Meta, type StoryObj } from '@storybook/angular-vite';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { expect, userEvent, within } from 'storybook/test';
 import { VoltCombobox } from 'volt';
 
 const FRAMEWORKS = ['Angular', 'React', 'Vue', 'Svelte', 'Solid', 'Qwik', 'Lit'];
@@ -83,5 +84,74 @@ export const ServerSide: Story = {
           <ng-template let-item>{{ item }}</ng-template>
         </volt-combobox>`,
     };
+  },
+};
+
+const MANUAL = `
+  <volt-combobox class="w-64" label="Framework" filterMode="manual" [items]="items" [loading]="loading" loadingText="Searching…" emptyText="No framework matches" (queryChange)="noop($event)">
+    <ng-template let-item>{{ item }}</ng-template>
+  </volt-combobox>`;
+
+/** Opens the list and types, so the state a reviewer needs is on screen without interaction. */
+async function typeIntoCombobox(canvasElement: HTMLElement, text: string): Promise<void> {
+  const input = within(canvasElement).getByRole('combobox');
+  await userEvent.click(input);
+  await userEvent.type(input, text);
+}
+
+export const ManualLoading: Story = {
+  name: 'Manual filtering — loading',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'While a request is in flight the list shows `loadingText`; the options already on screen are the previous answer.',
+      },
+    },
+  },
+  render: () => ({
+    props: { items: [], loading: true, noop: () => undefined },
+    template: MANUAL,
+  }),
+  play: async ({ canvasElement }) => {
+    await typeIntoCombobox(canvasElement, 'sv');
+    await expect(await within(document.body).findByText('Searching…')).toBeVisible();
+  },
+};
+
+export const ManualResults: Story = {
+  name: 'Manual filtering — results',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Volt renders `items` exactly as supplied: these results do not contain the typed text, and none are dropped.',
+      },
+    },
+  },
+  render: () => ({
+    props: { items: ['Angular', 'Svelte', 'Solid'], loading: false, noop: () => undefined },
+    template: MANUAL,
+  }),
+  play: async ({ canvasElement }) => {
+    await typeIntoCombobox(canvasElement, 'zz');
+    await expect(await within(document.body).findAllByRole('option')).toHaveLength(3);
+  },
+};
+
+export const ManualEmpty: Story = {
+  name: 'Manual filtering — no results',
+  parameters: {
+    docs: {
+      description: { story: 'An empty answer to a non-empty query shows `emptyText`.' },
+    },
+  },
+  render: () => ({
+    props: { items: [], loading: false, noop: () => undefined },
+    template: MANUAL,
+  }),
+  play: async ({ canvasElement }) => {
+    await typeIntoCombobox(canvasElement, 'qq');
+    await expect(await within(document.body).findByText('No framework matches')).toBeVisible();
   },
 };

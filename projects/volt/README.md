@@ -10,8 +10,13 @@ same components into your project.
 ## Installation
 
 ```bash
-npm install @voltui/components
+npm install @voltui/components @angular/cdk
 ```
+
+Angular 21.2+ and 22 are supported, and both are tested against the packed package (install, strict
+AOT build, browser contracts). `@angular/cdk` (a peer of `ng-primitives`) and `@angular/router` must be
+at the **same major as `@angular/core`**; npm picks the newest CDK on its own, which an older Angular
+cannot run, so install it explicitly as above.
 
 Import the theme CSS once in your global stylesheet:
 

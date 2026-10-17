@@ -12,6 +12,12 @@
  *
  * and it rejects stories files whose component is not public, and a missing Foundations page.
  *
+ * Storybook is where a reviewer sees every public *state*. REQUIRED_STATES lists, for components
+ * whose visible state carries meaning, the stories that must exist — a bug in one of those states
+ * (a pressed toggle that looked unpressed, a manual combobox with no loading view) is then only
+ * "fixed" once the state a reviewer would look at is on screen. It is a short list on purpose: add
+ * to it when a bug fix corresponds to a public state, not for internal edge cases.
+ *
  * Usage: node scripts/check-storybook.mjs
  */
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
@@ -24,6 +30,20 @@ const STORIES = join(ROOT, 'stories/components');
 const { COMPONENT_GUIDES, GROUP_TITLES } = await import(
   pathToFileURL(join(ROOT, 'stories/_docs/component-guides.mjs')).href
 );
+
+/** Component → story exports that must exist (see the header). */
+const REQUIRED_STATES = {
+  toggle: ['States'],
+  'toggle-group': ['SingleSelection'],
+  checkbox: ['States', 'Invalid'],
+  switch: ['States', 'Invalid'],
+  radio: ['States', 'Invalid'],
+  input: ['States'],
+  textarea: ['States'],
+  select: ['Disabled'],
+  combobox: ['Disabled', 'ServerSide', 'ManualLoading', 'ManualResults', 'ManualEmpty'],
+  dialog: ['Controlled', 'NotDismissible'],
+};
 
 const FOUNDATIONS = ['introduction', 'installation', 'package-vs-copy', 'theming', 'accessibility'];
 const problems = [];
@@ -44,6 +64,11 @@ for (const name of components) {
   if (!/^export const \w+\s*:\s*Story\b/m.test(src)) problems.push(`${name}: no story exports`);
   if (!/from 'volt'/.test(src))
     problems.push(`${name}: stories must import components from 'volt'`);
+  for (const state of REQUIRED_STATES[name] ?? []) {
+    if (!new RegExp(`^export const ${state}\\s*:\\s*Story\\b`, 'm').test(src)) {
+      problems.push(`${name}: the public state story \`${state}\` is missing`);
+    }
+  }
   if (/projects\/volt\/src\/lib|from '\.\.\/\.\.\/projects\//.test(src)) {
     problems.push(`${name}: import through the public 'volt' surface, not library internals`);
   }

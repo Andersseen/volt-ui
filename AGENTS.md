@@ -11,7 +11,7 @@ Volt UI is an Angular component library inspired by shadcn/ui, built on top of [
 
 ## Tech stack
 
-- Angular 21 (zoneless, standalone components, signals)
+- Angular 22 in the workspace (zoneless, standalone components, signals); the package supports 21.2+ and 22 — `pnpm check:angular-compat <major>` proves each against the packed tarball
 - AnalogJS 2.6 (docs app, SSR, file router)
 - Vite 7 + `@tailwindcss/vite`
 - Tailwind CSS v4 (CSS-only configuration, no `tailwind.config.js`)
@@ -80,6 +80,36 @@ These apply to everything under `src/app/` (the official site), not to the libra
   If a template grows past roughly 80 lines, or a file mixes state, browser observers and markup
   for several pieces, split it. Group a section's parts in one folder (see
   `src/app/components/landing/{pillars,playground,steps}/`).
+
+### Volt-first for voltui.dev itself
+
+> If Volt UI already provides an atom or interaction primitive for the responsibility, voltui.dev
+> uses the Volt public API instead of rebuilding that responsibility with raw Tailwind or by
+> importing `ng-primitives` directly.
+
+- **Before writing site UI, search the catalog** (the `volt-ui` MCP, `list_components`, or
+  `src/app/lib/component-metadata.ts`) for an existing responsibility. Hand-written equivalent UI
+  needs an explicit reason. This does not apply to `projects/volt/src/lib/**` — the library cannot
+  implement Button using Button.
+- **Prefer Volt responsibility, not Volt tag count.** Native HTML stays correct where Volt has no
+  equivalent, or the native element is the point: a route-backed tab strip is a set of real
+  anchors because the router owns selection (middle-click, SSR deep links). Don't force a stateful
+  `volt-tabs` over the Router.
+- **`pnpm check:dogfood`** enforces the mechanical part in CI: no `ng-primitives` imports under
+  `src/app`, no `<button>` without a Volt directive, no button-like anchors or hand-styled card
+  tiles. It skips `blocks/`, `layouts/` and `lib/snippets/` (source the site displays for
+  consumers to copy) and the live demo in a code panel. An exception goes in `EXCEPTIONS` in
+  `scripts/check-dogfood.mjs`, naming the file, the tag and the reason.
+- **`specs/dogfood-inventory.md`** (`pnpm generate:dogfood`) lists, per atom, whether the real
+  application uses it or only a demo page does. Real use is stronger evidence than a Storybook
+  story; it is not a reason to put an atom on the site the site has no use for.
+- **When Volt can't express what the site needs, that is dogfood evidence.** Reproduce it, decide
+  whether the site misuses the atom, and if the public API genuinely falls short add a failing
+  library test and the smallest backwards-compatible fix (plus a Storybook state if relevant)
+  rather than working around it with raw Tailwind.
+- **Reviewing any PR that touches `src/app/**`**: did we reuse an existing atom? did we bypass Volt
+  with ng-primitives? did we duplicate Volt styling? is the raw native HTML intentional? does the
+  site expose a missing Volt API that belongs upstream?
 
 ## Theme system
 
@@ -152,6 +182,25 @@ Two kinds of text are deliberately **not** translated:
 The guard recognises both structurally; the handful of specimens that sit outside a code
 panel are listed with their reasons at the top of `no-hardcoded-copy.spec.ts`.
 
+## Testing
+
+> Coverage is a side effect of meaningful tests, not their purpose.
+
+A component is verified when its public consumer contract is observed through the DOM and, where
+browser behaviour matters, in a real browser — see [`specs/TESTING.md`](specs/TESTING.md) (the
+contracts, the Stateful Value Contract, the layers) and [`specs/state-ownership.md`](specs/state-ownership.md)
+(who owns each value; why `mirrorValue()` is applied where it is). `specs/behavioral-contracts.md` is the
+generated map of which test proves which contract (`pnpm generate:behavior-matrix`).
+
+- Component specs: Vitest + `@testing-library/angular` + `userEvent`, zoneless, queries by role / label,
+  assertions on `aria-*`, `data-*`, the native value. Not on signals or implementation classes.
+- Anything a browser must prove (focus, keyboard, pointer geometry, portals, drag and drop, computed
+  styles) goes in `e2e/contracts` (`pnpm test:e2e:contracts`), run against the built package in
+  Chromium, Firefox and WebKit.
+- A bug fix reproduces the bug in a failing test first. Ask whether it corresponds to a public state
+  story (Pressed, Disabled, Invalid, Loading, Empty) and add it to Storybook and to `REQUIRED_STATES`
+  in `scripts/check-storybook.mjs` if so.
+
 ## Adding or editing a component
 
 1. Create/edit files under `projects/volt/src/lib/components/<name>/`.
@@ -161,7 +210,7 @@ panel are listed with their reasons at the top of `no-hardcoded-copy.spec.ts`.
 5. Add real unit tests using `@testing-library/angular` or `TestBed` (not just string checks).
 6. Run `pnpm typecheck`, `pnpm lint`, `pnpm test:run`, and `pnpm build:lib`.
 7. Regenerate the CLI manifest with `pnpm manifest` when component files change.
-8. Add `stories/components/<name>.stories.ts` and an entry in `stories/_docs/component-guides.mjs`, then `pnpm generate:storybook-docs` (see "Storybook").
+8. Add `stories/components/<name>.stories.ts` and an entry in `stories/_docs/component-guides.mjs` (with `COMPONENT_RELATIONS` if it is routinely confused with another), then `pnpm generate:storybook-docs` and `pnpm generate:agent-skills` (see "Storybook" and "AI tools for consumers").
 
 ## Search and discovery (SEO)
 
@@ -203,21 +252,46 @@ pnpm test:storybook    # Playwright smoke tests against dist/storybook (build fi
 
 ## AI tools for consumers
 
-The repo provides three complementary ways to give AI assistants context about Volt UI. None of these are auto-discovered by a consumer project on their own — they must be installed via `npx @voltui/agent <agent>` (or copied manually):
+The architecture is one rule: **the MCP server tells agents what Volt contains; the skills teach them
+when and how to use it.** Nothing is copied from one to the other.
 
-1. **Skill** — `.agents/skills/volt-ui/SKILL.md` is the source of truth for the skill content. `npx @voltui/agent claude` installs an inlined copy (`VOLT_UI_SKILL` in `cli/agent/setup-agent.js`) into the consumer's `.claude/skills/volt-ui/SKILL.md`, where Claude Code auto-discovers it. For OpenCode, copy the same file to `.agents/skills/volt-ui/SKILL.md` in the consumer project.
-2. **MCP server** — `src/server/routes/mcp.ts` is a spec-compliant Streamable HTTP MCP server (tools: `list_components`, `get_component`, `get_usage_example`, `get_theme_info`, `get_project_info`, `generate_cli_command`; resources: `component://<name>`, `theme://info`, `project://info`; prompts: `generate-volt-ui-component`, `volt-ui-troubleshooting`). Production endpoint: `https://voltui.dev/api/mcp`. `npx @voltui/agent claude` writes it to `.mcp.json` at the consumer's repo root (Claude Code's project-level MCP config, `"type": "http"`); `cursor`/`windsurf` targets write their own client-specific config. Claude Desktop does not support remote MCP servers via `claude_desktop_config.json` — add them through Settings → Connectors instead.
-3. **Prompt reference** — `VOLT_UI_PROMPT.md` is a single-file prompt that can be pasted into any LLM chat to get correct selectors, examples, and rules for Volt UI components.
+1. **MCP server** (`src/server/routes/mcp.ts`, Streamable HTTP, `https://voltui.dev/api/mcp`) — the
+   factual source: `list_components`, `find_components` (by intent, with `useWhen`/`notFor`/
+   `related`), `get_component`, `get_usage_example` (both take `mode: package | copy`),
+   `get_theme_info`, `get_project_info`, `generate_cli_command`; resources `component://<name>`,
+   `theme://info`, `project://info`; prompts `generate-volt-ui-component`, `volt-ui-troubleshooting`.
+   Responsibility metadata and the supported Angular range are **generated**
+   (`src/server/routes/mcp/responsibilities.generated.ts`), never hand-written there.
+2. **Skills** (`cli/agent/skills/<name>/SKILL.md`, the only copy) — short, single-responsibility
+   playbooks: `volt-ui` (router), `volt-ui-adoption`, `volt-ui-component-selection`, `volt-ui-forms`,
+   `volt-ui-overlays`, `volt-ui-styling`, `volt-ui-distribution`. They do not carry a component API.
+   Each ends with a `volt:digest` section: that is all a rules-file agent (Cursor, Windsurf, Copilot,
+   Gemini CLI) receives. Add a skill only for a genuinely independent workflow; the expected set is in
+   `cli/check-ai-docs-sync.js`.
+3. **Installer** (`cli/agent/`, `@voltui/agent`) — `npx @voltui/agent <agent>` writes the MCP entry
+   and, per agent, the skills (Claude Code `.claude/skills/`, Codex and OpenCode `.agents/skills/`) or
+   a routing block (`.cursorrules`, `.windsurfrules`, `copilot-instructions.md`, `GEMINI.md`).
+   `content.js` holds only executable generation (the block, the snippets); `skills.js` reads the
+   skill files.
+4. **Prompt reference** — `VOLT_UI_PROMPT.md`, a single file to paste into a chat LLM with no MCP.
+   Its component catalog is generated from the library source.
 
-The single installer lives at `cli/agent/setup-agent.js` (content in `cli/agent/content.js`, tests in `cli/agent/installer.spec.js`) (published as `@voltui/agent`; the root `package.json` bin/`setup:agent` script point there too — don't recreate a second copy).
+Generated pieces — never hand-edit, `pnpm check:generated` fails on drift:
 
-When updating component APIs, selectors, or examples, keep all of these in sync (run `pnpm check:ai-docs` to catch component list drift automatically):
+- `pnpm generate:agent-skills` → the catalog in `volt-ui-component-selection`, the catalog in
+  `VOLT_UI_PROMPT.md`, `mcp/responsibilities.generated.ts`, and the `.agents/skills/volt-ui*` copies
+  (for agents working in this repo).
+- `pnpm generate:mcp-content` → `mcp/content.generated.ts`, the hosted `/api/mcp/setup` payload.
 
-- `.agents/skills/volt-ui/SKILL.md`
-- `cli/agent/content.js` (`VOLT_UI_SKILL`, `CURSOR_RULES`, `COPILOT_INSTRUCTIONS`, `VSCODE_SNIPPETS`), then run `pnpm generate:mcp-content`: `src/server/routes/mcp/content.generated.ts` is generated from it for the hosted `/api/mcp/setup` endpoint (never hand-edit it; `pnpm check:generated` fails on drift)
-- `src/server/routes/mcp.ts`
-- `VOLT_UI_PROMPT.md`
-- `src/app/lib/snippets/usage.ts`
+Responsibility data (what a component is for, where it stops) comes from one place:
+`stories/_docs/component-guides.mjs` (`COMPONENT_GUIDES` + `COMPONENT_RELATIONS`) and
+`COMPONENT_STATUS.md`. Edit those, not the AI files.
+
+`pnpm check:ai-docs` compares everything an AI tool reads with the library itself — the selectors it
+declares, what it exports, its peer dependencies, `COMPONENT_STATUS.md` — and fails on an unknown
+element or directive, an import that does not exist, a `Ui*` name used for the package, a component
+called `beta` that is `stable`, a hard-coded Angular major, a skill set that is not the expected one,
+or a skill that grew past its budget.
 
 ## Agentyx harness
 

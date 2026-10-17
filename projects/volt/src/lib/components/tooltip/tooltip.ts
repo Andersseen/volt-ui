@@ -1,5 +1,5 @@
 import { booleanAttribute, Directive, input } from '@angular/core';
-import { NgpTooltipTrigger } from 'ng-primitives/tooltip';
+import { NgpTooltipTrigger, provideTooltipConfig } from 'ng-primitives/tooltip';
 import type { NgpTooltipPlacement } from 'ng-primitives/tooltip';
 import type {
   NgpFlip,
@@ -11,6 +11,12 @@ import type {
 
 @Directive({
   selector: '[voltTooltip]',
+  // The inputs below only reach the primitive when a consumer binds them; unbound, the primitive
+  // falls back to its own config (0ms show, 500ms hide, 4px offset). Providing Volt's documented
+  // defaults here is what makes `delay`, `closeDelay`, `offset` and `useTextContent` true.
+  providers: [
+    provideTooltipConfig({ offset: 8, showDelay: 300, hideDelay: 100, useTextContent: false }),
+  ],
   hostDirectives: [
     {
       directive: NgpTooltipTrigger,

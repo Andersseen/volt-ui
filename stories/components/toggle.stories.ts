@@ -57,3 +57,24 @@ export const WithFormControl: Story = {
       <p class="text-muted-foreground mt-2 text-sm">Pressed: {{ bold.value }}</p>`,
   }),
 };
+
+export const States: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Pressed is visible, not only announced: the pressed toggle changes background and text colour. Disabled dims it and ignores input, pressed or not.',
+      },
+    },
+  },
+  render: () => ({
+    template: `
+      <div class="flex flex-wrap items-center gap-3">
+        <volt-toggle variant="outline" ariaLabel="Not pressed">Not pressed</volt-toggle>
+        <volt-toggle variant="outline" [pressed]="true" ariaLabel="Pressed">Pressed</volt-toggle>
+        <volt-toggle variant="outline" [disabled]="true" ariaLabel="Disabled">Disabled</volt-toggle>
+        <volt-toggle variant="outline" [pressed]="true" [disabled]="true" ariaLabel="Pressed, disabled">Pressed, disabled</volt-toggle>
+        <volt-toggle variant="outline" size="icon" ariaLabel="Bold"><b>B</b></volt-toggle>
+      </div>`,
+  }),
+};

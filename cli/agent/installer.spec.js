@@ -5,6 +5,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 const { run, buildAgents, parseArgs, BLOCK_START, BLOCK_END } = require('./installer.js');
 const { DEFAULT_MCP_URL } = require('./content.js');
+const { skillNames, loadSkills, digestOf } = require('./skills.js');
 const pkg = require('./package.json');
 
 const AGENTS = Object.keys(buildAgents(DEFAULT_MCP_URL));
@@ -316,7 +317,84 @@ describe('doctor', () => {
 describe('package', () => {
   it('ships every file the installer requires', () => {
     expect(pkg.files).toEqual(
-      expect.arrayContaining(['setup-agent.js', 'installer.js', 'content.js'])
+      expect.arrayContaining([
+        'setup-agent.js',
+        'installer.js',
+        'content.js',
+        'skills.js',
+        'skills',
+      ])
     );
+  });
+});
+
+describe('the skill set', () => {
+  const SKILLS = skillNames();
+
+  it('is one router skill plus single-responsibility playbooks', () => {
+    expect(SKILLS).toEqual([
+      'volt-ui',
+      'volt-ui-adoption',
+      'volt-ui-component-selection',
+      'volt-ui-distribution',
+      'volt-ui-forms',
+      'volt-ui-overlays',
+      'volt-ui-styling',
+    ]);
+  });
+
+  it('every skill names itself, says when to use it, and carries a digest', () => {
+    for (const [name, text] of Object.entries(loadSkills())) {
+      expect(text, name).toMatch(new RegExp(`^---\nname: ${name}\ndescription: >`));
+      expect(digestOf(text), name).not.toBe('');
+    }
+  });
+
+  it('no skill duplicates a component API: exact facts are the MCP server’s', () => {
+    for (const [name, text] of Object.entries(loadSkills())) {
+      // A selector/input table is an API copy; the component-selection catalog is generated and
+      // lists responsibilities, not inputs.
+      expect(text, name).not.toMatch(/\|\s*Key inputs\s*\|/i);
+    }
+    expect(loadSkills()['volt-ui'].length).toBeLessThan(3500);
+  });
+
+  it.each([
+    ['claude', '.claude/skills'],
+    ['codex', '.agents/skills'],
+    ['opencode', '.agents/skills'],
+  ])('%s: installs every skill where it scans for them', async (agent, base) => {
+    expect(await go(agent)).toBe(0);
+    for (const name of SKILLS) {
+      expect(read(`${base}/${name}/SKILL.md`)).toMatch(new RegExp(`^---\nname: ${name}\n`));
+    }
+  });
+
+  it.each([
+    ['cursor', '.cursorrules'],
+    ['copilot', '.github/copilot-instructions.md'],
+    ['gemini', 'GEMINI.md'],
+    ['windsurf', '.windsurfrules'],
+  ])('%s: a rules block with the digests, not the skill bodies', async (agent, file) => {
+    await go(agent);
+    const text = read(file);
+    expect(text).toContain(BLOCK_START);
+    expect(text).toContain('find_components');
+    expect(text).toContain('Volt first');
+    expect(text).toContain('### overlays');
+    // The routing block stays short: pasting every playbook into a rules file is what this replaces.
+    expect(text.length).toBeLessThan(9000);
+    expect(text).not.toContain('## Dialog vs Drawer vs Popover');
+  });
+
+  it('uninstall removes every skill file it wrote and leaves the user’s own skills', async () => {
+    mkdirSync(join(dir, '.claude/skills/mine'), { recursive: true });
+    writeFileSync(join(dir, '.claude/skills/mine/SKILL.md'), 'mine');
+    await go('claude');
+    await go('claude', '--uninstall');
+    for (const name of SKILLS) {
+      expect(existsSync(join(dir, `.claude/skills/${name}/SKILL.md`)), name).toBe(false);
+    }
+    expect(read('.claude/skills/mine/SKILL.md')).toBe('mine');
   });
 });

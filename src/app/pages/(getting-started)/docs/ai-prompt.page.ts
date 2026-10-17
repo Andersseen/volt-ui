@@ -2,13 +2,14 @@ import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { injectAppI18n } from '../../../i18n/i18n';
 import { RouterLink } from '@angular/router';
 import { LmnCheckIcon, LmnCopyIcon } from 'lumen-icons';
+import { VoltNativeButton } from 'volt';
 import promptMarkdown from '../../../../../VOLT_UI_PROMPT.md?raw';
 import { Prose } from '../../../components/prose';
 
 @Component({
   selector: 'app-ai-prompt-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [Prose, RouterLink, LmnCopyIcon, LmnCheckIcon],
+  imports: [Prose, RouterLink, VoltNativeButton, LmnCopyIcon, LmnCheckIcon],
   template: `
     <div class="space-y-8 max-w-3xl">
       <!-- Header -->
@@ -33,9 +34,12 @@ import { Prose } from '../../../components/prose';
         <p class="text-muted-foreground">{{ t('guide.aiPromptPage.copyLede') }}</p>
         <div class="relative">
           <button
+            voltButton
+            variant="outline"
+            size="sm"
             type="button"
+            class="absolute right-3 top-3 z-10 gap-1.5"
             (click)="copyPrompt()"
-            class="absolute top-3 right-3 inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-background text-foreground border border-border rounded-md hover:bg-accent hover:text-accent-foreground transition-colors z-10"
           >
             @if (copied()) {
               <lmn-check [size]="14" />

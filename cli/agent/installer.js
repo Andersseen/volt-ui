@@ -52,8 +52,17 @@ const markersOf = spec => MARKERS[spec.style ?? 'html'];
 // ---------------------------------------------------------------------------
 
 function buildAgents(mcpUrl) {
-  const { CURSOR_RULES, COPILOT_INSTRUCTIONS, VOLT_UI_SKILL, VSCODE_SNIPPETS } =
+  const { CURSOR_RULES, COPILOT_INSTRUCTIONS, WINDSURF_RULES, VOLT_UI_SKILLS, VSCODE_SNIPPETS } =
     buildContent(mcpUrl);
+  // One owned file per skill, in the directory the agent scans: .claude/skills/<name>/ or
+  // .agents/skills/<name>/. The skills are the full playbooks; agents that cannot load them get
+  // the same digests in a rules block instead.
+  const skillFiles = dir =>
+    Object.entries(VOLT_UI_SKILLS).map(([name, content]) => ({
+      path: `${dir}/${name}/SKILL.md`,
+      kind: 'owned',
+      content,
+    }));
   // Cursor / Windsurf accept a bare `url` entry; Claude Code's `.mcp.json` and VS Code's
   // `.vscode/mcp.json` use the `http` transport type.
   const urlEntry = { type: 'url', url: mcpUrl };
@@ -74,10 +83,10 @@ function buildAgents(mcpUrl) {
           content: { mcpServers: { 'volt-ui': httpEntry } },
           owns: ['mcpServers', 'volt-ui'],
         },
-        { path: '.claude/skills/volt-ui/SKILL.md', kind: 'owned', content: VOLT_UI_SKILL },
+        ...skillFiles('.claude/skills'),
       ],
       notes: [
-        'Restart Claude Code for the MCP server and skill to load.',
+        'Restart Claude Code for the MCP server and skills to load.',
         'Claude Desktop: remote MCP servers are added via Settings -> Connectors, not by editing claude_desktop_config.json.',
       ],
     },
@@ -92,7 +101,10 @@ function buildAgents(mcpUrl) {
         },
         { path: '.cursorrules', kind: 'block', content: CURSOR_RULES },
       ],
-      notes: ['Restart Cursor for MCP changes to take effect.'],
+      notes: [
+        'Restart Cursor for MCP changes to take effect.',
+        'Cursor reads a rules file, not skills: .cursorrules carries the digests of the Volt skills.',
+      ],
     },
     windsurf: {
       label: 'Windsurf',
@@ -103,8 +115,12 @@ function buildAgents(mcpUrl) {
           content: { mcpServers: { 'volt-ui': urlEntry } },
           owns: ['mcpServers', 'volt-ui'],
         },
+        { path: '.windsurfrules', kind: 'block', content: WINDSURF_RULES },
       ],
-      notes: ['Restart Windsurf for MCP changes to take effect.'],
+      notes: [
+        'Restart Windsurf for MCP changes to take effect.',
+        'Windsurf reads a rules file, not skills: .windsurfrules carries the digests of the Volt skills.',
+      ],
     },
     copilot: {
       label: 'GitHub Copilot (VS Code)',
@@ -133,11 +149,11 @@ function buildAgents(mcpUrl) {
           content: `[mcp_servers.volt-ui]\nurl = "${mcpUrl}"`,
           unlessPresent: /^\s*\[mcp_servers\.(?:"volt-ui"|volt-ui)\]/m,
         },
-        { path: '.agents/skills/volt-ui/SKILL.md', kind: 'owned', content: VOLT_UI_SKILL },
+        ...skillFiles('.agents/skills'),
       ],
       notes: [
         'Codex reads .codex/config.toml only for projects you have marked as trusted.',
-        'Restart Codex for the MCP server and skill to load.',
+        'Restart Codex for the MCP server and skills to load.',
       ],
     },
     gemini: {
@@ -151,7 +167,10 @@ function buildAgents(mcpUrl) {
         },
         { path: 'GEMINI.md', kind: 'block', content: COPILOT_INSTRUCTIONS },
       ],
-      notes: ['Restart Gemini CLI; `/mcp` lists the connected servers.'],
+      notes: [
+        'Restart Gemini CLI; `/mcp` lists the connected servers.',
+        'GEMINI.md carries the digests of the Volt skills (Gemini CLI is given a rules block, not skills).',
+      ],
     },
     opencode: {
       label: 'OpenCode',
@@ -165,9 +184,9 @@ function buildAgents(mcpUrl) {
           },
           owns: ['mcp', 'volt-ui'],
         },
-        { path: '.agents/skills/volt-ui/SKILL.md', kind: 'owned', content: VOLT_UI_SKILL },
+        ...skillFiles('.agents/skills'),
       ],
-      notes: ['Restart OpenCode for the MCP server and skill to load.'],
+      notes: ['Restart OpenCode for the MCP server and skills to load.'],
     },
     vscode: {
       label: 'VS Code (snippets)',

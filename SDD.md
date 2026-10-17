@@ -21,7 +21,7 @@ The project exists because the Angular ecosystem lacks a shadcn/ui equivalent: e
 
 ### 1.1 Core idea
 
-- **For Angular:** first-class support for Angular 21+ (zoneless, standalone components, signals).
+- **For Angular:** first-class support for Angular 21.2+ and 22 (zoneless, standalone components, signals).
 - **Two first-class ways to consume it:** import the components from `@voltui/components`, or copy their source into your project with the CLI and own it. Both are supported for the whole 1.x line.
 - **Primitive-based accessibility:** accessibility and interaction logic come from [ng-primitives](https://ng-primitives.dev), the Angular equivalent of Radix UI.
 - **Tailwind-first styling:** styles are built with Tailwind CSS v4 and `class-variance-authority` (CVA), making variants fast to author and consistent.
