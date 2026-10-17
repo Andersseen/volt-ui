@@ -122,7 +122,8 @@ test.describe('Gallery tabs', () => {
     // which rules out anything that only updates on click.
     for (const url of ['/docs/blocks/cta', '/docs/layouts/kanban']) {
       await page.goto(url);
-      await expect(gallery).toHaveClass(/text-foreground/);
+      // VoltNavigationMenuLink reports the active entry through ng-primitives' `data-active`.
+      await expect(gallery).toHaveAttribute('data-active', '');
     }
   });
 });

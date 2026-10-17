@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { LmnGithubIcon } from 'lumen-icons';
+import { VoltNativeButton, VoltSeparator } from 'volt';
 import { injectAppI18n } from '../i18n/i18n';
 import { STORYBOOK_URL } from '../lib/storybook';
 
 @Component({
   selector: 'app-footer',
-  imports: [RouterLink, LmnGithubIcon],
+  imports: [RouterLink, LmnGithubIcon, VoltNativeButton, VoltSeparator],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <footer class="border-t border-border/50 bg-muted/15 py-10 relative z-10">
@@ -20,33 +21,34 @@ import { STORYBOOK_URL } from '../lib/storybook';
             <p class="text-xs">{{ t('footer.tagline') }}</p>
           </div>
         </div>
-        <div class="flex items-center gap-5">
-          <a
-            [routerLink]="path('/docs/introduction')"
-            class="hover:text-foreground transition-colors"
-            >{{ t('nav.docs') }}</a
-          >
-          <a
-            [routerLink]="path('/docs/components')"
-            class="hover:text-foreground transition-colors"
-            >{{ t('nav.components') }}</a
-          >
-          <a [routerLink]="path('/docs/blocks')" class="hover:text-foreground transition-colors">{{
+        <div class="flex flex-wrap items-center gap-1">
+          <a voltButton variant="ghost" size="sm" [routerLink]="path('/docs/introduction')">{{
+            t('nav.docs')
+          }}</a>
+          <a voltButton variant="ghost" size="sm" [routerLink]="path('/docs/components')">{{
+            t('nav.components')
+          }}</a>
+          <a voltButton variant="ghost" size="sm" [routerLink]="path('/docs/blocks')">{{
             t('nav.gallery')
           }}</a>
           <a
+            voltButton
+            variant="ghost"
+            size="sm"
             [href]="storybookUrl"
             target="_blank"
             rel="noopener"
-            class="hover:text-foreground transition-colors"
             >{{ t('nav.storybook') }}<span class="sr-only"> {{ t('nav.externalLink') }}</span></a
           >
-          <span class="hidden sm:inline">{{ t('footer.rights', { year: currentYear }) }}</span>
+          <volt-separator orientation="vertical" class="mx-1 hidden h-5 sm:block" />
+          <span class="hidden px-2 sm:inline">{{ t('footer.rights', { year: currentYear }) }}</span>
           <a
+            voltButton
+            variant="outline"
+            size="icon"
             href="https://github.com/Andersseen/volt-ui"
             target="_blank"
             rel="noreferrer"
-            class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-border/60 hover:text-foreground transition-colors"
             [attr.aria-label]="t('nav.github')"
           >
             <lmn-github [size]="16" />

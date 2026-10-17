@@ -11,6 +11,7 @@ import {
 import { LmnChevronDownIcon, LmnMoonIcon, LmnSunIcon } from 'lumen-icons';
 import {
   applyVoltTheme,
+  VoltNativeButton,
   VoltPopoverContent,
   VoltPopoverTrigger,
   VoltToggleGroup,
@@ -60,6 +61,7 @@ const STYLES: readonly { id: VoltThemeStyle; label: string }[] = [
   selector: 'app-theme-switcher',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    VoltNativeButton,
     VoltPopoverTrigger,
     VoltPopoverContent,
     VoltToggleGroup,
@@ -71,10 +73,12 @@ const STYLES: readonly { id: VoltThemeStyle; label: string }[] = [
   template: `
     <div class="flex items-center gap-2">
       <button
+        voltButton
+        variant="outline"
         type="button"
         [voltPopover]="themePanel"
         placement="bottom-end"
-        class="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-md border border-input bg-surface px-2.5 text-sm transition-colors hover:bg-muted"
+        class="h-9 shrink-0 gap-1.5 px-2.5"
         [attr.aria-label]="triggerLabel()"
       >
         <span class="h-4 w-4 rounded-full ring-1 ring-border" [class]="activeSwatch()"></span>
@@ -82,8 +86,11 @@ const STYLES: readonly { id: VoltThemeStyle; label: string }[] = [
       </button>
 
       <button
+        voltButton
+        variant="outline"
+        size="icon"
         type="button"
-        class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-input bg-surface text-sm transition-colors hover:bg-muted"
+        class="shrink-0"
         (click)="toggleDark()"
         [attr.aria-label]="t('nav.toggleDark')"
       >
