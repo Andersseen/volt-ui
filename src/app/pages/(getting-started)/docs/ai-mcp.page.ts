@@ -1,9 +1,20 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { LmnCheckIcon, LmnExternalLinkIcon, LmnListIcon, LmnSparklesIcon } from 'lumen-icons';
+import { SITE_STATS } from '../../../lib/generated/site-stats';
 import { Prose } from '../../../components/prose';
 import { injectAppI18n, type PlainTranslationKey } from '../../../i18n/i18n';
 
 const MCP_URL = 'https://voltui.dev/api/mcp';
+
+interface AgentCard {
+  readonly id: string;
+  readonly iconClass: string;
+  readonly native: boolean;
+  readonly name: PlainTranslationKey;
+  readonly badge: PlainTranslationKey;
+  readonly body: PlainTranslationKey;
+  readonly writes: PlainTranslationKey;
+}
 
 @Component({
   selector: 'app-ai-mcp-page',
@@ -69,84 +80,32 @@ const MCP_URL = 'https://voltui.dev/api/mcp';
           {{ t('guide.aiMcpPage.agentsTitle') }}
         </h2>
         <div class="grid gap-4 sm:grid-cols-2">
-          <!-- Claude -->
-          <div class="rounded-lg border border-border p-4 space-y-3">
-            <div class="flex items-center gap-2">
-              <lmn-sparkles [size]="20" class="text-orange-500" />
-              <h3 class="font-semibold">{{ t('guide.aiMcpPage.claudeName') }}</h3>
-              <span
-                class="ml-auto text-xs bg-green-500/10 text-green-600 px-2 py-0.5 rounded-full font-medium"
-                >{{ t('guide.aiMcpPage.claudeBadge') }}</span
-              >
+          @for (agent of agents; track agent.id) {
+            <div class="rounded-lg border border-border p-4 space-y-3">
+              <div class="flex items-center gap-2">
+                <lmn-sparkles [size]="20" [class]="agent.iconClass" />
+                <h3 class="font-semibold">{{ t(agent.name) }}</h3>
+                <span
+                  class="ml-auto text-xs px-2 py-0.5 rounded-full font-medium"
+                  [class]="
+                    agent.native
+                      ? 'bg-green-500/10 text-green-600'
+                      : 'bg-muted text-muted-foreground'
+                  "
+                  >{{ t(agent.badge) }}</span
+                >
+              </div>
+              <p class="text-sm text-muted-foreground"><app-prose [key]="agent.body" /></p>
+              <div class="bg-[#1e1e1e] rounded p-2 font-mono text-xs text-zinc-300 overflow-x-auto">
+                <code>npx @voltui/agent {{ agent.id }}</code>
+              </div>
+              <p class="text-xs text-muted-foreground"><app-prose [key]="agent.writes" /></p>
             </div>
-            <p class="text-sm text-muted-foreground">{{ t('guide.aiMcpPage.claudeBody') }}</p>
-            <div class="bg-[#1e1e1e] rounded p-2 font-mono text-xs text-zinc-300 overflow-x-auto">
-              <code>npx @voltui/agent claude</code>
-            </div>
-            <p class="text-xs text-muted-foreground">
-              <app-prose key="guide.aiMcpPage.claudeWrites" />
-            </p>
-          </div>
-
-          <!-- Cursor -->
-          <div class="rounded-lg border border-border p-4 space-y-3">
-            <div class="flex items-center gap-2">
-              <lmn-list [size]="20" class="text-blue-500" />
-              <h3 class="font-semibold">{{ t('guide.aiMcpPage.cursorName') }}</h3>
-              <span
-                class="ml-auto text-xs bg-green-500/10 text-green-600 px-2 py-0.5 rounded-full font-medium"
-                >{{ t('guide.aiMcpPage.cursorBadge') }}</span
-              >
-            </div>
-            <p class="text-sm text-muted-foreground">
-              <app-prose key="guide.aiMcpPage.cursorBody" />
-            </p>
-            <div class="bg-[#1e1e1e] rounded p-2 font-mono text-xs text-zinc-300 overflow-x-auto">
-              <code>npx @voltui/agent cursor</code>
-            </div>
-            <p class="text-xs text-muted-foreground">
-              <app-prose key="guide.aiMcpPage.cursorWrites" />
-            </p>
-          </div>
-
-          <!-- Windsurf -->
-          <div class="rounded-lg border border-border p-4 space-y-3">
-            <div class="flex items-center gap-2">
-              <lmn-sparkles [size]="20" class="text-cyan-500" />
-              <h3 class="font-semibold">{{ t('guide.aiMcpPage.windsurfName') }}</h3>
-              <span
-                class="ml-auto text-xs bg-green-500/10 text-green-600 px-2 py-0.5 rounded-full font-medium"
-                >{{ t('guide.aiMcpPage.windsurfBadge') }}</span
-              >
-            </div>
-            <p class="text-sm text-muted-foreground">{{ t('guide.aiMcpPage.windsurfBody') }}</p>
-            <div class="bg-[#1e1e1e] rounded p-2 font-mono text-xs text-zinc-300 overflow-x-auto">
-              <code>npx @voltui/agent windsurf</code>
-            </div>
-            <p class="text-xs text-muted-foreground">
-              <app-prose key="guide.aiMcpPage.windsurfWrites" />
-            </p>
-          </div>
-
-          <!-- Copilot -->
-          <div class="rounded-lg border border-border p-4 space-y-3">
-            <div class="flex items-center gap-2">
-              <lmn-sparkles [size]="20" class="text-purple-500" />
-              <h3 class="font-semibold">{{ t('guide.aiMcpPage.copilotName') }}</h3>
-              <span
-                class="ml-auto text-xs bg-muted text-muted-foreground px-2 py-0.5 rounded-full font-medium"
-                >{{ t('guide.aiMcpPage.copilotBadge') }}</span
-              >
-            </div>
-            <p class="text-sm text-muted-foreground">{{ t('guide.aiMcpPage.copilotBody') }}</p>
-            <div class="bg-[#1e1e1e] rounded p-2 font-mono text-xs text-zinc-300 overflow-x-auto">
-              <code>npx @voltui/agent copilot</code>
-            </div>
-            <p class="text-xs text-muted-foreground">
-              <app-prose key="guide.aiMcpPage.copilotWrites" />
-            </p>
-          </div>
+          }
         </div>
+        <p class="text-sm text-muted-foreground">
+          {{ t('guide.aiMcpPage.serves', { count: componentCount }) }}
+        </p>
       </div>
 
       <!-- Manual config -->
@@ -168,6 +127,73 @@ export default class AiMcpPage {
   protected readonly t = this.translations.t;
 
   readonly mcpUrl = MCP_URL;
+  readonly componentCount = SITE_STATS.components;
+
+  readonly agents: readonly AgentCard[] = [
+    {
+      id: 'claude',
+      iconClass: 'text-orange-500',
+      native: true,
+      name: 'guide.aiMcpPage.claudeName',
+      badge: 'guide.aiMcpPage.claudeBadge',
+      body: 'guide.aiMcpPage.claudeBody',
+      writes: 'guide.aiMcpPage.claudeWrites',
+    },
+    {
+      id: 'codex',
+      iconClass: 'text-emerald-500',
+      native: true,
+      name: 'guide.aiMcpPage.codexName',
+      badge: 'guide.aiMcpPage.codexBadge',
+      body: 'guide.aiMcpPage.codexBody',
+      writes: 'guide.aiMcpPage.codexWrites',
+    },
+    {
+      id: 'opencode',
+      iconClass: 'text-sky-500',
+      native: true,
+      name: 'guide.aiMcpPage.opencodeName',
+      badge: 'guide.aiMcpPage.opencodeBadge',
+      body: 'guide.aiMcpPage.opencodeBody',
+      writes: 'guide.aiMcpPage.opencodeWrites',
+    },
+    {
+      id: 'cursor',
+      iconClass: 'text-blue-500',
+      native: true,
+      name: 'guide.aiMcpPage.cursorName',
+      badge: 'guide.aiMcpPage.cursorBadge',
+      body: 'guide.aiMcpPage.cursorBody',
+      writes: 'guide.aiMcpPage.cursorWrites',
+    },
+    {
+      id: 'windsurf',
+      iconClass: 'text-cyan-500',
+      native: true,
+      name: 'guide.aiMcpPage.windsurfName',
+      badge: 'guide.aiMcpPage.windsurfBadge',
+      body: 'guide.aiMcpPage.windsurfBody',
+      writes: 'guide.aiMcpPage.windsurfWrites',
+    },
+    {
+      id: 'gemini',
+      iconClass: 'text-indigo-500',
+      native: false,
+      name: 'guide.aiMcpPage.geminiName',
+      badge: 'guide.aiMcpPage.geminiBadge',
+      body: 'guide.aiMcpPage.geminiBody',
+      writes: 'guide.aiMcpPage.geminiWrites',
+    },
+    {
+      id: 'copilot',
+      iconClass: 'text-purple-500',
+      native: false,
+      name: 'guide.aiMcpPage.copilotName',
+      badge: 'guide.aiMcpPage.copilotBadge',
+      body: 'guide.aiMcpPage.copilotBody',
+      writes: 'guide.aiMcpPage.copilotWrites',
+    },
+  ];
   readonly setupUrl = `${MCP_URL}/setup`;
 
   readonly manualConfig = JSON.stringify(

@@ -83,10 +83,14 @@ dropdown-menu, toast, resizable, toolbar, file-upload, search, native-select, pr
 
 ## Open questions / known gaps
 
-- **Glossa copy, partly updated.** The Angular statements (`landing.hero.badge`,
-  `guide.versioningPage.angularLede`, `guide.aiSkillPage.coversStack`) were corrected in en, es and uk
-  after the PR. The AI pages (`/docs/ai-skill`, `/docs/ai-mcp`, `/docs/mcp`, `/docs/ai-prompt`) still
-  describe "the skill" in the singular and the install line lacks `@angular/cdk`.
+- **Glossa copy.** Updated in en, es and uk through the Glossa API (the MCP client could not connect in
+  this session; the endpoint answers a plain `curl` and, behind Cloudflare, needs a non-Python
+  User-Agent): the Angular statements, and the AI pages (`ai-skill`, `ai-mcp`, `mcp`, `ai-prompt`,
+  intro cards, SEO) for the seven skills, the seven agents and the real written files. Two messages
+  use MF2 plurals (`guide.aiSkillPage.count`, `guide.aiMcpPage.serves`; Ukrainian one/few/many).
+  **Orphaned keys to delete once this is deployed** (the live site still reads them until then):
+  `guide.aiSkillPage.coversStack|coversNaming|coversCatalog|coversTheme`, and the unrendered
+  `guide.aiMcpPage.learns*`, `capTools|capResources|capPrompts`, `tools.*`, `resources.*`, `prompts.*`.
 - **Toggle-group tab stop** is its first item, not the pressed one (APG radio pattern). Needs a
   roving-focus initial-item seam; not changed.
 - **Popover offset** is 4 px, not the documented 8 px (only tooltip's defaults were corrected).
