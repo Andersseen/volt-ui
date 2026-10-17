@@ -70,7 +70,7 @@
   },
   "landing": {
     "hero": {
-      "badge": "Volt UI {$version} para Angular 21",
+      "badge": "Volt UI {$version} para Angular 21 y 22",
       "title": "Publica interfaces de Angular con componentes que son tuyos.",
       "subtitle": "Copia código Angular pulido y accesible dentro de tu app. Conserva la velocidad de una librería de componentes, con el control de un código que pertenece a tu producto.",
       "start": "Empezar a construir",
@@ -473,7 +473,7 @@
       "copiedSkill": "Copiado",
       "copySkill": "Copiar el contenido de la skill",
       "coversTitle": "Qué cubre la skill",
-      "coversStack": "**Contexto del stack** — Angular 21, signals sin zonas, OnPush, standalone, Tailwind v4, ng-primitives, CVA",
+      "coversStack": "**Contexto del stack** — Angular 21 y 22, signals sin zonas, OnPush, standalone, Tailwind v4, ng-primitives, CVA",
       "coversNaming": "**Convenciones de nombres** — `ui-*` frente a `volt-*`, selectores de elemento frente a selectores de atributo",
       "coversCatalog": "**Catálogo de componentes** — componentes estables y beta con sus selectores y entradas principales",
       "coversOverlays": "**Reglas de superposición** — disparadores como directiva de atributo + `<ng-template>` para dialog, drawer, popover, tooltip y dropdown-menu",

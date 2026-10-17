@@ -70,7 +70,7 @@
   },
   "landing": {
     "hero": {
-      "badge": "Volt UI {$version} for Angular 21",
+      "badge": "Volt UI {$version} for Angular 21 and 22",
       "title": "Ship Angular interfaces from components you can own.",
       "subtitle": "Copy polished, accessible Angular source into your app. Keep the speed of a component library, with the control of code that belongs to your product.",
       "start": "Start building",
@@ -473,7 +473,7 @@
       "copiedSkill": "Copied",
       "copySkill": "Copy skill contents",
       "coversTitle": "What the skill covers",
-      "coversStack": "**Stack context** — Angular 21, zoneless signals, OnPush, standalone, Tailwind v4, ng-primitives, CVA",
+      "coversStack": "**Stack context** — Angular 21 and 22, zoneless signals, OnPush, standalone, Tailwind v4, ng-primitives, CVA",
       "coversNaming": "**Naming conventions** — `ui-*` vs `volt-*`, element vs attribute selectors",
       "coversCatalog": "**Component catalog** — stable and beta components with selectors and key inputs",
       "coversOverlays": "**Overlay rules** — attribute-directive triggers + `<ng-template>` for dialog, drawer, popover, tooltip, dropdown-menu",

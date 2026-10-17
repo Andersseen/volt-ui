@@ -83,10 +83,10 @@ dropdown-menu, toast, resizable, toolbar, file-upload, search, native-select, pr
 
 ## Open questions / known gaps
 
-- **Glossa copy was not changed** (the Glossa MCP could not connect in this session). The AI pages
-  (`/docs/ai-skill`, `/docs/ai-mcp`, `/docs/mcp`, `/docs/ai-prompt`) still describe "the skill" in the
-  singular and the install line without `@angular/cdk`; the Angular badge/README were updated. Those
-  keys need updating through Glossa, locale-complete (en, es, uk).
+- **Glossa copy, partly updated.** The Angular statements (`landing.hero.badge`,
+  `guide.versioningPage.angularLede`, `guide.aiSkillPage.coversStack`) were corrected in en, es and uk
+  after the PR. The AI pages (`/docs/ai-skill`, `/docs/ai-mcp`, `/docs/mcp`, `/docs/ai-prompt`) still
+  describe "the skill" in the singular and the install line lacks `@angular/cdk`.
 - **Toggle-group tab stop** is its first item, not the pressed one (APG radio pattern). Needs a
   roving-focus initial-item seam; not changed.
 - **Popover offset** is 4 px, not the documented 8 px (only tooltip's defaults were corrected).

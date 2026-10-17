@@ -70,7 +70,7 @@
   },
   "landing": {
     "hero": {
-      "badge": "Volt UI {$version} для Angular 21",
+      "badge": "Volt UI {$version} для Angular 21 і 22",
       "title": "Випускайте інтерфейси Angular із компонентів, які належать вам.",
       "subtitle": "Копіюйте відшліфований і доступний код Angular у свій застосунок. Зберігайте швидкість бібліотеки компонентів із контролем над кодом, що належить вашому продукту.",
       "start": "Почати збірку",
@@ -473,7 +473,7 @@
       "copiedSkill": "Скопійовано",
       "copySkill": "Копіювати вміст skill",
       "coversTitle": "Що охоплює skill",
-      "coversStack": "**Контекст стека** — Angular 21, signals без zone.js, OnPush, standalone, Tailwind v4, ng-primitives, CVA",
+      "coversStack": "**Контекст стека** — Angular 21 і 22, signals без zone.js, OnPush, standalone, Tailwind v4, ng-primitives, CVA",
       "coversNaming": "**Конвенції назв** — `ui-*` проти `volt-*`, селектори елементів проти селекторів атрибутів",
       "coversCatalog": "**Каталог компонентів** — стабільні та бета-компоненти з селекторами й ключовими входами",
       "coversOverlays": "**Правила накладок** — тригери-директиви на атрибутах + `<ng-template>` для dialog, drawer, popover, tooltip і dropdown-menu",
