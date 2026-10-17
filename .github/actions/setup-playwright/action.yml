@@ -1,5 +1,10 @@
-name: Setup Playwright Chromium
-description: Installs Chromium and its OS packages, restoring the browser download from the cache when the Playwright version has not changed. Run after the setup action.
+name: Setup Playwright browser
+description: Installs a Playwright browser (Chromium by default) and its OS packages, restoring the browser download from the cache when the Playwright version has not changed. Run after the setup action.
+
+inputs:
+  browser:
+    description: chromium, firefox or webkit
+    default: chromium
 
 runs:
   using: composite
@@ -9,20 +14,20 @@ runs:
       shell: bash
       run: echo "version=$(pnpm exec playwright --version | awk '{print $2}')" >> "$GITHUB_OUTPUT"
 
-    - name: Cache the Chromium download
+    - name: Cache the browser download
       id: cache
       uses: actions/cache@v4
       with:
         path: ~/.cache/ms-playwright
-        key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.version }}-chromium
+        key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.version }}-${{ inputs.browser }}
 
-    - name: Download Chromium and install its OS packages
+    - name: Download the browser and install its OS packages
       if: steps.cache.outputs.cache-hit != 'true'
       shell: bash
-      run: pnpm exec playwright install --with-deps chromium
+      run: pnpm exec playwright install --with-deps ${{ inputs.browser }}
 
     # The browser is cached, the apt packages it needs are not.
-    - name: Install Chromium's OS packages
+    - name: Install the browser's OS packages
       if: steps.cache.outputs.cache-hit == 'true'
       shell: bash
-      run: pnpm exec playwright install-deps chromium
+      run: pnpm exec playwright install-deps ${{ inputs.browser }}

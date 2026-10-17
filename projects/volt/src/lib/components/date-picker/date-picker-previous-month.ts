@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  ElementRef,
+  inject,
+  input,
+} from '@angular/core';
 import { NgpDatePickerPreviousMonth } from 'ng-primitives/date-picker';
 import { cn } from '../../utils';
 
@@ -8,11 +15,25 @@ import { cn } from '../../utils';
   hostDirectives: [NgpDatePickerPreviousMonth],
   host: {
     '[class]': 'classes()',
+    // A custom element, not a <button>: without these it is neither announced as a button nor
+    // reachable and operable from the keyboard.
+    role: 'button',
+    '[attr.tabindex]': 'primitive.disabled() ? -1 : 0',
+    '(keydown.enter)': 'activate($event)',
+    '(keydown.space)': 'activate($event)',
   },
   template: `<ng-content />`,
 })
 export class VoltDatePickerPreviousMonth {
   readonly class = input<string>('');
+
+  protected readonly primitive = inject(NgpDatePickerPreviousMonth);
+  private readonly element = inject<ElementRef<HTMLElement>>(ElementRef);
+
+  protected activate(event: Event): void {
+    event.preventDefault();
+    this.element.nativeElement.click();
+  }
 
   protected readonly classes = computed(() =>
     cn(

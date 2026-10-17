@@ -18,7 +18,7 @@ const meta: Meta<VoltFileDropzone> = {
     props: args,
     template: `
       <volt-file-dropzone class="max-w-md" [multiple]="multiple" [directory]="directory" [disabled]="disabled" [fileTypes]="fileTypes" (selected)="selected($event)" (rejected)="rejected($event)">
-        Drop files here or click to upload
+        Drop files here
       </volt-file-dropzone>`,
   }),
 };

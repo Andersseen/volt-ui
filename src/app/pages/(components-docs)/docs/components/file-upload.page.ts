@@ -28,7 +28,7 @@ import { injectAppI18n } from '../../../../i18n/i18n';
           <div class="w-full max-w-md space-y-4">
             <volt-file-dropzone multiple (selected)="setFiles($event)">
               <span class="font-medium text-foreground">Drop files here</span>
-              <span class="mt-1 text-xs">or click to browse from your computer</span>
+              <span class="mt-1 text-xs">or use the button below to browse</span>
             </volt-file-dropzone>
             <volt-button voltFileUpload multiple (selected)="setFiles($event)">
               Browse files

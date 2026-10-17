@@ -18,6 +18,19 @@ import { VoltTooltipContent } from './tooltip-content';
 })
 class TooltipTestWrapper {}
 
+@Component({
+  selector: 'app-tooltip-default-wrapper',
+  imports: [VoltTooltip, VoltTooltipContent],
+  template: `
+    <button type="button" [voltTooltip]="tooltipTpl">Default delay</button>
+
+    <ng-template #tooltipTpl>
+      <volt-tooltip-content>Delayed body</volt-tooltip-content>
+    </ng-template>
+  `,
+})
+class TooltipDefaultWrapper {}
+
 describe('VoltTooltipContent', () => {
   it('should render tooltip role and projected content', async () => {
     const user = userEvent.setup();
@@ -26,5 +39,18 @@ describe('VoltTooltipContent', () => {
     await user.hover(screen.getByRole('button', { name: 'Show tooltip' }));
 
     expect(await screen.findByRole('tooltip')).toHaveTextContent('Tooltip body');
+  });
+
+  it('waits the documented 300ms before showing when `delay` is not bound', async () => {
+    const user = userEvent.setup();
+    await render(TooltipDefaultWrapper);
+
+    await user.hover(screen.getByRole('button', { name: 'Default delay' }));
+
+    // The primitive's own default is 0ms: unbound, the tooltip used to appear at once.
+    expect(screen.queryByRole('tooltip')).toBeNull();
+    expect(await screen.findByRole('tooltip', undefined, { timeout: 2000 })).toHaveTextContent(
+      'Delayed body'
+    );
   });
 });

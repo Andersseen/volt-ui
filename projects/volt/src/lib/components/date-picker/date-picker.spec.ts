@@ -144,4 +144,24 @@ describe('VoltDatePicker', () => {
     // Navigating the calendar must not change the committed value.
     expect(fixture.componentInstance.control.value).toEqual(new Date(2026, 6, 29));
   });
+
+  it('exposes the month controls as keyboard-operable buttons', async () => {
+    const user = userEvent.setup();
+    await render(DatePickerFixture);
+
+    const next = screen.getByRole('button', { name: 'Next month' });
+    const previous = screen.getByRole('button', { name: 'Previous month' });
+    expect(next).toHaveAttribute('tabindex', '0');
+    expect(previous).toHaveAttribute('tabindex', '0');
+
+    next.focus();
+    await user.keyboard('{Enter}');
+    expect(screen.getByText('August 2026')).toBeInTheDocument();
+    await user.keyboard(' ');
+    expect(screen.getByText('September 2026')).toBeInTheDocument();
+
+    previous.focus();
+    await user.keyboard('{Enter}');
+    expect(screen.getByText('August 2026')).toBeInTheDocument();
+  });
 });

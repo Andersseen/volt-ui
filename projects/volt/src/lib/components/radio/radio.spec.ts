@@ -85,6 +85,17 @@ describe('VoltRadio', () => {
     expect(radios[0]).toHaveAttribute('aria-checked', 'true');
   });
 
+  it('answers the arrow keys that match its default vertical layout', async () => {
+    const user = userEvent.setup();
+    await render(RadioTestWrapper);
+
+    await user.tab();
+    await user.keyboard('{ArrowDown}');
+    expect(screen.getByRole('radio', { name: 'Option B' })).toHaveFocus();
+    await user.keyboard('{ArrowUp}');
+    expect(screen.getByRole('radio', { name: 'Option A' })).toHaveFocus();
+  });
+
   it('should work with reactive forms', async () => {
     const user = userEvent.setup();
 

@@ -75,7 +75,8 @@
     "generate:seo-files": "node scripts/generate-seo-files.mjs",
     "check:seo": "node scripts/check-seo.mjs",
     "check:dogfood": "node scripts/check-dogfood.mjs",
-    "generate:dogfood": "node scripts/check-dogfood.mjs --write"
+    "generate:dogfood": "node scripts/check-dogfood.mjs --write",
+    "test:e2e:contracts": "pnpm build:lib && playwright test -c playwright.contracts.config.ts"
   },
   "lint-staged": {
     "*.{ts,html}": [

@@ -94,6 +94,32 @@ jobs:
       - name: Run CLI consumer fixture e2e tests
         run: pnpm test:e2e:consumer-cli
 
+  contracts:
+    name: Component contracts (${{ matrix.browser }})
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup
+
+      - name: Build library
+        run: pnpm build:lib
+
+      - name: Install Playwright ${{ matrix.browser }}
+        uses: ./.github/actions/setup-playwright
+        with:
+          browser: ${{ matrix.browser }}
+
+      # Focus, keyboard, pointer geometry, portals, drag and drop and computed styles against the
+      # built package: what jsdom cannot prove. See e2e/contracts and playwright.contracts.config.ts.
+      - name: Run component contract tests
+        run: pnpm exec playwright test -c playwright.contracts.config.ts --project=${{ matrix.browser }}
+
   build:
     name: Build docs app
     runs-on: ubuntu-latest
@@ -216,7 +242,7 @@ jobs:
   # One required check, whatever the number of jobs above.
   verify:
     name: Verify · lint · typecheck · test · build · e2e
-    needs: [static, unit, packages, build, e2e, ssr, storybook]
+    needs: [static, unit, packages, contracts, build, e2e, ssr, storybook]
     if: always()
     runs-on: ubuntu-latest
     permissions: {}
