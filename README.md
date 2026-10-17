@@ -17,23 +17,17 @@ Angular UI atoms that stay out of the way of your product's own design — built
 
 <br/>
 
-### ⚡ v1.2 — Application DX & Composition
+### ⚡ v1.3 — Async Data & Angular Integration
 
-**Atoms that survive real application workflows.** Dialogs can stay put while a request is pending
-(`[dismissible]`, `initialFocus`), `<button voltButton aria-disabled>` keeps a blocked action focusable
-and explained, `EmptyState` joins the catalog, and three tested **recipes** — settings form, async
-search, data table — show validation, pending, failure and retry around the existing atoms. Blocks and
-layouts now show copy-ready `@voltui/components` source and are compiled as a consumer would.
-Backwards compatible with 1.1 · **[release notes](./CHANGELOG.md)** · **[upgrade notes](./MIGRATION.md)**
-
-### v1.1 — Consumer DX
-
-**Built from what real apps ran into.** `class` now reliably styles the element you expect on every
-component, `<a voltButton routerLink>` replaces `<a><volt-button>`, forms get sizes and states,
-toasts and state-driven dialogs no longer need ng-primitives APIs, and `Alert` + `Spinner` join the
-catalog. Fully backwards compatible with 1.0.<br/>
-See the **[release notes](./CHANGELOG.md)** · **[upgrade notes](./MIGRATION.md)** ·
+**Volt UI meets real application data.** `volt-combobox` can search a server (`filterMode="manual"`,
+`(queryChange)`, `loading`), breadcrumbs take your own router anchors (`a[voltBreadcrumbLink]`), and
+the docs now cover the async-search recipe end to end. Backwards compatible ·
+**[release notes](./CHANGELOG.md)** · **[upgrade notes](./MIGRATION.md)** ·
 **[versioning policy](https://voltui.dev/docs/versioning)**
+
+The site is available in **English, Spanish and Ukrainian**, and every component now has an
+interactive **[Storybook](https://storybook.voltui.dev)** reference with live controls, all theme
+presets and an accessibility panel.
 
 <br/>
 
@@ -42,14 +36,14 @@ See the **[release notes](./CHANGELOG.md)** · **[upgrade notes](./MIGRATION.md)
 [![Angular 21](https://img.shields.io/badge/Angular-21-DD0031?style=for-the-badge&logo=angular&logoColor=white)](https://angular.dev)
 [![Tailwind v4](https://img.shields.io/badge/Tailwind-v4-38BDF8?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
 
-[![Components](https://img.shields.io/badge/components-42-8B5CF6?style=for-the-badge)](https://voltui.dev/docs/components)
+[![Components](https://img.shields.io/badge/components-44-8B5CF6?style=for-the-badge)](https://voltui.dev/docs/components)
 [![CI](https://img.shields.io/github/actions/workflow/status/Andersseen/volt-ui/ci.yml?style=for-the-badge&logo=githubactions&logoColor=white&label=CI&branch=main)](https://github.com/Andersseen/volt-ui/actions/workflows/ci.yml)
 [![License MIT](https://img.shields.io/badge/license-MIT-22C55E?style=for-the-badge)](./LICENSE)
 [![Stars](https://img.shields.io/github/stars/Andersseen/volt-ui?style=for-the-badge&logo=github&logoColor=white&color=F59E0B)](https://github.com/Andersseen/volt-ui/stargazers)
 
 <br/>
 
-**[🌐 Live Docs](https://voltui.dev)** · **[📦 Components](https://voltui.dev/docs/components)** · **[🎨 Theme Builder](https://voltui.dev/create-theme)** · **[🤖 AI / MCP](https://voltui.dev/api/mcp)** · **[📖 Docs](https://voltui.dev/docs/introduction)**
+**[🌐 Live Docs](https://voltui.dev)** · **[📦 Components](https://voltui.dev/docs/components)** · **[🎨 Theme Builder](https://voltui.dev/create-theme)** · **[🤖 AI / MCP](https://voltui.dev/docs/mcp)** · **[📖 Docs](https://voltui.dev/docs/introduction)** · **[📚 Storybook](https://storybook.voltui.dev)**
 
 </div>
 
@@ -82,14 +76,15 @@ There are two first-class ways to use it. Pick per project; both are supported f
 
 ## ✨ Highlights
 
-|                                |                                                                                               |
-| ------------------------------ | --------------------------------------------------------------------------------------------- |
-| ⚡ **Package or copy**         | Import from npm for shared updates, or copy the source with the CLI and own it.               |
-| ♿ **Accessible by default**   | Keyboard, focus, and ARIA behavior delegated to [ng-primitives](https://ng-primitives.dev).   |
-| 🎨 **25 theme combinations**   | 5 color × 5 style presets, plus dark mode, driven by Tailwind v4 tokens.                      |
-| 🧩 **44 components**           | Forms, overlays, feedback, navigation, data display — see the [catalog](#-component-catalog). |
-| 🛰️ **Zoneless & signal-first** | `input()` / `output()` / `model()` / `computed()`, `OnPush` everywhere.                       |
-| 🤖 **AI-ready**                | Ships an MCP server, a skill, and a prompt reference so assistants use it correctly.          |
+|                                |                                                                                                             |
+| ------------------------------ | ----------------------------------------------------------------------------------------------------------- |
+| ⚡ **Package or copy**         | Import from npm for shared updates, or copy the source with the CLI and own it.                             |
+| ♿ **Accessible by default**   | Keyboard, focus, and ARIA behavior delegated to [ng-primitives](https://ng-primitives.dev).                 |
+| 🎨 **25 theme combinations**   | 5 color × 5 style presets, plus dark mode, driven by Tailwind v4 tokens.                                    |
+| 🧩 **44 components**           | Forms, overlays, feedback, navigation, data display — see the [catalog](#-component-catalog).               |
+| 📚 **Storybook reference**     | Every component's states, controls, themes and API at [storybook.voltui.dev](https://storybook.voltui.dev). |
+| 🛰️ **Zoneless & signal-first** | `input()` / `output()` / `model()` / `computed()`, `OnPush` everywhere.                                     |
+| 🤖 **AI-ready**                | Ships an MCP server, a skill, and a prompt reference so assistants use it correctly.                        |
 
 ---
 
@@ -342,6 +337,7 @@ and keyboard workflows are additionally exercised in Playwright.
 ```bash
 pnpm install        # install dependencies
 pnpm dev            # docs app (AnalogJS + Vite)
+pnpm storybook      # component reference (Storybook) on http://localhost:6006
 pnpm typecheck      # type check
 pnpm lint           # lint
 pnpm test:run       # unit tests (Vitest)
@@ -350,7 +346,7 @@ pnpm test:e2e:ci    # Playwright e2e
 pnpm manifest       # regenerate the CLI manifest after component changes
 ```
 
-CI and deployment run through a **single pipeline** (`.github/workflows/ci.yml`): every PR runs lint · typecheck · test · build · e2e, and a merge to `main` deploys the docs to **Cloudflare Pages**.
+CI and deployment run through a **single pipeline** (`.github/workflows/ci.yml`): every PR runs lint · typecheck · test · build · e2e, and a merge to `main` deploys the docs (and, once enabled, Storybook) to **Cloudflare Pages**.
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) and [AGENTS.md](./AGENTS.md) for conventions.
 
