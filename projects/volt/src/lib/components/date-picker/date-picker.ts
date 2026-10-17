@@ -8,6 +8,7 @@ import {
   input,
   model,
   signal,
+  untracked,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import {
@@ -17,6 +18,7 @@ import {
 } from 'ng-primitives/date-picker';
 import { NgpNativeDateAdapter, provideDateAdapter } from 'ng-primitives/date-time';
 import { cn } from '../../utils';
+import { sameDay } from './same-day';
 
 export type VoltDatePickerFirstDayOfWeek = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
@@ -41,12 +43,6 @@ export type VoltDatePickerFirstDayOfWeek = 1 | 2 | 3 | 4 | 5 | 6 | 7;
         'ngpDatePickerDisabled: disabled',
         'ngpDatePickerDateDisabled: dateDisabled',
         'ngpDatePickerFirstDayOfWeek: firstDayOfWeek',
-        'ngpDatePickerDate: date',
-        'ngpDatePickerFocusedDate: focusedDate',
-      ],
-      outputs: [
-        'ngpDatePickerDateChange: dateChange',
-        'ngpDatePickerFocusedDateChange: focusedDateChange',
       ],
     },
   ],
@@ -78,6 +74,7 @@ export class VoltDatePicker implements ControlValueAccessor {
   private readonly controlDisabled = signal(false);
   protected readonly isDisabled = computed(() => this.disabled() || this.controlDisabled());
 
+  private writtenByForm = false;
   private onChange: (value: Date | undefined) => void = () => {};
   private onTouched: () => void = () => {};
 
@@ -86,14 +83,50 @@ export class VoltDatePicker implements ControlValueAccessor {
       this.datePickerState().setDisabled(this.isDisabled());
     });
 
-    // The NgpDatePicker host directive owns the selected date — the `date` model above
-    // is only the public alias for it. Watching that model instead of the primitive's
-    // own state never observed a calendar click, which left `[formControl]` silently
-    // disconnected in both directions. Mirrors the slider's CVA wiring.
-    this.datePickerState().dateChange.subscribe(value => this.onChange(value));
+    // Volt owns `date` and `focusedDate` and mirrors them into the primitive without ever binding
+    // the primitive's own inputs: ng-primitives latches into controlled mode the first time they
+    // are defined, which froze a static `[date]` (a click emitted and nothing changed) and kept
+    // `[(date)]` from ever seeing a calendar click.
+    // The template's default (`undefined`) must not erase what a form control wrote first.
+    let firstDate = true;
+    effect(() => {
+      const date = this.date();
+      untracked(() => {
+        if (!(firstDate && this.writtenByForm) && !sameDay(date, this.datePickerState().date())) {
+          this.datePickerState().select(date as Date, false, { emit: false });
+        }
+        firstDate = false;
+      });
+    });
+    this.datePickerState().dateChange.subscribe(value => {
+      this.date.set(value);
+      this.onChange(value);
+    });
+
+    // `setFocusedDate` clamps to min/max/disabled and emits no change event of its own, so the
+    // primitive's signal is the source for the outbound direction.
+    effect(() => {
+      const focused = this.focusedDate();
+      untracked(() => {
+        if (focused && !sameDay(focused, this.datePickerState().focusedDate())) {
+          this.datePickerState().setFocusedDate(focused, 'program', 'forward');
+        }
+      });
+    });
+    let firstFocused = true;
+    effect(() => {
+      const focused = this.datePickerState().focusedDate();
+      untracked(() => {
+        if (!firstFocused && !sameDay(focused, this.focusedDate())) {
+          this.focusedDate.set(focused);
+        }
+        firstFocused = false;
+      });
+    });
   }
 
   writeValue(value: Date | undefined | null): void {
+    this.writtenByForm = true;
     // `emit: false`: a form write must sync the calendar without echoing back into the control.
     this.datePickerState().select(value ?? (undefined as unknown as Date), false, { emit: false });
   }
