@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Foundations/Package vs Copy-and-own" />
+
+# Package vs copy-and-own
+
+Both modes use the same source. Pick the one that matches how much of the component you want to own.
+
+## Package mode: `@voltui/components`
+
+- Import the `Volt*` classes and `volt-*` selectors you see in this Storybook.
+- Fixes and new features arrive through normal semver updates.
+- Customise with the `class` input, which every component merges over its defaults with `cn()`, and with the theme tokens.
+- Best when you want the library to evolve without maintaining the code.
+
+## Copy-and-own mode: `@voltui/cli`
+
+- `npx @voltui/cli add <component>` copies the source and its local dependencies into your project.
+- Names become `Ui*` and `ui-*`, so what you read here maps one-to-one onto your copy.
+- You edit the files directly; updates are manual.
+- Best when you need to change a component's markup or behaviour.
+
+## How this Storybook relates to each mode
+
+Stories import from the package surface (`@voltui/components`, aliased to `volt` in this repository), so what you see is the packaged API. For a copied component, replace the `Volt`/`volt-` prefix with `Ui`/`ui-`. Each component page also shows the CLI command that copies it.

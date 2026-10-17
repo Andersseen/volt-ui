@@ -9,11 +9,30 @@ import {
 } from '../../../../lib/component-metadata';
 import { Reveal } from '../../../../components/reveal';
 import { injectAppI18n } from '../../../../i18n/i18n';
+import { STORYBOOK_URL } from '../../../../lib/storybook';
+import {
+  VoltCard,
+  VoltCardContent,
+  VoltCardDescription,
+  VoltCardHeader,
+  VoltCardTitle,
+  VoltNativeButton,
+} from 'volt';
 
 @Component({
   selector: 'app-components-index-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, ComponentPreview, Reveal],
+  imports: [
+    RouterLink,
+    ComponentPreview,
+    Reveal,
+    VoltCard,
+    VoltCardHeader,
+    VoltCardTitle,
+    VoltCardDescription,
+    VoltCardContent,
+    VoltNativeButton,
+  ],
   template: `
     <div class="space-y-8">
       <div>
@@ -46,6 +65,19 @@ import { injectAppI18n } from '../../../../i18n/i18n';
           }}</a>
         </p>
       </div>
+
+      <volt-card>
+        <volt-card-header>
+          <volt-card-title>{{ t('components.index.storybookTitle') }}</volt-card-title>
+          <volt-card-description>{{ t('components.index.storybookBody') }}</volt-card-description>
+        </volt-card-header>
+        <volt-card-content>
+          <a voltButton variant="outline" [href]="storybookUrl" target="_blank" rel="noopener">
+            {{ t('components.index.storybookCta') }}
+            <span class="sr-only">{{ t('nav.externalLink') }}</span>
+          </a>
+        </volt-card-content>
+      </volt-card>
 
       <div class="space-y-8">
         @for (group of groups; track group.titleKey) {
@@ -92,6 +124,8 @@ export default class ComponentsIndexPage {
   protected readonly t = this.translations.t;
 
   readonly groups = COMPONENT_GROUPS;
+
+  protected readonly storybookUrl = STORYBOOK_URL;
 
   protected readonly stagger = MOTION.stagger;
 

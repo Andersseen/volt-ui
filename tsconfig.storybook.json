@@ -1,0 +1,15 @@
+/* Type-checks the Storybook configuration and stories against the real `volt` public surface. */
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/storybook",
+    "types": ["node"],
+    "jsx": "react-jsx"
+  },
+  "include": [
+    "stories/**/*.ts",
+    ".storybook/*.ts",
+    ".storybook/*.tsx",
+    "src/app/lib/api-reference.generated.ts"
+  ]
+}

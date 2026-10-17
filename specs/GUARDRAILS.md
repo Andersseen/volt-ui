@@ -31,6 +31,7 @@ Adding, renaming, or deleting any file in `projects/volt/src/lib/` requires ALL 
 4. Demo page in `src/app/pages/(components-docs)/docs/components/` updated.
 5. `pnpm manifest` — regenerates `public/manifest.json`.
 6. `COMPONENT_STATUS.md` — if status/coverage changed.
+7. Storybook — `stories/components/<name>.stories.ts`, a `stories/_docs/component-guides.mjs` entry, then `pnpm generate:storybook-docs` (`pnpm check:storybook` fails otherwise).
 
 Skipping any of these WILL break CI or the CLI. See `specs/patterns/docs-page.md`.
 

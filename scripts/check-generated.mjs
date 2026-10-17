@@ -7,6 +7,7 @@
  *   site-stats.ts          library version, component/layout/preset counts   (pnpm stats)
  *   api-reference.generated.ts   every component's inputs, outputs, variants  (pnpm generate:api-reference)
  *   mcp/content.generated.ts   installer content served by /api/mcp/setup     (pnpm generate:mcp-content)
+ *   stories/components/*.mdx   Storybook component pages                      (pnpm generate:storybook-docs)
  *
  * `etyma.generated.ts` is not here: Etyma owns it and refreshes it from Glossa at dev/build time.
  */
@@ -19,6 +20,7 @@ const CHECKS = [
   ['scripts/generate-site-stats.mjs', 'pnpm stats'],
   ['scripts/generate-api-reference.mjs', 'pnpm generate:api-reference'],
   ['scripts/generate-mcp-content.mjs', 'pnpm generate:mcp-content'],
+  ['scripts/generate-storybook-docs.mjs', 'pnpm generate:storybook-docs'],
 ];
 
 let failed = false;

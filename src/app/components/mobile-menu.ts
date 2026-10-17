@@ -10,6 +10,7 @@ import {
 import { LmnMenuIcon, LmnXIcon } from 'lumen-icons';
 import { MoveEnterDirective } from 'angular-movement';
 import { MOTION } from '../lib/motion';
+import { STORYBOOK_URL } from '../lib/storybook';
 import { injectAppI18n } from '../i18n/i18n';
 
 @Component({
@@ -80,6 +81,16 @@ import { injectAppI18n } from '../i18n/i18n';
               {{ t(link.key) }}
             </a>
           }
+          <a
+            [href]="storybookUrl"
+            target="_blank"
+            rel="noopener"
+            (click)="close()"
+            class="px-3 py-2.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+          >
+            {{ t('nav.storybook') }}
+            <span class="sr-only">{{ t('nav.externalLink') }}</span>
+          </a>
         </nav>
       </div>
     </ng-template>
@@ -93,6 +104,8 @@ export class MobileMenu {
 
   /** Links stagger in behind the drawer, so the panel reads as arriving rather than appearing. */
   protected readonly stagger = MOTION.stagger;
+
+  protected readonly storybookUrl = STORYBOOK_URL;
 
   protected readonly links = [
     { path: '/', key: 'nav.home', exact: true },
