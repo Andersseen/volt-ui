@@ -120,6 +120,27 @@ jobs:
       - name: Run component contract tests
         run: pnpm exec playwright test -c playwright.contracts.config.ts --project=${{ matrix.browser }}
 
+  compat:
+    name: Packed package on Angular ${{ matrix.angular }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        angular: [21, 22]
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup
+      - name: Install Playwright Chromium
+        uses: ./.github/actions/setup-playwright
+
+      # Packs the real tarball, installs it with Angular ${{ matrix.angular }} into a project outside
+      # the repository, compiles it with that major's own ng build and runs the browser contracts
+      # against the result. A peer range that excludes the major fails at the install.
+      - name: Install, build and exercise the tarball
+        run: node scripts/check-angular-compat.mjs ${{ matrix.angular }}
+
   build:
     name: Build docs app
     runs-on: ubuntu-latest
@@ -242,7 +263,7 @@ jobs:
   # One required check, whatever the number of jobs above.
   verify:
     name: Verify · lint · typecheck · test · build · e2e
-    needs: [static, unit, packages, contracts, build, e2e, ssr, storybook]
+    needs: [static, unit, packages, contracts, compat, build, e2e, ssr, storybook]
     if: always()
     runs-on: ubuntu-latest
     permissions: {}

@@ -11,7 +11,7 @@ Volt UI is an Angular component library inspired by shadcn/ui, built on top of [
 
 ## Tech stack
 
-- Angular 21 (zoneless, standalone components, signals)
+- Angular 22 in the workspace (zoneless, standalone components, signals); the package supports 21.2+ and 22 — `pnpm check:angular-compat <major>` proves each against the packed tarball
 - AnalogJS 2.6 (docs app, SSR, file router)
 - Vite 7 + `@tailwindcss/vite`
 - Tailwind CSS v4 (CSS-only configuration, no `tailwind.config.js`)

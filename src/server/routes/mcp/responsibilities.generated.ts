@@ -14,7 +14,7 @@ export interface ComponentResponsibility {
 }
 
 /** The Angular versions the package supports: its peer dependency, so no prose has to repeat it. */
-export const ANGULAR_SUPPORT = '21';
+export const ANGULAR_SUPPORT = '21 and 22';
 
 export const RESPONSIBILITIES: Record<string, ComponentResponsibility> = {
   button: {

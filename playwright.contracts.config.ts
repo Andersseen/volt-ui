@@ -12,7 +12,10 @@ import { defineConfig, devices } from '@playwright/test';
  *   pnpm test:e2e:contracts -- --project=chromium   one engine
  */
 const port = Number(process.env['E2E_CONTRACTS_PORT'] ?? 5185);
-const baseURL = `http://127.0.0.1:${port}`;
+// `E2E_CONTRACTS_URL` points the same tests at an already served build — the Angular compatibility
+// check serves a project it built from the packed tarball (scripts/check-angular-compat.mjs).
+const external = process.env['E2E_CONTRACTS_URL'];
+const baseURL = external ?? `http://127.0.0.1:${port}`;
 
 export default defineConfig({
   testDir: './e2e/contracts',
@@ -31,9 +34,11 @@ export default defineConfig({
     { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
     { name: 'webkit', use: { ...devices['Desktop Safari'] } },
   ],
-  webServer: {
-    command: `pnpm exec vite --config e2e/consumer/vite.config.ts --host 127.0.0.1 --port ${port} --strictPort`,
-    url: `${baseURL}/contracts.html`,
-    reuseExistingServer: process.env['PLAYWRIGHT_REUSE_SERVER'] === '1',
-  },
+  webServer: external
+    ? undefined
+    : {
+        command: `pnpm exec vite --config e2e/consumer/vite.config.ts --host 127.0.0.1 --port ${port} --strictPort`,
+        url: `${baseURL}/contracts.html`,
+        reuseExistingServer: process.env['PLAYWRIGHT_REUSE_SERVER'] === '1',
+      },
 });

@@ -33,7 +33,7 @@ presets and an accessibility panel.
 
 [![npm — components](https://img.shields.io/npm/v/@voltui/components?style=for-the-badge&logo=npm&logoColor=white&label=components&color=6366F1)](https://www.npmjs.com/package/@voltui/components)
 [![npm — cli](https://img.shields.io/npm/v/@voltui/cli?style=for-the-badge&logo=npm&logoColor=white&label=cli&color=6366F1)](https://www.npmjs.com/package/@voltui/cli)
-[![Angular 21](https://img.shields.io/badge/Angular-21-DD0031?style=for-the-badge&logo=angular&logoColor=white)](https://angular.dev)
+[![Angular 21 · 22](https://img.shields.io/badge/Angular-21%20%C2%B7%2022-DD0031?style=for-the-badge&logo=angular&logoColor=white)](https://angular.dev)
 [![Tailwind v4](https://img.shields.io/badge/Tailwind-v4-38BDF8?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
 
 [![Components](https://img.shields.io/badge/components-44-8B5CF6?style=for-the-badge)](https://voltui.dev/docs/components)
@@ -68,7 +68,7 @@ There are two first-class ways to use it. Pick per project; both are supported f
 - 🎨 Restyle through **Tailwind v4 tokens** and `class` instead of fighting a theming API.
 - ♿ Keyboard, focus and ARIA behavior come from ng-primitives, on the native elements you write.
 
-> **Why it exists** — Angular has strong headless and enterprise UI options, but few focused on the shadcn-style _"copy the component and own it"_ workflow. Volt UI fills that gap with modern Angular 21 patterns: standalone components, `OnPush`, signals, zoneless compatibility, `ng-primitives` accessibility behavior, and Tailwind v4 tokens.
+> **Why it exists** — Angular has strong headless and enterprise UI options, but few focused on the shadcn-style _"copy the component and own it"_ workflow. Volt UI fills that gap with modern Angular patterns (21.2+ and 22): standalone components, `OnPush`, signals, zoneless compatibility, `ng-primitives` accessibility behavior, and Tailwind v4 tokens.
 
 > _Naming note: this project is not affiliated with PrimeVue Volt UI. Here, Volt UI is an independent Angular implementation for the `@voltui` packages and CLI._
 
@@ -93,7 +93,7 @@ There are two first-class ways to use it. Pick per project; both are supported f
 ### Package mode
 
 ```bash
-npm install @voltui/components
+npm install @voltui/components @angular/cdk
 ```
 
 ```css
@@ -244,7 +244,7 @@ promised. We have made peace with that.</sub>
 copies, and get fixes and features through normal semver updates.
 
 ```bash
-npm install @voltui/components
+npm install @voltui/components @angular/cdk
 ```
 
 Import themes once — that single line is all Tailwind v4 needs:

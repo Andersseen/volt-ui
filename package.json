@@ -77,7 +77,8 @@
     "check:dogfood": "node scripts/check-dogfood.mjs",
     "generate:dogfood": "node scripts/check-dogfood.mjs --write",
     "test:e2e:contracts": "pnpm build:lib && playwright test -c playwright.contracts.config.ts",
-    "generate:agent-skills": "node scripts/generate-agent-skills.mjs"
+    "generate:agent-skills": "node scripts/generate-agent-skills.mjs",
+    "check:angular-compat": "node scripts/check-angular-compat.mjs"
   },
   "lint-staged": {
     "*.{ts,html}": [

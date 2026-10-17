@@ -48,7 +48,7 @@ runtime utilities; the CLI copies component source into the consumer's project.
 5. **Theme system audited:** WCAG AA contrast on all 25 presets (light + dark), plus a
    documented guide for authoring custom presets.
 6. **CLI validated end-to-end:** `volt init` + `volt add` for every component works in a
-   fresh Angular 21 consumer app (verified by automated consumer fixture tests).
+   fresh Angular 21 or 22 consumer app (verified by automated consumer fixture tests).
 7. **API frozen:** public input/output names, selectors, and CVA export names are frozen;
    post-v1 breaking changes require a major version.
 8. **Published:** `@voltui/components@1.0.0` and `@voltui/cli@1.0.0` on npm, with a

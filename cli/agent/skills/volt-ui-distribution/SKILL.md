@@ -35,10 +35,10 @@ project's mode and you get matching selectors and imports.
 ## Package mode
 
 ```bash
-npm install @voltui/components
+npm install @voltui/components @angular/cdk
 ```
 
-Peer dependencies are declared by the package. Import the theme CSS and, optionally,
+Peer dependencies (`@angular/core`, `common`, `forms`, `router`, `cdk`) are declared by the package; install `@angular/cdk` yourself at the same major as `@angular/core`. Import the theme CSS and, optionally,
 `provideVoltTheme` (see `volt-ui-styling`). Updating is a version bump; read the changelog's
 migration notes for a major.
 
