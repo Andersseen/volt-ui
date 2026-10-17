@@ -1289,5 +1289,80 @@
         "tagline": "Retratos que cambian por un cargo y un enlace cuando los apuntas."
       }
     }
+  },
+  "seo": {
+    "home": {
+      "title": "Volt UI — Componentes de interfaz modernos para Angular",
+      "description": "Componentes Angular accesibles basados en ng-primitives, con signals, detección de cambios sin zone.js y Tailwind CSS v4. Instala el paquete o copia el código fuente con la CLI."
+    },
+    "components": {
+      "title": "Componentes de interfaz para Angular — Volt UI",
+      "description": "Explora todos los componentes de Volt UI para Angular: formularios, controles, navegación, superposiciones, visualización de datos y diseño, cada uno con ejemplos en vivo, código de uso y referencia de la API."
+    },
+    "introduction": {
+      "title": "Documentación de Volt UI — Biblioteca de componentes Angular",
+      "description": "Empieza con Volt UI: componentes Angular accesibles inspirados en shadcn/ui y construidos sobre ng-primitives. Instala el paquete o copia los componentes en tu proyecto."
+    },
+    "themes": {
+      "title": "Temas y modo oscuro para Angular — Volt UI",
+      "description": "Cinco presets de color, cinco de estilo y modo oscuro para Volt UI, basados en propiedades CSS personalizadas y utilidades semánticas de Tailwind CSS v4."
+    },
+    "customization": {
+      "title": "Personalizar componentes Angular — Volt UI",
+      "description": "Edita los componentes copiados de Volt UI, amplía las variantes con class-variance-authority, combina clases con cn() y ajusta los colores sin bifurcar la biblioteca."
+    },
+    "versioning": {
+      "title": "Versionado y estabilidad — Volt UI",
+      "description": "Cómo sigue Volt UI el versionado semántico, qué significan estable y beta para cada componente y cómo se gestionan los cambios de API tras la 1.0."
+    },
+    "roadmap": {
+      "title": "Hoja de ruta — Volt UI",
+      "description": "Qué está previsto para Volt UI después de la 1.0, por orden de dependencia: una capa headless propia, una distribución sin Tailwind y más layouts."
+    },
+    "migration": {
+      "title": "Migrar desde Volt UI 0.x — Volt UI",
+      "description": "Qué cambió entre Volt UI 0.x y 1.0, qué alias se eliminaron y qué actualizar en tu aplicación Angular."
+    },
+    "aiMcp": {
+      "title": "Servidor MCP de Volt UI para agentes de código con IA",
+      "description": "Un servidor Model Context Protocol alojado que expone los componentes de Volt UI, ejemplos de uso, información de temas y comandos de la CLI a cualquier agente de IA compatible."
+    },
+    "mcp": {
+      "title": "Volt UI para agentes de código con IA — MCP, skills y componentes Angular",
+      "description": "Tres formas de dar a los asistentes de IA el contexto correcto de Volt UI: una skill local, un servidor MCP alojado y un prompt de referencia en un solo archivo."
+    },
+    "aiPrompt": {
+      "title": "Prompt de referencia de Volt UI para LLM",
+      "description": "Un prompt en un solo archivo para pegar en cualquier chat con un LLM y que use los selectores, ejemplos y reglas correctos de Volt UI."
+    },
+    "aiSkill": {
+      "title": "Skill de Volt UI para Claude Code y OpenCode",
+      "description": "Un archivo skill que Claude Code y OpenCode descubren automáticamente en cualquier espacio de trabajo que use componentes de Volt UI."
+    },
+    "blocks": {
+      "title": "Bloques de página para Angular — Volt UI",
+      "description": "Secciones de página completas hechas con componentes de Volt UI: heroes, precios, paneles, inicios de sesión y más. Copia un archivo y hazlo tuyo."
+    },
+    "createTheme": {
+      "title": "Creador de temas para Angular — Volt UI",
+      "description": "Ajusta cada token semántico, compara los modos claro y oscuro y exporta un tema de Volt UI listo para producción sin salir del navegador."
+    },
+    "component": {
+      "title": "Componente {$name} para Angular — Volt UI",
+      "description": "El componente {$name} de Volt UI para Angular: ejemplos en vivo, código de uso y referencia de la API. Accesible, basado en ng-primitives y con estilos de Tailwind CSS v4."
+    },
+    "block": {
+      "title": "Bloque {$name} para Angular — Volt UI",
+      "description": "Una sección de página {$name} para Angular hecha con componentes de Volt UI. Copia el código en tu proyecto y adáptalo."
+    },
+    "layout": {
+      "title": "Layout {$name} para Angular — Volt UI",
+      "description": "Un layout de aplicación {$name} para Angular montado con componentes de Volt UI, con estilos solo de tokens del tema para adaptarse a tu marca."
+    },
+    "recipe": {
+      "title": "Receta {$name} para Angular — Volt UI",
+      "description": "Una receta {$name} probada para Angular que muestra el flujo con componentes de Volt UI, incluidos validación y estados de error."
+    },
+    "imageAlt": "Volt UI — componentes Angular accesibles"
   }
 }

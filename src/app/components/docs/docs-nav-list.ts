@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
-import { VoltBadge, VoltSidebarGroup, VoltSidebarItem } from 'volt';
+import { VoltBadge, VoltNativeButton, VoltSidebarGroup, VoltSidebarItem } from 'volt';
 import { injectAppI18n, type PlainTranslationKey } from '../../i18n/i18n';
 import type { ComponentStability } from '../../lib/component-metadata';
+import { STORYBOOK_URL } from '../../lib/storybook';
 
 /*
  * Keys, not text. Most sidebars on the site are built from a static catalog const, which has no
@@ -32,7 +33,7 @@ export interface DocsSidebarGroup {
 @Component({
   selector: 'app-docs-nav-list',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [VoltBadge, VoltSidebarGroup, VoltSidebarItem],
+  imports: [VoltBadge, VoltNativeButton, VoltSidebarGroup, VoltSidebarItem],
   host: { class: 'block', '(click)': 'onClick($event)' },
   template: `
     @for (group of groups(); track $index) {
@@ -57,6 +58,24 @@ export interface DocsSidebarGroup {
         }
       </volt-sidebar-group>
     }
+
+    <!-- Outside \`groups\` on purpose: it leaves the site, so it must not become the pager's next page. -->
+    <div class="mt-2 border-t border-border/60 pt-4">
+      <a
+        voltButton
+        variant="ghost"
+        size="sm"
+        [href]="storybookUrl"
+        target="_blank"
+        rel="noopener"
+        class="w-full justify-between px-3 text-[13px] font-normal text-muted-foreground"
+      >
+        <span
+          >{{ t('nav.storybook') }}<span class="sr-only"> {{ t('nav.externalLink') }}</span></span
+        >
+        <span aria-hidden="true">↗</span>
+      </a>
+    </div>
   `,
 })
 export class DocsNavList {
@@ -66,6 +85,7 @@ export class DocsNavList {
 
   private readonly translations = injectAppI18n();
   protected readonly t = this.translations.t;
+  protected readonly storybookUrl = STORYBOOK_URL;
   /** Every sidebar link on the site passes through here, so one call keeps them all in locale. */
   protected readonly path = this.translations.path;
 

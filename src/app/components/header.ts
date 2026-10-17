@@ -2,7 +2,14 @@ import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/c
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { filter, map } from 'rxjs';
-import { VoltBadge } from 'volt';
+import {
+  VoltBadge,
+  VoltNativeButton,
+  VoltNavigationMenu,
+  VoltNavigationMenuItem,
+  VoltNavigationMenuLink,
+  VoltNavigationMenuList,
+} from 'volt';
 import { ThemeSwitcher } from './theme-switcher';
 import { MobileMenu } from './mobile-menu';
 import { LmnGithubIcon } from 'lumen-icons';
@@ -10,7 +17,6 @@ import { LanguageSwitcher } from './language-switcher';
 import { injectAppI18n } from '../i18n/i18n';
 import { GALLERY_SECTIONS } from '../lib/gallery-sections';
 import { SITE_STATS } from '../lib/generated/site-stats';
-import { STORYBOOK_URL } from '../lib/storybook';
 
 @Component({
   selector: 'app-header',
@@ -19,6 +25,11 @@ import { STORYBOOK_URL } from '../lib/storybook';
     RouterLink,
     RouterLinkActive,
     VoltBadge,
+    VoltNativeButton,
+    VoltNavigationMenu,
+    VoltNavigationMenuList,
+    VoltNavigationMenuItem,
+    VoltNavigationMenuLink,
     ThemeSwitcher,
     MobileMenu,
     LanguageSwitcher,
@@ -31,8 +42,10 @@ import { STORYBOOK_URL } from '../lib/storybook';
       >
         <div class="flex items-center gap-3 shrink-0">
           <a
+            voltButton
+            variant="ghost"
             [routerLink]="path('/')"
-            class="flex items-center gap-2 hover:opacity-80 transition-opacity"
+            class="h-auto gap-2 px-1.5 py-1 hover:opacity-80"
           >
             <div
               class="flex items-center justify-center w-8 h-8 shrink-0 rounded-lg overflow-hidden relative shadow-[0_0_15px_rgba(var(--color-primary),0.5)]"
@@ -64,71 +77,84 @@ import { STORYBOOK_URL } from '../lib/storybook';
         </div>
 
         <div class="flex items-center gap-2 sm:gap-3">
-          <nav
-            class="hidden md:flex gap-0.5 text-sm font-medium text-muted-foreground"
-            [attr.aria-label]="t('nav.main')"
-          >
-            <a
-              [routerLink]="path('/')"
-              routerLinkActive="text-foreground"
-              [routerLinkActiveOptions]="{ exact: true }"
-              class="whitespace-nowrap rounded-md px-2.5 py-2 transition-colors hover:text-foreground lg:px-3"
-            >
-              {{ t('nav.home') }}
-            </a>
-            <a
-              [routerLink]="path('/docs/introduction')"
-              routerLinkActive="text-foreground"
-              class="whitespace-nowrap rounded-md px-2.5 py-2 transition-colors hover:text-foreground lg:px-3"
-            >
-              {{ t('nav.docs') }}
-            </a>
-            <a
-              [routerLink]="path('/docs/components')"
-              routerLinkActive="text-foreground"
-              class="whitespace-nowrap rounded-md px-2.5 py-2 transition-colors hover:text-foreground lg:px-3"
-            >
-              {{ t('nav.components') }}
-            </a>
-            <!-- One entry for both halves of the gallery, so the active state has to be
-                 computed: routerLinkActive only knows about this link's own path, and the
-                 tab underneath it may be the layouts one. -->
-            <a
-              [routerLink]="path(galleryPath)"
-              class="whitespace-nowrap rounded-md px-2.5 py-2 transition-colors hover:text-foreground lg:px-3"
-              [class.text-foreground]="inGallery()"
-            >
-              {{ t('nav.gallery') }}
-            </a>
-            <a
-              [href]="storybookUrl"
-              target="_blank"
-              rel="noopener"
-              class="hidden whitespace-nowrap rounded-md px-2.5 py-2 transition-colors hover:text-foreground lg:inline-flex lg:px-3"
-            >
-              {{ t('nav.storybook') }}
-              <span class="sr-only">{{ t('nav.externalLink') }}</span>
-            </a>
-            <a
-              [routerLink]="path('/create-theme')"
-              routerLinkActive="text-foreground"
-              class="inline-flex items-center gap-1.5 whitespace-nowrap rounded-md bg-primary/10 px-2.5 py-2 text-primary transition-colors hover:bg-primary hover:text-primary-foreground lg:px-3"
-            >
-              {{ t('nav.createTheme') }}
-              <span
-                aria-hidden="true"
-                class="rounded-full bg-primary px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase leading-none text-primary-foreground"
-              >
-                {{ t('nav.new') }}
-              </span>
-            </a>
-          </nav>
+          <!-- Volt's own navigation menu: the site is the first consumer of the atoms it ships. -->
+          <volt-navigation-menu class="hidden md:flex" [attr.aria-label]="t('nav.main')">
+            <volt-navigation-menu-list>
+              <volt-navigation-menu-item>
+                <a
+                  voltNavigationMenuLink
+                  [routerLink]="path('/')"
+                  routerLinkActive
+                  #home="routerLinkActive"
+                  [routerLinkActiveOptions]="{ exact: true }"
+                  [active]="home.isActive"
+                  class="bg-transparent"
+                >
+                  {{ t('nav.home') }}
+                </a>
+              </volt-navigation-menu-item>
+              <volt-navigation-menu-item>
+                <a
+                  voltNavigationMenuLink
+                  [routerLink]="path('/docs/introduction')"
+                  routerLinkActive
+                  #docs="routerLinkActive"
+                  [active]="docs.isActive"
+                  class="bg-transparent"
+                >
+                  {{ t('nav.docs') }}
+                </a>
+              </volt-navigation-menu-item>
+              <volt-navigation-menu-item>
+                <a
+                  voltNavigationMenuLink
+                  [routerLink]="path('/docs/components')"
+                  routerLinkActive
+                  #components="routerLinkActive"
+                  [active]="components.isActive"
+                  class="bg-transparent"
+                >
+                  {{ t('nav.components') }}
+                </a>
+              </volt-navigation-menu-item>
+              <!-- One entry for both halves of the gallery, so the active state is computed:
+                   routerLinkActive only knows this link's own path, and the tab underneath
+                   it may be the layouts one. -->
+              <volt-navigation-menu-item>
+                <a
+                  voltNavigationMenuLink
+                  [routerLink]="path(galleryPath)"
+                  [active]="inGallery()"
+                  class="bg-transparent"
+                >
+                  {{ t('nav.gallery') }}
+                </a>
+              </volt-navigation-menu-item>
+              <volt-navigation-menu-item>
+                <a
+                  voltNavigationMenuLink
+                  [routerLink]="path('/create-theme')"
+                  routerLinkActive
+                  #theme="routerLinkActive"
+                  [active]="theme.isActive"
+                  class="gap-1.5 bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground"
+                >
+                  {{ t('nav.createTheme') }}
+                  <volt-badge aria-hidden="true" class="px-1.5 py-0 text-[10px]">{{
+                    t('nav.new')
+                  }}</volt-badge>
+                </a>
+              </volt-navigation-menu-item>
+            </volt-navigation-menu-list>
+          </volt-navigation-menu>
 
           <a
+            voltButton
+            variant="outline"
+            size="icon"
             href="https://github.com/andersseen/volt-ui"
             target="_blank"
             rel="noreferrer"
-            class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-border/60 text-muted-foreground transition-colors hover:text-foreground hover:bg-muted/60"
             [attr.aria-label]="t('nav.github')"
           >
             <lmn-github [size]="20" />
@@ -154,8 +180,6 @@ export class Header {
 
   /** Generated from projects/volt/package.json, so the badge cannot outlive a release. */
   protected readonly version = SITE_STATS.version;
-
-  protected readonly storybookUrl = STORYBOOK_URL;
 
   /** The gallery opens on its first tab; the other one is a tab away. */
   protected readonly galleryPath = GALLERY_SECTIONS[0].path;

@@ -1,0 +1,140 @@
+# Volt UI
+
+> Volt UI is an open-source Angular component library inspired by shadcn/ui and built on ng-primitives. Components use signals, are zoneless-compatible, are styled with Tailwind CSS v4 and focus on accessibility. Use the npm package or copy the source into your project with the CLI. The documentation is available in English, Spanish and Ukrainian.
+
+Key facts:
+
+- Framework: Angular (standalone components, `OnPush`, `input()` / `output()` / `model()`), no NgModules.
+- Styling: Tailwind CSS v4 with CSS custom-property themes: five colour presets (volt, ember, sage, dusk, glacier), five style presets (sharp, soft, brutal, ghost, retro) and dark mode.
+- Behaviour and accessibility: delegated to ng-primitives.
+- Two ways to use it: **package mode** (`@voltui/components`, `Volt*` classes, `volt-*` selectors) and **copy-and-own mode** (`npx @voltui/cli add <component>`, `Ui*` classes, `ui-*` selectors).
+- Licence: MIT. Source: https://github.com/Andersseen/volt-ui
+
+## Start here
+
+- [Introduction](https://voltui.dev/docs/introduction): what Volt UI is and how to install it.
+- [Components](https://voltui.dev/docs/components): the full component catalog.
+- [Themes](https://voltui.dev/docs/themes): colour presets, style presets and dark mode.
+- [Customization](https://voltui.dev/docs/customization): editing copied components, variants and `cn()`.
+- [Theme builder](https://voltui.dev/create-theme): design and export a theme in the browser.
+- [Versioning and stability](https://voltui.dev/docs/versioning): semantic versioning and stable/beta labels.
+
+## For AI coding agents
+
+- [AI integration overview](https://voltui.dev/docs/mcp): skill, MCP server and prompt reference.
+- [MCP server](https://voltui.dev/docs/ai-mcp): hosted Model Context Protocol server (endpoint: https://voltui.dev/api/mcp).
+- [Local skill](https://voltui.dev/docs/ai-skill): a skill file for Claude Code and OpenCode.
+- [Prompt reference](https://voltui.dev/docs/ai-prompt): a single-file prompt for any LLM chat.
+
+## Components
+
+### Forms & Inputs
+
+- [Button](https://voltui.dev/docs/components/button): Triggers an action or navigates. Use the voltButton attribute on a native <button> or <a>, or the <volt-button> element.
+- [Input](https://voltui.dev/docs/components/input): A single-line text field styled for Volt, with size and validation-state variants. Works with Angular forms.
+- [Search](https://voltui.dev/docs/components/search): A search field wrapper with an icon slot and a clear button around a native input.
+- [Autofill](https://voltui.dev/docs/components/autofill): A directive that reports when the browser autofills an input, so styles and state can react.
+- [Textarea](https://voltui.dev/docs/components/textarea): A multi-line text field with variant, size, state and resize options.
+- [Form Field](https://voltui.dev/docs/components/form-field): Groups a control with its label, hint and error message and wires them together without hand-written ids.
+- [Checkbox](https://voltui.dev/docs/components/checkbox): A checked, unchecked or indeterminate toggle that works with Angular forms.
+- [Switch](https://voltui.dev/docs/components/switch): An on/off control for a setting that takes effect immediately.
+- [Radio](https://voltui.dev/docs/components/radio): A group of mutually exclusive options.
+- [Select](https://voltui.dev/docs/components/select): A custom listbox-based select with single and multiple selection, plus a styled native <select> directive.
+- [Combobox](https://voltui.dev/docs/components/combobox): A text input with a filterable popup list. Supports local filtering, manual (server-side) filtering, loading state and multiple selection.
+- [Input OTP](https://voltui.dev/docs/components/input-otp): A segmented one-time-password field with paste support and a completion event.
+- [File Upload](https://voltui.dev/docs/components/file-upload): A file picker directive and a drag-and-drop dropzone that report selected and rejected files.
+- [Slider](https://voltui.dev/docs/components/slider): Selects a single number in a range.
+- [Range Slider](https://voltui.dev/docs/components/range-slider): Selects a low and a high value in a range.
+
+### Controls
+
+- [Toggle](https://voltui.dev/docs/components/toggle): A two-state button that stays pressed, such as bold in a text editor.
+- [Toggle Group](https://voltui.dev/docs/components/toggle-group): A set of toggles with single or multiple selection.
+- [Toolbar](https://voltui.dev/docs/components/toolbar): A container that groups related controls into one tab stop with arrow-key navigation.
+- [Pagination](https://voltui.dev/docs/components/pagination): Page navigation with first/previous/next/last controls and numbered pages.
+- [Date Picker](https://voltui.dev/docs/components/date-picker): A calendar for choosing a single date or a date range, with min/max and disabled-date rules.
+- [Listbox](https://voltui.dev/docs/components/listbox): An always-visible list of options with single or multiple selection.
+
+### Navigation
+
+- [Navigation Menu](https://voltui.dev/docs/components/navigation-menu): A site navigation bar whose items can open rich submenu panels.
+- [Tabs](https://voltui.dev/docs/components/tabs): Switches between related panels, one visible at a time.
+- [Breadcrumbs](https://voltui.dev/docs/components/breadcrumbs): Shows the path to the current page.
+
+### Overlays
+
+- [Dialog](https://voltui.dev/docs/components/dialog): A modal window. Open it from a trigger, control it with [(open)], or open it from code and await the result with VoltDialogService.
+- [Drawer](https://voltui.dev/docs/components/drawer): A modal panel that slides in from an edge of the screen.
+- [Popover](https://voltui.dev/docs/components/popover): A floating panel anchored to a trigger, for rich, non-modal content.
+- [Dropdown Menu](https://voltui.dev/docs/components/dropdown-menu): A menu of actions opened from a trigger, with labels, separators and submenus.
+- [Tooltip](https://voltui.dev/docs/components/tooltip): A short hint shown on hover or keyboard focus.
+- [Toast](https://voltui.dev/docs/components/toast): Short, transient notifications raised from code with VoltToastService.
+
+### Display
+
+- [Accordion](https://voltui.dev/docs/components/accordion): Vertically stacked sections that expand and collapse.
+- [Avatar](https://voltui.dev/docs/components/avatar): A user image with a fallback (usually initials).
+- [Badge](https://voltui.dev/docs/components/badge): A small label for status, counts or categories.
+- [Card](https://voltui.dev/docs/components/card): A surface that groups related content with optional header, content and footer parts.
+- [Meter](https://voltui.dev/docs/components/meter): A gauge for a value within a known range, such as disk usage.
+- [Progress](https://voltui.dev/docs/components/progress): Shows how far a task has advanced, or that one is running when the value is unknown.
+- [Separator](https://voltui.dev/docs/components/separator): A horizontal or vertical divider.
+- [Skeleton](https://voltui.dev/docs/components/skeleton): A placeholder that mimics content while it loads.
+- [Table](https://voltui.dev/docs/components/table): Styled table parts for tabular data: header, body, footer, rows, cells and caption.
+- [Alert](https://voltui.dev/docs/components/alert): A callout for information, success, warnings or errors that sits in the page flow.
+- [Spinner](https://voltui.dev/docs/components/spinner): An indeterminate loading indicator in three sizes.
+- [Empty State](https://voltui.dev/docs/components/empty-state): A placeholder for an empty collection or a search with no results, with room for an action.
+
+### Layout
+
+- [Resizable](https://voltui.dev/docs/components/resizable): Panels separated by draggable, keyboard-operable handles.
+- [Sidebar](https://voltui.dev/docs/components/sidebar): A collapsible application sidebar with header, groups, items and footer.
+
+## Blocks, layouts and recipes
+
+Blocks are whole page sections, layouts are application shells and recipes are tested workflows; all are copied into your project.
+
+### Blocks
+
+- [Hero](https://voltui.dev/docs/blocks/hero)
+- [Hero Split](https://voltui.dev/docs/blocks/hero-split)
+- [Bento](https://voltui.dev/docs/blocks/bento)
+- [Services](https://voltui.dev/docs/blocks/services)
+- [Testimonials](https://voltui.dev/docs/blocks/testimonials)
+- [Pricing](https://voltui.dev/docs/blocks/pricing)
+- [Contact](https://voltui.dev/docs/blocks/contact)
+- [Cta](https://voltui.dev/docs/blocks/cta)
+- [Login](https://voltui.dev/docs/blocks/login)
+- [Footer](https://voltui.dev/docs/blocks/footer)
+- [Dashboard](https://voltui.dev/docs/blocks/dashboard)
+
+### Layouts
+
+- [Admin Dashboard](https://voltui.dev/docs/layouts/admin-dashboard)
+- [Top Nav](https://voltui.dev/docs/layouts/top-nav)
+- [Analytics](https://voltui.dev/docs/layouts/analytics)
+- [Sidebar](https://voltui.dev/docs/layouts/sidebar)
+- [Settings](https://voltui.dev/docs/layouts/settings)
+- [Profile](https://voltui.dev/docs/layouts/profile)
+- [Kanban](https://voltui.dev/docs/layouts/kanban)
+- [Chat](https://voltui.dev/docs/layouts/chat)
+- [Login](https://voltui.dev/docs/layouts/login)
+- [Sign Up](https://voltui.dev/docs/layouts/sign-up)
+
+### Recipes
+
+- [Settings form](https://voltui.dev/docs/recipes/settings-form)
+- [Async search](https://voltui.dev/docs/recipes/async-search)
+- [Data table](https://voltui.dev/docs/recipes/data-table)
+
+## Packages
+
+- [@voltui/components](https://www.npmjs.com/package/@voltui/components): The Angular component library (package mode).
+- [@voltui/cli](https://www.npmjs.com/package/@voltui/cli): Copies component source into your project (copy-and-own mode).
+- [@voltui/agent](https://www.npmjs.com/package/@voltui/agent): Installs the Volt UI skill and MCP server config for AI coding agents.
+
+## Optional
+
+- [GitHub repository](https://github.com/Andersseen/volt-ui)
+- [Component reference in Storybook](https://storybook.voltui.dev): interactive states, controls and accessibility checks.
+- [Sitemap](https://voltui.dev/sitemap.xml)

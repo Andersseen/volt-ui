@@ -32,7 +32,8 @@
     "copilot",
     "ai",
     "skills",
-    "agent"
+    "agent",
+    "angular-components"
   ],
   "license": "MIT",
   "engines": {

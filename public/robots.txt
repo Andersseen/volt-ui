@@ -1,0 +1,6 @@
+# Volt UI is a public open-source project: the documentation is meant to be found.
+# Crawlers, including search and AI-search bots such as OAI-SearchBot, are welcome.
+User-agent: *
+Allow: /
+
+Sitemap: https://voltui.dev/sitemap.xml

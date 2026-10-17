@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { LmnCheckIcon, LmnGlobeIcon, LmnLoaderIcon } from 'lumen-icons';
-import { VoltPopoverContent, VoltPopoverTrigger } from 'volt';
+import { VoltNativeButton, VoltPopoverContent, VoltPopoverTrigger } from 'volt';
 import { injectAppI18n, LOCALES, LOCALE_NAMES, LOCALE_SHORT, type Locale } from '../i18n/i18n';
 
 /**
@@ -26,16 +26,25 @@ import { injectAppI18n, LOCALES, LOCALE_NAMES, LOCALE_SHORT, type Locale } from 
 @Component({
   selector: 'app-language-switcher',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [VoltPopoverTrigger, VoltPopoverContent, LmnGlobeIcon, LmnCheckIcon, LmnLoaderIcon],
+  imports: [
+    VoltNativeButton,
+    VoltPopoverTrigger,
+    VoltPopoverContent,
+    LmnGlobeIcon,
+    LmnCheckIcon,
+    LmnLoaderIcon,
+  ],
   template: `
     <button
+      voltButton
+      variant="outline"
       type="button"
       [voltPopover]="languages"
       placement="bottom-end"
       data-testid="language-trigger"
       [disabled]="pendingLocale() !== null"
       [attr.aria-disabled]="pendingLocale() !== null ? 'true' : null"
-      class="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-md border border-input bg-surface px-2.5 text-sm transition-colors hover:bg-muted aria-disabled:cursor-wait aria-disabled:opacity-70 aria-disabled:hover:bg-surface"
+      class="h-9 shrink-0 gap-1.5 px-2.5 aria-disabled:cursor-wait aria-disabled:opacity-70"
       [attr.aria-label]="t('language.current', { name: name(locale()) })"
       [attr.aria-busy]="pendingLocale() !== null"
     >
@@ -54,9 +63,12 @@ import { injectAppI18n, LOCALES, LOCALE_NAMES, LOCALE_SHORT, type Locale } from 
         </p>
         @for (option of locales; track option) {
           <button
+            voltButton
+            variant="ghost"
             type="button"
-            class="flex w-full items-center justify-between gap-2 rounded-md px-2 py-1.5 text-left text-sm transition-colors hover:bg-muted aria-disabled:cursor-wait aria-disabled:opacity-70 aria-disabled:hover:bg-transparent"
-            [class]="option === locale() ? 'bg-muted font-medium' : ''"
+            class="h-auto w-full justify-between px-2 py-1.5 text-left font-normal aria-disabled:cursor-wait aria-disabled:opacity-70"
+            [class.bg-muted]="option === locale()"
+            [class.font-medium]="option === locale()"
             [attr.aria-disabled]="pendingLocale() !== null ? 'true' : null"
             [attr.aria-current]="option === locale() ? 'true' : null"
             [attr.data-testid]="'language-option-' + option"

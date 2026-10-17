@@ -1,96 +1,80 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import {
-  NgpDialog,
-  NgpDialogDescription,
-  NgpDialogOverlay,
-  NgpDialogTitle,
-  NgpDialogTrigger,
-} from 'ng-primitives/dialog';
 import { LmnMenuIcon, LmnXIcon } from 'lumen-icons';
 import { MoveEnterDirective } from 'angular-movement';
+import {
+  VoltDrawer,
+  VoltDrawerClose,
+  VoltDrawerContent,
+  VoltDrawerDescription,
+  VoltDrawerOverlay,
+  VoltDrawerTitle,
+  VoltNativeButton,
+} from 'volt';
 import { MOTION } from '../lib/motion';
-import { STORYBOOK_URL } from '../lib/storybook';
 import { injectAppI18n } from '../i18n/i18n';
 
+/** The site's own menu drawer: Volt's Drawer, Button and Close, nothing hand-built. */
 @Component({
   selector: 'app-mobile-menu',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     RouterLink,
     RouterLinkActive,
-    NgpDialog,
-    NgpDialogTrigger,
-    NgpDialogOverlay,
-    NgpDialogTitle,
-    NgpDialogDescription,
+    VoltNativeButton,
+    VoltDrawer,
+    VoltDrawerOverlay,
+    VoltDrawerContent,
+    VoltDrawerTitle,
+    VoltDrawerDescription,
+    VoltDrawerClose,
     LmnMenuIcon,
     LmnXIcon,
     MoveEnterDirective,
   ],
   template: `
-    <!-- Mobile Menu Button -->
     <button
-      [ngpDialogTrigger]="mobileMenuTemplate"
-      class="md:hidden inline-flex h-9 w-9 items-center justify-center rounded-md border border-border/60 text-muted-foreground transition-colors hover:text-foreground hover:bg-muted/60"
+      voltButton
+      variant="outline"
+      size="icon"
+      type="button"
+      class="md:hidden"
+      [voltDrawer]="mobileMenuTemplate"
       [attr.aria-label]="t('nav.openMenu')"
     >
       <lmn-menu [size]="20" />
     </button>
 
-    <!-- Mobile Menu Dialog Template -->
     <ng-template #mobileMenuTemplate let-close="close">
-      <!-- Overlay/Backdrop -->
-      <div
-        ngpDialogOverlay
-        class="fixed inset-0 bg-foreground/50 animate-in fade-in-0 data-[exit]:animate-out data-[exit]:fade-out-0 duration-200"
-      ></div>
-
-      <!-- Drawer Content -->
-      <div
-        ngpDialog
-        class="fixed inset-y-0 right-0 z-50 h-full w-[280px] bg-background shadow-xl border-l border-border animate-in slide-in-from-right data-[exit]:animate-out data-[exit]:slide-out-to-right duration-300 ease-out"
-      >
-        <!-- Header -->
-        <div class="flex items-center justify-between p-4 border-b border-border">
-          <h2 ngpDialogTitle class="text-lg font-semibold">{{ t('nav.menu') }}</h2>
-          <button
-            (click)="close()"
-            class="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:text-foreground hover:bg-muted"
-            [attr.aria-label]="t('nav.closeMenu')"
-          >
+      <div voltDrawerOverlay></div>
+      <div voltDrawerContent side="right">
+        <div class="flex items-center justify-between border-b border-border p-4">
+          <h2 voltDrawerTitle class="text-lg font-semibold">{{ t('nav.menu') }}</h2>
+          <volt-drawer-close [label]="t('nav.closeMenu')">
             <lmn-x [size]="20" />
-          </button>
+          </volt-drawer-close>
         </div>
 
-        <!-- Navigation -->
         <nav
-          class="flex flex-col p-4 space-y-1 overflow-y-auto max-h-[calc(100vh-80px)]"
-          ngpDialogDescription
+          class="flex max-h-[calc(100vh-80px)] flex-col space-y-1 overflow-y-auto p-4"
+          voltDrawerDescription
+          [attr.aria-label]="t('nav.main')"
         >
           @for (link of links; track link.path; let i = $index) {
             <a
+              voltButton
+              variant="ghost"
               [routerLink]="path(link.path)"
-              routerLinkActive="bg-muted text-foreground font-medium"
+              routerLinkActive="bg-accent font-semibold"
               [routerLinkActiveOptions]="{ exact: link.exact }"
               (click)="close()"
               moveEnter="fade-left"
               [moveDelay]="i * stagger"
-              class="px-3 py-2.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+              class="h-11 justify-start px-3 text-base font-medium text-muted-foreground"
             >
               {{ t(link.key) }}
             </a>
           }
-          <a
-            [href]="storybookUrl"
-            target="_blank"
-            rel="noopener"
-            (click)="close()"
-            class="px-3 py-2.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
-          >
-            {{ t('nav.storybook') }}
-            <span class="sr-only">{{ t('nav.externalLink') }}</span>
-          </a>
         </nav>
       </div>
     </ng-template>
@@ -104,8 +88,6 @@ export class MobileMenu {
 
   /** Links stagger in behind the drawer, so the panel reads as arriving rather than appearing. */
   protected readonly stagger = MOTION.stagger;
-
-  protected readonly storybookUrl = STORYBOOK_URL;
 
   protected readonly links = [
     { path: '/', key: 'nav.home', exact: true },

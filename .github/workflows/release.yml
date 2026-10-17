@@ -1,10 +1,20 @@
 name: Release
 
-# Fires on every main push, or on demand. The release script is idempotent: it
-# publishes only packages whose local version is new on npm and creates a GitHub
-# Release for each, so releases appear in the repo sidebar.
+# Publishes after CI has passed on main, instead of repeating CI. This workflow used to re-run
+# lint, typecheck, the generated-file checks, the unit tests and every e2e suite on each push to
+# main (about eight serial minutes), which is the same work the CI workflow had just done on the
+# same commit, and it failed whenever something outside the commit moved in between (a Glossa
+# catalog edit, for instance). Now it waits for CI to succeed and only builds and validates the
+# packages it is about to publish.
+#
+# A manual run (workflow_dispatch) has no CI behind it, so it keeps the full gate.
+#
+# The release script is idempotent: it publishes only packages whose local version is new on npm
+# and creates a GitHub Release for each, so releases appear in the repo sidebar.
 on:
-  push:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
     branches:
       - main
   workflow_dispatch:
@@ -19,12 +29,15 @@ permissions:
 jobs:
   release:
     name: Publish changed packages
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
         with:
+          # The commit CI just verified, not whatever main has moved to since.
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
           fetch-depth: 0 # full history so release notes can diff from the last tag
 
       - name: Setup pnpm
@@ -45,19 +58,25 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # Only a manual run needs these: on workflow_run, CI has already passed them.
       - name: Lint
+        if: github.event_name == 'workflow_dispatch'
         run: pnpm lint
 
       - name: Typecheck
+        if: github.event_name == 'workflow_dispatch'
         run: pnpm typecheck
 
       - name: Check committed generated files are current
+        if: github.event_name == 'workflow_dispatch'
         run: pnpm check:generated
 
       - name: Check generated AI and component documentation
+        if: github.event_name == 'workflow_dispatch'
         run: pnpm check:ai-docs
 
       - name: Run unit tests with enforced coverage
+        if: github.event_name == 'workflow_dispatch'
         run: pnpm test:coverage
 
       - name: Build library
@@ -67,9 +86,11 @@ jobs:
         run: pnpm pack:lib && pnpm pack:cli && pnpm pack:agent
 
       - name: Install Playwright Chromium
-        run: pnpm exec playwright install --with-deps chromium
+        if: github.event_name == 'workflow_dispatch'
+        uses: ./.github/actions/setup-playwright
 
       - name: Run docs and consumer end-to-end tests
+        if: github.event_name == 'workflow_dispatch'
         run: pnpm test:e2e:ci && pnpm test:e2e:consumer && pnpm test:e2e:consumer-cli
 
       - name: Publish new versions & create releases
@@ -78,3 +99,4 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
