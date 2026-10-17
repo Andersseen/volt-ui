@@ -12,7 +12,7 @@ const webServerCommand =
 
 export default defineConfig({
   testDir: './e2e',
-  testIgnore: /consumer(-cli)?(-workflow|-async)?\.spec\.ts/,
+  testIgnore: [/consumer(-cli)?(-workflow|-async)?\.spec\.ts/, /storybook\//],
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
