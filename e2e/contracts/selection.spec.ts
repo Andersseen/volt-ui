@@ -82,12 +82,16 @@ test.describe('listbox', () => {
 test.describe('combobox', () => {
   test.beforeEach(async ({ page }) => load(page, 'combobox'));
 
-  test('local filtering narrows by label, ArrowDown + Enter selects, the input shows the label', async ({
+  test('local filtering narrows by label, ArrowDown + Enter selects, the input shows the label, the list is positioned under the input', async ({
     page,
   }) => {
     const input = page.getByRole('combobox', { name: 'Local' });
     await input.click();
     await expect(page.getByRole('option', { name: /^(Angular|React|Vue|Svelte)$/ })).toHaveCount(4);
+    const field = (await input.boundingBox())!;
+    const list = (await page.getByRole('listbox').boundingBox())!;
+    expect(list.y).toBeGreaterThanOrEqual(field.y + field.height - 1);
+    expect(Math.abs(list.x - field.x)).toBeLessThan(24);
     await input.fill('s');
     await expect(page.getByRole('option', { name: 'Svelte' })).toBeVisible();
     await expect(page.getByRole('option', { name: 'Angular' })).toBeHidden();

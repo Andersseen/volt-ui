@@ -96,7 +96,9 @@ test.describe('range slider', () => {
     await expect(high).toHaveAttribute('aria-valuenow', '79');
   });
 
-  test('pointer: dragging the low thumb moves only the low value', async ({ page }) => {
+  test('pointer: dragging the low thumb to 40% of the real track geometry moves only the low value', async ({
+    page,
+  }) => {
     const low = page.getByRole('slider', { name: 'Minimum' });
     const host = page.locator('volt-range-slider');
     const track = await trackBox(host);

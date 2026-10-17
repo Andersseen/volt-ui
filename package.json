@@ -1,6 +1,6 @@
 {
   "name": "volt-ui",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "type": "module",
   "bin": {
     "volt": "./cli/bin/volt",
@@ -78,7 +78,8 @@
     "generate:dogfood": "node scripts/check-dogfood.mjs --write",
     "test:e2e:contracts": "pnpm build:lib && playwright test -c playwright.contracts.config.ts",
     "generate:agent-skills": "node scripts/generate-agent-skills.mjs",
-    "check:angular-compat": "node scripts/check-angular-compat.mjs"
+    "check:angular-compat": "node scripts/check-angular-compat.mjs",
+    "generate:behavior-matrix": "node scripts/generate-behavior-matrix.mjs"
   },
   "lint-staged": {
     "*.{ts,html}": [

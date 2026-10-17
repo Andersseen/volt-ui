@@ -75,6 +75,22 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 });
 
+// jsdom has no pointer capture; primitives that start a drag or press call it on pointerdown.
+for (const method of ['setPointerCapture', 'releasePointerCapture'] as const) {
+  if (!Element.prototype[method]) {
+    Object.defineProperty(Element.prototype, method, {
+      configurable: true,
+      value: () => undefined,
+    });
+  }
+}
+if (!Element.prototype.hasPointerCapture) {
+  Object.defineProperty(Element.prototype, 'hasPointerCapture', {
+    configurable: true,
+    value: () => false,
+  });
+}
+
 // Mock ResizeObserver
 class ResizeObserverMock {
   observe() {}

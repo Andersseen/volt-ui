@@ -8,7 +8,7 @@ test.describe('dialog and drawer', () => {
     ['dialog', 'Open dialog', 'Dialog title'],
     ['drawer', 'Open drawer', 'Drawer title'],
   ] as const) {
-    test(`${name}: opens named by its title, moves focus inside, Escape closes and returns focus`, async ({
+    test(`${name}: opens as a modal (aria-modal) named by its title, moves focus inside, Escape closes and returns focus`, async ({
       page,
     }) => {
       const opener = page.getByRole('button', { name: trigger });
@@ -75,7 +75,7 @@ test.describe('dialog and drawer', () => {
 test.describe('popover', () => {
   test.beforeEach(async ({ page }) => load(page, 'overlays'));
 
-  test('opens next to its trigger, Escape closes and returns focus, outside click dismisses', async ({
+  test('opens positioned next to its trigger, Escape closes and returns focus, outside click dismisses', async ({
     page,
   }) => {
     const opener = page.getByRole('button', { name: 'Open popover' });
@@ -101,7 +101,7 @@ test.describe('popover', () => {
 test.describe('tooltip', () => {
   test.beforeEach(async ({ page }) => load(page, 'overlays'));
 
-  test('shows on hover and on keyboard focus, hides on leave and on Escape', async ({
+  test('opens on hover and on keyboard focus, closes on leave and on Escape, positioned beside the trigger', async ({
     page,
     browserName,
   }) => {
@@ -110,6 +110,14 @@ test.describe('tooltip', () => {
     const tip = page.getByRole('tooltip');
     await expect(tip).toBeVisible();
     await expect(tip).toHaveText('Helpful tip');
+    const triggerBox = (await trigger.boundingBox())!;
+    const tipBox = (await tip.boundingBox())!;
+    // Beside the trigger, flipped below when there is no room above it.
+    const gap = Math.min(
+      Math.abs(tipBox.y + tipBox.height - triggerBox.y),
+      Math.abs(tipBox.y - (triggerBox.y + triggerBox.height))
+    );
+    expect(gap).toBeLessThan(24);
     await page.mouse.move(2, 300);
     await expect(tip).toBeHidden();
 

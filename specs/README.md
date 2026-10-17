@@ -10,6 +10,12 @@ This folder records the road from **0.4.0 to 1.0.0** and proposals for subsequen
 
 The following documents describe the historical v1 release ladder:
 
+- **Quality contract:** [`TESTING.md`](TESTING.md) (what "verified" means, the layers),
+  [`state-ownership.md`](state-ownership.md) (who owns each value) and the generated
+  [`behavioral-contracts.md`](behavioral-contracts.md); the active plan is
+  [`plans/reliability-dogfood-agent-dx.md`](plans/reliability-dogfood-agent-dx.md).
+- [`dogfood-inventory.md`](dogfood-inventory.md) — where voltui.dev itself uses each atom (generated).
+
 - [`SPEC.md`](SPEC.md) — the vision, the v1.0 definition of done, the release ladder,
   and the execution protocol. **Read this first.**
 - [`GUARDRAILS.md`](GUARDRAILS.md) — hard rules, required ripple effects when touching

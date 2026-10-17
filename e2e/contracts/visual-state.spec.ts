@@ -60,6 +60,15 @@ test.describe('selected, pressed and checked states are visibly different', () =
     await expect(off.locator('[ngpradioindicator]')).toBeHidden();
   });
 
+  test('date picker: the selected day', async ({ page }) => {
+    await page.goto('/contracts.html#date-picker');
+    await page.reload();
+    const days = page.locator('volt-date-picker-date-button:not([data-outside-month])');
+    const selected = days.getByText('15', { exact: true });
+    await expect(selected).toHaveAttribute('data-selected', '');
+    await differs(selected, days.getByText('16', { exact: true }));
+  });
+
   test('tab', async ({ page }) => {
     await differs(
       page.getByRole('tab', { name: 'Tab selected' }),

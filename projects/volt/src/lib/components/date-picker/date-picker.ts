@@ -4,6 +4,8 @@ import {
   Component,
   computed,
   effect,
+  ElementRef,
+  inject,
   forwardRef,
   input,
   model,
@@ -48,6 +50,7 @@ export type VoltDatePickerFirstDayOfWeek = 1 | 2 | 3 | 4 | 5 | 6 | 7;
   ],
   host: {
     '[class]': 'classes()',
+    '(focusout)': 'onFocusOut($event)',
   },
   template: `<ng-content />`,
 })
@@ -77,6 +80,29 @@ export class VoltDatePicker implements ControlValueAccessor {
   private writtenByForm = false;
   private onChange: (value: Date | undefined) => void = () => {};
   private onTouched: () => void = () => {};
+  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
+
+  /**
+   * The calendar opens on the focused month, which defaults to today. A date set from outside
+   * (a form control, a parent) in another month would be selected but off screen, so bring its
+   * month into view. Dates the user picks never come through here.
+   */
+  private showMonthOf(date: Date | null | undefined): void {
+    const focused = this.datePickerState().focusedDate();
+    if (
+      date &&
+      (date.getFullYear() !== focused.getFullYear() || date.getMonth() !== focused.getMonth())
+    ) {
+      this.datePickerState().setFocusedDate(date, 'program', 'forward');
+    }
+  }
+
+  /** Touched means focus left the whole calendar, not that it moved between its day buttons. */
+  protected onFocusOut(event: FocusEvent): void {
+    if (!this.host.nativeElement.contains(event.relatedTarget as Node | null)) {
+      this.onTouched();
+    }
+  }
 
   constructor() {
     effect(() => {
@@ -94,6 +120,7 @@ export class VoltDatePicker implements ControlValueAccessor {
       untracked(() => {
         if (!(firstDate && this.writtenByForm) && !sameDay(date, this.datePickerState().date())) {
           this.datePickerState().select(date as Date, false, { emit: false });
+          this.showMonthOf(date);
         }
         firstDate = false;
       });
@@ -127,6 +154,7 @@ export class VoltDatePicker implements ControlValueAccessor {
 
   writeValue(value: Date | undefined | null): void {
     this.writtenByForm = true;
+    this.showMonthOf(value);
     // `emit: false`: a form write must sync the calendar without echoing back into the control.
     this.datePickerState().select(value ?? (undefined as unknown as Date), false, { emit: false });
   }

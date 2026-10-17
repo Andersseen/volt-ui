@@ -182,6 +182,25 @@ Two kinds of text are deliberately **not** translated:
 The guard recognises both structurally; the handful of specimens that sit outside a code
 panel are listed with their reasons at the top of `no-hardcoded-copy.spec.ts`.
 
+## Testing
+
+> Coverage is a side effect of meaningful tests, not their purpose.
+
+A component is verified when its public consumer contract is observed through the DOM and, where
+browser behaviour matters, in a real browser — see [`specs/TESTING.md`](specs/TESTING.md) (the
+contracts, the Stateful Value Contract, the layers) and [`specs/state-ownership.md`](specs/state-ownership.md)
+(who owns each value; why `mirrorValue()` is applied where it is). `specs/behavioral-contracts.md` is the
+generated map of which test proves which contract (`pnpm generate:behavior-matrix`).
+
+- Component specs: Vitest + `@testing-library/angular` + `userEvent`, zoneless, queries by role / label,
+  assertions on `aria-*`, `data-*`, the native value. Not on signals or implementation classes.
+- Anything a browser must prove (focus, keyboard, pointer geometry, portals, drag and drop, computed
+  styles) goes in `e2e/contracts` (`pnpm test:e2e:contracts`), run against the built package in
+  Chromium, Firefox and WebKit.
+- A bug fix reproduces the bug in a failing test first. Ask whether it corresponds to a public state
+  story (Pressed, Disabled, Invalid, Loading, Empty) and add it to Storybook and to `REQUIRED_STATES`
+  in `scripts/check-storybook.mjs` if so.
+
 ## Adding or editing a component
 
 1. Create/edit files under `projects/volt/src/lib/components/<name>/`.
@@ -191,7 +210,7 @@ panel are listed with their reasons at the top of `no-hardcoded-copy.spec.ts`.
 5. Add real unit tests using `@testing-library/angular` or `TestBed` (not just string checks).
 6. Run `pnpm typecheck`, `pnpm lint`, `pnpm test:run`, and `pnpm build:lib`.
 7. Regenerate the CLI manifest with `pnpm manifest` when component files change.
-8. Add `stories/components/<name>.stories.ts` and an entry in `stories/_docs/component-guides.mjs`, then `pnpm generate:storybook-docs` (see "Storybook").
+8. Add `stories/components/<name>.stories.ts` and an entry in `stories/_docs/component-guides.mjs` (with `COMPONENT_RELATIONS` if it is routinely confused with another), then `pnpm generate:storybook-docs` and `pnpm generate:agent-skills` (see "Storybook" and "AI tools for consumers").
 
 ## Search and discovery (SEO)
 
