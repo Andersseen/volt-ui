@@ -43,8 +43,10 @@ test.describe('slider', () => {
     const host = page.locator('volt-slider').first();
     const track = await trackBox(host);
     await dragTo(page, thumb, track.x + track.width * 0.75, track.y);
+    await expect
+      .poll(async () => Number(await thumb.getAttribute('aria-valuenow')))
+      .toBeGreaterThanOrEqual(73);
     const value = Number(await thumb.getAttribute('aria-valuenow'));
-    expect(value).toBeGreaterThanOrEqual(73);
     expect(value).toBeLessThanOrEqual(77);
     await expect(page.locator('#volume')).toHaveText(String(value));
   });
@@ -55,9 +57,15 @@ test.describe('slider', () => {
     const thumb = page.getByRole('slider', { name: 'Volume' });
     await thumb.focus();
     await page.keyboard.press('End');
+    await expect(thumb).toHaveAttribute('aria-valuenow', '100');
     const host = (await page.locator('volt-slider').first().boundingBox())!;
-    const t = (await thumb.boundingBox())!;
-    expect(t.x + t.width / 2).toBeGreaterThan(host.x + host.width - 16);
+    // The value is announced first; the paint follows, so poll for it instead of reading once.
+    await expect
+      .poll(async () => {
+        const t = (await thumb.boundingBox())!;
+        return t.x + t.width / 2;
+      })
+      .toBeGreaterThan(host.x + host.width - 16);
   });
 
   test('disabled: not focusable by pointer, ignores keys, exposes aria-disabled state', async ({
@@ -103,8 +111,10 @@ test.describe('range slider', () => {
     const host = page.locator('volt-range-slider');
     const track = await trackBox(host);
     await dragTo(page, low, track.x + track.width * 0.4, track.y);
+    await expect
+      .poll(async () => Number(await low.getAttribute('aria-valuenow')))
+      .toBeGreaterThanOrEqual(38);
     const value = Number(await low.getAttribute('aria-valuenow'));
-    expect(value).toBeGreaterThanOrEqual(38);
     expect(value).toBeLessThanOrEqual(42);
     await expect(page.getByRole('slider', { name: 'Maximum' })).toHaveAttribute(
       'aria-valuenow',
@@ -127,8 +137,10 @@ test.describe('resizable', () => {
     await page.mouse.down();
     await page.mouse.move(h.x + h.width / 2 + 100, h.y + h.height / 2, { steps: 6 });
     await page.mouse.up();
+    await expect
+      .poll(async () => (await left.boundingBox())!.width - before.width)
+      .toBeGreaterThan(90);
     const after = (await left.boundingBox())!;
-    expect(after.width - before.width).toBeGreaterThan(90);
     expect(after.width - before.width).toBeLessThan(110);
     // The panels always fill the container: nothing is lost or invented by a resize.
     const right = (await page.locator('#right').boundingBox())!;
@@ -146,8 +158,8 @@ test.describe('resizable', () => {
     await handle.focus();
     await page.keyboard.press('ArrowRight');
     await page.keyboard.press('ArrowRight');
+    await expect.poll(async () => (await left.boundingBox())!.width).toBeGreaterThan(before.width);
     const after = (await left.boundingBox())!;
-    expect(after.width).toBeGreaterThan(before.width);
     const now = Number(await handle.getAttribute('aria-valuenow'));
     const max = Number(await handle.getAttribute('aria-valuemax'));
     expect(now).toBeGreaterThan(0);
@@ -156,7 +168,6 @@ test.describe('resizable', () => {
     await page.keyboard.press('ArrowLeft');
     await page.keyboard.press('ArrowLeft');
     await page.keyboard.press('ArrowLeft');
-    const back = (await left.boundingBox())!;
-    expect(back.width).toBeLessThan(after.width);
+    await expect.poll(async () => (await left.boundingBox())!.width).toBeLessThan(after.width);
   });
 });
