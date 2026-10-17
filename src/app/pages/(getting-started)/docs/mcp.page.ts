@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { injectAppI18n } from '../../../i18n/i18n';
 import { RouterLink } from '@angular/router';
+import { VoltCard } from 'volt';
 import { Prose } from '../../../components/prose';
 
 const MCP_URL = 'https://voltui.dev/api/mcp';
@@ -8,7 +9,7 @@ const MCP_URL = 'https://voltui.dev/api/mcp';
 @Component({
   selector: 'app-mcp-docs',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [Prose, RouterLink],
+  imports: [VoltCard, Prose, RouterLink],
   template: `
     <div class="space-y-8 max-w-3xl">
       <!-- Header -->
@@ -26,63 +27,75 @@ const MCP_URL = 'https://voltui.dev/api/mcp';
         <div class="grid gap-4">
           <a
             [routerLink]="path('/docs/ai-skill')"
-            class="group flex items-start gap-4 p-4 rounded-lg border border-border hover:border-primary/50 transition-colors"
+            class="group block rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
-            <div
-              class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary"
+            <volt-card
+              class="p-4 transition-colors group-hover:border-primary/50 flex items-start gap-4"
             >
-              <span class="font-bold">1</span>
-            </div>
-            <div>
-              <h3 class="font-semibold group-hover:text-primary">
-                {{ t('guide.mcpPage.skillTitle') }}
-              </h3>
-              <p class="text-sm text-muted-foreground mt-1">{{ t('guide.mcpPage.skillBody') }}</p>
-              <p class="text-sm text-primary mt-2">{{ t('guide.mcpPage.skillLink') }}</p>
-            </div>
+              <div
+                class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary"
+              >
+                <span class="font-bold">1</span>
+              </div>
+              <div>
+                <h3 class="font-semibold group-hover:text-primary">
+                  {{ t('guide.mcpPage.skillTitle') }}
+                </h3>
+                <p class="text-sm text-muted-foreground mt-1">{{ t('guide.mcpPage.skillBody') }}</p>
+                <p class="text-sm text-primary mt-2">{{ t('guide.mcpPage.skillLink') }}</p>
+              </div>
+            </volt-card>
           </a>
 
           <a
             [routerLink]="path('/docs/ai-mcp')"
-            class="group flex items-start gap-4 p-4 rounded-lg border border-border hover:border-primary/50 transition-colors"
+            class="group block rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
-            <div
-              class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary"
+            <volt-card
+              class="p-4 transition-colors group-hover:border-primary/50 flex items-start gap-4"
             >
-              <span class="font-bold">2</span>
-            </div>
-            <div>
-              <h3 class="font-semibold group-hover:text-primary">
-                {{ t('guide.mcpPage.mcpTitle') }}
-              </h3>
-              <p class="text-sm text-muted-foreground mt-1">
-                <app-prose
-                  [text]="t('guide.mcpPage.mcpBody', { url: mcpUrl })"
-                  codeClass="bg-muted px-1 rounded"
-                />
-              </p>
-              <p class="text-sm text-primary mt-2">{{ t('guide.mcpPage.mcpLink') }}</p>
-            </div>
+              <div
+                class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary"
+              >
+                <span class="font-bold">2</span>
+              </div>
+              <div>
+                <h3 class="font-semibold group-hover:text-primary">
+                  {{ t('guide.mcpPage.mcpTitle') }}
+                </h3>
+                <p class="text-sm text-muted-foreground mt-1">
+                  <app-prose
+                    [text]="t('guide.mcpPage.mcpBody', { url: mcpUrl })"
+                    codeClass="bg-muted px-1 rounded"
+                  />
+                </p>
+                <p class="text-sm text-primary mt-2">{{ t('guide.mcpPage.mcpLink') }}</p>
+              </div>
+            </volt-card>
           </a>
 
           <a
             [routerLink]="path('/docs/ai-prompt')"
-            class="group flex items-start gap-4 p-4 rounded-lg border border-border hover:border-primary/50 transition-colors"
+            class="group block rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
-            <div
-              class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary"
+            <volt-card
+              class="p-4 transition-colors group-hover:border-primary/50 flex items-start gap-4"
             >
-              <span class="font-bold">3</span>
-            </div>
-            <div>
-              <h3 class="font-semibold group-hover:text-primary">
-                {{ t('guide.mcpPage.promptTitle') }}
-              </h3>
-              <p class="text-sm text-muted-foreground mt-1">
-                <app-prose key="guide.mcpPage.promptBody" />
-              </p>
-              <p class="text-sm text-primary mt-2">{{ t('guide.mcpPage.promptLink') }}</p>
-            </div>
+              <div
+                class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary"
+              >
+                <span class="font-bold">3</span>
+              </div>
+              <div>
+                <h3 class="font-semibold group-hover:text-primary">
+                  {{ t('guide.mcpPage.promptTitle') }}
+                </h3>
+                <p class="text-sm text-muted-foreground mt-1">
+                  <app-prose key="guide.mcpPage.promptBody" />
+                </p>
+                <p class="text-sm text-primary mt-2">{{ t('guide.mcpPage.promptLink') }}</p>
+              </div>
+            </volt-card>
           </a>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { LmnCheckIcon, LmnCopyIcon, LmnDownloadIcon } from 'lumen-icons';
+import { VoltNativeButton } from 'volt';
 import skillMarkdown from '../../../../../.agents/skills/volt-ui/SKILL.md?raw';
 import { Prose } from '../../../components/prose';
 import { injectAppI18n } from '../../../i18n/i18n';
@@ -8,7 +9,7 @@ import { injectAppI18n } from '../../../i18n/i18n';
 @Component({
   selector: 'app-ai-skill-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [Prose, RouterLink, LmnCopyIcon, LmnCheckIcon, LmnDownloadIcon],
+  imports: [Prose, RouterLink, VoltNativeButton, LmnCopyIcon, LmnCheckIcon, LmnDownloadIcon],
   template: `
     <div class="space-y-8 max-w-3xl">
       <!-- Header -->
@@ -35,11 +36,7 @@ import { injectAppI18n } from '../../../i18n/i18n';
           <code>{{ installCommand }}</code>
         </div>
         <div class="flex flex-wrap gap-3">
-          <button
-            type="button"
-            (click)="copyInstallCommand()"
-            class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
-          >
+          <button voltButton size="sm" type="button" class="gap-1.5" (click)="copyInstallCommand()">
             @if (installCopied()) {
               <lmn-check [size]="16" />
               <span>{{ t('guide.aiSkillPage.copiedCmd') }}</span>
@@ -50,18 +47,24 @@ import { injectAppI18n } from '../../../i18n/i18n';
           </button>
 
           <button
+            voltButton
+            variant="outline"
+            size="sm"
             type="button"
+            class="gap-1.5"
             (click)="downloadSkill()"
-            class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium border border-border bg-background rounded-md hover:bg-accent hover:text-accent-foreground transition-colors"
           >
             <lmn-download [size]="16" />
             <span>{{ t('guide.aiSkillPage.downloadSkill') }}</span>
           </button>
 
           <button
+            voltButton
+            variant="outline"
+            size="sm"
             type="button"
+            class="gap-1.5"
             (click)="copySkill()"
-            class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium border border-border bg-background rounded-md hover:bg-accent hover:text-accent-foreground transition-colors"
           >
             @if (skillCopied()) {
               <lmn-check [size]="16" />

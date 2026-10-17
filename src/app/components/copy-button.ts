@@ -1,17 +1,21 @@
 import { ChangeDetectionStrategy, Component, input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LmnCheckIcon, LmnCopyIcon } from 'lumen-icons';
+import { VoltNativeButton } from 'volt';
 import { injectAppI18n } from '../i18n/i18n';
 
 @Component({
   selector: 'app-copy-button',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, LmnCheckIcon, LmnCopyIcon],
+  imports: [CommonModule, VoltNativeButton, LmnCheckIcon, LmnCopyIcon],
   template: `
     <button
+      voltButton
+      variant="outline"
+      size="sm"
       type="button"
       (click)="copyToClipboard()"
-      class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-muted-foreground bg-background border border-border rounded-md hover:bg-accent hover:text-accent-foreground transition-colors"
+      class="gap-1.5 text-muted-foreground"
       [class.border-success]="copied()"
       [class.bg-success]="copied()"
       [class.text-success-foreground]="copied()"

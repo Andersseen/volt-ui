@@ -81,6 +81,36 @@ These apply to everything under `src/app/` (the official site), not to the libra
   for several pieces, split it. Group a section's parts in one folder (see
   `src/app/components/landing/{pillars,playground,steps}/`).
 
+### Volt-first for voltui.dev itself
+
+> If Volt UI already provides an atom or interaction primitive for the responsibility, voltui.dev
+> uses the Volt public API instead of rebuilding that responsibility with raw Tailwind or by
+> importing `ng-primitives` directly.
+
+- **Before writing site UI, search the catalog** (the `volt-ui` MCP, `list_components`, or
+  `src/app/lib/component-metadata.ts`) for an existing responsibility. Hand-written equivalent UI
+  needs an explicit reason. This does not apply to `projects/volt/src/lib/**` — the library cannot
+  implement Button using Button.
+- **Prefer Volt responsibility, not Volt tag count.** Native HTML stays correct where Volt has no
+  equivalent, or the native element is the point: a route-backed tab strip is a set of real
+  anchors because the router owns selection (middle-click, SSR deep links). Don't force a stateful
+  `volt-tabs` over the Router.
+- **`pnpm check:dogfood`** enforces the mechanical part in CI: no `ng-primitives` imports under
+  `src/app`, no `<button>` without a Volt directive, no button-like anchors or hand-styled card
+  tiles. It skips `blocks/`, `layouts/` and `lib/snippets/` (source the site displays for
+  consumers to copy) and the live demo in a code panel. An exception goes in `EXCEPTIONS` in
+  `scripts/check-dogfood.mjs`, naming the file, the tag and the reason.
+- **`specs/dogfood-inventory.md`** (`pnpm generate:dogfood`) lists, per atom, whether the real
+  application uses it or only a demo page does. Real use is stronger evidence than a Storybook
+  story; it is not a reason to put an atom on the site the site has no use for.
+- **When Volt can't express what the site needs, that is dogfood evidence.** Reproduce it, decide
+  whether the site misuses the atom, and if the public API genuinely falls short add a failing
+  library test and the smallest backwards-compatible fix (plus a Storybook state if relevant)
+  rather than working around it with raw Tailwind.
+- **Reviewing any PR that touches `src/app/**`**: did we reuse an existing atom? did we bypass Volt
+  with ng-primitives? did we duplicate Volt styling? is the raw native HTML intentional? does the
+  site expose a missing Volt API that belongs upstream?
+
 ## Theme system
 
 - Theme tokens are CSS custom properties in `projects/volt/src/themes/core.css`.

@@ -36,6 +36,9 @@ jobs:
       - name: Check committed generated files are current
         run: pnpm check:generated
 
+      - name: Check the site dogfoods Volt
+        run: pnpm check:dogfood
+
       - name: Check generated AI and component documentation
         run: pnpm check:ai-docs
 

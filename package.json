@@ -73,7 +73,9 @@
     "check:storybook": "node scripts/check-storybook.mjs",
     "typecheck:storybook": "tsc --noEmit --project tsconfig.storybook.json",
     "generate:seo-files": "node scripts/generate-seo-files.mjs",
-    "check:seo": "node scripts/check-seo.mjs"
+    "check:seo": "node scripts/check-seo.mjs",
+    "check:dogfood": "node scripts/check-dogfood.mjs",
+    "generate:dogfood": "node scripts/check-dogfood.mjs --write"
   },
   "lint-staged": {
     "*.{ts,html}": [

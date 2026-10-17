@@ -15,6 +15,7 @@ import { COMPONENTS } from '../../../lib/component-metadata';
   selector: 'app-introduction-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    VoltCard,
     Prose,
     RouterLink,
     VoltCard,
@@ -41,26 +42,34 @@ import { COMPONENTS } from '../../../lib/component-metadata';
         <div class="grid gap-4 md:grid-cols-3">
           <a
             [routerLink]="path('/docs/ai-skill')"
-            class="group p-4 rounded-lg border border-border hover:border-primary/50 transition-colors"
+            class="group block rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
-            <h3 class="font-medium group-hover:text-primary">{{ t('guide.intro.skillLink') }}</h3>
-            <p class="text-sm text-muted-foreground mt-1">{{ t('guide.intro.skillBody') }}</p>
+            <volt-card class="p-4 transition-colors group-hover:border-primary/50">
+              <h3 class="font-medium group-hover:text-primary">{{ t('guide.intro.skillLink') }}</h3>
+              <p class="text-sm text-muted-foreground mt-1">{{ t('guide.intro.skillBody') }}</p>
+            </volt-card>
           </a>
 
           <a
             [routerLink]="path('/docs/ai-mcp')"
-            class="group p-4 rounded-lg border border-border hover:border-primary/50 transition-colors"
+            class="group block rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
-            <h3 class="font-medium group-hover:text-primary">{{ t('guide.intro.mcpLink') }}</h3>
-            <p class="text-sm text-muted-foreground mt-1">{{ t('guide.intro.mcpBody') }}</p>
+            <volt-card class="p-4 transition-colors group-hover:border-primary/50">
+              <h3 class="font-medium group-hover:text-primary">{{ t('guide.intro.mcpLink') }}</h3>
+              <p class="text-sm text-muted-foreground mt-1">{{ t('guide.intro.mcpBody') }}</p>
+            </volt-card>
           </a>
 
           <a
             [routerLink]="path('/docs/ai-prompt')"
-            class="group p-4 rounded-lg border border-border hover:border-primary/50 transition-colors"
+            class="group block rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
-            <h3 class="font-medium group-hover:text-primary">{{ t('guide.intro.promptLink') }}</h3>
-            <p class="text-sm text-muted-foreground mt-1">{{ t('guide.intro.promptBody') }}</p>
+            <volt-card class="p-4 transition-colors group-hover:border-primary/50">
+              <h3 class="font-medium group-hover:text-primary">
+                {{ t('guide.intro.promptLink') }}
+              </h3>
+              <p class="text-sm text-muted-foreground mt-1">{{ t('guide.intro.promptBody') }}</p>
+            </volt-card>
           </a>
         </div>
       </div>
@@ -320,28 +329,38 @@ import { COMPONENTS } from '../../../lib/component-metadata';
         <div class="grid gap-4 md:grid-cols-3">
           <a
             [routerLink]="path('/docs/themes')"
-            class="group p-4 rounded-lg border border-border hover:border-primary/50 transition-colors"
+            class="group block rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
-            <h3 class="font-medium group-hover:text-primary">{{ t('guide.intro.nextThemes') }}</h3>
-            <p class="text-sm text-muted-foreground mt-1">{{ t('guide.intro.nextThemesBody') }}</p>
+            <volt-card class="p-4 transition-colors group-hover:border-primary/50">
+              <h3 class="font-medium group-hover:text-primary">
+                {{ t('guide.intro.nextThemes') }}
+              </h3>
+              <p class="text-sm text-muted-foreground mt-1">
+                {{ t('guide.intro.nextThemesBody') }}
+              </p>
+            </volt-card>
           </a>
           <a
             [routerLink]="path('/docs/components')"
-            class="group p-4 rounded-lg border border-border hover:border-primary/50 transition-colors"
+            class="group block rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
-            <h3 class="font-medium group-hover:text-primary">
-              {{ t('guide.intro.nextComponents') }}
-            </h3>
-            <p class="text-sm text-muted-foreground mt-1">
-              {{ t('guide.intro.nextComponentsBody') }}
-            </p>
+            <volt-card class="p-4 transition-colors group-hover:border-primary/50">
+              <h3 class="font-medium group-hover:text-primary">
+                {{ t('guide.intro.nextComponents') }}
+              </h3>
+              <p class="text-sm text-muted-foreground mt-1">
+                {{ t('guide.intro.nextComponentsBody') }}
+              </p>
+            </volt-card>
           </a>
           <a
             [routerLink]="path('/docs/mcp')"
-            class="group p-4 rounded-lg border border-border hover:border-primary/50 transition-colors"
+            class="group block rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
-            <h3 class="font-medium group-hover:text-primary">{{ t('guide.intro.nextAi') }}</h3>
-            <p class="text-sm text-muted-foreground mt-1">{{ t('guide.intro.nextAiBody') }}</p>
+            <volt-card class="p-4 transition-colors group-hover:border-primary/50">
+              <h3 class="font-medium group-hover:text-primary">{{ t('guide.intro.nextAi') }}</h3>
+              <p class="text-sm text-muted-foreground mt-1">{{ t('guide.intro.nextAiBody') }}</p>
+            </volt-card>
           </a>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { VoltBadge } from 'volt';
 import { categoryFor, type BlockMetadata } from '../lib/blocks-metadata';
 import { externalPackages } from '../lib/snippets/consumer-source';
 import { CodePanel } from './code-panel';
@@ -19,7 +20,7 @@ import { injectAppI18n } from '../i18n/i18n';
 @Component({
   selector: 'app-block-showcase',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, CodePanel],
+  imports: [RouterLink, CodePanel, VoltBadge],
   template: `
     <div class="space-y-8">
       <div>
@@ -46,9 +47,13 @@ import { injectAppI18n } from '../i18n/i18n';
               <li>
                 <a
                   [routerLink]="atom.path"
-                  class="inline-flex rounded-full border border-border px-2.5 py-0.5 font-mono text-xs text-muted-foreground transition-colors hover:border-primary/50 hover:text-primary"
+                  class="rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 >
-                  {{ atom.name }}
+                  <volt-badge
+                    variant="outline"
+                    class="font-mono text-muted-foreground transition-colors hover:border-primary/50 hover:text-primary"
+                    >{{ atom.name }}</volt-badge
+                  >
                 </a>
               </li>
             }
