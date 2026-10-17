@@ -16,7 +16,9 @@
     "themeLabel": "Theme: {$color} palette, {$style} shape",
     "palette": "Palette",
     "shape": "Shape",
-    "logoAlt": "Volt UI Logo"
+    "logoAlt": "Volt UI Logo",
+    "storybook": "Storybook",
+    "externalLink": "(opens in a new tab)"
   },
   "footer": {
     "tagline": "Angular components you own.",
@@ -774,7 +776,10 @@
     },
     "index": {
       "title": "Components",
-      "description": "A collection of reusable, accessible components built with Angular and Tailwind CSS. Each component includes source code that you can copy and customize."
+      "description": "A collection of reusable, accessible components built with Angular and Tailwind CSS. Each component includes source code that you can copy and customize.",
+      "storybookTitle": "Component reference in Storybook",
+      "storybookBody": "Storybook shows every component in isolation: change its inputs with live controls, switch the colour and style presets or dark mode, run the accessibility panel and read its API. The guides, blocks and recipes stay here on voltui.dev.",
+      "storybookCta": "Open Storybook"
     },
     "inputOtp": {
       "title": "Input OTP",

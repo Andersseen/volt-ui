@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { LmnGithubIcon } from 'lumen-icons';
 import { injectAppI18n } from '../i18n/i18n';
+import { STORYBOOK_URL } from '../lib/storybook';
 
 @Component({
   selector: 'app-footer',
@@ -33,6 +34,13 @@ import { injectAppI18n } from '../i18n/i18n';
           <a [routerLink]="path('/docs/blocks')" class="hover:text-foreground transition-colors">{{
             t('nav.gallery')
           }}</a>
+          <a
+            [href]="storybookUrl"
+            target="_blank"
+            rel="noopener"
+            class="hover:text-foreground transition-colors"
+            >{{ t('nav.storybook') }}<span class="sr-only"> {{ t('nav.externalLink') }}</span></a
+          >
           <span class="hidden sm:inline">{{ t('footer.rights', { year: currentYear }) }}</span>
           <a
             href="https://github.com/Andersseen/volt-ui"
@@ -54,5 +62,6 @@ export class Footer {
   protected readonly t = this.translations.t;
   protected readonly path = this.translations.path;
 
+  protected readonly storybookUrl = STORYBOOK_URL;
   protected readonly currentYear = new Date().getFullYear();
 }

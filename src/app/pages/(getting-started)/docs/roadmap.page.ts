@@ -122,18 +122,6 @@ export default class RoadmapPage {
   readonly items: RoadmapItem[] = [
     {
       order: 1,
-      titleKey: 'guide.roadmapPage.items.languages.title',
-      scope: 'Docs site',
-      status: 'Next',
-      summaryKey: 'guide.roadmapPage.items.languages.summary',
-      detailKeys: [
-        'guide.roadmapPage.items.languages.details.d1',
-        'guide.roadmapPage.items.languages.details.d2',
-        'guide.roadmapPage.items.languages.details.d3',
-      ],
-    },
-    {
-      order: 2,
       titleKey: 'guide.roadmapPage.items.headless.title',
       scope: 'Library',
       status: 'Planned',
@@ -146,7 +134,7 @@ export default class RoadmapPage {
       ],
     },
     {
-      order: 3,
+      order: 2,
       titleKey: 'guide.roadmapPage.items.distributions.title',
       scope: 'Library',
       status: 'Planned',
@@ -158,7 +146,7 @@ export default class RoadmapPage {
       ],
     },
     {
-      order: 4,
+      order: 3,
       titleKey: 'guide.roadmapPage.items.layouts.title',
       scope: 'Library',
       status: 'Exploring',

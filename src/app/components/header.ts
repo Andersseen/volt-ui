@@ -10,6 +10,7 @@ import { LanguageSwitcher } from './language-switcher';
 import { injectAppI18n } from '../i18n/i18n';
 import { GALLERY_SECTIONS } from '../lib/gallery-sections';
 import { SITE_STATS } from '../lib/generated/site-stats';
+import { STORYBOOK_URL } from '../lib/storybook';
 
 @Component({
   selector: 'app-header',
@@ -100,6 +101,15 @@ import { SITE_STATS } from '../lib/generated/site-stats';
               {{ t('nav.gallery') }}
             </a>
             <a
+              [href]="storybookUrl"
+              target="_blank"
+              rel="noopener"
+              class="hidden whitespace-nowrap rounded-md px-2.5 py-2 transition-colors hover:text-foreground lg:inline-flex lg:px-3"
+            >
+              {{ t('nav.storybook') }}
+              <span class="sr-only">{{ t('nav.externalLink') }}</span>
+            </a>
+            <a
               [routerLink]="path('/create-theme')"
               routerLinkActive="text-foreground"
               class="inline-flex items-center gap-1.5 whitespace-nowrap rounded-md bg-primary/10 px-2.5 py-2 text-primary transition-colors hover:bg-primary hover:text-primary-foreground lg:px-3"
@@ -144,6 +154,8 @@ export class Header {
 
   /** Generated from projects/volt/package.json, so the badge cannot outlive a release. */
   protected readonly version = SITE_STATS.version;
+
+  protected readonly storybookUrl = STORYBOOK_URL;
 
   /** The gallery opens on its first tab; the other one is a tab away. */
   protected readonly galleryPath = GALLERY_SECTIONS[0].path;
