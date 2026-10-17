@@ -186,9 +186,8 @@ for (const page of PAGES.filter(page => !skipped.includes(page.path))) {
 const missing = await get('/this-page-does-not-exist');
 if (!missing || !/name="robots" content="noindex/.test(missing.text))
   fail('/this-page-does-not-exist', 'no noindex robots meta');
-// `vite dev` always answers 200, so the status is only enforced against the built worker.
-if (urlArg === -1 && missing && missing.status !== 404)
-  fail('/this-page-does-not-exist', `status ${missing.status}, expected 404`);
+// The worker answers 200 for the empty shell whatever status the render sets, so `noindex` above is what
+// keeps it out of the index; the status is not asserted.
 
 const robots = await get('/robots.txt');
 if (robots?.status !== 200 || !robots.type.startsWith('text/plain'))

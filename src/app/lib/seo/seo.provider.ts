@@ -5,7 +5,6 @@ import {
   inject,
 } from '@angular/core';
 import { NavigationEnd, NavigationError, Router } from '@angular/router';
-import { injectResponse } from '@analogjs/router/tokens';
 import { filter } from 'rxjs';
 import { injectAppI18n, LOCALES } from '../../i18n/i18n';
 import { breadcrumbJsonLd, homeJsonLd, type JsonLd } from './json-ld';
@@ -37,9 +36,8 @@ export function provideSeo(): EnvironmentProviders {
       const router = inject(Router);
       const seo = inject(SeoService);
       const { t } = injectAppI18n();
-      const response = injectResponse();
 
-      /** Keeps a page out of the index; `status` is only meaningful on the server. */
+      /** Keeps a page out of the index. */
       const keepOutOfIndex = (url: string) => {
         const path = url.split(/[?#]/)[0];
         const locale = localeOfPath(path);
@@ -55,11 +53,11 @@ export function provideSeo(): EnvironmentProviders {
       };
 
       // A path no route claims: the router raises NG04002 and the shell renders with nothing in it.
-      // Tell crawlers so, with the status and with a noindex, instead of leaving a blank 200.
+      // Tell crawlers with a noindex. (The Cloudflare worker answers 200 whatever status the render
+      // sets, so the meta tag is the signal that holds.)
       router.events
         .pipe(filter((event): event is NavigationError => event instanceof NavigationError))
         .subscribe(event => {
-          if (response) response.statusCode = 404;
           keepOutOfIndex(event.url);
         });
 
