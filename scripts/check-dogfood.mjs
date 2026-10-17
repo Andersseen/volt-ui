@@ -25,6 +25,7 @@
  */
 import { readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
+import { format, resolveConfig } from 'prettier';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -195,7 +196,11 @@ function render(rows) {
 
 const args = new Set(process.argv.slice(2));
 const { violations, used } = check();
-const rendered = render(inventory(used));
+// The table is committed through prettier (lint-staged), so generate it already formatted.
+const rendered = await format(render(inventory(used)), {
+  ...((await resolveConfig(INVENTORY)) ?? {}),
+  filepath: INVENTORY,
+});
 
 if (args.has('--write')) {
   writeFileSync(INVENTORY, rendered);
