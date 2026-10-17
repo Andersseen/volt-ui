@@ -161,6 +161,26 @@ panel are listed with their reasons at the top of `no-hardcoded-copy.spec.ts`.
 5. Add real unit tests using `@testing-library/angular` or `TestBed` (not just string checks).
 6. Run `pnpm typecheck`, `pnpm lint`, `pnpm test:run`, and `pnpm build:lib`.
 7. Regenerate the CLI manifest with `pnpm manifest` when component files change.
+8. Add `stories/components/<name>.stories.ts` and an entry in `stories/_docs/component-guides.mjs`, then `pnpm generate:storybook-docs` (see "Storybook").
+
+## Storybook
+
+Storybook (`@storybook/angular-vite`, Storybook 10) is the component **reference**: every public component, its states, accessibility notes and API, rendered from the real library. voltui.dev stays the main documentation site (guides, blocks, recipes, theme builder, localisation); Storybook complements it and is English-only.
+
+```bash
+pnpm storybook         # dev server on http://localhost:6006 (regenerates the docs pages first)
+pnpm build:storybook   # static build in dist/storybook (ignored by git)
+pnpm check:storybook   # every public component has a correctly titled stories file
+pnpm test:storybook    # Playwright smoke tests against dist/storybook (build first)
+```
+
+- Config lives in `.storybook/` (`main.ts`, `preview.ts`, `manager.ts`) with its own `.storybook/vite.config.ts`: it never loads the docs app's `vite.config.ts`, so a Storybook build does not touch Glossa or the network. Targets are `volt:storybook` / `volt:build-storybook` in `angular.json`; `tsconfig.storybook.json` type-checks stories (`pnpm typecheck:storybook`).
+- Stories import from `volt` (the public surface), never from `projects/volt/src/lib`. Styles come from `src/styles.css`, which imports the real theme sources, so there is no Storybook theme. The toolbar's colour/style/appearance switches call `applyVoltTheme`.
+- **Documentation pages are generated.** `stories/components/<name>.mdx` is written by `scripts/generate-storybook-docs.mjs` from the existing sources: `api-reference.generated.ts` (API tables), `snippets/usage.ts` (full example), `component-metadata.ts` (group), `COMPONENT_STATUS.md` (status, keyboard, focus, forms) and the prose in `stories/_docs/component-guides.mjs`. Never hand-edit the `.mdx`; `pnpm check:generated` fails on drift. Foundations pages in `stories/foundations/` are hand-written.
+- Story titles are literal `Components/<Group>/<Title>` (the group and title come from the guide entry); `pnpm check:storybook` enforces it and fails when a public component has no stories.
+- `args`/`argTypes`: use the signal inputs as they are. Take variant options from the generated API with `variantArgTypes()` (`stories/_helpers/api.ts`), not a second hand-typed list.
+- The smoke test (`e2e/storybook/`) renders **every** story and fails on a runtime error, so a broken story breaks CI.
+- Deployment: CI builds Storybook in the `storybook` job. The `deploy-storybook` job publishes `dist/storybook` to the Cloudflare Pages project `volt-ui-storybook` (custom domain `storybook.voltui.dev`) and only runs when the repository variable `STORYBOOK_DEPLOY` is `true`.
 
 ## Important notes
 

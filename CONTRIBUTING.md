@@ -8,7 +8,7 @@ tests and documentation are always welcome.
 1. Fork and clone the repository.
 2. Install Node 22 and pnpm 10.
 3. Run `pnpm install`.
-4. Run `pnpm dev` for the docs application.
+4. Run `pnpm dev` for the docs application, or `pnpm storybook` for the component reference (stories, controls and the accessibility panel; theme and viewport switches are in the toolbar).
 
 ## Before opening a pull request
 
@@ -20,6 +20,7 @@ pnpm test:coverage
 pnpm build:lib
 pnpm test:e2e:ci
 pnpm test:e2e:consumer
+pnpm typecheck:storybook && pnpm check:storybook   # when you touched a component
 ```
 
 `pnpm test:all` runs the same complete verification locally.
@@ -33,6 +34,7 @@ pnpm test:e2e:consumer
    `src/app/pages/(components-docs)/docs/components/`.
 5. Update snippets and AI references required by `AGENTS.md`.
 6. Run `pnpm manifest` after component source changes.
+7. Add or update `stories/components/<name>.stories.ts` and the entry in `stories/_docs/component-guides.mjs`, then run `pnpm generate:storybook-docs`.
 
 Use standalone components, `OnPush`, signal APIs and semantic Tailwind utilities.
 Boolean inputs must use `booleanAttribute`. Accessibility and keyboard contracts
