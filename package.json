@@ -45,6 +45,11 @@
     "deploy:cf": "pnpm run build && pnpm exec wrangler pages deploy dist/analog/public --project-name=volt-ui",
     "deploy:cf:main": "pnpm run build && pnpm exec wrangler pages deploy dist/analog/public --project-name=volt-ui --branch=main",
     "build:lib": "ng build volt",
+    "storybook": "ng run volt:storybook",
+    "prestorybook": "node scripts/generate-storybook-docs.mjs",
+    "build:storybook": "ng run volt:build-storybook",
+    "prebuild:storybook": "node scripts/generate-storybook-docs.mjs",
+    "test:storybook": "playwright test -c playwright.storybook.config.ts",
     "pack:lib": "pnpm build:lib && cd dist/volt && npm --cache ../../.npm-cache pack --dry-run",
     "pack:cli": "cd cli && node prepare-package.js && npm --cache ../.npm-cache pack --dry-run && node prepare-package.js --clean",
     "pack:agent": "cd cli/agent && npm --cache ../../.npm-cache pack --dry-run",
@@ -63,7 +68,10 @@
     "check:contrast": "node scripts/contrast-audit.mjs",
     "check:ssr": "node scripts/check-ssr.mjs",
     "test:e2e:ssr": "E2E_SERVER=wrangler E2E_PORT=8799 playwright test e2e/ssr-gallery.spec.ts --project=chromium",
-    "check:copied-source": "pnpm build:lib && node scripts/check-copied-source.mjs"
+    "check:copied-source": "pnpm build:lib && node scripts/check-copied-source.mjs",
+    "generate:storybook-docs": "node scripts/generate-storybook-docs.mjs",
+    "check:storybook": "node scripts/check-storybook.mjs",
+    "typecheck:storybook": "tsc --noEmit --project tsconfig.storybook.json"
   },
   "lint-staged": {
     "*.{ts,html}": [
@@ -122,6 +130,9 @@
     "@etyma/tooling": "1.0.0",
     "@ng-primitives/mcp": "^0.131.2",
     "@playwright/test": "^1.64.0",
+    "@storybook/addon-a11y": "10.6.2",
+    "@storybook/addon-docs": "10.6.2",
+    "@storybook/angular-vite": "10.6.2",
     "@tailwindcss/postcss": "^4.3.0",
     "@tailwindcss/vite": "^4.3.0",
     "@testing-library/angular": "^19.5.0",
@@ -143,6 +154,7 @@
     "playwright": "^1.64.0",
     "postcss": "^8.5.28",
     "prettier": "^3.9.6",
+    "storybook": "10.6.2",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "~6.0.0",
     "typescript-eslint": "^8.71.0",

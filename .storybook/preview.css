@@ -1,0 +1,16 @@
+/*
+ * Storybook chrome only. Every design token comes from src/styles.css (imported first in
+ * preview.ts), which in turn imports projects/volt/src/themes: there is no Storybook theme.
+ */
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+/* Docs pages: render each live example on the active Volt surface instead of Storybook's white. */
+.docs-story,
+.docs-story > div {
+  background: var(--background);
+  color: var(--foreground);
+}
