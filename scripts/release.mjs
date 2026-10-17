@@ -13,7 +13,9 @@
  * with the right credentials (NPM auth in ~/.npmrc and `gh` logged in).
  *
  * Env:
- *   GITHUB_SHA  commit the releases should point at (defaults to HEAD)
+ *   RELEASE_SHA commit the releases should point at; wins over GITHUB_SHA, which on a
+ *               workflow_run is the tip of main rather than the commit CI verified
+ *   GITHUB_SHA  fallback (defaults to HEAD)
  *   DRY_RUN=1   log what would happen without publishing or creating releases
  */
 import { execSync } from 'node:child_process';
@@ -46,7 +48,10 @@ const PACKAGES = [
   },
 ];
 
-const sha = process.env.GITHUB_SHA || execSync('git rev-parse HEAD').toString().trim();
+const sha =
+  process.env.RELEASE_SHA ||
+  process.env.GITHUB_SHA ||
+  execSync('git rev-parse HEAD').toString().trim();
 
 const versionOf = file => JSON.parse(readFileSync(file, 'utf8')).version;
 

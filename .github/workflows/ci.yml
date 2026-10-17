@@ -83,7 +83,7 @@ jobs:
         run: pnpm pack:agent
 
       - name: Install Playwright Chromium
-        run: pnpm exec playwright install --with-deps chromium
+        uses: ./.github/actions/setup-playwright
 
       - name: Run consumer fixture e2e tests
         run: pnpm test:e2e:consumer
@@ -132,7 +132,7 @@ jobs:
           path: dist
 
       - name: Install Playwright Chromium
-        run: pnpm exec playwright install --with-deps chromium
+        uses: ./.github/actions/setup-playwright
 
       - name: Run e2e smoke tests
         run: pnpm exec playwright test --project=chromium --shard=${{ matrix.shard }}/2
@@ -161,10 +161,16 @@ jobs:
           path: dist
 
       - name: Install Playwright Chromium
-        run: pnpm exec playwright install --with-deps chromium
+        uses: ./.github/actions/setup-playwright
 
       - name: Server-render the gallery in the Cloudflare worker
         run: pnpm check:ssr --shard ${{ matrix.shard }}/4
+
+      # The raw HTML a crawler receives: titles, canonical, hreflang, Open Graph, JSON-LD, robots,
+      # sitemap and llms.txt, served by the same worker as production. Once is enough.
+      - name: Check search metadata in the server-rendered HTML
+        if: matrix.shard == 1
+        run: pnpm check:seo
 
       - name: Hydrate the gallery in the Cloudflare worker
         run: pnpm exec playwright test e2e/ssr-gallery.spec.ts --project=chromium --shard=${{ matrix.shard }}/4
@@ -191,7 +197,7 @@ jobs:
         run: pnpm build:storybook
 
       - name: Install Playwright Chromium
-        run: pnpm exec playwright install --with-deps chromium
+        uses: ./.github/actions/setup-playwright
 
       - name: Smoke-test the static Storybook
         run: pnpm test:storybook
