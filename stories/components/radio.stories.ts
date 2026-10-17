@@ -1,5 +1,5 @@
 import { moduleMetadata, type Meta, type StoryObj } from '@storybook/angular-vite';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { VoltLabel, VoltRadioGroup, VoltRadioItem } from 'volt';
 
 const meta: Meta<VoltRadioGroup> = {
@@ -57,4 +57,46 @@ export const WithFormControl: Story = {
       </volt-radio-group>
       <p class="text-muted-foreground mt-2 text-sm">Value: {{ plan.value }}</p>`,
   }),
+};
+
+export const States: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Unchecked, checked, disabled and disabled-while-checked items side by side.',
+      },
+    },
+  },
+  render: () => ({
+    template: `
+      <volt-radio-group aria-label="States" value="checked">
+        <div class="flex items-center gap-2"><volt-radio-item id="rs-off" value="unchecked" /><volt-label htmlFor="rs-off">Unchecked</volt-label></div>
+        <div class="flex items-center gap-2"><volt-radio-item id="rs-on" value="checked" /><volt-label htmlFor="rs-on">Checked</volt-label></div>
+        <div class="flex items-center gap-2"><volt-radio-item id="rs-dis" value="disabled" [disabled]="true" /><volt-label htmlFor="rs-dis">Disabled</volt-label></div>
+      </volt-radio-group>`,
+  }),
+};
+
+export const Invalid: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'A required group that was touched with nothing chosen reports `aria-invalid="true"`.',
+      },
+    },
+  },
+  render: () => {
+    const plan = new FormControl<string | null>(null, { validators: [Validators.required] });
+    plan.markAsTouched();
+    return {
+      props: { plan },
+      template: `
+        <volt-radio-group aria-label="Plan" [formControl]="plan">
+          <div class="flex items-center gap-2"><volt-radio-item id="ri-free" value="free" /><volt-label htmlFor="ri-free">Free</volt-label></div>
+          <div class="flex items-center gap-2"><volt-radio-item id="ri-pro" value="pro" /><volt-label htmlFor="ri-pro">Pro</volt-label></div>
+        </volt-radio-group>
+        <p class="mt-2 text-sm text-destructive">Choose a plan.</p>`,
+    };
+  },
 };

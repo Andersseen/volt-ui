@@ -62,3 +62,30 @@ export const WithFormControl: Story = {
       <p class="text-muted-foreground mt-2 text-sm">Value: {{ accepted.value }} · valid: {{ accepted.valid }}</p>`,
   }),
 };
+
+export const Invalid: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'A required checkbox that was touched without being ticked reports `aria-invalid="true"`; pair it with visible text.',
+      },
+    },
+  },
+  render: () => {
+    const terms = new FormControl(false, {
+      nonNullable: true,
+      validators: [Validators.requiredTrue],
+    });
+    terms.markAsTouched();
+    return {
+      props: { terms },
+      template: `
+        <div class="flex items-center gap-2">
+          <volt-checkbox id="terms-invalid" [formControl]="terms" />
+          <volt-label htmlFor="terms-invalid">Accept terms and conditions</volt-label>
+        </div>
+        <p class="mt-2 text-sm text-destructive">You must accept the terms to continue.</p>`,
+    };
+  },
+};

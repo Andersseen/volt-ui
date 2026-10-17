@@ -1,15 +1,15 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 
 export const toggleVariants = cva(
-  'inline-flex items-center justify-center gap-2 rounded-md font-medium text-foreground transition-colors hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[selected]:bg-primary/15 data-[selected]:text-primary cursor-pointer',
+  'inline-flex items-center justify-center gap-2 rounded-md font-medium text-foreground transition-colors hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[selected]:bg-primary/15 data-[selected]:text-foreground cursor-pointer',
   {
     variants: {
       variant: {
         default: 'bg-transparent',
         outline:
-          'border border-border bg-transparent hover:bg-muted hover:text-foreground data-[selected]:border-primary data-[selected]:bg-primary/10 data-[selected]:text-primary',
+          'border border-border bg-transparent hover:bg-muted hover:text-foreground data-[selected]:border-primary data-[selected]:bg-primary/10 data-[selected]:text-foreground',
         ghost:
-          'bg-transparent hover:bg-muted hover:text-foreground data-[selected]:bg-primary/15 data-[selected]:text-primary',
+          'bg-transparent hover:bg-muted hover:text-foreground data-[selected]:bg-primary/15 data-[selected]:text-foreground',
         solid:
           'bg-background hover:bg-muted data-[selected]:bg-primary data-[selected]:text-primary-foreground',
       },

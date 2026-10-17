@@ -163,12 +163,15 @@ describe('VoltToggle', () => {
     );
 
     // The outline variant used to reset its pressed background to transparent, so a pressed
-    // and an unpressed toggle looked identical.
+    // and an unpressed toggle looked identical. jsdom loads no CSS, so this can only check that
+    // every variant declares a pressed background; that it really paints differently is
+    // asserted on computed styles in e2e/contracts/visual-state.spec.ts, and its contrast by the
+    // Storybook axe scan (e2e/storybook/states.spec.ts).
     const buttons = [...container.querySelectorAll('button')];
     expect(buttons).toHaveLength(3);
     for (const button of buttons) {
       expect(button).toHaveAttribute('aria-pressed', 'true');
-      expect(button.className).toMatch(/data-\[selected\]:text-primary/);
+      expect(button.className).toMatch(/data-\[selected\]:bg-primary/);
     }
   });
 
