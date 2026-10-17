@@ -71,7 +71,9 @@
     "check:copied-source": "pnpm build:lib && node scripts/check-copied-source.mjs",
     "generate:storybook-docs": "node scripts/generate-storybook-docs.mjs",
     "check:storybook": "node scripts/check-storybook.mjs",
-    "typecheck:storybook": "tsc --noEmit --project tsconfig.storybook.json"
+    "typecheck:storybook": "tsc --noEmit --project tsconfig.storybook.json",
+    "generate:seo-files": "node scripts/generate-seo-files.mjs",
+    "check:seo": "node scripts/check-seo.mjs"
   },
   "lint-staged": {
     "*.{ts,html}": [

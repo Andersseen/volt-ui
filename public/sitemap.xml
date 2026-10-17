@@ -1,0 +1,1704 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://voltui.dev/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/introduction</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/introduction"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/introduction"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/introduction"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/introduction"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/introduction</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/introduction"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/introduction"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/introduction"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/introduction"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/introduction</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/introduction"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/introduction"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/introduction"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/introduction"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/components</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/components</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/components</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/themes</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/themes"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/themes"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/themes"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/themes"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/themes</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/themes"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/themes"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/themes"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/themes"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/themes</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/themes"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/themes"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/themes"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/themes"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/customization</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/customization"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/customization"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/customization"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/customization"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/customization</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/customization"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/customization"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/customization"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/customization"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/customization</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/customization"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/customization"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/customization"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/customization"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/versioning</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/versioning"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/versioning"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/versioning"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/versioning"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/versioning</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/versioning"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/versioning"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/versioning"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/versioning"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/versioning</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/versioning"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/versioning"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/versioning"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/versioning"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/roadmap</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/roadmap"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/roadmap"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/roadmap"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/roadmap"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/roadmap</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/roadmap"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/roadmap"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/roadmap"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/roadmap"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/roadmap</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/roadmap"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/roadmap"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/roadmap"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/roadmap"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/migration-notes</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/migration-notes"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/migration-notes"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/migration-notes"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/migration-notes"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/migration-notes</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/migration-notes"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/migration-notes"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/migration-notes"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/migration-notes"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/migration-notes</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/migration-notes"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/migration-notes"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/migration-notes"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/migration-notes"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/mcp</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/mcp"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/mcp"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/mcp"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/mcp"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/mcp</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/mcp"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/mcp"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/mcp"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/mcp"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/mcp</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/mcp"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/mcp"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/mcp"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/mcp"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/ai-mcp</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/ai-mcp"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/ai-mcp"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/ai-mcp"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/ai-mcp"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/ai-mcp</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/ai-mcp"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/ai-mcp"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/ai-mcp"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/ai-mcp"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/ai-mcp</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/ai-mcp"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/ai-mcp"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/ai-mcp"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/ai-mcp"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/ai-skill</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/ai-skill"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/ai-skill"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/ai-skill"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/ai-skill"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/ai-skill</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/ai-skill"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/ai-skill"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/ai-skill"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/ai-skill"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/ai-skill</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/ai-skill"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/ai-skill"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/ai-skill"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/ai-skill"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/ai-prompt</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/ai-prompt"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/ai-prompt"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/ai-prompt"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/ai-prompt"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/ai-prompt</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/ai-prompt"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/ai-prompt"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/ai-prompt"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/ai-prompt"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/ai-prompt</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/ai-prompt"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/ai-prompt"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/ai-prompt"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/ai-prompt"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/blocks</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/blocks"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/blocks"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/blocks"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/blocks"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/blocks</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/blocks"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/blocks"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/blocks"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/blocks"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/blocks</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/blocks"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/blocks"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/blocks"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/blocks"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/create-theme</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/create-theme"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/create-theme"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/create-theme"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/create-theme"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/create-theme</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/create-theme"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/create-theme"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/create-theme"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/create-theme"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/create-theme</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/create-theme"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/create-theme"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/create-theme"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/create-theme"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/components/button</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/button"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/button"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/button"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/button"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/components/button</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/button"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/button"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/button"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/button"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/components/button</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/button"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/button"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/button"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/button"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/components/input</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/input"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/input"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/input"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/input"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/components/input</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/input"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/input"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/input"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/input"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/components/input</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/input"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/input"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/input"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/input"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/components/search</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/search"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/search"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/search"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/search"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/components/search</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/search"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/search"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/search"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/search"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/components/search</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/search"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/search"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/search"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/search"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/components/autofill</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/autofill"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/autofill"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/autofill"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/autofill"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/components/autofill</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/autofill"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/autofill"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/autofill"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/autofill"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/components/autofill</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/autofill"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/autofill"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/autofill"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/autofill"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/components/textarea</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/textarea"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/textarea"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/textarea"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/textarea"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/components/textarea</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/textarea"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/textarea"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/textarea"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/textarea"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/components/textarea</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/textarea"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/textarea"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/textarea"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/textarea"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/components/form-field</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/form-field"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/form-field"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/form-field"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/form-field"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/components/form-field</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/form-field"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/form-field"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/form-field"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/form-field"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/components/form-field</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/form-field"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/form-field"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/form-field"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/form-field"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/components/checkbox</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/checkbox"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/checkbox"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/checkbox"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/checkbox"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/components/checkbox</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/checkbox"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/checkbox"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/checkbox"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/checkbox"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/components/checkbox</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/checkbox"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/checkbox"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/checkbox"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/checkbox"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/components/switch</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/switch"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/switch"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/switch"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/switch"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/components/switch</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/switch"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/switch"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/switch"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/switch"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/components/switch</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/switch"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/switch"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/switch"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/switch"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/components/radio</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/radio"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/radio"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/radio"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/radio"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/components/radio</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/radio"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/radio"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/radio"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/radio"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/components/radio</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/radio"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/radio"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/radio"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/radio"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/components/select</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/select"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/select"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/select"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/select"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/components/select</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/select"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/select"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/select"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/select"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/components/select</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/select"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/select"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/select"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/select"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/components/combobox</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/combobox"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/combobox"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/combobox"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/combobox"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/components/combobox</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/combobox"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/combobox"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/combobox"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/combobox"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/components/combobox</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/combobox"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/combobox"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/combobox"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/combobox"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/components/input-otp</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/input-otp"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/input-otp"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/input-otp"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/input-otp"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/components/input-otp</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/input-otp"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/input-otp"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/input-otp"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/input-otp"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/components/input-otp</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/input-otp"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/input-otp"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/input-otp"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/input-otp"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/components/file-upload</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/file-upload"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/file-upload"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/file-upload"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/file-upload"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/components/file-upload</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/file-upload"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/file-upload"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/file-upload"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/file-upload"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/components/file-upload</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/file-upload"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/file-upload"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/file-upload"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/file-upload"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/components/slider</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/slider"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/slider"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/slider"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/slider"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/components/slider</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/slider"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/slider"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/slider"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/slider"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/components/slider</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/slider"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/slider"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/slider"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/slider"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/components/range-slider</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/range-slider"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/range-slider"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/range-slider"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/range-slider"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/components/range-slider</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/range-slider"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/range-slider"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/range-slider"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/range-slider"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/components/range-slider</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/range-slider"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/range-slider"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/range-slider"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/range-slider"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/components/toggle</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/toggle"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/toggle"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/toggle"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/toggle"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/components/toggle</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/toggle"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/toggle"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/toggle"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/toggle"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/components/toggle</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/toggle"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/toggle"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/toggle"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/toggle"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/components/toggle-group</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/toggle-group"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/toggle-group"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/toggle-group"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/toggle-group"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/components/toggle-group</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/toggle-group"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/toggle-group"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/toggle-group"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/toggle-group"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/components/toggle-group</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/toggle-group"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/toggle-group"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/toggle-group"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/toggle-group"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/components/toolbar</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/toolbar"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/toolbar"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/toolbar"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/toolbar"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/components/toolbar</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/toolbar"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/toolbar"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/toolbar"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/toolbar"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/components/toolbar</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/toolbar"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/toolbar"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/toolbar"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/toolbar"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/components/pagination</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/pagination"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/pagination"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/pagination"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/pagination"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/components/pagination</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/pagination"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/pagination"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/pagination"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/pagination"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/components/pagination</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/pagination"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/pagination"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/pagination"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/pagination"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/components/date-picker</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/date-picker"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/date-picker"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/date-picker"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/date-picker"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/components/date-picker</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/date-picker"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/date-picker"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/date-picker"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/date-picker"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/components/date-picker</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/date-picker"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/date-picker"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/date-picker"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/date-picker"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/components/listbox</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/listbox"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/listbox"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/listbox"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/listbox"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/components/listbox</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/listbox"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/listbox"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/listbox"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/listbox"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/components/listbox</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/listbox"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/listbox"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/listbox"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/listbox"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/components/navigation-menu</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/navigation-menu"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/navigation-menu"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/navigation-menu"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/navigation-menu"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/components/navigation-menu</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/navigation-menu"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/navigation-menu"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/navigation-menu"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/navigation-menu"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/components/navigation-menu</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/navigation-menu"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/navigation-menu"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/navigation-menu"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/navigation-menu"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/components/tabs</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/tabs"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/tabs"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/tabs"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/tabs"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/components/tabs</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/tabs"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/tabs"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/tabs"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/tabs"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/components/tabs</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/tabs"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/tabs"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/tabs"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/tabs"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/components/breadcrumbs</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/breadcrumbs"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/breadcrumbs"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/breadcrumbs"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/breadcrumbs"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/components/breadcrumbs</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/breadcrumbs"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/breadcrumbs"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/breadcrumbs"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/breadcrumbs"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/components/breadcrumbs</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/breadcrumbs"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/breadcrumbs"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/breadcrumbs"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/breadcrumbs"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/components/dialog</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/dialog"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/dialog"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/dialog"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/dialog"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/components/dialog</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/dialog"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/dialog"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/dialog"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/dialog"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/components/dialog</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/dialog"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/dialog"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/dialog"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/dialog"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/components/drawer</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/drawer"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/drawer"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/drawer"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/drawer"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/components/drawer</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/drawer"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/drawer"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/drawer"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/drawer"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/components/drawer</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/drawer"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/drawer"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/drawer"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/drawer"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/components/popover</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/popover"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/popover"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/popover"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/popover"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/components/popover</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/popover"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/popover"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/popover"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/popover"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/components/popover</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/popover"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/popover"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/popover"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/popover"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/components/dropdown-menu</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/dropdown-menu"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/dropdown-menu"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/dropdown-menu"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/dropdown-menu"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/components/dropdown-menu</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/dropdown-menu"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/dropdown-menu"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/dropdown-menu"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/dropdown-menu"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/components/dropdown-menu</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/dropdown-menu"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/dropdown-menu"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/dropdown-menu"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/dropdown-menu"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/components/tooltip</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/tooltip"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/tooltip"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/tooltip"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/tooltip"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/components/tooltip</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/tooltip"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/tooltip"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/tooltip"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/tooltip"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/components/tooltip</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/tooltip"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/tooltip"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/tooltip"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/tooltip"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/components/toast</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/toast"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/toast"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/toast"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/toast"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/components/toast</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/toast"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/toast"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/toast"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/toast"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/components/toast</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/toast"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/toast"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/toast"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/toast"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/components/accordion</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/accordion"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/accordion"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/accordion"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/accordion"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/components/accordion</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/accordion"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/accordion"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/accordion"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/accordion"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/components/accordion</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/accordion"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/accordion"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/accordion"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/accordion"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/components/avatar</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/avatar"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/avatar"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/avatar"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/avatar"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/components/avatar</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/avatar"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/avatar"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/avatar"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/avatar"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/components/avatar</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/avatar"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/avatar"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/avatar"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/avatar"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/components/badge</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/badge"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/badge"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/badge"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/badge"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/components/badge</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/badge"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/badge"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/badge"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/badge"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/components/badge</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/badge"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/badge"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/badge"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/badge"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/components/card</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/card"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/card"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/card"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/card"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/components/card</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/card"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/card"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/card"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/card"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/components/card</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/card"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/card"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/card"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/card"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/components/meter</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/meter"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/meter"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/meter"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/meter"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/components/meter</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/meter"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/meter"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/meter"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/meter"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/components/meter</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/meter"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/meter"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/meter"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/meter"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/components/progress</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/progress"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/progress"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/progress"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/progress"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/components/progress</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/progress"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/progress"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/progress"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/progress"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/components/progress</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/progress"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/progress"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/progress"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/progress"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/components/separator</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/separator"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/separator"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/separator"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/separator"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/components/separator</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/separator"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/separator"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/separator"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/separator"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/components/separator</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/separator"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/separator"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/separator"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/separator"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/components/skeleton</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/skeleton"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/skeleton"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/skeleton"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/skeleton"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/components/skeleton</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/skeleton"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/skeleton"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/skeleton"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/skeleton"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/components/skeleton</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/skeleton"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/skeleton"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/skeleton"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/skeleton"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/components/table</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/table"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/table"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/table"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/table"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/components/table</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/table"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/table"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/table"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/table"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/components/table</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/table"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/table"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/table"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/table"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/components/resizable</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/resizable"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/resizable"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/resizable"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/resizable"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/components/resizable</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/resizable"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/resizable"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/resizable"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/resizable"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/components/resizable</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/resizable"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/resizable"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/resizable"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/resizable"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/components/alert</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/alert"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/alert"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/alert"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/alert"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/components/alert</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/alert"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/alert"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/alert"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/alert"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/components/alert</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/alert"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/alert"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/alert"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/alert"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/components/spinner</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/spinner"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/spinner"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/spinner"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/spinner"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/components/spinner</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/spinner"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/spinner"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/spinner"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/spinner"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/components/spinner</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/spinner"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/spinner"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/spinner"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/spinner"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/components/empty-state</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/empty-state"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/empty-state"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/empty-state"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/empty-state"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/components/empty-state</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/empty-state"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/empty-state"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/empty-state"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/empty-state"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/components/empty-state</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/components/empty-state"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/components/empty-state"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/components/empty-state"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/components/empty-state"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/blocks/hero</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/blocks/hero"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/blocks/hero"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/blocks/hero"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/blocks/hero"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/blocks/hero</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/blocks/hero"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/blocks/hero"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/blocks/hero"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/blocks/hero"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/blocks/hero</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/blocks/hero"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/blocks/hero"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/blocks/hero"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/blocks/hero"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/blocks/hero-split</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/blocks/hero-split"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/blocks/hero-split"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/blocks/hero-split"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/blocks/hero-split"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/blocks/hero-split</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/blocks/hero-split"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/blocks/hero-split"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/blocks/hero-split"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/blocks/hero-split"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/blocks/hero-split</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/blocks/hero-split"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/blocks/hero-split"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/blocks/hero-split"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/blocks/hero-split"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/blocks/bento</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/blocks/bento"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/blocks/bento"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/blocks/bento"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/blocks/bento"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/blocks/bento</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/blocks/bento"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/blocks/bento"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/blocks/bento"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/blocks/bento"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/blocks/bento</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/blocks/bento"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/blocks/bento"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/blocks/bento"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/blocks/bento"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/blocks/services</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/blocks/services"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/blocks/services"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/blocks/services"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/blocks/services"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/blocks/services</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/blocks/services"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/blocks/services"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/blocks/services"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/blocks/services"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/blocks/services</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/blocks/services"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/blocks/services"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/blocks/services"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/blocks/services"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/blocks/testimonials</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/blocks/testimonials"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/blocks/testimonials"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/blocks/testimonials"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/blocks/testimonials"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/blocks/testimonials</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/blocks/testimonials"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/blocks/testimonials"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/blocks/testimonials"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/blocks/testimonials"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/blocks/testimonials</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/blocks/testimonials"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/blocks/testimonials"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/blocks/testimonials"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/blocks/testimonials"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/blocks/pricing</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/blocks/pricing"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/blocks/pricing"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/blocks/pricing"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/blocks/pricing"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/blocks/pricing</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/blocks/pricing"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/blocks/pricing"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/blocks/pricing"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/blocks/pricing"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/blocks/pricing</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/blocks/pricing"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/blocks/pricing"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/blocks/pricing"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/blocks/pricing"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/blocks/contact</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/blocks/contact"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/blocks/contact"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/blocks/contact"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/blocks/contact"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/blocks/contact</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/blocks/contact"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/blocks/contact"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/blocks/contact"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/blocks/contact"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/blocks/contact</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/blocks/contact"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/blocks/contact"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/blocks/contact"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/blocks/contact"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/blocks/cta</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/blocks/cta"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/blocks/cta"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/blocks/cta"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/blocks/cta"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/blocks/cta</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/blocks/cta"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/blocks/cta"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/blocks/cta"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/blocks/cta"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/blocks/cta</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/blocks/cta"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/blocks/cta"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/blocks/cta"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/blocks/cta"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/blocks/login</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/blocks/login"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/blocks/login"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/blocks/login"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/blocks/login"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/blocks/login</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/blocks/login"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/blocks/login"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/blocks/login"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/blocks/login"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/blocks/login</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/blocks/login"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/blocks/login"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/blocks/login"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/blocks/login"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/blocks/footer</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/blocks/footer"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/blocks/footer"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/blocks/footer"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/blocks/footer"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/blocks/footer</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/blocks/footer"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/blocks/footer"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/blocks/footer"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/blocks/footer"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/blocks/footer</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/blocks/footer"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/blocks/footer"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/blocks/footer"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/blocks/footer"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/blocks/dashboard</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/blocks/dashboard"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/blocks/dashboard"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/blocks/dashboard"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/blocks/dashboard"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/blocks/dashboard</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/blocks/dashboard"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/blocks/dashboard"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/blocks/dashboard"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/blocks/dashboard"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/blocks/dashboard</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/blocks/dashboard"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/blocks/dashboard"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/blocks/dashboard"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/blocks/dashboard"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/layouts/admin-dashboard</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/layouts/admin-dashboard"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/layouts/admin-dashboard"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/layouts/admin-dashboard"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/layouts/admin-dashboard"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/layouts/admin-dashboard</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/layouts/admin-dashboard"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/layouts/admin-dashboard"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/layouts/admin-dashboard"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/layouts/admin-dashboard"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/layouts/admin-dashboard</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/layouts/admin-dashboard"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/layouts/admin-dashboard"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/layouts/admin-dashboard"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/layouts/admin-dashboard"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/layouts/top-nav</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/layouts/top-nav"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/layouts/top-nav"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/layouts/top-nav"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/layouts/top-nav"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/layouts/top-nav</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/layouts/top-nav"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/layouts/top-nav"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/layouts/top-nav"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/layouts/top-nav"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/layouts/top-nav</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/layouts/top-nav"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/layouts/top-nav"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/layouts/top-nav"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/layouts/top-nav"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/layouts/analytics</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/layouts/analytics"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/layouts/analytics"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/layouts/analytics"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/layouts/analytics"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/layouts/analytics</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/layouts/analytics"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/layouts/analytics"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/layouts/analytics"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/layouts/analytics"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/layouts/analytics</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/layouts/analytics"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/layouts/analytics"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/layouts/analytics"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/layouts/analytics"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/layouts/sidebar</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/layouts/sidebar"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/layouts/sidebar"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/layouts/sidebar"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/layouts/sidebar"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/layouts/sidebar</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/layouts/sidebar"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/layouts/sidebar"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/layouts/sidebar"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/layouts/sidebar"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/layouts/sidebar</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/layouts/sidebar"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/layouts/sidebar"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/layouts/sidebar"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/layouts/sidebar"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/layouts/settings</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/layouts/settings"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/layouts/settings"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/layouts/settings"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/layouts/settings"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/layouts/settings</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/layouts/settings"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/layouts/settings"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/layouts/settings"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/layouts/settings"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/layouts/settings</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/layouts/settings"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/layouts/settings"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/layouts/settings"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/layouts/settings"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/layouts/profile</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/layouts/profile"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/layouts/profile"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/layouts/profile"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/layouts/profile"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/layouts/profile</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/layouts/profile"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/layouts/profile"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/layouts/profile"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/layouts/profile"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/layouts/profile</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/layouts/profile"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/layouts/profile"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/layouts/profile"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/layouts/profile"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/layouts/kanban</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/layouts/kanban"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/layouts/kanban"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/layouts/kanban"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/layouts/kanban"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/layouts/kanban</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/layouts/kanban"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/layouts/kanban"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/layouts/kanban"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/layouts/kanban"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/layouts/kanban</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/layouts/kanban"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/layouts/kanban"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/layouts/kanban"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/layouts/kanban"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/layouts/chat</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/layouts/chat"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/layouts/chat"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/layouts/chat"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/layouts/chat"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/layouts/chat</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/layouts/chat"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/layouts/chat"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/layouts/chat"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/layouts/chat"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/layouts/chat</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/layouts/chat"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/layouts/chat"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/layouts/chat"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/layouts/chat"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/layouts/login</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/layouts/login"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/layouts/login"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/layouts/login"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/layouts/login"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/layouts/login</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/layouts/login"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/layouts/login"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/layouts/login"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/layouts/login"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/layouts/login</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/layouts/login"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/layouts/login"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/layouts/login"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/layouts/login"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/layouts/sign-up</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/layouts/sign-up"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/layouts/sign-up"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/layouts/sign-up"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/layouts/sign-up"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/layouts/sign-up</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/layouts/sign-up"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/layouts/sign-up"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/layouts/sign-up"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/layouts/sign-up"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/layouts/sign-up</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/layouts/sign-up"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/layouts/sign-up"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/layouts/sign-up"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/layouts/sign-up"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/recipes/settings-form</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/recipes/settings-form"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/recipes/settings-form"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/recipes/settings-form"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/recipes/settings-form"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/recipes/settings-form</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/recipes/settings-form"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/recipes/settings-form"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/recipes/settings-form"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/recipes/settings-form"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/recipes/settings-form</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/recipes/settings-form"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/recipes/settings-form"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/recipes/settings-form"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/recipes/settings-form"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/recipes/async-search</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/recipes/async-search"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/recipes/async-search"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/recipes/async-search"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/recipes/async-search"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/recipes/async-search</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/recipes/async-search"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/recipes/async-search"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/recipes/async-search"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/recipes/async-search"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/recipes/async-search</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/recipes/async-search"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/recipes/async-search"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/recipes/async-search"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/recipes/async-search"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/docs/recipes/data-table</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/recipes/data-table"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/recipes/data-table"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/recipes/data-table"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/recipes/data-table"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/es/docs/recipes/data-table</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/recipes/data-table"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/recipes/data-table"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/recipes/data-table"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/recipes/data-table"/>
+  </url>
+  <url>
+    <loc>https://voltui.dev/uk/docs/recipes/data-table</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://voltui.dev/docs/recipes/data-table"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://voltui.dev/es/docs/recipes/data-table"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://voltui.dev/uk/docs/recipes/data-table"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://voltui.dev/docs/recipes/data-table"/>
+  </url>
+</urlset>

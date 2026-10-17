@@ -1289,5 +1289,80 @@
       "foundations": "Theme foundations",
       "instant": "Changes preview instantly"
     }
+  },
+  "seo": {
+    "home": {
+      "title": "Volt UI — Modern Angular UI Components",
+      "description": "Accessible Angular components built on ng-primitives with signals, zoneless change detection and Tailwind CSS v4. Install the package or copy the source with the CLI."
+    },
+    "components": {
+      "title": "Angular UI Components — Volt UI",
+      "description": "Browse every Volt UI component for Angular: forms, controls, navigation, overlays, data display and layout, each with live examples, usage code and an API reference."
+    },
+    "introduction": {
+      "title": "Volt UI Documentation — Angular Component Library",
+      "description": "Get started with Volt UI: accessible Angular components inspired by shadcn/ui and built on ng-primitives. Install the package or copy components into your project."
+    },
+    "themes": {
+      "title": "Angular Themes and Dark Mode — Volt UI",
+      "description": "Five colour presets, five style presets and dark mode for Volt UI, driven by CSS custom properties and Tailwind CSS v4 semantic utilities."
+    },
+    "customization": {
+      "title": "Customizing Angular Components — Volt UI",
+      "description": "Edit copied Volt UI components, extend variants with class-variance-authority, merge classes with cn() and adjust colours without forking the library."
+    },
+    "versioning": {
+      "title": "Versioning and Stability — Volt UI",
+      "description": "How Volt UI follows semantic versioning, what stable and beta mean for each component, and how API changes are handled after 1.0."
+    },
+    "roadmap": {
+      "title": "Roadmap — Volt UI",
+      "description": "What is planned for Volt UI after 1.0, in order of dependence: a first-party headless layer, a Tailwind-free distribution and more layouts."
+    },
+    "migration": {
+      "title": "Migrating from Volt UI 0.x — Volt UI",
+      "description": "What changed between Volt UI 0.x and 1.0, which aliases were removed and what to update in your Angular application."
+    },
+    "aiMcp": {
+      "title": "Volt UI MCP Server for AI Coding Agents",
+      "description": "A hosted Model Context Protocol server that exposes Volt UI components, usage examples, theme information and CLI commands to any compatible AI agent."
+    },
+    "mcp": {
+      "title": "Volt UI for AI Coding Agents — MCP, Skills and Angular Components",
+      "description": "Three ways to give AI assistants correct Volt UI context: a local skill, a hosted MCP server and a single-file prompt reference."
+    },
+    "aiPrompt": {
+      "title": "Volt UI Prompt Reference for LLMs",
+      "description": "A single-file prompt to paste into any LLM chat so it uses the correct Volt UI selectors, examples and rules."
+    },
+    "aiSkill": {
+      "title": "Volt UI Skill for Claude Code and OpenCode",
+      "description": "A skill file that Claude Code and OpenCode discover automatically in any workspace that uses Volt UI components."
+    },
+    "blocks": {
+      "title": "Angular Page Blocks — Volt UI",
+      "description": "Whole page sections built from Volt UI components — heroes, pricing, dashboards, logins and more. Copy one file and make it yours."
+    },
+    "createTheme": {
+      "title": "Angular Theme Builder — Volt UI",
+      "description": "Tune every semantic token, compare light and dark modes and export a production-ready Volt UI theme without leaving the browser."
+    },
+    "component": {
+      "title": "Angular {$name} Component — Volt UI",
+      "description": "The Volt UI {$name} component for Angular: live examples, usage code and API reference. Accessible, built on ng-primitives and styled with Tailwind CSS v4."
+    },
+    "block": {
+      "title": "Angular {$name} Block — Volt UI",
+      "description": "A {$name} page section for Angular built from Volt UI components. Copy the source into your project and adapt it."
+    },
+    "layout": {
+      "title": "Angular {$name} Layout — Volt UI",
+      "description": "A {$name} application layout for Angular assembled from Volt UI components, styled only with theme tokens so it fits your brand."
+    },
+    "recipe": {
+      "title": "Angular {$name} Recipe — Volt UI",
+      "description": "A tested {$name} recipe for Angular showing the workflow with Volt UI components, including validation and failure states."
+    },
+    "imageAlt": "Volt UI — accessible Angular components"
   }
 }
