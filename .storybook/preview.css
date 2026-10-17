@@ -14,3 +14,11 @@ body {
   background: var(--background);
   color: var(--foreground);
 }
+
+/*
+ * Docs pages in dark mode: Storybook's own blocks follow `docs.theme`; this only carries the
+ * Volt surface behind them, and the rendered MDX content, which uses the same tokens.
+ */
+.sbdocs-wrapper {
+  background: var(--background) !important;
+}

@@ -1,11 +1,25 @@
 import type { Preview } from '@storybook/angular-vite';
+import { addons } from 'storybook/preview-api';
 import { applyVoltTheme } from 'volt';
 import '../src/styles.css';
 import './preview.css';
+import { VoltDocsContainer } from './docs-container';
 import { APPEARANCES, COLORS, STYLES } from './themes';
 
 const toolbarItems = (values: readonly string[]) =>
   values.map(value => ({ value, title: value[0].toUpperCase() + value.slice(1) }));
+
+/** Docs pages that are only MDX have no story, so no decorator runs for them: follow the globals on the channel. */
+function syncTheme(globals: Record<string, unknown>) {
+  applyVoltTheme({
+    color: globals['voltColor'] as never,
+    style: globals['voltStyle'] as never,
+    dark: globals['voltAppearance'] === 'dark',
+  });
+}
+const channel = addons.getChannel();
+channel.on('setGlobals', ({ globals }) => syncTheme(globals));
+channel.on('globalsUpdated', ({ globals }) => syncTheme(globals));
 
 const preview: Preview = {
   globalTypes: {
@@ -58,7 +72,10 @@ const preview: Preview = {
         desktop: { name: 'Desktop', styles: { width: '1280px', height: '800px' }, type: 'desktop' },
       },
     },
-    docs: { toc: { headingSelector: 'h2, h3', title: 'On this page' } },
+    docs: {
+      toc: { headingSelector: 'h2, h3', title: 'On this page' },
+      container: VoltDocsContainer,
+    },
     options: {
       storySort: {
         order: [

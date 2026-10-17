@@ -3,7 +3,13 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/storybook",
-    "types": ["node"]
+    "types": ["node"],
+    "jsx": "react-jsx"
   },
-  "include": ["stories/**/*.ts", ".storybook/*.ts", "src/app/lib/api-reference.generated.ts"]
+  "include": [
+    "stories/**/*.ts",
+    ".storybook/*.ts",
+    ".storybook/*.tsx",
+    "src/app/lib/api-reference.generated.ts"
+  ]
 }

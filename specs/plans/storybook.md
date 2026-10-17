@@ -18,7 +18,7 @@ All `devDependencies`, pinned to the same exact version (Storybook ships as a lo
 | `@storybook/addon-docs`   | MDX and docs pages (the generated component pages and the Foundations pages).                                                                 |
 | `@storybook/addon-a11y`   | The official axe-core panel on every story.                                                                                                   |
 
-Checked: Storybook 10.6.2 supports Angular `>=21 <23` (the repo is on 22.2), Vite `>=8`, and `@analogjs/vite-plugin-angular >=2.7.3` (repo: 2.8). No Compodoc, no `zone.js`, no `remark-gfm` (API tables are emitted as HTML), no Chromatic.
+Checked: Storybook 10.6.2 supports Angular `>=21 <23` (the repo is on 22.2), Vite `>=8`, and `@analogjs/vite-plugin-angular >=2.7.3` (repo: 2.8). `react`, `react-dom` and `@types/react` are added as explicit devDependencies (the versions `addon-docs` already pulled in as peers): they are needed only by `.storybook/docs-container.tsx`, the docs container that makes docs pages follow the Appearance switch. No Compodoc, no `zone.js`, no `remark-gfm` (API tables are emitted as HTML), no Chromatic.
 
 ## Decisions
 
