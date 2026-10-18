@@ -10,6 +10,9 @@ describe('application shell', () => {
   it('renders the primary navigation and current release', async () => {
     await render(Header, { providers: [provideRouter([])] });
 
+    const mainNavigation = screen.getByRole('navigation', { name: 'Main' });
+    expect(mainNavigation.querySelector('[role="menubar"]')).toBeNull();
+    expect(screen.getByRole('link', { name: 'Home' })).toHaveAttribute('aria-current', 'page');
     expect(screen.getByRole('link', { name: /Volt UI/i })).toHaveAttribute('href', '/');
     expect(screen.getByRole('link', { name: 'Docs' })).toHaveAttribute(
       'href',

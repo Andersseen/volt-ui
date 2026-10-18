@@ -45,6 +45,7 @@ async function get(path, attempts = 40) {
         return {
           status: response.status,
           type: response.headers.get('content-type') ?? '',
+          headers: response.headers,
           text: await response.text(),
         };
       }
@@ -186,6 +187,17 @@ for (const page of PAGES.filter(page => !skipped.includes(page.path))) {
 const missing = await get('/this-page-does-not-exist');
 if (!missing || !/name="robots" content="noindex/.test(missing.text))
   fail('/this-page-does-not-exist', 'no noindex robots meta');
+
+const homepage = await get('/');
+for (const [header, expected] of [
+  ['x-content-type-options', 'nosniff'],
+  ['referrer-policy', 'strict-origin-when-cross-origin'],
+  ['x-frame-options', 'DENY'],
+  ['permissions-policy', 'camera=(), microphone=(), geolocation=()'],
+]) {
+  if (homepage?.headers.get(header)?.toLowerCase() !== expected.toLowerCase())
+    fail('/', `${header} is missing or incorrect`);
+}
 // The worker answers 200 for the empty shell whatever status the render sets, so `noindex` above is what
 // keeps it out of the index; the status is not asserted.
 

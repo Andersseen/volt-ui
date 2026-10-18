@@ -2,14 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/c
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { filter, map } from 'rxjs';
-import {
-  VoltBadge,
-  VoltNativeButton,
-  VoltNavigationMenu,
-  VoltNavigationMenuItem,
-  VoltNavigationMenuLink,
-  VoltNavigationMenuList,
-} from 'volt';
+import { VoltBadge, VoltNativeButton } from 'volt';
 import { ThemeSwitcher } from './theme-switcher';
 import { MobileMenu } from './mobile-menu';
 import { LmnGithubIcon } from 'lumen-icons';
@@ -26,10 +19,6 @@ import { SITE_STATS } from '../lib/generated/site-stats';
     RouterLinkActive,
     VoltBadge,
     VoltNativeButton,
-    VoltNavigationMenu,
-    VoltNavigationMenuList,
-    VoltNavigationMenuItem,
-    VoltNavigationMenuLink,
     ThemeSwitcher,
     MobileMenu,
     LanguageSwitcher,
@@ -77,76 +66,65 @@ import { SITE_STATS } from '../lib/generated/site-stats';
         </div>
 
         <div class="flex items-center gap-2 sm:gap-3">
-          <!-- Volt's own navigation menu: the site is the first consumer of the atoms it ships. -->
-          <volt-navigation-menu class="hidden md:flex" [attr.aria-label]="t('nav.main')">
-            <volt-navigation-menu-list>
-              <volt-navigation-menu-item>
-                <a
-                  voltNavigationMenuLink
-                  [routerLink]="path('/')"
-                  routerLinkActive
-                  #home="routerLinkActive"
-                  [routerLinkActiveOptions]="{ exact: true }"
-                  [active]="home.isActive"
-                  class="bg-transparent"
-                >
-                  {{ t('nav.home') }}
-                </a>
-              </volt-navigation-menu-item>
-              <volt-navigation-menu-item>
-                <a
-                  voltNavigationMenuLink
-                  [routerLink]="path('/docs/introduction')"
-                  routerLinkActive
-                  #docs="routerLinkActive"
-                  [active]="docs.isActive"
-                  class="bg-transparent"
-                >
-                  {{ t('nav.docs') }}
-                </a>
-              </volt-navigation-menu-item>
-              <volt-navigation-menu-item>
-                <a
-                  voltNavigationMenuLink
-                  [routerLink]="path('/docs/components')"
-                  routerLinkActive
-                  #components="routerLinkActive"
-                  [active]="components.isActive"
-                  class="bg-transparent"
-                >
-                  {{ t('nav.components') }}
-                </a>
-              </volt-navigation-menu-item>
-              <!-- One entry for both halves of the gallery, so the active state is computed:
-                   routerLinkActive only knows this link's own path, and the tab underneath
-                   it may be the layouts one. -->
-              <volt-navigation-menu-item>
-                <a
-                  voltNavigationMenuLink
-                  [routerLink]="path(galleryPath)"
-                  [active]="inGallery()"
-                  class="bg-transparent"
-                >
-                  {{ t('nav.gallery') }}
-                </a>
-              </volt-navigation-menu-item>
-              <volt-navigation-menu-item>
-                <a
-                  voltNavigationMenuLink
-                  [routerLink]="path('/create-theme')"
-                  routerLinkActive
-                  #theme="routerLinkActive"
-                  [active]="theme.isActive"
-                  class="gap-1.5 bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground"
-                >
-                  {{ t('nav.createTheme') }}
-                  <volt-badge aria-hidden="true" class="px-1.5 py-0 text-[10px]">{{
-                    t('nav.new')
-                  }}</volt-badge>
-                </a>
-              </volt-navigation-menu-item>
-            </volt-navigation-menu-list>
-          </volt-navigation-menu>
+          <!-- These are ordinary route links, so keep native navigation semantics. -->
+          <nav class="hidden items-center gap-1 md:flex" [attr.aria-label]="t('nav.main')">
+            <a
+              voltButton
+              variant="ghost"
+              [routerLink]="path('/')"
+              routerLinkActive="bg-accent text-accent-foreground"
+              [routerLinkActiveOptions]="{ exact: true }"
+              ariaCurrentWhenActive="page"
+              class="bg-transparent"
+            >
+              {{ t('nav.home') }}
+            </a>
+            <a
+              voltButton
+              variant="ghost"
+              [routerLink]="path('/docs/introduction')"
+              routerLinkActive="bg-accent text-accent-foreground"
+              ariaCurrentWhenActive="page"
+              class="bg-transparent"
+            >
+              {{ t('nav.docs') }}
+            </a>
+            <a
+              voltButton
+              variant="ghost"
+              [routerLink]="path('/docs/components')"
+              routerLinkActive="bg-accent text-accent-foreground"
+              ariaCurrentWhenActive="page"
+              class="bg-transparent"
+            >
+              {{ t('nav.components') }}
+            </a>
+            <!-- One entry for both gallery sections; RouterLinkActive only knows a single path. -->
+            <a
+              voltButton
+              variant="ghost"
+              [routerLink]="path(galleryPath)"
+              [class.bg-accent]="inGallery()"
+              [class.text-accent-foreground]="inGallery()"
+              [attr.aria-current]="inGallery() ? 'page' : null"
+              class="bg-transparent"
+            >
+              {{ t('nav.gallery') }}
+            </a>
+            <a
+              voltButton
+              variant="ghost"
+              [routerLink]="path('/create-theme')"
+              routerLinkActive="bg-accent text-accent-foreground"
+              ariaCurrentWhenActive="page"
+              class="gap-1.5 bg-primary/10 text-foreground hover:bg-primary hover:text-primary-foreground"
+            >
+              {{ t('nav.createTheme') }}
+              <volt-badge aria-hidden="true" class="px-1.5 py-0 text-[10px]">{{
+                t('nav.new')
+              }}</volt-badge>
+            </a>
+          </nav>
 
           <a
             voltButton

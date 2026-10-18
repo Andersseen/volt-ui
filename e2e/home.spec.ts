@@ -32,6 +32,21 @@ test.describe('Official landing page', () => {
     await expect(card).toContainText('npx @voltui/cli add switch');
   });
 
+  test('keeps decorative catalog previews out of keyboard focus', async ({ page }) => {
+    const preview = page.locator('app-showcase-card app-component-preview').first();
+    const focusable = preview.locator('button, a, input, [tabindex]:not([tabindex="-1"])').first();
+
+    await expect(preview).toHaveAttribute('aria-hidden', 'true');
+    await expect(preview).toHaveAttribute('inert', '');
+    await expect(focusable).toBeAttached();
+
+    const receivedFocus = await focusable.evaluate(element => {
+      (element as HTMLElement).focus();
+      return document.activeElement === element;
+    });
+    expect(receivedFocus).toBe(false);
+  });
+
   test('keeps the complete landing page inside a mobile viewport', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.reload();
