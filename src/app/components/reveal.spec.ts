@@ -11,6 +11,7 @@ import { Reveal } from './reveal';
 class Host {}
 
 type ObserverCallback = (entries: Partial<IntersectionObserverEntry>[]) => void;
+const defaultIntersectionObserver = globalThis.IntersectionObserver;
 
 describe('Reveal', () => {
   let observe: ReturnType<typeof vi.fn>;
@@ -32,7 +33,9 @@ describe('Reveal', () => {
   });
 
   afterEach(() => {
-    vi.unstubAllGlobals();
+    // Keep test-setup's fetch stub intact; unstubAllGlobals also removes it and lets Etyma
+    // reach Glossa during later specs.
+    vi.stubGlobal('IntersectionObserver', defaultIntersectionObserver);
     vi.restoreAllMocks();
   });
 

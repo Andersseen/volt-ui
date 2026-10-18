@@ -182,6 +182,8 @@ import {
   ],
   host: {
     'aria-hidden': 'true',
+    // These are illustrative, not controls. aria-hidden alone leaves their descendants tabbable.
+    inert: '',
     class: 'pointer-events-none block w-full select-none',
   },
   template: `

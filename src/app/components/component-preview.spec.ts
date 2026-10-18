@@ -11,6 +11,7 @@ describe('ComponentPreview', () => {
 
     const host = fixture.nativeElement as HTMLElement;
     expect(host.getAttribute('aria-hidden')).toBe('true');
+    expect(host).toHaveAttribute('inert');
     expect(host.className).toContain('pointer-events-none');
   });
 

@@ -4,6 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { AppDashboard } from './app-dashboard';
 
 type ObserverCallback = (entries: Partial<IntersectionObserverEntry>[]) => void;
+const defaultIntersectionObserver = globalThis.IntersectionObserver;
 
 /*
  * jsdom never paints, so its animation frames never arrive on their own. Driving them
@@ -45,7 +46,9 @@ describe('AppDashboard', () => {
   });
 
   afterEach(() => {
-    vi.unstubAllGlobals();
+    // Keep test-setup's fetch stub intact; unstubAllGlobals also removes it and lets Etyma
+    // reach Glossa during later specs.
+    vi.stubGlobal('IntersectionObserver', defaultIntersectionObserver);
     vi.restoreAllMocks();
   });
 

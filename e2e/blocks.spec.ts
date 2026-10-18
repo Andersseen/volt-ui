@@ -122,8 +122,10 @@ test.describe('Gallery tabs', () => {
     // which rules out anything that only updates on click.
     for (const url of ['/docs/blocks/cta', '/docs/layouts/kanban']) {
       await page.goto(url);
-      // VoltNavigationMenuLink reports the active entry through ng-primitives' `data-active`.
-      await expect(gallery).toHaveAttribute('data-active', '');
+      // The route group is a native nav link; current-page semantics and its visual state both
+      // follow the deep link, including the layouts half of the gallery.
+      await expect(gallery).toHaveAttribute('aria-current', 'page');
+      await expect(gallery).toHaveClass(/bg-accent/);
     }
   });
 });

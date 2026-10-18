@@ -1,19 +1,12 @@
 <div align="center">
 
-<a href="https://voltui.dev">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="./docs/hero-dark.png" />
-    <source media="(prefers-color-scheme: light)" srcset="./docs/hero-light.png" />
-    <img alt="Volt UI — Modern UI building blocks for Angular" src="./docs/hero-light.png" width="840" />
-  </picture>
-</a>
+<img src="./docs/readme-banner.svg" alt="Volt UI — Angular UI atoms you can make your own. Accessible components for Angular 21.2 and 22, available as an npm package or copy-and-own source." width="100%" />
 
-<h1>⚡ Volt UI</h1>
+<br/>
 
-### Modern UI building blocks for Angular
+**Accessible, themeable Angular components—install them from npm or copy the source and make them yours.**
 
-Angular UI atoms that stay out of the way of your product's own design — built on **signals**,<br/>
-**Tailwind CSS v4**, **CVA** and [ng-primitives](https://ng-primitives.dev). Install the package or copy the source.
+Built with signals, Tailwind CSS v4, CVA and [ng-primitives](https://ng-primitives.dev).
 
 <br/>
 
