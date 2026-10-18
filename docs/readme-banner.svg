@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="560" viewBox="0 0 1600 560" fill="none">
+  <defs>
+    <linearGradient id="background" x1="80" y1="20" x2="1510" y2="550" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#15132E"/>
+      <stop offset=".52" stop-color="#101525"/>
+      <stop offset="1" stop-color="#092B38"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="250" y1="90" x2="1350" y2="480" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8B5CF6"/>
+      <stop offset=".52" stop-color="#5687FF"/>
+      <stop offset="1" stop-color="#27D3D2"/>
+    </linearGradient>
+    <linearGradient id="bolt" x1="223" y1="111" x2="267" y2="168" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fff"/>
+      <stop offset="1" stop-color="#D9E3FF"/>
+    </linearGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" stroke="#B9C7FF" stroke-opacity=".07"/>
+    </pattern>
+    <filter id="glow" x="870" y="40" width="650" height="500" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feGaussianBlur stdDeviation="32"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="560" rx="28" fill="url(#background)"/>
+  <rect width="1600" height="560" rx="28" fill="url(#grid)"/>
+  <rect x="1" y="1" width="1598" height="558" rx="27" stroke="url(#accent)" stroke-opacity=".65" stroke-width="2"/>
+
+  <circle cx="1190" cy="280" r="210" fill="#4F75FF" fill-opacity=".2" filter="url(#glow)"/>
+
+  <g font-family="Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+    <rect x="78" y="72" width="66" height="66" rx="20" fill="url(#accent)"/>
+    <path d="M115 83 96 111h14l-5 22 22-31h-15l3-19Z" fill="url(#bolt)"/>
+    <text x="162" y="119" fill="#F8FAFC" font-size="34" font-weight="700" letter-spacing="-1.2">Volt UI</text>
+    <rect x="295" y="88" width="78" height="30" rx="15" fill="#FFFFFF" fill-opacity=".09" stroke="#FFFFFF" stroke-opacity=".1"/>
+    <text x="334" y="108" fill="#CFD7EE" font-size="14" font-weight="650" text-anchor="middle">v1.3.2</text>
+
+    <text x="80" y="231" fill="#F8FAFC" font-size="58" font-weight="750" letter-spacing="-2.2">Angular UI atoms</text>
+    <text x="80" y="300" fill="url(#accent)" font-size="58" font-weight="750" letter-spacing="-2.2">you can make your own.</text>
+    <text x="84" y="357" fill="#C2C9D9" font-size="22" font-weight="450">Accessible components for Angular 21.2 and 22.</text>
+    <text x="84" y="390" fill="#C2C9D9" font-size="22" font-weight="450">Install from npm, or copy the source and own it.</text>
+
+    <g font-size="15" font-weight="650">
+      <rect x="80" y="438" width="204" height="42" rx="21" fill="#FFFFFF" fill-opacity=".08" stroke="#FFFFFF" stroke-opacity=".14"/>
+      <circle cx="103" cy="459" r="5" fill="#33D6B0"/>
+      <text x="119" y="464" fill="#E5EAF6">44 components</text>
+
+      <rect x="298" y="438" width="180" height="42" rx="21" fill="#FFFFFF" fill-opacity=".08" stroke="#FFFFFF" stroke-opacity=".14"/>
+      <circle cx="321" cy="459" r="5" fill="#8C73FF"/>
+      <text x="337" y="464" fill="#E5EAF6">5 × 5 themes</text>
+
+      <rect x="492" y="438" width="214" height="42" rx="21" fill="#FFFFFF" fill-opacity=".08" stroke="#FFFFFF" stroke-opacity=".14"/>
+      <circle cx="515" cy="459" r="5" fill="#51A8FF"/>
+      <text x="531" y="464" fill="#E5EAF6">Package + copy CLI</text>
+    </g>
+
+    <g transform="translate(850 97)">
+      <rect x="20" y="12" width="570" height="350" rx="22" fill="#0B1020" fill-opacity=".82" stroke="#95A8FF" stroke-opacity=".28" stroke-width="2"/>
+      <path d="M21 70H589" stroke="#95A8FF" stroke-opacity=".18" stroke-width="2"/>
+      <circle cx="53" cy="42" r="6" fill="#FB7185" fill-opacity=".88"/>
+      <circle cx="76" cy="42" r="6" fill="#FBBF24" fill-opacity=".88"/>
+      <circle cx="99" cy="42" r="6" fill="#34D399" fill-opacity=".88"/>
+      <text x="139" y="48" fill="#AAB5D0" font-size="14" font-weight="600">YOUR COMPONENTS, YOUR RULES</text>
+
+      <rect x="55" y="102" width="198" height="218" rx="16" fill="#121A30" stroke="#FFFFFF" stroke-opacity=".1"/>
+      <text x="78" y="132" fill="#AAB5D0" font-size="13" font-weight="600">BUTTON VARIANTS</text>
+      <rect x="77" y="154" width="152" height="40" rx="9" fill="url(#accent)"/>
+      <text x="153" y="179" fill="#fff" font-size="14" font-weight="700" text-anchor="middle">Save changes</text>
+      <rect x="77" y="207" width="152" height="40" rx="9" fill="#121A30" stroke="#7988A7" stroke-opacity=".7"/>
+      <text x="153" y="232" fill="#E7EBF4" font-size="14" font-weight="650" text-anchor="middle">Cancel</text>
+      <rect x="77" y="267" width="74" height="24" rx="12" fill="#25345E"/>
+      <text x="114" y="283" fill="#C9D6FF" font-size="11" font-weight="650" text-anchor="middle">FOCUS</text>
+      <rect x="159" y="267" width="70" height="24" rx="12" fill="#133E3B"/>
+      <text x="194" y="283" fill="#8AF0D6" font-size="11" font-weight="650" text-anchor="middle">THEMED</text>
+
+      <rect x="273" y="102" width="285" height="102" rx="16" fill="#121A30" stroke="#FFFFFF" stroke-opacity=".1"/>
+      <text x="296" y="132" fill="#AAB5D0" font-size="13" font-weight="600">BUILT FOR ANGULAR</text>
+      <text x="296" y="166" fill="#F2F5FB" font-size="17" font-weight="650">Signals · OnPush · zoneless</text>
+
+      <rect x="273" y="220" width="285" height="100" rx="16" fill="#121A30" stroke="#FFFFFF" stroke-opacity=".1"/>
+      <text x="296" y="250" fill="#AAB5D0" font-size="13" font-weight="600">STYLE WITH TOKENS</text>
+      <rect x="296" y="270" width="28" height="28" rx="8" fill="#8B5CF6"/>
+      <rect x="334" y="270" width="28" height="28" rx="8" fill="#5687FF"/>
+      <rect x="372" y="270" width="28" height="28" rx="8" fill="#27D3D2"/>
+      <rect x="410" y="270" width="28" height="28" rx="8" fill="#F59E0B"/>
+      <rect x="448" y="270" width="28" height="28" rx="8" fill="#FB7185"/>
+      <text x="495" y="289" fill="#D7DDF0" font-size="12" font-weight="600">5 color presets</text>
+    </g>
+
+    <text x="1517" y="520" fill="#B8C3DA" fill-opacity=".75" font-size="15" font-weight="650" text-anchor="end">voltui.dev</text>
+  </g>
+</svg>
