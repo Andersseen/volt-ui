@@ -72,10 +72,10 @@ import { SITE_STATS } from '../lib/generated/site-stats';
               voltButton
               variant="ghost"
               [routerLink]="path('/')"
-              routerLinkActive="bg-accent text-accent-foreground"
+              routerLinkActive="bg-accent text-accent-foreground ring-1 ring-inset ring-primary/50"
               [routerLinkActiveOptions]="{ exact: true }"
               ariaCurrentWhenActive="page"
-              class="bg-transparent"
+              class="transition-colors"
             >
               {{ t('nav.home') }}
             </a>
@@ -83,9 +83,9 @@ import { SITE_STATS } from '../lib/generated/site-stats';
               voltButton
               variant="ghost"
               [routerLink]="path('/docs/introduction')"
-              routerLinkActive="bg-accent text-accent-foreground"
+              routerLinkActive="bg-accent text-accent-foreground ring-1 ring-inset ring-primary/50"
               ariaCurrentWhenActive="page"
-              class="bg-transparent"
+              class="transition-colors"
             >
               {{ t('nav.docs') }}
             </a>
@@ -93,9 +93,9 @@ import { SITE_STATS } from '../lib/generated/site-stats';
               voltButton
               variant="ghost"
               [routerLink]="path('/docs/components')"
-              routerLinkActive="bg-accent text-accent-foreground"
+              routerLinkActive="bg-accent text-accent-foreground ring-1 ring-inset ring-primary/50"
               ariaCurrentWhenActive="page"
-              class="bg-transparent"
+              class="transition-colors"
             >
               {{ t('nav.components') }}
             </a>
@@ -104,10 +104,13 @@ import { SITE_STATS } from '../lib/generated/site-stats';
               voltButton
               variant="ghost"
               [routerLink]="path(galleryPath)"
-              [class.bg-accent]="inGallery()"
-              [class.text-accent-foreground]="inGallery()"
+              [class]="
+                inGallery()
+                  ? 'bg-accent text-accent-foreground ring-1 ring-inset ring-primary/50'
+                  : ''
+              "
               [attr.aria-current]="inGallery() ? 'page' : null"
-              class="bg-transparent"
+              class="transition-colors"
             >
               {{ t('nav.gallery') }}
             </a>
@@ -115,7 +118,7 @@ import { SITE_STATS } from '../lib/generated/site-stats';
               voltButton
               variant="ghost"
               [routerLink]="path('/create-theme')"
-              routerLinkActive="bg-accent text-accent-foreground"
+              routerLinkActive="bg-accent text-accent-foreground ring-1 ring-inset ring-primary/50"
               ariaCurrentWhenActive="page"
               class="gap-1.5 bg-primary/10 text-foreground hover:bg-primary hover:text-primary-foreground"
             >
