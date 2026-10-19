@@ -81,13 +81,14 @@ test.describe('advertised states exist', () => {
     page,
   }) => {
     await open(page, 'Radio', 'States');
-    await expect(page.getByRole('radio', { name: 'Checked', exact: true })).toHaveAttribute(
+    const group = page.getByRole('radiogroup', { name: 'States' });
+    await expect(group.getByRole('radio', { name: 'Checked', exact: true })).toHaveAttribute(
       'aria-checked',
       'true'
     );
-    await expect(page.getByRole('radio', { checked: true })).toHaveCount(1);
-    await page.getByRole('radio', { name: 'Disabled' }).click({ force: true });
-    await expect(page.getByRole('radio', { name: 'Checked', exact: true })).toHaveAttribute(
+    await expect(group.getByRole('radio', { checked: true })).toHaveCount(1);
+    await group.getByRole('radio', { name: 'Disabled' }).click({ force: true });
+    await expect(group.getByRole('radio', { name: 'Checked', exact: true })).toHaveAttribute(
       'aria-checked',
       'true'
     );
