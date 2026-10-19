@@ -63,7 +63,7 @@ import { injectAppI18n } from '../../../../i18n/i18n';
       </app-code-panel>
 
       <div class="space-y-3">
-        <h3 class="text-lg font-semibold">{{ t('ui.api.title') }}</h3>
+        <h2 class="text-lg font-semibold">{{ t('ui.api.title') }}</h2>
         <app-api-reference [data]="api" />
       </div>
 

@@ -54,6 +54,7 @@ export class CodeEditor implements OnInit {
   protected readonly t = this.translations.t;
 
   readonly code = input.required<string>();
+  readonly ariaLabel = input<string>('');
   readonly language = input<CodeEditorLanguage>('typescript');
   readonly height = input<string>('400px');
   readonly lineNumbers = input<boolean>(true);
@@ -70,6 +71,7 @@ export class CodeEditor implements OnInit {
   private readonly syncEditorEffect = afterRenderEffect(() => {
     const code = this.code();
     const theme = this.editorTheme();
+    const ariaLabel = this.ariaLabel() || this.t('ui.codePanel.componentSource');
     // Re-run once the editor element actually lands in the DOM.
     void this.editorLoaded();
 
@@ -80,6 +82,7 @@ export class CodeEditor implements OnInit {
     if (editor._ready && typeof editor.setValue === 'function') {
       editor.setValue(code);
       editor.setAttribute('theme', theme);
+      this.setEditorAccessibleName(editor, ariaLabel);
     } else if (!this.readyListenerAttached.has(editor)) {
       this.readyListenerAttached.add(editor);
       editor.addEventListener(
@@ -87,6 +90,10 @@ export class CodeEditor implements OnInit {
         () => {
           editor.setValue?.(this.code());
           editor.setAttribute('theme', this.editorTheme());
+          this.setEditorAccessibleName(
+            editor,
+            this.ariaLabel() || this.t('ui.codePanel.componentSource')
+          );
         },
         { once: true }
       );
@@ -107,5 +114,11 @@ export class CodeEditor implements OnInit {
 
   private syncThemeFromDocument(): void {
     this.editorTheme.set(document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+  }
+
+  private setEditorAccessibleName(editor: HTMLElement, label: string): void {
+    editor.shadowRoot
+      ?.querySelector<HTMLElement>('.cm-content[role="textbox"]')
+      ?.setAttribute('aria-label', label);
   }
 }

@@ -202,6 +202,12 @@ Themes are CSS custom properties mapped into Tailwind v4 via `@theme inline`. Co
 > contrast-checked palette in one click, or import one from
 > [Palette Crafter](https://palette-crafter.andersseen.dev).
 
+Custom themes must preserve WCAG contrast in both appearances: text and its background need at least
+4.5:1, while control boundaries and focus/active rings need at least 3:1 against each adjacent
+surface. Volt maps the active accent surface to `--muted` and its text to `--foreground`; check
+`--foreground` on `--muted` and `--ring` on `--muted` as well as your usual background pairs. Volt's
+`pnpm check:contrast` audits the built-in presets; consumer-defined palettes need their own checks.
+
 ---
 
 ## 🧩 Component Catalog

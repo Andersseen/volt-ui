@@ -1,5 +1,5 @@
 :root[data-color='glacier'] {
-  --primary: oklch(0.521 0.16 225);
+  --primary: oklch(0.42 0.16 225);
   --primary-foreground: oklch(0.98 0 0);
   --secondary: oklch(0.53 0.12 200);
   --secondary-foreground: oklch(0.98 0 0);
@@ -23,8 +23,8 @@
 }
 
 .dark[data-color='glacier'] {
-  --primary: oklch(0.521 0.16 225);
-  --primary-foreground: oklch(0.98 0 0);
+  --primary: oklch(0.72 0.16 225);
+  --primary-foreground: oklch(0.14 0.02 225);
   --secondary: oklch(0.53 0.12 200);
   --secondary-foreground: oklch(0.98 0 0);
   --background: oklch(0.06 0.01 225);

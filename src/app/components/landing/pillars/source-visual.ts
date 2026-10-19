@@ -10,7 +10,7 @@ import { CodeWindow } from '../code-window';
     <app-code-window>
       <div class="font-mono">
         <p><span class="text-primary">$</span> npx &#64;voltui/cli add dialog form-field</p>
-        <p class="text-success">✓ resolved {{ files.length }} files</p>
+        <p><span class="text-success">✓</span> resolved {{ files.length }} files</p>
         <div class="mt-4 space-y-1.5 border-t border-border/60 pt-4">
           @for (file of files; track file) {
             <p class="truncate"><span class="text-muted-foreground">src/app/ui/</span>{{ file }}</p>

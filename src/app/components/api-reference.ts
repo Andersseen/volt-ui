@@ -10,12 +10,12 @@ import { injectAppI18n } from '../i18n/i18n';
       @for (directive of data().directives; track directive.className) {
         <div class="space-y-3">
           @if (data().directives.length > 1) {
-            <h4 class="font-mono text-sm text-muted-foreground">
+            <h3 class="font-mono text-sm text-muted-foreground">
               {{ directive.className }}
               @if (directive.selector) {
                 <span class="text-xs">— {{ directive.selector }}</span>
               }
-            </h4>
+            </h3>
           }
 
           @if (directive.inputs.length > 0) {
@@ -73,7 +73,7 @@ import { injectAppI18n } from '../i18n/i18n';
 
       @if (data().variants; as variants) {
         <div class="space-y-3">
-          <h4 class="font-mono text-sm text-muted-foreground">{{ t('ui.api.variants') }}</h4>
+          <h3 class="font-mono text-sm text-muted-foreground">{{ t('ui.api.variants') }}</h3>
           <div class="rounded-lg border border-border bg-muted/30 overflow-x-auto">
             <table class="w-full text-sm">
               <thead>
