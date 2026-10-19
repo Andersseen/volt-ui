@@ -13,7 +13,7 @@ import { CodeWindow } from '../code-window';
         <p><span class="text-primary">$</span> npx &#64;voltui/agent claude</p>
         <div class="mt-4 space-y-1.5 border-t border-border/60 pt-4">
           @for (file of files; track file) {
-            <p class="truncate"><span class="text-success">created</span> {{ file }}</p>
+            <p class="truncate"><span>created</span> {{ file }}</p>
           }
         </div>
         <div class="mt-4 flex flex-wrap gap-2 text-[11px]">

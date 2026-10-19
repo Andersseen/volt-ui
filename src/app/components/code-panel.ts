@@ -25,7 +25,7 @@ import { injectAppI18n } from '../i18n/i18n';
     <div class="space-y-3">
       <!-- Header with title and copy button -->
       <div class="flex items-center justify-between">
-        <h3 class="font-semibold text-lg">{{ heading() }}</h3>
+        <h2 class="font-semibold text-lg">{{ heading() }}</h2>
         @if (!tabbed() || activeTab() === 'code') {
           <app-copy-button [code]="code()" />
         }
@@ -86,7 +86,7 @@ import { injectAppI18n } from '../i18n/i18n';
                   >TypeScript</span
                 >
               </div>
-              <app-code-editor [code]="code()" />
+              <app-code-editor [code]="code()" [ariaLabel]="heading()" />
             </div>
           </volt-tabs-content>
         </volt-tabs>
@@ -96,7 +96,7 @@ import { injectAppI18n } from '../i18n/i18n';
           <div class="absolute top-0 right-0 p-2 z-10">
             <span class="text-xs text-muted-foreground px-2 py-1 bg-muted rounded">TypeScript</span>
           </div>
-          <app-code-editor [code]="code()" />
+          <app-code-editor [code]="code()" [ariaLabel]="heading()" />
         </div>
       }
 

@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.3] - 2026-10-19
+
+Patch release: improve visual state contrast without changing component APIs.
+
+### Fixed — `@voltui/components`
+
+- **`volt-radio-item` was difficult to see when unchecked**, especially in dark themes. Its boundary
+  now uses the semantic `input` token and its hover, focus-visible and disabled states are explicit.
+- **Primary text failed WCAG AA contrast in several built-in palettes.** Primary and primary-foreground
+  values now meet the text contrast relationship in light and dark appearances.
+- **The current documentation-sidebar link fell below WCAG AA contrast on its tinted background.**
+  Sidebar selection uses the semantic accent surface, a visible ring and `aria-current="page"`.
+- **Component-source code views had no accessible name and skipped heading levels.** Read-only editor
+  fields now use the translated section label, and documentation section headings descend in order.
+
+### Fixed — `@voltui/cli` 1.3.3
+
+- The copied radio source and generated manifest include the same radio state fix as the package.
+
+### Fixed — voltui.dev
+
+- Active navigation is visible on desktop and mobile, including `aria-current` on mobile links.
+- The landing workflow cards no longer fade their text during scroll entry and exit. Status text uses
+  the regular foreground; the success check remains a semantic success-colored mark.
+
 ## [1.3.2] - 2026-10-17
 
 Patch release: behavioural fixes found by testing the consumer contract in real browsers and in

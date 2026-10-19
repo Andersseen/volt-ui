@@ -8,7 +8,7 @@
   --surface: oklch(0.96 0.01 295);
   --surface-foreground: oklch(0.18 0.02 295);
   --muted: oklch(0.9 0.02 295);
-  --muted-foreground: oklch(0.498 0.03 295);
+  --muted-foreground: oklch(0.48 0.03 295);
   --border: oklch(0.85 0.03 295);
   --input: oklch(0.64 0.03 295);
   --ring: oklch(0.55 0.2 295);
@@ -23,8 +23,8 @@
 }
 
 .dark[data-color='dusk'] {
-  --primary: oklch(0.574 0.2 295);
-  --primary-foreground: oklch(0.98 0 0);
+  --primary: oklch(0.72 0.2 295);
+  --primary-foreground: oklch(0.14 0.02 295);
   --secondary: oklch(0.576 0.18 320);
   --secondary-foreground: oklch(0.98 0 0);
   --background: oklch(0.08 0.015 295);

@@ -121,7 +121,10 @@ const PAIRS = [
   ['surface-foreground', 'surface', 4.5, 'text on card/popover surface'],
   ['muted-foreground', 'muted', 4.5, 'muted text on muted background'],
   ['muted-foreground', 'background', 4.5, 'muted text on page'],
+  ['foreground', 'muted', 4.5, 'accent text on accent background'],
   ['primary-foreground', 'primary', 4.5, 'text on primary button'],
+  ['primary', 'background', 4.5, 'primary text on page'],
+  ['primary', 'surface', 4.5, 'primary text on card/popover surface'],
   ['secondary-foreground', 'secondary', 4.5, 'text on secondary button'],
   ['destructive-foreground', 'destructive', 4.5, 'text on destructive button'],
   ['success-foreground', 'success', 4.5, 'text on success surface'],
@@ -129,6 +132,7 @@ const PAIRS = [
   ['error-foreground', 'error', 4.5, 'text on error surface'],
   ['info-foreground', 'info', 4.5, 'text on info surface'],
   ['ring', 'background', 3, 'focus ring vs page (non-text UI, SC 1.4.11)'],
+  ['ring', 'muted', 3, 'active/focus ring vs accent surface (non-text UI, SC 1.4.11)'],
   ['input', 'background', 3, 'form field border vs page (non-text UI, SC 1.4.11)'],
   // Status colours used as icon/border colour directly on the page (Alert icons, Input and
   // Textarea success/error borders). Warning is deliberately absent: `--warning` is a fill

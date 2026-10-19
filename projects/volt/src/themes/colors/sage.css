@@ -1,5 +1,5 @@
 :root[data-color='sage'] {
-  --primary: oklch(0.532 0.15 155);
+  --primary: oklch(0.42 0.15 155);
   --primary-foreground: oklch(0.98 0 0);
   --secondary: oklch(0.525 0.12 185);
   --secondary-foreground: oklch(0.98 0 0);
@@ -23,8 +23,8 @@
 }
 
 .dark[data-color='sage'] {
-  --primary: oklch(0.532 0.15 155);
-  --primary-foreground: oklch(0.98 0 0);
+  --primary: oklch(0.72 0.15 155);
+  --primary-foreground: oklch(0.14 0.02 155);
   --secondary: oklch(0.525 0.12 185);
   --secondary-foreground: oklch(0.98 0 0);
   --background: oklch(0.08 0.01 155);

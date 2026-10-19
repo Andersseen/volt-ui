@@ -63,7 +63,8 @@ export const States: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Unchecked, checked, disabled and disabled-while-checked items side by side.',
+        story:
+          'Unchecked and checked items show the indicator state; separate groups show disabled and disabled-while-checked controls.',
       },
     },
   },
@@ -73,6 +74,9 @@ export const States: Story = {
         <div class="flex items-center gap-2"><volt-radio-item id="rs-off" value="unchecked" /><volt-label htmlFor="rs-off">Unchecked</volt-label></div>
         <div class="flex items-center gap-2"><volt-radio-item id="rs-on" value="checked" /><volt-label htmlFor="rs-on">Checked</volt-label></div>
         <div class="flex items-center gap-2"><volt-radio-item id="rs-dis" value="disabled" [disabled]="true" /><volt-label htmlFor="rs-dis">Disabled</volt-label></div>
+      </volt-radio-group>
+      <volt-radio-group aria-label="Disabled selected state" value="selected" [disabled]="true" class="mt-6">
+        <div class="flex items-center gap-2"><volt-radio-item id="rs-dis-selected" value="selected" /><volt-label htmlFor="rs-dis-selected">Disabled and selected</volt-label></div>
       </volt-radio-group>`,
   }),
 };

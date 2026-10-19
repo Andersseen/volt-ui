@@ -72,8 +72,9 @@ import { StepsIndex } from './steps-index';
   styles: `
     /*
      * The steps ride a curve: a card arrives tilted back from below, lies flat while it is
-     * read, and tips away as it leaves — like cards on a turning wheel. Scroll-driven CSS,
-     * so it tracks the scrollbar exactly and needs no JavaScript; static where unsupported.
+     * read, and tips away as it leaves — like cards on a turning wheel. Keep the card opaque
+     * throughout: fading its text with the scroll transform made it unreadable at entry/exit.
+     * Scroll-driven CSS tracks the scrollbar without JavaScript; static where unsupported.
      */
     @supports (animation-timeline: view()) {
       .step-curve {
@@ -86,7 +87,6 @@ import { StepsIndex } from './steps-index';
 
     @keyframes step-curve {
       0% {
-        opacity: 0.25;
         transform: perspective(1400px) translateY(80px) rotateX(22deg) scale(0.92);
       }
       35%,
@@ -95,7 +95,6 @@ import { StepsIndex } from './steps-index';
         transform: perspective(1400px) translateY(0) rotateX(0) scale(1);
       }
       100% {
-        opacity: 0.35;
         transform: perspective(1400px) translateY(-60px) rotateX(-18deg) scale(0.94);
       }
     }

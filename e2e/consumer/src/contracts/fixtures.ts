@@ -164,6 +164,11 @@ export class StaticValueFixture {
       <volt-radio-item value="a">Free</volt-radio-item>
       <volt-radio-item value="b">Pro</volt-radio-item>
       <volt-radio-item value="c">Team</volt-radio-item>
+      <volt-radio-item value="locked" disabled>Legacy</volt-radio-item>
+    </volt-radio-group>
+    <volt-radio-group value="fixed" disabled aria-label="Fixed plan">
+      <volt-radio-item value="fixed">Fixed selection</volt-radio-item>
+      <volt-radio-item value="unavailable">Unavailable</volt-radio-item>
     </volt-radio-group>
     <button voltButton variant="outline" id="after">After</button>
   `,

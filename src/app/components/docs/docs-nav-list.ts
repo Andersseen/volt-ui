@@ -40,7 +40,7 @@ export interface DocsSidebarGroup {
       <volt-sidebar-group class="mb-6" [label]="heading(group)">
         @for (link of group.links; track link.path) {
           <volt-sidebar-item
-            class="h-8 rounded-md px-3 text-[13px] [&.active]:bg-primary/10 [&.active]:text-primary"
+            class="h-8 rounded-md px-3 text-[13px]"
             [routerLink]="path(link.path)"
             [label]="label(link)"
             [exact]="link.exact ?? false"
