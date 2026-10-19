@@ -65,7 +65,7 @@ import { injectAppI18n } from '../i18n/i18n';
               voltButton
               variant="ghost"
               [routerLink]="path(link.path)"
-              routerLinkActive="bg-accent font-semibold"
+              routerLinkActive="bg-accent text-accent-foreground font-semibold ring-1 ring-inset ring-primary/50"
               [routerLinkActiveOptions]="{ exact: link.exact }"
               (click)="close()"
               moveEnter="fade-left"

@@ -30,7 +30,7 @@ import { cn } from '../../utils';
       [attr.id]="id() || null"
       [attr.aria-label]="ariaLabel() || ariaLabelAttribute() || null"
       [attr.aria-labelledby]="hasInlineLabel() ? labelId : null"
-      class="peer relative flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center rounded-full border border-border bg-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50 data-[checked]:border-primary"
+      class="peer relative flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center rounded-full border border-input bg-background transition-colors hover:bg-accent hover:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background data-[disabled]:cursor-not-allowed data-[disabled]:hover:bg-background data-[disabled]:hover:border-input data-[disabled]:opacity-50 data-[checked]:border-primary"
     >
       <span ngpRadioIndicator class="items-center justify-center hidden data-[checked]:flex">
         <span class="h-2.5 w-2.5 rounded-full bg-primary"></span>
