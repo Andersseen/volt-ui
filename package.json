@@ -162,7 +162,7 @@
     "lint-staged": "^17.6.0",
     "ng-packagr": "^21.2.7",
     "playwright": "^1.64.0",
-    "postcss": "^8.5.28",
+    "postcss": "^8.5.30",
     "prettier": "^3.9.6",
     "react": "19.3.1",
     "react-dom": "19.3.1",
