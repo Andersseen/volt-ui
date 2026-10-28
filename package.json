@@ -169,7 +169,7 @@
     "storybook": "10.6.2",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "~6.0.0",
-    "typescript-eslint": "^8.71.0",
+    "typescript-eslint": "^8.72.0",
     "vite": "^8.3.4",
     "vitest": "^5.0.5",
     "wrangler": "^4.131.1"
