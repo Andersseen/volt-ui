@@ -1,8 +1,11 @@
 import { fileURLToPath } from 'node:url';
+import { doqPrerenderRoutes } from '@doqs/analog/config';
+import { doqDeterministicMarkdown } from '@doqs/analog/vite';
 import analog from '@analogjs/platform';
 import tailwindcss from '@tailwindcss/vite';
 import { etymaRemoteContract, etymaRemoteValidation } from '@etyma/tooling/vite';
 import { defineConfig } from 'vite';
+import { doqPaths } from './src/doq.paths.ts';
 import { resolve } from 'path';
 import { catalogUrl, I18N_PROJECT } from '../../packages/shared/i18n/project.ts';
 import {
@@ -52,9 +55,15 @@ export default defineConfig(() => ({
       sourceLocale: I18N_PROJECT.sourceLocale,
     }),
     tailwindcss(),
+    // Renders Markdown one file at a time so heading ids (`usage-1`) do not differ between builds.
+    doqDeterministicMarkdown(),
     analog({
       ssr: true,
       workspaceRoot: REPO,
+      // Required by Doqs for code blocks, tabs and demos.
+      content: { highlighter: 'prism' },
+      // The documentation is prerendered (every locale); the catalog pages stay server-rendered.
+      prerender: { routes: async () => doqPrerenderRoutes(doqPaths) },
       nitro: {
         preset: 'cloudflare-pages',
         externals: {

@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { LmnGithubIcon } from 'lumen-icons';
 import { VoltNativeButton, VoltSeparator } from 'volt';
 import { injectAppI18n } from '@shared/i18n/i18n';
@@ -8,7 +9,7 @@ import { docsUrl, GITHUB_URL, SITE_NAME } from '../lib/site';
 @Component({
   selector: 'app-footer',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [LmnGithubIcon, VoltNativeButton, VoltSeparator],
+  imports: [RouterLink, LmnGithubIcon, VoltNativeButton, VoltSeparator],
   template: `
     <footer class="relative z-10 border-t border-border/50 bg-muted/15 py-10">
       <div
@@ -22,7 +23,9 @@ import { docsUrl, GITHUB_URL, SITE_NAME } from '../lib/site';
           </div>
         </div>
         <div class="flex flex-wrap items-center gap-1">
-          <a voltButton variant="ghost" size="sm" [href]="docsHref()">{{ t('nav.docs') }}</a>
+          <a voltButton variant="ghost" size="sm" [routerLink]="path('/docs')">{{
+            t('nav.docs')
+          }}</a>
           <a voltButton variant="ghost" size="sm" [href]="componentsHref()">{{
             t('nav.components')
           }}</a>
@@ -51,15 +54,13 @@ export class Footer {
   private readonly translations = injectAppI18n();
 
   protected readonly t = this.translations.t;
+  protected readonly path = this.translations.path;
 
   protected readonly siteName = SITE_NAME;
   protected readonly github = GITHUB_URL;
   protected readonly storybook = STORYBOOK_URL;
   protected readonly currentYear = new Date().getFullYear();
 
-  protected readonly docsHref = computed(() =>
-    docsUrl(this.translations.locale(), '/docs/introduction')
-  );
   protected readonly componentsHref = computed(() =>
     docsUrl(this.translations.locale(), '/docs/components')
   );

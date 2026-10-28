@@ -53,8 +53,18 @@ import { docsUrl, GITHUB_URL, SITE_NAME } from '../lib/site';
               {{ label(section.kind) }}
             </a>
           }
-          <a voltButton variant="ghost" [href]="docsHref()" class="transition-colors">
+          <a
+            voltButton
+            variant="ghost"
+            [routerLink]="path('/docs')"
+            routerLinkActive="bg-accent text-accent-foreground ring-1 ring-inset ring-primary/50"
+            ariaCurrentWhenActive="page"
+            class="transition-colors"
+          >
             {{ t('nav.docs') }}
+          </a>
+          <a voltButton variant="ghost" [href]="componentsHref()" class="transition-colors">
+            {{ t('nav.components') }}
           </a>
         </nav>
 
@@ -91,7 +101,18 @@ import { docsUrl, GITHUB_URL, SITE_NAME } from '../lib/site';
             {{ label(section.kind) }}
           </a>
         }
-        <a voltButton variant="ghost" size="sm" [href]="docsHref()">{{ t('nav.docs') }}</a>
+        <a
+          voltButton
+          variant="ghost"
+          size="sm"
+          [routerLink]="path('/docs')"
+          routerLinkActive="bg-accent text-accent-foreground ring-1 ring-inset ring-primary/50"
+          ariaCurrentWhenActive="page"
+          >{{ t('nav.docs') }}</a
+        >
+        <a voltButton variant="ghost" size="sm" [href]="componentsHref()">{{
+          t('nav.components')
+        }}</a>
       </nav>
     </header>
   `,
@@ -106,8 +127,8 @@ export class Header {
   protected readonly github = GITHUB_URL;
   protected readonly sections = CATALOG_KINDS.map(kind => ({ kind, path: listingPath(kind) }));
 
-  protected readonly docsHref = computed(() =>
-    docsUrl(this.translations.locale(), '/docs/introduction')
+  protected readonly componentsHref = computed(() =>
+    docsUrl(this.translations.locale(), '/docs/components')
   );
 
   /** Blocks and Layouts have Glossa titles; Recipes is a proper name until its key exists. */

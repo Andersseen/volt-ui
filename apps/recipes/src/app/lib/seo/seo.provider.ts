@@ -11,6 +11,7 @@ import { plainText } from '@shared/seo/paths';
 import { SeoService } from '@shared/seo/seo.service';
 import { entryForPath, listingPath, type CatalogEntry, type CatalogKind } from '../catalog';
 import { breadcrumbJsonLd, homeJsonLd, type JsonLd } from './json-ld';
+import { DOC_PAGES } from './docs-pages';
 import { seoEntryFor, type SeoEntry } from './seo-catalog';
 import { absoluteUrl, barePath, localeOfPath, localizedPath, SITE_NAME } from '../site';
 
@@ -62,7 +63,7 @@ export function provideSeo(): EnvironmentProviders {
             return;
           }
 
-          const { title, description } = describe(entry, t);
+          const { title, description } = describe(entry, t, locale);
           seo.apply({
             title,
             description,
@@ -90,8 +91,15 @@ function nameOf(entry: CatalogEntry, t: T): string {
 
 const titled = (name: string): string => `${name} — ${SITE_NAME}`;
 
-function describe(entry: SeoEntry, t: T): { title: string; description: string } {
+function describe(entry: SeoEntry, t: T, locale: string): { title: string; description: string } {
   switch (entry.kind) {
+    case 'doc': {
+      const page = DOC_PAGES.find(candidate => candidate.slug === entry.slug);
+      return {
+        title: titled(page?.titles[locale] ?? page?.titles['en'] ?? entry.slug),
+        description: page?.descriptions[locale] ?? page?.descriptions['en'] ?? homeDescription(t),
+      };
+    }
     case 'home':
       return { title: SITE_NAME, description: homeDescription(t) };
     case 'listing':
@@ -134,6 +142,22 @@ function singular(kind: CatalogKind | undefined): 'block' | 'layout' | 'recipe' 
 
 function structuredData(entry: SeoEntry, locale: string, t: T): JsonLd[] {
   if (entry.kind === 'home') return homeJsonLd(homeDescription(t));
+  if (entry.kind === 'doc') {
+    const page = DOC_PAGES.find(candidate => candidate.slug === entry.slug);
+    return [
+      breadcrumbJsonLd(
+        [
+          { name: SITE_NAME, path: localizedPath('/', locale) },
+          { name: t('nav.docs'), path: localizedPath('/docs', locale) },
+          {
+            name: page?.titles[locale] ?? page?.titles['en'] ?? entry.slug,
+            path: localizedPath(entry.path, locale),
+          },
+        ],
+        absoluteUrl
+      ),
+    ];
+  }
   if (entry.kind !== 'entry') return [];
 
   const catalogEntry = entryForPath(entry.path);

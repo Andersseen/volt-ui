@@ -4,6 +4,13 @@
 
 Volt UI itself — the components, theming and API reference — is documented at https://voltui.dev. This site is available in English, Spanish and Ukrainian.
 
+## Documentation
+
+- [Adding a recipe](https://recipes.voltui.dev/docs/adding-a-recipe): The steps for contributing a block, a layout or a recipe to Volt UI Recipes.
+- [Blocks, layouts and recipes](https://recipes.voltui.dev/docs/blocks-layouts-recipes): How a block, a layout and a recipe differ, and when to reach for each.
+- [Copying a recipe](https://recipes.voltui.dev/docs/copying-a-recipe): Install the packages a block, layout or recipe needs, copy its source and check it compiles in your project.
+- [Introduction](https://recipes.voltui.dev/docs/introduction): What Volt UI Recipes is, what it publishes and how it relates to the Volt UI component library.
+
 ## Blocks
 
 - [Hero](https://recipes.voltui.dev/blocks/hero)

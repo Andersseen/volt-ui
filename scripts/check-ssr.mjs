@@ -12,7 +12,7 @@
  * `--shard i/n` checks every n-th route, so CI can split the run across jobs.
  */
 import { spawn } from 'node:child_process';
-import { existsSync } from 'node:fs';
+import { existsSync, readdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { BLOCKS } from '../apps/recipes/src/app/lib/blocks-metadata.ts';
@@ -75,6 +75,10 @@ const allRoutes =
         '/blocks',
         '/layouts',
         '/recipes',
+        '/docs',
+        ...readdirSync(join(ROOT, 'apps/recipes/src/content/docs'))
+          .filter(file => file.endsWith('.md'))
+          .flatMap(file => ['', '/es', '/uk'].map(prefix => `${prefix}/docs/${file.slice(0, -3)}`)),
         ...BLOCKS.map(b => b.path),
         ...LAYOUTS.map(l => l.path),
         ...RECIPES.map(r => r.path),

@@ -88,7 +88,7 @@ cli/              @voltui/cli and @voltui/agent (own release flow, outside the w
 
 `packages/shared/` holds only what both need and is imported as `@shared/*`: i18n (one Glossa project, one generated contract), theme presets and `styles/site.css` (the token imports), the code panel, copy button, theme/language switchers, SEO service and URL helpers. Neither app imports the other's private directories; the one sanctioned bridge is `packages/shared/legacy-redirects.ts`, built from the Recipes catalog.
 
-Recipes shows what you can **build**; it never re-documents a component's API (that is voltui.dev, linked with absolute URLs). Blocks, layouts and recipes stay copyable source, never `@voltui/components` exports. To add one, see `docs/recipes-app.md`; to deploy, same file. Old `/docs/{blocks,layouts,recipes}/*` URLs 301 to Recipes (`packages/shared/legacy-redirects.ts`).
+Recipes also hosts its own guides at `/docs`, written in Markdown (en/es/uk) and rendered by Doqs (`@doqs/analog`) — see `docs/recipes-app.md`. Recipes shows what you can **build**; it never re-documents a component's API (that is voltui.dev, linked with absolute URLs). Blocks, layouts and recipes stay copyable source, never `@voltui/components` exports. To add one, see `docs/recipes-app.md`; to deploy, same file. Old `/docs/{blocks,layouts,recipes}/*` URLs 301 to Recipes (`packages/shared/legacy-redirects.ts`).
 
 ## Docs site rules
 

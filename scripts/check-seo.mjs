@@ -91,6 +91,19 @@ const PAGES = RECIPES
       { path: '/recipes/async-search', lang: 'en', title: /Async search/, breadcrumbs: true },
       { path: '/es/blocks/pricing', lang: 'es', title: /Bloque Pricing Tiers/, breadcrumbs: true },
       { path: '/uk/layouts', lang: 'uk', title: /Макети/ },
+      { path: '/docs/copying-a-recipe', lang: 'en', title: /Copying a recipe/, breadcrumbs: true },
+      {
+        path: '/es/docs/copying-a-recipe',
+        lang: 'es',
+        title: /Copiar una receta/,
+        breadcrumbs: true,
+      },
+      {
+        path: '/uk/docs/adding-a-recipe',
+        lang: 'uk',
+        title: /Додавання рецепта/,
+        breadcrumbs: true,
+      },
     ]
   : [
       { path: '/', lang: 'en', title: /Volt UI/, home: true },

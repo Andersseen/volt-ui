@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import {
   VoltCard,
@@ -10,7 +10,7 @@ import {
 import { injectAppI18n } from '@shared/i18n/i18n';
 import { CatalogCard } from '../components/catalog-card';
 import { entriesOf, FEATURED, listingPath, type CatalogKind } from '../lib/catalog';
-import { docsUrl, SITE_NAME } from '../lib/site';
+import { SITE_NAME } from '../lib/site';
 
 /**
  * Where a visitor lands: what the site is, the three ways in, and a handful of real entries.
@@ -45,7 +45,7 @@ import { docsUrl, SITE_NAME } from '../lib/site';
         <p class="text-lg text-muted-foreground">{{ t('gallery.blocks.lede') }}</p>
         <div class="flex flex-wrap gap-3">
           <a voltButton [routerLink]="path('/blocks')">{{ t('gallery.blocks.browse') }}</a>
-          <a voltButton variant="outline" [href]="docsHref()">{{ t('nav.docs') }}</a>
+          <a voltButton variant="outline" [routerLink]="path('/docs')">{{ t('nav.docs') }}</a>
         </div>
       </section>
 
@@ -84,9 +84,6 @@ export default class HomePage {
 
   protected readonly siteName = SITE_NAME;
   protected readonly featured = FEATURED;
-  protected readonly docsHref = computed(() =>
-    docsUrl(this.translations.locale(), '/docs/introduction')
-  );
 
   /** Recipes has no published title or description yet, so it shows its own entry names. */
   protected readonly sections: readonly {

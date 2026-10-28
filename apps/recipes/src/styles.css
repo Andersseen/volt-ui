@@ -10,3 +10,25 @@
 
 @source '../../../packages/shared';
 @source '../../../packages/volt/src/lib';
+
+/* Doqs (the documentation region, /docs): its own styles, mapped onto the shared Volt tokens. */
+@import '@doqs/analog/styles.css';
+
+:root {
+  --host-docs-background: var(--background);
+  --host-docs-foreground: var(--foreground);
+  --host-docs-primary: var(--primary);
+  --host-docs-border: var(--border);
+  --host-docs-surface: var(--surface);
+  --host-docs-secondary: var(--muted-foreground);
+  --host-docs-muted: var(--muted-foreground);
+  --host-docs-primary-text: var(--primary);
+  --host-docs-focus: var(--ring);
+  --host-docs-code-background: var(--muted);
+  --host-docs-code-foreground: var(--foreground);
+  --host-docs-playground-surface: var(--surface);
+  --host-docs-playground-preview: var(--background);
+  /* The sticky site header (4rem) plus the section row shown below md. */
+  --host-docs-scroll-offset: 6.5rem;
+  --host-docs-sticky-offset: 4.5rem;
+}

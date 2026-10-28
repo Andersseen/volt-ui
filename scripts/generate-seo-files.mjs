@@ -49,6 +49,7 @@ try {
     site: await vite.ssrLoadModule('/apps/recipes/src/app/lib/site.ts'),
     catalog: await vite.ssrLoadModule('/apps/recipes/src/app/lib/seo/seo-catalog.ts'),
     entries: await vite.ssrLoadModule('/apps/recipes/src/app/lib/catalog.ts'),
+    docs: await vite.ssrLoadModule('/apps/recipes/src/app/lib/seo/docs-pages.ts'),
   };
   project = await vite.ssrLoadModule('/packages/shared/i18n/project.ts');
 } finally {
@@ -160,7 +161,7 @@ ${NPM_PACKAGES.map(pkg => `- [${pkg.name}](${pkg.url}): ${pkg.purpose}`).join('\
 `;
 }
 
-function llmsRecipes({ site, entries }) {
+function llmsRecipes({ site, entries, docs }) {
   const { SITE_NAME, SITE_ORIGIN, DOCS_ORIGIN, GITHUB_URL, absoluteUrl } = site;
   const list = kind =>
     entries
@@ -172,6 +173,10 @@ function llmsRecipes({ site, entries }) {
 > Copyable blocks, application layouts and tested recipes built from Volt UI, an open-source Angular component library built on ng-primitives. Every example has a live preview, complete source and install instructions. Blocks, layouts and recipes are source you copy into your project, not library exports.
 
 Volt UI itself — the components, theming and API reference — is documented at ${DOCS_ORIGIN}. This site is available in English, Spanish and Ukrainian.
+
+## Documentation
+
+${docs.DOC_PAGES.map(page => `- [${page.titles.en}](${absoluteUrl(page.path)}): ${page.descriptions.en}`).join('\n')}
 
 ## Blocks
 

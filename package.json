@@ -106,6 +106,7 @@
     "pnpm": ">=9.0.0"
   },
   "dependencies": {
+    "@analogjs/content": "^2.9.2",
     "@analogjs/platform": "^2.8.0",
     "@analogjs/router": "^2.6.1",
     "@angular/animations": "^22.2.2",
@@ -117,6 +118,7 @@
     "@angular/platform-browser": "^22.2.2",
     "@angular/platform-server": "^22.2.2",
     "@angular/router": "^22.2.2",
+    "@doqs/analog": "^0.12.0",
     "@etyma/analog": "1.0.0",
     "@etyma/angular": "1.0.0",
     "@etyma/core": "1.0.0",
@@ -127,6 +129,7 @@
     "clsx": "^2.1.1",
     "lumen-icons": "^0.1.0",
     "ng-primitives": "0.131.2",
+    "prismjs": "^1.30.0",
     "rxjs": "~7.8.0",
     "tailwind-merge": "^3.5.0",
     "tailwindcss": "^4.3.0",
