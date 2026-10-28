@@ -7,7 +7,7 @@
     <script>
       // Applies the visitor's saved theme before first paint so there is no
       // flash of the default (volt/sharp/light) theme while Angular loads.
-      // This mirrors shared/components/theme-switcher.ts's localStorage
+      // This mirrors packages/shared/components/theme-switcher.ts's localStorage
       // keys; keep both in sync if those keys ever change. Runs unguarded
       // because it only ever executes in the browser (a raw <script> tag
       // is never evaluated by Angular's server renderer, just serialized).
@@ -43,7 +43,7 @@
       Boot skeleton. While the site stylesheet is still loading (in production it is
       render-blocking, so this never paints; in \`vite dev\` CSS arrives after the HTML), an
       unstyled page would flash raw markup. This covers it with the shape of the page, using
-      only the inline styles below, and src/styles.css hides it the moment it applies.
+      only the inline styles below, and apps/web/src/styles.css hides it the moment it applies.
     -->
     <style>
       #volt-boot {

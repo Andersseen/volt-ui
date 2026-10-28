@@ -144,7 +144,7 @@ export class ExampleComponent {}
 
 <br/>
 
-- Copies from `projects/volt/src/lib` into `src/app/ui` by default.
+- Copies from `packages/volt/src/lib` into `src/app/ui` by default.
 - Transforms `Volt*` → `Ui*` and `volt-*` → `ui-*`.
 - Detects and copies local component dependencies automatically.
 - Refuses to overwrite existing files unless `--force` is passed.

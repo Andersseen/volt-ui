@@ -92,8 +92,8 @@
       "Write(./playwright-report/**)",
       "Edit(./test-results/**)",
       "Write(./test-results/**)",
-      "Edit(./public/manifest.json)",
-      "Write(./public/manifest.json)",
+      "Edit(./apps/web/public/manifest.json)",
+      "Write(./apps/web/public/manifest.json)",
       "Edit(./pnpm-lock.yaml)",
       "Write(./pnpm-lock.yaml)"
     ]

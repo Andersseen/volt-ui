@@ -16,7 +16,7 @@ in the working tree.
 ## The theme mechanism (do not guess it)
 
 Theming is three independent switches on `<html>`, applied by `applyVoltTheme()` in
-`projects/volt/src/lib/components/theme/theme.ts`:
+`packages/volt/src/lib/components/theme/theme.ts`:
 
 | Switch | Where                              | Values                                  |
 | ------ | ---------------------------------- | --------------------------------------- |
@@ -28,7 +28,7 @@ Dark mode is a class, not a media query — `core.css` declares
 `@custom-variant dark (&:where(.dark, .dark *))`. The docs app persists choices in
 `localStorage` under `volt-color`, `volt-style`, `volt-dark`.
 
-Token sources live in `projects/volt/src/themes/`: `colors/*.css`, `styles/*.css`, and the
+Token sources live in `packages/volt/src/themes/`: `colors/*.css`, `styles/*.css`, and the
 25 precomputed pairs in `presets/*.css`.
 
 ## Step 1 — Static pass first (cheap, catches most of it)
@@ -37,7 +37,7 @@ Grep the component before opening a browser. These are the patterns that break a
 presets, and they are findable without rendering anything:
 
 ```bash
-C=projects/volt/src/lib/components/<name>
+C=packages/volt/src/lib/components/<name>
 grep -nE "#[0-9a-fA-F]{3,8}\b|rgb\(|hsl\(" $C/*.ts          # hardcoded color
 grep -nE "\[var\(--" $C/*.ts                                  # bg-[var(--primary)] instead of bg-primary
 grep -nE "\b(white|black|gray|slate|zinc|neutral)-[0-9]{2,3}\b" $C/*.ts  # Tailwind palette instead of semantic token
@@ -104,5 +104,5 @@ One table: preset → finding → the exact file and line. Then the fix, which i
 the other 49 combinations.
 
 If a token genuinely does not exist for what the component needs, that is a
-`projects/volt/src/themes/core.css` change: add the `--volt-*` source variable and map it
+`packages/volt/src/themes/core.css` change: add the `--volt-*` source variable and map it
 in `@theme inline`. Never introduce a recursive CSS variable (`AGENTS.md`).

@@ -1,0 +1,16 @@
+{
+  "name": "@voltui/web",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Volt UI documentation site (https://voltui.dev). Scripts run from the repository root: paths in the repo's tooling are root-relative.",
+  "scripts": {
+    "predev": "cd ../.. && node cli/generate-manifest.js && node scripts/generate-site-stats.mjs",
+    "dev": "cd ../.. && vite --config apps/web/vite.config.ts",
+    "prebuild": "cd ../.. && node cli/generate-manifest.js && node scripts/generate-site-stats.mjs",
+    "build": "cd ../.. && vite build --config apps/web/vite.config.ts",
+    "postbuild": "cd ../.. && node scripts/prepare-cloudflare-pages-output.mjs && node scripts/check-server-bundle.mjs",
+    "preview": "cd ../.. && wrangler pages dev dist/apps/web/analog/public",
+    "typecheck": "cd ../.. && tsc --noEmit --project apps/web/tsconfig.app.json && ngc --project apps/web/tsconfig.app.json --noEmit"
+  }
+}

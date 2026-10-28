@@ -1,5 +1,5 @@
 import type { ArgTypes } from '@storybook/angular-vite';
-import type { ComponentApi } from '../../src/app/lib/api-reference.generated';
+import type { ComponentApi } from '../../apps/web/src/app/lib/api-reference.generated';
 
 /**
  * Select controls for every CVA variant group, read from the generated API reference so the

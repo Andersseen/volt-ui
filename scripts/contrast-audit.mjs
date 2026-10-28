@@ -5,7 +5,7 @@
  * Volt's presets are a cross product of *color* (`data-color`) and *style*
  * (`data-style`), but style presets (sharp/soft/brutal/ghost/retro) only ever
  * set radius/shadow/spacing/font-weight tokens — never a color token. Verified
- * by grepping `projects/volt/src/themes/styles/*.css` for exact `--<token>:`
+ * by grepping `packages/volt/src/themes/styles/*.css` for exact `--<token>:`
  * matches against the semantic color variable names; there are none. So the
  * meaningful contrast surface is 5 colors x 2 modes (light/dark) = 10
  * combinations, not the full 50 color x style x mode cross product.
@@ -19,7 +19,7 @@ import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
-const THEMES = join(ROOT, 'projects/volt/src/themes');
+const THEMES = join(ROOT, 'packages/volt/src/themes');
 
 // ---------------------------------------------------------------------------
 // oklch(L C H) -> linear sRGB, per the CSS Color 4 OKLab matrices.

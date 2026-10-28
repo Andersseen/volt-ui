@@ -4,13 +4,13 @@ import tailwindcss from '@tailwindcss/vite';
 import { etymaRemoteContract, etymaRemoteValidation } from '@etyma/tooling/vite';
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
-import { catalogUrl, I18N_PROJECT } from '../../shared/i18n/project.ts';
+import { catalogUrl, I18N_PROJECT } from '../../packages/shared/i18n/project.ts';
 import {
   freshRouteTablePlugin,
   noMarkdownDepsPlugin,
   rawTypeScriptPlugin,
   serverModeChunksPlugin,
-} from '../../shared/vite-plugins.ts';
+} from '../../packages/shared/vite-plugins.ts';
 
 /**
  * Volt UI Recipes (https://recipes.voltui.dev).
@@ -18,7 +18,7 @@ import {
  * A second Analog application in the same workspace. `root` points Analog at `apps/recipes/`,
  * so the page glob, `index.html`, `src/main.ts` and `public/` are all this app's own, and
  * Analog's Nitro output lands in `dist/apps/recipes/analog/` — never in the Volt UI site's
- * `dist/analog/`. `workspaceRoot` is the repository, which is what keeps `dist/` shared.
+ * `dist/apps/recipes/analog/`. `workspaceRoot` is the repository, which is what keeps `dist/` shared.
  *
  * The library and the theme tokens are not copied: `volt` and `@shared` resolve to the same
  * sources the docs site compiles.
@@ -40,11 +40,11 @@ export default defineConfig(() => ({
     noMarkdownDepsPlugin(),
     serverModeChunksPlugin(),
     rawTypeScriptPlugin(),
-    // The same Glossa project as the docs site (see shared/i18n/project.ts), so one contract file
+    // The same Glossa project as the docs site (see packages/shared/i18n/project.ts), so one contract file
     // serves both applications and neither can be built against a different catalog.
     etymaRemoteContract({
       source: catalogUrl(I18N_PROJECT.sourceLocale),
-      output: resolve(REPO, 'shared/i18n/etyma.generated.ts'),
+      output: resolve(REPO, 'packages/shared/i18n/etyma.generated.ts'),
     }),
     etymaRemoteValidation({
       remote: I18N_PROJECT.remote,
@@ -66,8 +66,8 @@ export default defineConfig(() => ({
   resolve: {
     dedupe: ['@analogjs/router'],
     alias: {
-      volt: resolve(REPO, 'projects/volt/src/public-api.ts'),
-      '@shared': resolve(REPO, 'shared'),
+      volt: resolve(REPO, 'packages/volt/src/public-api.ts'),
+      '@shared': resolve(REPO, 'packages/shared'),
     },
   },
   build: {

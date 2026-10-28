@@ -36,21 +36,21 @@ const vite = await createServer({
   configFile: false,
   appType: 'custom',
   logLevel: 'silent',
-  resolve: { alias: { '@shared': join(ROOT, 'shared') } },
+  resolve: { alias: { '@shared': join(ROOT, 'packages/shared') } },
   server: { middlewareMode: true, hmr: false, watch: null },
 });
 let docs, recipes, project;
 try {
   docs = {
-    site: await vite.ssrLoadModule('/src/app/lib/seo/site.ts'),
-    catalog: await vite.ssrLoadModule('/src/app/lib/seo/seo-catalog.ts'),
+    site: await vite.ssrLoadModule('/apps/web/src/app/lib/seo/site.ts'),
+    catalog: await vite.ssrLoadModule('/apps/web/src/app/lib/seo/seo-catalog.ts'),
   };
   recipes = {
     site: await vite.ssrLoadModule('/apps/recipes/src/app/lib/site.ts'),
     catalog: await vite.ssrLoadModule('/apps/recipes/src/app/lib/seo/seo-catalog.ts'),
     entries: await vite.ssrLoadModule('/apps/recipes/src/app/lib/catalog.ts'),
   };
-  project = await vite.ssrLoadModule('/shared/i18n/project.ts');
+  project = await vite.ssrLoadModule('/packages/shared/i18n/project.ts');
 } finally {
   await vite.close();
 }
@@ -201,9 +201,9 @@ const titleCase = slug =>
     .join(' ');
 
 const files = {
-  'public/robots.txt': robots(docs),
-  'public/sitemap.xml': sitemap(docs),
-  'public/llms.txt': llmsDocs(docs),
+  'apps/web/public/robots.txt': robots(docs),
+  'apps/web/public/sitemap.xml': sitemap(docs),
+  'apps/web/public/llms.txt': llmsDocs(docs),
   'apps/recipes/public/robots.txt': robots(recipes),
   'apps/recipes/public/sitemap.xml': sitemap(recipes),
   'apps/recipes/public/llms.txt': llmsRecipes(recipes),

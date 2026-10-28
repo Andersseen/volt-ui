@@ -7,6 +7,7 @@ Second application in this workspace: https://recipes.voltui.dev. Blocks, layout
 ```bash
 pnpm dev:recipes        # http://localhost:4300
 pnpm build:recipes      # dist/apps/recipes/{client,ssr,analog}
+pnpm build:all          # docs + Recipes in parallel through Turborepo
 pnpm preview:recipes    # wrangler serves dist/apps/recipes/analog/public
 pnpm typecheck:recipes
 pnpm test:e2e:recipes   # playwright.recipes.config.ts (E2E_SERVER=dev|preview|wrangler)

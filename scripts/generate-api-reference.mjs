@@ -9,7 +9,7 @@
  * the two outputs can never drift from each other.
  *
  * Usage: node scripts/generate-api-reference.mjs
- * Writes: src/app/lib/api-reference.generated.ts
+ * Writes: apps/web/src/app/lib/api-reference.generated.ts
  */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { format, resolveConfig } from 'prettier';
@@ -19,9 +19,9 @@ import { listComponentDirs, processComponentDir, toUpperSnake } from './lib/api-
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
-const COMP_ROOT = join(ROOT, 'projects/volt/src/lib/components');
-const LAYOUT_ROOT = join(ROOT, 'projects/volt/src/lib/layouts');
-const OUT_FILE = join(ROOT, 'src/app/lib/api-reference.generated.ts');
+const COMP_ROOT = join(ROOT, 'packages/volt/src/lib/components');
+const LAYOUT_ROOT = join(ROOT, 'packages/volt/src/lib/layouts');
+const OUT_FILE = join(ROOT, 'apps/web/src/app/lib/api-reference.generated.ts');
 
 // Components with no renderable directive (documented as a prose guide
 // instead of a Preview+Code demo page — see themes.page.ts).

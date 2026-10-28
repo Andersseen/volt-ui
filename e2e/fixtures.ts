@@ -18,7 +18,7 @@ import { test as base, expect } from '@playwright/test';
  * A spec that needs its own response (a slow or failing catalog) registers `page.route` after
  * this runs, and Playwright matches the most recently registered route first.
  */
-const FIXTURES = fileURLToPath(new URL('../shared/i18n/__fixtures__', import.meta.url));
+const FIXTURES = fileURLToPath(new URL('../packages/shared/i18n/__fixtures__', import.meta.url));
 const catalogs = new Map(
   ['en', 'es', 'uk'].map(locale => [locale, readFileSync(join(FIXTURES, `${locale}.json`), 'utf8')])
 );

@@ -24,8 +24,8 @@ import {
 } from 'lumen-icons';
 import { LayoutShowcase } from '../../../components/layout-showcase';
 import { layoutBySlug } from '../../../lib/layouts-metadata';
-import sidebarSource from '../../../../../../../projects/volt/src/lib/layouts/sidebar/sidebar.ts?raw';
-import sidebarServiceSource from '../../../../../../../projects/volt/src/lib/layouts/sidebar/sidebar.service.ts?raw';
+import sidebarSource from '../../../../../../../packages/volt/src/lib/layouts/sidebar/sidebar.ts?raw';
+import sidebarServiceSource from '../../../../../../../packages/volt/src/lib/layouts/sidebar/sidebar.service.ts?raw';
 
 @Component({
   selector: 'app-sidebar-demo',

@@ -5,9 +5,9 @@ const baseURL = `http://127.0.0.1:${port}`;
 const serverMode = process.env['E2E_SERVER'] ?? 'dev';
 const webServerCommand =
   serverMode === 'wrangler'
-    ? `pnpm exec wrangler pages dev dist/analog/public --ip 127.0.0.1 --port ${port}`
+    ? `pnpm exec wrangler pages dev dist/apps/web/analog/public --ip 127.0.0.1 --port ${port}`
     : serverMode === 'preview'
-      ? `pnpm exec vite preview --host 127.0.0.1 --port ${port} --strictPort`
+      ? `pnpm exec vite preview --config apps/web/vite.config.ts --host 127.0.0.1 --port ${port} --strictPort`
       : `pnpm dev -- --host 127.0.0.1 --port ${port}`;
 
 export default defineConfig({

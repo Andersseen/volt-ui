@@ -6,7 +6,7 @@ import type { PlainTranslationKey } from '@shared/i18n/i18n';
  * A block is a whole page section — a hero, a pricing table, a footer — composed from
  * Volt components and copied into a project wholesale. It is deliberately not a library
  * export: the moment a section ships as a dependency, every product using it looks the
- * same and nobody can change the parts they need to change. `projects/volt/` stays the
+ * same and nobody can change the parts they need to change. `packages/volt/` stays the
  * component surface; this stays the arrangement of it.
  *
  * The catalog is grouped by the kind of section rather than by one flat "marketing"

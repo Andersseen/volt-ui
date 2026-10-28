@@ -19,7 +19,7 @@ never double-publishes.
 
 | Package              | Version source               | npm                                                     | Release tag         |
 | -------------------- | ---------------------------- | ------------------------------------------------------- | ------------------- |
-| `@voltui/components` | `projects/volt/package.json` | [npm](https://www.npmjs.com/package/@voltui/components) | `components-vX.Y.Z` |
+| `@voltui/components` | `packages/volt/package.json` | [npm](https://www.npmjs.com/package/@voltui/components) | `components-vX.Y.Z` |
 | `@voltui/cli`        | `cli/package.json`           | [npm](https://www.npmjs.com/package/@voltui/cli)        | `cli-vX.Y.Z`        |
 | `@voltui/agent`      | `cli/agent/package.json`     | [npm](https://www.npmjs.com/package/@voltui/agent)      | `agent-vX.Y.Z`      |
 
@@ -41,7 +41,7 @@ That's the only secret required (`GITHUB_TOKEN` is provided automatically).
 ## Cutting a release
 
 1. Open a PR that bumps the version of whatever you're releasing, e.g. in
-   `projects/volt/package.json`. Keep [`CHANGELOG.md`](CHANGELOG.md) updated in the
+   `packages/volt/package.json`. Keep [`CHANGELOG.md`](CHANGELOG.md) updated in the
    same PR.
 2. Merge to `main`.
 3. The **Release** workflow fires, publishes the bumped package(s), and creates the

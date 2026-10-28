@@ -1,6 +1,0 @@
-/* Volt UI docs site. Tokens, theme presets and base rules are shared with Recipes: see shared/styles/site.css. */
-@import 'tailwindcss';
-@import '../shared/styles/site.css';
-
-@source '../shared';
-@source '../projects/volt/src/lib';

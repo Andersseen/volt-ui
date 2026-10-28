@@ -16,5 +16,5 @@ const TARGET = join(ROOT, 'apps/recipes/public');
 
 mkdirSync(TARGET, { recursive: true });
 for (const file of ['web-editor-lite.min.js', 'vertex-sw.js']) {
-  copyFileSync(join(ROOT, 'public', file), join(TARGET, file));
+  copyFileSync(join(ROOT, 'apps/web/public', file), join(TARGET, file));
 }

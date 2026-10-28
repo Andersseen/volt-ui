@@ -11,7 +11,7 @@ import type { Page } from '@playwright/test';
  * computed styles off a live rendered button — the same signal a human
  * would notice as "the theme didn't change" if the CSS pipeline regresses
  * (e.g. the docs app's styles.css silently drifting from the token source
- * in projects/volt/src/themes/, which is exactly what happened before v0.8).
+ * in packages/volt/src/themes/, which is exactly what happened before v0.8).
  */
 
 const COLOR_OPTIONS = ['Ember', 'Sage', 'Dusk', 'Glacier'] as const;
@@ -51,7 +51,7 @@ async function readTokens(page: Page) {
 test.describe('Theme preset cycling', () => {
   test.beforeEach(async ({ page }) => {
     // Desktop viewport: the theme popover trigger lives in the desktop header
-    // (see src/app/components/theme-switcher.ts).
+    // (see apps/web/src/app/components/theme-switcher.ts).
     await page.setViewportSize({ width: 1280, height: 900 });
     await page.goto('/docs/components/button');
     await expect(page.getByRole('button', { name: 'Solid' })).toBeVisible();

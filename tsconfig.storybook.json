@@ -10,6 +10,6 @@
     "stories/**/*.ts",
     ".storybook/*.ts",
     ".storybook/*.tsx",
-    "src/app/lib/api-reference.generated.ts"
+    "apps/web/src/app/lib/api-reference.generated.ts"
   ]
 }

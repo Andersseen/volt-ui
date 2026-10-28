@@ -1,6 +1,6 @@
 import { moduleMetadata, type Meta, type StoryObj } from '@storybook/angular-vite';
 import { VoltSkeleton } from 'volt';
-import { SKELETON_API } from '../../src/app/lib/api-reference.generated';
+import { SKELETON_API } from '../../apps/web/src/app/lib/api-reference.generated';
 import { variantArgTypes } from '../_helpers/api';
 
 const meta: Meta<VoltSkeleton> = {

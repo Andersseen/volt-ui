@@ -1,6 +1,6 @@
 /*
- * Storybook chrome only. Every design token comes from src/styles.css (imported first in
- * preview.ts), which in turn imports projects/volt/src/themes: there is no Storybook theme.
+ * Storybook chrome only. Every design token comes from apps/web/src/styles.css (imported first in
+ * preview.ts), which in turn imports packages/volt/src/themes: there is no Storybook theme.
  */
 body {
   background: var(--background);

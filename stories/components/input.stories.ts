@@ -1,7 +1,7 @@
 import { moduleMetadata, type Meta, type StoryObj } from '@storybook/angular-vite';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { VoltFormField, VoltHint, VoltError, VoltInput, VoltLabel } from 'volt';
-import { INPUT_API } from '../../src/app/lib/api-reference.generated';
+import { INPUT_API } from '../../apps/web/src/app/lib/api-reference.generated';
 import { variantArgTypes } from '../_helpers/api';
 
 const meta: Meta<VoltInput> = {

@@ -9,7 +9,7 @@
  *
  * Checks either application, each against its own origin and its own crawler files:
  *
- *   node scripts/check-seo.mjs                                   # Volt UI (voltui.dev), served from dist/analog
+ *   node scripts/check-seo.mjs                                   # Volt UI (voltui.dev), served from dist/apps/web/analog
  *   node scripts/check-seo.mjs --app recipes                     # Recipes (recipes.voltui.dev), from dist/apps/recipes
  *   node scripts/check-seo.mjs --url http://localhost:5173       # an already running server
  */
@@ -29,7 +29,7 @@ const RECIPES = APP === 'recipes';
 const ORIGIN = RECIPES ? 'https://recipes.voltui.dev' : 'https://voltui.dev';
 const OTHER_ORIGIN = RECIPES ? 'https://voltui.dev' : 'https://recipes.voltui.dev';
 const SITE_NAME = RECIPES ? 'Volt UI Recipes' : 'Volt UI';
-const OUTPUT = RECIPES ? 'dist/apps/recipes/analog/public' : 'dist/analog/public';
+const OUTPUT = RECIPES ? 'dist/apps/recipes/analog/public' : 'dist/apps/web/analog/public';
 // Written in pieces so this file is not itself a hit for the old-origin regression test.
 const OLD_ORIGIN = ['volt-ui', 'andersseen', 'dev'].join('.');
 const PORT = RECIPES ? 8797 : 8798;

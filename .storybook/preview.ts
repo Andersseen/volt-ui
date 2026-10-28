@@ -1,7 +1,7 @@
 import type { Preview } from '@storybook/angular-vite';
 import { addons } from 'storybook/preview-api';
 import { applyVoltTheme } from 'volt';
-import '../src/styles.css';
+import '../apps/web/src/styles.css';
 import './preview.css';
 import { VoltDocsContainer } from './docs-container';
 import { APPEARANCES, COLORS, STYLES } from './themes';

@@ -16,8 +16,8 @@
  *   duplicated-atom    a hand-styled card: a `bg-card text-card-foreground` div, or an `<a>`
  *                      that is a bordered rounded tile (use `<a><volt-card>` instead)
  *
- * Scans both applications (`src/app` and `apps/recipes/src/app`) and the components they share
- * (`shared/components`).
+ * Scans both applications (`apps/web/src/app` and `apps/recipes/src/app`) and the components they share
+ * (`packages/shared/components`).
  *
  * Not scanned: spec files, generated files, and `{blocks,layouts}` plus
  * `lib/snippets` in either app — those are source the site *displays* for consumers to copy, and the
@@ -34,9 +34,9 @@ import { fileURLToPath } from 'node:url';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 /** Every place site code lives: the docs app, the Recipes app and what they share. */
 const APPS = [
-  join(ROOT, 'src/app'),
+  join(ROOT, 'apps/web/src/app'),
   join(ROOT, 'apps/recipes/src/app'),
-  join(ROOT, 'shared/components'),
+  join(ROOT, 'packages/shared/components'),
 ];
 const INVENTORY = join(ROOT, 'specs/dogfood-inventory.md');
 
@@ -44,7 +44,7 @@ const INVENTORY = join(ROOT, 'specs/dogfood-inventory.md');
 const EXCEPTIONS = [
   {
     rule: 'raw-button',
-    file: 'src/app/components/theme-studio/theme-studio-setup.ts',
+    file: 'apps/web/src/app/components/theme-studio/theme-studio-setup.ts',
     match: 'store.toggleImport()',
     reason:
       'An inline text affordance inside a sentence-sized row; voltButton variant="link" would add the button box model (h-10, px-4) to what is a running-text link.',
@@ -149,13 +149,13 @@ function check() {
 function surface(rel) {
   if (/^src\/app\/pages\/\(components-docs\)/.test(rel)) return 'docs-demo';
   if (rel.startsWith('apps/recipes/src/app/recipes/')) return 'docs-demo';
-  if (rel === 'src/app/components/component-preview.ts') return 'docs-demo';
-  if (rel.startsWith('src/app/components/docs/')) return 'application';
+  if (rel === 'apps/web/src/app/components/component-preview.ts') return 'docs-demo';
+  if (rel.startsWith('apps/web/src/app/components/docs/')) return 'application';
   return 'application';
 }
 
 function inventory(used) {
-  const libIndex = readFileSync(join(ROOT, 'projects/volt/src/public-api.ts'), 'utf8');
+  const libIndex = readFileSync(join(ROOT, 'packages/volt/src/public-api.ts'), 'utf8');
   const components = [...libIndex.matchAll(/lib\/components\/([\w-]+)/g)].map(m => m[1]);
   const bySymbol = new Map();
   for (const { symbol, rel } of used) {
@@ -202,7 +202,7 @@ function render(rows) {
   for (const r of rows) {
     const files = r.app.length
       ? r.app
-          .map(f => f.replace('apps/recipes/src/app/', 'recipes:').replace('src/app/', ''))
+          .map(f => f.replace('apps/recipes/src/app/', 'recipes:').replace('apps/web/src/app/', ''))
           .join(', ')
       : '—';
     lines.push(`| ${r.name} | ${r.status} | ${files} |`);

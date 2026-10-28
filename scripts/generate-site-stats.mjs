@@ -18,7 +18,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const OUTPUT = resolve(root, 'src/app/lib/generated/site-stats.ts');
+const OUTPUT = resolve(root, 'apps/web/src/app/lib/generated/site-stats.ts');
 
 const countDirs = relativePath =>
   readdirSync(resolve(root, relativePath), { withFileTypes: true }).filter(entry =>
@@ -60,14 +60,14 @@ function runTestCount() {
 
 /** The published library version — what "Volt UI x.y.z" on the site means. */
 const libraryVersion = () =>
-  JSON.parse(readFileSync(resolve(root, 'projects/volt/package.json'), 'utf8')).version;
+  JSON.parse(readFileSync(resolve(root, 'packages/volt/package.json'), 'utf8')).version;
 
 const withTests = process.argv.includes('--with-tests');
 const version = libraryVersion();
-const components = countDirs('projects/volt/src/lib/components');
-const layouts = countDirs('projects/volt/src/lib/layouts');
-const colorPresets = countCssPresets('projects/volt/src/themes/colors');
-const stylePresets = countCssPresets('projects/volt/src/themes/styles');
+const components = countDirs('packages/volt/src/lib/components');
+const layouts = countDirs('packages/volt/src/lib/layouts');
+const colorPresets = countCssPresets('packages/volt/src/themes/colors');
+const stylePresets = countCssPresets('packages/volt/src/themes/styles');
 const tests = (withTests ? runTestCount() : null) ?? previousTestCount();
 
 if (tests === null) {

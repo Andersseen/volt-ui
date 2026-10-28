@@ -17,7 +17,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { BLOCKS } from '../apps/recipes/src/app/lib/blocks-metadata.ts';
 import { LAYOUTS } from '../apps/recipes/src/app/lib/layouts-metadata.ts';
-import { COMPONENTS } from '../src/app/lib/component-metadata.ts';
+import { COMPONENTS } from '../apps/web/src/app/lib/component-metadata.ts';
 import { RECIPES } from '../apps/recipes/src/app/lib/recipes-metadata.ts';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -29,7 +29,8 @@ if (!['docs', 'recipes'].includes(APP)) {
   console.error('--app must be "docs" or "recipes"');
   process.exit(1);
 }
-const OUTPUT = APP === 'recipes' ? 'dist/apps/recipes/analog/public' : 'dist/analog/public';
+const OUTPUT =
+  APP === 'recipes' ? 'dist/apps/recipes/analog/public' : 'dist/apps/web/analog/public';
 const PORT = portArg > -1 ? Number(process.argv[portArg + 1]) : APP === 'recipes' ? 8798 : 8799;
 
 /**

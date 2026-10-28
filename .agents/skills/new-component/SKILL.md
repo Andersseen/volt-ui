@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # New Volt UI component
 
-Creates a component under `projects/volt/src/lib/components/<name>/` and completes every
+Creates a component under `packages/volt/src/lib/components/<name>/` and completes every
 ripple effect, so CI and the `volt add` CLI stay green.
 
 Argument: the component name in kebab-case (e.g. `carousel`, `color-picker`).
@@ -20,9 +20,9 @@ Do not write code from memory. Read, in order:
 2. `specs/patterns/component.md` — the two canonical component shapes.
 3. `specs/patterns/docs-page.md` — demo page + snippet registration.
 4. The nearest existing sibling component as a live reference:
-   - CVA shape → `projects/volt/src/lib/components/button/`
-   - form-control shape → `projects/volt/src/lib/components/checkbox/`
-   - overlay → `projects/volt/src/lib/components/dialog/`
+   - CVA shape → `packages/volt/src/lib/components/button/`
+   - form-control shape → `packages/volt/src/lib/components/checkbox/`
+   - overlay → `packages/volt/src/lib/components/dialog/`
 
 If a pattern doc disagrees with real source, **the real file wins** — and say so, so the
 pattern doc gets updated.
@@ -47,7 +47,7 @@ behavior — that is an architectural decision, not an implementation detail.
 
 ## Step 3 — Create the library files
 
-`projects/volt/src/lib/components/<name>/`:
+`packages/volt/src/lib/components/<name>/`:
 
 - `<name>.ts` — selector `volt-<name>`, class `Volt<Name>`, `OnPush`, signals API.
 - `variants.ts` — Shape A only. Export `<name>Variants` + a `VariantProps` type.
@@ -64,7 +64,7 @@ Hard rules that bite here (from GUARDRAILS):
 
 ## Step 4 — Ripple effects (all six, no exceptions)
 
-1. `projects/volt/src/public-api.ts` — `export * from './lib/components/<name>';`
+1. `packages/volt/src/public-api.ts` — `export * from './lib/components/<name>';`
 2. `src/app/lib/snippets/index.ts` — `?raw` import + `<NAME>_SNIPPET` export.
 3. `src/app/lib/snippets/usage.ts` — `<NAME>_USAGE` template string.
 4. `src/app/pages/(components-docs)/docs/components/<name>.page.ts` — demo page,
@@ -91,7 +91,7 @@ Zoneless repo: no `fakeAsync`/`tick`. Use `await` + `fixture.whenStable()` or
 ## Step 6 — Verify
 
 ```bash
-pnpm vitest --run projects/volt/src/lib/components/<name>/<name>.spec.ts
+pnpm vitest --run packages/volt/src/lib/components/<name>/<name>.spec.ts
 pnpm typecheck && pnpm lint
 pnpm build:lib
 pnpm check:ai-docs

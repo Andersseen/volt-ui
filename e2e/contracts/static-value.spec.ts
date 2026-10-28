@@ -3,7 +3,7 @@ import { load } from './helpers';
 
 /**
  * The 1.3.0 class of failure, in a real browser: a literal initial value renders correctly and
- * then the component ignores every click. See projects/volt/src/lib/static-value.spec.ts.
+ * then the component ignores every click. See packages/volt/src/lib/static-value.spec.ts.
  */
 test.describe('a static initial value stays interactive', () => {
   test.beforeEach(async ({ page }) => load(page, 'static'));

@@ -27,8 +27,8 @@ pnpm typecheck:storybook && pnpm check:storybook   # when you touched a componen
 
 ## Components
 
-1. Add or edit source under `projects/volt/src/lib/components/<name>/`.
-2. Export new public APIs from `projects/volt/src/public-api.ts`.
+1. Add or edit source under `packages/volt/src/lib/components/<name>/`.
+2. Export new public APIs from `packages/volt/src/public-api.ts`.
 3. Add a real colocated `*.spec.ts` using Testing Library or TestBed.
 4. Update the docs page under
    `src/app/pages/(components-docs)/docs/components/`.

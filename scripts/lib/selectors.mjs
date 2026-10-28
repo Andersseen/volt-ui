@@ -3,7 +3,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../..');
-const LIB = join(ROOT, 'projects/volt/src/lib');
+const LIB = join(ROOT, 'packages/volt/src/lib');
 
 function walk(dir, out = []) {
   for (const name of readdirSync(dir)) {
@@ -48,7 +48,7 @@ export function templateNames(selectors = librarySelectors()) {
 
 /** Every class and function exported from the public API (what `@voltui/components` can import). */
 export function publicExports() {
-  const api = readFileSync(join(ROOT, 'projects/volt/src/public-api.ts'), 'utf8');
+  const api = readFileSync(join(ROOT, 'packages/volt/src/public-api.ts'), 'utf8');
   const names = new Set();
   const visit = (file, seen = new Set()) => {
     if (seen.has(file)) return;

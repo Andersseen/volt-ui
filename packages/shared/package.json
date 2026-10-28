@@ -1,0 +1,7 @@
+{
+  "name": "@voltui/shared",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Source shared by apps/web and apps/recipes, imported through the `@shared/*` alias (tsconfig paths, Vite and Vitest). Never published."
+}

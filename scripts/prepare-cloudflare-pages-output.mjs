@@ -6,12 +6,12 @@ import { dirname } from 'node:path';
  * Prepares one application's Nitro output for Cloudflare Pages: `_routes.json` (which paths bypass the
  * worker) and the `_headers` / `_redirects` files Nitro writes next to the public directory.
  *
- *   node scripts/prepare-cloudflare-pages-output.mjs            # Volt UI  -> dist/analog
+ *   node scripts/prepare-cloudflare-pages-output.mjs            # Volt UI  -> dist/apps/web/analog
  *   node scripts/prepare-cloudflare-pages-output.mjs --app recipes  # Recipes -> dist/apps/recipes/analog
  */
 const APPS = {
   docs: {
-    nitroDir: 'dist/analog',
+    nitroDir: 'dist/apps/web/analog',
     staticRoutes: [
       '/assets/*',
       '/favicon.svg',

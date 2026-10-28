@@ -14,7 +14,7 @@ pnpm test:all          # the complete local CI pipeline
 ```
 
 Coverage includes all TypeScript implementation files under
-`projects/volt/src/lib`, the CLI core and the hosted MCP route. Files without a
+`packages/volt/src/lib`, the CLI core and the hosted MCP route. Files without a
 test are therefore counted as uncovered. The thresholds in `vitest.config.ts`
 are a floor, not a target; increases should be ratcheted upward and never lowered
 to make a change pass.

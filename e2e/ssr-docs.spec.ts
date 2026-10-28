@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { COMPONENTS } from '../src/app/lib/component-metadata';
+import { COMPONENTS } from '../apps/web/src/app/lib/component-metadata';
 
 /**
  * SSR → hydration for the docs site's landing page and its component pages.

@@ -6,7 +6,7 @@ const flag = process.argv.indexOf('--app');
 const serverOutput =
   flag !== -1 && process.argv[flag + 1] === 'recipes'
     ? 'dist/apps/recipes/analog/public/_worker.js'
-    : 'dist/analog/public/_worker.js';
+    : 'dist/apps/web/analog/public/_worker.js';
 const forbiddenImports = [
   { pattern: /(?:^|[/\\])vitest(?:[/\\]|$)/, label: 'Vitest runtime' },
   { pattern: /@vitest[/\\]/, label: 'Vitest internals' },

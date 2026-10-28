@@ -6,8 +6,8 @@ const REPO_ROOT = path.resolve(__dirname, '../..');
 const PACKAGE_ROOT = path.resolve(__dirname, '..');
 
 function resolveRegistryPaths() {
-  const localManifestPath = path.join(REPO_ROOT, 'public/manifest.json');
-  const localComponentsRoot = path.join(REPO_ROOT, 'projects/volt/src/lib');
+  const localManifestPath = path.join(REPO_ROOT, 'apps/web/public/manifest.json');
+  const localComponentsRoot = path.join(REPO_ROOT, 'packages/volt/src/lib');
 
   if (fs.existsSync(localManifestPath) && fs.existsSync(localComponentsRoot)) {
     return {
@@ -30,7 +30,7 @@ const RUNTIME_DEPENDENCIES = [
   'tailwind-merge',
 ];
 
-// Files living directly in projects/volt/src/lib (not under components/ or layouts/)
+// Files living directly in packages/volt/src/lib (not under components/ or layouts/)
 // that some components import via a relative path, e.g. `from '../../utils'`. The
 // manifest's dependency detector only resolves components/layouts imports, so these are
 // tracked and copied separately, flat into the target dir (sibling to each component's

@@ -5,11 +5,11 @@
  * Storybook must not become a second source of truth, so a page is assembled from what the repo
  * already maintains:
  *
- *   API tables, variants      src/app/lib/api-reference.generated.ts   (pnpm generate:api-reference)
- *   usage example             src/app/lib/snippets/usage.ts            (the same code voltui.dev shows)
- *   group, docs link          src/app/lib/component-metadata.ts
+ *   API tables, variants      apps/web/src/app/lib/api-reference.generated.ts   (pnpm generate:api-reference)
+ *   usage example             apps/web/src/app/lib/snippets/usage.ts            (the same code voltui.dev shows)
+ *   group, docs link          apps/web/src/app/lib/component-metadata.ts
  *   status, keyboard, focus   COMPONENT_STATUS.md
- *   public component list     projects/volt/src/public-api.ts
+ *   public component list     packages/volt/src/public-api.ts
  *
  * and the only new prose, which lives in `stories/_docs/component-guides.mjs`. The live examples
  * come from the hand-written `stories/components/<name>.stories.ts` the page is attached to.
@@ -28,9 +28,9 @@ const CHECK = process.argv.includes('--check');
 
 // Node strips the TypeScript types of these data-only modules on import (Node >= 22.18).
 const load = rel => import(pathToFileURL(join(ROOT, rel)).href);
-const API = await load('src/app/lib/api-reference.generated.ts');
-const USAGE = await load('src/app/lib/snippets/usage.ts');
-const { COMPONENT_GROUPS } = await load('src/app/lib/component-metadata.ts');
+const API = await load('apps/web/src/app/lib/api-reference.generated.ts');
+const USAGE = await load('apps/web/src/app/lib/snippets/usage.ts');
+const { COMPONENT_GROUPS } = await load('apps/web/src/app/lib/component-metadata.ts');
 const { COMPONENT_GUIDES, GROUP_TITLES } = await load('stories/_docs/component-guides.mjs');
 
 const upperSnake = name => name.replace(/-/g, '_').toUpperCase();
