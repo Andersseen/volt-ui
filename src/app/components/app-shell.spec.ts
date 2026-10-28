@@ -26,8 +26,11 @@ describe('application shell', () => {
       'href',
       '/create-theme'
     );
-    // Blocks and layouts share one entry; it opens on the first tab.
-    expect(screen.getByRole('link', { name: 'Gallery' })).toHaveAttribute('href', '/docs/blocks');
+    // Blocks, layouts and recipes are their own site now; the entry leaves for it.
+    expect(screen.getByRole('link', { name: /Gallery/ })).toHaveAttribute(
+      'href',
+      'https://recipes.voltui.dev/'
+    );
     expect(screen.queryByRole('link', { name: 'Layouts' })).not.toBeInTheDocument();
     expect(screen.getByText(`v${SITE_STATS.version}`)).toBeInTheDocument();
   });

@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { VoltFormField, VoltLabel, VoltHint, VoltError, VoltInput, VoltNativeButton } from 'volt';
-import { CodePanel } from '../../../../components/code-panel';
+import { CodePanel } from '@shared/components/code-panel';
 import { ApiReference } from '../../../../components/api-reference';
 import { FORM_FIELD_SNIPPET } from '../../../../lib/snippets';
 import { FORM_FIELD_USAGE } from '../../../../lib/snippets/usage';
 import { FORM_FIELD_API } from '../../../../lib/api-reference.generated';
-import { injectAppI18n } from '../../../../i18n/i18n';
+import { injectAppI18n } from '@shared/i18n/i18n';
 
 @Component({
   selector: 'app-form-field-demo',

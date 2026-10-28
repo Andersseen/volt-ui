@@ -2,7 +2,7 @@ import { provideRouter } from '@angular/router';
 import { render, screen } from '@testing-library/angular';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
-import { COLOR_PRESETS, STYLE_PRESETS } from '../../../lib/theme-presets';
+import { COLOR_PRESETS, STYLE_PRESETS } from '@shared/lib/theme-presets';
 import { LandingPlayground } from './landing-playground';
 
 async function setup() {

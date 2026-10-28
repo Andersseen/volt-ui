@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
-import { injectAppI18n } from '../../../i18n/i18n';
+import { injectAppI18n } from '@shared/i18n/i18n';
 import { RouterLink } from '@angular/router';
 import { LmnCheckIcon, LmnCopyIcon } from 'lumen-icons';
 import { VoltNativeButton } from 'volt';
 import promptMarkdown from '../../../../../VOLT_UI_PROMPT.md?raw';
-import { Prose } from '../../../components/prose';
+import { Prose } from '@shared/components/prose';
 
 @Component({
   selector: 'app-ai-prompt-page',

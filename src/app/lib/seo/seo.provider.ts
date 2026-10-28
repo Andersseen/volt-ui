@@ -6,20 +6,12 @@ import {
 } from '@angular/core';
 import { NavigationEnd, NavigationError, Router } from '@angular/router';
 import { filter } from 'rxjs';
-import { injectAppI18n, LOCALES } from '../../i18n/i18n';
+import { injectAppI18n, LOCALES } from '@shared/i18n/i18n';
 import { breadcrumbJsonLd, homeJsonLd, type JsonLd } from './json-ld';
 import { seoEntryFor, type SeoEntry } from './seo-catalog';
-import { SeoService } from './seo.service';
+import { SeoService } from '@shared/seo/seo.service';
+import { plainText } from '@shared/seo/paths';
 import { absoluteUrl, barePath, localeOfPath, localizedPath, SITE_NAME } from './site';
-
-/** The `**bold**`, `` `code` `` and `[text](url)` marks the site's prose keys may carry. */
-export function plainText(text: string): string {
-  return text
-    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
-    .replace(/[*`]/g, '')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
 
 /**
  * Keeps the search metadata in step with the router: after every navigation, the page's title,
@@ -120,27 +112,6 @@ function describe(entry: SeoEntry, t: T): { title: string; description: string }
         ),
       };
     }
-    case 'block': {
-      const name = nameOf(entry, t);
-      return {
-        title: t('seo.block.title', { name }),
-        description: t('seo.block.description', { name }),
-      };
-    }
-    case 'layout': {
-      const name = nameOf(entry, t);
-      return {
-        title: t('seo.layout.title', { name }),
-        description: t('seo.layout.description', { name }),
-      };
-    }
-    case 'recipe': {
-      const name = nameOf(entry, t);
-      return {
-        title: t('seo.recipe.title', { name }),
-        description: t('seo.recipe.description', { name }),
-      };
-    }
   }
 }
 
@@ -160,15 +131,6 @@ function structuredData(
       breadcrumbJsonLd([
         { name: SITE_NAME, path: localizedPath('/', locale) },
         { name: t('nav.components'), path: localizedPath('/docs/components', locale) },
-        { name: nameOf(entry, t), path: localizedPath(bare, locale) },
-      ]),
-    ];
-  }
-  if (entry.kind === 'block') {
-    return [
-      breadcrumbJsonLd([
-        { name: SITE_NAME, path: localizedPath('/', locale) },
-        { name: t('gallery.blocks.title'), path: localizedPath('/docs/blocks', locale) },
         { name: nameOf(entry, t), path: localizedPath(bare, locale) },
       ]),
     ];

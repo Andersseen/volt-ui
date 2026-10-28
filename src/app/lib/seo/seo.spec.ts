@@ -3,7 +3,7 @@ import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { COMPONENTS } from '../component-metadata';
 import { breadcrumbJsonLd, homeJsonLd, serializeJsonLd } from './json-ld';
-import { plainText } from './seo.provider';
+import { plainText } from '@shared/seo/paths';
 import { SEO_ENTRIES, seoEntryFor } from './seo-catalog';
 import {
   absoluteUrl,
@@ -114,17 +114,24 @@ describe('seo catalog', () => {
     expect(seoEntryFor('/docs/layouts')).toBeUndefined();
   });
 
-  it('covers the landing, docs, theme builder, blocks, layouts and recipes', () => {
+  it('does not advertise the pages that moved to Recipes', () => {
+    for (const path of [
+      '/docs/blocks',
+      '/docs/blocks/hero',
+      '/docs/layouts/sidebar',
+      '/docs/recipes/async-search',
+    ]) {
+      expect(seoEntryFor(path), path).toBeUndefined();
+    }
+  });
+
+  it('covers the landing, docs and theme builder', () => {
     for (const path of [
       '/',
       '/docs/introduction',
       '/docs/components',
       '/create-theme',
       '/docs/mcp',
-      '/docs/blocks',
-      '/docs/blocks/hero',
-      '/docs/layouts/sidebar',
-      '/docs/recipes/async-search',
       '/docs/components/combobox',
     ]) {
       expect(seoEntryFor(path), path).toBeDefined();

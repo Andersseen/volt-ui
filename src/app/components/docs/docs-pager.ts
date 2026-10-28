@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { LmnArrowLeftIcon, LmnArrowRightIcon } from 'lumen-icons';
 import { VoltNativeButton } from 'volt';
-import { injectAppI18n } from '../../i18n/i18n';
+import { injectAppI18n } from '@shared/i18n/i18n';
 
 export interface PagerLink {
   /** Already localized. */

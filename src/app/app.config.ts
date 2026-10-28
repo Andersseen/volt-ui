@@ -9,10 +9,11 @@ import { provideFileRouter } from '@analogjs/router';
 import { provideEtymaAnalog, withLocalizedRoutes } from '@etyma/analog';
 import { provideEtyma } from '@etyma/angular';
 import { provideMovement } from 'angular-movement';
-import { MOTION } from './lib/motion';
-import { appI18n } from './i18n/i18n';
+import { MOTION } from '@shared/lib/motion';
+import { appI18n } from '@shared/i18n/i18n';
 import { provideSeo } from './lib/seo/seo.provider';
-import { SITE_ORIGIN } from './lib/seo/site';
+import { SITE_IDENTITY } from '@shared/seo/seo.service';
+import { SITE_IDENTITY_VALUE, SITE_ORIGIN } from './lib/seo/site';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -25,6 +26,7 @@ export const appConfig: ApplicationConfig = {
     provideEtymaAnalog({
       origin: SITE_ORIGIN,
     }),
+    { provide: SITE_IDENTITY, useValue: SITE_IDENTITY_VALUE },
     provideSeo(),
     // Every angular-movement directive inherits these unless it overrides them, so the
     // docs site has one motion signature instead of per-template magic numbers. The

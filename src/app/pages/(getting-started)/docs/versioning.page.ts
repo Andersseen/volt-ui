@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { injectAppI18n } from '../../../i18n/i18n';
+import { injectAppI18n } from '@shared/i18n/i18n';
 import { RouterLink } from '@angular/router';
-import { Prose } from '../../../components/prose';
+import { Prose } from '@shared/components/prose';
 
 @Component({
   selector: 'app-versioning-page',

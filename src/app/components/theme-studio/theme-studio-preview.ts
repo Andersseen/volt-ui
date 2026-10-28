@@ -13,7 +13,7 @@ import {
   VoltSwitch,
 } from 'volt';
 import { ThemeStudioStore } from '../../services/theme-studio-store';
-import { injectAppI18n } from '../../i18n/i18n';
+import { injectAppI18n } from '@shared/i18n/i18n';
 
 /**
  * The live canvas. Everything inside the shell is rendered under the draft's own tokens

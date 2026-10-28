@@ -12,6 +12,8 @@ export default defineConfig({
       include: [
         'test-setup.ts',
         'src/**/*.spec.ts',
+        'shared/**/*.spec.ts',
+        'apps/**/*.spec.ts',
         'projects/volt/src/**/*.spec.ts',
         'projects/volt/src/**/*.ts',
       ],
@@ -20,12 +22,13 @@ export default defineConfig({
   resolve: {
     alias: {
       volt: resolve(ROOT, 'projects/volt/src/public-api.ts'),
+      '@shared': resolve(ROOT, 'shared'),
     },
   },
   test: {
     globals: true,
     // Vitest blanks every CSS import by default, `?raw` included. The theme presets are read as
-    // text by src/app/lib/theme-presets.ts, so those files have to come through as written.
+    // text by shared/lib/theme-presets.ts, so those files have to come through as written.
     css: { include: [/projects\/volt\/src\/themes\/((colors|styles)\/[\w-]+|core)\.css/] },
     environment: 'jsdom',
     // Every render loads three Etyma catalogs (~0.6s locally). On a shared CI runner running ~100
@@ -34,7 +37,13 @@ export default defineConfig({
     testTimeout: 20_000,
     hookTimeout: 20_000,
     setupFiles: ['./test-setup.ts'],
-    include: ['src/**/*.spec.ts', 'projects/volt/src/**/*.spec.ts', 'cli/**/*.spec.js'],
+    include: [
+      'src/**/*.spec.ts',
+      'shared/**/*.spec.ts',
+      'apps/**/*.spec.ts',
+      'projects/volt/src/**/*.spec.ts',
+      'cli/**/*.spec.js',
+    ],
     coverage: {
       reporter: ['text', 'html', 'lcov'],
       include: [
@@ -42,6 +51,9 @@ export default defineConfig({
         'src/server/routes/mcp.ts',
         'cli/lib/**/*.js',
         'src/app/components/**/*.ts',
+        'shared/components/**/*.ts',
+        'shared/services/**/*.ts',
+        'apps/recipes/src/app/components/**/*.ts',
         'src/app/services/**/*.ts',
         'src/app/pages/index.page.ts',
         'src/app/pages/create-theme.page.ts',

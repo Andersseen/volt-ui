@@ -14,7 +14,7 @@ import { execFileSync } from 'node:child_process';
 import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { toConsumerSource } from '../src/app/lib/snippets/consumer-source.ts';
+import { toConsumerSource } from '../apps/recipes/src/app/lib/snippets/consumer-source.ts';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = join(ROOT, 'dist/copied-source');
@@ -29,7 +29,7 @@ rmSync(OUT, { recursive: true, force: true });
 
 let copied = 0;
 for (const kind of ['blocks', 'layouts', 'recipes']) {
-  const dir = join(ROOT, 'src/app', kind);
+  const dir = join(ROOT, 'apps/recipes/src/app', kind);
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
     if (!entry.isDirectory()) continue;
     const file = join(dir, entry.name, `${entry.name}.ts`);

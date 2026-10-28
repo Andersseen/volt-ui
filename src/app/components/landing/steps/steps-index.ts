@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { VoltNativeButton } from 'volt';
-import { injectAppI18n } from '../../../i18n/i18n';
+import { injectAppI18n } from '@shared/i18n/i18n';
 import type { Step } from './steps';
 
 /** The pinned list of steps beside the workflow: marks the current one, jumps on click. */

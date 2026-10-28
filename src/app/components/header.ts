@@ -1,14 +1,12 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { filter, map } from 'rxjs';
+import { ChangeDetectionStrategy, Component, computed } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { VoltBadge, VoltNativeButton } from 'volt';
-import { ThemeSwitcher } from './theme-switcher';
+import { ThemeSwitcher } from '@shared/components/theme-switcher';
 import { MobileMenu } from './mobile-menu';
 import { LmnGithubIcon } from 'lumen-icons';
-import { LanguageSwitcher } from './language-switcher';
-import { injectAppI18n } from '../i18n/i18n';
-import { GALLERY_SECTIONS } from '../lib/gallery-sections';
+import { LanguageSwitcher } from '@shared/components/language-switcher';
+import { injectAppI18n } from '@shared/i18n/i18n';
+import { recipesUrl } from '../lib/recipes-site';
 import { SITE_STATS } from '../lib/generated/site-stats';
 
 @Component({
@@ -99,20 +97,15 @@ import { SITE_STATS } from '../lib/generated/site-stats';
             >
               {{ t('nav.components') }}
             </a>
-            <!-- One entry for both gallery sections; RouterLinkActive only knows a single path. -->
             <a
               voltButton
               variant="ghost"
-              [routerLink]="path(galleryPath)"
-              [class]="
-                inGallery()
-                  ? 'bg-accent text-accent-foreground ring-1 ring-inset ring-primary/50'
-                  : ''
-              "
-              [attr.aria-current]="inGallery() ? 'page' : null"
+              [href]="recipesHref()"
+              target="_blank"
+              rel="noopener"
               class="transition-colors"
             >
-              {{ t('nav.gallery') }}
+              {{ t('nav.gallery') }}<span class="sr-only"> {{ t('nav.externalLink') }}</span>
             </a>
             <a
               voltButton
@@ -152,7 +145,6 @@ import { SITE_STATS } from '../lib/generated/site-stats';
   `,
 })
 export class Header {
-  private readonly router = inject(Router);
   private readonly translations = injectAppI18n();
 
   protected readonly t = this.translations.t;
@@ -162,18 +154,6 @@ export class Header {
   /** Generated from projects/volt/package.json, so the badge cannot outlive a release. */
   protected readonly version = SITE_STATS.version;
 
-  /** The gallery opens on its first tab; the other one is a tab away. */
-  protected readonly galleryPath = GALLERY_SECTIONS[0].path;
-
-  private readonly url = toSignal(
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd),
-      map(() => this.router.url)
-    ),
-    { initialValue: this.router.url }
-  );
-
-  protected readonly inGallery = computed(() =>
-    GALLERY_SECTIONS.some(section => this.url().startsWith(section.path))
-  );
+  /** Blocks, layouts and recipes are their own site; the link follows the visitor's language. */
+  protected readonly recipesHref = computed(() => recipesUrl(this.translations.locale()));
 }

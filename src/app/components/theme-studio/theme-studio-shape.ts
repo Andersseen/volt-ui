@@ -8,7 +8,7 @@ import {
   VoltSlider,
 } from 'volt';
 import { ThemeStudioStore } from '../../services/theme-studio-store';
-import { injectAppI18n } from '../../i18n/i18n';
+import { injectAppI18n } from '@shared/i18n/i18n';
 
 /** The structural tokens both modes share: radius, borders, focus ring, shadow. */
 @Component({

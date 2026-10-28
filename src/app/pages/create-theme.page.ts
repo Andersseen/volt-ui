@@ -7,7 +7,7 @@ import { ThemeStudioSetup } from '../components/theme-studio/theme-studio-setup'
 import { ThemeStudioShape } from '../components/theme-studio/theme-studio-shape';
 import { ThemeStudioTokens } from '../components/theme-studio/theme-studio-tokens';
 import { ThemeStudioStore } from '../services/theme-studio-store';
-import { injectAppI18n } from '../i18n/i18n';
+import { injectAppI18n } from '@shared/i18n/i18n';
 
 /**
  * The theme studio is a two-column layout over one shared draft. The draft lives in

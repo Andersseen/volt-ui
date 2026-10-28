@@ -504,7 +504,7 @@ When unsure, call the MCP `get_component` tool or read the `component://<name>` 
 
 ## Blocks, Layouts and Recipes are copied, not imported
 
-They live on the docs site (`/docs/blocks`, `/docs/layouts`, `/docs/recipes/*`), not in
+They live on Volt UI Recipes (https://recipes.voltui.dev: `/blocks`, `/layouts`, `/recipes`), not in
 `@voltui/components`. Copy the source into the app and import Volt from `@voltui/components`. Never
 write `import { … } from '@voltui/components'` for an `AppDashboard`, `SettingsLayout` or
 `SettingsFormRecipe`. Recipes (settings form, async search, data table) show behaviour — validation,

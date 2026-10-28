@@ -11,13 +11,13 @@ import { DOCUMENT } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { LmnSparklesIcon } from 'lumen-icons';
 import { VoltButton } from 'volt';
-import { injectAppI18n } from '../../../i18n/i18n';
+import { injectAppI18n } from '@shared/i18n/i18n';
 import {
   COLOR_PRESETS,
   STYLE_PRESETS,
   type ColorPreset,
   type StylePreset,
-} from '../../../lib/theme-presets';
+} from '@shared/lib/theme-presets';
 import { LandingSectionHeader } from '../section-header';
 import { PalettePicker } from './palette-picker';
 import { ShapePicker } from './shape-picker';

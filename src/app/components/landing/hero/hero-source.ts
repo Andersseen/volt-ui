@@ -7,7 +7,7 @@ import {
   VoltToggleGroup,
   VoltToggleGroupItem,
 } from 'volt';
-import { injectAppI18n } from '../../../i18n/i18n';
+import { injectAppI18n } from '@shared/i18n/i18n';
 import { SOURCE_DEMOS, codeParts, type DemoId, type SourceDemo } from './source-demos';
 
 type ButtonVariant = 'solid' | 'outline' | 'ghost' | 'link';

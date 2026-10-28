@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { injectAppI18n, type PlainTranslationKey } from '../../../i18n/i18n';
+import { injectAppI18n, type PlainTranslationKey } from '@shared/i18n/i18n';
 import { RouterLink } from '@angular/router';
-import { Prose } from '../../../components/prose';
+import { Prose } from '@shared/components/prose';
 
 /*
  * Keys, not prose. The sequence is the point of this page, so the item that says why it

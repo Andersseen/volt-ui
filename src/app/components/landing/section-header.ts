@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { VoltBadge } from 'volt';
-import { Prose } from '../prose';
-import { Reveal } from '../reveal';
+import { Prose } from '@shared/components/prose';
+import { Reveal } from '@shared/components/reveal';
 
 /**
  * The eyebrow, display heading and lede that open a landing section.

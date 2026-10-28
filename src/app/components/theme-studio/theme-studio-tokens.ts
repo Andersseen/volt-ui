@@ -12,7 +12,7 @@ import {
 } from 'volt';
 import { ThemeStudioStore } from '../../services/theme-studio-store';
 import { ThemeTokenField } from './theme-token-field';
-import { injectAppI18n } from '../../i18n/i18n';
+import { injectAppI18n } from '@shared/i18n/i18n';
 
 /** The semantic color tokens, edited per mode. */
 @Component({

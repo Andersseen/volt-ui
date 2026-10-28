@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { injectAppI18n, type PlainTranslationKey } from '../../i18n/i18n';
+import { injectAppI18n, type PlainTranslationKey } from '@shared/i18n/i18n';
 import { SITE_STATS } from '../../lib/generated/site-stats';
-import { MOTION } from '../../lib/motion';
+import { MOTION } from '@shared/lib/motion';
 import { CountUp } from '../count-up';
-import { Reveal } from '../reveal';
+import { Reveal } from '@shared/components/reveal';
 
 /** The four headline numbers under the hero. All of them come from the repo itself. */
 interface ProofPoint {

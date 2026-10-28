@@ -11,9 +11,13 @@ const CHROME = [
   'header.ts',
   'footer.ts',
   'mobile-menu.ts',
-  'language-switcher.ts',
-  'theme-switcher.ts',
   'docs/docs-nav-list.ts',
+  // Shared with Recipes.
+  '../../../shared/components/language-switcher.ts',
+  '../../../shared/components/theme-switcher.ts',
+  // Recipes' own chrome.
+  '../../../apps/recipes/src/app/components/header.ts',
+  '../../../apps/recipes/src/app/components/footer.ts',
 ];
 const VOLT_DIRECTIVE =
   /\b(voltButton|voltNavigationMenuLink|voltDrawerClose|voltFileUpload)\b|<volt-(drawer-close|sidebar-item|toggle-group-item|dropdown-menu-item)\b/;

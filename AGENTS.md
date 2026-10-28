@@ -4,7 +4,7 @@
 
 Volt UI is an Angular component library inspired by shadcn/ui, built on top of [ng-primitives](https://ng-primitives.dev).
 
-- **Monorepo layout**: Angular workspace with one app (`volt-ui`) and one library (`projects/volt` published as `@voltui/components`).
+- **Monorepo layout**: Angular workspace with two apps — Volt UI docs (`volt-ui`, `src/`, voltui.dev) and Volt UI Recipes (`apps/recipes/`, recipes.voltui.dev) — plus `shared/` and one library (`projects/volt` published as `@voltui/components`).
 - **Docs app**: AnalogJS + file-based routing + Vite + Tailwind CSS v4.
 - **CLI**: `cli/` contains a Node CLI for copying components into consumer projects (`@voltui/cli`).
 - **Package manager**: pnpm (`packageManager: pnpm@10.30.1`).
@@ -61,6 +61,22 @@ pnpm test:all
 - Library components live in `projects/volt/src/lib/components/<name>/` with a barrel `index.ts`.
 - Export every public component from `projects/volt/src/public-api.ts`.
 - The docs app imports the library via the `volt` alias (mapped to `projects/volt/src/public-api.ts`).
+
+## Two applications
+
+|                       | Volt UI (docs)                                          | Volt UI Recipes                                                                                   |
+| --------------------- | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| Origin                | https://voltui.dev                                      | https://recipes.voltui.dev                                                                        |
+| Root                  | `src/` (`vite.config.ts`)                               | `apps/recipes/` (`apps/recipes/vite.config.ts`)                                                   |
+| Owns                  | component docs, API, theming, Theme Studio, AI/MCP docs | copyable **blocks**, **layouts**, **recipes** (live preview, source, install, related components) |
+| Dev / build / preview | `pnpm dev` / `build` / `preview`                        | `pnpm dev:recipes` / `build:recipes` / `preview:recipes`                                          |
+| Typecheck / e2e       | `pnpm typecheck` / `pnpm test:e2e`                      | `pnpm typecheck:recipes` / `pnpm test:e2e:recipes`                                                |
+| Output                | `dist/analog/public`                                    | `dist/apps/recipes/analog/public`                                                                 |
+| Cloudflare Pages      | `volt-ui`                                               | `volt-ui-recipes`                                                                                 |
+
+`shared/` holds only what both need and is imported as `@shared/*`: i18n (one Glossa project, one generated contract), theme presets and `styles/site.css` (the token imports), the code panel, copy button, theme/language switchers, SEO service and URL helpers. Neither app imports the other's private directories; the one sanctioned bridge is `shared/legacy-redirects.ts`, built from the Recipes catalog.
+
+Recipes shows what you can **build**; it never re-documents a component's API (that is voltui.dev, linked with absolute URLs). Blocks, layouts and recipes stay copyable source, never `@voltui/components` exports. To add one, see `docs/recipes-app.md`; to deploy, same file. Old `/docs/{blocks,layouts,recipes}/*` URLs 301 to Recipes (`shared/legacy-redirects.ts`).
 
 ## Docs site rules
 
@@ -174,10 +190,10 @@ config that connects to it.
 
 Two kinds of text are deliberately **not** translated:
 
-| Not translated                            | Why                                                                                                                                   |
-| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| `src/app/blocks/**`, `src/app/layouts/**` | Read with `?raw` and shown as source to copy. A `t()` call would break in a consumer's project, which has no `Translations`.          |
-| The live demo inside `<app-code-panel>`   | It is an exhibit of the code shown beside it. A demo reading "Manzana" next to a snippet saying `Apple` looks broken, not translated. |
+| Not translated                                     | Why                                                                                                                                   |
+| -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `apps/recipes/src/app/{blocks,layouts,recipes}/**` | Read with `?raw` and shown as source to copy. A `t()` call would break in a consumer's project, which has no `Translations`.          |
+| The live demo inside `<app-code-panel>`            | It is an exhibit of the code shown beside it. A demo reading "Manzana" next to a snippet saying `Apple` looks broken, not translated. |
 
 The guard recognises both structurally; the handful of specimens that sit outside a code
 panel are listed with their reasons at the top of `no-hardcoded-copy.spec.ts`.

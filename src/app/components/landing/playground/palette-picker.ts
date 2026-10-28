@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { LmnPauseIcon, LmnPlayIcon } from 'lumen-icons';
 import { VoltButton, VoltProgress, VoltToggleGroup, VoltToggleGroupItem } from 'volt';
-import { injectAppI18n } from '../../../i18n/i18n';
-import { COLOR_PRESETS, swatch, type ColorPreset } from '../../../lib/theme-presets';
+import { injectAppI18n } from '@shared/i18n/i18n';
+import { COLOR_PRESETS, swatch, type ColorPreset } from '@shared/lib/theme-presets';
 
 /**
  * The palette choices, plus the tour's progress and its pause control.

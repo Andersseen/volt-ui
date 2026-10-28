@@ -1,4 +1,4 @@
-import type { PlainTranslationKey } from '../../../i18n/i18n';
+import type { PlainTranslationKey } from '@shared/i18n/i18n';
 
 export type DemoId = 'button' | 'badge' | 'switch';
 

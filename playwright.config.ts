@@ -13,7 +13,13 @@ const webServerCommand =
 export default defineConfig({
   testDir: './e2e',
   // contracts/ has its own config and server (playwright.contracts.config.ts).
-  testIgnore: [/consumer(-cli)?(-workflow|-async)?\.spec\.ts/, /storybook\//, /contracts\//],
+  testIgnore: [
+    /consumer(-cli)?(-workflow|-async)?\.spec\.ts/,
+    /storybook\//,
+    /contracts\//,
+    // The Recipes app has its own config and server (playwright.recipes.config.ts).
+    /recipes\//,
+  ],
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,

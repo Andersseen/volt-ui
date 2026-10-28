@@ -15,14 +15,22 @@ import { spawn } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { BLOCKS } from '../src/app/lib/blocks-metadata.ts';
-import { LAYOUTS } from '../src/app/lib/layouts-metadata.ts';
+import { BLOCKS } from '../apps/recipes/src/app/lib/blocks-metadata.ts';
+import { LAYOUTS } from '../apps/recipes/src/app/lib/layouts-metadata.ts';
 import { COMPONENTS } from '../src/app/lib/component-metadata.ts';
-import { RECIPES } from '../src/app/lib/recipes-metadata.ts';
+import { RECIPES } from '../apps/recipes/src/app/lib/recipes-metadata.ts';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const portArg = process.argv.indexOf('--port');
-const PORT = portArg > -1 ? Number(process.argv[portArg + 1]) : 8799;
+// `--app recipes` renders the Recipes worker (dist/apps/recipes); the default is the Volt UI docs site.
+const appArg = process.argv.indexOf('--app');
+const APP = appArg > -1 ? process.argv[appArg + 1] : 'docs';
+if (!['docs', 'recipes'].includes(APP)) {
+  console.error('--app must be "docs" or "recipes"');
+  process.exit(1);
+}
+const OUTPUT = APP === 'recipes' ? 'dist/apps/recipes/analog/public' : 'dist/analog/public';
+const PORT = portArg > -1 ? Number(process.argv[portArg + 1]) : APP === 'recipes' ? 8798 : 8799;
 
 /**
  * Routes that currently log an error that is not ours to fix here, with the reason. Anything
@@ -40,7 +48,7 @@ const KNOWN = new Map([
 // quietly. Blocks, layouts and recipes are ours to fix, so they are covered too.
 const NEVER_ALLOWLISTED = [
   /^\/docs\/components\/(listbox|select|combobox|dialog|drawer|popover|tooltip|dropdown-menu)$/,
-  /^\/docs\/(blocks|layouts|recipes)\//,
+  /^\/(docs\/)?(blocks|layouts|recipes)\//,
 ];
 for (const route of KNOWN.keys()) {
   if (NEVER_ALLOWLISTED.some(pattern => pattern.test(route))) {
@@ -59,24 +67,31 @@ if (!(shardCount >= 1 && shardIndex >= 1 && shardIndex <= shardCount)) {
   process.exit(1);
 }
 
-const allRoutes = [
-  ...BLOCKS.map(b => b.path),
-  ...LAYOUTS.map(l => l.path),
-  ...RECIPES.map(r => r.path),
-  '/docs/components',
-  ...COMPONENTS.map(c => c.path),
-];
+const allRoutes =
+  APP === 'recipes'
+    ? [
+        '/',
+        '/blocks',
+        '/layouts',
+        '/recipes',
+        ...BLOCKS.map(b => b.path),
+        ...LAYOUTS.map(l => l.path),
+        ...RECIPES.map(r => r.path),
+      ]
+    : ['/docs/components', ...COMPONENTS.map(c => c.path)];
 const routes = allRoutes.filter((_, i) => i % shardCount === shardIndex - 1);
 
-if (!existsSync(join(ROOT, 'dist/analog/public'))) {
-  console.error('dist/analog/public is missing — run "pnpm build" first.');
+if (!existsSync(join(ROOT, OUTPUT))) {
+  console.error(
+    `${OUTPUT} is missing — run "pnpm ${APP === 'recipes' ? 'build:recipes' : 'build'}" first.`
+  );
   process.exit(1);
 }
 
 let log = '';
 const server = spawn(
   join(ROOT, 'node_modules/.bin/wrangler'),
-  ['pages', 'dev', 'dist/analog/public', '--ip', '127.0.0.1', '--port', String(PORT)],
+  ['pages', 'dev', OUTPUT, '--ip', '127.0.0.1', '--port', String(PORT)],
   { cwd: ROOT, env: { ...process.env, NO_COLOR: '1', FORCE_COLOR: '0' } }
 );
 for (const stream of [server.stdout, server.stderr]) stream.on('data', d => (log += d));

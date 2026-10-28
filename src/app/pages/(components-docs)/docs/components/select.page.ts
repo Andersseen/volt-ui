@@ -8,12 +8,12 @@ import {
   VoltSelectLabel,
   VoltSelectSeparator,
 } from 'volt';
-import { CodePanel } from '../../../../components/code-panel';
+import { CodePanel } from '@shared/components/code-panel';
 import { ApiReference } from '../../../../components/api-reference';
 import { SELECT_SNIPPET } from '../../../../lib/snippets';
 import { SELECT_USAGE, NATIVE_SELECT_USAGE } from '../../../../lib/snippets/usage';
 import { SELECT_API } from '../../../../lib/api-reference.generated';
-import { injectAppI18n } from '../../../../i18n/i18n';
+import { injectAppI18n } from '@shared/i18n/i18n';
 
 @Component({
   selector: 'app-select-demo',

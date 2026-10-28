@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { VoltRangeSlider } from 'volt';
-import { CodePanel } from '../../../../components/code-panel';
+import { CodePanel } from '@shared/components/code-panel';
 import { ApiReference } from '../../../../components/api-reference';
 import { RANGE_SLIDER_SNIPPET } from '../../../../lib/snippets';
 import { RANGE_SLIDER_USAGE } from '../../../../lib/snippets/usage';
 import { RANGE_SLIDER_API } from '../../../../lib/api-reference.generated';
-import { injectAppI18n } from '../../../../i18n/i18n';
+import { injectAppI18n } from '@shared/i18n/i18n';
 
 @Component({
   selector: 'app-range-slider-demo',

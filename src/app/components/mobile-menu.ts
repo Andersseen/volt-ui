@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { LmnMenuIcon, LmnXIcon } from 'lumen-icons';
 import { MoveEnterDirective } from 'angular-movement';
@@ -11,8 +11,9 @@ import {
   VoltDrawerTitle,
   VoltNativeButton,
 } from 'volt';
-import { MOTION } from '../lib/motion';
-import { injectAppI18n } from '../i18n/i18n';
+import { recipesUrl } from '../lib/recipes-site';
+import { MOTION } from '@shared/lib/motion';
+import { injectAppI18n } from '@shared/i18n/i18n';
 
 /** The site's own menu drawer: Volt's Drawer, Button and Close, nothing hand-built. */
 @Component({
@@ -76,6 +77,17 @@ import { injectAppI18n } from '../i18n/i18n';
               {{ t(link.key) }}
             </a>
           }
+          <a
+            voltButton
+            variant="ghost"
+            [href]="recipesHref()"
+            target="_blank"
+            rel="noopener"
+            (click)="close()"
+            class="h-11 justify-start px-3 text-base font-medium text-muted-foreground"
+          >
+            {{ t('nav.gallery') }}<span class="sr-only"> {{ t('nav.externalLink') }}</span>
+          </a>
         </nav>
       </div>
     </ng-template>
@@ -86,6 +98,7 @@ export class MobileMenu {
 
   protected readonly t = this.translations.t;
   protected readonly path = this.translations.path;
+  protected readonly recipesHref = computed(() => recipesUrl(this.translations.locale()));
 
   /** Links stagger in behind the drawer, so the panel reads as arriving rather than appearing. */
   protected readonly stagger = MOTION.stagger;
@@ -94,7 +107,6 @@ export class MobileMenu {
     { path: '/', key: 'nav.home', exact: true },
     { path: '/docs/introduction', key: 'nav.docs', exact: false },
     { path: '/docs/components', key: 'nav.components', exact: false },
-    { path: '/docs/blocks', key: 'nav.gallery', exact: false },
     { path: '/create-theme', key: 'nav.createTheme', exact: false },
   ] as const;
 }

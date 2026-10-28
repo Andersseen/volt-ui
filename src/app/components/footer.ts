@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { LmnGithubIcon } from 'lumen-icons';
 import { VoltNativeButton, VoltSeparator } from 'volt';
-import { injectAppI18n } from '../i18n/i18n';
-import { STORYBOOK_URL } from '../lib/storybook';
+import { injectAppI18n } from '@shared/i18n/i18n';
+import { recipesUrl } from '../lib/recipes-site';
+import { STORYBOOK_URL } from '@shared/lib/storybook';
 
 @Component({
   selector: 'app-footer',
@@ -28,9 +29,15 @@ import { STORYBOOK_URL } from '../lib/storybook';
           <a voltButton variant="ghost" size="sm" [routerLink]="path('/docs/components')">{{
             t('nav.components')
           }}</a>
-          <a voltButton variant="ghost" size="sm" [routerLink]="path('/docs/blocks')">{{
-            t('nav.gallery')
-          }}</a>
+          <a
+            voltButton
+            variant="ghost"
+            size="sm"
+            [href]="recipesHref()"
+            target="_blank"
+            rel="noopener"
+            >{{ t('nav.gallery') }}<span class="sr-only"> {{ t('nav.externalLink') }}</span></a
+          >
           <a
             voltButton
             variant="ghost"
@@ -64,6 +71,7 @@ export class Footer {
   protected readonly t = this.translations.t;
   protected readonly path = this.translations.path;
 
+  protected readonly recipesHref = computed(() => recipesUrl(this.translations.locale()));
   protected readonly storybookUrl = STORYBOOK_URL;
   protected readonly currentYear = new Date().getFullYear();
 }

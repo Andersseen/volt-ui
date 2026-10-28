@@ -14,12 +14,12 @@ import {
   VoltTabsList,
   VoltTabsTrigger,
 } from 'volt';
-import { CodePanel } from '../../../../components/code-panel';
+import { CodePanel } from '@shared/components/code-panel';
 import { ApiReference } from '../../../../components/api-reference';
 import { TABS_SNIPPET } from '../../../../lib/snippets';
 import { TABS_USAGE } from '../../../../lib/snippets/usage';
 import { TABS_API } from '../../../../lib/api-reference.generated';
-import { injectAppI18n } from '../../../../i18n/i18n';
+import { injectAppI18n } from '@shared/i18n/i18n';
 
 @Component({
   selector: 'app-tabs-demo',

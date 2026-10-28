@@ -14,7 +14,7 @@ import { DOCUMENT } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, map } from 'rxjs';
-import { injectAppI18n } from '../i18n/i18n';
+import { injectAppI18n } from '@shared/i18n/i18n';
 import { currentIndex, flattenLinks, slugFor, type TocItem } from '../lib/docs-nav';
 import { DocsBreadcrumbs } from './docs/docs-breadcrumbs';
 import { DocsMobileNav } from './docs/docs-mobile-nav';

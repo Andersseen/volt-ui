@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { VoltBadge, VoltNativeButton, VoltSidebarGroup, VoltSidebarItem } from 'volt';
-import { injectAppI18n, type PlainTranslationKey } from '../../i18n/i18n';
+import { injectAppI18n, type PlainTranslationKey } from '@shared/i18n/i18n';
 import type { ComponentStability } from '../../lib/component-metadata';
-import { STORYBOOK_URL } from '../../lib/storybook';
+import { STORYBOOK_URL } from '@shared/lib/storybook';
 
 /*
  * Keys, not text. Most sidebars on the site are built from a static catalog const, which has no

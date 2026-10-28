@@ -11,8 +11,8 @@ import {
   VoltProgressValue,
   VoltSwitch,
 } from 'volt';
-import { injectAppI18n } from '../../../i18n/i18n';
-import { presetStyle, type ColorPreset, type StylePreset } from '../../../lib/theme-presets';
+import { injectAppI18n } from '@shared/i18n/i18n';
+import { presetStyle, type ColorPreset, type StylePreset } from '@shared/lib/theme-presets';
 
 /**
  * A settings panel of real Volt components, themed by one preset pair.

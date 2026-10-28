@@ -8,7 +8,7 @@ import {
   VoltDrawerOverlay,
   VoltDrawerTitle,
 } from 'volt';
-import { injectAppI18n } from '../../i18n/i18n';
+import { injectAppI18n } from '@shared/i18n/i18n';
 import { DocsNavList, type DocsSidebarGroup } from './docs-nav-list';
 
 /** Below `lg`: a button that opens the docs navigation in a Volt drawer. */

@@ -1,18 +1,15 @@
-import type { PlainTranslationKey } from '../../i18n/i18n';
-import { BLOCKS } from '../blocks-metadata';
+import type { PlainTranslationKey } from '@shared/i18n/i18n';
 import { COMPONENTS } from '../component-metadata';
-import { LAYOUTS } from '../layouts-metadata';
-import { RECIPES } from '../recipes-metadata';
 
 /**
  * Every public, indexable route and where its search metadata comes from.
  *
  * This is the single list the runtime head (`SeoService`), the sitemap and `llms.txt` are built
- * from, so a page cannot appear in one and be missing from another. Component, block, layout and
- * recipe pages are derived from the catalogs that already drive the site; only the handful of
+ * from, so a page cannot appear in one and be missing from another. Component pages are derived from the catalog that already drives the site; only the handful of
  * guide pages are listed by hand.
  *
- * Not listed on purpose: `/docs` and `/docs/layouts` (redirects), `/api/**` (the MCP server),
+ * Not listed on purpose: `/docs` (a redirect), the blocks, layouts and recipes (their own site,
+ * `apps/recipes`, and the old `/docs/{blocks,layouts,recipes}` URLs redirect there), `/api/**` (the MCP server),
  * anything under a locale prefix (the generators add those).
  */
 export type SeoEntry =
@@ -23,7 +20,7 @@ export type SeoEntry =
       readonly descriptionKey: PlainTranslationKey;
     }
   | {
-      readonly kind: 'component' | 'block' | 'layout';
+      readonly kind: 'component';
       readonly path: string;
       /** The page's own name in the reader's language. */
       readonly nameKey: PlainTranslationKey;
@@ -32,8 +29,8 @@ export type SeoEntry =
       readonly descriptionKey?: PlainTranslationKey;
     }
   | {
-      /** An entry whose name has no Glossa key: a recipe, or a component that predates its key. */
-      readonly kind: 'component' | 'recipe';
+      /** An entry whose name has no Glossa key: a component that predates its key. */
+      readonly kind: 'component';
       readonly path: string;
       readonly name: string;
       readonly nameKey?: undefined;
@@ -110,12 +107,6 @@ const PAGES: readonly SeoEntry[] = [
   },
   {
     kind: 'page',
-    path: '/docs/blocks',
-    titleKey: 'seo.blocks.title',
-    descriptionKey: 'seo.blocks.description',
-  },
-  {
-    kind: 'page',
     path: '/create-theme',
     titleKey: 'seo.createTheme.title',
     descriptionKey: 'seo.createTheme.description',
@@ -149,17 +140,6 @@ export const SEO_ENTRIES: readonly SeoEntry[] = [
     path: component.path,
     name: component.label ?? component.name,
   })),
-  ...BLOCKS.map((block): SeoEntry => ({
-    kind: 'block',
-    path: block.path,
-    nameKey: block.labelKey,
-  })),
-  ...LAYOUTS.map((layout): SeoEntry => ({
-    kind: 'layout',
-    path: layout.path,
-    nameKey: layout.labelKey,
-  })),
-  ...RECIPES.map((recipe): SeoEntry => ({ kind: 'recipe', path: recipe.path, name: recipe.label })),
 ];
 
 export function seoEntryFor(barePath: string): SeoEntry | undefined {

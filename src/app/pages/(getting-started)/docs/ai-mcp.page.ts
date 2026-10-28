@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { LmnCheckIcon, LmnExternalLinkIcon, LmnListIcon, LmnSparklesIcon } from 'lumen-icons';
 import { SITE_STATS } from '../../../lib/generated/site-stats';
-import { Prose } from '../../../components/prose';
-import { injectAppI18n, type PlainTranslationKey } from '../../../i18n/i18n';
+import { Prose } from '@shared/components/prose';
+import { injectAppI18n, type PlainTranslationKey } from '@shared/i18n/i18n';
 
 const MCP_URL = 'https://voltui.dev/api/mcp';
 

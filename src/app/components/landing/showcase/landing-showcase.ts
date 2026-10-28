@@ -12,7 +12,7 @@ import { DOCUMENT } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { LmnArrowLeftIcon, LmnArrowRightIcon } from 'lumen-icons';
 import { VoltButton } from 'volt';
-import { injectAppI18n } from '../../../i18n/i18n';
+import { injectAppI18n } from '@shared/i18n/i18n';
 import { LandingSectionHeader } from '../section-header';
 import { FEATURED_COMPONENTS } from './featured';
 import { ShowcaseCard } from './showcase-card';

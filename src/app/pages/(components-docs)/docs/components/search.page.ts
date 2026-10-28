@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { CodePanel } from '../../../../components/code-panel';
+import { CodePanel } from '@shared/components/code-panel';
 import { SEARCH_SNIPPET } from '../../../../lib/snippets';
 import { SEARCH_USAGE } from '../../../../lib/snippets/usage';
 import { VoltInput, VoltSearch, VoltSearchClear } from 'volt';
-import { injectAppI18n } from '../../../../i18n/i18n';
+import { injectAppI18n } from '@shared/i18n/i18n';
 
 @Component({
   selector: 'app-search-demo',

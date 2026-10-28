@@ -372,3 +372,7 @@ Built with ⚡ by [Andersseen](https://github.com/Andersseen) · [MIT License](.
 <sub><a href="#-volt-ui">↑ Back to top</a></sub>
 
 </div>
+
+## Applications
+
+This repository ships two sites from one Angular workspace: the documentation at [voltui.dev](https://voltui.dev) (`src/`) and the copyable blocks, layouts and recipes at [recipes.voltui.dev](https://recipes.voltui.dev) (`apps/recipes/`). See [docs/recipes-app.md](docs/recipes-app.md).

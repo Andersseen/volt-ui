@@ -1,12 +1,18 @@
 #!/usr/bin/env node
 /**
- * Generates the crawler-facing files in `public/`:
+ * Generates the crawler-facing files of BOTH applications:
+ *
+ *   Volt UI  (https://voltui.dev)          -> public/
+ *   Recipes  (https://recipes.voltui.dev)  -> apps/recipes/public/
+ *
+ * Each app has its own catalog and its own origin, so a sitemap can only list the pages its own
+ * site serves, under its own domain. Per app:
  *
  *   robots.txt    allows public crawling (OAI-SearchBot included) and names the sitemap
  *   sitemap.xml   every indexable route, in every locale, with hreflang alternates
  *   llms.txt      a concise index for tools and agents that read the llms.txt convention
  *
- * Routes come from `src/app/lib/seo/seo-catalog.ts`, the same list the page head is built from,
+ * Routes come from each app's `lib/seo/seo-catalog.ts`, the same list the page head is built from,
  * so the sitemap, `llms.txt` and the metadata cannot disagree about which pages exist.
  * `lastmod` is left out: nothing in the repo records a reliable per-page modification date.
  *
@@ -24,19 +30,27 @@ import { createServer } from 'vite';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const CHECK = process.argv.includes('--check');
 
-// Vite's SSR loader resolves the TypeScript catalog and its extensionless imports without a build.
+// Vite's SSR loader resolves the TypeScript catalogs and their extensionless imports without a build.
 const vite = await createServer({
   root: ROOT,
   configFile: false,
   appType: 'custom',
   logLevel: 'silent',
+  resolve: { alias: { '@shared': join(ROOT, 'shared') } },
   server: { middlewareMode: true, hmr: false, watch: null },
 });
-let site, catalog, project;
+let docs, recipes, project;
 try {
-  site = await vite.ssrLoadModule('/src/app/lib/seo/site.ts');
-  catalog = await vite.ssrLoadModule('/src/app/lib/seo/seo-catalog.ts');
-  project = await vite.ssrLoadModule('/src/app/i18n/project.ts');
+  docs = {
+    site: await vite.ssrLoadModule('/src/app/lib/seo/site.ts'),
+    catalog: await vite.ssrLoadModule('/src/app/lib/seo/seo-catalog.ts'),
+  };
+  recipes = {
+    site: await vite.ssrLoadModule('/apps/recipes/src/app/lib/site.ts'),
+    catalog: await vite.ssrLoadModule('/apps/recipes/src/app/lib/seo/seo-catalog.ts'),
+    entries: await vite.ssrLoadModule('/apps/recipes/src/app/lib/catalog.ts'),
+  };
+  project = await vite.ssrLoadModule('/shared/i18n/project.ts');
 } finally {
   await vite.close();
 }
@@ -44,17 +58,18 @@ const { COMPONENT_GUIDES, GROUP_TITLES } = await import(
   pathToFileURL(join(ROOT, 'stories/_docs/component-guides.mjs')).href
 );
 
-const { SITE_NAME, SITE_ORIGIN, GITHUB_URL, NPM_PACKAGES, absoluteUrl, localizedPath } = site;
-const { SEO_ENTRIES } = catalog;
 const { I18N_PROJECT } = project;
 const LOCALES = [...I18N_PROJECT.locales];
 const SOURCE = I18N_PROJECT.sourceLocale;
 
+const RECIPES_ORIGIN = recipes.site.SITE_ORIGIN;
+
 const escapeXml = text =>
   text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
-function sitemap() {
-  const urls = SEO_ENTRIES.map(entry => entry.path).map(bare => {
+function sitemap({ site, catalog }) {
+  const { absoluteUrl, localizedPath } = site;
+  const urls = catalog.SEO_ENTRIES.map(entry => entry.path).map(bare => {
     const alternates = [
       ...LOCALES.map(
         locale =>
@@ -70,7 +85,8 @@ function sitemap() {
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${urls.join('\n')}\n</urlset>\n`;
 }
 
-function robots() {
+function robots({ site }) {
+  const { SITE_NAME, absoluteUrl } = site;
   return `# ${SITE_NAME} is a public open-source project: the documentation is meant to be found.
 # Crawlers, including search and AI-search bots such as OAI-SearchBot, are welcome.
 User-agent: *
@@ -82,7 +98,8 @@ Sitemap: ${absoluteUrl('/sitemap.xml')}
 
 const plain = text => text.replace(/`/g, '').replace(/\s+/g, ' ').trim();
 
-function llms() {
+function llmsDocs({ site }) {
+  const { SITE_NAME, GITHUB_URL, NPM_PACKAGES, absoluteUrl } = site;
   const byGroup = new Map();
   for (const [name, guide] of Object.entries(COMPONENT_GUIDES)) {
     if (!byGroup.has(guide.group)) byGroup.set(guide.group, []);
@@ -95,17 +112,6 @@ function llms() {
     );
     return `### ${GROUP_TITLES[group]}\n\n${lines.join('\n')}`;
   });
-  const slugOf = path => path.split('/').pop();
-  const titleCase = slug =>
-    slug
-      .split('-')
-      .map(w => w[0].toUpperCase() + w.slice(1))
-      .join(' ');
-  const gallery = kind =>
-    SEO_ENTRIES.filter(entry => entry.kind === kind)
-      .map(entry => `- [${titleCase(slugOf(entry.path))}](${absoluteUrl(entry.path)})`)
-      .join('\n');
-
   return `# ${SITE_NAME}
 
 > Volt UI is an open-source Angular component library inspired by shadcn/ui and built on ng-primitives. Components use signals, are zoneless-compatible, are styled with Tailwind CSS v4 and focus on accessibility. Use the npm package or copy the source into your project with the CLI. The documentation is available in English, Spanish and Ukrainian.
@@ -140,21 +146,7 @@ ${componentLines.join('\n\n')}
 
 ## Blocks, layouts and recipes
 
-Blocks are whole page sections, layouts are application shells and recipes are tested workflows; all are copied into your project.
-
-### Blocks
-
-${gallery('block')}
-
-### Layouts
-
-${gallery('layout')}
-
-### Recipes
-
-${SEO_ENTRIES.filter(entry => entry.kind === 'recipe')
-  .map(entry => `- [${entry.name}](${absoluteUrl(entry.path)})`)
-  .join('\n')}
+Copyable page sections, application layouts and tested workflows live on their own site, [Volt UI Recipes](${RECIPES_ORIGIN}): ${RECIPES_ORIGIN}/blocks, ${RECIPES_ORIGIN}/layouts and ${RECIPES_ORIGIN}/recipes.
 
 ## Packages
 
@@ -168,10 +160,53 @@ ${NPM_PACKAGES.map(pkg => `- [${pkg.name}](${pkg.url}): ${pkg.purpose}`).join('\
 `;
 }
 
+function llmsRecipes({ site, entries }) {
+  const { SITE_NAME, SITE_ORIGIN, DOCS_ORIGIN, GITHUB_URL, absoluteUrl } = site;
+  const list = kind =>
+    entries
+      .entriesOf(kind)
+      .map(entry => `- [${entry.name ?? titleCase(entry.slug)}](${absoluteUrl(entry.path)})`)
+      .join('\n');
+  return `# ${SITE_NAME}
+
+> Copyable blocks, application layouts and tested recipes built from Volt UI, an open-source Angular component library built on ng-primitives. Every example has a live preview, complete source and install instructions. Blocks, layouts and recipes are source you copy into your project, not library exports.
+
+Volt UI itself — the components, theming and API reference — is documented at ${DOCS_ORIGIN}. This site is available in English, Spanish and Ukrainian.
+
+## Blocks
+
+${list('blocks')}
+
+## Layouts
+
+${list('layouts')}
+
+## Recipes
+
+${list('recipes')}
+
+## Optional
+
+- [Volt UI documentation](${DOCS_ORIGIN}/docs/introduction)
+- [Component reference in Storybook](https://storybook.voltui.dev)
+- [GitHub repository](${GITHUB_URL})
+- [Sitemap](${SITE_ORIGIN}/sitemap.xml)
+`;
+}
+
+const titleCase = slug =>
+  slug
+    .split('-')
+    .map(w => w[0].toUpperCase() + w.slice(1))
+    .join(' ');
+
 const files = {
-  'public/robots.txt': robots(),
-  'public/sitemap.xml': sitemap(),
-  'public/llms.txt': llms(),
+  'public/robots.txt': robots(docs),
+  'public/sitemap.xml': sitemap(docs),
+  'public/llms.txt': llmsDocs(docs),
+  'apps/recipes/public/robots.txt': robots(recipes),
+  'apps/recipes/public/sitemap.xml': sitemap(recipes),
+  'apps/recipes/public/llms.txt': llmsRecipes(recipes),
 };
 
 let stale = false;
@@ -200,6 +235,6 @@ if (CHECK) {
   console.log('[seo-files] up to date');
 } else {
   console.log(
-    `Wrote ${Object.keys(files).join(', ')} (${SEO_ENTRIES.length} routes × ${LOCALES.length} locales)`
+    `Wrote ${Object.keys(files).join(', ')} (${docs.catalog.SEO_ENTRIES.length} docs + ${recipes.catalog.SEO_ENTRIES.length} Recipes routes × ${LOCALES.length} locales)`
   );
 }

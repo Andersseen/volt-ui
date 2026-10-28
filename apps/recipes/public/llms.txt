@@ -1,0 +1,45 @@
+# Volt UI Recipes
+
+> Copyable blocks, application layouts and tested recipes built from Volt UI, an open-source Angular component library built on ng-primitives. Every example has a live preview, complete source and install instructions. Blocks, layouts and recipes are source you copy into your project, not library exports.
+
+Volt UI itself — the components, theming and API reference — is documented at https://voltui.dev. This site is available in English, Spanish and Ukrainian.
+
+## Blocks
+
+- [Hero](https://recipes.voltui.dev/blocks/hero)
+- [Hero Split](https://recipes.voltui.dev/blocks/hero-split)
+- [Bento](https://recipes.voltui.dev/blocks/bento)
+- [Services](https://recipes.voltui.dev/blocks/services)
+- [Testimonials](https://recipes.voltui.dev/blocks/testimonials)
+- [Pricing](https://recipes.voltui.dev/blocks/pricing)
+- [Contact](https://recipes.voltui.dev/blocks/contact)
+- [Cta](https://recipes.voltui.dev/blocks/cta)
+- [Login](https://recipes.voltui.dev/blocks/login)
+- [Footer](https://recipes.voltui.dev/blocks/footer)
+- [Dashboard](https://recipes.voltui.dev/blocks/dashboard)
+
+## Layouts
+
+- [Admin Dashboard](https://recipes.voltui.dev/layouts/admin-dashboard)
+- [Top Nav](https://recipes.voltui.dev/layouts/top-nav)
+- [Analytics](https://recipes.voltui.dev/layouts/analytics)
+- [Sidebar](https://recipes.voltui.dev/layouts/sidebar)
+- [Settings](https://recipes.voltui.dev/layouts/settings)
+- [Profile](https://recipes.voltui.dev/layouts/profile)
+- [Kanban](https://recipes.voltui.dev/layouts/kanban)
+- [Chat](https://recipes.voltui.dev/layouts/chat)
+- [Login](https://recipes.voltui.dev/layouts/login)
+- [Sign Up](https://recipes.voltui.dev/layouts/sign-up)
+
+## Recipes
+
+- [Settings form](https://recipes.voltui.dev/recipes/settings-form)
+- [Async search](https://recipes.voltui.dev/recipes/async-search)
+- [Data table](https://recipes.voltui.dev/recipes/data-table)
+
+## Optional
+
+- [Volt UI documentation](https://voltui.dev/docs/introduction)
+- [Component reference in Storybook](https://storybook.voltui.dev)
+- [GitHub repository](https://github.com/Andersseen/volt-ui)
+- [Sitemap](https://recipes.voltui.dev/sitemap.xml)

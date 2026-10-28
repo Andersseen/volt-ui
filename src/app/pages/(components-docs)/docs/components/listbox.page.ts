@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { VoltListbox, VoltListboxHeader, VoltListboxOption, VoltListboxSection } from 'volt';
-import { CodePanel } from '../../../../components/code-panel';
+import { CodePanel } from '@shared/components/code-panel';
 import { ApiReference } from '../../../../components/api-reference';
 import { LISTBOX_SNIPPET } from '../../../../lib/snippets';
 import { LISTBOX_USAGE } from '../../../../lib/snippets/usage';
 import { LISTBOX_API } from '../../../../lib/api-reference.generated';
-import { injectAppI18n } from '../../../../i18n/i18n';
+import { injectAppI18n } from '@shared/i18n/i18n';
 
 @Component({
   selector: 'app-listbox-demo',

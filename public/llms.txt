@@ -92,40 +92,7 @@ Key facts:
 
 ## Blocks, layouts and recipes
 
-Blocks are whole page sections, layouts are application shells and recipes are tested workflows; all are copied into your project.
-
-### Blocks
-
-- [Hero](https://voltui.dev/docs/blocks/hero)
-- [Hero Split](https://voltui.dev/docs/blocks/hero-split)
-- [Bento](https://voltui.dev/docs/blocks/bento)
-- [Services](https://voltui.dev/docs/blocks/services)
-- [Testimonials](https://voltui.dev/docs/blocks/testimonials)
-- [Pricing](https://voltui.dev/docs/blocks/pricing)
-- [Contact](https://voltui.dev/docs/blocks/contact)
-- [Cta](https://voltui.dev/docs/blocks/cta)
-- [Login](https://voltui.dev/docs/blocks/login)
-- [Footer](https://voltui.dev/docs/blocks/footer)
-- [Dashboard](https://voltui.dev/docs/blocks/dashboard)
-
-### Layouts
-
-- [Admin Dashboard](https://voltui.dev/docs/layouts/admin-dashboard)
-- [Top Nav](https://voltui.dev/docs/layouts/top-nav)
-- [Analytics](https://voltui.dev/docs/layouts/analytics)
-- [Sidebar](https://voltui.dev/docs/layouts/sidebar)
-- [Settings](https://voltui.dev/docs/layouts/settings)
-- [Profile](https://voltui.dev/docs/layouts/profile)
-- [Kanban](https://voltui.dev/docs/layouts/kanban)
-- [Chat](https://voltui.dev/docs/layouts/chat)
-- [Login](https://voltui.dev/docs/layouts/login)
-- [Sign Up](https://voltui.dev/docs/layouts/sign-up)
-
-### Recipes
-
-- [Settings form](https://voltui.dev/docs/recipes/settings-form)
-- [Async search](https://voltui.dev/docs/recipes/async-search)
-- [Data table](https://voltui.dev/docs/recipes/data-table)
+Copyable page sections, application layouts and tested workflows live on their own site, [Volt UI Recipes](https://recipes.voltui.dev): https://recipes.voltui.dev/blocks, https://recipes.voltui.dev/layouts and https://recipes.voltui.dev/recipes.
 
 ## Packages
 

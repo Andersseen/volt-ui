@@ -6,10 +6,10 @@ import {
   VoltCardHeader,
   VoltCardTitle,
 } from 'volt';
-import { CodeEditor } from '../code-editor';
-import { CopyButton } from '../copy-button';
+import { CodeEditor } from '@shared/components/code-editor';
+import { CopyButton } from '@shared/components/copy-button';
 import { ThemeStudioStore } from '../../services/theme-studio-store';
-import { injectAppI18n } from '../../i18n/i18n';
+import { injectAppI18n } from '@shared/i18n/i18n';
 
 /** The exported stylesheet, ready to paste into a Volt theme preset. */
 @Component({

@@ -11,7 +11,6 @@ test.describe('Site navigation', () => {
     for (const destination of [
       { name: 'Docs', url: /\/docs\/introduction$/ },
       { name: 'Components', url: /\/docs\/components$/ },
-      { name: 'Gallery', url: /\/docs\/blocks$/ },
       { name: 'Create Theme', url: /\/create-theme$/ },
       { name: 'Home', url: /\/$/ },
     ]) {

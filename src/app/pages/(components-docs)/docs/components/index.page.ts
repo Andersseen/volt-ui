@@ -1,15 +1,15 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ComponentPreview } from '../../../../components/component-preview';
-import { MOTION } from '../../../../lib/motion';
+import { MOTION } from '@shared/lib/motion';
 import {
   COMPONENT_GROUPS,
   type ComponentMetadata,
   type ComponentStability,
 } from '../../../../lib/component-metadata';
-import { Reveal } from '../../../../components/reveal';
-import { injectAppI18n } from '../../../../i18n/i18n';
-import { STORYBOOK_URL } from '../../../../lib/storybook';
+import { Reveal } from '@shared/components/reveal';
+import { injectAppI18n } from '@shared/i18n/i18n';
+import { STORYBOOK_URL } from '@shared/lib/storybook';
 import {
   VoltCard,
   VoltCardContent,

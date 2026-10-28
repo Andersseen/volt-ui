@@ -14,8 +14,8 @@ import {
   VoltTextarea,
 } from 'volt';
 import { ThemeStudioStore } from '../../services/theme-studio-store';
-import { Prose } from '../../components/prose';
-import { injectAppI18n } from '../../i18n/i18n';
+import { Prose } from '@shared/components/prose';
+import { injectAppI18n } from '@shared/i18n/i18n';
 
 /** Name the theme, pick a starting preset, generate or import a palette. */
 @Component({

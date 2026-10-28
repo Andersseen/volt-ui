@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { VoltCard } from 'volt';
-import { injectAppI18n } from '../../i18n/i18n';
+import { injectAppI18n } from '@shared/i18n/i18n';
 import type { ColorField } from '../../lib/theme-draft';
 
 /** One semantic color token: a swatch that opens the color picker, its name and role, its hex. */

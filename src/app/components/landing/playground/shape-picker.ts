@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { VoltToggleGroup, VoltToggleGroupItem } from 'volt';
-import { injectAppI18n } from '../../../i18n/i18n';
-import { STYLE_PRESETS, type StylePreset } from '../../../lib/theme-presets';
+import { injectAppI18n } from '@shared/i18n/i18n';
+import { STYLE_PRESETS, type StylePreset } from '@shared/lib/theme-presets';
 
 /** The style preset choices, as a single-select toggle group. */
 @Component({

@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "../..",
+    "outDir": "../../out-tsc/recipes",
+    "types": []
+  },
+  "include": ["src/**/*.ts", "../../shared/**/*.ts"],
+  "exclude": ["src/**/*.spec.ts", "../../shared/**/*.spec.ts", "../../shared/vite-plugins.ts"]
+}

@@ -33,6 +33,9 @@ jobs:
       - name: Typecheck
         run: pnpm typecheck
 
+      - name: Typecheck Volt UI Recipes
+        run: pnpm typecheck:recipes
+
       - name: Check committed generated files are current
         run: pnpm check:generated
 
@@ -69,7 +72,7 @@ jobs:
       - name: Build library
         run: pnpm build:lib
 
-      - name: Compile copied Blocks and Layouts in a consumer workspace
+      - name: Compile copied Blocks, Layouts and Recipes in a consumer workspace
         run: node scripts/check-copied-source.mjs
 
       # The CLI package bundles the manifest; unit tests used to generate it as a side effect.
@@ -161,6 +164,28 @@ jobs:
           include-hidden-files: true # .well-known and .nitro live under dist
           retention-days: 1
 
+  # The second application. Built on its own, so a docs-site failure never hides a Recipes one
+  # (and the other way round); both feed `verify`.
+  build-recipes:
+    name: Build Recipes app
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup
+
+      - name: Build Recipes
+        run: pnpm build:recipes
+
+      - name: Upload build for the Recipes checks
+        uses: actions/upload-artifact@v7
+        with:
+          name: build-recipes-files
+          path: dist/apps/recipes
+          include-hidden-files: true
+          retention-days: 1
+
   e2e:
     name: Docs e2e (${{ matrix.shard }}/2)
     needs: build
@@ -213,7 +238,7 @@ jobs:
       - name: Install Playwright Chromium
         uses: ./.github/actions/setup-playwright
 
-      - name: Server-render the gallery in the Cloudflare worker
+      - name: Server-render the docs pages in the Cloudflare worker
         run: pnpm check:ssr --shard ${{ matrix.shard }}/4
 
       # The raw HTML a crawler receives: titles, canonical, hreflang, Open Graph, JSON-LD, robots,
@@ -222,11 +247,53 @@ jobs:
         if: matrix.shard == 1
         run: pnpm check:seo
 
-      - name: Hydrate the gallery in the Cloudflare worker
-        run: pnpm exec playwright test e2e/ssr-gallery.spec.ts --project=chromium --shard=${{ matrix.shard }}/4
+      - name: Hydrate the docs pages in the Cloudflare worker
+        run: pnpm exec playwright test e2e/ssr-docs.spec.ts --project=chromium --shard=${{ matrix.shard }}/4
         env:
           E2E_SERVER: wrangler
           E2E_PORT: 8799
+
+      # blocks/layouts/recipes left this site: every old URL must 301 to recipes.voltui.dev, in each
+      # locale, without touching an unrelated route. Served by the same worker as production.
+      - name: Check the legacy gallery redirects
+        if: matrix.shard == 1
+        run: pnpm exec playwright test e2e/legacy-redirects.spec.ts --project=chromium
+        env:
+          E2E_SERVER: wrangler
+          E2E_PORT: 8799
+
+  recipes:
+    name: Recipes · server render · hydration · e2e · SEO
+    needs: build-recipes
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup
+
+      - name: Download build
+        uses: actions/download-artifact@v8
+        with:
+          name: build-recipes-files
+          path: dist/apps/recipes
+
+      - name: Install Playwright Chromium
+        uses: ./.github/actions/setup-playwright
+
+      - name: Server-render every Recipes route in the Cloudflare worker
+        run: pnpm check:ssr:recipes
+
+      - name: Check search metadata in the server-rendered HTML
+        run: node scripts/check-seo.mjs --app recipes
+
+      # Routes, live previews, source and copy, canonical origin, theme persistence, the
+      # theme x viewport sweep, reduced motion, and hydration — against the built worker.
+      - name: Run Recipes e2e in the Cloudflare worker
+        run: pnpm exec playwright test -c playwright.recipes.config.ts --project=chromium
+        env:
+          E2E_SERVER: wrangler
+          E2E_PORT: 8798
 
   storybook:
     name: Storybook · typecheck · coverage · build · smoke
@@ -263,7 +330,20 @@ jobs:
   # One required check, whatever the number of jobs above.
   verify:
     name: Verify · lint · typecheck · test · build · e2e
-    needs: [static, unit, packages, contracts, compat, build, e2e, ssr, storybook]
+    needs:
+      [
+        static,
+        unit,
+        packages,
+        contracts,
+        compat,
+        build,
+        build-recipes,
+        e2e,
+        ssr,
+        recipes,
+        storybook,
+      ]
     if: always()
     runs-on: ubuntu-latest
     permissions: {}
@@ -275,10 +355,48 @@ jobs:
           echo "job results: $RESULTS"
           for r in $RESULTS; do [ "$r" = "success" ] || exit 1; done
 
+  # Volt UI Recipes is its own Cloudflare Pages project (`volt-ui-recipes`, https://recipes.voltui.dev).
+  # GitHub Actions owns its production deployments: do not also connect the project to Git in the
+  # Cloudflare dashboard, or every push deploys twice. Opt-in, like Storybook: set the repository
+  # variable RECIPES_DEPLOY=true once the Pages project and the custom domain exist
+  # (docs/recipes-app.md "Deploying"). Until then this job is skipped, not failed.
+  deploy-recipes:
+    name: Deploy Recipes to Cloudflare Pages
+    needs: verify
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && vars.RECIPES_DEPLOY == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    environment:
+      name: recipes
+      url: https://recipes.voltui.dev
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup
+
+      - name: Build library
+        run: pnpm build:lib
+
+      - name: Build Recipes
+        run: pnpm build:recipes
+
+      # --branch must match the Pages project's production branch (main): wrangler only tags a
+      # deployment "Production", the environment the custom domain serves, when they match.
+      - name: Deploy to Cloudflare Pages
+        run: pnpm exec wrangler pages deploy dist/apps/recipes/analog/public --project-name=volt-ui-recipes --branch=main
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
   deploy:
     name: Deploy to Cloudflare Pages
-    needs: verify
-    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    # The docs build redirects every old /docs/{blocks,layouts,recipes}/* URL to recipes.voltui.dev, so
+    # it must never go live ahead of its destination. When Recipes deploys in the same run, wait for it.
+    needs: [verify, deploy-recipes]
+    if: >-
+      always() && github.event_name != 'pull_request' && github.ref == 'refs/heads/main' &&
+      needs.verify.result == 'success' &&
+      (needs.deploy-recipes.result == 'success' || needs.deploy-recipes.result == 'skipped')
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -301,6 +419,17 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      # The legacy-gallery redirects point here. A 301 to an unprovisioned domain is worse than a 404.
+      - name: Require Volt UI Recipes to be live
+        run: |
+          for attempt in 1 2 3 4 5; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' https://recipes.voltui.dev/blocks/hero || true)
+            [ "$code" = "200" ] && exit 0
+            sleep 10
+          done
+          echo "::error::https://recipes.voltui.dev/blocks/hero answered $code. Deploy Volt UI Recipes first (docs/recipes-app.md)."
+          exit 1
 
       - name: Build library
         run: pnpm build:lib

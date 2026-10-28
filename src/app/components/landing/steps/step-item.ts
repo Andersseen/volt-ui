@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { VoltCard } from 'volt';
-import { injectAppI18n } from '../../../i18n/i18n';
-import { Prose } from '../../prose';
+import { injectAppI18n } from '@shared/i18n/i18n';
+import { Prose } from '@shared/components/prose';
 import { CodeWindow } from '../code-window';
 import type { Step } from './steps';
 

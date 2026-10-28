@@ -7,7 +7,7 @@ import {
   swatch,
   type ColorPreset,
   type StylePreset,
-} from '../../../lib/theme-presets';
+} from '@shared/lib/theme-presets';
 
 /** Every color preset as a swatch, every style preset as the same tile in a different shape. */
 @Component({

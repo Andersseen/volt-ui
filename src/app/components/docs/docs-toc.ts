@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { VoltNativeButton } from 'volt';
-import { injectAppI18n } from '../../i18n/i18n';
+import { injectAppI18n } from '@shared/i18n/i18n';
 import type { TocItem } from '../../lib/docs-nav';
 
 /** "On this page": the page's headings, the one being read marked, a click jumps to it. */

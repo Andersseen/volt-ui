@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { VoltNativeButton, VoltSpinner } from 'volt';
-import { CodePanel } from '../../../../components/code-panel';
+import { CodePanel } from '@shared/components/code-panel';
 import { ApiReference } from '../../../../components/api-reference';
 import { SPINNER_SNIPPET } from '../../../../lib/snippets';
 import { SPINNER_USAGE } from '../../../../lib/snippets/usage';
 import { SPINNER_API } from '../../../../lib/api-reference.generated';
-import { injectAppI18n } from '../../../../i18n/i18n';
+import { injectAppI18n } from '@shared/i18n/i18n';
 
 // The heading is the component name, which is identical in every locale (as every
 // `components.*.title` is). Switch it to t('components.spinner.title') and add a description

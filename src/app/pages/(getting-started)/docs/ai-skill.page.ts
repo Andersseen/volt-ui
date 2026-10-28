@@ -21,8 +21,8 @@ function describeSkill(text: string): { name: string; description: string } {
     .join(' ');
   return { name, description };
 }
-import { Prose } from '../../../components/prose';
-import { injectAppI18n, type PlainTranslationKey } from '../../../i18n/i18n';
+import { Prose } from '@shared/components/prose';
+import { injectAppI18n, type PlainTranslationKey } from '@shared/i18n/i18n';
 
 @Component({
   selector: 'app-ai-skill-page',

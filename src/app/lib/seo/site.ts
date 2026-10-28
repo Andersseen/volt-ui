@@ -1,5 +1,3 @@
-import { I18N_PROJECT } from '../../i18n/project';
-
 /**
  * The one place the public identity of the site is written down.
  *
@@ -37,36 +35,13 @@ export const NPM_PACKAGES = [
   },
 ] as const;
 
-const LOCALES: readonly string[] = I18N_PROJECT.locales;
-const SOURCE_LOCALE: string = I18N_PROJECT.sourceLocale;
+export { OG_LOCALES, barePath, localeOfPath, localizedPath } from '@shared/seo/paths';
 
-/** `og:locale` wants a language_TERRITORY code. */
-export const OG_LOCALES: Readonly<Record<string, string>> = {
-  en: 'en_US',
-  es: 'es_ES',
-  uk: 'uk_UA',
-};
-
-/** The locale a URL path is written in. The source locale has no prefix (Etyma redirects `/en/...`). */
-export function localeOfPath(path: string): string {
-  const first = path.split('/')[1];
-  return first !== SOURCE_LOCALE && LOCALES.includes(first) ? first : SOURCE_LOCALE;
-}
-
-/** A path without its locale prefix, a trailing slash, a query or a fragment. `/es/docs/` → `/docs`. */
-export function barePath(path: string): string {
-  const pathname = path.split(/[?#]/)[0];
-  const locale = localeOfPath(pathname);
-  const stripped = locale === SOURCE_LOCALE ? pathname : pathname.slice(locale.length + 1);
-  const trimmed = stripped.length > 1 ? stripped.replace(/\/+$/, '') : stripped;
-  return trimmed === '' ? '/' : trimmed;
-}
-
-/** The path of a bare route in a locale: `('/docs', 'es')` → `/es/docs`, `('/', 'uk')` → `/uk`. */
-export function localizedPath(bare: string, locale: string): string {
-  if (locale === SOURCE_LOCALE) return bare;
-  return bare === '/' ? `/${locale}` : `/${locale}${bare}`;
-}
+export const SITE_IDENTITY_VALUE = {
+  name: SITE_NAME,
+  origin: SITE_ORIGIN,
+  socialImage: SOCIAL_IMAGE,
+} as const;
 
 export function absoluteUrl(path: string): string {
   return `${SITE_ORIGIN}${path}`;

@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { MoveEnterDirective, MoveTapDirective } from 'angular-movement';
 import { LmnCheckIcon, LmnCopyIcon, LmnTerminalIcon } from 'lumen-icons';
 import { VoltButton, VoltCard } from 'volt';
-import { injectAppI18n } from '../../../i18n/i18n';
-import { TAP_PRESS } from '../../../lib/motion';
+import { injectAppI18n } from '@shared/i18n/i18n';
+import { TAP_PRESS } from '@shared/lib/motion';
 
 /** The install command the hero advertises and its copy button writes to the clipboard. */
 export const INSTALL_COMMAND = 'npx @voltui/cli add button dialog form-field';

@@ -1,0 +1,12 @@
+/*
+ * Volt UI Recipes. Tokens, theme presets and base rules are the docs site's own, imported from
+ * shared/styles/site.css — nothing about a theme is defined twice.
+ *
+ * Tailwind scans from this app's root, so the sources whose classes it must emit are listed:
+ * the shared components and the Volt library itself.
+ */
+@import 'tailwindcss';
+@import '../../../shared/styles/site.css';
+
+@source '../../../shared';
+@source '../../../projects/volt/src/lib';

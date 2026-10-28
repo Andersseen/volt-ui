@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { injectAppI18n } from '../../../i18n/i18n';
-import { Prose } from '../../../components/prose';
+import { injectAppI18n } from '@shared/i18n/i18n';
+import { Prose } from '@shared/components/prose';
 import { RouterLink } from '@angular/router';
 import {
   VoltCard,

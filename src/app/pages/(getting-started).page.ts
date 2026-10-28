@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { DocsPageShell } from '../components/docs-page-shell';
 import type { DocsSidebarGroup } from '../components/docs/docs-nav-list';
-import { injectAppI18n } from '../i18n/i18n';
+import { injectAppI18n } from '@shared/i18n/i18n';
 
 @Component({
   selector: 'app-docs-layout',

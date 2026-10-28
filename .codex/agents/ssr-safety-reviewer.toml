@@ -38,9 +38,9 @@ Browser globals and APIs: `document`, `window`, `localStorage`, `sessionStorage`
 
 ## Reference implementations in this repo (copy these shapes)
 
-- `src/app/components/theme-switcher.ts` — `isPlatformBrowser` guard around
+- `shared/components/theme-switcher.ts` — `isPlatformBrowser` guard around
   `localStorage` read/write.
-- `src/app/components/code-panel.ts` — `afterNextRender` with an explicit `injector`,
+- `shared/components/code-panel.ts` — `afterNextRender` with an explicit `injector`,
   plus an `isPlatformBrowser` early return.
 
 ## Additional checks for library code (`projects/volt/src/lib/`)

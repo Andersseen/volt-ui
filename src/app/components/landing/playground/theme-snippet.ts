@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import type { ColorPreset, StylePreset } from '../../../lib/theme-presets';
+import type { ColorPreset, StylePreset } from '@shared/lib/theme-presets';
 import { CodeWindow } from '../code-window';
 
 /** The one line of app config that produces the preset pair currently on screen. */

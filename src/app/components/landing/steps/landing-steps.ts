@@ -11,7 +11,7 @@ import { DOCUMENT } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { LmnArrowRightIcon } from 'lumen-icons';
 import { VoltButton } from 'volt';
-import { injectAppI18n } from '../../../i18n/i18n';
+import { injectAppI18n } from '@shared/i18n/i18n';
 import { LandingSectionHeader } from '../section-header';
 import { StepItem } from './step-item';
 import { STEPS } from './steps';

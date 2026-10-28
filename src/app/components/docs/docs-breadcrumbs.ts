@@ -8,7 +8,7 @@ import {
   VoltBreadcrumbs,
   VoltNativeBreadcrumbLink,
 } from 'volt';
-import { injectAppI18n } from '../../i18n/i18n';
+import { injectAppI18n } from '@shared/i18n/i18n';
 
 /** Section › page, above the page title. */
 @Component({

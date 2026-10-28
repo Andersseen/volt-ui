@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { VoltCard, VoltCardContent, VoltNativeButton } from 'volt';
-import { injectAppI18n } from '../../../i18n/i18n';
+import { injectAppI18n } from '@shared/i18n/i18n';
 import type { ComponentMetadata } from '../../../lib/component-metadata';
 import { ComponentPreview } from '../../component-preview';
 

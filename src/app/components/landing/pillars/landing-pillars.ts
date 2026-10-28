@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { injectAppI18n, type PlainTranslationKey } from '../../../i18n/i18n';
+import { injectAppI18n, type PlainTranslationKey } from '@shared/i18n/i18n';
 import { LandingSectionHeader } from '../section-header';
 import { AgentVisual } from './agent-visual';
 import { BehaviorVisual } from './behavior-visual';

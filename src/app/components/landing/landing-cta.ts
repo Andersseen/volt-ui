@@ -3,10 +3,10 @@ import { RouterLink } from '@angular/router';
 import { MoveHoverDirective, MoveTapDirective } from 'angular-movement';
 import { LmnGithubIcon, LmnGridIcon } from 'lumen-icons';
 import { VoltButton, VoltCard, VoltNativeButton } from 'volt';
-import { injectAppI18n } from '../../i18n/i18n';
+import { injectAppI18n } from '@shared/i18n/i18n';
 import { SITE_STATS } from '../../lib/generated/site-stats';
-import { HOVER_LIFT, TAP_PRESS } from '../../lib/motion';
-import { Reveal } from '../reveal';
+import { HOVER_LIFT, TAP_PRESS } from '@shared/lib/motion';
+import { Reveal } from '@shared/components/reveal';
 
 /** Closing call to action. */
 @Component({

@@ -2,12 +2,12 @@ import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { VoltButton, VoltNativeButton, VoltSpinner } from 'volt';
 import { ApiReference } from '../../../../components/api-reference';
-import { CodePanel } from '../../../../components/code-panel';
+import { CodePanel } from '@shared/components/code-panel';
 import { BUTTON_API } from '../../../../lib/api-reference.generated';
 import { BUTTON_SNIPPET } from '../../../../lib/snippets';
 import { BUTTON_USAGE } from '../../../../lib/snippets/usage';
 import { LmnArrowRightIcon, LmnChevronRightIcon, LmnMailIcon } from 'lumen-icons';
-import { injectAppI18n } from '../../../../i18n/i18n';
+import { injectAppI18n } from '@shared/i18n/i18n';
 
 @Component({
   selector: 'app-button-demo',

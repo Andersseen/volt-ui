@@ -64,3 +64,7 @@ public/manifest.json
 # System files
 .DS_Store
 Thumbs.db
+
+# Copied from public/ before every Recipes dev/build (scripts/sync-recipes-public.mjs)
+/apps/recipes/public/web-editor-lite.min.js
+/apps/recipes/public/vertex-sw.js

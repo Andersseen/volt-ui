@@ -3,9 +3,9 @@ import { RouterLink } from '@angular/router';
 import { MoveHoverDirective, MoveLoopDirective, MoveTapDirective } from 'angular-movement';
 import { LmnArrowRightIcon, LmnSparklesIcon } from 'lumen-icons';
 import { VoltBadge, VoltButton } from 'volt';
-import { injectAppI18n } from '../../../i18n/i18n';
+import { injectAppI18n } from '@shared/i18n/i18n';
 import { SITE_STATS } from '../../../lib/generated/site-stats';
-import { HOVER_LIFT, TAP_PRESS } from '../../../lib/motion';
+import { HOVER_LIFT, TAP_PRESS } from '@shared/lib/motion';
 import { InstallCommand } from './install-command';
 
 /** The hero's words: release badge, headline, lede, the two journeys and the install command. */

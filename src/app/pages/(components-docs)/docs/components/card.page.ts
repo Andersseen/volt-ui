@@ -12,11 +12,11 @@ import {
   VoltNativeButton,
 } from 'volt';
 import { ApiReference } from '../../../../components/api-reference';
-import { CodePanel } from '../../../../components/code-panel';
+import { CodePanel } from '@shared/components/code-panel';
 import { CARD_API } from '../../../../lib/api-reference.generated';
 import { CARD_SNIPPET } from '../../../../lib/snippets';
 import { CARD_USAGE } from '../../../../lib/snippets/usage';
-import { injectAppI18n } from '../../../../i18n/i18n';
+import { injectAppI18n } from '@shared/i18n/i18n';
 
 @Component({
   selector: 'app-card-demo',
