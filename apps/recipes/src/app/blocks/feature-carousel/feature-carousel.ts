@@ -101,7 +101,7 @@ const DEFAULT_REASONS: readonly Reason[] = [
               [disabled]="atStart()"
               (click)="page(-1)"
             >
-              <lmn-arrow-left [size]="18" />
+              <lmn-arrow-left [size]="20" />
             </volt-button>
             <volt-button
               variant="outline"
@@ -111,7 +111,7 @@ const DEFAULT_REASONS: readonly Reason[] = [
               [disabled]="atEnd()"
               (click)="page(1)"
             >
-              <lmn-arrow-right [size]="18" />
+              <lmn-arrow-right [size]="20" />
             </volt-button>
           </div>
         </div>
@@ -123,7 +123,7 @@ const DEFAULT_REASONS: readonly Reason[] = [
           role="region"
           [attr.aria-label]="heading()"
           tabindex="0"
-          class="track -mx-4 mt-10 snap-x snap-mandatory overflow-x-auto scroll-px-4 px-4 pb-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          class="track -mx-4 -mb-8 mt-10 snap-x snap-mandatory overflow-x-auto scroll-px-4 px-4 pb-12 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           (scroll)="measure()"
         >
           <ul class="flex gap-5">
@@ -139,23 +139,24 @@ const DEFAULT_REASONS: readonly Reason[] = [
                   </h3>
                   @switch (reason.icon) {
                     @case ('zap') {
-                      <lmn-zap [size]="28" class="icon shrink-0" />
+                      <lmn-zap [size]="32" class="icon shrink-0" />
                     }
                     @case ('package') {
-                      <lmn-package [size]="28" class="icon shrink-0" />
+                      <lmn-package [size]="32" class="icon shrink-0" />
                     }
                     @case ('sparkles') {
-                      <lmn-sparkles [size]="28" class="icon shrink-0" />
+                      <lmn-sparkles [size]="32" class="icon shrink-0" />
                     }
                     @case ('shield') {
-                      <lmn-shield [size]="28" class="icon shrink-0" />
+                      <lmn-shield [size]="32" class="icon shrink-0" />
                     }
                   }
                 </div>
                 <p class="body mt-6 flex-1 leading-7">{{ reason.body }}</p>
                 <volt-button
                   variant="link"
-                  class="link mt-6 self-start px-0"
+                  class="mt-6 self-start"
+                  [customClass]="i === front() ? 'px-0 text-primary-foreground' : 'px-0'"
                   (click)="learnMore.emit(reason)"
                 >
                   {{ reason.linkLabel }}
@@ -204,8 +205,7 @@ const DEFAULT_REASONS: readonly Reason[] = [
       box-shadow: 0 18px 50px -20px color-mix(in oklch, var(--primary) 70%, transparent);
     }
     .card.front .body,
-    .card.front .icon,
-    .card.front .link {
+    .card.front .icon {
       color: var(--primary-foreground);
     }
 

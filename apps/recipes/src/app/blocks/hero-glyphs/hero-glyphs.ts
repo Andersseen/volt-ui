@@ -53,7 +53,7 @@ interface Cell {
     >
       <canvas
         #field
-        class="field pointer-events-none absolute inset-x-0 bottom-0 h-3/5 w-full"
+        class="field pointer-events-none absolute inset-x-0 bottom-0 h-1/2 w-full"
         aria-hidden="true"
       ></canvas>
 
