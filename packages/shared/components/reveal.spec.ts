@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { render } from '@testing-library/angular';
-import { provideMovement } from 'angular-movement';
+import { MoveAnimator, provideMovement } from 'angular-movement';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { Reveal } from './reveal';
 
@@ -80,6 +80,21 @@ describe('Reveal', () => {
     // The hidden start state is handed back to the animation, which owns opacity from
     // here on — leaving the inline value in place would override it.
     expect(target.style.opacity).toBe('');
+  });
+
+  it('plays a bare attribute with no stagger instead of an invalid delay', async () => {
+    stubViewport({ reducedMotion: false, rect: { top: 5000, bottom: 5200 } });
+    // A NaN delay is what the browser's Web Animations API rejects ("non-finite"); jsdom has none.
+    const animate = vi.spyOn(MoveAnimator.prototype, 'animate').mockReturnValue(undefined as never);
+
+    await renderHost();
+    lastCallback([{ isIntersecting: true, boundingClientRect: { bottom: 5200 } as DOMRect }]);
+
+    expect(animate).toHaveBeenCalledWith(
+      expect.any(HTMLElement),
+      expect.anything(),
+      expect.objectContaining({ delay: 0 })
+    );
   });
 
   it('does nothing when the visitor asks for reduced motion', async () => {

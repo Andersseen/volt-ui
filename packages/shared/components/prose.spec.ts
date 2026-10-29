@@ -27,4 +27,13 @@ describe('Prose', () => {
     const code = screen.getByText('ng-primitives/slider');
     expect(code.tagName).toBe('CODE');
   });
+
+  it('adds no space of its own around a mark', async () => {
+    const { container } = await render(Prose, {
+      providers: [provideRouter([])],
+      componentInputs: { text: 'Its own site, **Volt UI Recipes**: a preview.' },
+    });
+
+    expect(container.textContent).toBe('Its own site, Volt UI Recipes: a preview.');
+  });
 });

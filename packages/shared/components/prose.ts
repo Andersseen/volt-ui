@@ -64,7 +64,9 @@ const MARKED = /`([^`]+)`|\*\*([^*]+)\*\*|\[([^\]]+)\]\(([^)]+)\)/g;
         }
       }
       @default {
-        {{ segment.text }}
+        <!-- In an element, so the template's own line breaks stay whitespace-only nodes Angular drops,
+             rather than becoming spaces before the next mark ("Recipes :"). -->
+        <ng-container>{{ segment.text }}</ng-container>
       }
     }
   }`,

@@ -33,8 +33,11 @@ export class Reveal {
   private readonly animator = inject(MoveAnimator);
   private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
-  /** Stagger, in milliseconds, applied before this element animates. */
-  readonly appReveal = input(0, { transform: numberAttribute });
+  /**
+   * Stagger, in milliseconds, applied before this element animates. A bare `appReveal` attribute
+   * arrives as `''`, which `numberAttribute` alone turns into `NaN` and the Web Animations API rejects.
+   */
+  readonly appReveal = input(0, { transform: (value: unknown) => numberAttribute(value, 0) });
 
   /** Which angular-movement preset to play. */
   readonly appRevealPreset = input<MovePreset>('fade-up');
