@@ -38,7 +38,7 @@ export function provideSeo(): EnvironmentProviders {
           url: absoluteUrl(localizedPath(barePath(path), locale)),
           locale,
           locales: LOCALES,
-          imageAlt: t('seo.imageAlt'),
+          imageAlt: homeTitle(t),
           robots: 'noindex, follow',
         });
       };
@@ -70,7 +70,7 @@ export function provideSeo(): EnvironmentProviders {
             url: absoluteUrl(localizedPath(bare, locale)),
             locale,
             locales: LOCALES,
-            imageAlt: t('seo.imageAlt'),
+            imageAlt: homeTitle(t),
             jsonLd: structuredData(entry, locale, t),
           });
         });
@@ -80,9 +80,14 @@ export function provideSeo(): EnvironmentProviders {
 
 type T = ReturnType<typeof injectAppI18n>['t'];
 
-/** Two published sentences, one per section that has one: localized without a new key. */
+/** The home page's own lede: what the site publishes and what every example comes with. */
 function homeDescription(t: T): string {
-  return `${t('gallery.blocks.description')} ${t('gallery.layouts.description')}`;
+  return t('recipes.home.lede');
+}
+
+/** `Volt UI Recipes — Whole screens, built from Volt UI`: the name alone says nothing to a searcher. */
+function homeTitle(t: T): string {
+  return `${SITE_NAME} — ${t('recipes.home.title').replace(/[.。]$/, '')}`;
 }
 
 function nameOf(entry: CatalogEntry, t: T): string {
@@ -101,7 +106,7 @@ function describe(entry: SeoEntry, t: T, locale: string): { title: string; descr
       };
     }
     case 'home':
-      return { title: SITE_NAME, description: homeDescription(t) };
+      return { title: homeTitle(t), description: homeDescription(t) };
     case 'listing':
       switch (entry.section) {
         case 'blocks':

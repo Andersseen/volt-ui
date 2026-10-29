@@ -423,12 +423,13 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       # The legacy-gallery redirects point here. A 301 to an unprovisioned domain is worse than a 404.
+      # Up to three minutes: right after deploy-recipes publishes, the custom domain can lag behind.
       - name: Require Volt UI Recipes to be live
         run: |
-          for attempt in 1 2 3 4 5; do
+          for attempt in $(seq 1 12); do
             code=$(curl -s -o /dev/null -w '%{http_code}' https://recipes.voltui.dev/blocks/hero || true)
             [ "$code" = "200" ] && exit 0
-            sleep 10
+            sleep 15
           done
           echo "::error::https://recipes.voltui.dev/blocks/hero answered $code. Deploy Volt UI Recipes first (docs/recipes-app.md)."
           exit 1

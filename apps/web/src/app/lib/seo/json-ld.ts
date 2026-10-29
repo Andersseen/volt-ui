@@ -1,4 +1,4 @@
-import { GITHUB_URL, LICENSE_URL, SITE_NAME, SITE_ORIGIN, absoluteUrl } from './site';
+import { GITHUB_URL, LICENSE_URL, NPM_PACKAGES, SITE_NAME, SITE_ORIGIN, absoluteUrl } from './site';
 
 import {
   breadcrumbJsonLd as breadcrumb,
@@ -33,6 +33,8 @@ export function homeJsonLd(description: string): JsonLd[] {
       programmingLanguage: 'TypeScript',
       runtimePlatform: 'Angular',
       license: LICENSE_URL,
+      // The published library, the same code as this repository.
+      sameAs: NPM_PACKAGES[0].url,
       isPartOf: { '@id': `${SITE_ORIGIN}/#website` },
     },
   ];

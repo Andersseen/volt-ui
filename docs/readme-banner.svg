@@ -3,40 +3,41 @@
     <linearGradient id="background" x1="80" y1="20" x2="1510" y2="550" gradientUnits="userSpaceOnUse">
       <stop stop-color="#15132E"/>
       <stop offset=".52" stop-color="#101525"/>
-      <stop offset="1" stop-color="#092B38"/>
+      <stop offset="1" stop-color="#0E1A3A"/>
     </linearGradient>
-    <linearGradient id="accent" x1="250" y1="90" x2="1350" y2="480" gradientUnits="userSpaceOnUse">
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
       <stop stop-color="#8B5CF6"/>
-      <stop offset=".52" stop-color="#5687FF"/>
-      <stop offset="1" stop-color="#27D3D2"/>
+      <stop offset="1" stop-color="#3B82F6"/>
     </linearGradient>
-    <linearGradient id="bolt" x1="223" y1="111" x2="267" y2="168" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#fff"/>
-      <stop offset="1" stop-color="#D9E3FF"/>
+    <linearGradient id="headline" x1="0" y1="0" x2="1" y2="0">
+      <stop stop-color="#A78BFA"/>
+      <stop offset="1" stop-color="#60A5FA"/>
+    </linearGradient>
+    <linearGradient id="frame" x1="0" y1="0" x2="1600" y2="560" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8B5CF6"/>
+      <stop offset="1" stop-color="#3B82F6"/>
     </linearGradient>
     <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
       <path d="M40 0H0V40" stroke="#B9C7FF" stroke-opacity=".07"/>
     </pattern>
-    <filter id="glow" x="870" y="40" width="650" height="500" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+    <filter id="glow" x="780" y="-60" width="820" height="680" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
       <feGaussianBlur stdDeviation="32"/>
     </filter>
   </defs>
 
   <rect width="1600" height="560" rx="28" fill="url(#background)"/>
   <rect width="1600" height="560" rx="28" fill="url(#grid)"/>
-  <rect x="1" y="1" width="1598" height="558" rx="27" stroke="url(#accent)" stroke-opacity=".65" stroke-width="2"/>
+  <rect x="1" y="1" width="1598" height="558" rx="27" stroke="url(#frame)" stroke-opacity=".6" stroke-width="2"/>
 
-  <circle cx="1190" cy="280" r="210" fill="#4F75FF" fill-opacity=".2" filter="url(#glow)"/>
+  <circle cx="1190" cy="280" r="210" fill="#6366F1" fill-opacity=".22" filter="url(#glow)"/>
 
   <g font-family="Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
     <rect x="78" y="72" width="66" height="66" rx="20" fill="url(#accent)"/>
-    <path d="M115 83 96 111h14l-5 22 22-31h-15l3-19Z" fill="url(#bolt)"/>
+    <path d="M116 84 97 111h14l-5 22 22-31h-15l3-18Z" fill="#fff"/>
     <text x="162" y="119" fill="#F8FAFC" font-size="34" font-weight="700" letter-spacing="-1.2">Volt UI</text>
-    <rect x="295" y="88" width="78" height="30" rx="15" fill="#FFFFFF" fill-opacity=".09" stroke="#FFFFFF" stroke-opacity=".1"/>
-    <text x="334" y="108" fill="#CFD7EE" font-size="14" font-weight="650" text-anchor="middle">v1.3.2</text>
 
     <text x="80" y="231" fill="#F8FAFC" font-size="58" font-weight="750" letter-spacing="-2.2">Angular UI atoms</text>
-    <text x="80" y="300" fill="url(#accent)" font-size="58" font-weight="750" letter-spacing="-2.2">you can make your own.</text>
+    <text x="80" y="300" fill="url(#headline)" font-size="58" font-weight="750" letter-spacing="-2.2">you can make your own.</text>
     <text x="84" y="357" fill="#C2C9D9" font-size="22" font-weight="450">Accessible components for Angular 21.2 and 22.</text>
     <text x="84" y="390" fill="#C2C9D9" font-size="22" font-weight="450">Install from npm, or copy the source and own it.</text>
 
@@ -46,11 +47,11 @@
       <text x="119" y="464" fill="#E5EAF6">44 components</text>
 
       <rect x="298" y="438" width="180" height="42" rx="21" fill="#FFFFFF" fill-opacity=".08" stroke="#FFFFFF" stroke-opacity=".14"/>
-      <circle cx="321" cy="459" r="5" fill="#8C73FF"/>
+      <circle cx="321" cy="459" r="5" fill="#A78BFA"/>
       <text x="337" y="464" fill="#E5EAF6">5 × 5 themes</text>
 
       <rect x="492" y="438" width="214" height="42" rx="21" fill="#FFFFFF" fill-opacity=".08" stroke="#FFFFFF" stroke-opacity=".14"/>
-      <circle cx="515" cy="459" r="5" fill="#51A8FF"/>
+      <circle cx="515" cy="459" r="5" fill="#60A5FA"/>
       <text x="531" y="464" fill="#E5EAF6">Package + copy CLI</text>
     </g>
 
@@ -78,13 +79,12 @@
       <text x="296" y="166" fill="#F2F5FB" font-size="17" font-weight="650">Signals · OnPush · zoneless</text>
 
       <rect x="273" y="220" width="285" height="100" rx="16" fill="#121A30" stroke="#FFFFFF" stroke-opacity=".1"/>
-      <text x="296" y="250" fill="#AAB5D0" font-size="13" font-weight="600">STYLE WITH TOKENS</text>
-      <rect x="296" y="270" width="28" height="28" rx="8" fill="#8B5CF6"/>
-      <rect x="334" y="270" width="28" height="28" rx="8" fill="#5687FF"/>
-      <rect x="372" y="270" width="28" height="28" rx="8" fill="#27D3D2"/>
-      <rect x="410" y="270" width="28" height="28" rx="8" fill="#F59E0B"/>
-      <rect x="448" y="270" width="28" height="28" rx="8" fill="#FB7185"/>
-      <text x="495" y="289" fill="#D7DDF0" font-size="12" font-weight="600">5 color presets</text>
+      <text x="296" y="250" fill="#AAB5D0" font-size="13" font-weight="600">5 COLOR PRESETS</text>
+      <rect x="296" y="268" width="38" height="30" rx="8" fill="#73A0FF"/>
+      <rect x="344" y="268" width="38" height="30" rx="8" fill="#FF5F41"/>
+      <rect x="392" y="268" width="38" height="30" rx="8" fill="#43C07A"/>
+      <rect x="440" y="268" width="38" height="30" rx="8" fill="#B085FF"/>
+      <rect x="488" y="268" width="38" height="30" rx="8" fill="#00B7EF"/>
     </g>
 
     <text x="1517" y="520" fill="#B8C3DA" fill-opacity=".75" font-size="15" font-weight="650" text-anchor="end">voltui.dev</text>

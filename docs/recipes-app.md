@@ -49,7 +49,7 @@ Findings for Doqs (to take to the voltui.dev adoption):
 Owner of production deploys: **GitHub Actions** (`deploy-recipes` in `ci.yml`). Do **not** also connect the Pages project to Git.
 
 1. Cloudflare Pages → create project `volt-ui-recipes` (Direct Upload), production branch `main`.
-2. Custom domain `recipes.voltui.dev` on that project (DNS CNAME to `volt-ui-recipes.pages.dev`, proxied).
+2. Custom domain `recipes.voltui.dev` on that project (DNS CNAME to `volt-ui-recipes.pages.dev`, proxied). Adding the domain in Pages does not create the record when the token lacks DNS access: until the CNAME exists the domain stays `pending` and the docs deploy fails its probe.
 3. Repo variable `RECIPES_DEPLOY=true`; secrets `CLOUDFLARE_API_TOKEN` / `CLOUDFLARE_ACCOUNT_ID` already serve the other projects.
 4. Merge. `deploy-recipes` runs first; `deploy` (docs) waits for it and also probes `https://recipes.voltui.dev/blocks/hero` before publishing, because the docs build 301-redirects the old gallery URLs there. **Never deploy the docs build before Recipes is live.**
 5. Previews: PR builds are verified in CI (`recipes` job); no per-PR Pages preview is configured.
