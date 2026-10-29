@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { NavigationCancel, NavigationEnd, NavigationError, Router } from '@angular/router';
+import { filter, firstValueFrom } from 'rxjs';
 import { LmnCheckIcon, LmnGlobeIcon, LmnLoaderIcon } from 'lumen-icons';
 import { VoltNativeButton, VoltPopoverContent, VoltPopoverTrigger } from 'volt';
 import { injectAppI18n, LOCALES, LOCALE_NAMES, LOCALE_SHORT, type Locale } from '../i18n/i18n';
@@ -93,6 +95,7 @@ export class LanguageSwitcher {
   protected readonly locale = this.translations.locale;
   protected readonly t = this.translations.t;
   protected readonly pendingLocale = signal<Locale | null>(null);
+  private readonly router = inject(Router);
 
   protected name(locale: string): string {
     return LOCALE_NAMES[locale as Locale] ?? locale;
@@ -108,6 +111,28 @@ export class LanguageSwitcher {
     }
 
     this.pendingLocale.set(locale);
-    void this.translations.setLocale(locale).finally(() => this.pendingLocale.set(null));
+    const run = () =>
+      this.translations.setLocale(locale).finally(() => this.pendingLocale.set(null));
+    void (this.router.navigated ? run() : this.firstNavigation().then(run));
+  }
+
+  /**
+   * Resolves when the router finishes its first navigation.
+   *
+   * A visitor can reach the picker before then (the header is server-rendered, and `/docs` still
+   * has its redirect to `/docs/introduction` to run). Switching in that window started a
+   * navigation the initial one then overrode, leaving the page in the old language.
+   */
+  private firstNavigation(): Promise<unknown> {
+    return firstValueFrom(
+      this.router.events.pipe(
+        filter(
+          event =>
+            event instanceof NavigationEnd ||
+            event instanceof NavigationCancel ||
+            event instanceof NavigationError
+        )
+      )
+    );
   }
 }

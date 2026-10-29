@@ -1,4 +1,5 @@
 import { EtymaI18n } from '@etyma/angular';
+import { provideRouter, Router } from '@angular/router';
 import { render, screen } from '@testing-library/angular';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
@@ -13,10 +14,17 @@ function deferred(): { promise: Promise<void>; resolve: () => void } {
   return { promise, resolve };
 }
 
+/** Renders the picker in an app whose router has finished its first navigation, as on a real page. */
+async function renderNavigated() {
+  const result = await render(LanguageSwitcher, { providers: [provideRouter([])] });
+  await result.fixture.debugElement.injector.get(Router).navigateByUrl('/');
+  return result;
+}
+
 describe('LanguageSwitcher', () => {
   it('shows a loading state while the catalog is in flight, and clears it once resolved', async () => {
     const user = userEvent.setup();
-    const { fixture } = await render(LanguageSwitcher);
+    const { fixture } = await renderNavigated();
     const translations = fixture.debugElement.injector.get(EtymaI18n);
 
     const gate = deferred();
@@ -50,7 +58,7 @@ describe('LanguageSwitcher', () => {
 
   it('does not fetch anything for the already-active locale', async () => {
     const user = userEvent.setup();
-    const { fixture } = await render(LanguageSwitcher);
+    const { fixture } = await renderNavigated();
     const translations = fixture.debugElement.injector.get(EtymaI18n);
     const setLocale = vi.spyOn(translations, 'setLocale');
 
@@ -60,5 +68,25 @@ describe('LanguageSwitcher', () => {
     await fixture.whenStable();
 
     expect(setLocale).not.toHaveBeenCalled();
+  });
+
+  it('waits for the first navigation, so a redirect still running cannot undo the switch', async () => {
+    const user = userEvent.setup();
+    const { fixture } = await render(LanguageSwitcher, { providers: [provideRouter([])] });
+    // As during hydration: the page is on screen, the router's first navigation is not done.
+    const router = fixture.debugElement.injector.get(Router);
+    router.navigated = false;
+    const translations = fixture.debugElement.injector.get(EtymaI18n);
+    const setLocale = vi.spyOn(translations, 'setLocale').mockResolvedValue();
+
+    await user.click(screen.getByTestId('language-trigger'));
+    await user.click(await screen.findByTestId('language-option-es'));
+    await fixture.whenStable();
+    expect(setLocale).not.toHaveBeenCalled();
+    expect(screen.getByTestId('language-trigger')).toHaveAttribute('aria-busy', 'true');
+
+    await router.navigateByUrl('/');
+    await fixture.whenStable();
+    expect(setLocale).toHaveBeenCalledWith('es');
   });
 });
