@@ -1088,6 +1088,26 @@
         "label": "Dashboard",
         "tagline": "Branded shell, figures that count up, and a chart that draws itself.",
         "motion": "The figures count to their value the first time the row is scrolled into view, once and never again, and the chart strokes itself on as it arrives. Both start finished under reduced motion."
+      },
+      "featureShowcase": {
+        "label": "Feature Showcase",
+        "motion": "The chart bars grow in once. Everything else is still, and the bars appear at full height under reduced motion.",
+        "tagline": "One large capability and three supporting ones, each drawn the way its content wants to be shown."
+      },
+      "heroProduct": {
+        "label": "Hero Product",
+        "motion": "The copy and the board rise in on load, and a status dot pulses. Both stop under reduced motion; the board is interactive either way.",
+        "tagline": "A centred hero whose preview is a working product: filter, tick tasks and watch the progress move."
+      },
+      "scrollStory": {
+        "label": "Scroll Story",
+        "motion": "Each card sticks and the next slides over it. Native scrolling is untouched, so nothing traps the page; below the md breakpoint or with reduced motion the cards simply flow.",
+        "tagline": "Steps that stack as you scroll, in plain CSS — an ordinary list on small screens and with reduced motion."
+      },
+      "sourcePreview": {
+        "label": "Source to Preview",
+        "motion": "Picking a notice rewrites the source and swaps the card with a short fade, announced politely. The fade is skipped under reduced motion.",
+        "tagline": "A config on the left, the component it produces on the right — both read from one value, so they cannot disagree."
       }
     },
     "upcoming": {
@@ -1396,7 +1416,9 @@
     "items": {
       "settingsForm": "Settings form",
       "asyncSearch": "Async search",
-      "dataTable": "Data table"
+      "dataTable": "Data table",
+      "componentExplorer": "Component explorer",
+      "livePlayground": "Live playground"
     },
     "doqs": {
       "documentation": "Documentation",

@@ -68,6 +68,30 @@ export const RECIPES: readonly RecipeMetadata[] = [
       atom('VoltAlert', 'alert'),
     ],
   },
+  {
+    slug: 'live-playground',
+    labelKey: 'recipes.items.livePlayground',
+    path: '/recipes/live-playground',
+    atoms: [
+      atom('VoltAlert', 'alert'),
+      atom('VoltToggleGroup', 'toggle-group'),
+      atom('VoltInput', 'input'),
+      atom('VoltSwitch', 'switch'),
+      atom('VoltButton', 'button'),
+    ],
+  },
+  {
+    slug: 'component-explorer',
+    labelKey: 'recipes.items.componentExplorer',
+    path: '/recipes/component-explorer',
+    atoms: [
+      atom('VoltToggleGroup', 'toggle-group'),
+      atom('VoltButton', 'button'),
+      atom('VoltBadge', 'badge'),
+      atom('VoltSwitch', 'switch'),
+      atom('VoltSpinner', 'spinner'),
+    ],
+  },
 ];
 
 /** Looks a recipe up by its route segment. Throws on a miss: the callers' slugs are typos the build should surface. */

@@ -16,6 +16,10 @@ import { ContactSplit } from '../blocks/contact-split/contact-split';
 import { CtaMagnetic } from '../blocks/cta-magnetic/cta-magnetic';
 import { FeatureBento } from '../blocks/feature-bento/feature-bento';
 import { FooterSitemap } from '../blocks/footer-sitemap/footer-sitemap';
+import { FeatureShowcase } from '../blocks/feature-showcase/feature-showcase';
+import { HeroProduct } from '../blocks/hero-product/hero-product';
+import { ScrollStory } from '../blocks/scroll-story/scroll-story';
+import { SourcePreview } from '../blocks/source-preview/source-preview';
 import { HeroSplit } from '../blocks/hero-split/hero-split';
 import { HeroSpotlight } from '../blocks/hero-spotlight/hero-spotlight';
 import { PricingTiers } from '../blocks/pricing-tiers/pricing-tiers';
@@ -41,6 +45,10 @@ import { TestimonialMarquee } from '../blocks/testimonial-marquee/testimonial-ma
   imports: [
     HeroSpotlight,
     HeroSplit,
+    HeroProduct,
+    FeatureShowcase,
+    ScrollStory,
+    SourcePreview,
     FeatureBento,
     ServiceList,
     PricingTiers,
@@ -67,6 +75,18 @@ import { TestimonialMarquee } from '../blocks/testimonial-marquee/testimonial-ma
         }
         @case ('hero-split') {
           <app-hero-split />
+        }
+        @case ('hero-product') {
+          <app-hero-product />
+        }
+        @case ('feature-showcase') {
+          <app-feature-showcase />
+        }
+        @case ('scroll-story') {
+          <app-scroll-story />
+        }
+        @case ('source-preview') {
+          <app-source-preview />
         }
         @case ('bento') {
           <app-feature-bento />

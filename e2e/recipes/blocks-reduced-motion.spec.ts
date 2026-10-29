@@ -19,7 +19,7 @@ for (const block of BLOCKS) {
     await page.waitForTimeout(1500);
 
     const report = await page.evaluate(() => {
-      const root = document.querySelector('app-block-showcase .overflow-hidden') ?? document.body;
+      const root = document.querySelector('app-block-showcase .overflow-clip') ?? document.body;
       const looping = root
         .getAnimations({ subtree: true })
         .filter(a => {
