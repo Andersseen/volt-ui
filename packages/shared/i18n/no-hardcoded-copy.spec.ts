@@ -35,7 +35,7 @@ const SOURCE_ROOTS = ['apps/web/src/app', 'apps/recipes/src/app', 'packages/shar
  * Files whose templates are a specimen from top to bottom.
  *
  * Everywhere else a specimen is recognised structurally — it sits inside the
- * `<app-code-panel>` that shows the code beside it — and needs no entry here. These four
+ * `<app-code-panel>` that shows the code beside it — and needs no entry here. These
  * render an exhibit with no panel around it, so the structure cannot say so.
  */
 const EXEMPT = [
@@ -46,6 +46,11 @@ const EXEMPT = [
   // Miniature live renders of every component and block, for the catalog and gallery cards.
   'apps/web/src/app/components/component-preview.ts',
   'apps/recipes/src/app/components/block-thumbnail.ts',
+  // Miniatures of a Recipes block, layout and recipe on the landing's signpost: sample data.
+  'apps/web/src/app/components/landing/recipes/block-mini.ts',
+  'apps/web/src/app/components/landing/recipes/layout-mini.ts',
+  'apps/web/src/app/components/landing/recipes/recipe-mini.ts',
+  'apps/web/src/app/components/landing/recipes/recipes-stage.ts',
   // The theme studio's preview canvas: a sample dashboard drawn in the theme being edited.
   'apps/web/src/app/components/theme-studio/theme-studio-preview.ts',
   // Carries `SidebarDemo`, a full sample application shell, alongside its own docs.

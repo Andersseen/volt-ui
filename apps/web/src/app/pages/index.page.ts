@@ -4,6 +4,7 @@ import { LandingHero } from '../components/landing/hero/landing-hero';
 import { LandingPillars } from '../components/landing/pillars/landing-pillars';
 import { LandingPlayground } from '../components/landing/playground/landing-playground';
 import { LandingProofPoints } from '../components/landing/landing-proof-points';
+import { LandingRecipes } from '../components/landing/recipes/landing-recipes';
 import { LandingShowcase } from '../components/landing/showcase/landing-showcase';
 import { LandingSteps } from '../components/landing/steps/landing-steps';
 
@@ -22,6 +23,7 @@ import { LandingSteps } from '../components/landing/steps/landing-steps';
     LandingShowcase,
     LandingPlayground,
     LandingSteps,
+    LandingRecipes,
     LandingCta,
   ],
   template: `
@@ -41,6 +43,7 @@ import { LandingSteps } from '../components/landing/steps/landing-steps';
       <app-landing-showcase />
       <app-landing-playground />
       <app-landing-steps />
+      <app-landing-recipes />
       <app-landing-cta />
     </div>
   `,

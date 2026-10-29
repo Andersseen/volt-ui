@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { VoltBadge, VoltNativeButton } from 'volt';
 import { ThemeSwitcher } from '@shared/components/theme-switcher';
@@ -6,7 +6,6 @@ import { MobileMenu } from './mobile-menu';
 import { LmnGithubIcon } from 'lumen-icons';
 import { LanguageSwitcher } from '@shared/components/language-switcher';
 import { injectAppI18n } from '@shared/i18n/i18n';
-import { recipesUrl } from '../lib/recipes-site';
 import { SITE_STATS } from '../lib/generated/site-stats';
 
 @Component({
@@ -100,16 +99,6 @@ import { SITE_STATS } from '../lib/generated/site-stats';
             <a
               voltButton
               variant="ghost"
-              [href]="recipesHref()"
-              target="_blank"
-              rel="noopener"
-              class="transition-colors"
-            >
-              {{ t('nav.gallery') }}<span class="sr-only"> {{ t('nav.externalLink') }}</span>
-            </a>
-            <a
-              voltButton
-              variant="ghost"
               [routerLink]="path('/create-theme')"
               routerLinkActive="bg-accent text-accent-foreground ring-1 ring-inset ring-primary/50"
               ariaCurrentWhenActive="page"
@@ -155,5 +144,4 @@ export class Header {
   protected readonly version = SITE_STATS.version;
 
   /** Blocks, layouts and recipes are their own site; the link follows the visitor's language. */
-  protected readonly recipesHref = computed(() => recipesUrl(this.translations.locale()));
 }

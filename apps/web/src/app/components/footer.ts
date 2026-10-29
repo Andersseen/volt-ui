@@ -36,7 +36,7 @@ import { STORYBOOK_URL } from '@shared/lib/storybook';
             [href]="recipesHref()"
             target="_blank"
             rel="noopener"
-            >{{ t('nav.gallery') }}<span class="sr-only"> {{ t('nav.externalLink') }}</span></a
+            >{{ t('recipes.title') }}<span class="sr-only"> {{ t('nav.externalLink') }}</span></a
           >
           <a
             voltButton

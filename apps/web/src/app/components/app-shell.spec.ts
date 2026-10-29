@@ -26,11 +26,9 @@ describe('application shell', () => {
       'href',
       '/create-theme'
     );
-    // Blocks, layouts and recipes are their own site now; the entry leaves for it.
-    expect(screen.getByRole('link', { name: /Gallery/ })).toHaveAttribute(
-      'href',
-      'https://recipes.voltui.dev/'
-    );
+    // Blocks, layouts and recipes are their own site now: the landing and the footer link to it,
+    // the primary navigation stays about the library.
+    expect(screen.queryByRole('link', { name: /Gallery|Recipes/ })).not.toBeInTheDocument();
     expect(screen.queryByRole('link', { name: 'Layouts' })).not.toBeInTheDocument();
     expect(screen.getByText(`v${SITE_STATS.version}`)).toBeInTheDocument();
   });
@@ -46,6 +44,10 @@ describe('application shell', () => {
     expect(screen.getByRole('link', { name: 'GitHub repository' })).toHaveAttribute(
       'href',
       'https://github.com/Andersseen/volt-ui'
+    );
+    expect(screen.getByRole('link', { name: /Recipes/ })).toHaveAttribute(
+      'href',
+      'https://recipes.voltui.dev/'
     );
   });
 
