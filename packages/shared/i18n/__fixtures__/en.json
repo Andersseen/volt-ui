@@ -1031,6 +1031,10 @@
       "app": {
         "label": "Application",
         "blurb": "The screens behind the login, with the work done rather than left as slots."
+      },
+      "backgrounds": {
+        "label": "Backgrounds",
+        "blurb": "Animated surfaces to put behind a hero or a call to action. Your content sits on top."
       }
     },
     "items": {
@@ -1133,6 +1137,21 @@
         "label": "Playground",
         "tagline": "Change a setting, watch the result, copy the CSS that produces it.",
         "motion": "The preview replays through the Web Animations API whenever the preset or the easing changes, and the CSS is generated from the same values. With reduced motion it only plays when you press Replay."
+      },
+      "particleWave": {
+        "label": "Particle Wave",
+        "tagline": "Ribbons of particles that swell slowly across the section, like light caught in silk.",
+        "motion": "Thousands of particles on one canvas follow three slow waves, with a shimmer running along each strand. The loop pauses off screen; with reduced motion the ribbons are drawn once and stay still."
+      },
+      "lightThreads": {
+        "label": "Light Threads",
+        "tagline": "Threads of light that converge on one glowing point, in pure SVG and CSS.",
+        "motion": "Pulses of light travel along each thread and the meeting point breathes. No JavaScript runs: it already moves in the server-rendered HTML. With reduced motion the threads stay and the pulses stop."
+      },
+      "glyphField": {
+        "label": "Glyph Field",
+        "tagline": "A grid of code glyphs that lights up around the pointer.",
+        "motion": "Glyphs near the pointer take the brand colour; with no pointer, a slow light wanders on its own. With reduced motion the field only redraws when the pointer moves."
       }
     },
     "upcoming": {
@@ -1476,6 +1495,26 @@
       "ctaBody": "Every entry imports from `@voltui/components`, so it follows your theme and keeps the accessibility of the components underneath.",
       "ctaComponents": "Browse the components"
     },
-    "browse": "Browse Recipes"
+    "browse": "Browse Recipes",
+    "browser": {
+      "searchLabel": "Search the catalog",
+      "searchPlaceholder": "Search by name, purpose or component…",
+      "categories": "Categories",
+      "all": "All",
+      "sortLabel": "Sort",
+      "sortCategory": "By category",
+      "sortName": "A–Z",
+      "showing": "Showing {$shown} of {$total}",
+      "emptyTitle": "Nothing matches",
+      "emptyBody": "Try a shorter word, another category, or clear the filters.",
+      "clear": "Clear filters",
+      "catalog": "Catalog"
+    },
+    "kinds": {
+      "heading": "Blocks, layouts or recipes?",
+      "blocks": "Finished page sections — a hero, pricing, a footer. Styled and animated: copy one and change the words.",
+      "layouts": "Unbranded page structures — app shells, sign-in screens, boards. The skeleton you fill with your own product.",
+      "recipes": "Behaviour over time — validation, async search, recovery. A tested workflow rather than a look."
+    }
   }
 }

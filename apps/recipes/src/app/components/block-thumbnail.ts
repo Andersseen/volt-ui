@@ -11,6 +11,9 @@ import {
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { AppDashboard } from '../blocks/app-dashboard/app-dashboard';
+import { BgGlyphField } from '../blocks/bg-glyph-field/bg-glyph-field';
+import { BgLightThreads } from '../blocks/bg-light-threads/bg-light-threads';
+import { BgParticleWave } from '../blocks/bg-particle-wave/bg-particle-wave';
 import { AuthLogin } from '../blocks/auth-login/auth-login';
 import { ConfigPlayground } from '../blocks/config-playground/config-playground';
 import { ContactSplit } from '../blocks/contact-split/contact-split';
@@ -53,6 +56,9 @@ import { TestimonialMarquee } from '../blocks/testimonial-marquee/testimonial-ma
     HeroProduct,
     HeroInstall,
     HeroGlyphs,
+    BgParticleWave,
+    BgLightThreads,
+    BgGlyphField,
     FeatureShowcase,
     FeatureTour,
     FeatureCarousel,
@@ -94,6 +100,15 @@ import { TestimonialMarquee } from '../blocks/testimonial-marquee/testimonial-ma
         }
         @case ('hero-glyphs') {
           <app-hero-glyphs />
+        }
+        @case ('particle-wave') {
+          <app-bg-particle-wave />
+        }
+        @case ('light-threads') {
+          <app-bg-light-threads />
+        }
+        @case ('glyph-field') {
+          <app-bg-glyph-field />
         }
         @case ('feature-tour') {
           <app-feature-tour />

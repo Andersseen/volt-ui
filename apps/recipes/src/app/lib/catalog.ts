@@ -1,5 +1,5 @@
 import type { PlainTranslationKey } from '@shared/i18n/i18n';
-import { BLOCKS, categoryFor, type BlockMetadata } from './blocks-metadata';
+import { BLOCK_CATEGORIES, BLOCKS, categoryFor, type BlockMetadata } from './blocks-metadata';
 import { LAYOUT_CATEGORIES, LAYOUTS, type LayoutMetadata } from './layouts-metadata';
 import { RECIPES, type RecipeMetadata } from './recipes-metadata';
 
@@ -38,6 +38,8 @@ export interface CatalogEntry {
   readonly summaryKey?: PlainTranslationKey;
   /** The group the entry is filed under on its listing page. */
   readonly groupKey?: PlainTranslationKey;
+  /** That group's id, for filtering: one of `groupsOf(kind)`. */
+  readonly groupId?: string;
   /** Volt components the entry is built from — "related components". */
   readonly atoms: readonly CatalogAtom[];
 }
@@ -50,6 +52,7 @@ const fromBlock = (block: BlockMetadata): CatalogEntry => ({
   nameKey: block.labelKey,
   summaryKey: block.taglineKey,
   groupKey: categoryFor(block).labelKey,
+  groupId: block.category,
   atoms: block.atoms,
 });
 
@@ -61,6 +64,7 @@ const fromLayout = (layout: LayoutMetadata): CatalogEntry => ({
   nameKey: layout.labelKey,
   summaryKey: layout.taglineKey,
   groupKey: LAYOUT_CATEGORIES.find(category => category.id === layout.category)?.labelKey,
+  groupId: layout.category,
   atoms: layout.atoms,
 });
 
@@ -81,6 +85,22 @@ export const CATALOG: readonly CatalogEntry[] = [
 
 export const entriesOf = (kind: CatalogKind): readonly CatalogEntry[] =>
   CATALOG.filter(entry => entry.kind === kind);
+
+export interface CatalogGroup {
+  readonly id: string;
+  readonly labelKey: PlainTranslationKey;
+}
+
+/**
+ * The groups a kind files its entries under, in the order the listing shows them, keeping only
+ * groups that have something in them. Recipes are not grouped yet, so they have none.
+ */
+export const groupsOf = (kind: CatalogKind): readonly CatalogGroup[] => {
+  const groups: readonly CatalogGroup[] =
+    kind === 'blocks' ? BLOCK_CATEGORIES : kind === 'layouts' ? LAYOUT_CATEGORIES : [];
+  const entries = entriesOf(kind);
+  return groups.filter(group => entries.some(entry => entry.groupId === group.id));
+};
 
 /** Looks an entry up by its route path, for the page head. */
 export const entryForPath = (path: string): CatalogEntry | undefined =>

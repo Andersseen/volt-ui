@@ -35,6 +35,16 @@ Findings for Doqs (to take to the voltui.dev adoption):
 1. Doqs only sets a generic head, so the host's SEO service must own titles/descriptions/JSON-LD (done in `seo.provider.ts`).
 1. Vitest 5's module cache breaks Angular JIT inline styles after the first run; `fsModuleCache: false` in `vitest.config.ts`.
 
+## Listings
+
+`/blocks`, `/layouts` and `/recipes` share one `CatalogBrowser` (`components/catalog-browser/`): a
+three-catalog explainer, search (name, summary, category and the Volt atoms an entry uses), category
+chips and an A–Z sort. The query lives in the URL (`?q=`, `?category=`, `?sort=name`), so filtered
+views can be linked and are server-rendered as-is; `catalog-query.ts` holds the pure filtering. The
+gallery layout adds `CatalogSidebar` from `lg` up, built on `volt-sidebar-item`. Categories come from
+`groupsOf(kind)` in `lib/catalog.ts`; a new block category only needs its entry in
+`BLOCK_CATEGORIES` and its Glossa keys.
+
 ## Adding a block, layout or recipe
 
 1. Source: `apps/recipes/src/app/{blocks,layouts,recipes}/<name>/<name>.ts`, importing Volt from `'volt'` (rewritten to `@voltui/components` for the copy) and nothing from the app.

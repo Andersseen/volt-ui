@@ -170,7 +170,7 @@ test.describe('Blocks gallery cards', () => {
     expect(errors.filter(text => text.includes('NG0500'))).toEqual([]);
 
     const headings = await page
-      .locator('app-blocks-index-page > div > section > div > h2')
+      .locator('app-catalog-browser > div > section > div > h2')
       .allInnerTexts();
     expect(new Set(headings).size).toBe(headings.length);
   });
@@ -263,5 +263,59 @@ test.describe('Blocks respond to their container', () => {
 
     expect(await brandVisibleAt(700)).toBe(false);
     expect(await brandVisibleAt(1200)).toBe(true);
+  });
+});
+
+test.describe('Catalog browser', () => {
+  test('narrows the listing from a category chip and keeps it in the URL', async ({ page }) => {
+    await page.goto('/blocks');
+    await page.waitForLoadState('networkidle');
+
+    await page.getByRole('radio', { name: /^Backgrounds/ }).click();
+
+    await expect(page).toHaveURL(/\/blocks\?category=backgrounds$/);
+    await expect(page.locator('app-catalog-browser p[aria-live]').first()).toHaveText(
+      /Showing 3 of \d+/
+    );
+    await expect(
+      page.locator('app-catalog-sidebar').getByRole('link', { name: /^Backgrounds/ })
+    ).toHaveAttribute('aria-current', 'page');
+  });
+
+  test('searches by the Volt atom a block is built from', async ({ page }) => {
+    await page.goto('/blocks');
+    await page.waitForLoadState('networkidle');
+
+    await page.getByRole('searchbox', { name: 'Search the catalog' }).fill('switch');
+
+    await expect(page).toHaveURL(/\?q=switch$/);
+    await expect(page.locator('app-catalog-card').first()).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Pricing Tiers' })).toBeVisible();
+  });
+
+  test('renders a shared filtered link as filtered before any script runs', async ({ browser }) => {
+    const context = await browser.newContext({ javaScriptEnabled: false });
+    const page = await context.newPage();
+
+    await page.goto('/layouts?category=auth&sort=name');
+
+    await expect(page.locator('app-catalog-browser p[aria-live]').first()).toHaveText(
+      /Showing 2 of \d+/
+    );
+    await context.close();
+  });
+
+  test('moves between catalogs from the sidebar', async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto('/blocks/hero');
+    await page.waitForLoadState('networkidle');
+
+    await page
+      .locator('app-catalog-sidebar')
+      .getByRole('link', { name: /^Layouts/ })
+      .click();
+
+    await expect(page).toHaveURL(/\/layouts$/);
+    await expect(page.getByRole('heading', { level: 1, name: 'Layouts' })).toBeVisible();
   });
 });

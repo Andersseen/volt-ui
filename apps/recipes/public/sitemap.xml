@@ -190,6 +190,69 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://recipes.voltui.dev/blocks/hero-glyphs"/>
   </url>
   <url>
+    <loc>https://recipes.voltui.dev/blocks/particle-wave</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://recipes.voltui.dev/blocks/particle-wave"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://recipes.voltui.dev/es/blocks/particle-wave"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://recipes.voltui.dev/uk/blocks/particle-wave"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://recipes.voltui.dev/blocks/particle-wave"/>
+  </url>
+  <url>
+    <loc>https://recipes.voltui.dev/es/blocks/particle-wave</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://recipes.voltui.dev/blocks/particle-wave"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://recipes.voltui.dev/es/blocks/particle-wave"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://recipes.voltui.dev/uk/blocks/particle-wave"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://recipes.voltui.dev/blocks/particle-wave"/>
+  </url>
+  <url>
+    <loc>https://recipes.voltui.dev/uk/blocks/particle-wave</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://recipes.voltui.dev/blocks/particle-wave"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://recipes.voltui.dev/es/blocks/particle-wave"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://recipes.voltui.dev/uk/blocks/particle-wave"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://recipes.voltui.dev/blocks/particle-wave"/>
+  </url>
+  <url>
+    <loc>https://recipes.voltui.dev/blocks/light-threads</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://recipes.voltui.dev/blocks/light-threads"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://recipes.voltui.dev/es/blocks/light-threads"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://recipes.voltui.dev/uk/blocks/light-threads"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://recipes.voltui.dev/blocks/light-threads"/>
+  </url>
+  <url>
+    <loc>https://recipes.voltui.dev/es/blocks/light-threads</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://recipes.voltui.dev/blocks/light-threads"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://recipes.voltui.dev/es/blocks/light-threads"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://recipes.voltui.dev/uk/blocks/light-threads"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://recipes.voltui.dev/blocks/light-threads"/>
+  </url>
+  <url>
+    <loc>https://recipes.voltui.dev/uk/blocks/light-threads</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://recipes.voltui.dev/blocks/light-threads"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://recipes.voltui.dev/es/blocks/light-threads"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://recipes.voltui.dev/uk/blocks/light-threads"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://recipes.voltui.dev/blocks/light-threads"/>
+  </url>
+  <url>
+    <loc>https://recipes.voltui.dev/blocks/glyph-field</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://recipes.voltui.dev/blocks/glyph-field"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://recipes.voltui.dev/es/blocks/glyph-field"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://recipes.voltui.dev/uk/blocks/glyph-field"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://recipes.voltui.dev/blocks/glyph-field"/>
+  </url>
+  <url>
+    <loc>https://recipes.voltui.dev/es/blocks/glyph-field</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://recipes.voltui.dev/blocks/glyph-field"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://recipes.voltui.dev/es/blocks/glyph-field"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://recipes.voltui.dev/uk/blocks/glyph-field"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://recipes.voltui.dev/blocks/glyph-field"/>
+  </url>
+  <url>
+    <loc>https://recipes.voltui.dev/uk/blocks/glyph-field</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://recipes.voltui.dev/blocks/glyph-field"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://recipes.voltui.dev/es/blocks/glyph-field"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://recipes.voltui.dev/uk/blocks/glyph-field"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://recipes.voltui.dev/blocks/glyph-field"/>
+  </url>
+  <url>
     <loc>https://recipes.voltui.dev/blocks/bento</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://recipes.voltui.dev/blocks/bento"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://recipes.voltui.dev/es/blocks/bento"/>

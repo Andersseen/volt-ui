@@ -54,6 +54,11 @@ export const BLOCK_CATEGORIES: readonly BlockCategory[] = [
     blurbKey: 'blocks.categories.hero.blurb',
   },
   {
+    id: 'backgrounds',
+    labelKey: 'blocks.categories.backgrounds.label',
+    blurbKey: 'blocks.categories.backgrounds.blurb',
+  },
+  {
     id: 'features',
     labelKey: 'blocks.categories.features.label',
     blurbKey: 'blocks.categories.features.blurb',
@@ -164,6 +169,42 @@ export const BLOCKS: readonly BlockMetadata[] = [
     taglineKey: 'blocks.items.heroGlyphs.tagline',
     motionKey: 'blocks.items.heroGlyphs.motion',
     atoms: [{ name: 'VoltButton', path: '/docs/components/button' }],
+  },
+  {
+    slug: 'particle-wave',
+    path: '/blocks/particle-wave',
+    labelKey: 'blocks.items.particleWave.label',
+    category: 'backgrounds',
+    taglineKey: 'blocks.items.particleWave.tagline',
+    motionKey: 'blocks.items.particleWave.motion',
+    atoms: [
+      { name: 'VoltBadge', path: '/docs/components/badge' },
+      { name: 'VoltButton', path: '/docs/components/button' },
+    ],
+  },
+  {
+    slug: 'light-threads',
+    path: '/blocks/light-threads',
+    labelKey: 'blocks.items.lightThreads.label',
+    category: 'backgrounds',
+    taglineKey: 'blocks.items.lightThreads.tagline',
+    motionKey: 'blocks.items.lightThreads.motion',
+    atoms: [
+      { name: 'VoltBadge', path: '/docs/components/badge' },
+      { name: 'VoltButton', path: '/docs/components/button' },
+    ],
+  },
+  {
+    slug: 'glyph-field',
+    path: '/blocks/glyph-field',
+    labelKey: 'blocks.items.glyphField.label',
+    category: 'backgrounds',
+    taglineKey: 'blocks.items.glyphField.tagline',
+    motionKey: 'blocks.items.glyphField.motion',
+    atoms: [
+      { name: 'VoltBadge', path: '/docs/components/badge' },
+      { name: 'VoltButton', path: '/docs/components/button' },
+    ],
   },
   {
     slug: 'bento',
