@@ -8,7 +8,7 @@
 .wrangler/
 
 # Node
-/node_modules
+node_modules/
 /.npm-cache
 npm-debug.log
 yarn-error.log
