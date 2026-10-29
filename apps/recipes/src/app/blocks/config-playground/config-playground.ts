@@ -160,11 +160,10 @@ const COPIED_FOR_MS = 1800;
               >
                 @if (copied()) {
                   <lmn-check slot="leading" [size]="14" class="text-success" />
-                  Copied
                 } @else {
                   <lmn-copy slot="leading" [size]="14" />
-                  Copy
                 }
+                {{ copied() ? 'Copied' : 'Copy' }}
               </volt-button>
             </div>
             <pre
