@@ -18,8 +18,10 @@ import { RelatedComponents } from './related-components';
   template: `
     <div class="space-y-8">
       <div>
-        <p class="text-xs font-medium uppercase tracking-wider text-primary">Recipes</p>
-        <h1 class="mt-1.5 text-3xl font-bold tracking-tight">{{ recipe().label }}</h1>
+        <p class="text-xs font-medium uppercase tracking-wider text-primary">
+          {{ t('recipes.title') }}
+        </p>
+        <h1 class="mt-1.5 text-3xl font-bold tracking-tight">{{ t(recipe().labelKey) }}</h1>
       </div>
 
       <div class="rounded-xl border border-border bg-background/50 p-6 md:p-10">
@@ -35,7 +37,6 @@ import { RelatedComponents } from './related-components';
         [title]="t('ui.codePanel.usage')"
         [code]="code()"
         [cliCommand]="installCommand()"
-        [tabbed]="true"
       />
     </div>
   `,

@@ -166,7 +166,7 @@ function llmsRecipes({ site, entries, docs }) {
   const list = kind =>
     entries
       .entriesOf(kind)
-      .map(entry => `- [${entry.name ?? titleCase(entry.slug)}](${absoluteUrl(entry.path)})`)
+      .map(entry => `- [${titleCase(entry.slug)}](${absoluteUrl(entry.path)})`)
       .join('\n');
   return `# ${SITE_NAME}
 

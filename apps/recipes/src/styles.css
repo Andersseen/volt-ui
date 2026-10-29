@@ -14,6 +14,15 @@
 /* Doqs (the documentation region, /docs): its own styles, mapped onto the shared Volt tokens. */
 @import '@doqs/analog/styles.css';
 
+/*
+ * One language control per page. Etyma owns the locale and the header's switcher changes it on every
+ * route, /docs included; Doqs 0.12 renders its own selector whenever more than one locale is
+ * published and has no option to leave it out (see docs/recipes-app.md, "Doqs findings").
+ */
+doq-locale-switcher {
+  display: none;
+}
+
 :root {
   --host-docs-background: var(--background);
   --host-docs-foreground: var(--foreground);

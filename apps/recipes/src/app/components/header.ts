@@ -131,8 +131,7 @@ export class Header {
     docsUrl(this.translations.locale(), '/docs/components')
   );
 
-  /** Blocks and Layouts have Glossa titles; Recipes is a proper name until its key exists. */
   protected label(kind: 'blocks' | 'layouts' | 'recipes'): string {
-    return kind === 'recipes' ? 'Recipes' : this.t(`gallery.${kind}.title`);
+    return kind === 'recipes' ? this.t('recipes.title') : this.t(`gallery.${kind}.title`);
   }
 }

@@ -32,9 +32,8 @@ export interface CatalogEntry {
   readonly slug: string;
   /** Public route on the Recipes origin, without a locale prefix. */
   readonly path: string;
-  /** The name in the reader's language, or a literal where Glossa has no key yet. */
-  readonly nameKey?: PlainTranslationKey;
-  readonly name?: string;
+  /** The name in the reader's language. */
+  readonly nameKey: PlainTranslationKey;
   /** One line for a listing card, when Glossa has one. */
   readonly summaryKey?: PlainTranslationKey;
   /** The group the entry is filed under on its listing page. */
@@ -70,7 +69,7 @@ const fromRecipe = (recipe: RecipeMetadata): CatalogEntry => ({
   kind: 'recipes',
   slug: recipe.slug,
   path: recipe.path,
-  name: recipe.label,
+  nameKey: recipe.labelKey,
   atoms: recipe.atoms,
 });
 
@@ -89,10 +88,3 @@ export const entryForPath = (path: string): CatalogEntry | undefined =>
 
 /** The listing path of a kind: `/blocks`. */
 export const listingPath = (kind: CatalogKind): string => `/${kind}`;
-
-/** Entries shown on the home page: the first of each kind that has a thumbnail or a name worth leading with. */
-export const FEATURED: readonly CatalogEntry[] = [
-  ...entriesOf('blocks').slice(0, 3),
-  ...entriesOf('layouts').slice(0, 2),
-  ...entriesOf('recipes').slice(0, 1),
-];

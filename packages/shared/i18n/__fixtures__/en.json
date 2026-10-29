@@ -173,6 +173,12 @@
       "subtitle": "Forms, overlays, navigation and data display: each one keyboard-ready, themeable and yours to edit. These are rendered live.",
       "previous": "Previous components",
       "next": "Next components"
+    },
+    "recipes": {
+      "eyebrow": "Beyond components",
+      "title": "Whole screens, ready to copy.",
+      "lede": "Blocks, layouts and recipes assembled from Volt components live on their own site, **Volt UI Recipes**: a live preview, the complete source and the components each one is made of.",
+      "open": "Open Volt UI Recipes"
     }
   },
   "guide": {
@@ -1383,5 +1389,46 @@
       "description": "A tested {$name} recipe for Angular showing the workflow with Volt UI components, including validation and failure states."
     },
     "imageAlt": "Volt UI — accessible Angular components"
+  },
+  "recipes": {
+    "title": "Recipes",
+    "description": "Behaviour over time: validation, asynchronous search, tables.",
+    "items": {
+      "settingsForm": "Settings form",
+      "asyncSearch": "Async search",
+      "dataTable": "Data table"
+    },
+    "doqs": {
+      "documentation": "Documentation",
+      "loading": "Loading documentation…",
+      "indexTitle": "Explore the docs",
+      "indexDescription": "Guides for using, copying and contributing to Volt UI Recipes.",
+      "readGuide": "Read guide →",
+      "menu": "{$label} menu",
+      "closeNavigation": "Close navigation",
+      "notFoundTitle": "Documentation page not found",
+      "notFoundPageTitle": "Page not found",
+      "notFoundBody": "This page may have moved or does not exist.",
+      "browse": "Browse documentation",
+      "codeCopied": "Code copied",
+      "copyUnavailable": "Copy unavailable",
+      "clipboardUnavailable": "Clipboard access unavailable",
+      "scrollableTable": "Scrollable table",
+      "untranslated": "This page is not translated yet. You are reading it in {$label}."
+    },
+    "home": {
+      "badge": "Copy the source, not a dependency",
+      "title": "Whole screens, built from Volt UI.",
+      "lede": "Page sections, application layouts and tested workflows. Each one comes with a live preview, its complete source and the components it is made of.",
+      "statComponents": "Volt components in use",
+      "blocksTitle": "Sections that already move.",
+      "shellsEyebrow": "Layouts and recipes",
+      "shellsTitle": "Frames and workflows to fill in.",
+      "shellsLede": "Layouts give an application its frame. Recipes show behaviour over time: a form that validates, a search that waits for the network, a table that paginates.",
+      "ctaTitle": "Copy it, then make it yours.",
+      "ctaBody": "Every entry imports from `@voltui/components`, so it follows your theme and keeps the accessibility of the components underneath.",
+      "ctaComponents": "Browse the components"
+    },
+    "browse": "Browse Recipes"
   }
 }

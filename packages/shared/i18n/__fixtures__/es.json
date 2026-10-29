@@ -173,6 +173,12 @@
       "subtitle": "Formularios, overlays, navegación y visualización de datos: todos listos para teclado, tematizables y tuyos para editar. Se renderizan en vivo.",
       "previous": "Componentes anteriores",
       "next": "Componentes siguientes"
+    },
+    "recipes": {
+      "eyebrow": "Más allá de los componentes",
+      "title": "Pantallas completas, listas para copiar.",
+      "lede": "Los bloques, layouts y recetas hechos con componentes de Volt tienen su propio sitio, **Volt UI Recipes**: vista previa en vivo, el código completo y los componentes con los que está hecho cada uno.",
+      "open": "Abrir Volt UI Recipes"
     }
   },
   "guide": {
@@ -1383,5 +1389,46 @@
       "description": "Una receta {$name} probada para Angular que muestra el flujo con componentes de Volt UI, incluidos validación y estados de error."
     },
     "imageAlt": "Volt UI — componentes Angular accesibles"
+  },
+  "recipes": {
+    "title": "Recetas",
+    "description": "Comportamiento en el tiempo: validación, búsqueda asíncrona, tablas.",
+    "items": {
+      "settingsForm": "Formulario de ajustes",
+      "asyncSearch": "Búsqueda asíncrona",
+      "dataTable": "Tabla de datos"
+    },
+    "doqs": {
+      "documentation": "Documentación",
+      "loading": "Cargando la documentación…",
+      "indexTitle": "Explora la documentación",
+      "indexDescription": "Guías para usar, copiar y contribuir a Volt UI Recipes.",
+      "readGuide": "Leer la guía →",
+      "menu": "Menú de {$label}",
+      "closeNavigation": "Cerrar la navegación",
+      "notFoundTitle": "Página de documentación no encontrada",
+      "notFoundPageTitle": "Página no encontrada",
+      "notFoundBody": "Puede que esta página se haya movido o que no exista.",
+      "browse": "Ver la documentación",
+      "codeCopied": "Código copiado",
+      "copyUnavailable": "No se puede copiar",
+      "clipboardUnavailable": "Sin acceso al portapapeles",
+      "scrollableTable": "Tabla desplazable",
+      "untranslated": "Esta página aún no está traducida. La estás leyendo en {$label}."
+    },
+    "home": {
+      "badge": "Copia el código, no una dependencia",
+      "title": "Pantallas completas, hechas con Volt UI.",
+      "lede": "Secciones de página, layouts de aplicación y flujos probados. Cada uno trae vista previa en vivo, su código completo y los componentes con los que está hecho.",
+      "statComponents": "Componentes de Volt en uso",
+      "blocksTitle": "Secciones que ya se mueven.",
+      "shellsEyebrow": "Layouts y recetas",
+      "shellsTitle": "Estructuras y flujos para completar.",
+      "shellsLede": "Los layouts dan a una aplicación su estructura. Las recetas muestran comportamiento en el tiempo: un formulario que valida, una búsqueda que espera a la red, una tabla que pagina.",
+      "ctaTitle": "Cópialo y hazlo tuyo.",
+      "ctaBody": "Cada entrada importa desde `@voltui/components`, así que sigue tu tema y conserva la accesibilidad de los componentes que lleva dentro.",
+      "ctaComponents": "Ver los componentes"
+    },
+    "browse": "Ver recetas"
   }
 }

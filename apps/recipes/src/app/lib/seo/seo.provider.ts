@@ -86,7 +86,7 @@ function homeDescription(t: T): string {
 }
 
 function nameOf(entry: CatalogEntry, t: T): string {
-  return entry.nameKey ? t(entry.nameKey) : (entry.name ?? entry.slug);
+  return t(entry.nameKey);
 }
 
 const titled = (name: string): string => `${name} — ${SITE_NAME}`;
@@ -116,11 +116,9 @@ function describe(entry: SeoEntry, t: T, locale: string): { title: string; descr
             description: `${t('gallery.layouts.description')} ${t('gallery.layoutSourceNote')}`,
           };
         case 'recipes':
-          // No published title or description for the recipes index yet; the recipe sentence
-          // names the product rather than a recipe.
           return {
-            title: titled('Recipes'),
-            description: t('seo.recipe.description', { name: 'Volt UI' }),
+            title: titled(t('recipes.title')),
+            description: t('recipes.description'),
           };
       }
     // falls through: the switch above is exhaustive
@@ -168,7 +166,7 @@ function structuredData(entry: SeoEntry, locale: string, t: T): JsonLd[] {
       ? t('gallery.blocks.title')
       : catalogEntry.kind === 'layouts'
         ? t('gallery.layouts.title')
-        : 'Recipes';
+        : t('recipes.title');
 
   return [
     breadcrumbJsonLd(

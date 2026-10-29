@@ -14,7 +14,7 @@ import { provideMovement } from 'angular-movement';
 import { appI18n } from '@shared/i18n/i18n';
 import { doqPaths } from '../doq.paths';
 import { AsyncSearchRecipe } from './recipes/async-search/async-search';
-import { provideDoqI18n } from './lib/doq-i18n';
+import { provideEtymaDoqI18n, withEtymaLocale } from './lib/doq-i18n';
 import { MOTION } from '@shared/lib/motion';
 import { SITE_IDENTITY } from '@shared/seo/seo.service';
 import { provideSeo } from './lib/seo/seo.provider';
@@ -40,10 +40,13 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(withEventReplay()),
     // Doqs routes first: Analog also turns every Markdown file into a route, and a catch-all such as
     // the locale wrapper registered ahead of Doqs would answer with the raw page and no navigation.
-    provideFileRouter(withExtraRoutes(doqRoutes(doqConfig)), withLocalizedRoutes()),
+    provideFileRouter(
+      withExtraRoutes(withEtymaLocale(doqRoutes(doqConfig))),
+      withLocalizedRoutes()
+    ),
     provideContent(withMarkdownRenderer()),
     provideDoq(doqConfig),
-    provideDoqI18n(),
+    provideEtymaDoqI18n(),
     provideAnimationsAsync(),
     provideEtyma(appI18n),
     // Canonical and hreflang are written against this app's own origin, never the docs site's.

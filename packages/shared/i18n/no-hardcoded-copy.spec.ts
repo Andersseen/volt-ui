@@ -75,11 +75,6 @@ const PROPER_NOUNS = new Set([
   'Alert',
   'Spinner',
   'Empty State',
-  // Recipe names (specs/plans/v1.2.md "Glossa keys pending").
-  'Recipes',
-  'Settings form',
-  'Async search',
-  'Data table',
 ]);
 
 function templateSources(): { file: string; markup: string }[] {

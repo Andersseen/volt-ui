@@ -60,6 +60,22 @@ test.describe('documentation', () => {
     ).toHaveAttribute('aria-current', 'page');
   });
 
+  test('the header is the only language control, and it moves a guide between languages', async ({
+    page,
+  }) => {
+    await page.goto('/docs/copying-a-recipe');
+    // Doqs ships a selector of its own; Etyma owns the locale, so only the header's is shown.
+    await expect(page.locator('doq-locale-switcher').first()).toBeHidden();
+    await expect(page.getByTestId('language-trigger')).toHaveCount(1);
+
+    await page.getByTestId('language-trigger').click();
+    await page.getByTestId('language-option-es').click();
+    await expect(page).toHaveURL(/\/es\/docs\/copying-a-recipe$/);
+    await expect(page.locator('html')).toHaveAttribute('lang', 'es');
+    // Doqs's own interface text comes from the same Glossa catalog as the rest of the site.
+    await expect(page.getByText('En esta página').first()).toBeVisible();
+  });
+
   test('a live recipe renders inside a guide', async ({ page }) => {
     await page.goto('/docs/blocks-layouts-recipes');
     await expect(page.getByRole('combobox').first()).toBeVisible();

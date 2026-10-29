@@ -38,6 +38,12 @@ export default defineConfig(() => ({
   ssr: {
     noExternal: ['@analogjs/router', '@etyma/analog', '@etyma/angular', '@etyma/core'],
   },
+  optimizeDeps: {
+    // `@analogjs/content` (which Doqs renders through) imports `front-matter`, a CommonJS package. pnpm does
+    // not hoist it, so the dev server would serve it raw ("does not provide an export named 'default'") and
+    // the app would never bootstrap. Production builds bundle it, so only `vite dev` hits this.
+    include: ['@analogjs/content > front-matter'],
+  },
   plugins: [
     freshRouteTablePlugin(),
     noMarkdownDepsPlugin(),
