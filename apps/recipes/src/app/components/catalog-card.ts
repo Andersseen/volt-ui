@@ -1,5 +1,12 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import {
+  booleanAttribute,
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { LmnFolderIcon, LmnZapIcon } from 'lumen-icons';
 import { VoltBadge, VoltCard, VoltCardDescription, VoltCardHeader, VoltCardTitle } from 'volt';
 import { injectAppI18n } from '@shared/i18n/i18n';
 import { BlockThumbnail } from './block-thumbnail';
@@ -24,6 +31,8 @@ import type { CatalogEntry } from '../lib/catalog';
     VoltCardHeader,
     VoltCardTitle,
     VoltCardDescription,
+    LmnFolderIcon,
+    LmnZapIcon,
   ],
   host: { class: 'block min-w-0' },
   template: `
@@ -38,6 +47,21 @@ import type { CatalogEntry } from '../lib/catalog';
         </div>
       }
       <volt-card-header class="flex-1 p-4">
+        @if (entry().kind !== 'blocks') {
+          <span
+            class="mb-2 flex h-9 w-9 items-center justify-center rounded-lg bg-muted text-muted-foreground transition-colors group-hover:bg-primary group-hover:text-primary-foreground"
+            aria-hidden="true"
+          >
+            @if (entry().kind === 'layouts') {
+              <lmn-folder [size]="16" />
+            } @else {
+              <lmn-zap [size]="16" />
+            }
+          </span>
+        }
+        @if (group()) {
+          <p class="text-xs font-medium uppercase tracking-wider text-primary">{{ group() }}</p>
+        }
         <div class="flex items-center justify-between gap-2">
           <volt-card-title class="text-base font-medium leading-snug group-hover:text-primary">
             <a [routerLink]="path()" class="stretched">{{ name() }}</a>
@@ -79,9 +103,15 @@ export class CatalogCard {
   protected readonly t = this.translations.t;
 
   readonly entry = input.required<CatalogEntry>();
+  /** Name the entry's category above its title — for a flat list, where no heading does. */
+  readonly showGroup = input<boolean, unknown>(false, { transform: booleanAttribute });
 
   protected readonly path = computed(() => this.translations.path(this.entry().path));
   protected readonly name = computed(() => this.t(this.entry().nameKey));
+  protected readonly group = computed(() => {
+    const { groupKey } = this.entry();
+    return this.showGroup() && groupKey ? this.t(groupKey) : '';
+  });
   protected readonly summary = computed(() => {
     const { summaryKey } = this.entry();
     return summaryKey ? this.t(summaryKey) : '';

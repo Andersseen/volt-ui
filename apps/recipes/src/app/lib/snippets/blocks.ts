@@ -6,8 +6,16 @@
  * block updates its documentation in the same commit, for free.
  */
 import { toConsumerSource } from './consumer-source';
+import bgGlyphFieldSource from '../../blocks/bg-glyph-field/bg-glyph-field.ts?raw';
+import bgLightThreadsSource from '../../blocks/bg-light-threads/bg-light-threads.ts?raw';
+import bgParticleWaveSource from '../../blocks/bg-particle-wave/bg-particle-wave.ts?raw';
 import appDashboardSource from '../../blocks/app-dashboard/app-dashboard.ts?raw';
 import authLoginSource from '../../blocks/auth-login/auth-login.ts?raw';
+import configPlaygroundSource from '../../blocks/config-playground/config-playground.ts?raw';
+import featureCarouselSource from '../../blocks/feature-carousel/feature-carousel.ts?raw';
+import featureTourSource from '../../blocks/feature-tour/feature-tour.ts?raw';
+import heroGlyphsSource from '../../blocks/hero-glyphs/hero-glyphs.ts?raw';
+import heroInstallSource from '../../blocks/hero-install/hero-install.ts?raw';
 import contactSplitSource from '../../blocks/contact-split/contact-split.ts?raw';
 import ctaMagneticSource from '../../blocks/cta-magnetic/cta-magnetic.ts?raw';
 import featureBentoSource from '../../blocks/feature-bento/feature-bento.ts?raw';
@@ -37,3 +45,11 @@ export const HERO_PRODUCT_BLOCK = toConsumerSource(heroProductSource);
 export const FEATURE_SHOWCASE_BLOCK = toConsumerSource(featureShowcaseSource);
 export const SCROLL_STORY_BLOCK = toConsumerSource(scrollStorySource);
 export const SOURCE_PREVIEW_BLOCK = toConsumerSource(sourcePreviewSource);
+export const HERO_INSTALL_BLOCK = toConsumerSource(heroInstallSource);
+export const HERO_GLYPHS_BLOCK = toConsumerSource(heroGlyphsSource);
+export const FEATURE_TOUR_BLOCK = toConsumerSource(featureTourSource);
+export const FEATURE_CAROUSEL_BLOCK = toConsumerSource(featureCarouselSource);
+export const CONFIG_PLAYGROUND_BLOCK = toConsumerSource(configPlaygroundSource);
+export const BG_PARTICLE_WAVE_BLOCK = toConsumerSource(bgParticleWaveSource);
+export const BG_LIGHT_THREADS_BLOCK = toConsumerSource(bgLightThreadsSource);
+export const BG_GLYPH_FIELD_BLOCK = toConsumerSource(bgGlyphFieldSource);

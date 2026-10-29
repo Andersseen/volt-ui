@@ -1237,6 +1237,10 @@
       "app": {
         "label": "Aplicación",
         "blurb": "Las pantallas detrás del login, con el trabajo hecho en vez de dejado como huecos."
+      },
+      "backgrounds": {
+        "label": "Fondos",
+        "blurb": "Superficies animadas para poner detrás de un hero o una llamada a la acción. Tu contenido va encima."
       }
     },
     "items": {
@@ -1314,6 +1318,46 @@
         "label": "Del código a la vista",
         "motion": "Elegir un aviso reescribe el código y cambia la tarjeta con un breve fundido, anunciado de forma educada. El fundido se omite con movimiento reducido.",
         "tagline": "Una configuración a la izquierda y el componente que produce a la derecha: ambos salen de un mismo valor, así que no pueden contradecirse."
+      },
+      "heroInstall": {
+        "label": "Hero con instalación",
+        "tagline": "Un hero de librería que termina en la instalación: el comando en el gestor de paquetes del visitante, a un clic del portapapeles.",
+        "motion": "Dos franjas de luz se mecen detrás del titular y el texto sube al cargar. Cambiar de gestor de paquetes reescribe el comando; al copiar cambia el icono y se anuncia. Con movimiento reducido todo queda quieto."
+      },
+      "heroGlyphs": {
+        "label": "Hero de glifos",
+        "tagline": "Un titular compacto y seguro sobre un campo de glifos de código que se asienta hacia el borde inferior.",
+        "motion": "Los glifos parpadean y se encienden con el color de marca en un único canvas, y solo mientras el hero está en pantalla. Con movimiento reducido el campo se dibuja una vez y queda quieto."
+      },
+      "featureTour": {
+        "label": "Recorrido de funciones",
+        "tagline": "Un recorrido guiado: la explicación a un lado y la propia función funcionando en vivo al otro.",
+        "motion": "Elegir una pestaña avanza el raíl de progreso y cambia el texto de al lado. Cada demo funciona de verdad: un botón que se eleva y se pulsa, un estado que sigue a un interruptor, filas que llegan y mosaicos que entran escalonados."
+      },
+      "featureCarousel": {
+        "label": "Carrusel de ventajas",
+        "tagline": "Los motivos para elegirte, en una fila que se desplaza con puntos de anclaje, flechas y teclado.",
+        "motion": "El desplazamiento lo hace el navegador; la primera tarjeta visible toma el color de marca. Las flechas avanzan de tarjeta en tarjeta y se desactivan en cada extremo. Con movimiento reducido el desplazamiento salta en lugar de deslizarse."
+      },
+      "playground": {
+        "label": "Playground",
+        "tagline": "Cambia un ajuste, mira el resultado y copia el CSS que lo produce.",
+        "motion": "La vista previa se reproduce con la Web Animations API cada vez que cambian el preset o la curva, y el CSS se genera a partir de los mismos valores. Con movimiento reducido solo se reproduce al pulsar Repetir."
+      },
+      "particleWave": {
+        "label": "Onda de partículas",
+        "tagline": "Cintas de partículas que ondulan despacio por la sección, como luz atrapada en seda.",
+        "motion": "Miles de partículas en un único canvas siguen tres ondas lentas, con un brillo que recorre cada hebra. El bucle se pausa fuera de pantalla; con movimiento reducido las cintas se dibujan una vez y quedan quietas."
+      },
+      "lightThreads": {
+        "label": "Hilos de luz",
+        "tagline": "Hilos de luz que convergen en un punto brillante, solo con SVG y CSS.",
+        "motion": "Pulsos de luz recorren cada hilo y el punto de encuentro respira. No se ejecuta JavaScript: ya se mueve en el HTML renderizado en el servidor. Con movimiento reducido los hilos se quedan y los pulsos se detienen."
+      },
+      "glyphField": {
+        "label": "Campo de glifos",
+        "tagline": "Una rejilla de glifos de código que se ilumina alrededor del puntero.",
+        "motion": "Los glifos cerca del puntero toman el color de marca; sin puntero, una luz lenta deambula sola. Con movimiento reducido el campo solo se redibuja cuando se mueve el puntero."
       }
     },
     "upcoming": {
@@ -1451,6 +1495,26 @@
       "ctaBody": "Cada entrada importa desde `@voltui/components`, así que sigue tu tema y conserva la accesibilidad de los componentes que lleva dentro.",
       "ctaComponents": "Ver los componentes"
     },
-    "browse": "Ver recetas"
+    "browse": "Ver recetas",
+    "browser": {
+      "searchLabel": "Buscar en el catálogo",
+      "searchPlaceholder": "Busca por nombre, propósito o componente…",
+      "categories": "Categorías",
+      "all": "Todo",
+      "sortLabel": "Ordenar",
+      "sortCategory": "Por categoría",
+      "sortName": "A–Z",
+      "showing": "Mostrando {$shown} de {$total}",
+      "emptyTitle": "Nada coincide",
+      "emptyBody": "Prueba una palabra más corta, otra categoría o borra los filtros.",
+      "clear": "Borrar filtros",
+      "catalog": "Catálogo"
+    },
+    "kinds": {
+      "heading": "¿Bloques, layouts o recetas?",
+      "blocks": "Secciones de página terminadas — un hero, precios, un footer. Con estilo y animación: copia una y cambia los textos.",
+      "layouts": "Estructuras de página sin marca — shells de aplicación, pantallas de acceso, tableros. El esqueleto que llenas con tu producto.",
+      "recipes": "Comportamiento en el tiempo — validación, búsqueda asíncrona, recuperación. Un flujo probado, no un aspecto."
+    }
   }
 }

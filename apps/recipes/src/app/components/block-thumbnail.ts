@@ -11,12 +11,20 @@ import {
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { AppDashboard } from '../blocks/app-dashboard/app-dashboard';
+import { BgGlyphField } from '../blocks/bg-glyph-field/bg-glyph-field';
+import { BgLightThreads } from '../blocks/bg-light-threads/bg-light-threads';
+import { BgParticleWave } from '../blocks/bg-particle-wave/bg-particle-wave';
 import { AuthLogin } from '../blocks/auth-login/auth-login';
+import { ConfigPlayground } from '../blocks/config-playground/config-playground';
 import { ContactSplit } from '../blocks/contact-split/contact-split';
 import { CtaMagnetic } from '../blocks/cta-magnetic/cta-magnetic';
 import { FeatureBento } from '../blocks/feature-bento/feature-bento';
+import { FeatureCarousel } from '../blocks/feature-carousel/feature-carousel';
+import { FeatureTour } from '../blocks/feature-tour/feature-tour';
 import { FooterSitemap } from '../blocks/footer-sitemap/footer-sitemap';
 import { FeatureShowcase } from '../blocks/feature-showcase/feature-showcase';
+import { HeroGlyphs } from '../blocks/hero-glyphs/hero-glyphs';
+import { HeroInstall } from '../blocks/hero-install/hero-install';
 import { HeroProduct } from '../blocks/hero-product/hero-product';
 import { ScrollStory } from '../blocks/scroll-story/scroll-story';
 import { SourcePreview } from '../blocks/source-preview/source-preview';
@@ -46,7 +54,15 @@ import { TestimonialMarquee } from '../blocks/testimonial-marquee/testimonial-ma
     HeroSpotlight,
     HeroSplit,
     HeroProduct,
+    HeroInstall,
+    HeroGlyphs,
+    BgParticleWave,
+    BgLightThreads,
+    BgGlyphField,
     FeatureShowcase,
+    FeatureTour,
+    FeatureCarousel,
+    ConfigPlayground,
     ScrollStory,
     SourcePreview,
     FeatureBento,
@@ -78,6 +94,30 @@ import { TestimonialMarquee } from '../blocks/testimonial-marquee/testimonial-ma
         }
         @case ('hero-product') {
           <app-hero-product />
+        }
+        @case ('hero-install') {
+          <app-hero-install />
+        }
+        @case ('hero-glyphs') {
+          <app-hero-glyphs />
+        }
+        @case ('particle-wave') {
+          <app-bg-particle-wave />
+        }
+        @case ('light-threads') {
+          <app-bg-light-threads />
+        }
+        @case ('glyph-field') {
+          <app-bg-glyph-field />
+        }
+        @case ('feature-tour') {
+          <app-feature-tour />
+        }
+        @case ('feature-carousel') {
+          <app-feature-carousel />
+        }
+        @case ('playground') {
+          <app-config-playground />
         }
         @case ('feature-showcase') {
           <app-feature-showcase />
