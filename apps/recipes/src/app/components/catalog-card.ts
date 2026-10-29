@@ -25,13 +25,15 @@ import type { CatalogEntry } from '../lib/catalog';
     VoltCardTitle,
     VoltCardDescription,
   ],
-  host: { class: 'block' },
+  host: { class: 'block min-w-0' },
   template: `
     <volt-card
       class="group relative flex h-full flex-col overflow-hidden transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5 motion-safe:hover:-translate-y-1"
     >
       @if (entry().kind === 'blocks') {
-        <div class="thumb relative h-48 overflow-hidden border-b border-border bg-background">
+        <div
+          class="thumb relative aspect-[16/9] overflow-hidden border-b border-border bg-background"
+        >
           <app-block-thumbnail [slug]="entry().slug" />
         </div>
       }
@@ -79,10 +81,7 @@ export class CatalogCard {
   readonly entry = input.required<CatalogEntry>();
 
   protected readonly path = computed(() => this.translations.path(this.entry().path));
-  protected readonly name = computed(() => {
-    const { nameKey, name } = this.entry();
-    return nameKey ? this.t(nameKey) : (name ?? '');
-  });
+  protected readonly name = computed(() => this.t(this.entry().nameKey));
   protected readonly summary = computed(() => {
     const { summaryKey } = this.entry();
     return summaryKey ? this.t(summaryKey) : '';

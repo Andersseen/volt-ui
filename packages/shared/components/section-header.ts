@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { VoltBadge } from 'volt';
-import { Prose } from '@shared/components/prose';
-import { Reveal } from '@shared/components/reveal';
+import { Prose } from './prose';
+import { Reveal } from './reveal';
 
 /**
- * The eyebrow, display heading and lede that open a landing section.
+ * The eyebrow, display heading and lede that open a landing section, on either site.
  *
  * Takes already-translated strings so each section stays in charge of its own keys. The lede
  * goes through `<app-prose>`, so a message with `code` marks renders them as code.

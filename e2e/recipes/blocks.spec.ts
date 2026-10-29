@@ -175,6 +175,27 @@ test.describe('Blocks gallery cards', () => {
     expect(new Set(headings).size).toBe(headings.length);
   });
 
+  for (const width of [390, 1440]) {
+    test(`scales every thumbnail to the full width of its card at ${width}px`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto('/');
+      await page.waitForLoadState('networkidle');
+
+      const thumbnails = page.locator('app-catalog-card app-block-thumbnail');
+      await expect(thumbnails.first()).toBeVisible();
+      for (const thumbnail of await thumbnails.all()) {
+        const [frame, stage] = await Promise.all([
+          thumbnail.boundingBox(),
+          thumbnail.locator('.stage').boundingBox(),
+        ]);
+        // The block is laid out at 1180px and scaled to the frame: no strip of empty card beside
+        // it, and no card stretched to the stage's width (which left the scale at 1 on phones).
+        expect(frame!.width).toBeLessThanOrEqual(width);
+        expect(Math.abs(stage!.width - frame!.width)).toBeLessThan(2);
+      }
+    });
+  }
+
   test('keeps the whole card clickable from the thumbnail', async ({ page }) => {
     await page.goto('/blocks');
     // Server-rendered HTML shows before hydration; interact only once the page is live.

@@ -8,7 +8,10 @@ import { CATALOG, listingPath, CATALOG_KINDS } from '../../apps/recipes/src/app/
 test.describe('catalog routes', () => {
   test('home links to every section', async ({ page }) => {
     await page.goto('/');
-    await expect(page.getByRole('heading', { level: 1, name: 'Volt UI Recipes' })).toBeVisible();
+    await expect(
+      page.getByRole('heading', { level: 1, name: 'Whole screens, built from Volt UI.' })
+    ).toBeVisible();
+    await expect(page).toHaveTitle(/Volt UI Recipes/);
     for (const kind of CATALOG_KINDS) {
       await expect(page.locator(`main a[href="${listingPath(kind)}"]`).first()).toBeVisible();
     }

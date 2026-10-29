@@ -18,7 +18,7 @@ import {
   type ColorPreset,
   type StylePreset,
 } from '@shared/lib/theme-presets';
-import { LandingSectionHeader } from '../section-header';
+import { LandingSectionHeader } from '@shared/components/section-header';
 import { PalettePicker } from './palette-picker';
 import { ShapePicker } from './shape-picker';
 import { ThemePreview } from './theme-preview';
