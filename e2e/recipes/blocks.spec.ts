@@ -253,7 +253,7 @@ test.describe('Blocks respond to their container', () => {
 
     const brandVisibleAt = (width: number) =>
       section.evaluate((el, target) => {
-        const frame = el.closest('.overflow-hidden') as HTMLElement;
+        const frame = el.closest('.overflow-clip') as HTMLElement;
         const previous = frame.style.width;
         frame.style.width = `${target}px`;
         const visible = (el.querySelector('.brand') as HTMLElement).offsetParent !== null;

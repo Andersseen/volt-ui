@@ -12,6 +12,10 @@ import contactSplitSource from '../../blocks/contact-split/contact-split.ts?raw'
 import ctaMagneticSource from '../../blocks/cta-magnetic/cta-magnetic.ts?raw';
 import featureBentoSource from '../../blocks/feature-bento/feature-bento.ts?raw';
 import footerSitemapSource from '../../blocks/footer-sitemap/footer-sitemap.ts?raw';
+import heroProductSource from '../../blocks/hero-product/hero-product.ts?raw';
+import featureShowcaseSource from '../../blocks/feature-showcase/feature-showcase.ts?raw';
+import scrollStorySource from '../../blocks/scroll-story/scroll-story.ts?raw';
+import sourcePreviewSource from '../../blocks/source-preview/source-preview.ts?raw';
 import heroSplitSource from '../../blocks/hero-split/hero-split.ts?raw';
 import heroSpotlightSource from '../../blocks/hero-spotlight/hero-spotlight.ts?raw';
 import pricingTiersSource from '../../blocks/pricing-tiers/pricing-tiers.ts?raw';
@@ -29,3 +33,7 @@ export const CONTACT_SPLIT_BLOCK = toConsumerSource(contactSplitSource);
 export const FOOTER_SITEMAP_BLOCK = toConsumerSource(footerSitemapSource);
 export const AUTH_LOGIN_BLOCK = toConsumerSource(authLoginSource);
 export const APP_DASHBOARD_BLOCK = toConsumerSource(appDashboardSource);
+export const HERO_PRODUCT_BLOCK = toConsumerSource(heroProductSource);
+export const FEATURE_SHOWCASE_BLOCK = toConsumerSource(featureShowcaseSource);
+export const SCROLL_STORY_BLOCK = toConsumerSource(scrollStorySource);
+export const SOURCE_PREVIEW_BLOCK = toConsumerSource(sourcePreviewSource);

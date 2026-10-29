@@ -1294,6 +1294,26 @@
         "label": "Dashboard",
         "tagline": "Shell con marca, cifras que cuentan hacia arriba y un gráfico que se dibuja solo.",
         "motion": "Las cifras cuentan hasta su valor la primera vez que la fila entra en pantalla, una vez y nunca más, y el gráfico se traza a medida que aparece. Ambos empiezan terminados si se reduce el movimiento."
+      },
+      "featureShowcase": {
+        "label": "Escaparate de funciones",
+        "motion": "Las barras del gráfico crecen una vez. Todo lo demás está quieto, y con movimiento reducido las barras aparecen a altura completa.",
+        "tagline": "Una capacidad grande y tres de apoyo, cada una dibujada como pide su contenido."
+      },
+      "heroProduct": {
+        "label": "Hero de producto",
+        "motion": "El texto y el tablero aparecen deslizándose al cargar y un punto de estado pulsa. Ambos se detienen con movimiento reducido; el tablero es interactivo en cualquier caso.",
+        "tagline": "Un hero centrado cuya vista previa es un producto que funciona: filtra, marca tareas y mira avanzar el progreso."
+      },
+      "scrollStory": {
+        "label": "Historia con scroll",
+        "motion": "Cada tarjeta se fija y la siguiente se desliza encima. El scroll nativo no se toca, así que nada atrapa la página; por debajo del punto md o con movimiento reducido las tarjetas fluyen normalmente.",
+        "tagline": "Pasos que se apilan al hacer scroll, con CSS puro: una lista normal en pantallas pequeñas y con movimiento reducido."
+      },
+      "sourcePreview": {
+        "label": "Del código a la vista",
+        "motion": "Elegir un aviso reescribe el código y cambia la tarjeta con un breve fundido, anunciado de forma educada. El fundido se omite con movimiento reducido.",
+        "tagline": "Una configuración a la izquierda y el componente que produce a la derecha: ambos salen de un mismo valor, así que no pueden contradecirse."
       }
     },
     "upcoming": {
@@ -1396,7 +1416,9 @@
     "items": {
       "settingsForm": "Formulario de ajustes",
       "asyncSearch": "Búsqueda asíncrona",
-      "dataTable": "Tabla de datos"
+      "dataTable": "Tabla de datos",
+      "componentExplorer": "Explorador de componentes",
+      "livePlayground": "Playground en vivo"
     },
     "doqs": {
       "documentation": "Documentación",

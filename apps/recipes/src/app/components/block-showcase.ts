@@ -30,7 +30,9 @@ import { injectAppI18n } from '@shared/i18n/i18n';
         <p class="mt-2 text-lg text-muted-foreground">{{ t(block().taglineKey) }}</p>
       </div>
 
-      <div class="overflow-hidden rounded-xl border border-border">
+      <!-- overflow-clip, not hidden: hidden makes a scroll container, which stops a block's
+             position: sticky (scroll-story) from sticking to the page. -->
+      <div class="overflow-clip rounded-xl border border-border">
         <ng-content />
       </div>
 
