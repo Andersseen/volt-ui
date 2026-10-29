@@ -38,8 +38,10 @@ describe('VoltSkeleton', () => {
       componentInputs: { width: '4rem', height: '2rem' },
     });
 
-    const skeleton = container.querySelector('volt-skeleton');
-    expect(skeleton).toHaveStyle({ width: '4rem' });
-    expect(skeleton).toHaveStyle({ height: '2rem' });
+    // The inline style carries the value exactly as given. A computed style would not: jsdom 30
+    // resolves `4rem` to `64px`, as a browser does.
+    const skeleton = container.querySelector<HTMLElement>('volt-skeleton')!;
+    expect(skeleton.style.width).toBe('4rem');
+    expect(skeleton.style.height).toBe('2rem');
   });
 });
