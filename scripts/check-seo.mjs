@@ -41,8 +41,9 @@ let server;
 if (urlArg === -1) {
   server = spawn(
     join(ROOT, 'node_modules/.bin/wrangler'),
-    ['pages', 'dev', OUTPUT, '--ip', '127.0.0.1', '--port', String(PORT)],
-    { cwd: ROOT, env: { ...process.env, NO_COLOR: '1' }, stdio: 'ignore' }
+    ['pages', 'dev', '--ip', '127.0.0.1', '--port', String(PORT)],
+    // From the app's folder, so its wrangler.toml (output dir, compatibility date) applies.
+    { cwd: join(ROOT, 'apps', APP === 'recipes' ? 'recipes' : 'web'), env: { ...process.env, NO_COLOR: '1' }, stdio: 'ignore' }
   );
 }
 

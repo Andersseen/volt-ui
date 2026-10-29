@@ -10,7 +10,7 @@
     "prebuild": "cd ../.. && node scripts/sync-recipes-public.mjs",
     "build": "cd ../.. && vite build --config apps/recipes/vite.config.ts",
     "postbuild": "cd ../.. && node scripts/prepare-cloudflare-pages-output.mjs --app recipes && node scripts/check-server-bundle.mjs --app recipes",
-    "preview": "cd ../.. && wrangler pages dev dist/apps/recipes/analog/public",
+    "preview": "wrangler pages dev",
     "typecheck": "cd ../.. && tsc --noEmit --project apps/recipes/tsconfig.app.json && ngc --project apps/recipes/tsconfig.app.json --noEmit"
   }
 }

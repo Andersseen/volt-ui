@@ -54,6 +54,8 @@ Owner of production deploys: **GitHub Actions** (`deploy-recipes` in `ci.yml`). 
 4. Merge. `deploy-recipes` runs first; `deploy` (docs) waits for it and also probes `https://recipes.voltui.dev/blocks/hero` before publishing, because the docs build 301-redirects the old gallery URLs there. **Never deploy the docs build before Recipes is live.**
 5. Previews: PR builds are verified in CI (`recipes` job); no per-PR Pages preview is configured.
 
+Each app has its own `wrangler.toml` (`apps/web/`, `apps/recipes/`: project name, compatibility date, output directory). Every `wrangler pages` command — the CI deploys, `pnpm preview`, the `wrangler` e2e mode, `check:ssr`, `check:seo` — runs from that app's folder so its file applies; run from the repository root, wrangler would find no config and fall back to the dashboard's settings.
+
 Environment variables: none required (Glossa catalogs are public). Optional analytics is not wired for Recipes.
 
 ## Deferred / blocked

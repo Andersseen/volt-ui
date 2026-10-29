@@ -382,8 +382,10 @@ jobs:
 
       # --branch must match the Pages project's production branch (main): wrangler only tags a
       # deployment "Production", the environment the custom domain serves, when they match.
+      # From the app's folder, so apps/recipes/wrangler.toml (output dir, compatibility date) applies.
       - name: Deploy to Cloudflare Pages
-        run: pnpm exec wrangler pages deploy dist/apps/recipes/analog/public --project-name=volt-ui-recipes --branch=main
+        working-directory: apps/recipes
+        run: pnpm exec wrangler pages deploy --project-name=volt-ui-recipes --branch=main
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -449,7 +451,9 @@ jobs:
         # --branch=production does not mean "the production environment": it deploys under
         # a branch that happens to be *named* production, which Cloudflare treats as an
         # ordinary Preview deployment. See git blame on this line before changing it again.
-        run: pnpm exec wrangler pages deploy dist/apps/web/analog/public --project-name=volt-ui --branch=main
+        # From the app's folder, so apps/web/wrangler.toml (output dir, compatibility date) applies.
+        working-directory: apps/web
+        run: pnpm exec wrangler pages deploy --project-name=volt-ui --branch=main
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

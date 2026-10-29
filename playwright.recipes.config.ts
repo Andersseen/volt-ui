@@ -13,7 +13,7 @@ const baseURL = `http://127.0.0.1:${port}`;
 const serverMode = process.env['E2E_SERVER'] ?? 'dev';
 const webServerCommand =
   serverMode === 'wrangler'
-    ? `pnpm exec wrangler pages dev dist/apps/recipes/analog/public --ip 127.0.0.1 --port ${port}`
+    ? `pnpm exec wrangler pages dev --ip 127.0.0.1 --port ${port}`
     : serverMode === 'preview'
       ? `pnpm exec vite preview --config apps/recipes/vite.config.ts --host 127.0.0.1 --port ${port} --strictPort`
       : `pnpm exec vite --config apps/recipes/vite.config.ts --host 127.0.0.1 --port ${port} --strictPort`;
@@ -37,6 +37,8 @@ export default defineConfig({
   ],
   webServer: {
     command: webServerCommand,
+    // wrangler runs from the app's folder so its wrangler.toml (output dir, compatibility date) applies.
+    cwd: serverMode === 'wrangler' ? 'apps/recipes' : undefined,
     url: baseURL,
     reuseExistingServer: process.env['PLAYWRIGHT_REUSE_SERVER'] === '1',
   },
