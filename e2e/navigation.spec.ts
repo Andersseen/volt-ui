@@ -210,7 +210,7 @@ test.describe('Site navigation', () => {
     await expect(page).toHaveURL(/\/docs\/components$/);
     await expect(dialog).toBeHidden();
 
-    await page.locator('app-mobile-menu button').click();
+    await page.locator('app-site-mobile-menu button').click();
     const reopenedDialog = page.getByRole('dialog', { name: 'Menu' });
     const mobileNavigation = reopenedDialog.getByRole('navigation');
     await expect(mobileNavigation.locator('a[aria-current="page"]')).toHaveCount(1);

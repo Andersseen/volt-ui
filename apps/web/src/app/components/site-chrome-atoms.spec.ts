@@ -10,9 +10,10 @@ import { describe, expect, it } from 'vitest';
 const CHROME = [
   'header.ts',
   'footer.ts',
-  'mobile-menu.ts',
   'docs/docs-nav-list.ts',
   // Shared with Recipes.
+  '../../../../../packages/shared/components/site-header.ts',
+  '../../../../../packages/shared/components/site-mobile-menu.ts',
   '../../../../../packages/shared/components/language-switcher.ts',
   '../../../../../packages/shared/components/theme-switcher.ts',
   // Recipes' own chrome.

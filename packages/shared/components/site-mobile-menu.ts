@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { LmnMenuIcon, LmnXIcon } from 'lumen-icons';
 import { MoveEnterDirective } from 'angular-movement';
@@ -11,12 +11,13 @@ import {
   VoltDrawerTitle,
   VoltNativeButton,
 } from 'volt';
-import { MOTION } from '@shared/lib/motion';
-import { injectAppI18n } from '@shared/i18n/i18n';
+import { MOTION } from '../lib/motion';
+import { injectAppI18n } from '../i18n/i18n';
+import type { SiteNavLink } from './site-nav';
 
-/** The site's own menu drawer: Volt's Drawer, Button and Close, nothing hand-built. */
+/** The menu drawer below `md`, for either site: Volt's Drawer, Button and Close, nothing hand-built. */
 @Component({
-  selector: 'app-mobile-menu',
+  selector: 'app-site-mobile-menu',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     RouterLink,
@@ -60,40 +61,45 @@ import { injectAppI18n } from '@shared/i18n/i18n';
           voltDrawerDescription
           [attr.aria-label]="t('nav.main')"
         >
-          @for (link of links; track link.path; let i = $index) {
-            <a
-              voltButton
-              variant="ghost"
-              [routerLink]="path(link.path)"
-              routerLinkActive="bg-accent text-accent-foreground font-semibold ring-1 ring-inset ring-primary/50"
-              [routerLinkActiveOptions]="{ exact: link.exact }"
-              ariaCurrentWhenActive="page"
-              (click)="close()"
-              moveEnter="fade-left"
-              [moveDelay]="i * stagger"
-              class="h-11 justify-start px-3 text-base font-medium text-muted-foreground"
-            >
-              {{ t(link.key) }}
-            </a>
+          @for (link of links(); track link.label; let i = $index) {
+            @if (link.path !== undefined) {
+              <a
+                voltButton
+                variant="ghost"
+                [routerLink]="link.path"
+                routerLinkActive="bg-accent text-accent-foreground font-semibold ring-1 ring-inset ring-primary/50"
+                [routerLinkActiveOptions]="{ exact: !!link.exact }"
+                ariaCurrentWhenActive="page"
+                (click)="close()"
+                moveEnter="fade-left"
+                [moveDelay]="i * stagger"
+                class="h-11 justify-start px-3 text-base font-medium text-muted-foreground"
+              >
+                {{ link.label }}
+              </a>
+            } @else {
+              <a
+                voltButton
+                variant="ghost"
+                [href]="link.href"
+                (click)="close()"
+                moveEnter="fade-left"
+                [moveDelay]="i * stagger"
+                class="h-11 justify-start px-3 text-base font-medium text-muted-foreground"
+              >
+                {{ link.label }}
+              </a>
+            }
           }
         </nav>
       </div>
     </ng-template>
   `,
 })
-export class MobileMenu {
-  private readonly translations = injectAppI18n();
+export class SiteMobileMenu {
+  readonly links = input.required<readonly SiteNavLink[]>();
 
-  protected readonly t = this.translations.t;
-  protected readonly path = this.translations.path;
-
+  protected readonly t = injectAppI18n().t;
   /** Links stagger in behind the drawer, so the panel reads as arriving rather than appearing. */
   protected readonly stagger = MOTION.stagger;
-
-  protected readonly links = [
-    { path: '/', key: 'nav.home', exact: true },
-    { path: '/docs/introduction', key: 'nav.docs', exact: false },
-    { path: '/docs/components', key: 'nav.components', exact: false },
-    { path: '/create-theme', key: 'nav.createTheme', exact: false },
-  ] as const;
 }
