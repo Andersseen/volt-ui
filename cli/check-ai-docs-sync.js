@@ -4,7 +4,7 @@
  * Fails when the content AI tools read states something the library does not.
  *
  * Sources checked: the agent skills (cli/agent/skills), the single-file prompt (VOLT_UI_PROMPT.md),
- * the MCP server (src/server/routes/mcp.ts), the installer content (cli/agent/content.js) and the
+ * the MCP server (apps/web/src/server/routes/mcp.ts), the installer content (cli/agent/content.js) and the
  * agent README. They are compared with the library itself — its selectors, its public exports, its
  * peer dependencies — and with COMPONENT_STATUS.md, never with each other.
  *
@@ -19,7 +19,7 @@
  *   angular     no hard-coded Angular major: the supported range is the library's peer dependency
  *   removed     elements and APIs that do not exist (and are easy to hallucinate) are not mentioned
  *
- * Ground truth for the component list is public/manifest.json (`pnpm manifest`).
+ * Ground truth for the component list is apps/web/public/manifest.json (`pnpm manifest`).
  */
 'use strict';
 
@@ -54,9 +54,9 @@ async function main() {
     pathToFileURL(path.join(ROOT, 'scripts/lib/component-catalog.mjs')).href
   );
 
-  const manifestPath = path.join(ROOT, 'public/manifest.json');
+  const manifestPath = path.join(ROOT, 'apps/web/public/manifest.json');
   if (!fs.existsSync(manifestPath)) {
-    console.error('Missing public/manifest.json — run "pnpm manifest" first.');
+    console.error('Missing apps/web/public/manifest.json — run "pnpm manifest" first.');
     process.exit(1);
   }
   const manifest = new Set(
@@ -64,7 +64,7 @@ async function main() {
   );
 
   // --- inventory ---------------------------------------------------------------------------
-  const mcpSrc = read('src/server/routes/mcp.ts');
+  const mcpSrc = read('apps/web/src/server/routes/mcp.ts');
   const block = mcpSrc.slice(
     mcpSrc.indexOf('const components: Record<string, ComponentMeta> = {'),
     mcpSrc.indexOf('\nconst componentKeys')
@@ -77,13 +77,17 @@ async function main() {
   const catalog = await loadCatalog();
   const described = new Set(catalog.map(c => c.key));
   for (const key of manifest) {
-    if (!mcpKeys.has(key)) fail('src/server/routes/mcp.ts', `serves no component "${key}"`);
+    if (!mcpKeys.has(key))
+      fail('apps/web/src/server/routes/mcp.ts', `serves no component "${key}"`);
     if (!described.has(key))
       fail('component metadata', `"${key}" has no responsibility (Storybook guide)`);
   }
   for (const key of mcpKeys) {
     if (!manifest.has(key))
-      fail('src/server/routes/mcp.ts', `serves "${key}", which the manifest does not know`);
+      fail(
+        'apps/web/src/server/routes/mcp.ts',
+        `serves "${key}", which the manifest does not know`
+      );
   }
 
   // --- skills ------------------------------------------------------------------------------
@@ -125,7 +129,7 @@ async function main() {
   const files = [
     ...skills.map(s => s.file),
     'VOLT_UI_PROMPT.md',
-    'src/server/routes/mcp.ts',
+    'apps/web/src/server/routes/mcp.ts',
     'cli/agent/content.js',
     'cli/agent/README.md',
   ];
@@ -134,7 +138,7 @@ async function main() {
   const exported = publicExports();
   const toPackage = n => n.replace(/^Ui(?=[A-Z])/, 'Volt');
   const titles = new Map(catalog.map(c => [c.title, c]));
-  const peer = JSON.parse(read('projects/volt/package.json')).peerDependencies['@angular/core'];
+  const peer = JSON.parse(read('packages/volt/package.json')).peerDependencies['@angular/core'];
   const majors = new Set([...peer.matchAll(/(\d+)\.\d+\.\d+/g)].map(m => m[1]));
 
   const REMOVED = [

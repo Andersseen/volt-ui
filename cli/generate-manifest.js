@@ -2,9 +2,9 @@
 const fs = require('fs');
 const path = require('path');
 
-const COMPONENTS_DIR = path.resolve(__dirname, '../projects/volt/src/lib/components');
-const LAYOUTS_DIR = path.resolve(__dirname, '../projects/volt/src/lib/layouts');
-const OUTPUT = path.resolve(__dirname, '../public/manifest.json');
+const COMPONENTS_DIR = path.resolve(__dirname, '../packages/volt/src/lib/components');
+const LAYOUTS_DIR = path.resolve(__dirname, '../packages/volt/src/lib/layouts');
+const OUTPUT = path.resolve(__dirname, '../apps/web/public/manifest.json');
 const STATUS_FILE = path.resolve(__dirname, '../COMPONENT_STATUS.md');
 
 /**

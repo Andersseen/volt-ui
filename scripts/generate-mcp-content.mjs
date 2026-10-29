@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Writes src/server/routes/mcp/content.generated.ts from cli/agent/content.js, the single source of
+ * Writes apps/web/src/server/routes/mcp/content.generated.ts from cli/agent/content.js, the single source of
  * the files the @voltui/agent installer writes. The hosted /api/mcp/setup endpoint serves this copy,
  * so the installer and the endpoint can no longer drift apart.
  *
@@ -14,7 +14,7 @@ import { fileURLToPath } from 'node:url';
 import { format, resolveConfig } from 'prettier';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
-const OUT_FILE = join(ROOT, 'src/server/routes/mcp/content.generated.ts');
+const OUT_FILE = join(ROOT, 'apps/web/src/server/routes/mcp/content.generated.ts');
 const { DEFAULT_MCP_URL, buildContent } = createRequire(import.meta.url)(
   join(ROOT, 'cli/agent/content.js')
 );

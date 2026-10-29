@@ -27,7 +27,7 @@ mismatch _between_ two of them, so a partial read tells you nothing.
 
 ```bash
 # 1. Local versions (what the repo thinks it is)
-node -p "require('./projects/volt/package.json').version"   # @voltui/components
+node -p "require('./packages/volt/package.json').version"   # @voltui/components
 node -p "require('./cli/package.json').version"             # @voltui/cli
 node -p "require('./cli/agent/package.json').version"         # @voltui/agent
 

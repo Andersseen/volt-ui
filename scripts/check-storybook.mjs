@@ -2,12 +2,12 @@
 /**
  * Storybook coverage guard: adding a public component without a Storybook representation fails here.
  *
- * For every component or layout exported from `projects/volt/src/public-api.ts` (minus `theme`,
+ * For every component or layout exported from `packages/volt/src/public-api.ts` (minus `theme`,
  * which is documented under Foundations) it requires:
  *
  *   - `stories/components/<name>.stories.ts` with at least one story export,
  *   - a literal CSF `title` of `Components/<group>/<title>` that matches the guide data,
- *   - imports through the public `volt` surface, never `projects/volt/src/lib/...`,
+ *   - imports through the public `volt` surface, never `packages/volt/src/lib/...`,
  *   - the generated docs page (checked separately by `generate-storybook-docs.mjs --check`),
  *
  * and it rejects stories files whose component is not public, and a missing Foundations page.

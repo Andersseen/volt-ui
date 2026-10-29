@@ -89,7 +89,7 @@ Prints component names from `public/manifest.json`.
 
 When you run `volt add button`:
 
-1. Source files are read from `projects/volt/src/lib/components/button/`.
+1. Source files are read from `packages/volt/src/lib/components/button/`.
 2. Selectors are transformed from `volt-*` to `ui-*`.
 3. Class and identifier names are transformed from `Volt*` / `volt*` to `Ui*` / `ui*`.
 4. Local component dependencies from the manifest are copied too.

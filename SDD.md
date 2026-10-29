@@ -1,6 +1,6 @@
 # Volt UI — Software Design Document (SDD)
 
-**Version:** the one in `projects/volt/package.json` (not repeated here)  
+**Version:** the one in `packages/volt/package.json` (not repeated here)  
 **Status:** Stable  
 **Last updated:** 2026-10-16  
 **Maintainers:** Volt UI contributors
@@ -72,7 +72,7 @@ Neither is a fallback for the other. Both are exercised on every change by the s
                               │ imports via `volt` alias
                               ▼
 ┌─────────────────────────────────────────────────────────────┐
-│                   Library Source (projects/volt)            │
+│                   Library Source (packages/volt)            │
 │   Components    Layouts    Themes    Theme provider         │
 │   public-api.ts                                             │
 └─────────────────────────────────────────────────────────────┘
@@ -90,7 +90,7 @@ Neither is a fallback for the other. Both are exercised on every change by the s
 
 ```text
 /
-├── projects/volt/                 # Publishable Angular library
+├── packages/volt/                 # Publishable Angular library
 │   ├── src/lib/components/<name>/ # Component source folders
 │   ├── src/lib/layouts/<name>/    # Layout components (e.g. sidebar)
 │   ├── src/themes/                # Theme presets and core tokens
@@ -113,7 +113,7 @@ Neither is a fallback for the other. Both are exercised on every change by the s
 
 ## 4. Tech Stack
 
-Versions live in `package.json` (the workspace) and `projects/volt/package.json` (the published
+Versions live in `package.json` (the workspace) and `packages/volt/package.json` (the published
 library's peer ranges); they are deliberately not repeated here, where they only ever went stale.
 
 | Layer           | Technology                        | Purpose                                                                 |
@@ -157,7 +157,7 @@ Every library component follows these rules:
 ### 5.2 File structure per component
 
 ```text
-projects/volt/src/lib/components/button/
+packages/volt/src/lib/components/button/
 ├── index.ts          # Public barrel export
 ├── button.ts         # Main component + CVA variants
 └── button.spec.ts    # Unit tests (required for v1)
@@ -189,7 +189,7 @@ Components use Tailwind utilities (`bg-primary`, `rounded-md`, `shadow-sm`) inst
 
 ### 6.2 Token layers
 
-- **Source variables** (`--volt-*`) — defined in `projects/volt/src/themes/core.css` and preset files. Example: `--volt-shadow-sm`.
+- **Source variables** (`--volt-*`) — defined in `packages/volt/src/themes/core.css` and preset files. Example: `--volt-shadow-sm`.
 - **Tailwind theme mapping** — maps semantic keys to source variables. Example: `--shadow-sm: var(--volt-shadow-sm);`.
 - **Semantic variables** — `--background`, `--foreground`, `--primary`, `--secondary`, `--destructive`, `--success`, `--warning`, `--error`, `--info`, etc.
 
@@ -257,7 +257,7 @@ The CLI package is `@voltui/cli` located in `cli/`.
 
 ### 7.2 Copy / transform behavior
 
-1. Reads source from `projects/volt/src/lib` (local copy workflow).
+1. Reads source from `packages/volt/src/lib` (local copy workflow).
 2. Replaces `volt-` selectors with `ui-`.
 3. Replaces `Volt*` / `volt*` identifiers with `Ui*` / `ui*`.
 4. Rewrites `from 'volt'` imports to local `./index`.
@@ -317,7 +317,7 @@ When adding or editing a component, both snippet files must be updated.
 
 - **Runner:** Vitest.
 - **Setup:** `test-setup.ts` configures zoneless `TestBed`, jest-dom matchers, and common DOM mocks (`matchMedia`, `ResizeObserver`, `getAnimations`).
-- **Library tests:** live next to components in `projects/volt/src/lib/components/**/*.spec.ts`.
+- **Library tests:** live next to components in `packages/volt/src/lib/components/**/*.spec.ts`.
 - **App tests:** live in `src/app/**/*.spec.ts`.
 - **Pattern:** prefer `@testing-library/angular` `render()` + `screen` + `userEvent` over manual `TestBed` wiring.
 
@@ -363,7 +363,7 @@ pnpm test:e2e:ci   # Build + Playwright smoke tests
 
 ## 11. Public API Surface
 
-The library currently exposes 41 component groups plus one layout from `projects/volt/src/public-api.ts`:
+The library currently exposes 41 component groups plus one layout from `packages/volt/src/public-api.ts`:
 
 - **Basic:** button, badge, input, search, autofill, textarea, card
 - **Form:** checkbox, radio, switch, toggle, form-field, select, slider, range-slider, input-otp, file-upload, combobox, date-picker, listbox
@@ -410,8 +410,8 @@ API freeze) is recorded in [`CHANGELOG.md`](./CHANGELOG.md) release-by-release �
 When modifying this codebase:
 
 1. Read `AGENTS.md` for the latest conventions and commands.
-2. Components live in `projects/volt/src/lib/components/<name>/`.
-3. Update `projects/volt/src/public-api.ts` for new public exports.
+2. Components live in `packages/volt/src/lib/components/<name>/`.
+3. Update `packages/volt/src/public-api.ts` for new public exports.
 4. Add/update the demo page in `src/app/pages/(components-docs)/docs/components/<name>.page.ts`.
 5. Add/update snippet exports in `src/app/lib/snippets/index.ts` and `src/app/lib/snippets/usage.ts`.
 6. Add real unit tests using `@testing-library/angular` or `TestBed`.

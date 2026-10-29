@@ -1,0 +1,54 @@
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  VoltCard,
+  VoltCardContent,
+  VoltCardDescription,
+  VoltCardHeader,
+  VoltCardTitle,
+} from 'volt';
+import { CodeEditor } from '@shared/components/code-editor';
+import { CopyButton } from '@shared/components/copy-button';
+import { ThemeStudioStore } from '../../services/theme-studio-store';
+import { injectAppI18n } from '@shared/i18n/i18n';
+
+/** The exported stylesheet, ready to paste into a Volt theme preset. */
+@Component({
+  selector: 'app-theme-studio-output',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    CodeEditor,
+    CopyButton,
+    VoltCard,
+    VoltCardContent,
+    VoltCardDescription,
+    VoltCardHeader,
+    VoltCardTitle,
+  ],
+  template: `
+    <volt-card
+      class="border-border/70 bg-surface/80 shadow-sm backdrop-blur transition-colors duration-200 hover:border-primary/25"
+    >
+      <volt-card-header>
+        <div class="flex items-center justify-between gap-3">
+          <div>
+            <volt-card-title>{{ t('themeStudio.output.title') }}</volt-card-title>
+            <volt-card-description>{{ t('themeStudio.output.lede') }}</volt-card-description>
+          </div>
+          <app-copy-button [code]="store.generatedCss()" />
+        </div>
+      </volt-card-header>
+      <volt-card-content>
+        <div class="overflow-hidden rounded-xl border border-border/70 bg-muted/30">
+          <app-code-editor [code]="store.generatedCss()" language="css" height="420px" />
+        </div>
+      </volt-card-content>
+    </volt-card>
+  `,
+})
+export class ThemeStudioOutput {
+  private readonly translations = injectAppI18n();
+
+  protected readonly t = this.translations.t;
+
+  protected readonly store = inject(ThemeStudioStore);
+}

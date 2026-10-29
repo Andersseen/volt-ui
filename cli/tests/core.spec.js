@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { readFileSync, existsSync, rmSync, readdirSync, writeFileSync, mkdirSync } from 'node:fs';
-import { resolve, join } from 'node:path';
+import { basename, resolve, join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { execSync } from 'node:child_process';
 
@@ -448,13 +448,22 @@ describe('CLI Core', () => {
       execSync(`node ${cliPath} init ${testDir}`, { cwd: repoRoot, stdio: 'pipe' });
       expect(existsSync(join(testDir, 'index.ts'))).toBe(true);
 
+      // A consumer project (the CLI's cwd) with Tailwind v4 configured. The repo root no longer
+      // is one: its stylesheets live in apps/web and apps/recipes.
+      const consumer = join(testDir, '..', `${basename(testDir)}-consumer`);
+      mkdirSync(join(consumer, 'src'), { recursive: true });
+      writeFileSync(
+        join(consumer, 'package.json'),
+        JSON.stringify({ devDependencies: { tailwindcss: '^4.0.0' } })
+      );
+      writeFileSync(join(consumer, 'src', 'styles.css'), `@import 'tailwindcss';\n`);
       const output = execSync(`node ${cliPath} init ${testDir}`, {
-        cwd: repoRoot,
+        cwd: consumer,
         stdio: 'pipe',
         encoding: 'utf-8',
       });
-      // volt-ui's own repo (the CLI's cwd here) has Tailwind configured, so init
-      // shouldn't print setup guidance for it.
+      rmSync(consumer, { recursive: true, force: true });
+      // A configured project gets no setup guidance.
       expect(output).not.toContain('Tailwind CSS v4 does not look configured');
 
       execSync(`node ${cliPath} add button ${testDir}`, { cwd: repoRoot, stdio: 'pipe' });

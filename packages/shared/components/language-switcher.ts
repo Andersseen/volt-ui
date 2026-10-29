@@ -1,0 +1,138 @@
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { NavigationCancel, NavigationEnd, NavigationError, Router } from '@angular/router';
+import { filter, firstValueFrom } from 'rxjs';
+import { LmnCheckIcon, LmnGlobeIcon, LmnLoaderIcon } from 'lumen-icons';
+import { VoltNativeButton, VoltPopoverContent, VoltPopoverTrigger } from 'volt';
+import { injectAppI18n, LOCALES, LOCALE_NAMES, LOCALE_SHORT, type Locale } from '../i18n/i18n';
+
+/**
+ * Language picker.
+ *
+ * Choosing a language navigates rather than swapping strings in place, because the URL is
+ * what decides the language here. Anything else would leave `/es/docs` rendering English
+ * — and would hand out links that open in whatever the recipient last picked.
+ *
+ * Etyma loads the target catalog before navigating, so the destination page never renders
+ * a frame in the language the visitor just left - but that load is a network fetch to
+ * Glossa, not instant, so `pendingLocale` swaps the trigger's icon for a spinner for its
+ * duration. Same box size throughout (a 16px icon slot, a button that never resizes), so
+ * nothing shifts or reflows while it waits.
+ *
+ * Deliberately `aria-disabled`, not the native `disabled` attribute, on every element that
+ * can hold focus here (the option just activated, and the trigger once focus returns to it
+ * on close): setting `disabled` on a focused control blurs it synchronously, straight to
+ * `<body>`, with nothing to send focus back anywhere after. `switchTo()`'s own re-entry
+ * guard (`pendingLocale() !== null`) already makes a stray click during the pending window
+ * a no-op, so nothing but the visual/AT-facing "busy" signal depends on the attribute.
+ */
+@Component({
+  selector: 'app-language-switcher',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    VoltNativeButton,
+    VoltPopoverTrigger,
+    VoltPopoverContent,
+    LmnGlobeIcon,
+    LmnCheckIcon,
+    LmnLoaderIcon,
+  ],
+  template: `
+    <button
+      voltButton
+      variant="outline"
+      type="button"
+      [voltPopover]="languages"
+      placement="bottom-end"
+      data-testid="language-trigger"
+      [disabled]="pendingLocale() !== null"
+      [attr.aria-disabled]="pendingLocale() !== null ? 'true' : null"
+      class="h-9 shrink-0 gap-1.5 px-2.5 aria-disabled:cursor-wait aria-disabled:opacity-70"
+      [attr.aria-label]="t('language.current', { name: name(locale()) })"
+      [attr.aria-busy]="pendingLocale() !== null"
+    >
+      @if (pendingLocale()) {
+        <lmn-loader [size]="16" class="animate-spin text-muted-foreground" />
+      } @else {
+        <lmn-globe [size]="16" class="text-muted-foreground" />
+      }
+      <span class="font-medium">{{ short(locale()) }}</span>
+    </button>
+
+    <ng-template #languages>
+      <volt-popover-content class="w-44 space-y-1 p-2">
+        <p class="px-2 pb-1 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+          {{ t('nav.language') }}
+        </p>
+        @for (option of locales; track option) {
+          <button
+            voltButton
+            variant="ghost"
+            type="button"
+            class="h-auto w-full justify-between px-2 py-1.5 text-left font-normal aria-disabled:cursor-wait aria-disabled:opacity-70"
+            [class.bg-muted]="option === locale()"
+            [class.font-medium]="option === locale()"
+            [attr.aria-disabled]="pendingLocale() !== null ? 'true' : null"
+            [attr.aria-current]="option === locale() ? 'true' : null"
+            [attr.data-testid]="'language-option-' + option"
+            (click)="switchTo(option)"
+          >
+            <span>{{ name(option) }}</span>
+            @if (pendingLocale() === option) {
+              <lmn-loader [size]="14" class="animate-spin text-primary" />
+            } @else if (option === locale()) {
+              <lmn-check [size]="14" class="text-primary" />
+            }
+          </button>
+        }
+      </volt-popover-content>
+    </ng-template>
+  `,
+})
+export class LanguageSwitcher {
+  private readonly translations = injectAppI18n();
+
+  protected readonly locales = LOCALES;
+  protected readonly locale = this.translations.locale;
+  protected readonly t = this.translations.t;
+  protected readonly pendingLocale = signal<Locale | null>(null);
+  private readonly router = inject(Router);
+
+  protected name(locale: string): string {
+    return LOCALE_NAMES[locale as Locale] ?? locale;
+  }
+
+  protected short(locale: string): string {
+    return LOCALE_SHORT[locale as Locale] ?? locale.toUpperCase();
+  }
+
+  protected switchTo(locale: Locale): void {
+    if (locale === this.locale() || this.pendingLocale() !== null) {
+      return;
+    }
+
+    this.pendingLocale.set(locale);
+    const run = () =>
+      this.translations.setLocale(locale).finally(() => this.pendingLocale.set(null));
+    void (this.router.navigated ? run() : this.firstNavigation().then(run));
+  }
+
+  /**
+   * Resolves when the router finishes its first navigation.
+   *
+   * A visitor can reach the picker before then (the header is server-rendered, and `/docs` still
+   * has its redirect to `/docs/introduction` to run). Switching in that window started a
+   * navigation the initial one then overrode, leaving the page in the old language.
+   */
+  private firstNavigation(): Promise<unknown> {
+    return firstValueFrom(
+      this.router.events.pipe(
+        filter(
+          event =>
+            event instanceof NavigationEnd ||
+            event instanceof NavigationCancel ||
+            event instanceof NavigationError
+        )
+      )
+    );
+  }
+}

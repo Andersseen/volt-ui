@@ -1,0 +1,67 @@
+import { Component } from '@angular/core';
+import { provideRouter } from '@angular/router';
+import { render, screen } from '@testing-library/angular';
+import { describe, expect, it } from 'vitest';
+import en from '@shared/i18n/__fixtures__/en.json';
+import { LayoutShowcase } from './layout-showcase';
+import { layoutBySlug } from '../lib/layouts-metadata';
+
+@Component({
+  imports: [LayoutShowcase],
+  template: `
+    <app-layout-showcase [layout]="layout" [code]="code">
+      <p data-testid="projected">the live layout</p>
+    </app-layout-showcase>
+  `,
+})
+class Host {
+  readonly layout = layoutBySlug('admin-dashboard');
+  readonly code = 'export class AdminDashboardLayout {}';
+}
+
+const renderHost = () => render(Host, { providers: [provideRouter([])] });
+
+describe('LayoutShowcase', () => {
+  it('titles the page after the layout and projects the live skeleton', async () => {
+    await renderHost();
+
+    expect(screen.getByRole('heading', { level: 1, name: 'Admin Dashboard' })).toBeInTheDocument();
+    expect(screen.getByTestId('projected')).toBeInTheDocument();
+  });
+
+  it('leads with the arrangement, which is what a layout is chosen by', async () => {
+    await renderHost();
+
+    expect(screen.getByRole('heading', { name: /the arrangement/i })).toBeInTheDocument();
+    expect(screen.getByText(en.layouts.items.adminDashboard.structure)).toBeInTheDocument();
+  });
+
+  it('links every component the layout is assembled from', async () => {
+    await renderHost();
+
+    for (const atom of layoutBySlug('admin-dashboard').atoms) {
+      expect(screen.getByRole('link', { name: atom.name })).toHaveAttribute(
+        'href',
+        `https://voltui.dev${atom.path}`
+      );
+    }
+  });
+
+  it('offers the source, so a layout is something you can actually take', async () => {
+    await renderHost();
+
+    expect(screen.getByRole('heading', { name: /layout source/i })).toBeInTheDocument();
+    // One copy button for the source, one for the install command shown above it.
+    expect(screen.getAllByRole('button', { name: /copy/i })).toHaveLength(2);
+    expect(screen.getByText(/^pnpm add @voltui\/components/)).toBeInTheDocument();
+  });
+
+  it('points at the blocks gallery for anyone who wanted a finished section', async () => {
+    await renderHost();
+
+    expect(screen.getByRole('link', { name: /blocks gallery/i })).toHaveAttribute(
+      'href',
+      '/blocks'
+    );
+  });
+});

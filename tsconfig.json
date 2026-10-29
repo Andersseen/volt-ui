@@ -16,7 +16,8 @@
     "target": "ES2022",
     "module": "preserve",
     "paths": {
-      "volt": ["./projects/volt/src/public-api"]
+      "volt": ["./packages/volt/src/public-api"],
+      "@shared/*": ["./packages/shared/*"]
     }
   },
   "angularCompilerOptions": {
@@ -28,16 +29,16 @@
   "files": [],
   "references": [
     {
-      "path": "./tsconfig.app.json"
+      "path": "./apps/web/tsconfig.app.json"
     },
     {
       "path": "./tsconfig.spec.json"
     },
     {
-      "path": "./projects/volt/tsconfig.lib.json"
+      "path": "./packages/volt/tsconfig.lib.json"
     },
     {
-      "path": "./projects/volt/tsconfig.spec.json"
+      "path": "./packages/volt/tsconfig.spec.json"
     }
   ]
 }

@@ -1,0 +1,9 @@
+# One pnpm workspace, orchestrated by Turborepo (turbo.json).
+#   apps/web       Volt UI docs site          https://voltui.dev
+#   apps/recipes   Volt UI Recipes            https://recipes.voltui.dev
+#   packages/volt  @voltui/components         the published library
+#   packages/shared  code both apps import as `@shared/*` (private, source-only)
+# cli/ is published separately (own release flow) and stays outside the workspace.
+packages:
+  - apps/*
+  - packages/*

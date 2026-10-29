@@ -1,0 +1,16 @@
+{
+  "name": "@voltui/recipes",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Volt UI Recipes (https://recipes.voltui.dev). Scripts run from the repository root: paths in the repo's tooling are root-relative.",
+  "scripts": {
+    "predev": "cd ../.. && node scripts/sync-recipes-public.mjs",
+    "dev": "cd ../.. && vite --config apps/recipes/vite.config.ts --port 4300",
+    "prebuild": "cd ../.. && node scripts/sync-recipes-public.mjs",
+    "build": "cd ../.. && vite build --config apps/recipes/vite.config.ts",
+    "postbuild": "cd ../.. && node scripts/prepare-cloudflare-pages-output.mjs --app recipes && node scripts/check-server-bundle.mjs --app recipes",
+    "preview": "wrangler pages dev",
+    "typecheck": "cd ../.. && tsc --noEmit --project apps/recipes/tsconfig.app.json && ngc --project apps/recipes/tsconfig.app.json --noEmit"
+  }
+}

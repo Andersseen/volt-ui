@@ -2,15 +2,15 @@
 /**
  * v0.8 Phase 3: docs completeness sweep.
  *
- * Compares every export in projects/volt/src/public-api.ts against:
- *   - a source snippet export in src/app/lib/snippets/index.ts (<NAME>_SNIPPET)
- *   - a usage snippet export in src/app/lib/snippets/usage.ts (<NAME>_USAGE)
- *   - a demo page under src/app/pages/**\/docs/**\/<name>.page.ts
+ * Compares every export in packages/volt/src/public-api.ts against:
+ *   - a source snippet export in apps/web/src/app/lib/snippets/index.ts (<NAME>_SNIPPET)
+ *   - a usage snippet export in apps/web/src/app/lib/snippets/usage.ts (<NAME>_USAGE)
+ *   - a demo page under apps/web/src/app/pages/**\/docs/**\/<name>.page.ts
  *
  * `theme` is a set of functions (provideVoltTheme/applyVoltTheme), not a
  * renderable widget — there is nothing to put in a "Preview" tab. It's
  * documented as a full prose guide instead
- * (src/app/pages/(getting-started)/docs/themes.page.ts) and is exempt
+ * (apps/web/src/app/pages/(getting-started)/docs/themes.page.ts) and is exempt
  * from all three checks below, not just the demo-page one.
  *
  * Usage: node scripts/docs-completeness-check.mjs
@@ -23,10 +23,10 @@ import { fileURLToPath } from 'node:url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 
-const PUBLIC_API = join(ROOT, 'projects/volt/src/public-api.ts');
-const SNIPPETS_INDEX = join(ROOT, 'src/app/lib/snippets/index.ts');
-const SNIPPETS_USAGE = join(ROOT, 'src/app/lib/snippets/usage.ts');
-const PAGES_ROOT = join(ROOT, 'src/app/pages');
+const PUBLIC_API = join(ROOT, 'packages/volt/src/public-api.ts');
+const SNIPPETS_INDEX = join(ROOT, 'apps/web/src/app/lib/snippets/index.ts');
+const SNIPPETS_USAGE = join(ROOT, 'apps/web/src/app/lib/snippets/usage.ts');
+const PAGES_ROOT = join(ROOT, 'apps/web/src/app/pages');
 
 const FULLY_EXEMPT = new Set(['theme']);
 const DEMO_PAGE_EXEMPT = new Set(['theme']);
@@ -82,7 +82,7 @@ for (const name of components) {
       gaps.push({
         name,
         kind: 'demo-page',
-        detail: `no ${name}.page.ts found under src/app/pages`,
+        detail: `no ${name}.page.ts found under apps/web/src/app/pages`,
       });
   }
 }

@@ -121,11 +121,11 @@ test.describe('Localised site', () => {
   }
 
   test('renders a deep localised link without any client-side redirect', async ({ page }) => {
-    const response = await page.goto('/uk/docs/blocks/hero');
+    const response = await page.goto('/uk/docs/components/button');
 
     expect(response?.status()).toBe(200);
-    await expect(page).toHaveURL(/\/uk\/docs\/blocks\/hero$/);
-    await expect(page.getByRole('heading', { level: 1, name: 'Hero Spotlight' })).toBeVisible();
+    await expect(page).toHaveURL(/\/uk\/docs\/components\/button$/);
+    await expect(page.getByRole('heading', { level: 1, name: 'Button' })).toBeVisible();
   });
 
   test('updates SEO metadata after same-locale SPA navigation', async ({ page }) => {

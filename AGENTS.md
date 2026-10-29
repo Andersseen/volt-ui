@@ -4,7 +4,7 @@
 
 Volt UI is an Angular component library inspired by shadcn/ui, built on top of [ng-primitives](https://ng-primitives.dev).
 
-- **Monorepo layout**: Angular workspace with one app (`volt-ui`) and one library (`projects/volt` published as `@voltui/components`).
+- **Monorepo layout**: Angular workspace with two apps — Volt UI docs (`volt-ui`, `src/`, voltui.dev) and Volt UI Recipes (`apps/recipes/`, recipes.voltui.dev) — plus `shared/` and one library (`packages/volt` published as `@voltui/components`).
 - **Docs app**: AnalogJS + file-based routing + Vite + Tailwind CSS v4.
 - **CLI**: `cli/` contains a Node CLI for copying components into consumer projects (`@voltui/cli`).
 - **Package manager**: pnpm (`packageManager: pnpm@10.30.1`).
@@ -15,7 +15,7 @@ Volt UI is an Angular component library inspired by shadcn/ui, built on top of [
 - AnalogJS 2.6 (docs app, SSR, file router)
 - Vite 7 + `@tailwindcss/vite`
 - Tailwind CSS v4 (CSS-only configuration, no `tailwind.config.js`)
-- ng-primitives (primitive behaviors / accessibility; pinned in `package.json`, peer range in `projects/volt/package.json`)
+- ng-primitives (primitive behaviors / accessibility; pinned in `package.json`, peer range in `packages/volt/package.json`)
 - class-variance-authority (CVA) for component variants
 - Vitest + `@testing-library/angular` + Playwright
 
@@ -58,9 +58,37 @@ pnpm test:all
   ```
 - Number inputs should use `numberAttribute` when appropriate.
 - Component variants should use **class-variance-authority** (see `button.ts`, `badge.ts`, `toggle.ts`).
-- Library components live in `projects/volt/src/lib/components/<name>/` with a barrel `index.ts`.
-- Export every public component from `projects/volt/src/public-api.ts`.
-- The docs app imports the library via the `volt` alias (mapped to `projects/volt/src/public-api.ts`).
+- Library components live in `packages/volt/src/lib/components/<name>/` with a barrel `index.ts`.
+- Export every public component from `packages/volt/src/public-api.ts`.
+- The docs app imports the library via the `volt` alias (mapped to `packages/volt/src/public-api.ts`).
+
+## Two applications
+
+|                       | Volt UI (docs)                                          | Volt UI Recipes                                                                                   |
+| --------------------- | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| Origin                | https://voltui.dev                                      | https://recipes.voltui.dev                                                                        |
+| Root                  | `src/` (`vite.config.ts`)                               | `apps/recipes/` (`apps/recipes/vite.config.ts`)                                                   |
+| Owns                  | component docs, API, theming, Theme Studio, AI/MCP docs | copyable **blocks**, **layouts**, **recipes** (live preview, source, install, related components) |
+| Dev / build / preview | `pnpm dev` / `build` / `preview`                        | `pnpm dev:recipes` / `build:recipes` / `preview:recipes`                                          |
+| Typecheck / e2e       | `pnpm typecheck` / `pnpm test:e2e`                      | `pnpm typecheck:recipes` / `pnpm test:e2e:recipes`                                                |
+| Output                | `dist/analog/public`                                    | `dist/apps/recipes/analog/public`                                                                 |
+| Cloudflare Pages      | `volt-ui`                                               | `volt-ui-recipes`                                                                                 |
+
+## Monorepo (pnpm workspace + Turborepo)
+
+```text
+apps/web          Volt UI docs (@voltui/web)        voltui.dev
+apps/recipes      Volt UI Recipes (@voltui/recipes) recipes.voltui.dev
+packages/volt     @voltui/components (published library; ng-packagr)
+packages/shared   source both apps import as @shared/* (private)
+cli/              @voltui/cli and @voltui/agent (own release flow, outside the workspace)
+```
+
+`pnpm-workspace.yaml` lists `apps/*` and `packages/*`; dependencies stay in the root `package.json` (one version of Angular for everything). `turbo.json` defines `dev`, `build`, `typecheck`, `preview` for the two apps; root scripts wrap it (`pnpm build`, `pnpm build:recipes`, `pnpm build:all` builds both in parallel). An app's package scripts `cd ../..` first because the repo tooling is root-relative. Turbo never caches builds (Glossa catalogs are fetched at build time).
+
+`packages/shared/` holds only what both need and is imported as `@shared/*`: i18n (one Glossa project, one generated contract), theme presets and `styles/site.css` (the token imports), the code panel, copy button, theme/language switchers, SEO service and URL helpers. Neither app imports the other's private directories; the one sanctioned bridge is `packages/shared/legacy-redirects.ts`, built from the Recipes catalog.
+
+Recipes also hosts its own guides at `/docs`, written in Markdown (en/es/uk) and rendered by Doqs (`@doqs/analog`) — see `docs/recipes-app.md`. Recipes shows what you can **build**; it never re-documents a component's API (that is voltui.dev, linked with absolute URLs). Blocks, layouts and recipes stay copyable source, never `@voltui/components` exports. To add one, see `docs/recipes-app.md`; to deploy, same file. Old `/docs/{blocks,layouts,recipes}/*` URLs 301 to Recipes (`packages/shared/legacy-redirects.ts`).
 
 ## Docs site rules
 
@@ -89,7 +117,7 @@ These apply to everything under `src/app/` (the official site), not to the libra
 
 - **Before writing site UI, search the catalog** (the `volt-ui` MCP, `list_components`, or
   `src/app/lib/component-metadata.ts`) for an existing responsibility. Hand-written equivalent UI
-  needs an explicit reason. This does not apply to `projects/volt/src/lib/**` — the library cannot
+  needs an explicit reason. This does not apply to `packages/volt/src/lib/**` — the library cannot
   implement Button using Button.
 - **Prefer Volt responsibility, not Volt tag count.** Native HTML stays correct where Volt has no
   equivalent, or the native element is the point: a route-backed tab strip is a set of real
@@ -113,7 +141,7 @@ These apply to everything under `src/app/` (the official site), not to the libra
 
 ## Theme system
 
-- Theme tokens are CSS custom properties in `projects/volt/src/themes/core.css`.
+- Theme tokens are CSS custom properties in `packages/volt/src/themes/core.css`.
 - Avoid recursive CSS variables; theme-source variables use the `--volt-*` prefix (e.g. `--volt-shadow-sm`).
 - Tailwind `@theme inline` maps to those source variables (e.g. `--shadow-sm: var(--volt-shadow-sm);`).
 - Components should use Tailwind utilities (`bg-primary`, `rounded-md`, `shadow-lg`) instead of `bg-[var(--primary)]` or `shadow-[var(--shadow-lg)]`.
@@ -174,10 +202,10 @@ config that connects to it.
 
 Two kinds of text are deliberately **not** translated:
 
-| Not translated                            | Why                                                                                                                                   |
-| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| `src/app/blocks/**`, `src/app/layouts/**` | Read with `?raw` and shown as source to copy. A `t()` call would break in a consumer's project, which has no `Translations`.          |
-| The live demo inside `<app-code-panel>`   | It is an exhibit of the code shown beside it. A demo reading "Manzana" next to a snippet saying `Apple` looks broken, not translated. |
+| Not translated                                     | Why                                                                                                                                   |
+| -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `apps/recipes/src/app/{blocks,layouts,recipes}/**` | Read with `?raw` and shown as source to copy. A `t()` call would break in a consumer's project, which has no `Translations`.          |
+| The live demo inside `<app-code-panel>`            | It is an exhibit of the code shown beside it. A demo reading "Manzana" next to a snippet saying `Apple` looks broken, not translated. |
 
 The guard recognises both structurally; the handful of specimens that sit outside a code
 panel are listed with their reasons at the top of `no-hardcoded-copy.spec.ts`.
@@ -203,8 +231,8 @@ generated map of which test proves which contract (`pnpm generate:behavior-matri
 
 ## Adding or editing a component
 
-1. Create/edit files under `projects/volt/src/lib/components/<name>/`.
-2. Update `projects/volt/src/public-api.ts` if it is a new public export.
+1. Create/edit files under `packages/volt/src/lib/components/<name>/`.
+2. Update `packages/volt/src/public-api.ts` if it is a new public export.
 3. Add/update the demo page under `src/app/pages/(components-docs)/docs/components/<name>.page.ts`.
 4. Add/update source-code snippet exports in `src/app/lib/snippets/index.ts` and `src/app/lib/snippets/usage.ts`.
 5. Add real unit tests using `@testing-library/angular` or `TestBed` (not just string checks).
@@ -237,7 +265,7 @@ pnpm test:storybook    # Playwright smoke tests against dist/storybook (build fi
 ```
 
 - Config lives in `.storybook/` (`main.ts`, `preview.ts`, `manager.ts`) with its own `.storybook/vite.config.ts`: it never loads the docs app's `vite.config.ts`, so a Storybook build does not touch Glossa or the network. Targets are `volt:storybook` / `volt:build-storybook` in `angular.json`; `tsconfig.storybook.json` type-checks stories (`pnpm typecheck:storybook`).
-- Stories import from `volt` (the public surface), never from `projects/volt/src/lib`. Styles come from `src/styles.css`, which imports the real theme sources, so there is no Storybook theme. The toolbar's colour/style/appearance switches call `applyVoltTheme`.
+- Stories import from `volt` (the public surface), never from `packages/volt/src/lib`. Styles come from `src/styles.css`, which imports the real theme sources, so there is no Storybook theme. The toolbar's colour/style/appearance switches call `applyVoltTheme`.
 - **Documentation pages are generated.** `stories/components/<name>.mdx` is written by `scripts/generate-storybook-docs.mjs` from the existing sources: `api-reference.generated.ts` (API tables), `snippets/usage.ts` (full example), `component-metadata.ts` (group), `COMPONENT_STATUS.md` (status, keyboard, focus, forms) and the prose in `stories/_docs/component-guides.mjs`. Never hand-edit the `.mdx`; `pnpm check:generated` fails on drift. Foundations pages in `stories/foundations/` are hand-written.
 - Story titles are literal `Components/<Group>/<Title>` (the group and title come from the guide entry); `pnpm check:storybook` enforces it and fails when a public component has no stories.
 - `args`/`argTypes`: use the signal inputs as they are. Take variant options from the generated API with `variantArgTypes()` (`stories/_helpers/api.ts`), not a second hand-typed list.
@@ -247,7 +275,7 @@ pnpm test:storybook    # Playwright smoke tests against dist/storybook (build fi
 ## Important notes
 
 - The manifest for the CLI is generated by `cli/generate-manifest.js` and written to `public/manifest.json`.
-- The CLI copies component files from the local `projects/volt/src/lib` source; inter-component dependencies are detected automatically from source imports.
+- The CLI copies component files from the local `packages/volt/src/lib` source; inter-component dependencies are detected automatically from source imports.
 - Do not commit the `dist/` folder.
 
 ## AI tools for consumers

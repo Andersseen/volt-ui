@@ -11,7 +11,6 @@ test.describe('Site navigation', () => {
     for (const destination of [
       { name: 'Docs', url: /\/docs\/introduction$/ },
       { name: 'Components', url: /\/docs\/components$/ },
-      { name: 'Gallery', url: /\/docs\/blocks$/ },
       { name: 'Create Theme', url: /\/create-theme$/ },
       { name: 'Home', url: /\/$/ },
     ]) {
@@ -211,7 +210,7 @@ test.describe('Site navigation', () => {
     await expect(page).toHaveURL(/\/docs\/components$/);
     await expect(dialog).toBeHidden();
 
-    await page.locator('app-mobile-menu button').click();
+    await page.locator('app-site-mobile-menu button').click();
     const reopenedDialog = page.getByRole('dialog', { name: 'Menu' });
     const mobileNavigation = reopenedDialog.getByRole('navigation');
     await expect(mobileNavigation.locator('a[aria-current="page"]')).toHaveCount(1);

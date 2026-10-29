@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
- * Renders the 1200×630 social card (`public/og.png`) from the existing brand mark
- * (`public/favicon.svg`). Not part of the build: run it by hand if the card ever changes, and
+ * Renders the 1200×630 social card (`apps/web/public/og.png`) from the existing brand mark
+ * (`apps/web/public/favicon.svg`). Not part of the build: run it by hand if the card ever changes, and
  * commit the PNG. It lives outside the visible site on purpose.
  *
  * Usage: node scripts/generate-og-image.mjs
@@ -12,7 +12,7 @@ import { fileURLToPath } from 'node:url';
 import { chromium } from '@playwright/test';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
-const mark = readFileSync(join(ROOT, 'public/favicon.svg'), 'utf8')
+const mark = readFileSync(join(ROOT, 'apps/web/public/favicon.svg'), 'utf8')
   .replace(/id="voltGrad"/g, 'id="cardGrad"')
   .replace(/url\(#voltGrad\)/g, 'url(#cardGrad)')
   .replace(/id="glow"/g, 'id="cardGlow"')
@@ -35,8 +35,8 @@ const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1200, height: 630 } });
 await page.setContent(html);
 await page.screenshot({
-  path: join(ROOT, 'public/og.png'),
+  path: join(ROOT, 'apps/web/public/og.png'),
   clip: { x: 0, y: 0, width: 1200, height: 630 },
 });
 await browser.close();
-console.log('Wrote public/og.png');
+console.log('Wrote apps/web/public/og.png');

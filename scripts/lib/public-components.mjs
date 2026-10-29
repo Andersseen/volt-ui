@@ -9,7 +9,7 @@ export const FOUNDATION_ONLY = new Set(['theme']);
 
 /** Every component or layout exported from `public-api.ts`, minus the foundation-only ones. */
 export function publicComponents() {
-  const src = readFileSync(join(ROOT, 'projects/volt/src/public-api.ts'), 'utf8');
+  const src = readFileSync(join(ROOT, 'packages/volt/src/public-api.ts'), 'utf8');
   return [...src.matchAll(/export \* from '\.\/lib\/(?:components|layouts)\/([\w-]+)'/g)]
     .map(m => m[1])
     .filter(name => !FOUNDATION_ONLY.has(name));

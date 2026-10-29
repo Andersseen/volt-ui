@@ -1,0 +1,1434 @@
+{
+  "nav": {
+    "home": "Home",
+    "docs": "Docs",
+    "components": "Components",
+    "gallery": "Gallery",
+    "createTheme": "Create Theme",
+    "new": "New",
+    "main": "Main",
+    "github": "GitHub repository",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "menu": "Menu",
+    "language": "Language",
+    "toggleDark": "Toggle dark mode",
+    "themeLabel": "Theme: {$color} palette, {$style} shape",
+    "palette": "Palette",
+    "shape": "Shape",
+    "logoAlt": "Volt UI Logo",
+    "storybook": "Storybook",
+    "externalLink": "(opens in a new tab)"
+  },
+  "footer": {
+    "tagline": "Angular components you own.",
+    "rights": "© {$year :number useGrouping=never}"
+  },
+  "gallery": {
+    "sections": "Gallery sections",
+    "blocks": {
+      "title": "Blocks",
+      "browse": "Browse Blocks",
+      "description": "Animated page sections. Copy the source, keep the motion.",
+      "lede": "Whole page sections built from Volt components, with the motion already wired. Every block is one file: copy it, rename it, and delete the parts you do not want.",
+      "oneFile": "One file each",
+      "oneFileBody": "Template, styles and behaviour in a single standalone component.",
+      "noRuntime": "No animation runtime",
+      "noRuntimeBody": "CSS and a pointer handler. Nothing to add to your bundle.",
+      "themeAware": "Theme-aware",
+      "themeAwareBody": "Built on tokens, so every preset and dark mode come along."
+    },
+    "layouts": {
+      "title": "Layouts",
+      "browse": "Browse Layouts",
+      "description": "Unbranded skeletons to fill with your screens."
+    },
+    "overview": "Overview",
+    "comingSoon": "Coming soon",
+    "comingSoonHint": "The categories above are the shape of the set; these fill the gaps.",
+    "soon": "Soon",
+    "missing": "Missing one you need?",
+    "openIssue": "Open an issue",
+    "missingTail": "and it goes to the front of the queue.",
+    "atoms": "{$count} atoms",
+    "whatMoves": "What moves",
+    "builtFrom": "Built from",
+    "blockSource": "Block source",
+    "arrangement": "The arrangement",
+    "assembledFrom": "Assembled from",
+    "layoutSource": "Layout source",
+    "blockSourceNote": "One standalone component. Paste it into your project, point the imports at your Volt path, and wire the buttons to your own routes.",
+    "blockThemeNote": "Every animation here is guarded by {$reducedMotion}, and the colours come from theme tokens — try a different preset with the switcher in the header and the block follows.",
+    "layoutSourceNote": "The arrangement, with the sample data kept in plain arrays at the bottom. Swap those for yours and the template stops being an example.",
+    "layoutUnbrandedNote": "Layouts stay unbranded on purpose: no gradients, no logos, no stock photography, and nothing fetched from a third party. If you want a section that is finished rather than a shape to fill,",
+    "blocksGalleryLink": "the blocks gallery",
+    "isTheOtherTab": "is the other tab."
+  },
+  "language": {
+    "switch": "Change language",
+    "current": "Language: {$name}"
+  },
+  "landing": {
+    "hero": {
+      "badge": "Volt UI {$version} for Angular 21 and 22",
+      "title": "Ship Angular interfaces from components you can own.",
+      "subtitle": "Copy polished, accessible Angular source into your app. Keep the speed of a component library, with the control of code that belongs to your product.",
+      "start": "Start building",
+      "studio": "Try the theme studio",
+      "copyCommand": "Copy the install command",
+      "copied": "Copied",
+      "panelTitle": "Project settings",
+      "panelSubtitle": "Built with Volt UI components",
+      "live": "live",
+      "workspace": "Workspace name",
+      "publicTheme": "Public theme",
+      "publicThemeHint": "Anyone can preview it",
+      "radius": "Border radius",
+      "migration": "Migration progress",
+      "save": "Save changes",
+      "reset": "Reset",
+      "autoSync": "Auto-sync"
+    },
+    "proof": {
+      "components": "documented components",
+      "tests": "automated tests",
+      "themes": "theme combinations",
+      "ngModules": "NgModules required"
+    },
+    "features": {
+      "eyebrow": "Built for ownership",
+      "title": "Production behavior first. Product taste next.",
+      "subtitle": "Volt UI starts with ng-primitives for focus, overlays, ARIA and forms, then wraps it in Angular signals, Tailwind tokens, and copyable source you can reshape.",
+      "ownTitle": "Own the source",
+      "ownBody": "The CLI copies readable standalone components directly into your application. Change every line when your product needs it.",
+      "behaviorTitle": "Behavior built in",
+      "behaviorBody": "ng-primitives handles focus, keyboard navigation, overlays, and ARIA contracts while Volt UI handles product-ready styling.",
+      "systemTitle": "Designed as a system",
+      "systemBody": "Semantic Tailwind tokens, colour presets, and style presets let one component set adapt to a complete visual language."
+    },
+    "workflow": {
+      "eyebrow": "One command. Your source.",
+      "title": "A workflow that ends in editable Angular, not vendor lock-in.",
+      "subtitle": "The CLI resolves component dependencies, writes readable files, and keeps selectors consistent with the source-first workflow.",
+      "install": "Read the installation guide",
+      "copied": "copied",
+      "export": "export",
+      "themePreview": "Theme preview",
+      "themeCaption": "Five color systems, five styles.",
+      "darkMode": "Dark mode ready",
+      "accessible": "Accessible interactions",
+      "workspaceLabel": "Workspace",
+      "ownedSource": "Owned source",
+      "saveUi": "Save UI"
+    },
+    "cta": {
+      "title": "Build the Angular interface you wanted.",
+      "browse": "Browse components",
+      "star": "Star on GitHub",
+      "body": "Explore {$components} components, accessible layouts, {$themes} theme combinations, and an AI-ready workflow."
+    },
+    "pillars": {
+      "aiTitle": "Ready for your AI agent",
+      "aiBody": "One command gives Claude Code, Cursor, Windsurf or Copilot the component catalog, the selectors and the rules, so generated code uses Volt the way you would."
+    },
+    "playground": {
+      "eyebrow": "Theme playground",
+      "title": "One set of components. Every look your brand needs.",
+      "subtitle": "Pick a palette and a shape. These are the real presets on real Volt components: the same tokens your app gets from `provideVoltTheme()`.",
+      "pause": "Pause the palette tour",
+      "play": "Resume the palette tour",
+      "cta": "Build your own theme"
+    },
+    "steps": {
+      "nav": "Workflow steps",
+      "install": {
+        "label": "Install",
+        "title": "Add components with one command.",
+        "body": "The CLI resolves the dependencies between components and writes readable files into `src/app/ui`. No runtime to install, nothing to configure first."
+      },
+      "compose": {
+        "label": "Compose",
+        "title": "Use them like Angular code you wrote.",
+        "body": "Standalone components, signal inputs and OnPush everywhere. Import them from `./ui` and they behave like the rest of your app."
+      },
+      "theme": {
+        "label": "Theme",
+        "title": "Set the brand once, at bootstrap.",
+        "body": "`provideVoltTheme()` sets the palette, the shape and dark mode on the server and in the browser, so the first paint is already on brand."
+      },
+      "own": {
+        "label": "Customize",
+        "title": "Change any line. There is nothing to eject.",
+        "body": "Variants live in a CVA file next to each component, and classes merge through `cn()`. Add a size, rename an input, delete what you don't need."
+      },
+      "agents": {
+        "label": "Automate",
+        "title": "Let your agent write it the Volt way.",
+        "body": "`npx @voltui/agent` installs the MCP server, a skill and editor rules, so Claude Code, Cursor or Copilot reach for the right selector the first time."
+      }
+    },
+    "showcase": {
+      "eyebrow": "The component library",
+      "title": "Every piece a product needs, already wired.",
+      "subtitle": "Forms, overlays, navigation and data display: each one keyboard-ready, themeable and yours to edit. These are rendered live.",
+      "previous": "Previous components",
+      "next": "Next components"
+    },
+    "recipes": {
+      "eyebrow": "Beyond components",
+      "title": "Whole screens, ready to copy.",
+      "lede": "Blocks, layouts and recipes assembled from Volt components live on their own site, **Volt UI Recipes**: a live preview, the complete source and the components each one is made of.",
+      "open": "Open Volt UI Recipes"
+    }
+  },
+  "guide": {
+    "title": "Getting Started",
+    "browse": "Browse Docs",
+    "description": "Everything you need to ship with Volt UI.",
+    "aiTools": "AI Tools",
+    "introduction": "Introduction",
+    "themes": "Themes",
+    "customization": "Customization",
+    "versioning": "Versioning & Stability",
+    "roadmap": "Roadmap",
+    "migration": "Migration Notes",
+    "aiIntegration": "AI Integration",
+    "localSkill": "Agent Skills",
+    "mcpServer": "MCP Server",
+    "promptReference": "Prompt Reference",
+    "intro": {
+      "title": "Introduction",
+      "lede": "Volt UI is a collection of reusable, accessible Angular components built on top of ng-primitives. Inspired by shadcn/ui, you can copy and customize components to match your needs.",
+      "aiTitle": "AI Tools for Consumers",
+      "aiLede": "Volt UI ships with three complementary ways to give AI assistants full context about its components, selectors, and conventions.",
+      "skillLink": "Agent Skills →",
+      "skillBody": "Focused playbooks for Claude Code, Codex and OpenCode: when to use Volt, which component fits, how to compose it.",
+      "mcpLink": "MCP Server →",
+      "mcpBody": "Hosted MCP tools for listing components, getting examples, and generating CLI commands.",
+      "promptLink": "Prompt Reference →",
+      "promptBody": "A single-file prompt to paste into any LLM chat for correct selectors and examples.",
+      "installTitle": "Installation Options",
+      "installLede": "There are two ways to use Volt UI components in your project:",
+      "option1": "Option 1: npm package",
+      "option1Body": "Install the library directly from npm and import components in your project.",
+      "thenImport": "Then import:",
+      "option2": "Option 2: CLI (shadcn-style)",
+      "option2Body": "Copy component source files into your project with ui-* prefix. Full customization.",
+      "option3": "Option 3: Copy & Paste",
+      "option3Body": "Browse component demos and copy the source code directly. Full control over the implementation.",
+      "browse": "Browse Components →",
+      "namingTitle": "Naming Conventions",
+      "namingLede": "Volt UI uses different prefixes for library source and CLI-generated output.",
+      "context": "Context",
+      "selector": "Selector",
+      "className": "Class name",
+      "importPath": "Import path",
+      "librarySource": "Library source",
+      "cliOutput": "CLI output",
+      "prereqTitle": "Prerequisites",
+      "prereqLede": "Before using Volt UI components, ensure you have the following dependencies installed:",
+      "npmPackage": "npm package",
+      "npmBody": "Runtime dependencies are included automatically. Import the theme CSS once in your global stylesheet.",
+      "cliDeps": "CLI / Copy & Paste — runtime deps",
+      "themeTitle": "Theme System",
+      "themeLede": "Volt UI provides semantic Tailwind tokens via CSS custom properties. Configure the theme in your app config.",
+      "structureTitle": "Project Structure",
+      "structureLede": "When using the CLI, components are added to your project's ui folder:",
+      "afterAdding": "After adding a component, import and use it in your Angular components:",
+      "overlayTitle": "Overlay Components",
+      "catalogTitle": "Component Catalog",
+      "stableLabel": "Stable",
+      "stableBody": "Recommended for production use. Meaningful tests, documented API, and CVA coverage where applicable.",
+      "nextTitle": "Next Steps",
+      "nextThemes": "Themes →",
+      "nextThemesBody": "Learn how to customize colors, typography, and dark mode.",
+      "nextComponents": "Components →",
+      "nextComponentsBody": "Explore all available components with examples and source code.",
+      "nextAi": "AI Integration →",
+      "nextAiBody": "Configure the MCP server and IDE snippets for Claude, Cursor, Copilot, and more.",
+      "cliFlags": "Use `--dry-run` to preview files and `--force` to overwrite edited components.",
+      "tailwindTitle": "Tailwind CSS v4",
+      "tailwindBody": "Volt components ship critical layout CSS, so npm consumers do not need an `@source` directive for `node_modules`.",
+      "usageTitle": "Usage",
+      "overlayLede": "Dialog, drawer, popover, tooltip, and dropdown-menu use an attribute-directive trigger that references an `<ng-template>` containing the overlay content.",
+      "catalogLede": "Every component in Volt UI 1.0.0 is **stable** — a settled API, tests that assert the component's own behavior, and documented usage. The **beta** label stays in the system for components added after 1.0; nothing carries it today. See",
+      "versioningLink": "Versioning & stability",
+      "catalogLedeTail": "for the full policy.",
+      "catalogSummary": "Components marked **stable** have a settled API, tests that assert their own behavior, and documented usage. **Beta** marks recent additions whose API may still change in a minor release. The full policy is in [Versioning & stability](/docs/versioning)."
+    },
+    "themesPage": {
+      "title": "Themes",
+      "lede": "Customize the look and feel of your application with built-in themes, colors, and dark mode support.",
+      "availableTitle": "Available Themes",
+      "availableLede": "Volt UI comes with several pre-built color themes. Each theme provides a unique palette for primary, secondary, accent, and semantic colors.",
+      "presets": {
+        "volt": "Default blue theme",
+        "ember": "Warm orange theme",
+        "sage": "Natural green theme",
+        "dusk": "Purple twilight theme",
+        "glacier": "Cool cyan theme"
+      },
+      "setupTitle": "Theme Setup",
+      "setupLede": "Add the theme provider to your application configuration:",
+      "colorOptionsTitle": "Color Options",
+      "colorsTitle": "Theme Colors",
+      "colorsLede": "Choose your primary color palette",
+      "colors": {
+        "volt": "`'volt'` — Blue (default)",
+        "ember": "`'ember'` — Orange/Red",
+        "sage": "`'sage'` — Green",
+        "dusk": "`'dusk'` — Purple",
+        "glacier": "`'glacier'` — Cyan"
+      },
+      "stylesTitle": "Style Variants",
+      "stylesLede": "Choose your component style",
+      "styles": {
+        "sharp": "`'sharp'` — Small radius, flat shadows (default)",
+        "soft": "`'soft'` — Large radius, diffuse shadows",
+        "brutal": "`'brutal'` — No radius, hard offset shadows, heavy borders",
+        "ghost": "`'ghost'` — No borders, no shadows",
+        "retro": "`'retro'` — Y2K look"
+      },
+      "runtimeTitle": "Runtime API",
+      "runtimeLede": "Two functions from `@voltui/components` control the theme at runtime. Both just set `data-color`, `data-style` and a `.dark` class on `<html>` — there is no hidden state, so you can inspect or override the result with plain DOM APIs at any time.",
+      "provideLede": "Environment provider. Call it once in `appConfig.providers` to set the theme at bootstrap, on both server and client.",
+      "provideBody": "**SSR-safe.** It reads Angular's `DOCUMENT` injection token rather than the global `document`, so the theme attributes are present in the server-rendered HTML itself — no flash of the default theme while the client bundle hydrates.",
+      "applyLede": "Plain function. Call it from a click handler, an effect, or anywhere else you need to change the theme after bootstrap (e.g. a theme switcher).",
+      "applyBody": "Browser-only by default (it no-ops if `document` is undefined). Pass an explicit `doc` argument to target a different document, e.g. in a test.",
+      "darkTitle": "Dark Mode Strategy",
+      "darkLede": "Dark mode is class-based: adding `.dark` to `<html>` switches every component to its dark token values (see `core.css`'s `@custom-variant dark`). Volt does **not** read `prefers-color-scheme` automatically — `dark` defaults to light unless you pass `dark: true` or call `applyVoltTheme` yourself, so the choice is always explicit and won't silently change if the visitor's OS theme changes.",
+      "varsTitle": "CSS Variables",
+      "varsLede": "Every preset sets the same set of semantic tokens as `oklch()` values. Components consume them through Tailwind utilities (`bg-primary`, `text-muted-foreground`) mapped via `@theme inline` in `core.css` — never a raw `var(--primary)`. This is the full list a preset can define; see the two guides below for copy-paste templates.",
+      "colorPresetTitle": "Create a Custom Color Preset",
+      "colorPresetLede": "A color preset is just a pair of selectors keyed by `data-color`. Copy this template, replace `'mytheme'` and the values, then import the file after `@voltui/components/themes.css` in your global stylesheet.",
+      "contrastNote": "Keep every foreground/background pair at 4.5:1 contrast or better (3:1 for `--ring` and `--input` against `--background`) — see `scripts/contrast-audit.mjs` in the repo for the exact check this project runs against its own presets. The",
+      "contrastNoteTail": "tool generates a starting point from a single accent color if you'd rather not hand-pick eleven tokens.",
+      "stylePresetTitle": "Create a Custom Style Preset",
+      "stylePresetLede": "A style preset never touches color — only shape. It's keyed by `data-style` and applies to every color at once.",
+      "styleRegisterNote": "Registration is the same as a color preset: put it in your global stylesheet after `@voltui/components/themes.css`, then set `data-style=\"mystyle\"` via `provideVoltTheme` or `applyVoltTheme`.",
+      "persistNote": "The docs app itself persists the visitor's choice to `localStorage` and applies it from a small inline script in `index.html`'s `<head>`, before any stylesheet loads — see `src/app/components/theme-switcher.ts` for a reference implementation if you want the same no-flash behavior client-side."
+    },
+    "customizationPage": {
+      "title": "Customization",
+      "lede": "Every component you add via `npx @voltui/cli add` is copied into your project as plain source. There is no package to eject from and no override API to learn — you edit the file the same way you'd edit any other component you wrote yourself.",
+      "editingTitle": "Editing a copied component",
+      "editingLede": "After `volt add button`, you own `src/app/ui/button/button.ts` (or wherever your CLI config points it). Want a fourth button size? Add it directly — there is nothing else to regenerate or sync.",
+      "inferredType": "The type `ButtonVariants['size']` is inferred from this object via `VariantProps<typeof buttonVariants>`, so `<volt-button size=\"xl\">` is fully typed the moment you save the file — no separate type declaration to update.",
+      "cvaTitle": "How CVA variants work here",
+      "newGroup": "Adding a brand-new variant group (not just a new option in an existing one — e.g. a `tone` variant alongside `variant` and `size`) is the same pattern: add the key to `variants` in `variants.ts`, then add `readonly tone = input<...>('default')` and pass it through in the `computed()` above.",
+      "cnTitle": "Overriding classes with cn()",
+      "cnLede": "Most components expose a `class` input that flows through `cn()` — `clsx` for conditional joining, `tailwind-merge` to resolve conflicts so the last utility wins instead of both ending up in the class list:",
+      "cnMerge": "Because it's `tailwind-merge` underneath, `class=\"bg-red-500\"` reliably overrides the variant's own background utility instead of producing two conflicting `bg-*` classes in the final output.",
+      "colorsTitle": "Colors and shape vs. structure",
+      "cvaLede": "Components with visual variants (button, badge, toast, ...) split styling into a sibling `variants.ts` using [class-variance-authority](https://cva.style/docs). The component itself only computes which variant is active — it never hardcodes conditional classes in the template:",
+      "colorsLede": "Before editing a component's Tailwind classes to change a color or a border-radius, check whether a [theme preset](/docs/themes) already covers it — `bg-primary`, `rounded-md`, and `shadow-lg` all resolve through `--volt-*` tokens that already vary per color/style preset. Hardcoding `bg-indigo-600` in a copied component opts that one component out of theme switching; reach for a custom color or style preset instead when the change should apply everywhere. Component edits are for **structural** changes — new variants, new slots, different markup — that no token could express.",
+      "cvaLedeHead": "Components with visual variants (button, badge, toast, ...) split styling into a sibling `variants.ts` using",
+      "cvaLink": "class-variance-authority",
+      "cvaLedeTail": "{{. The component itself only computes which variant is active — it never hardcodes conditional classes in the template:}}",
+      "colorsLedeHead": "Before editing a component's Tailwind classes to change a color or a border-radius, check whether a",
+      "themePresetLink": "theme preset",
+      "colorsLedeTail": "already covers it — `bg-primary`, `rounded-md`, and `shadow-lg` all resolve through `--volt-*` tokens that already vary per color/style preset. Hardcoding `bg-indigo-600` in a copied component opts that one component out of theme switching; reach for a custom color or style preset instead when the change should apply everywhere. Component edits are for **structural** changes — new variants, new slots, different markup — that no token could express."
+    },
+    "versioningPage": {
+      "title": "Versioning & Stability",
+      "lede": "Volt UI reached `1.0.0` — the public API is locked and follows ordinary [semantic versioning](https://semver.org/) from here on.",
+      "semverTitle": "The semver promise",
+      "majorLabel": "Major — `2.0.0`",
+      "majorBody": "The only place breaking changes happen: renamed or removed inputs/outputs/selectors, changed default behavior, dropped Angular major support.",
+      "minorLabel": "Minor — `1.1.0`",
+      "minorBody": "New components, new optional inputs/outputs, new CVA variants. Always backward-compatible with the previous minor.",
+      "patchLabel": "Patch — `1.0.1`",
+      "patchBody": "Bug fixes, accessibility corrections, internal refactors. Never changes the public contract.",
+      "frozenSurface": "The frozen surface itself is inventoried in [specs/api-freeze-0.9.md](https://github.com/Andersseen/volt-ui/blob/main/specs/api-freeze-0.9.md) — every input, output, and selector present at the 1.0.0 freeze. Upgrading from a 0.x release? See [0.x Migration Notes](/docs/migration-notes).",
+      "labelsTitle": "What status labels mean now",
+      "labelsLede": "Every component in 1.0.0 is `stable` — see [the component catalog](/docs/components) for the per-component label. `beta` and `experimental` stay defined below because components added after 1.0 may start there; nothing carries either label today. The label is a confidence signal, not an availability gate: every component ships through the npm package and the CLI regardless of label.",
+      "stableTitle": "Stable",
+      "stableBody": "Recommended for production use. Documented API, meaningful tests, known accessibility caveats (if any) written down.",
+      "betaTitle": "Beta",
+      "betaBody": "Usable today, but may still gain forms, keyboard, or accessibility hardening in a minor or patch release — that hardening never breaks the existing public API, so moving from beta to stable is a documentation change, not a version bump on its own. Unused in 1.0.",
+      "expTitle": "Experimental",
+      "expBody": "Reserved for future previews whose API may still change. Not currently used — no shipped component carries this label as of 1.0.0.",
+      "angularTitle": "Angular version support",
+      "angularLede": "The `1.x` line supports Angular `^21.2 || ^22` and Node 20 or newer. A range is only widened after the packed package has been installed into an isolated project of that major, built and exercised in a browser — a successful build in this repository is never taken as proof.",
+      "angularNote": "When a new Angular major ships, moving Volt UI's support to it is a minor release with migration notes or release notes documenting anything that changed. A supported major is never dropped silently.",
+      "seeAlso": "Where the project goes from here: [Roadmap](/docs/roadmap). Full per-component status table: [component catalog](/docs/components). Upgrading an existing copy? [0.x Migration Notes](/docs/migration-notes). Full release history: [CHANGELOG.md](https://github.com/Andersseen/volt-ui/blob/main/CHANGELOG.md)."
+    },
+    "migrationPage": {
+      "title": "0.x Migration Notes",
+      "lede": "Volt UI's public API is frozen as of 1.0.0 — see [Versioning & stability](/docs/versioning) for the current promise. Because components are copied into your project rather than installed as a dependency, \"upgrading\" means re-running `volt add <component>` (or `--force` to overwrite) and diffing — nothing updates silently underneath you. This page covers the changes across the pre-1.0 `0.x` releases that actually required touching template code when upgrading; see [MIGRATION.md](https://github.com/Andersseen/volt-ui/blob/main/MIGRATION.md) for the 0.x → 1.0 upgrade guide specifically. Sourced from [CHANGELOG.md](https://github.com/Andersseen/volt-ui/blob/main/CHANGELOG.md). Most 0.x releases were additive; those aren't listed here.",
+      "actionTitle": "Changes that need action",
+      "buttonTypeTitle": "Button defaults to `type=\"button\"`",
+      "buttonTypeBody": "Before 0.4.0, a `<volt-button>` with no explicit `type` fell through to the browser default inside a `<form>`, which is `\"submit\"`. If you had a button that relied on that implicit submit behavior, it now does nothing until you set `type=\"submit\"` explicitly.",
+      "booleanTitle": "Boolean inputs normalized to `booleanAttribute`",
+      "booleanBody": "`disabled`, `required`, `multiple`, and similar boolean inputs across the library switched from plain JS-truthiness checks to Angular's `booleanAttribute` transform. This mainly matters if you were passing a string in a template attribute position — `disabled=\"false\"` as a bare attribute is now correctly treated as `false`, where a naive truthiness check would previously have treated the non-empty string `\"false\"` as truthy.",
+      "additiveTitle": "Additive changes worth adopting",
+      "additiveLede": "These didn't require any change to keep working, but the newer pattern is what current docs and snippets show.",
+      "formsTitle": "Reactive Forms support added to combobox, listbox, input-OTP",
+      "formsBody": "These now implement `ControlValueAccessor` in addition to their existing `[(value)]`-style model binding — the old binding still works unchanged. Prefer `formControlName` / `[formControl]` going forward for validation state (`aria-invalid`, disabled propagation, touched) that model binding alone doesn't give you.",
+      "internalTitle": "Internal fixes (no action needed)",
+      "selectFix": "**0.6.0** `VoltSelect` declared `valueChange` twice; deduplicated so `value = model(...)` owns the single generated output. A normal `(valueChange)` subscriber was never affected.",
+      "menuFix": "**0.6.0** Keyboard-opened dropdown menus now correctly move focus to the first visible item.",
+      "footer": "Nothing on this page applies to a component you haven't copied yet — a fresh `volt add` always gives you the current behavior. This page is for diffing an existing copy. See the [Customization guide](/docs/customization) for how to carry your own edits forward across a re-add."
+    },
+    "roadmapPage": {
+      "items": {
+        "languages": {
+          "title": "Documentation in more languages",
+          "summary": "The docs are English-only today. Ukrainian (UA) and Spanish (ES) are next, so the library is approachable without reading English first.",
+          "details": {
+            "d1": "Applies to this documentation site — guides, component pages, and examples.",
+            "d2": "Component names, selectors, inputs, and outputs stay in English. Translating an API would break every copied component and every code sample on the internet.",
+            "d3": "Language is a reader preference, not a separate build: the same components and the same package back every locale."
+          }
+        },
+        "headless": {
+          "title": "A first-party headless layer — @volt-ui/core",
+          "summary": "Replace the ng-primitives dependency with Volt UI’s own headless primitives, so behavior and styling are two layers of one project instead of one project on top of someone else’s.",
+          "details": {
+            "d1": "Headless and styled ship separately. Want only the behavior — focus management, keyboard handling, ARIA wiring — with your own markup and CSS? Take @volt-ui/core alone.",
+            "d2": "Want what Volt UI looks like today? Keep using the styled components; they are built on the same headless layer.",
+            "d3": "This happens before the component catalog grows — see the reasoning below.",
+            "d4": "The @volt-ui/core name is already reserved for exactly this in the project spec; it is not a new idea, it is the next one."
+          }
+        },
+        "distributions": {
+          "title": "Two distributions: with Tailwind and without",
+          "summary": "Volt UI is styled with Tailwind CSS v4 today, which rules it out for projects that do not or cannot use Tailwind. A Tailwind-free distribution removes that constraint.",
+          "details": {
+            "d1": "The Tailwind build stays the default and keeps working exactly as it does now.",
+            "d2": "The Tailwind-free build ships the same components and the same design tokens as plain CSS.",
+            "d3": "Depends on the headless layer landing first: once behavior is separate from styling, a second styling target stops being a fork and becomes a build output."
+          }
+        },
+        "layouts": {
+          "title": "More layouts built from Volt UI components",
+          "summary": "Beyond the existing sidebar and top-nav layouts — fuller application shells assembled from components that already exist, so a real screen is a starting point rather than an assembly job.",
+          "details": {
+            "d1": "Least critical item on this page, and honestly labelled as such — it is a convenience, not a gap.",
+            "d2": "Composed from shipped Volt UI components rather than new one-off primitives.",
+            "d3": "Sequenced last on purpose: layouts built before the headless port would need porting too."
+          }
+        }
+      },
+      "scopes": {
+        "docs": "Docs site",
+        "library": "Library"
+      },
+      "statuses": {
+        "next": "Next",
+        "planned": "Planned",
+        "exploring": "Exploring"
+      },
+      "statusLabel": "Status:",
+      "scopeLabel": "Applies to:",
+      "title": "Roadmap",
+      "lede": "Volt UI reached `1.0.0`, and 1.0 is a starting line rather than a finish. This is the direction the project is heading and the order it will get there in.",
+      "howToTitle": "How to read this page",
+      "howToBody": "There are no dates here on purpose — a roadmap with dates it can't keep is worse than no roadmap. What is committed is the **order**: each item below depends on the one above it, and shipping them out of sequence would mean redoing work. Anything here that turns out to be wrong gets removed from this page rather than quietly dropped.",
+      "semverNote": "None of this breaks your existing code. The 1.0 public API is frozen and everything below follows ordinary semantic versioning — see [Versioning & Stability](/docs/versioning).",
+      "whyTitle": "Why the headless layer comes first",
+      "whyBody": "The most tempting thing to do after a 1.0 is add components. That is deliberately not what happens next. Every Volt UI component today delegates its accessibility and interaction behavior to [ng-primitives](https://ng-primitives.dev), so every component added before that layer is replaced is one more component to port afterwards. Growing the catalog first would make the migration bigger, slower, and more likely to break your code when it lands.",
+      "whyOrder": "Doing it in this order means the port happens once, across the components that exist today, and the catalog grows afterwards on a foundation that is entirely first-party.",
+      "notChangingTitle": "What is not changing",
+      "copyInTitle": "The copy-in model",
+      "copyInBody": "Components stay copyable into your project via the CLI. You own the code you copy; nothing on this page changes that.",
+      "apiTitle": "The 1.0 API",
+      "apiBody": "Selectors, inputs, and outputs frozen at 1.0 keep working. A breaking change requires a major version and migration notes.",
+      "themingTitle": "Theming",
+      "themingBody": "The 5 color × 5 style presets and the token system stay as they are. A Tailwind-free build adds an option; it removes nothing.",
+      "feedback": "Have an opinion on the order, or need something that isn't here? Open an issue or a discussion on [GitHub](https://github.com/Andersseen/volt-ui). Shipped work is recorded in [CHANGELOG.md](https://github.com/Andersseen/volt-ui/blob/main/CHANGELOG.md), and the longer-term technical framing lives in [specs/SPEC.md](https://github.com/Andersseen/volt-ui/blob/main/specs/SPEC.md)."
+    },
+    "mcpPage": {
+      "title": "AI Integration",
+      "lede": "Volt UI gives AI assistants three ways to use the component library correctly: a hosted MCP server for the facts, focused skills for the decisions, and a prompt reference.",
+      "chooseTitle": "Choose your integration",
+      "skillTitle": "Agent Skills",
+      "skillBody": "Best for Claude Code, Codex and OpenCode, which discover skills in your workspace. They teach when to use Volt, which component fits and how to compose it; exact APIs come from the MCP server.",
+      "skillLink": "Learn more →",
+      "mcpTitle": "MCP Server",
+      "mcpLink": "Learn more →",
+      "promptTitle": "Prompt Reference",
+      "promptBody": "Best for web-based LLM chats or agents without MCP/skill support. Paste the contents of `VOLT_UI_PROMPT.md` into any chat for a complete usage guide.",
+      "promptLink": "Learn more →",
+      "quickStartTitle": "Quick start (MCP)",
+      "quickStartLede": "If you want the fastest path with Claude, Cursor, or Windsurf:",
+      "quickStartNote": "The installer writes the right config for your agent: the MCP entry and, where the agent supports them, the skills. Cursor, Windsurf, Copilot and Gemini CLI get a short rules block instead.",
+      "whenTitle": "When to use what",
+      "colSituation": "Situation",
+      "colTool": "Recommended tool",
+      "row1": "You use Claude Code, Codex or OpenCode",
+      "row1Tool": "[Agent Skills](/docs/ai-skill) + [MCP Server](/docs/ai-mcp)",
+      "row2": "You use Claude Desktop, Cursor, Windsurf or Gemini CLI",
+      "row2Tool": "[MCP Server](/docs/ai-mcp)",
+      "row3": "You use GitHub Copilot in VS Code",
+      "row3Tool": "[MCP Server](/docs/ai-mcp) (instructions + snippets)",
+      "row4": "You use a web chat (ChatGPT, Gemini, etc.)",
+      "row4Tool": "[Prompt Reference](/docs/ai-prompt)",
+      "mcpBody": "Best for Claude, Cursor, Windsurf, and any MCP-native agent. The hosted server at `{$url}` exposes tools to find components by intent, query exact APIs, examples, themes, and CLI commands on demand."
+    },
+    "aiSkillPage": {
+      "title": "Agent Skills",
+      "lede": "Focused playbooks that Claude Code, Codex and OpenCode discover in any workspace that uses Volt UI. The MCP server says what Volt contains; the skills teach when and how to use it.",
+      "whatTitle": "What it is",
+      "whatBody": "`npx @voltui/agent` installs the skills into the folder your agent scans: `.claude/skills/` for Claude Code, `.agents/skills/` for Codex and OpenCode. Cursor, Windsurf, Copilot and Gemini CLI get a short rules block with the same digests instead. No skill copies a component API: exact selectors and inputs come from the MCP server.",
+      "installTitle": "Install the skills",
+      "installBody": "The fastest way is the Volt UI agent installer, which also connects the MCP server. Run it from your project directory:",
+      "copiedCmd": "Copied",
+      "copyCmd": "Copy install command",
+      "downloadSkill": "Download the router SKILL.md",
+      "copiedSkill": "Copied",
+      "copySkill": "Copy the router skill",
+      "coversTitle": "What the skills cover",
+      "coversStack": "**Stack context** — Angular 21 and 22, zoneless signals, OnPush, standalone, Tailwind v4, ng-primitives, CVA",
+      "coversNaming": "**Naming conventions** — `ui-*` vs `volt-*`, element vs attribute selectors",
+      "coversCatalog": "**Component catalog** — stable and beta components with selectors and key inputs",
+      "coversOverlays": "**Overlays** — trigger-driven, controlled and service dialogs, `dismissible` while a request is pending, focus return",
+      "coversForms": "**Forms** — Form Field, Reactive Forms, `aria-disabled` vs `disabled`, server-backed Combobox",
+      "coversTheme": "**Theme system** — `provideVoltTheme`, colors, styles, and dark mode",
+      "exampleTitle": "Example rule from the skills",
+      "exampleBody": "The adoption skill tells the agent to reuse an existing atom instead of rebuilding it with raw Tailwind, and never to import `ng-primitives` in an app that consumes Volt.",
+      "coversAdoption": "**Adoption** — reuse an existing atom before hand-building UI; native HTML only where it is the right element",
+      "coversSelection": "**Component selection** — Button vs link, Select vs Combobox, Dialog vs Drawer, Alert vs Toast",
+      "coversDistribution": "**Distribution** — package (`volt-*`, `VoltXxx`) vs copy-and-own (`ui-*`, `UiXxx`) and the CLI",
+      "coversStyling": "**Styling** — semantic tokens, presets, the `class` merge contract, dark mode",
+      "listTitle": "The skills",
+      "count": ".input {$count :number}\n.match $count\none {{{$count} skill, one responsibility each}}\n* {{{$count} skills, one responsibility each}}"
+    },
+    "aiPromptPage": {
+      "title": "Prompt Reference",
+      "lede": "A single-file prompt you can paste into any LLM chat to get correct selectors, examples, and rules for Volt UI components.",
+      "whatTitle": "What it is",
+      "whatBody": "`VOLT_UI_PROMPT.md` is a self-contained prompt reference. It tells the LLM everything it needs to know about Volt UI: installation, naming, the full component catalog, overlay rules, Reactive Forms examples, and troubleshooting.",
+      "copyTitle": "Copy the prompt",
+      "copyLede": "Paste the contents below at the top of a new chat with any LLM (ChatGPT, Claude, Gemini, Cursor Chat, etc.), then ask your question.",
+      "copied": "Copied",
+      "copyButton": "Copy prompt",
+      "howTitle": "How to use it",
+      "howStep1": "Click **Copy prompt** above.",
+      "howStep2": "Paste it at the top of a new chat with your LLM.",
+      "howStep3": "Ask your question, e.g. \"Create a login form with Volt UI components.\"",
+      "insideTitle": "What's inside",
+      "insideInstall": "**Installation** — npm package and CLI workflows",
+      "insideNaming": "**Naming conventions** — `ui-*` / `UiXxx` vs `volt-*` / `VoltXxx`",
+      "insideCatalog": "**Component catalog** — every component with its status and selectors",
+      "insideOverlays": "**Overlay rules** — dialog, drawer, popover, tooltip, dropdown-menu templates",
+      "insideForms": "**Reactive Forms** — CVA components and `FormControl` wiring",
+      "insideTheme": "**Theme system** — colors, styles, `provideVoltTheme`",
+      "insideRules": "**AI assistant rules** — what to do and what not to do when generating Volt UI code",
+      "insideTroubleshooting": "**Troubleshooting** — common mistakes and fixes",
+      "whenTitle": "When to use it",
+      "whenBody": "Use the prompt reference when your editor or agent supports neither MCP nor skills yet. It's also handy for one-off questions in web-based LLM chats.",
+      "whenAlt": "For integrated agents, prefer the [MCP server](/docs/ai-mcp) or the [agent skills](/docs/ai-skill) so the context stays in sync automatically."
+    },
+    "aiMcpPage": {
+      "title": "MCP Server",
+      "lede": "A hosted Model Context Protocol server that exposes Volt UI components, usage examples, theme info, and CLI commands as tools any compatible agent can call — including finding the right component for a stated need.",
+      "whatTitle": "What is MCP?",
+      "setupTitle": "Quick Setup",
+      "setupLede": "Run the interactive installer from your project directory:",
+      "setupNote": "It asks which agent(s) to set up, then writes the right config files automatically. You can also pass the agent directly:",
+      "agentsTitle": "Supported Agents",
+      "claudeName": "Claude",
+      "claudeBadge": "MCP native",
+      "claudeBody": "Claude Code gets the MCP server and the skills. Claude Desktop adds the server under Settings → Connectors.",
+      "claudeWrites": "Writes `.mcp.json` and the Volt skills under `.claude/skills/`.",
+      "cursorName": "Cursor",
+      "cursorBadge": "MCP native",
+      "cursorBody": "Full MCP support plus a rules block with the digest of each Volt skill.",
+      "cursorWrites": "Writes `.cursor/mcp.json` and a `.cursorrules` block.",
+      "windsurfName": "Windsurf",
+      "windsurfBadge": "MCP native",
+      "windsurfBody": "Codeium's Windsurf editor with native MCP support and a rules block.",
+      "windsurfWrites": "Writes `.codeium/windsurf/mcp_config.json` and a `.windsurfrules` block.",
+      "copilotName": "GitHub Copilot",
+      "copilotBadge": "MCP + instructions",
+      "copilotBody": "Copilot in VS Code connects to the MCP server and reads an instructions file with the digest of each Volt skill.",
+      "copilotWrites": "Writes `.vscode/mcp.json`, `.github/copilot-instructions.md` and `.vscode/volt-snippets.code-snippets`.",
+      "manualTitle": "Manual Configuration",
+      "manualLede": "For MCP-native agents, add this entry to your config file:",
+      "configLocations": "Config file locations:",
+      "configClaudeDesktop": "**Claude Desktop** — `~/Library/Application Support/Claude/claude_desktop_config.json`",
+      "configClaudeCode": "**Claude Code** — `.claude/mcp.json` in your project",
+      "configCursor": "**Cursor** — `.cursor/mcp.json` in your project",
+      "configWindsurf": "**Windsurf** — `.codeium/windsurf/mcp_config.json` in your project",
+      "capabilitiesTitle": "Server capabilities",
+      "capTools": "Tools",
+      "capResources": "Resources",
+      "capPrompts": "Prompts",
+      "learnsTitle": "What the agent learns",
+      "learnsComponents": "**All components** — 41 components across stable and beta status labels",
+      "learnsSelectors": "**Correct selectors** — element components vs attribute directives for overlays",
+      "learnsVariants": "**Variants & inputs** — solid, outline, ghost, destructive + sizes",
+      "learnsTheme": "**Theme system** — 5 colors × 5 styles, `provideVoltTheme`",
+      "learnsCli": "**CLI commands** — `npx @voltui/cli add`, `init`, `list`",
+      "learnsPrompts": "**Reusable prompts** — component generation and troubleshooting prompts",
+      "examplesTitle": "Example prompts",
+      "examplesLede": "After setup, try asking your AI assistant:",
+      "apiTitle": "API reference",
+      "apiBody": "The server implements the MCP Streamable HTTP transport. It is stateless and returns JSON responses for POST requests.",
+      "endpointLabel": "MCP Server endpoint",
+      "setupConfigsLabel": "Setup configs",
+      "whatBody": "The Model Context Protocol is an open standard that lets LLMs talk to external tools, resources, and prompts. The Volt UI MCP server runs at `{$url}` and exposes a spec-compliant Streamable HTTP endpoint. Agents can list components, read detailed metadata, fetch usage examples, and even retrieve reusable prompts.",
+      "discoveryNote": "`GET {$url}` returns human-readable discovery JSON (tools, resources, prompts, setup links).",
+      "endpointBody": "`GET {$url}` — server info & capability list",
+      "setupConfigsBody": "`GET {$url}?agent=claude` — exact files to write per agent",
+      "tools": {
+        "listComponents": "List all available Volt UI components.",
+        "getComponent": "Get detailed info about a specific component.",
+        "getUsageExample": "Get import paths and usage snippets.",
+        "getThemeInfo": "Get colors, styles, and theme provider API.",
+        "getProjectInfo": "Get framework, naming, and architecture rules.",
+        "generateCliCommand": "Generate npx @voltui/cli commands."
+      },
+      "resources": {
+        "componentName": "Full metadata for a single component.",
+        "themeInfo": "Available colors, styles, and theme helpers.",
+        "projectInfo": "Framework, naming, and architecture overview."
+      },
+      "prompts": {
+        "generateVoltUiComponent": "Pre-filled prompt for generating a component usage example.",
+        "voltUiTroubleshooting": "Pre-filled prompt for diagnosing common Volt UI mistakes."
+      },
+      "examples": {
+        "e1": "Create a login form with Volt UI card, form-field, input, and button",
+        "e2": "Add a settings page with Volt UI tabs for Account and Security sections",
+        "e3": "Build a navigation header using Volt UI navigation-menu with dropdown items",
+        "e4": "Create a data table with Volt UI badge for status and avatar for user column",
+        "e5": "Apply the ember color with brutal style to this app using provideVoltTheme"
+      },
+      "codexName": "OpenAI Codex",
+      "codexBadge": "MCP + skills",
+      "codexBody": "Connects Codex to the hosted server and discovers the Volt skills in your workspace.",
+      "codexWrites": "Writes a block in `.codex/config.toml` and the skills under `.agents/skills/`.",
+      "geminiName": "Gemini CLI",
+      "geminiBadge": "MCP + rules",
+      "geminiBody": "Connects Gemini CLI to the hosted server and gives it the skill digests in `GEMINI.md`.",
+      "geminiWrites": "Writes `.gemini/settings.json` and a `GEMINI.md` block.",
+      "opencodeName": "OpenCode",
+      "opencodeBadge": "MCP + skills",
+      "opencodeBody": "Connects OpenCode to the hosted server and discovers the Volt skills.",
+      "opencodeWrites": "Writes `opencode.json` and the skills under `.agents/skills/`.",
+      "serves": ".input {$count :number}\n.match $count\none {{The server describes {$count} component.}}\n* {{The server describes {$count} components.}}"
+    }
+  },
+  "ui": {
+    "copy": {
+      "code": "Copy code",
+      "copied": "Copied!",
+      "action": "Copy"
+    },
+    "codePanel": {
+      "installCli": "Install via CLI:",
+      "preview": "Preview",
+      "code": "Code",
+      "componentSource": "Component Source",
+      "directiveSource": "Directive Source",
+      "usage": "Usage",
+      "copyNote": "Copy this code to your project.",
+      "copyNoteDep": "Copy this code to your project. The component uses {$dep}."
+    },
+    "api": {
+      "input": "Input",
+      "output": "Output",
+      "type": "Type",
+      "default": "Default",
+      "prop": "Prop",
+      "options": "Options",
+      "variants": "CVA variants",
+      "title": "API Reference"
+    },
+    "section": {
+      "example": "Example",
+      "variants": "Variants",
+      "sizes": "Sizes",
+      "features": "Features",
+      "horizontal": "Horizontal",
+      "vertical": "Vertical"
+    },
+    "codeEditor": {
+      "loading": "Loading editor…"
+    },
+    "docs": {
+      "onThisPage": "On this page",
+      "previous": "Previous",
+      "next": "Next",
+      "pager": "Previous and next pages",
+      "breadcrumb": "Breadcrumb",
+      "closeNav": "Close navigation"
+    }
+  },
+  "components": {
+    "accordion": {
+      "title": "Accordion",
+      "description": "A vertically stacked set of interactive headings that each reveal a section of content."
+    },
+    "avatar": {
+      "title": "Avatar",
+      "description": "An image element with a fallback for representing the user."
+    },
+    "badge": {
+      "title": "Badge",
+      "description": "Displays a badge or a component that looks like a badge."
+    },
+    "breadcrumbs": {
+      "title": "Breadcrumbs",
+      "description": "Displays the path to the current resource using a hierarchy of links."
+    },
+    "button": {
+      "title": "Button",
+      "description": "Displays a button or a component that looks like a button.",
+      "statesSlots": "States & Icons (Slots)"
+    },
+    "card": {
+      "title": "Card",
+      "description": "Displays a card with header, content, and footer."
+    },
+    "checkbox": {
+      "title": "Checkbox",
+      "description": "A control that allows the user to toggle between checked and not checked."
+    },
+    "dialog": {
+      "title": "Dialog",
+      "description": "A window overlaid on either the primary window or another dialog window.",
+      "features": {
+        "escape": "Keyboard navigation with Escape key to close",
+        "outside": "Click outside to close (configurable)",
+        "focusTrap": "Focus trap for accessibility",
+        "animations": "Smooth animations and transitions",
+        "aria": "ARIA attributes for screen readers"
+      }
+    },
+    "drawer": {
+      "title": "Drawer",
+      "description": "A panel that slides in from the edge of the screen. Built on top of Dialog primitives."
+    },
+    "dropdownMenu": {
+      "title": "Dropdown Menu",
+      "description": "Displays a menu of options to the user, triggered by a button."
+    },
+    "input": {
+      "title": "Input & Forms",
+      "description": "Displays a form input field or a component that looks like an input field."
+    },
+    "navigationMenu": {
+      "title": "Navigation Menu",
+      "description": "A collection of links for navigating websites, with support for dropdown menus.",
+      "features": {
+        "keyboard": "Keyboard navigation with Arrow keys and Escape",
+        "aria": "Accessible with proper ARIA attributes",
+        "animations": "Smooth animations and transitions",
+        "layouts": "Flexible content layouts (single column, multi-column)",
+        "links": "Support for direct links and dropdown menus"
+      }
+    },
+    "popover": {
+      "title": "Popover",
+      "description": "Displays rich content in a portal, triggered by clicking an element."
+    },
+    "progress": {
+      "title": "Progress",
+      "description": "Displays an indicator showing the completion progress of a task."
+    },
+    "radio": {
+      "title": "Radio",
+      "description": "A set of checkable buttons—known as radio buttons—where no more than one of the buttons can be checked at a time."
+    },
+    "rangeSlider": {
+      "title": "Range Slider",
+      "description": "An input where the user selects a range of values between two thumbs."
+    },
+    "resizable": {
+      "title": "Resizable",
+      "description": "Accessible resizable panel groups with draggable handles."
+    },
+    "select": {
+      "title": "Select",
+      "description": "Displays a list of options for the user to pick from—triggered by a button.",
+      "nativeTitle": "Native Select",
+      "nativeNote": "A lighter alternative to {$select} for simple cases: it's the real native {$element} element (full mobile/native picker behavior, works with {$formControl}/{$ngModel} for free), styled to match the theme."
+    },
+    "separator": {
+      "title": "Separator",
+      "description": "Visually or semantically separates content."
+    },
+    "skeleton": {
+      "title": "Skeleton",
+      "description": "Use to show a placeholder while content is loading."
+    },
+    "slider": {
+      "title": "Slider",
+      "description": "An input where the user selects a value from within a given range."
+    },
+    "switch": {
+      "title": "Switch",
+      "description": "A control that allows the user to toggle between checked and not checked."
+    },
+    "table": {
+      "title": "Table",
+      "description": "A responsive table component for displaying tabular data."
+    },
+    "tabs": {
+      "title": "Tabs",
+      "description": "A set of layered sections of content—known as tab panels—that are displayed one at a time."
+    },
+    "toggle": {
+      "title": "Toggle",
+      "description": "A two-state button that can be either on or off."
+    },
+    "tooltip": {
+      "title": "Tooltip",
+      "description": "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it."
+    },
+    "autofill": {
+      "title": "Autofill",
+      "description": "Directive for detecting browser autofill state on form controls."
+    },
+    "combobox": {
+      "title": "Combobox",
+      "description": "Searchable select input with a custom option template."
+    },
+    "datePicker": {
+      "title": "Date Picker",
+      "description": "Calendar primitives for date and range selection."
+    },
+    "fileUpload": {
+      "title": "File Upload",
+      "description": "File picker trigger and drag-and-drop dropzone primitives."
+    },
+    "formField": {
+      "title": "Form Field",
+      "description": "Accessible form wrapper with label, hint, and error text."
+    },
+    "index": {
+      "title": "Components",
+      "description": "A collection of reusable, accessible components built with Angular and Tailwind CSS. Each component includes source code that you can copy and customize.",
+      "storybookTitle": "Component reference in Storybook",
+      "storybookBody": "Storybook shows every component in isolation: change its inputs with live controls, switch the colour and style presets or dark mode, run the accessibility panel and read its API. The guides, blocks and recipes stay here on voltui.dev.",
+      "storybookCta": "Open Storybook"
+    },
+    "inputOtp": {
+      "title": "Input OTP",
+      "description": "One-time password input for verification and PIN flows."
+    },
+    "listbox": {
+      "title": "Listbox",
+      "description": "Accessible single or multiple selection list."
+    },
+    "meter": {
+      "title": "Meter",
+      "description": "Displays a scalar measurement within a known range."
+    },
+    "pagination": {
+      "title": "Pagination",
+      "description": "Pagination controls with previous, next, and page buttons."
+    },
+    "search": {
+      "title": "Search",
+      "description": "Search field wrapper with a clear action powered by ng-primitives."
+    },
+    "textarea": {
+      "title": "Textarea",
+      "description": "Multi-line text input with size, variant, resize, and error states."
+    },
+    "toast": {
+      "title": "Toast",
+      "description": "A compact notification surface with title, description, and close affordance."
+    },
+    "toggleGroup": {
+      "title": "Toggle Group",
+      "description": "A grouped set of toggles for single or multiple selection."
+    },
+    "toolbar": {
+      "title": "Toolbar",
+      "description": "Grouped controls with toolbar semantics and roving focus."
+    }
+  },
+  "catalog": {
+    "groups": {
+      "forms": "Forms",
+      "controls": "Controls",
+      "navigation": "Navigation",
+      "overlays": "Overlays",
+      "display": "Display",
+      "layout": "Layout"
+    },
+    "button": {
+      "description": "Interactive buttons"
+    },
+    "input": {
+      "label": "Input",
+      "description": "Text input fields"
+    },
+    "search": {
+      "description": "Search with clear action"
+    },
+    "autofill": {
+      "description": "Browser autofill detection"
+    },
+    "textarea": {
+      "description": "Multi-line input"
+    },
+    "formField": {
+      "description": "Labels, hints, and errors"
+    },
+    "checkbox": {
+      "description": "Boolean selection"
+    },
+    "switch": {
+      "description": "On/off controls"
+    },
+    "radio": {
+      "description": "Single-select options"
+    },
+    "select": {
+      "description": "Dropdown selection"
+    },
+    "combobox": {
+      "description": "Searchable select"
+    },
+    "inputOtp": {
+      "description": "PIN code input"
+    },
+    "fileUpload": {
+      "description": "Upload controls"
+    },
+    "slider": {
+      "description": "Range input"
+    },
+    "rangeSlider": {
+      "description": "Dual-thumb range selection"
+    },
+    "toggle": {
+      "description": "Pressed state button"
+    },
+    "toggleGroup": {
+      "description": "Grouped toggle controls"
+    },
+    "toolbar": {
+      "description": "Grouped actions"
+    },
+    "pagination": {
+      "description": "Page navigation"
+    },
+    "datePicker": {
+      "description": "Calendar input"
+    },
+    "listbox": {
+      "description": "Selection list"
+    },
+    "navigationMenu": {
+      "description": "Navbar with dropdowns",
+      "short": "Nav Menu"
+    },
+    "tabs": {
+      "description": "Tabbed interface"
+    },
+    "breadcrumbs": {
+      "description": "Path trail"
+    },
+    "dialog": {
+      "description": "Modal dialogs"
+    },
+    "drawer": {
+      "description": "Slide-in panels"
+    },
+    "popover": {
+      "description": "Floating panels"
+    },
+    "dropdownMenu": {
+      "description": "Action menus"
+    },
+    "tooltip": {
+      "description": "Hover information"
+    },
+    "toast": {
+      "description": "Notifications"
+    },
+    "accordion": {
+      "description": "Collapsible panels"
+    },
+    "avatar": {
+      "description": "User images"
+    },
+    "badge": {
+      "description": "Status indicators"
+    },
+    "card": {
+      "description": "Content containers"
+    },
+    "meter": {
+      "description": "Known-range values"
+    },
+    "progress": {
+      "description": "Task completion"
+    },
+    "separator": {
+      "description": "Visual dividers"
+    },
+    "skeleton": {
+      "description": "Loading placeholders"
+    },
+    "table": {
+      "description": "Data tables"
+    },
+    "resizable": {
+      "description": "Resizable panels"
+    },
+    "all": "All Components",
+    "browse": "Browse Components",
+    "stable": "Stable",
+    "stableBody": "Recommended for production use. APIs are settled.",
+    "beta": "Beta",
+    "betaBody": "Usable today, with more forms, keyboard, or edge-case coverage planned.",
+    "quickInstall": "Quick install:",
+    "orBrowse": "or browse below to copy source code.",
+    "learnMore": "Learn more →",
+    "stability": {
+      "stable": "stable",
+      "beta": "beta",
+      "experimental": "experimental",
+      "experimentalShort": "exp"
+    }
+  },
+  "blocks": {
+    "categories": {
+      "hero": {
+        "label": "Hero",
+        "blurb": "The first screen. What the product is, and the one thing to do about it."
+      },
+      "features": {
+        "label": "Features",
+        "blurb": "What it does, arranged so the important one is visibly the important one."
+      },
+      "services": {
+        "label": "Services",
+        "blurb": "What you do for someone, when the product is a team rather than a download."
+      },
+      "proof": {
+        "label": "Social proof",
+        "blurb": "Other people saying it, which is the only version anyone believes."
+      },
+      "pricing": {
+        "label": "Pricing",
+        "blurb": "Plans, the difference between them, and the one you would like picked."
+      },
+      "contact": {
+        "label": "Contact",
+        "blurb": "A form that works, next to the ways of reaching you that are not a form."
+      },
+      "cta": {
+        "label": "Call to action",
+        "blurb": "The last chance to convert someone who read the whole page."
+      },
+      "footer": {
+        "label": "Footer",
+        "blurb": "The sitemap, the legal bits, and the newsletter nobody scrolls back up for."
+      },
+      "auth": {
+        "label": "Auth",
+        "blurb": "Screens where the page is the component. The layouts tab has the same ones stripped to their skeleton."
+      },
+      "app": {
+        "label": "Application",
+        "blurb": "The screens behind the login, with the work done rather than left as slots."
+      }
+    },
+    "items": {
+      "hero": {
+        "label": "Hero Spotlight",
+        "tagline": "Centred opening with a spotlight that follows the pointer.",
+        "motion": "A radial spotlight tracks the pointer, two auroras drift behind the grid, the headline word shimmers, and the content rises in five steps at first paint."
+      },
+      "heroSplit": {
+        "label": "Hero Split",
+        "tagline": "Copy on the left, a live product panel on the right, tilted toward the reader.",
+        "motion": "The panel sits on a slight 3D tilt that straightens as the pointer approaches, and a status row ticks through states on its own."
+      },
+      "bento": {
+        "label": "Feature Bento",
+        "tagline": "Asymmetric grid where each card lights its own border under the cursor.",
+        "motion": "Each card carries a radial fill and a one-pixel gradient ring that follow the pointer inside that card, plus a lift on hover."
+      },
+      "services": {
+        "label": "Service List",
+        "tagline": "Numbered rows that open as you point at them, instead of four equal cards.",
+        "motion": "The row under the pointer expands to reveal its detail and deliverables while the others recede, so the section reads as one thing at a time."
+      },
+      "testimonials": {
+        "label": "Testimonial Marquee",
+        "tagline": "Two rows of quotes sliding in opposite directions, pausing under the pointer.",
+        "motion": "Each row loops a duplicated list by exactly half its width, so the seam is invisible, and stops on hover or focus."
+      },
+      "pricing": {
+        "label": "Pricing Tiers",
+        "tagline": "Three plans with an annual switch, animated prices and a scaled featured tier.",
+        "motion": "Switching the billing period replays the price entrance, the savings badge slides in, and the featured tier sits scaled above the row."
+      },
+      "contact": {
+        "label": "Contact Split",
+        "tagline": "A real form beside the ways of reaching you that are not a form.",
+        "motion": "Each field group grows an accent bar and brightens its label on focus, and submitting swaps the form for a confirmation in place, with focus moved onto it."
+      },
+      "cta": {
+        "label": "Magnetic CTA",
+        "tagline": "Closing panel with a rotating gradient border and a button that leans toward you.",
+        "motion": "A conic gradient spins around the panel edge, and the submit button is pulled toward the pointer while it is within 140px."
+      },
+      "login": {
+        "label": "Login Split",
+        "tagline": "A marketing panel beside the form — the shipped version of the login layout.",
+        "motion": "Two auroras drift behind the brand panel, and the copy and form rise in three steps at first paint. The panel itself is dropped, not stacked, once the section is too narrow for it."
+      },
+      "footer": {
+        "label": "Footer Sitemap",
+        "tagline": "Four link columns, a newsletter field, and a status line that is actually live.",
+        "motion": "Column links slide their underline out from the left on hover, and the status dot pulses on a slow loop."
+      },
+      "dashboard": {
+        "label": "Dashboard",
+        "tagline": "Branded shell, figures that count up, and a chart that draws itself.",
+        "motion": "The figures count to their value the first time the row is scrolled into view, once and never again, and the chart strokes itself on as it arrives. Both start finished under reduced motion."
+      }
+    },
+    "upcoming": {
+      "logoCloud": {
+        "label": "Logo Cloud",
+        "tagline": "Customer logos that settle into place as the section arrives."
+      },
+      "faq": {
+        "label": "FAQ",
+        "tagline": "Accordion built on the accessible primitive, with a search field over it."
+      },
+      "stats": {
+        "label": "Stats",
+        "tagline": "Figures that count up once, the first time they are scrolled into view."
+      },
+      "team": {
+        "label": "Team",
+        "tagline": "Portraits that swap for a role and a link when you point at them."
+      }
+    }
+  },
+  "layouts": {
+    "items": {
+      "adminDashboard": {
+        "label": "Admin Dashboard",
+        "tagline": "Collapsible sidebar, top bar, and a content area with stats and a table.",
+        "structure": "A sidebar that collapses to icons, a top bar carrying the collapse control and a breadcrumb, and a scrolling content area. The stat row and table are there to show what the content area is for — they are the part you replace."
+      },
+      "topNav": {
+        "label": "Top Navigation",
+        "tagline": "Horizontal navigation instead of a sidebar, for apps with few sections.",
+        "structure": "A full-width header holding the brand, the primary navigation and the account menu, over a centred content column. The shape to reach for when the sections fit on one line."
+      },
+      "analytics": {
+        "label": "Analytics",
+        "tagline": "A metrics page: filter bar, KPI row, and panels sized by importance.",
+        "structure": "A filter bar pinned above a KPI row, then a grid where the panels are deliberately unequal — the chart is worth more space than the list beside it."
+      },
+      "sidebar": {
+        "label": "Sidebar",
+        "tagline": "The sidebar component itself: API, collapse behaviour and width control.",
+        "structure": "Unlike the rest of this tab, this documents a component that ships in the library rather than an arrangement you copy. The layouts above are built on it."
+      },
+      "settings": {
+        "label": "Settings",
+        "tagline": "Section navigation beside a form column, the shape every settings page has.",
+        "structure": "A narrow list of sections on the left and one form column on the right, with each group separated rather than boxed. Scales to more sections without redesigning anything."
+      },
+      "profile": {
+        "label": "Profile",
+        "tagline": "An identity header over tabbed detail panels.",
+        "structure": "A header carrying who this is and the actions you can take on them, then tabs for the detail. The header stays put while the tabs change what is underneath."
+      },
+      "kanban": {
+        "label": "Kanban Board",
+        "tagline": "Columns that scroll horizontally with cards that scroll inside them.",
+        "structure": "The two-axis scrolling problem, solved: the board scrolls sideways, each column scrolls its own cards, and neither one steals the other gesture."
+      },
+      "chat": {
+        "label": "Chat",
+        "tagline": "A conversation list, a message thread, and a composer pinned to the bottom.",
+        "structure": "Three regions with different scroll behaviour: the list scrolls, the thread scrolls and starts at the bottom, and the composer never moves."
+      },
+      "login": {
+        "label": "Login",
+        "tagline": "A centred credential form with the fields wired to form-field.",
+        "structure": "One card, centred on both axes, with labels bound to their inputs and hints in the slot that announces them. Deliberately unbranded — the blocks gallery is where a login gets a face."
+      },
+      "signUp": {
+        "label": "Sign Up",
+        "tagline": "Registration with validation slots and the terms checkbox that gates submit.",
+        "structure": "The login shape plus what registration adds: more fields, a place for per-field errors, and a submit that stays disabled until the terms are accepted."
+      }
+    },
+    "categories": {
+      "shells": {
+        "label": "App shells"
+      },
+      "account": {
+        "label": "Account"
+      },
+      "productivity": {
+        "label": "Productivity"
+      },
+      "auth": {
+        "label": "Auth"
+      }
+    },
+    "sidebarDocs": {
+      "minimalShape": "The live demo above is the full page-shell composition; this is the minimal shape.",
+      "widthTitle": "Configuring the width",
+      "widthNote": "Reach for the custom property when the width is dynamic or set from outside Angular.",
+      "sourceNote": "Copy this code to your project. VoltSidebarService holds the collapsed/mobile-open state as signals; nothing else in the layout depends on Angular Router beyond routerLink."
+    }
+  },
+  "themeStudio": {
+    "setup": {
+      "title": "Theme Setup",
+      "lede": "Name it, pick a starting palette, then tune the details.",
+      "nameLabel": "Theme name",
+      "namePlaceholder": "acme-ocean",
+      "startFrom": "Start from",
+      "presetPlaceholder": "Choose preset",
+      "presets": "Presets",
+      "generateTitle": "Generate a palette",
+      "generateLede": "Perceptual OKLCH scales with contrast-checked text colors, for both modes at once.",
+      "harmony": "Harmony",
+      "generate": "Generate",
+      "importLabel": "Paste the **JSON** export from Palette Crafter:",
+      "applyPalette": "Apply palette"
+    },
+    "tokens": {
+      "title": "Color Tokens",
+      "lede": "Edit light and dark palettes independently.",
+      "light": "Light",
+      "dark": "Dark",
+      "fields": {
+        "background": {
+          "label": "Background",
+          "description": "Page canvas"
+        },
+        "foreground": {
+          "label": "Foreground",
+          "description": "Main text"
+        },
+        "surface": {
+          "label": "Surface",
+          "description": "Cards and panels"
+        },
+        "surfaceForeground": {
+          "label": "Surface text",
+          "description": "Text on surfaces"
+        },
+        "muted": {
+          "label": "Muted",
+          "description": "Subtle fills"
+        },
+        "mutedForeground": {
+          "label": "Muted text",
+          "description": "Secondary text"
+        },
+        "border": {
+          "label": "Border",
+          "description": "Lines and outlines"
+        },
+        "input": {
+          "label": "Input",
+          "description": "Form borders"
+        },
+        "ring": {
+          "label": "Ring",
+          "description": "Focus color"
+        },
+        "primary": {
+          "label": "Primary",
+          "description": "Main action"
+        },
+        "primaryForeground": {
+          "label": "Primary text",
+          "description": "Text on primary"
+        },
+        "secondary": {
+          "label": "Secondary",
+          "description": "Secondary action"
+        },
+        "secondaryForeground": {
+          "label": "Secondary text",
+          "description": "Text on secondary"
+        },
+        "success": {
+          "label": "Success",
+          "description": "Positive state"
+        },
+        "successForeground": {
+          "label": "Success text",
+          "description": "Text on success"
+        },
+        "warning": {
+          "label": "Warning",
+          "description": "Caution state"
+        },
+        "warningForeground": {
+          "label": "Warning text",
+          "description": "Text on warning"
+        },
+        "error": {
+          "label": "Error",
+          "description": "Error state"
+        },
+        "errorForeground": {
+          "label": "Error text",
+          "description": "Text on error"
+        },
+        "info": {
+          "label": "Info",
+          "description": "Informational state"
+        },
+        "infoForeground": {
+          "label": "Info text",
+          "description": "Text on info"
+        }
+      }
+    },
+    "shape": {
+      "title": "Shape & Feel",
+      "lede": "Adjust the structural tokens shared by both modes."
+    },
+    "output": {
+      "title": "Generated CSS",
+      "lede": "Paste this into a Volt theme preset or app stylesheet."
+    },
+    "preview": {
+      "eyebrow": "Canvas",
+      "title": "Live preview",
+      "lede": "Scoped safely from the docs theme.",
+      "dark": "Dark"
+    },
+    "page": {
+      "eyebrow": "Theme studio",
+      "badge": "Export-ready CSS variables",
+      "title": "Design your system.",
+      "lede": "Tune every semantic token, compare light and dark modes, and export a production-ready Volt UI theme without leaving the browser.",
+      "editor": "Editor",
+      "foundations": "Theme foundations",
+      "instant": "Changes preview instantly"
+    }
+  },
+  "seo": {
+    "home": {
+      "title": "Volt UI — Modern Angular UI Components",
+      "description": "Accessible Angular components built on ng-primitives with signals, zoneless change detection and Tailwind CSS v4. Install the package or copy the source with the CLI."
+    },
+    "components": {
+      "title": "Angular UI Components — Volt UI",
+      "description": "Browse every Volt UI component for Angular: forms, controls, navigation, overlays, data display and layout, each with live examples, usage code and an API reference."
+    },
+    "introduction": {
+      "title": "Volt UI Documentation — Angular Component Library",
+      "description": "Get started with Volt UI: accessible Angular components inspired by shadcn/ui and built on ng-primitives. Install the package or copy components into your project."
+    },
+    "themes": {
+      "title": "Angular Themes and Dark Mode — Volt UI",
+      "description": "Five colour presets, five style presets and dark mode for Volt UI, driven by CSS custom properties and Tailwind CSS v4 semantic utilities."
+    },
+    "customization": {
+      "title": "Customizing Angular Components — Volt UI",
+      "description": "Edit copied Volt UI components, extend variants with class-variance-authority, merge classes with cn() and adjust colours without forking the library."
+    },
+    "versioning": {
+      "title": "Versioning and Stability — Volt UI",
+      "description": "How Volt UI follows semantic versioning, what stable and beta mean for each component, and how API changes are handled after 1.0."
+    },
+    "roadmap": {
+      "title": "Roadmap — Volt UI",
+      "description": "What is planned for Volt UI after 1.0, in order of dependence: a first-party headless layer, a Tailwind-free distribution and more layouts."
+    },
+    "migration": {
+      "title": "Migrating from Volt UI 0.x — Volt UI",
+      "description": "What changed between Volt UI 0.x and 1.0, which aliases were removed and what to update in your Angular application."
+    },
+    "aiMcp": {
+      "title": "Volt UI MCP Server for AI Coding Agents",
+      "description": "A hosted Model Context Protocol server that exposes Volt UI components, usage examples, theme information and CLI commands to any compatible AI agent."
+    },
+    "mcp": {
+      "title": "Volt UI for AI Coding Agents — MCP, Skills and Angular Components",
+      "description": "Three ways to give AI assistants correct Volt UI context: a local skill, a hosted MCP server and a single-file prompt reference."
+    },
+    "aiPrompt": {
+      "title": "Volt UI Prompt Reference for LLMs",
+      "description": "A single-file prompt to paste into any LLM chat so it uses the correct Volt UI selectors, examples and rules."
+    },
+    "aiSkill": {
+      "title": "Volt UI Agent Skills for Claude Code, Codex and OpenCode",
+      "description": "Focused skills that Claude Code, Codex and OpenCode discover in any workspace using Volt UI: adoption, component selection, forms, overlays, styling and distribution."
+    },
+    "blocks": {
+      "title": "Angular Page Blocks — Volt UI",
+      "description": "Whole page sections built from Volt UI components — heroes, pricing, dashboards, logins and more. Copy one file and make it yours."
+    },
+    "createTheme": {
+      "title": "Angular Theme Builder — Volt UI",
+      "description": "Tune every semantic token, compare light and dark modes and export a production-ready Volt UI theme without leaving the browser."
+    },
+    "component": {
+      "title": "Angular {$name} Component — Volt UI",
+      "description": "The Volt UI {$name} component for Angular: live examples, usage code and API reference. Accessible, built on ng-primitives and styled with Tailwind CSS v4."
+    },
+    "block": {
+      "title": "Angular {$name} Block — Volt UI",
+      "description": "A {$name} page section for Angular built from Volt UI components. Copy the source into your project and adapt it."
+    },
+    "layout": {
+      "title": "Angular {$name} Layout — Volt UI",
+      "description": "A {$name} application layout for Angular assembled from Volt UI components, styled only with theme tokens so it fits your brand."
+    },
+    "recipe": {
+      "title": "Angular {$name} Recipe — Volt UI",
+      "description": "A tested {$name} recipe for Angular showing the workflow with Volt UI components, including validation and failure states."
+    },
+    "imageAlt": "Volt UI — accessible Angular components"
+  },
+  "recipes": {
+    "title": "Recipes",
+    "description": "Behaviour over time: validation, asynchronous search, tables.",
+    "items": {
+      "settingsForm": "Settings form",
+      "asyncSearch": "Async search",
+      "dataTable": "Data table"
+    },
+    "doqs": {
+      "documentation": "Documentation",
+      "loading": "Loading documentation…",
+      "indexTitle": "Explore the docs",
+      "indexDescription": "Guides for using, copying and contributing to Volt UI Recipes.",
+      "readGuide": "Read guide →",
+      "menu": "{$label} menu",
+      "closeNavigation": "Close navigation",
+      "notFoundTitle": "Documentation page not found",
+      "notFoundPageTitle": "Page not found",
+      "notFoundBody": "This page may have moved or does not exist.",
+      "browse": "Browse documentation",
+      "codeCopied": "Code copied",
+      "copyUnavailable": "Copy unavailable",
+      "clipboardUnavailable": "Clipboard access unavailable",
+      "scrollableTable": "Scrollable table",
+      "untranslated": "This page is not translated yet. You are reading it in {$label}."
+    },
+    "home": {
+      "badge": "Copy the source, not a dependency",
+      "title": "Whole screens, built from Volt UI.",
+      "lede": "Page sections, application layouts and tested workflows. Each one comes with a live preview, its complete source and the components it is made of.",
+      "statComponents": "Volt components in use",
+      "blocksTitle": "Sections that already move.",
+      "shellsEyebrow": "Layouts and recipes",
+      "shellsTitle": "Frames and workflows to fill in.",
+      "shellsLede": "Layouts give an application its frame. Recipes show behaviour over time: a form that validates, a search that waits for the network, a table that paginates.",
+      "ctaTitle": "Copy it, then make it yours.",
+      "ctaBody": "Every entry imports from `@voltui/components`, so it follows your theme and keeps the accessibility of the components underneath.",
+      "ctaComponents": "Browse the components"
+    },
+    "browse": "Browse Recipes"
+  }
+}

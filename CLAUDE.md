@@ -21,7 +21,7 @@ Configured in `.claude/` and committed, so every contributor gets it:
 | `/theme-audit <name>`    | `.claude/skills/theme-audit/`    | Sweeps a component across the 5 × 5 presets + dark mode for tokens that only resolve by default |
 | `ssr-safety-reviewer`    | `.claude/agents/`                | Audits for browser-API access that breaks SSR (passes jsdom, fails `pnpm build`)                |
 | `a11y-reviewer`          | `.claude/agents/`                | Audits ARIA, keyboard, focus, and ng-primitives delegation                                      |
-| ripple-check hook        | `.claude/hooks/ripple-check.mjs` | After editing `projects/volt/src/lib/**`, reports which ripple effects are still missing        |
+| ripple-check hook        | `.claude/hooks/ripple-check.mjs` | After editing `packages/volt/src/lib/**`, reports which ripple effects are still missing        |
 | ai-docs gate hook        | `.claude/hooks/ai-docs-gate.mjs` | Blocks end-of-session on `pnpm check:ai-docs` drift                                             |
 
 ## MCP servers

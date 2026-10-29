@@ -1,0 +1,43 @@
+/*
+ * Volt UI Recipes. Tokens, theme presets and base rules are the docs site's own, imported from
+ * packages/shared/styles/site.css — nothing about a theme is defined twice.
+ *
+ * Tailwind scans from this app's root, so the sources whose classes it must emit are listed:
+ * the shared components and the Volt library itself.
+ */
+@import 'tailwindcss';
+@import '../../../packages/shared/styles/site.css';
+
+@source '../../../packages/shared';
+@source '../../../packages/volt/src/lib';
+
+/* Doqs (the documentation region, /docs): its own styles, mapped onto the shared Volt tokens. */
+@import '@doqs/analog/styles.css';
+
+/*
+ * One language control per page. Etyma owns the locale and the header's switcher changes it on every
+ * route, /docs included; Doqs 0.12 renders its own selector whenever more than one locale is
+ * published and has no option to leave it out (see docs/recipes-app.md, "Doqs findings").
+ */
+doq-locale-switcher {
+  display: none;
+}
+
+:root {
+  --host-docs-background: var(--background);
+  --host-docs-foreground: var(--foreground);
+  --host-docs-primary: var(--primary);
+  --host-docs-border: var(--border);
+  --host-docs-surface: var(--surface);
+  --host-docs-secondary: var(--muted-foreground);
+  --host-docs-muted: var(--muted-foreground);
+  --host-docs-primary-text: var(--primary);
+  --host-docs-focus: var(--ring);
+  --host-docs-code-background: var(--muted);
+  --host-docs-code-foreground: var(--foreground);
+  --host-docs-playground-surface: var(--surface);
+  --host-docs-playground-preview: var(--background);
+  /* The sticky site header (4rem) plus the section row shown below md. */
+  --host-docs-scroll-offset: 6.5rem;
+  --host-docs-sticky-offset: 4.5rem;
+}

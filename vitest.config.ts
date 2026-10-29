@@ -11,22 +11,28 @@ export default defineConfig({
     angular({
       include: [
         'test-setup.ts',
-        'src/**/*.spec.ts',
-        'projects/volt/src/**/*.spec.ts',
-        'projects/volt/src/**/*.ts',
+        'apps/**/*.ts',
+        'packages/shared/**/*.spec.ts',
+        'packages/volt/src/**/*.spec.ts',
+        'packages/volt/src/**/*.ts',
       ],
     }),
   ],
   resolve: {
     alias: {
-      volt: resolve(ROOT, 'projects/volt/src/public-api.ts'),
+      volt: resolve(ROOT, 'packages/volt/src/public-api.ts'),
+      '@shared': resolve(ROOT, 'packages/shared'),
     },
   },
   test: {
     globals: true,
+    // Vitest 5 persists transformed modules between runs. The Angular plugin keeps JIT inline styles in an
+    // in-memory table filled while it transforms, so a cached component asks for a style id that no
+    // longer exists ("Cannot find module virtual:angular:jit:style:inline") on every run after the first.
+    fsModuleCache: false,
     // Vitest blanks every CSS import by default, `?raw` included. The theme presets are read as
-    // text by src/app/lib/theme-presets.ts, so those files have to come through as written.
-    css: { include: [/projects\/volt\/src\/themes\/((colors|styles)\/[\w-]+|core)\.css/] },
+    // text by packages/shared/lib/theme-presets.ts, so those files have to come through as written.
+    css: { include: [/packages\/volt\/src\/themes\/((colors|styles)\/[\w-]+|core)\.css/] },
     environment: 'jsdom',
     // Every render loads three Etyma catalogs (~0.6s locally). On a shared CI runner running ~100
     // files in parallel that approaches the 5s default and fails the same few tests at random.
@@ -34,17 +40,25 @@ export default defineConfig({
     testTimeout: 20_000,
     hookTimeout: 20_000,
     setupFiles: ['./test-setup.ts'],
-    include: ['src/**/*.spec.ts', 'projects/volt/src/**/*.spec.ts', 'cli/**/*.spec.js'],
+    include: [
+      'packages/shared/**/*.spec.ts',
+      'apps/**/*.spec.ts',
+      'packages/volt/src/**/*.spec.ts',
+      'cli/**/*.spec.js',
+    ],
     coverage: {
       reporter: ['text', 'html', 'lcov'],
       include: [
-        'projects/volt/src/lib/**/*.ts',
-        'src/server/routes/mcp.ts',
+        'packages/volt/src/lib/**/*.ts',
+        'apps/web/src/server/routes/mcp.ts',
         'cli/lib/**/*.js',
-        'src/app/components/**/*.ts',
-        'src/app/services/**/*.ts',
-        'src/app/pages/index.page.ts',
-        'src/app/pages/create-theme.page.ts',
+        'apps/web/src/app/components/**/*.ts',
+        'packages/shared/components/**/*.ts',
+        'packages/shared/services/**/*.ts',
+        'apps/recipes/src/app/components/**/*.ts',
+        'apps/web/src/app/services/**/*.ts',
+        'apps/web/src/app/pages/index.page.ts',
+        'apps/web/src/app/pages/create-theme.page.ts',
       ],
       exclude: [
         'node_modules/',
@@ -54,7 +68,7 @@ export default defineConfig({
         '**/*.spec.ts',
         '**/index.ts',
         '**/variants.ts',
-        'src/app/lib/snippets/**',
+        'apps/web/src/app/lib/snippets/**',
       ],
       thresholds: {
         statements: 75,

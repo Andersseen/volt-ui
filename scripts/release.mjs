@@ -28,7 +28,7 @@ const PACKAGES = [
   {
     name: '@voltui/components',
     label: 'Components library',
-    versionFile: 'projects/volt/package.json',
+    versionFile: 'packages/volt/package.json',
     publish: 'pnpm publish:lib',
     tagPrefix: 'components',
   },

@@ -19,8 +19,8 @@ import { listComponentDirs, processComponentDir } from './lib/api-extract.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
-const COMP_ROOT = join(ROOT, 'projects/volt/src/lib/components');
-const LAYOUT_ROOT = join(ROOT, 'projects/volt/src/lib/layouts');
+const COMP_ROOT = join(ROOT, 'packages/volt/src/lib/components');
+const LAYOUT_ROOT = join(ROOT, 'packages/volt/src/lib/layouts');
 const OUT_FILE = join(ROOT, 'specs/api-freeze-0.9.md');
 
 // theme.ts exposes provideVoltTheme()/applyVoltTheme() functions, not a

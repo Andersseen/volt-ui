@@ -1,0 +1,60 @@
+{
+  "name": "@voltui/components",
+  "version": "1.3.3",
+  "description": "Accessible Angular UI components built on ng-primitives with signals, zoneless change detection and Tailwind CSS v4. Use the package, or copy the source with @voltui/cli.",
+  "license": "MIT",
+  "homepage": "https://voltui.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Andersseen/volt-ui.git",
+    "directory": "packages/volt"
+  },
+  "bugs": {
+    "url": "https://github.com/Andersseen/volt-ui/issues"
+  },
+  "keywords": [
+    "angular",
+    "components",
+    "signals",
+    "tailwindcss",
+    "accessible",
+    "shadcn",
+    "angular-components",
+    "angular-ui",
+    "ui-components",
+    "ui-library",
+    "component-library",
+    "design-system",
+    "zoneless",
+    "tailwind",
+    "tailwind-v4",
+    "accessible-components",
+    "ng-primitives",
+    "copy-and-own",
+    "dark-mode",
+    "theming"
+  ],
+  "peerDependencies": {
+    "@angular/cdk": "^21.2.0 || ^22.0.0",
+    "@angular/common": "^21.2.0 || ^22.0.0",
+    "@angular/core": "^21.2.0 || ^22.0.0",
+    "@angular/forms": "^21.2.0 || ^22.0.0",
+    "@angular/router": "^21.2.0 || ^22.0.0"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.0.0",
+    "tailwind-merge": "^3.0.0",
+    "ng-primitives": "^0.131.2",
+    "@floating-ui/dom": "^1.6.0"
+  },
+  "exports": {
+    "./themes.css": "./themes.css",
+    "./themes/*": "./themes/*"
+  },
+  "sideEffects": [
+    "./themes.css",
+    "./themes/**/*.css"
+  ]
+}

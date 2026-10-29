@@ -8,7 +8,7 @@
  * `pnpm test:all`. This runs it once at the end of a session (~0.3s) so drift is caught
  * before the commit rather than in CI.
  *
- * Regenerates public/manifest.json as a side effect — same as `pnpm manifest`.
+ * Regenerates apps/web/public/manifest.json as a side effect — same as `pnpm manifest`.
  */
 'use strict';
 
@@ -46,9 +46,9 @@ function main(input) {
         'Sync the component list across the files listed in AGENTS.md "AI tools for consumers":',
         '- `.agents/skills/volt-ui/SKILL.md`',
         '- `cli/agent/content.js` (VOLT_UI_SKILL, CURSOR_RULES, COPILOT_INSTRUCTIONS, VSCODE_SNIPPETS), then `pnpm generate:mcp-content`',
-        '- `src/server/routes/mcp.ts`',
+        '- `apps/web/src/server/routes/mcp.ts`',
         '- `VOLT_UI_PROMPT.md`',
-        '- `src/app/lib/snippets/usage.ts`',
+        '- `apps/web/src/app/lib/snippets/usage.ts`',
       ].join('\n'),
     })
   );

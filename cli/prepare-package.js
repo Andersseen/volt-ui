@@ -7,16 +7,18 @@ const REPO_ROOT = path.resolve(CLI_ROOT, '..');
 const REGISTRY_ROOT = path.join(CLI_ROOT, 'registry');
 
 function copyRegistry() {
-  const manifestPath = path.join(REPO_ROOT, 'public/manifest.json');
-  const sourceRoot = path.join(REPO_ROOT, 'projects/volt/src/lib');
+  const manifestPath = path.join(REPO_ROOT, 'apps/web/public/manifest.json');
+  const sourceRoot = path.join(REPO_ROOT, 'packages/volt/src/lib');
   const targetSourceRoot = path.join(REGISTRY_ROOT, 'src/lib');
 
   if (!fs.existsSync(manifestPath)) {
-    throw new Error('Missing public/manifest.json. Run "pnpm manifest" before packing the CLI.');
+    throw new Error(
+      'Missing apps/web/public/manifest.json. Run "pnpm manifest" before packing the CLI.'
+    );
   }
 
   if (!fs.existsSync(sourceRoot)) {
-    throw new Error('Missing projects/volt/src/lib. Run this script from the volt-ui repository.');
+    throw new Error('Missing packages/volt/src/lib. Run this script from the volt-ui repository.');
   }
 
   fs.rmSync(REGISTRY_ROOT, { recursive: true, force: true });

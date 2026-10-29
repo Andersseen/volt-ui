@@ -7,10 +7,10 @@ import { getTestBed } from '@angular/core/testing';
 import { NgModule, provideZonelessChangeDetection } from '@angular/core';
 import { BrowserTestingModule, platformBrowserTesting } from '@angular/platform-browser/testing';
 import { provideEtyma } from '@etyma/angular';
-import { appI18n, LOCALES } from './src/app/i18n/i18n';
-import en from './src/app/i18n/__fixtures__/en.json';
-import es from './src/app/i18n/__fixtures__/es.json';
-import uk from './src/app/i18n/__fixtures__/uk.json';
+import { appI18n, LOCALES } from '@shared/i18n/i18n';
+import en from '@shared/i18n/__fixtures__/en.json';
+import es from '@shared/i18n/__fixtures__/es.json';
+import uk from '@shared/i18n/__fixtures__/uk.json';
 
 /**
  * A real snapshot of Glossa's catalogs, frozen at whatever `pnpm manifest`/checkout last

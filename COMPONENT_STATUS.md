@@ -1,6 +1,6 @@
 # Component Status
 
-Volt UI is stable (the current version is the one in `projects/volt/package.json`; it is not repeated here). Status labels describe the current confidence level for the copy-paste workflow, not a permanent promise — a `beta` label means more hardening may land in a minor release, not that the API can break outside a major.
+Volt UI is stable (the current version is the one in `packages/volt/package.json`; it is not repeated here). Status labels describe the current confidence level for the copy-paste workflow, not a permanent promise — a `beta` label means more hardening may land in a minor release, not that the API can break outside a major.
 
 > Naming note: this is the independent Angular Volt UI project under `@voltui`, not PrimeVue Volt UI.
 

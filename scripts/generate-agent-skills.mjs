@@ -3,7 +3,7 @@
  * Keeps the agent skills' derived content in step with the sources it comes from.
  *
  *   cli/agent/skills/volt-ui-component-selection/SKILL.md   the generated catalog block
- *   src/server/routes/mcp/responsibilities.generated.ts      what the MCP `find_components` tool reads
+ *   apps/web/src/server/routes/mcp/responsibilities.generated.ts      what the MCP `find_components` tool reads
  *   VOLT_UI_PROMPT.md                                        the catalog block (selectors read from the library)
  *   .agents/skills/volt-ui (and volt-ui-*)                    copies for agents working in this repo
  *
@@ -23,7 +23,7 @@ import { librarySelectors } from './lib/selectors.mjs';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const SKILLS = join(ROOT, 'cli/agent/skills');
 const SELECTION = join(SKILLS, 'volt-ui-component-selection/SKILL.md');
-const RESPONSIBILITIES = join(ROOT, 'src/server/routes/mcp/responsibilities.generated.ts');
+const RESPONSIBILITIES = join(ROOT, 'apps/web/src/server/routes/mcp/responsibilities.generated.ts');
 const PROMPT = join(ROOT, 'VOLT_UI_PROMPT.md');
 const REPO_SKILLS = join(ROOT, '.agents/skills');
 const check = process.argv.includes('--check');
@@ -71,7 +71,7 @@ const catalog = await loadCatalog();
 
 /** `^21.2.0 || ^22.0.0` → `21 and 22` (the major versions the peer range admits). */
 function angularSupport() {
-  const peer = JSON.parse(readFileSync(join(ROOT, 'projects/volt/package.json'), 'utf8'))
+  const peer = JSON.parse(readFileSync(join(ROOT, 'packages/volt/package.json'), 'utf8'))
     .peerDependencies['@angular/core'];
   const majors = [...peer.matchAll(/(\d+)\.\d+\.\d+/g)].map(m => m[1]);
   return majors.length > 1 ? `${majors.slice(0, -1).join(', ')} and ${majors.at(-1)}` : majors[0];

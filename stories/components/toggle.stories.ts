@@ -1,7 +1,7 @@
 import { moduleMetadata, type Meta, type StoryObj } from '@storybook/angular-vite';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { VoltToggle } from 'volt';
-import { TOGGLE_API } from '../../src/app/lib/api-reference.generated';
+import { TOGGLE_API } from '../../apps/web/src/app/lib/api-reference.generated';
 import { variantArgTypes } from '../_helpers/api';
 
 const meta: Meta<VoltToggle> = {

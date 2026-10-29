@@ -144,7 +144,7 @@ export class ExampleComponent {}
 
 <br/>
 
-- Copies from `projects/volt/src/lib` into `src/app/ui` by default.
+- Copies from `packages/volt/src/lib` into `src/app/ui` by default.
 - Transforms `Volt*` → `Ui*` and `volt-*` → `ui-*`.
 - Detects and copies local component dependencies automatically.
 - Refuses to overwrite existing files unless `--force` is passed.
@@ -372,3 +372,7 @@ Built with ⚡ by [Andersseen](https://github.com/Andersseen) · [MIT License](.
 <sub><a href="#-volt-ui">↑ Back to top</a></sub>
 
 </div>
+
+## Applications
+
+This repository ships two sites from one Angular workspace: the documentation at [voltui.dev](https://voltui.dev) (`src/`) and the copyable blocks, layouts and recipes at [recipes.voltui.dev](https://recipes.voltui.dev) (`apps/recipes/`). See [docs/recipes-app.md](docs/recipes-app.md).

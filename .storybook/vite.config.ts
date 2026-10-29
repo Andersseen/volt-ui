@@ -11,7 +11,7 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   resolve: {
     // The same `volt` boundary as tsconfig.json `paths` and the docs app.
-    alias: { volt: fileURLToPath(new URL('../projects/volt/src/public-api.ts', import.meta.url)) },
+    alias: { volt: fileURLToPath(new URL('../packages/volt/src/public-api.ts', import.meta.url)) },
   },
   plugins: [tailwindcss()],
 });

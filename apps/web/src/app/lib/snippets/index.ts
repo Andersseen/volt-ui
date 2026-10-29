@@ -1,0 +1,446 @@
+// Single-file components
+import buttonSource from '../../../../../../packages/volt/src/lib/components/button/button.ts?raw';
+import buttonVariantsSource from '../../../../../../packages/volt/src/lib/components/button/variants.ts?raw';
+import nativeButtonSource from '../../../../../../packages/volt/src/lib/components/button/native-button.ts?raw';
+import badgeSource from '../../../../../../packages/volt/src/lib/components/badge/badge.ts?raw';
+import badgeVariantsSource from '../../../../../../packages/volt/src/lib/components/badge/variants.ts?raw';
+import cardSource from '../../../../../../packages/volt/src/lib/components/card/card.ts?raw';
+import checkboxSource from '../../../../../../packages/volt/src/lib/components/checkbox/checkbox.ts?raw';
+import inputSource from '../../../../../../packages/volt/src/lib/components/input/input.ts?raw';
+import inputVariantsSource from '../../../../../../packages/volt/src/lib/components/input/variants.ts?raw';
+import autofillSource from '../../../../../../packages/volt/src/lib/components/autofill/autofill.ts?raw';
+import progressSource from '../../../../../../packages/volt/src/lib/components/progress/progress.ts?raw';
+import progressLabelSource from '../../../../../../packages/volt/src/lib/components/progress/progress-label.ts?raw';
+import progressValueSource from '../../../../../../packages/volt/src/lib/components/progress/progress-value.ts?raw';
+import searchSource from '../../../../../../packages/volt/src/lib/components/search/search.ts?raw';
+import searchClearSource from '../../../../../../packages/volt/src/lib/components/search/search-clear.ts?raw';
+import separatorSource from '../../../../../../packages/volt/src/lib/components/separator/separator.ts?raw';
+import sliderSource from '../../../../../../packages/volt/src/lib/components/slider/slider.ts?raw';
+import rangeSliderSource from '../../../../../../packages/volt/src/lib/components/range-slider/range-slider.ts?raw';
+import switchSource from '../../../../../../packages/volt/src/lib/components/switch/switch.ts?raw';
+import textareaSource from '../../../../../../packages/volt/src/lib/components/textarea/textarea.ts?raw';
+import textareaVariantsSource from '../../../../../../packages/volt/src/lib/components/textarea/variants.ts?raw';
+import toggleSource from '../../../../../../packages/volt/src/lib/components/toggle/toggle.ts?raw';
+import toggleVariantsSource from '../../../../../../packages/volt/src/lib/components/toggle/variants.ts?raw';
+import toolbarSource from '../../../../../../packages/volt/src/lib/components/toolbar/toolbar.ts?raw';
+import toolbarButtonSource from '../../../../../../packages/volt/src/lib/components/toolbar/toolbar-button.ts?raw';
+
+// Multi-file components
+import accordionSource from '../../../../../../packages/volt/src/lib/components/accordion/accordion.ts?raw';
+import accordionItemSource from '../../../../../../packages/volt/src/lib/components/accordion/accordion-item.ts?raw';
+import accordionTriggerSource from '../../../../../../packages/volt/src/lib/components/accordion/accordion-trigger.ts?raw';
+import accordionContentSource from '../../../../../../packages/volt/src/lib/components/accordion/accordion-content.ts?raw';
+
+import avatarSource from '../../../../../../packages/volt/src/lib/components/avatar/avatar.ts?raw';
+import avatarImageSource from '../../../../../../packages/volt/src/lib/components/avatar/avatar-image.ts?raw';
+import avatarFallbackSource from '../../../../../../packages/volt/src/lib/components/avatar/avatar-fallback.ts?raw';
+
+import breadcrumbsSource from '../../../../../../packages/volt/src/lib/components/breadcrumbs/breadcrumbs.ts?raw';
+import breadcrumbsItemSource from '../../../../../../packages/volt/src/lib/components/breadcrumbs/breadcrumbs-item.ts?raw';
+import breadcrumbsLinkSource from '../../../../../../packages/volt/src/lib/components/breadcrumbs/breadcrumbs-link.ts?raw';
+import nativeBreadcrumbsLinkSource from '../../../../../../packages/volt/src/lib/components/breadcrumbs/native-breadcrumbs-link.ts?raw';
+import breadcrumbsLinkVariantsSource from '../../../../../../packages/volt/src/lib/components/breadcrumbs/breadcrumbs-link-variants.ts?raw';
+import breadcrumbsListSource from '../../../../../../packages/volt/src/lib/components/breadcrumbs/breadcrumbs-list.ts?raw';
+import breadcrumbsPageSource from '../../../../../../packages/volt/src/lib/components/breadcrumbs/breadcrumbs-page.ts?raw';
+import breadcrumbsSeparatorSource from '../../../../../../packages/volt/src/lib/components/breadcrumbs/breadcrumbs-separator.ts?raw';
+import breadcrumbsEllipsisSource from '../../../../../../packages/volt/src/lib/components/breadcrumbs/breadcrumbs-ellipsis.ts?raw';
+
+import dropdownMenuSource from '../../../../../../packages/volt/src/lib/components/dropdown-menu/dropdown-menu.ts?raw';
+import dropdownMenuTriggerSource from '../../../../../../packages/volt/src/lib/components/dropdown-menu/dropdown-menu-trigger.ts?raw';
+import dropdownMenuSubmenuTriggerSource from '../../../../../../packages/volt/src/lib/components/dropdown-menu/dropdown-menu-submenu-trigger.ts?raw';
+import dropdownMenuItemSource from '../../../../../../packages/volt/src/lib/components/dropdown-menu/dropdown-menu-item.ts?raw';
+import dropdownMenuLabelSource from '../../../../../../packages/volt/src/lib/components/dropdown-menu/dropdown-menu-label.ts?raw';
+import dropdownMenuSeparatorSource from '../../../../../../packages/volt/src/lib/components/dropdown-menu/dropdown-menu-separator.ts?raw';
+
+import navigationMenuSource from '../../../../../../packages/volt/src/lib/components/navigation-menu/navigation-menu.ts?raw';
+import navigationMenuListSource from '../../../../../../packages/volt/src/lib/components/navigation-menu/navigation-menu-list.ts?raw';
+import navigationMenuItemSource from '../../../../../../packages/volt/src/lib/components/navigation-menu/navigation-menu-item.ts?raw';
+import navigationMenuTriggerSource from '../../../../../../packages/volt/src/lib/components/navigation-menu/navigation-menu-trigger.ts?raw';
+import navigationMenuContentSource from '../../../../../../packages/volt/src/lib/components/navigation-menu/navigation-menu-content.ts?raw';
+import navigationMenuLinkSource from '../../../../../../packages/volt/src/lib/components/navigation-menu/navigation-menu-link.ts?raw';
+import navigationMenuContentItemSource from '../../../../../../packages/volt/src/lib/components/navigation-menu/navigation-menu-content-item.ts?raw';
+
+import popoverTriggerSource from '../../../../../../packages/volt/src/lib/components/popover/popover-trigger.ts?raw';
+import popoverContentSource from '../../../../../../packages/volt/src/lib/components/popover/popover-content.ts?raw';
+import popoverArrowSource from '../../../../../../packages/volt/src/lib/components/popover/popover-arrow.ts?raw';
+
+import radioGroupSource from '../../../../../../packages/volt/src/lib/components/radio/radio-group.ts?raw';
+import radioItemSource from '../../../../../../packages/volt/src/lib/components/radio/radio-item.ts?raw';
+
+import selectSource from '../../../../../../packages/volt/src/lib/components/select/select.ts?raw';
+import nativeSelectSource from '../../../../../../packages/volt/src/lib/components/select/native-select.ts?raw';
+import selectContentSource from '../../../../../../packages/volt/src/lib/components/select/select-content.ts?raw';
+import selectItemSource from '../../../../../../packages/volt/src/lib/components/select/select-item.ts?raw';
+import selectLabelSource from '../../../../../../packages/volt/src/lib/components/select/select-label.ts?raw';
+import selectSeparatorSource from '../../../../../../packages/volt/src/lib/components/select/select-separator.ts?raw';
+
+import tabsSource from '../../../../../../packages/volt/src/lib/components/tabs/tabs.ts?raw';
+import tabsListSource from '../../../../../../packages/volt/src/lib/components/tabs/tabs-list.ts?raw';
+import tabsTriggerSource from '../../../../../../packages/volt/src/lib/components/tabs/tabs-trigger.ts?raw';
+import tabsContentSource from '../../../../../../packages/volt/src/lib/components/tabs/tabs-content.ts?raw';
+
+import tooltipSource from '../../../../../../packages/volt/src/lib/components/tooltip/tooltip.ts?raw';
+import tooltipContentSource from '../../../../../../packages/volt/src/lib/components/tooltip/tooltip-content.ts?raw';
+import tooltipArrowSource from '../../../../../../packages/volt/src/lib/components/tooltip/tooltip-arrow.ts?raw';
+
+import comboboxSource from '../../../../../../packages/volt/src/lib/components/combobox/combobox.ts?raw';
+import comboboxInputSource from '../../../../../../packages/volt/src/lib/components/combobox/combobox-input.ts?raw';
+import comboboxButtonSource from '../../../../../../packages/volt/src/lib/components/combobox/combobox-button.ts?raw';
+import comboboxDropdownSource from '../../../../../../packages/volt/src/lib/components/combobox/combobox-dropdown.ts?raw';
+import comboboxOptionSource from '../../../../../../packages/volt/src/lib/components/combobox/combobox-option.ts?raw';
+
+import datePickerSource from '../../../../../../packages/volt/src/lib/components/date-picker/date-picker.ts?raw';
+import dateRangePickerSource from '../../../../../../packages/volt/src/lib/components/date-picker/date-range-picker.ts?raw';
+import datePickerLabelSource from '../../../../../../packages/volt/src/lib/components/date-picker/date-picker-label.ts?raw';
+import datePickerGridSource from '../../../../../../packages/volt/src/lib/components/date-picker/date-picker-grid.ts?raw';
+import datePickerCellSource from '../../../../../../packages/volt/src/lib/components/date-picker/date-picker-cell.ts?raw';
+import datePickerDateButtonSource from '../../../../../../packages/volt/src/lib/components/date-picker/date-picker-date-button.ts?raw';
+import datePickerNextMonthSource from '../../../../../../packages/volt/src/lib/components/date-picker/date-picker-next-month.ts?raw';
+import datePickerPreviousMonthSource from '../../../../../../packages/volt/src/lib/components/date-picker/date-picker-previous-month.ts?raw';
+
+import fileUploadSource from '../../../../../../packages/volt/src/lib/components/file-upload/file-upload.ts?raw';
+import fileDropzoneSource from '../../../../../../packages/volt/src/lib/components/file-upload/file-dropzone.ts?raw';
+
+import formFieldSource from '../../../../../../packages/volt/src/lib/components/form-field/form-field.ts?raw';
+import formFieldLabelSource from '../../../../../../packages/volt/src/lib/components/form-field/form-field-label.ts?raw';
+import formFieldHintSource from '../../../../../../packages/volt/src/lib/components/form-field/form-field-hint.ts?raw';
+import formFieldErrorSource from '../../../../../../packages/volt/src/lib/components/form-field/form-field-error.ts?raw';
+
+import inputOtpSource from '../../../../../../packages/volt/src/lib/components/input-otp/input-otp.ts?raw';
+import inputOtpSlotSource from '../../../../../../packages/volt/src/lib/components/input-otp/input-otp-slot.ts?raw';
+
+import listboxSource from '../../../../../../packages/volt/src/lib/components/listbox/listbox.ts?raw';
+import listboxOptionSource from '../../../../../../packages/volt/src/lib/components/listbox/listbox-option.ts?raw';
+import listboxVariantsSource from '../../../../../../packages/volt/src/lib/components/listbox/variants.ts?raw';
+import listboxSectionSource from '../../../../../../packages/volt/src/lib/components/listbox/listbox-section.ts?raw';
+import listboxHeaderSource from '../../../../../../packages/volt/src/lib/components/listbox/listbox-header.ts?raw';
+import listboxTriggerSource from '../../../../../../packages/volt/src/lib/components/listbox/listbox-trigger.ts?raw';
+
+import meterSource from '../../../../../../packages/volt/src/lib/components/meter/meter.ts?raw';
+import meterTrackSource from '../../../../../../packages/volt/src/lib/components/meter/meter-track.ts?raw';
+import meterIndicatorSource from '../../../../../../packages/volt/src/lib/components/meter/meter-indicator.ts?raw';
+import meterLabelSource from '../../../../../../packages/volt/src/lib/components/meter/meter-label.ts?raw';
+import meterValueSource from '../../../../../../packages/volt/src/lib/components/meter/meter-value.ts?raw';
+
+import paginationSource from '../../../../../../packages/volt/src/lib/components/pagination/pagination.ts?raw';
+import paginationVariantsSource from '../../../../../../packages/volt/src/lib/components/pagination/variants.ts?raw';
+import paginationFirstSource from '../../../../../../packages/volt/src/lib/components/pagination/pagination-first.ts?raw';
+import paginationPreviousSource from '../../../../../../packages/volt/src/lib/components/pagination/pagination-previous.ts?raw';
+import paginationNextSource from '../../../../../../packages/volt/src/lib/components/pagination/pagination-next.ts?raw';
+import paginationLastSource from '../../../../../../packages/volt/src/lib/components/pagination/pagination-last.ts?raw';
+import paginationButtonSource from '../../../../../../packages/volt/src/lib/components/pagination/pagination-button.ts?raw';
+
+import toastSource from '../../../../../../packages/volt/src/lib/components/toast/toast.ts?raw';
+import toastVariantsSource from '../../../../../../packages/volt/src/lib/components/toast/variants.ts?raw';
+import toastTitleSource from '../../../../../../packages/volt/src/lib/components/toast/toast-title.ts?raw';
+import toastDescriptionSource from '../../../../../../packages/volt/src/lib/components/toast/toast-description.ts?raw';
+import toastCloseSource from '../../../../../../packages/volt/src/lib/components/toast/toast-close.ts?raw';
+import toastServiceSource from '../../../../../../packages/volt/src/lib/components/toast/toast-service.ts?raw';
+
+import toggleGroupSource from '../../../../../../packages/volt/src/lib/components/toggle-group/toggle-group.ts?raw';
+import toggleGroupItemSource from '../../../../../../packages/volt/src/lib/components/toggle-group/toggle-group-item.ts?raw';
+import toggleGroupVariantsSource from '../../../../../../packages/volt/src/lib/components/toggle-group/variants.ts?raw';
+
+import skeletonSource from '../../../../../../packages/volt/src/lib/components/skeleton/skeleton.ts?raw';
+import skeletonVariantsSource from '../../../../../../packages/volt/src/lib/components/skeleton/variants.ts?raw';
+
+import tableSource from '../../../../../../packages/volt/src/lib/components/table/table.ts?raw';
+import tableHeaderSource from '../../../../../../packages/volt/src/lib/components/table/table-header.ts?raw';
+import tableBodySource from '../../../../../../packages/volt/src/lib/components/table/table-body.ts?raw';
+import tableFooterSource from '../../../../../../packages/volt/src/lib/components/table/table-footer.ts?raw';
+import tableRowSource from '../../../../../../packages/volt/src/lib/components/table/table-row.ts?raw';
+import tableHeadSource from '../../../../../../packages/volt/src/lib/components/table/table-head.ts?raw';
+import tableCellSource from '../../../../../../packages/volt/src/lib/components/table/table-cell.ts?raw';
+import tableCaptionSource from '../../../../../../packages/volt/src/lib/components/table/table-caption.ts?raw';
+
+import dialogSource from '../../../../../../packages/volt/src/lib/components/dialog/dialog.ts?raw';
+import dialogOverlaySource from '../../../../../../packages/volt/src/lib/components/dialog/dialog-overlay.ts?raw';
+import dialogContentSource from '../../../../../../packages/volt/src/lib/components/dialog/dialog-content.ts?raw';
+import dialogTitleSource from '../../../../../../packages/volt/src/lib/components/dialog/dialog-title.ts?raw';
+import dialogDescriptionSource from '../../../../../../packages/volt/src/lib/components/dialog/dialog-description.ts?raw';
+import dialogRootSource from '../../../../../../packages/volt/src/lib/components/dialog/dialog-root.ts?raw';
+import dialogServiceSource from '../../../../../../packages/volt/src/lib/components/dialog/dialog-service.ts?raw';
+
+import drawerSource from '../../../../../../packages/volt/src/lib/components/drawer/drawer.ts?raw';
+import drawerOverlaySource from '../../../../../../packages/volt/src/lib/components/drawer/drawer-overlay.ts?raw';
+import drawerContentSource from '../../../../../../packages/volt/src/lib/components/drawer/drawer-content.ts?raw';
+import drawerTitleSource from '../../../../../../packages/volt/src/lib/components/drawer/drawer-title.ts?raw';
+import drawerDescriptionSource from '../../../../../../packages/volt/src/lib/components/drawer/drawer-description.ts?raw';
+import drawerCloseSource from '../../../../../../packages/volt/src/lib/components/drawer/drawer-close.ts?raw';
+
+import resizableSource from '../../../../../../packages/volt/src/lib/components/resizable/resizable.ts?raw';
+import resizablePanelSource from '../../../../../../packages/volt/src/lib/components/resizable/resizable-panel.ts?raw';
+import resizableHandleSource from '../../../../../../packages/volt/src/lib/components/resizable/resizable-handle.ts?raw';
+
+import alertSource from '../../../../../../packages/volt/src/lib/components/alert/alert.ts?raw';
+import alertTitleSource from '../../../../../../packages/volt/src/lib/components/alert/alert-title.ts?raw';
+import alertDescriptionSource from '../../../../../../packages/volt/src/lib/components/alert/alert-description.ts?raw';
+import alertVariantsSource from '../../../../../../packages/volt/src/lib/components/alert/variants.ts?raw';
+
+import emptyStateSource from '../../../../../../packages/volt/src/lib/components/empty-state/empty-state.ts?raw';
+import emptyStateTitleSource from '../../../../../../packages/volt/src/lib/components/empty-state/empty-state-title.ts?raw';
+import emptyStateDescriptionSource from '../../../../../../packages/volt/src/lib/components/empty-state/empty-state-description.ts?raw';
+import spinnerSource from '../../../../../../packages/volt/src/lib/components/spinner/spinner.ts?raw';
+import spinnerVariantsSource from '../../../../../../packages/volt/src/lib/components/spinner/variants.ts?raw';
+
+import sidebarSource from '../../../../../../packages/volt/src/lib/layouts/sidebar/sidebar.ts?raw';
+import sidebarServiceSource from '../../../../../../packages/volt/src/lib/layouts/sidebar/sidebar.service.ts?raw';
+
+function join(...parts: [filename: string, source: string][]): string {
+  return parts.map(([filename, source]) => `// ${filename}\n${source}`).join('\n\n');
+}
+
+export const BUTTON_SNIPPET = join(
+  ['button.ts', buttonSource],
+  ['native-button.ts', nativeButtonSource],
+  ['variants.ts', buttonVariantsSource]
+);
+export const BADGE_SNIPPET = join(['badge.ts', badgeSource], ['variants.ts', badgeVariantsSource]);
+export const CARD_SNIPPET = cardSource;
+export const CHECKBOX_SNIPPET = checkboxSource;
+export const INPUT_SNIPPET = join(['input.ts', inputSource], ['variants.ts', inputVariantsSource]);
+export const AUTOFILL_SNIPPET = autofillSource;
+export const PROGRESS_SNIPPET = join(
+  ['progress.ts', progressSource],
+  ['progress-label.ts', progressLabelSource],
+  ['progress-value.ts', progressValueSource]
+);
+export const SEARCH_SNIPPET = join(
+  ['search.ts', searchSource],
+  ['search-clear.ts', searchClearSource]
+);
+export const SEPARATOR_SNIPPET = separatorSource;
+export const SLIDER_SNIPPET = sliderSource;
+export const RANGE_SLIDER_SNIPPET = rangeSliderSource;
+export const SWITCH_SNIPPET = switchSource;
+export const TEXTAREA_SNIPPET = join(
+  ['textarea.ts', textareaSource],
+  ['variants.ts', textareaVariantsSource]
+);
+export const TOGGLE_SNIPPET = join(
+  ['toggle.ts', toggleSource],
+  ['variants.ts', toggleVariantsSource]
+);
+export const TOOLBAR_SNIPPET = join(
+  ['toolbar.ts', toolbarSource],
+  ['toolbar-button.ts', toolbarButtonSource]
+);
+
+export const ACCORDION_SNIPPET = join(
+  ['accordion.ts', accordionSource],
+  ['accordion-item.ts', accordionItemSource],
+  ['accordion-trigger.ts', accordionTriggerSource],
+  ['accordion-content.ts', accordionContentSource]
+);
+
+export const AVATAR_SNIPPET = join(
+  ['avatar.ts', avatarSource],
+  ['avatar-image.ts', avatarImageSource],
+  ['avatar-fallback.ts', avatarFallbackSource]
+);
+
+export const BREADCRUMBS_SNIPPET = join(
+  ['breadcrumbs.ts', breadcrumbsSource],
+  ['breadcrumbs-list.ts', breadcrumbsListSource],
+  ['breadcrumbs-item.ts', breadcrumbsItemSource],
+  ['breadcrumbs-link.ts', breadcrumbsLinkSource],
+  ['native-breadcrumbs-link.ts', nativeBreadcrumbsLinkSource],
+  ['breadcrumbs-link-variants.ts', breadcrumbsLinkVariantsSource],
+  ['breadcrumbs-page.ts', breadcrumbsPageSource],
+  ['breadcrumbs-separator.ts', breadcrumbsSeparatorSource],
+  ['breadcrumbs-ellipsis.ts', breadcrumbsEllipsisSource]
+);
+
+export const DROPDOWN_MENU_SNIPPET = join(
+  ['dropdown-menu.ts', dropdownMenuSource],
+  ['dropdown-menu-trigger.ts', dropdownMenuTriggerSource],
+  ['dropdown-menu-submenu-trigger.ts', dropdownMenuSubmenuTriggerSource],
+  ['dropdown-menu-item.ts', dropdownMenuItemSource],
+  ['dropdown-menu-label.ts', dropdownMenuLabelSource],
+  ['dropdown-menu-separator.ts', dropdownMenuSeparatorSource]
+);
+
+export const NAVIGATION_MENU_SNIPPET = join(
+  ['navigation-menu.ts', navigationMenuSource],
+  ['navigation-menu-list.ts', navigationMenuListSource],
+  ['navigation-menu-item.ts', navigationMenuItemSource],
+  ['navigation-menu-trigger.ts', navigationMenuTriggerSource],
+  ['navigation-menu-content.ts', navigationMenuContentSource],
+  ['navigation-menu-link.ts', navigationMenuLinkSource],
+  ['navigation-menu-content-item.ts', navigationMenuContentItemSource]
+);
+
+export const POPOVER_SNIPPET = join(
+  ['popover-trigger.ts', popoverTriggerSource],
+  ['popover-content.ts', popoverContentSource],
+  ['popover-arrow.ts', popoverArrowSource]
+);
+
+export const RADIO_SNIPPET = join(
+  ['radio-group.ts', radioGroupSource],
+  ['radio-item.ts', radioItemSource]
+);
+
+export const SELECT_SNIPPET = join(
+  ['select.ts', selectSource],
+  ['native-select.ts', nativeSelectSource],
+  ['select-content.ts', selectContentSource],
+  ['select-item.ts', selectItemSource],
+  ['select-label.ts', selectLabelSource],
+  ['select-separator.ts', selectSeparatorSource]
+);
+
+export const TABS_SNIPPET = join(
+  ['tabs.ts', tabsSource],
+  ['tabs-list.ts', tabsListSource],
+  ['tabs-trigger.ts', tabsTriggerSource],
+  ['tabs-content.ts', tabsContentSource]
+);
+
+export const TOOLTIP_SNIPPET = join(
+  ['tooltip.ts', tooltipSource],
+  ['tooltip-content.ts', tooltipContentSource],
+  ['tooltip-arrow.ts', tooltipArrowSource]
+);
+
+export const COMBOBOX_SNIPPET = join(
+  ['combobox.ts', comboboxSource],
+  ['combobox-input.ts', comboboxInputSource],
+  ['combobox-button.ts', comboboxButtonSource],
+  ['combobox-dropdown.ts', comboboxDropdownSource],
+  ['combobox-option.ts', comboboxOptionSource]
+);
+
+export const DATE_PICKER_SNIPPET = join(
+  ['date-picker.ts', datePickerSource],
+  ['date-range-picker.ts', dateRangePickerSource],
+  ['date-picker-label.ts', datePickerLabelSource],
+  ['date-picker-grid.ts', datePickerGridSource],
+  ['date-picker-cell.ts', datePickerCellSource],
+  ['date-picker-date-button.ts', datePickerDateButtonSource],
+  ['date-picker-next-month.ts', datePickerNextMonthSource],
+  ['date-picker-previous-month.ts', datePickerPreviousMonthSource]
+);
+
+export const FILE_UPLOAD_SNIPPET = join(
+  ['file-upload.ts', fileUploadSource],
+  ['file-dropzone.ts', fileDropzoneSource]
+);
+
+export const FORM_FIELD_SNIPPET = join(
+  ['form-field.ts', formFieldSource],
+  ['form-field-label.ts', formFieldLabelSource],
+  ['form-field-hint.ts', formFieldHintSource],
+  ['form-field-error.ts', formFieldErrorSource]
+);
+
+export const INPUT_OTP_SNIPPET = join(
+  ['input-otp.ts', inputOtpSource],
+  ['input-otp-slot.ts', inputOtpSlotSource]
+);
+
+export const LISTBOX_SNIPPET = join(
+  ['listbox.ts', listboxSource],
+  ['listbox-option.ts', listboxOptionSource],
+  ['variants.ts', listboxVariantsSource],
+  ['listbox-section.ts', listboxSectionSource],
+  ['listbox-header.ts', listboxHeaderSource],
+  ['listbox-trigger.ts', listboxTriggerSource]
+);
+
+export const METER_SNIPPET = join(
+  ['meter.ts', meterSource],
+  ['meter-track.ts', meterTrackSource],
+  ['meter-indicator.ts', meterIndicatorSource],
+  ['meter-label.ts', meterLabelSource],
+  ['meter-value.ts', meterValueSource]
+);
+
+export const PAGINATION_SNIPPET = join(
+  ['pagination.ts', paginationSource],
+  ['variants.ts', paginationVariantsSource],
+  ['pagination-first.ts', paginationFirstSource],
+  ['pagination-previous.ts', paginationPreviousSource],
+  ['pagination-next.ts', paginationNextSource],
+  ['pagination-last.ts', paginationLastSource],
+  ['pagination-button.ts', paginationButtonSource]
+);
+
+export const TOAST_SNIPPET = join(
+  ['toast.ts', toastSource],
+  ['variants.ts', toastVariantsSource],
+  ['toast-title.ts', toastTitleSource],
+  ['toast-description.ts', toastDescriptionSource],
+  ['toast-close.ts', toastCloseSource],
+  ['toast-service.ts', toastServiceSource]
+);
+
+export const TOGGLE_GROUP_SNIPPET = join(
+  ['toggle-group.ts', toggleGroupSource],
+  ['toggle-group-item.ts', toggleGroupItemSource],
+  ['variants.ts', toggleGroupVariantsSource]
+);
+
+export const SKELETON_SNIPPET = join(
+  ['skeleton.ts', skeletonSource],
+  ['variants.ts', skeletonVariantsSource]
+);
+
+export const TABLE_SNIPPET = join(
+  ['table.ts', tableSource],
+  ['table-header.ts', tableHeaderSource],
+  ['table-body.ts', tableBodySource],
+  ['table-footer.ts', tableFooterSource],
+  ['table-row.ts', tableRowSource],
+  ['table-head.ts', tableHeadSource],
+  ['table-cell.ts', tableCellSource],
+  ['table-caption.ts', tableCaptionSource]
+);
+
+export const DIALOG_SNIPPET = join(
+  ['dialog.ts', dialogSource],
+  ['dialog-overlay.ts', dialogOverlaySource],
+  ['dialog-content.ts', dialogContentSource],
+  ['dialog-title.ts', dialogTitleSource],
+  ['dialog-description.ts', dialogDescriptionSource],
+  ['dialog-root.ts', dialogRootSource],
+  ['dialog-service.ts', dialogServiceSource]
+);
+
+export const DRAWER_SNIPPET = join(
+  ['drawer.ts', drawerSource],
+  ['drawer-overlay.ts', drawerOverlaySource],
+  ['drawer-content.ts', drawerContentSource],
+  ['drawer-title.ts', drawerTitleSource],
+  ['drawer-description.ts', drawerDescriptionSource],
+  ['drawer-close.ts', drawerCloseSource]
+);
+
+export const RESIZABLE_SNIPPET = join(
+  ['resizable.ts', resizableSource],
+  ['resizable-panel.ts', resizablePanelSource],
+  ['resizable-handle.ts', resizableHandleSource]
+);
+
+export const SIDEBAR_SNIPPET = join(
+  ['sidebar.ts', sidebarSource],
+  ['sidebar.service.ts', sidebarServiceSource]
+);
+
+export const ALERT_SNIPPET = join(
+  ['alert.ts', alertSource],
+  ['alert-title.ts', alertTitleSource],
+  ['alert-description.ts', alertDescriptionSource],
+  ['variants.ts', alertVariantsSource]
+);
+
+export const EMPTY_STATE_SNIPPET = join(
+  ['empty-state.ts', emptyStateSource],
+  ['empty-state-title.ts', emptyStateTitleSource],
+  ['empty-state-description.ts', emptyStateDescriptionSource]
+);
+
+export const SPINNER_SNIPPET = join(
+  ['spinner.ts', spinnerSource],
+  ['variants.ts', spinnerVariantsSource]
+);

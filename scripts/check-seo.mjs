@@ -7,19 +7,32 @@
  * Why the raw response and not the DOM: the metadata is written during server rendering, and a
  * browser test would pass even if it only appeared after hydration.
  *
- * Usage:
- *   node scripts/check-seo.mjs --url http://localhost:5173      # an already running server
- *   node scripts/check-seo.mjs                                   # serves dist/ with wrangler (needs pnpm build)
+ * Checks either application, each against its own origin and its own crawler files:
+ *
+ *   node scripts/check-seo.mjs                                   # Volt UI (voltui.dev), served from dist/apps/web/analog
+ *   node scripts/check-seo.mjs --app recipes                     # Recipes (recipes.voltui.dev), from dist/apps/recipes
+ *   node scripts/check-seo.mjs --url http://localhost:5173       # an already running server
  */
 import { spawn } from 'node:child_process';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
-const ORIGIN = 'https://voltui.dev';
+
+const appArg = process.argv.indexOf('--app');
+const APP = appArg > -1 ? process.argv[appArg + 1] : 'docs';
+if (!['docs', 'recipes'].includes(APP)) {
+  console.error('--app must be "docs" or "recipes"');
+  process.exit(1);
+}
+const RECIPES = APP === 'recipes';
+const ORIGIN = RECIPES ? 'https://recipes.voltui.dev' : 'https://voltui.dev';
+const OTHER_ORIGIN = RECIPES ? 'https://voltui.dev' : 'https://recipes.voltui.dev';
+const SITE_NAME = RECIPES ? 'Volt UI Recipes' : 'Volt UI';
+const OUTPUT = RECIPES ? 'dist/apps/recipes/analog/public' : 'dist/apps/web/analog/public';
 // Written in pieces so this file is not itself a hit for the old-origin regression test.
 const OLD_ORIGIN = ['volt-ui', 'andersseen', 'dev'].join('.');
-const PORT = 8798;
+const PORT = RECIPES ? 8797 : 8798;
 
 const urlArg = process.argv.indexOf('--url');
 let base = urlArg > -1 ? process.argv[urlArg + 1] : `http://127.0.0.1:${PORT}`;
@@ -28,8 +41,9 @@ let server;
 if (urlArg === -1) {
   server = spawn(
     join(ROOT, 'node_modules/.bin/wrangler'),
-    ['pages', 'dev', 'dist/analog/public', '--ip', '127.0.0.1', '--port', String(PORT)],
-    { cwd: ROOT, env: { ...process.env, NO_COLOR: '1' }, stdio: 'ignore' }
+    ['pages', 'dev', '--ip', '127.0.0.1', '--port', String(PORT)],
+    // From the app's folder, so its wrangler.toml (output dir, compatibility date) applies.
+    { cwd: join(ROOT, 'apps', APP === 'recipes' ? 'recipes' : 'web'), env: { ...process.env, NO_COLOR: '1' }, stdio: 'ignore' }
   );
 }
 
@@ -67,16 +81,46 @@ const metas = (html, key, value) =>
     .filter(match => match[0].includes(`${key}="${value}"`))
     .map(match => match[0].match(/\scontent="([^"]*)"/)?.[1]);
 
-const PAGES = [
-  { path: '/', lang: 'en', title: /Volt UI/, home: true },
-  { path: '/docs/components', lang: 'en', title: /Components/ },
-  { path: '/docs/components/button', lang: 'en', title: /Button/, breadcrumbs: true },
-  { path: '/docs/components/dialog', lang: 'en', title: /Dialog/, breadcrumbs: true },
-  { path: '/docs/introduction', lang: 'en', title: /Documentation/ },
-  { path: '/create-theme', lang: 'en', title: /Theme/ },
-  { path: '/es/docs/components/dialog', lang: 'es', title: /Componente Dialog/, breadcrumbs: true },
-  { path: '/uk/docs/introduction', lang: 'uk', title: /Документація/ },
-];
+const PAGES = RECIPES
+  ? [
+      { path: '/', lang: 'en', title: /Volt UI Recipes/, home: true },
+      { path: '/blocks', lang: 'en', title: /Blocks/ },
+      { path: '/blocks/pricing', lang: 'en', title: /Pricing Tiers/, breadcrumbs: true },
+      { path: '/layouts', lang: 'en', title: /Layouts/ },
+      { path: '/layouts/kanban', lang: 'en', title: /Kanban/, breadcrumbs: true },
+      { path: '/recipes', lang: 'en', title: /Recipes/ },
+      { path: '/recipes/async-search', lang: 'en', title: /Async search/, breadcrumbs: true },
+      { path: '/es/blocks/pricing', lang: 'es', title: /Bloque Pricing Tiers/, breadcrumbs: true },
+      { path: '/uk/layouts', lang: 'uk', title: /Макети/ },
+      { path: '/docs/copying-a-recipe', lang: 'en', title: /Copying a recipe/, breadcrumbs: true },
+      {
+        path: '/es/docs/copying-a-recipe',
+        lang: 'es',
+        title: /Copiar una receta/,
+        breadcrumbs: true,
+      },
+      {
+        path: '/uk/docs/adding-a-recipe',
+        lang: 'uk',
+        title: /Додавання рецепта/,
+        breadcrumbs: true,
+      },
+    ]
+  : [
+      { path: '/', lang: 'en', title: /Volt UI/, home: true },
+      { path: '/docs/components', lang: 'en', title: /Components/ },
+      { path: '/docs/components/button', lang: 'en', title: /Button/, breadcrumbs: true },
+      { path: '/docs/components/dialog', lang: 'en', title: /Dialog/, breadcrumbs: true },
+      { path: '/docs/introduction', lang: 'en', title: /Documentation/ },
+      { path: '/create-theme', lang: 'en', title: /Theme/ },
+      {
+        path: '/es/docs/components/dialog',
+        lang: 'es',
+        title: /Componente Dialog/,
+        breadcrumbs: true,
+      },
+      { path: '/uk/docs/introduction', lang: 'uk', title: /Документація/ },
+    ];
 const LOCALES = ['en', 'es', 'uk'];
 const withLocale = (bare, locale) =>
   locale === 'en' ? bare : bare === '/' ? `/${locale}` : `/${locale}${bare}`;
@@ -105,7 +149,7 @@ for (const page of PAGES.filter(page => !skipped.includes(page.path))) {
   if (title.length !== 1) fail(where, `${title.length} <title> elements`);
   else {
     if (!page.title.test(title[0])) fail(where, `unexpected title "${title[0]}"`);
-    if (title[0] === 'Volt UI') fail(where, 'title is the generic default');
+    if (title[0] === 'Volt UI' && !RECIPES) fail(where, 'title is the generic default');
     if (titles.has(title[0])) fail(where, `title duplicates ${titles.get(title[0])}`);
     titles.set(title[0], where);
   }
@@ -150,7 +194,7 @@ for (const page of PAGES.filter(page => !skipped.includes(page.path))) {
   if (metaContent(head, 'property', 'og:url') !== expectedCanonical)
     fail(where, 'og:url differs from canonical');
   if (metaContent(head, 'property', 'og:type') !== 'website') fail(where, 'og:type is not website');
-  if (metaContent(head, 'property', 'og:site_name') !== 'Volt UI') fail(where, 'og:site_name');
+  if (metaContent(head, 'property', 'og:site_name') !== SITE_NAME) fail(where, 'og:site_name');
   if (metaContent(head, 'name', 'twitter:card') !== 'summary_large_image')
     fail(where, 'twitter:card');
   for (const image of [
@@ -169,7 +213,11 @@ for (const page of PAGES.filter(page => !skipped.includes(page.path))) {
       try {
         const data = JSON.parse(jsonLd[0]);
         const types = (Array.isArray(data) ? data : [data]).map(item => item['@type']);
-        const wanted = page.home ? ['WebSite', 'SoftwareSourceCode'] : ['BreadcrumbList'];
+        const wanted = page.home
+          ? RECIPES
+            ? ['WebSite']
+            : ['WebSite', 'SoftwareSourceCode']
+          : ['BreadcrumbList'];
         for (const type of wanted) if (!types.includes(type)) fail(where, `JSON-LD lacks ${type}`);
       } catch (error) {
         fail(where, `JSON-LD is not valid JSON: ${error.message}`);
@@ -180,6 +228,15 @@ for (const page of PAGES.filter(page => !skipped.includes(page.path))) {
   }
 
   if (html.includes(OLD_ORIGIN)) fail(where, `contains the old origin ${OLD_ORIGIN}`);
+  // Each site's own canonical, alternates and social tags stay on its own origin.
+  if (
+    head.includes(`"${OTHER_ORIGIN}/`) &&
+    /rel="(canonical|alternate)"[^>]*href="https:\/\/(voltui|recipes\.voltui)\.dev/.test(head)
+  ) {
+    for (const m of head.matchAll(/<link\b[^>]*rel="(?:canonical|alternate)"[^>]*>/g)) {
+      if (m[0].includes(OTHER_ORIGIN)) fail(where, `${m[0]} points at ${OTHER_ORIGIN}`);
+    }
+  }
   if (!/<h1\b/.test(html)) fail(where, 'no <h1> in the server-rendered HTML');
 }
 
@@ -217,15 +274,29 @@ if (sitemap?.status !== 200 || !/xml/.test(sitemap.type))
   fail('/sitemap.xml', `status ${sitemap?.status} type ${sitemap?.type}`);
 else {
   const locs = tag(sitemap.text, /<loc>([^<]*)<\/loc>/g);
-  for (const wanted of [
-    '/',
-    '/es/docs/components/button',
-    '/uk/docs/introduction',
-    '/docs/components/dialog',
-    '/create-theme',
-  ]) {
+  for (const wanted of RECIPES
+    ? [
+        '/',
+        '/blocks/hero',
+        '/layouts/kanban',
+        '/recipes/data-table',
+        '/es/blocks/pricing',
+        '/uk/recipes',
+      ]
+    : [
+        '/',
+        '/es/docs/components/button',
+        '/uk/docs/introduction',
+        '/docs/components/dialog',
+        '/create-theme',
+      ]) {
     if (!locs.includes(`${ORIGIN}${wanted}`)) fail('/sitemap.xml', `missing ${wanted}`);
   }
+  // The pages that moved are advertised by exactly one site: their new home.
+  if (!RECIPES && locs.some(loc => /\/docs\/(blocks|layouts|recipes)(\/|$)/.test(loc)))
+    fail('/sitemap.xml', 'still advertises pages that moved to Recipes');
+  if (locs.some(loc => loc.startsWith(OTHER_ORIGIN)))
+    fail('/sitemap.xml', `lists ${OTHER_ORIGIN} URLs`);
   if (locs.some(loc => !loc.startsWith(`${ORIGIN}/`) || /\/api\/|\?|#/.test(loc)))
     fail('/sitemap.xml', 'contains a non-canonical or internal URL');
   if (new Set(locs).size !== locs.length) fail('/sitemap.xml', 'contains duplicate URLs');
@@ -235,12 +306,19 @@ const llms = await get('/llms.txt');
 if (llms?.status !== 200 || !llms.type.startsWith('text/plain'))
   fail('/llms.txt', `status ${llms?.status} type ${llms?.type}`);
 else
-  for (const wanted of [
-    ORIGIN,
-    'https://github.com/Andersseen/volt-ui',
-    '@voltui/components',
-    `${ORIGIN}/docs/components`,
-  ]) {
+  for (const wanted of RECIPES
+    ? [
+        ORIGIN,
+        'https://github.com/Andersseen/volt-ui',
+        `${ORIGIN}/blocks/hero`,
+        'https://voltui.dev',
+      ]
+    : [
+        ORIGIN,
+        'https://github.com/Andersseen/volt-ui',
+        '@voltui/components',
+        `${ORIGIN}/docs/components`,
+      ]) {
     if (!llms.text.includes(wanted)) fail('/llms.txt', `lacks ${wanted}`);
   }
 

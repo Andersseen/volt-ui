@@ -1,0 +1,188 @@
+/* Imported after `@import 'tailwindcss'` in each app's own entry stylesheet, which also owns `@source`. */
+@plugin 'tailwindcss-animate';
+
+@variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans:
+    'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    sans-serif;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-foreground: var(--surface-foreground);
+  --color-card: var(--surface);
+  --color-card-foreground: var(--surface-foreground);
+  --color-popover: var(--surface);
+  --color-popover-foreground: var(--surface-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--muted);
+  --color-accent-foreground: var(--foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+
+  --color-error: var(--error);
+  --color-error-foreground: var(--error-foreground);
+
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+
+  --scrollbar-size: 0.75rem;
+  --scrollbar-track: color-mix(in oklch, var(--background) 88%, var(--surface));
+  --scrollbar-thumb: color-mix(in oklch, var(--primary) 42%, var(--border));
+  --scrollbar-thumb-hover: color-mix(in oklch, var(--primary) 64%, var(--border));
+
+  /* Dynamic radius based on user selection */
+  --radius-sm: calc(var(--radius) - 0.125rem);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 0.125rem);
+  --radius-xl: calc(var(--radius) + 0.25rem);
+  --radius-full: 9999px;
+
+  --shadow-sm: var(--volt-shadow-sm);
+  --shadow: var(--volt-shadow);
+  --shadow-md: var(--volt-shadow-md);
+  --shadow-lg: var(--volt-shadow-lg);
+  --font-weight-normal: var(--volt-font-weight-base);
+  --font-weight-medium: var(--volt-font-weight-label);
+  --font-weight-semibold: var(--volt-font-weight-heading);
+  --font-weight-bold: var(--volt-font-weight-heading);
+}
+
+:root {
+  --radius: 0.5rem; /* default */
+  --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Smooth in-page navigation for anchor links and skip targets. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /*
+   * Neutralises tailwindcss-animate's enter/exit keyframes, which the overlays rely on.
+   * angular-movement opts out on its own — every directive checks the media query before
+   * it touches an element.
+   */
+  .animate-in,
+  .animate-out,
+  [data-exit] {
+    animation: none !important;
+  }
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+/* The boot skeleton in index.html covers the page until this stylesheet applies. */
+#volt-boot {
+  display: none;
+}
+
+/*
+ * Hero entrance. The hero is above the fold on every viewport, so its entrance has to start at
+ * first paint: a CSS animation ships with the server-rendered stylesheet and does exactly that,
+ * where a JavaScript entrance could only run after hydration.
+ */
+.reveal-up {
+  animation: reveal-up 650ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.reveal-delay-1 {
+  animation-delay: 80ms;
+}
+.reveal-delay-2 {
+  animation-delay: 160ms;
+}
+.reveal-delay-3 {
+  animation-delay: 240ms;
+}
+.reveal-delay-4 {
+  animation-delay: 320ms;
+}
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal-up {
+    animation: none;
+  }
+}
+
+/* Display headings on the landing page: tight tracking and leading for large sizes. */
+@utility landing-display {
+  letter-spacing: -0.035em;
+  line-height: 1.02;
+}
+
+*::-webkit-scrollbar {
+  width: var(--scrollbar-size);
+  height: var(--scrollbar-size);
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+*::-webkit-scrollbar-thumb {
+  min-height: 2rem;
+  border: 3px solid var(--scrollbar-track);
+  border-radius: var(--radius-full);
+  background: var(--scrollbar-thumb);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+*::-webkit-scrollbar-corner {
+  background: var(--scrollbar-track);
+}
+
+/*
+ * Volt's design tokens (colors + style presets) are NOT duplicated here.
+ * This used to be a hand-copied fork of packages/volt/src/themes/ that could
+ * (and did) drift from what @voltui/components/themes.css actually ships to
+ * consumers — see CHANGELOG 0.8.0. Both apps now import the exact same
+ * source files the published package uses, so there is exactly one place
+ * that defines what "ember" or "brutal" mean.
+ */
+@import '../../volt/src/themes/core.css'; /* base tokens + volt (default) colors + sharp (default) style */
+@import '../../volt/src/themes/colors/ember.css';
+@import '../../volt/src/themes/colors/sage.css';
+@import '../../volt/src/themes/colors/dusk.css';
+@import '../../volt/src/themes/colors/glacier.css';
+@import '../../volt/src/themes/styles/soft.css';
+@import '../../volt/src/themes/styles/brutal.css';
+@import '../../volt/src/themes/styles/ghost.css';
+@import '../../volt/src/themes/styles/retro.css';

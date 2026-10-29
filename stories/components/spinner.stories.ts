@@ -1,6 +1,6 @@
 import { moduleMetadata, type Meta, type StoryObj } from '@storybook/angular-vite';
 import { VoltNativeButton, VoltSpinner } from 'volt';
-import { SPINNER_API } from '../../src/app/lib/api-reference.generated';
+import { SPINNER_API } from '../../apps/web/src/app/lib/api-reference.generated';
 import { variantArgTypes } from '../_helpers/api';
 
 const meta: Meta<VoltSpinner> = {

@@ -5,27 +5,27 @@
     "packageManager": "pnpm",
     "analytics": "8d511575-c890-4951-a20a-17cfebd9a4af"
   },
-  "newProjectRoot": "projects",
+  "newProjectRoot": "packages",
   "projects": {
     "volt-ui": {
       "projectType": "application",
       "schematics": {},
-      "root": "",
-      "sourceRoot": "src",
+      "root": "apps/web",
+      "sourceRoot": "apps/web/src",
       "prefix": "app",
       "architect": {
         "build": {
           "builder": "@analogjs/platform:vite",
           "options": {
-            "outputPath": "dist/volt-ui",
+            "outputPath": "dist/apps/web",
             "ssr": true,
             "assets": [
               {
                 "glob": "**/*",
-                "input": "public"
+                "input": "apps/web/public"
               }
             ],
-            "styles": ["src/styles.css"]
+            "styles": ["apps/web/src/styles.css"]
           },
           "configurations": {
             "production": {},
@@ -54,20 +54,64 @@
         }
       }
     },
+    "recipes": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "apps/recipes",
+      "sourceRoot": "apps/recipes/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@analogjs/platform:vite",
+          "options": {
+            "outputPath": "dist/apps/recipes",
+            "ssr": true,
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "apps/recipes/public"
+              }
+            ],
+            "styles": ["apps/recipes/src/styles.css"]
+          },
+          "configurations": {
+            "production": {},
+            "development": {}
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@analogjs/platform:vite-dev-server",
+          "options": {
+            "buildTarget": "recipes:build:development",
+            "hmr": true
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "recipes:build:production"
+            },
+            "development": {
+              "buildTarget": "recipes:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        }
+      }
+    },
     "volt": {
       "projectType": "library",
-      "root": "projects/volt",
-      "sourceRoot": "projects/volt/src",
+      "root": "packages/volt",
+      "sourceRoot": "packages/volt/src",
       "prefix": "volt",
       "architect": {
         "build": {
           "builder": "@angular/build:ng-packagr",
           "configurations": {
             "production": {
-              "tsConfig": "projects/volt/tsconfig.lib.prod.json"
+              "tsConfig": "packages/volt/tsconfig.lib.prod.json"
             },
             "development": {
-              "tsConfig": "projects/volt/tsconfig.lib.json"
+              "tsConfig": "packages/volt/tsconfig.lib.json"
             }
           },
           "defaultConfiguration": "production"
@@ -75,7 +119,7 @@
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
-            "tsConfig": "projects/volt/tsconfig.spec.json"
+            "tsConfig": "packages/volt/tsconfig.spec.json"
           }
         },
         "storybook": {

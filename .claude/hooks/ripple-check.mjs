@@ -2,7 +2,7 @@
 /**
  * PostToolUse hook — enforces GUARDRAILS.md "Required ripple effects".
  *
- * Fires after an Edit/Write under projects/volt/src/lib/{components,layouts}/<name>/
+ * Fires after an Edit/Write under packages/volt/src/lib/{components,layouts}/<name>/
  * and reports which of the required follow-up edits are still missing. Silent when
  * everything is in place, so it only ever speaks up when there is real work left.
  *
@@ -35,27 +35,29 @@ function main(input) {
   const missing = [];
 
   // 1. public-api.ts export
-  if (!read('projects/volt/src/public-api.ts').includes(`./lib/${kind}/${name}'`)) {
+  if (!read('packages/volt/src/public-api.ts').includes(`./lib/${kind}/${name}'`)) {
     missing.push(
-      `\`projects/volt/src/public-api.ts\` — add \`export * from './lib/${kind}/${name}';\``
+      `\`packages/volt/src/public-api.ts\` — add \`export * from './lib/${kind}/${name}';\``
     );
   }
 
   // 2-4. Snippets + demo page only apply to components (layouts have no docs page).
   if (kind === 'components') {
-    if (!read('src/app/lib/snippets/index.ts').includes(`components/${name}/`)) {
+    if (!read('apps/web/src/app/lib/snippets/index.ts').includes(`components/${name}/`)) {
       missing.push(
-        `\`src/app/lib/snippets/index.ts\` — add the \`?raw\` import + \`${constName}_SNIPPET\` export`
+        `\`apps/web/src/app/lib/snippets/index.ts\` — add the \`?raw\` import + \`${constName}_SNIPPET\` export`
       );
     }
-    if (!read('src/app/lib/snippets/usage.ts').includes(`${constName}_USAGE`)) {
-      missing.push(`\`src/app/lib/snippets/usage.ts\` — add \`${constName}_USAGE\``);
+    if (!read('apps/web/src/app/lib/snippets/usage.ts').includes(`${constName}_USAGE`)) {
+      missing.push(`\`apps/web/src/app/lib/snippets/usage.ts\` — add \`${constName}_USAGE\``);
     }
     if (
-      !existsSync(join(ROOT, `src/app/pages/(components-docs)/docs/components/${name}.page.ts`))
+      !existsSync(
+        join(ROOT, `apps/web/src/app/pages/(components-docs)/docs/components/${name}.page.ts`)
+      )
     ) {
       missing.push(
-        `\`src/app/pages/(components-docs)/docs/components/${name}.page.ts\` — demo page (needs \`export default\`)`
+        `\`apps/web/src/app/pages/(components-docs)/docs/components/${name}.page.ts\` — demo page (needs \`export default\`)`
       );
     }
   }
@@ -63,12 +65,12 @@ function main(input) {
   // 5. Generated manifest
   let manifest;
   try {
-    manifest = JSON.parse(read('public/manifest.json'));
+    manifest = JSON.parse(read('apps/web/public/manifest.json'));
   } catch {
     manifest = null;
   }
   if (manifest && !Object.prototype.hasOwnProperty.call(manifest.components ?? {}, name)) {
-    missing.push('`pnpm manifest` — regenerate `public/manifest.json` (the CLI reads it)');
+    missing.push('`pnpm manifest` — regenerate `apps/web/public/manifest.json` (the CLI reads it)');
   }
 
   if (missing.length === 0) return;

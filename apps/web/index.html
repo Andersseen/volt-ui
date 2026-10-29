@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Volt UI</title>
+    <base href="/" />
+    <script>
+      // Applies the visitor's saved theme before first paint so there is no
+      // flash of the default (volt/sharp/light) theme while Angular loads.
+      // This mirrors packages/shared/components/theme-switcher.ts's localStorage
+      // keys; keep both in sync if those keys ever change. Runs unguarded
+      // because it only ever executes in the browser (a raw <script> tag
+      // is never evaluated by Angular's server renderer, just serialized).
+      (function () {
+        try {
+          var root = document.documentElement;
+          var color = localStorage.getItem('volt-color');
+          var style = localStorage.getItem('volt-style');
+          var dark = localStorage.getItem('volt-dark') === 'true';
+          if (color) root.setAttribute('data-color', color);
+          if (style) root.setAttribute('data-style', style);
+          if (dark) {
+            root.classList.add('dark');
+            root.style.colorScheme = 'dark';
+          }
+        } catch (e) {
+          // localStorage may be unavailable (private browsing, blocked
+          // storage) — fall back to the default theme, no worse than today.
+        }
+      })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!--
+      Boot skeleton. While the site stylesheet is still loading (in production it is
+      render-blocking, so this never paints; in \`vite dev\` CSS arrives after the HTML), an
+      unstyled page would flash raw markup. This covers it with the shape of the page, using
+      only the inline styles below, and apps/web/src/styles.css hides it the moment it applies.
+    -->
+    <style>
+      #volt-boot {
+        position: fixed;
+        inset: 0;
+        z-index: 2147483647;
+        background: #ffffff;
+        --sk: #eef0f4;
+        font-family: system-ui, sans-serif;
+      }
+      .dark #volt-boot {
+        background: #07070b;
+        --sk: #16171f;
+      }
+      #volt-boot .bar {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        height: 64px;
+        padding: 0 24px;
+        border-bottom: 1px solid var(--sk);
+      }
+      #volt-boot .sk {
+        border-radius: 8px;
+        background: var(--sk);
+        animation: volt-boot-pulse 1.2s ease-in-out infinite;
+      }
+      #volt-boot .hero {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 72px 24px;
+        display: grid;
+        gap: 48px;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      }
+      #volt-boot .stack > * + * {
+        margin-top: 16px;
+      }
+      @keyframes volt-boot-pulse {
+        50% {
+          opacity: 0.55;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #volt-boot .sk {
+          animation: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="volt-boot" aria-hidden="true">
+      <div class="bar">
+        <img src="favicon.svg" width="32" height="32" alt="" />
+        <div class="sk" style="width: 72px; height: 16px"></div>
+        <div style="flex: 1"></div>
+        <div class="sk" style="width: 240px; height: 16px"></div>
+      </div>
+      <div class="hero">
+        <div class="stack">
+          <div class="sk" style="width: 180px; height: 24px; border-radius: 999px"></div>
+          <div class="sk" style="width: 92%; height: 56px"></div>
+          <div class="sk" style="width: 70%; height: 56px"></div>
+          <div class="sk" style="width: 85%; height: 18px"></div>
+          <div class="sk" style="width: 60%; height: 18px"></div>
+          <div class="sk" style="width: 320px; height: 44px"></div>
+        </div>
+        <div class="sk" style="height: 380px; border-radius: 16px"></div>
+      </div>
+    </div>
+    <app-root></app-root>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

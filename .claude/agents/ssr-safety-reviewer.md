@@ -1,6 +1,6 @@
 ---
 name: ssr-safety-reviewer
-description: Audits Angular/Analog code for SSR-unsafe browser API access. Use after adding or editing components in projects/volt/src/lib or pages in src/app, and before any release. Catches the bug class that passes Vitest (jsdom) but breaks `pnpm build` or hydration.
+description: Audits Angular/Analog code for SSR-unsafe browser API access. Use after adding or editing components in packages/volt/src/lib or pages in apps/web/src/app, and before any release. Catches the bug class that passes Vitest (jsdom) but breaks `pnpm build` or hydration.
 tools: Read, Grep, Glob, Bash
 model: sonnet
 ---
@@ -42,12 +42,12 @@ Browser globals and APIs: `document`, `window`, `localStorage`, `sessionStorage`
 
 ## Reference implementations in this repo (copy these shapes)
 
-- `src/app/components/theme-switcher.ts` — `isPlatformBrowser` guard around
+- `apps/web/src/app/components/theme-switcher.ts` — `isPlatformBrowser` guard around
   `localStorage` read/write.
-- `src/app/components/code-panel.ts` — `afterNextRender` with an explicit `injector`,
+- `apps/web/src/app/components/code-panel.ts` — `afterNextRender` with an explicit `injector`,
   plus an `isPlatformBrowser` early return.
 
-## Additional checks for library code (`projects/volt/src/lib/`)
+## Additional checks for library code (`packages/volt/src/lib/`)
 
 - Library components must be renderable server-side by a consumer with SSR. Hold them
   to a stricter bar than the docs app.

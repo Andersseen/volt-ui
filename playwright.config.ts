@@ -5,15 +5,21 @@ const baseURL = `http://127.0.0.1:${port}`;
 const serverMode = process.env['E2E_SERVER'] ?? 'dev';
 const webServerCommand =
   serverMode === 'wrangler'
-    ? `pnpm exec wrangler pages dev dist/analog/public --ip 127.0.0.1 --port ${port}`
+    ? `pnpm exec wrangler pages dev --ip 127.0.0.1 --port ${port}`
     : serverMode === 'preview'
-      ? `pnpm exec vite preview --host 127.0.0.1 --port ${port} --strictPort`
+      ? `pnpm exec vite preview --config apps/web/vite.config.ts --host 127.0.0.1 --port ${port} --strictPort`
       : `pnpm dev -- --host 127.0.0.1 --port ${port}`;
 
 export default defineConfig({
   testDir: './e2e',
   // contracts/ has its own config and server (playwright.contracts.config.ts).
-  testIgnore: [/consumer(-cli)?(-workflow|-async)?\.spec\.ts/, /storybook\//, /contracts\//],
+  testIgnore: [
+    /consumer(-cli)?(-workflow|-async)?\.spec\.ts/,
+    /storybook\//,
+    /contracts\//,
+    // The Recipes app has its own config and server (playwright.recipes.config.ts).
+    /recipes\//,
+  ],
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
@@ -36,6 +42,8 @@ export default defineConfig({
   ],
   webServer: {
     command: webServerCommand,
+    // wrangler runs from the app's folder so its wrangler.toml (output dir, compatibility date) applies.
+    cwd: serverMode === 'wrangler' ? 'apps/web' : undefined,
     url: baseURL,
     reuseExistingServer: process.env['PLAYWRIGHT_REUSE_SERVER'] === '1',
   },
