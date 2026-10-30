@@ -1,0 +1,73 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Foundations/Headless backends (experimental)" />
+
+# Headless backends
+
+Volt UI separates three things that used to travel together:
+
+| Axis             | Choices                                       | Chosen by                                |
+| ---------------- | --------------------------------------------- | ---------------------------------------- |
+| Headless backend | `ng-primitives` (default), `quartz`           | the import path, or `volt init --base=…` |
+| Colour preset    | Volt, Ember, Sage, Dusk, Glacier, or your own | `applyVoltTheme` / the theme CSS         |
+| Style preset     | Sharp, Soft, Brutal, Ghost, Retro             | `applyVoltTheme` / the theme CSS         |
+
+Changing the backend never changes the palette or the visual style. The accessibility and behavioural
+contract belongs to Volt UI; the primitive library is an implementation detail of the backend.
+
+## Quartz Headless — experimental
+
+Three components can be backed by [Quartz Headless](https://github.com/Andersseen/quartz) instead of
+ng-primitives: **Checkbox**, **Switch** and **Toggle**. Everything else is ng-primitives only.
+
+### Package mode
+
+```bash
+npm install @voltui/components @quartz-headless/core @quartz-headless/primitives
+```
+
+```ts
+// ng-primitives (default)
+import { VoltCheckbox, VoltSwitch, VoltToggle } from '@voltui/components';
+
+// Quartz Headless — same names, selectors, inputs, models and outputs
+import { VoltCheckbox, VoltSwitch, VoltToggle } from '@voltui/components/quartz';
+```
+
+Import **one** implementation of a given component per Angular component: two classes sharing the
+`volt-checkbox` selector in the same `imports` array is an error. Both entry points can live in the
+same application (for example Quartz Checkbox next to an ng-primitives Dialog); the Quartz entry
+point never loads ng-primitives and the main entry point never loads Quartz.
+
+### CLI mode
+
+```bash
+npx @voltui/cli init --base=quartz
+npx @voltui/cli add checkbox switch toggle --base=quartz
+```
+
+The base is recorded in `volt.json` and reused by later `volt add` calls. A flag that contradicts
+`volt.json`, or a component without a Quartz implementation, is rejected rather than silently
+generating the other engine's source.
+
+### Requirements
+
+- `@quartz-headless/core` and `@quartz-headless/primitives` **0.16.x** (optional peers of `@voltui/components`).
+- Angular 21.2+. Quartz 0.16 declares `@angular/*` peers of `^21.0.0`: on **Angular 22** npm needs
+  `--legacy-peer-deps` (or an `overrides` entry) until Quartz publishes widened peer ranges. The
+  components run correctly on Angular 22 — the compatibility check builds and drives them there.
+
+### What is guaranteed to match
+
+Role, accessible name, `aria-checked` (including `mixed`) / `aria-pressed`, the native `<button>`,
+keyboard and pointer activation, the `data-checked` / `data-indeterminate` / `data-selected` /
+`data-disabled` styling hooks, computed colours, geometry and focus ring, `ControlValueAccessor`
+behaviour (silent writes, dirty/touched, reset, disable), and SSR output plus hydration.
+
+### Known differences
+
+- Disabled **Toggle**: ng-primitives keeps the button focusable with `aria-disabled`; Quartz uses the
+  native `disabled` attribute, which removes it from the tab order.
+- Engine-owned attributes differ (`data-qz-*` versus `data-hover` / `data-press` / `ngp*`). Do not style them.
+
+The **Side by side** story renders both backends from one template.

@@ -17,6 +17,7 @@
     "module": "preserve",
     "paths": {
       "volt": ["./packages/volt/src/public-api"],
+      "volt/quartz": ["./packages/volt/src/quartz-api"],
       "@shared/*": ["./packages/shared/*"]
     }
   },

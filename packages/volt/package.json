@@ -39,7 +39,17 @@
     "@angular/common": "^21.2.0 || ^22.0.0",
     "@angular/core": "^21.2.0 || ^22.0.0",
     "@angular/forms": "^21.2.0 || ^22.0.0",
-    "@angular/router": "^21.2.0 || ^22.0.0"
+    "@angular/router": "^21.2.0 || ^22.0.0",
+    "@quartz-headless/core": "^0.16.0",
+    "@quartz-headless/primitives": "^0.16.0"
+  },
+  "peerDependenciesMeta": {
+    "@quartz-headless/core": {
+      "optional": true
+    },
+    "@quartz-headless/primitives": {
+      "optional": true
+    }
   },
   "dependencies": {
     "tslib": "^2.3.0",

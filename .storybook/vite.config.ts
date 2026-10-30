@@ -11,7 +11,17 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   resolve: {
     // The same `volt` boundary as tsconfig.json `paths` and the docs app.
-    alias: { volt: fileURLToPath(new URL('../packages/volt/src/public-api.ts', import.meta.url)) },
+    // `volt/quartz` first: the opt-in Quartz Headless entry point (`@voltui/components/quartz`).
+    alias: [
+      {
+        find: /^volt\/quartz$/,
+        replacement: fileURLToPath(new URL('../packages/volt/src/quartz-api.ts', import.meta.url)),
+      },
+      {
+        find: /^volt$/,
+        replacement: fileURLToPath(new URL('../packages/volt/src/public-api.ts', import.meta.url)),
+      },
+    ],
   },
   plugins: [tailwindcss()],
 });
