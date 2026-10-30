@@ -6,6 +6,9 @@ const COMPONENTS_DIR = path.resolve(__dirname, '../packages/volt/src/lib/compone
 const LAYOUTS_DIR = path.resolve(__dirname, '../packages/volt/src/lib/layouts');
 const OUTPUT = path.resolve(__dirname, '../apps/web/public/manifest.json');
 const STATUS_FILE = path.resolve(__dirname, '../COMPONENT_STATUS.md');
+const LIB_DIR = path.resolve(__dirname, '../packages/volt/src/lib');
+const QUARTZ_DIR = path.join(LIB_DIR, 'quartz');
+const LIB_PACKAGE = path.resolve(__dirname, '../packages/volt/package.json');
 
 /**
  * Stability is read from COMPONENT_STATUS.md, the one place it is written by hand. It used to be
@@ -359,8 +362,68 @@ for (const [name, meta] of Object.entries(components)) {
   meta.dependencies = extractDependencies(componentDir, meta.category, name, allComponentNames);
 }
 
+/**
+ * Alternative headless backends. `components.<name>.files` stays the default (ng-primitives)
+ * source, unchanged; a component that also has a Quartz implementation gets
+ * `backends.quartz = { files, dependencies }` with paths relative to `packages/volt/src/lib`.
+ * A Quartz folder may import a pure helper that lives with the default component (Toggle's
+ * `variants.ts`); that file is listed too, so a copy is self-contained and styling is not forked.
+ */
+function scanQuartzBackends() {
+  if (!fs.existsSync(QUARTZ_DIR)) return {};
+  const backends = {};
+  for (const entry of fs.readdirSync(QUARTZ_DIR, { withFileTypes: true })) {
+    if (!entry.isDirectory()) continue;
+    const name = entry.name;
+    if (!components[name]) {
+      throw new Error(
+        `lib/quartz/${name} has no ng-primitives counterpart in lib/components/${name}.`
+      );
+    }
+    const dir = path.join(QUARTZ_DIR, name);
+    const own = fs
+      .readdirSync(dir)
+      .filter(f => f.endsWith('.ts') && !f.endsWith('.spec.ts') && !f.endsWith('.test.ts'))
+      .sort();
+    const files = own.map(f => path.posix.join('quartz', name, f));
+    const dependencies = new Set();
+    for (const file of own) {
+      const content = fs.readFileSync(path.join(dir, file), 'utf-8');
+      for (const [, importPath] of content.matchAll(/from\s+['"]([^'"]+)['"]/g)) {
+        const sameComponentFile = importPath.match(/^(?:\.\.\/)+components\/([^/]+)\/([^/]+)$/);
+        if (sameComponentFile && sameComponentFile[1] === name) {
+          const shared = path.posix.join('components', name, `${sameComponentFile[2]}.ts`);
+          if (!files.includes(shared)) files.push(shared);
+          continue;
+        }
+        const target = resolveInternalImport(importPath, 'components', name);
+        if (target && allComponentNames.has(target)) dependencies.add(target);
+      }
+    }
+    backends[name] = { files, dependencies: [...dependencies].sort() };
+  }
+  return backends;
+}
+
+const quartzBackends = scanQuartzBackends();
+for (const [name, backend] of Object.entries(quartzBackends)) {
+  components[name].backends = { quartz: backend };
+}
+const libPackage = JSON.parse(fs.readFileSync(LIB_PACKAGE, 'utf-8'));
+
 const manifest = {
   version: require('../package.json').version,
+  // Published ranges of each backend's runtime packages, read from the library's own peer ranges.
+  backends: {
+    'ng-primitives': { default: true, packages: [] },
+    quartz: {
+      entryPoint: '@voltui/components/quartz',
+      packages: ['@quartz-headless/core', '@quartz-headless/primitives'].map(
+        pkg => `${pkg}@${libPackage.peerDependencies[pkg]}`
+      ),
+      components: Object.keys(quartzBackends).sort(),
+    },
+  },
   components,
 };
 

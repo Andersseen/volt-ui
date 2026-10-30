@@ -144,6 +144,37 @@ jobs:
       - name: Install, build and exercise the tarball
         run: node scripts/check-angular-compat.mjs ${{ matrix.angular }}
 
+  quartz:
+    name: Quartz backend on Angular ${{ matrix.angular }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        # 21.2.0 is the declared minimum; 22 needs --legacy-peer-deps while Quartz 0.16 declares ^21 peers.
+        angular: [21.2.0, 21, 22]
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup
+      - name: Install Playwright Chromium
+        uses: ./.github/actions/setup-playwright
+      - name: Install Playwright Firefox
+        uses: ./.github/actions/setup-playwright
+        with:
+          browser: firefox
+      - name: Install Playwright WebKit
+        uses: ./.github/actions/setup-playwright
+        with:
+          browser: webkit
+
+      # Packs the real tarball, installs it with the published Quartz packages into a project outside
+      # the repository, builds four apps (package and CLI copy, each engine) with strict AOT, zoneless
+      # and prerendered SSR, checks that neither engine leaks into the other's bundle, then runs the
+      # Forms/keyboard/hydration/paint contract in all three browsers. See scripts/check-quartz-consumer.mjs.
+      - name: Install, build and exercise the Quartz backend
+        run: node scripts/check-quartz-consumer.mjs ${{ matrix.angular }}
+
   build:
     name: Build docs app
     runs-on: ubuntu-latest
@@ -337,6 +368,7 @@ jobs:
         packages,
         contracts,
         compat,
+        quartz,
         build,
         build-recipes,
         e2e,
