@@ -95,6 +95,24 @@ Available styles: `sharp`, `soft`, `brutal`, `ghost`, `retro`.
 provideVoltTheme({ color: 'ember', style: 'soft', dark: true });
 ```
 
+## Headless backends (experimental)
+
+Volt's default components are built on [ng-primitives](https://ng-primitives.dev). **Checkbox, Switch and
+Toggle** also ship an opt-in implementation on [Quartz Headless](https://github.com/Andersseen/quartz):
+
+```bash
+npm install @quartz-headless/core @quartz-headless/primitives   # optional peers, ^0.16.0
+```
+
+```typescript
+// Same names, selectors, inputs, models and outputs — import ONE implementation per component.
+import { VoltCheckbox, VoltSwitch, VoltToggle } from '@voltui/components/quartz';
+```
+
+Colour and style presets are independent of the backend, and the two entry points never load each other's
+engine. Angular 21.2+; on Angular 22 npm needs `--legacy-peer-deps` while Quartz 0.16 declares `^21` peers.
+Details and known differences: [docs/headless-backends.md](https://github.com/Andersseen/volt-ui/blob/main/docs/headless-backends.md).
+
 ## Links
 
 - Documentation: https://voltui.dev

@@ -139,6 +139,23 @@ These apply to everything under `src/app/` (the official site), not to the libra
   with ng-primitives? did we duplicate Volt styling? is the raw native HTML intentional? does the
   site expose a missing Volt API that belongs upstream?
 
+## Headless backends
+
+Volt's behaviour contract is its own; the headless engine is an implementation detail. The default is
+ng-primitives (`@voltui/components`). `@voltui/components/quartz` is an **opt-in, experimental** secondary
+entry point with Checkbox, Switch and Toggle on Quartz Headless (`@quartz-headless/*`, optional peers).
+
+- Sources: `packages/volt/src/lib/quartz/<name>/`, exported from `packages/volt/src/quartz-api.ts`; ng-packagr entry
+  `packages/volt/quartz/ng-package.json`. Same selectors, inputs, models, outputs and Tailwind classes as the default
+  component; the wrapper writes the `data-checked|indeterminate|selected|disabled` hooks itself (never style `data-qz-*`).
+  Keep the Volt `ControlValueAccessor` wrapper — do not add `@quartz-headless/primitives/forms` (two CVAs).
+- A component may import only one implementation of a selector. The primary entry must never import Quartz and the Quartz
+  entry must never import ng-primitives; `node scripts/check-quartz-consumer.mjs <angular>` proves it on the packed tarball.
+- Contract: `packages/volt/testing/headless-contract.ts` runs against both engines (`lib/quartz/ngp-and-quartz.spec.ts`);
+  `backend-parity.spec.ts` compares attributes, classes and the public API. A new Quartz component needs a row in both.
+- CLI: `volt init|add --base=ng-primitives|quartz`, recorded in `volt.json`; the manifest `backends` field is generated from
+  `lib/quartz/`. Unsupported pairs are rejected, never silently generated with the other engine. See `docs/headless-backends.md`.
+
 ## Theme system
 
 - Theme tokens are CSS custom properties in `packages/volt/src/themes/core.css`.
