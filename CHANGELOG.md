@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.4.0] - Unreleased
+## [1.4.0] - 2026-10-30
 
 Minor release: the first opt-in alternative headless backend. Additive; every existing import, selector and
 the default ng-primitives implementation are unchanged.

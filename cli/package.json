@@ -1,6 +1,6 @@
 {
   "name": "@voltui/cli",
-  "version": "1.3.3",
+  "version": "1.4.0",
   "description": "CLI that copies accessible Volt UI Angular components into your project (shadcn-style copy-and-own, built on ng-primitives and Tailwind CSS v4).",
   "homepage": "https://voltui.dev",
   "repository": {
