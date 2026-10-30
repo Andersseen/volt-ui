@@ -79,7 +79,8 @@ const fail = message => {
   process.exit(1);
 };
 
-// 1. the tarball
+// 1. the tarball (and the CLI manifest the copy variants read; it is generated, not committed)
+run('generate the CLI manifest', 'node', [join(ROOT, 'cli/generate-manifest.js')], { cwd: ROOT });
 if (!noBuild || !existsSync(join(ROOT, 'dist/volt/package.json'))) {
   run('build the library', 'pnpm', ['build:lib'], { cwd: ROOT });
 }
