@@ -14,7 +14,7 @@ import { join, resolve } from 'node:path';
 
 const core = require('../lib/core.js');
 const CLI = resolve(__dirname, '../bin/volt');
-const QUARTZ = ['checkbox', 'switch', 'toggle'];
+const QUARTZ = ['checkbox', 'radio', 'switch', 'toggle', 'toggle-group'];
 
 /** Runs the real binary in a throwaway project root, as a consumer would. */
 function volt(cwd, ...args) {
@@ -46,7 +46,7 @@ describe('headless bases', () => {
   const ui = () => join(project, 'src/app/ui');
 
   describe('manifest', () => {
-    it('records the Quartz implementation of exactly the three supported components', () => {
+    it('records the Quartz implementation of exactly the five supported components', () => {
       const manifest = core.getLocalManifest();
       expect(manifest.backends.quartz.components).toEqual(QUARTZ);
       expect(core.componentsForBase(manifest, 'quartz')).toEqual(QUARTZ);
@@ -100,11 +100,11 @@ describe('headless bases', () => {
       expect(JSON.parse(readFileSync(join(project, 'volt.json'), 'utf-8'))).toEqual({
         base: 'quartz',
       });
-      expect(result.out).toContain('checkbox, switch, toggle');
+      expect(result.out).toContain('checkbox, radio, switch, toggle, toggle-group');
       expect(result.out).toContain('experimental');
     });
 
-    it('adds all three, with Quartz imports and no ng-primitives import anywhere', () => {
+    it('adds every supported component, with Quartz imports and no ng-primitives import anywhere', () => {
       const result = volt(project, 'add', ...QUARTZ, ui(), '--base=quartz');
       expect(result.status).toBe(0);
       const files = sources(ui());
@@ -115,8 +115,17 @@ describe('headless bases', () => {
           'form-control-state.ts',
           'host-forwarding.ts',
           'index.ts',
+          'quartz-attributes.ts',
+          'quartz-ids.ts',
+          'radio/index.ts',
+          'radio/radio-group.ts',
+          'radio/radio-item.ts',
           'switch/index.ts',
           'switch/switch.ts',
+          'toggle-group/index.ts',
+          'toggle-group/toggle-group-item.ts',
+          'toggle-group/toggle-group.ts',
+          'toggle-group/variants.ts',
           'toggle/index.ts',
           'toggle/toggle.ts',
           'toggle/variants.ts',
@@ -135,6 +144,46 @@ describe('headless bases', () => {
         "from '../toggle/variants'"
       );
       expect(JSON.parse(readFileSync(join(project, 'volt.json'), 'utf-8')).base).toBe('quartz');
+    });
+
+    it('adds radio and toggle-group alone with their helpers and no ng-primitives', () => {
+      const result = volt(project, 'add', 'radio', 'toggle-group', ui(), '--base=quartz');
+      expect(result.status).toBe(0);
+      const copied = sources(ui())
+        .map(f => f.slice(ui().length + 1))
+        .sort();
+      expect(copied).toEqual(
+        [
+          'form-control-state.ts',
+          'host-forwarding.ts',
+          'index.ts',
+          'quartz-attributes.ts',
+          'quartz-ids.ts',
+          'radio/index.ts',
+          'radio/radio-group.ts',
+          'radio/radio-item.ts',
+          'toggle-group/index.ts',
+          'toggle-group/toggle-group-item.ts',
+          'toggle-group/toggle-group.ts',
+          'toggle-group/variants.ts',
+          'utils.ts',
+        ].sort()
+      );
+      const all = copied.map(f => readFileSync(join(ui(), f), 'utf-8')).join('\n');
+      expect(all).not.toMatch(/from\s+['"]ng-primitives/);
+      expect(all).toContain("from '../quartz-ids'");
+      expect(readFileSync(join(ui(), 'radio/radio-item.ts'), 'utf-8')).toContain(
+        "selector: 'ui-radio-item'"
+      );
+      expect(readFileSync(join(ui(), 'toggle-group/toggle-group-item.ts'), 'utf-8')).toContain(
+        "from '../toggle-group/variants'"
+      );
+    });
+
+    it('does not copy the Quartz id helpers for components that do not use them', () => {
+      volt(project, 'add', 'checkbox', 'toggle', ui(), '--base=quartz');
+      expect(existsSync(join(ui(), 'quartz-ids.ts'))).toBe(false);
+      expect(existsSync(join(ui(), 'quartz-attributes.ts'))).toBe(false);
     });
 
     it('persists the base: later adds need no flag', () => {
@@ -233,7 +282,7 @@ describe('headless bases', () => {
       const result = volt(project, 'add', 'checkbox', 'button', ui(), '--base=quartz');
       expect(result.status).toBe(1);
       expect(result.out).toContain('does not support: button');
-      expect(result.out).toContain('checkbox, switch, toggle');
+      expect(result.out).toContain('checkbox, radio, switch, toggle, toggle-group');
       expect(result.out).toContain('without --base');
       expect(existsSync(ui())).toBe(false);
       expect(existsSync(join(project, 'volt.json'))).toBe(false);

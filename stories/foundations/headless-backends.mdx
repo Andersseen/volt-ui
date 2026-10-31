@@ -17,8 +17,8 @@ contract belongs to Volt UI; the primitive library is an implementation detail o
 
 ## Quartz Headless — experimental
 
-Three components can be backed by [Quartz Headless](https://github.com/Andersseen/quartz) instead of
-ng-primitives: **Checkbox**, **Switch** and **Toggle**. Everything else is ng-primitives only.
+Five component families can be backed by [Quartz Headless](https://github.com/Andersseen/quartz) instead of
+ng-primitives: **Checkbox**, **Radio** (group + item), **Switch**, **Toggle** and **ToggleGroup** (group + item). Everything else is ng-primitives only.
 
 ### Package mode
 
@@ -28,10 +28,15 @@ npm install @voltui/components @quartz-headless/core @quartz-headless/primitives
 
 ```ts
 // ng-primitives (default)
-import { VoltCheckbox, VoltSwitch, VoltToggle } from '@voltui/components';
+import { VoltCheckbox, VoltRadioGroup, VoltRadioItem, VoltToggleGroup } from '@voltui/components';
 
 // Quartz Headless — same names, selectors, inputs, models and outputs
-import { VoltCheckbox, VoltSwitch, VoltToggle } from '@voltui/components/quartz';
+import {
+  VoltCheckbox,
+  VoltRadioGroup,
+  VoltRadioItem,
+  VoltToggleGroup,
+} from '@voltui/components/quartz';
 ```
 
 Import **one** implementation of a given component per Angular component: two classes sharing the
@@ -43,7 +48,7 @@ point never loads ng-primitives and the main entry point never loads Quartz.
 
 ```bash
 npx @voltui/cli init --base=quartz
-npx @voltui/cli add checkbox switch toggle --base=quartz
+npx @voltui/cli add checkbox radio switch toggle toggle-group --base=quartz
 ```
 
 The base is recorded in `volt.json` and reused by later `volt add` calls. A flag that contradicts
@@ -57,6 +62,12 @@ generating the other engine's source.
   `--legacy-peer-deps` (or an `overrides` entry) until Quartz publishes widened peer ranges. The
   components run correctly on Angular 22 — the compatibility check builds and drives them there.
 
+### Group controls
+
+`ToggleGroup.value` is a `string[]` in single **and** multiple mode under both backends: Quartz's
+`T | null` / `T[]` split is mapped inside the wrapper, so switching backend never changes your data model.
+`RadioGroup.value` is `string | null`. Ids rendered by Quartz's counter are replaced, so server and browser agree.
+
 ### What is guaranteed to match
 
 Role, accessible name, `aria-checked` (including `mixed`) / `aria-pressed`, the native `<button>`,
@@ -68,6 +79,7 @@ behaviour (silent writes, dirty/touched, reset, disable), and SSR output plus hy
 
 - Disabled **Toggle**: ng-primitives keeps the button focusable with `aria-disabled`; Quartz uses the
   native `disabled` attribute, which removes it from the tab order.
+- Disabled Radio / ToggleGroup items follow the same rule. A single-mode ToggleGroup given several values shows only the first with Quartz.
 - Engine-owned attributes differ (`data-qz-*` versus `data-hover` / `data-press` / `ngp*`). Do not style them.
 
 The **Side by side** story renders both backends from one template.

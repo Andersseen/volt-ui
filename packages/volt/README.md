@@ -97,8 +97,8 @@ provideVoltTheme({ color: 'ember', style: 'soft', dark: true });
 
 ## Headless backends (experimental)
 
-Volt's default components are built on [ng-primitives](https://ng-primitives.dev). **Checkbox, Switch and
-Toggle** also ship an opt-in implementation on [Quartz Headless](https://github.com/Andersseen/quartz):
+Volt's default components are built on [ng-primitives](https://ng-primitives.dev). **Checkbox, Radio, Switch,
+Toggle and ToggleGroup** also ship an opt-in implementation on [Quartz Headless](https://github.com/Andersseen/quartz):
 
 ```bash
 npm install @quartz-headless/core @quartz-headless/primitives   # optional peers, ^0.16.0
@@ -106,7 +106,12 @@ npm install @quartz-headless/core @quartz-headless/primitives   # optional peers
 
 ```typescript
 // Same names, selectors, inputs, models and outputs — import ONE implementation per component.
-import { VoltCheckbox, VoltSwitch, VoltToggle } from '@voltui/components/quartz';
+import {
+  VoltCheckbox,
+  VoltRadioGroup,
+  VoltRadioItem,
+  VoltToggleGroup,
+} from '@voltui/components/quartz';
 ```
 
 Colour and style presets are independent of the backend, and the two entry points never load each other's
