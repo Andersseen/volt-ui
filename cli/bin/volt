@@ -8,6 +8,15 @@ const {
   groupComponents,
   detectTailwindSetup,
   formatTailwindGuidance,
+  resolveBase,
+  writeConfig,
+  readConfig,
+  assertSupportedForBase,
+  componentsForBase,
+  targetUsesNgPrimitives,
+  validateBase,
+  DEFAULT_BASE,
+  CONFIG_FILE,
 } = require('../lib/core');
 
 function parseArgs(rawArgs) {
@@ -50,6 +59,29 @@ function parseAddArgs(args, manifest) {
   return { componentNames, targetDir };
 }
 
+/**
+ * Resolves the backend for this invocation and refuses to mix engines in a directory that already
+ * holds the other one. Exits with a message instead of throwing a stack trace.
+ */
+function selectBase(flags, targetDir) {
+  let selection;
+  try {
+    selection = resolveBase(flags.base);
+  } catch (err) {
+    console.error(`❌ ${err.message}`);
+    process.exit(1);
+  }
+  if (selection.base !== DEFAULT_BASE && !selection.recorded && targetUsesNgPrimitives(targetDir)) {
+    console.error(
+      `❌ ${targetDir} already contains components copied with the ng-primitives base.\n` +
+        `   Copying a Quartz component next to them would mix engines without a record of it.\n` +
+        `   Use another target-dir, or keep using ng-primitives for this directory.`
+    );
+    process.exit(1);
+  }
+  return selection;
+}
+
 async function main() {
   const { args, flags } = parseArgs(process.argv.slice(2));
   const command = args[0];
@@ -63,6 +95,15 @@ async function main() {
 
     const manifest = await loadManifest();
     const { componentNames, targetDir } = parseAddArgs(args, manifest);
+    const { base, requested, recorded } = selectBase(flags, targetDir);
+
+    try {
+      // Checked for the whole request up front, so a mixed list writes nothing.
+      assertSupportedForBase(componentNames, manifest, base);
+    } catch (err) {
+      console.error(`❌ ${err.message}`);
+      process.exit(1);
+    }
 
     const results = [];
     for (const componentName of componentNames) {
@@ -70,13 +111,18 @@ async function main() {
         install: false, // install once at the end
         dryRun: !!flags['dry-run'],
         force: !!flags.force,
+        base,
       });
       results.push(result);
     }
 
+    // An explicit --base is remembered, so later `volt add` calls keep the same engine.
+    if (requested && !recorded && !flags['dry-run']) writeConfig(requested);
+
     if (flags.install) {
       const { installDependencies } = require('../lib/core');
-      installDependencies(process.cwd(), { dryRun: !!flags['dry-run'] });
+      const dependencies = [...new Set(results.flatMap(r => r.runtimeDependencies))];
+      installDependencies(process.cwd(), { dryRun: !!flags['dry-run'], dependencies });
     }
 
     if (flags['dry-run']) {
@@ -102,6 +148,9 @@ async function main() {
     for (const result of results) {
       console.log(`  import { ${result.className} } from './ui/${result.componentName}';`);
     }
+    if (base !== DEFAULT_BASE) {
+      console.log(`\n🧪 Headless base: ${base} (experimental).`);
+    }
 
     if (flags.install) {
       console.log(flags['dry-run'] ? `\n🔎 Runtime dependencies would be installed.` : `\n✅ Runtime dependencies installed.`);
@@ -109,12 +158,24 @@ async function main() {
       const firstResult = results[0];
       console.log(`\n⚠️  Ensure runtime dependencies are installed:`);
       console.log(`  ${firstResult.installCommand}`);
-      console.log(`\n  Or run: volt add ${componentNames.join(' ')} ${targetDir} --install`);
+      console.log(
+        `\n  Or run: volt add ${componentNames.join(' ')} ${targetDir} --install${base !== DEFAULT_BASE ? ` --base=${base}` : ''}`
+      );
     }
   } else if (command === 'init') {
     const targetDir = args[1] || './src/app/ui';
+    const { base, requested, recorded } = selectBase(flags, targetDir);
     initProject(targetDir);
     console.log('✅ Initialized volt/ui in', targetDir);
+    // Only an explicit --base writes volt.json: a project that never asks keeps the old behaviour.
+    if (requested && !recorded) {
+      writeConfig(requested);
+      console.log(`✅ Recorded base "${requested}" in ${CONFIG_FILE}`);
+    }
+    if (base !== DEFAULT_BASE) {
+      const supported = componentsForBase(await loadManifest(), base);
+      console.log(`🧪 The "${base}" base is experimental and supports: ${supported.join(', ')}.`);
+    }
 
     const tailwind = detectTailwindSetup(process.cwd());
     if (!tailwind.configured) {
@@ -129,7 +190,14 @@ async function main() {
       process.exit(1);
     }
 
-    const components = listComponents(manifest, { status });
+    let base;
+    try {
+      base = flags.base === undefined ? undefined : validateBase(flags.base);
+    } catch (err) {
+      console.error(`❌ ${err.message}`);
+      process.exit(1);
+    }
+    const components = listComponents(manifest, { status, base });
     if (flags.json) {
       console.log(JSON.stringify(components, null, 2));
       return;
@@ -150,19 +218,35 @@ async function main() {
     console.log('');
     console.log('Usage:');
     console.log('  volt init [target-dir]                Initialize volt/ui in your project');
-    console.log('  volt add <component>... [target-dir]  Add one or more components to your project');
+    console.log(
+      '  volt init [target-dir] --base=quartz  Also record the headless base (ng-primitives | quartz)'
+    );
+    console.log(
+      '  volt add <component>... [target-dir]  Add one or more components to your project'
+    );
     console.log('  volt add <component>... [target-dir] --dry-run  Preview files without writing');
-    console.log('  volt add <component>... [target-dir] --force    Overwrite existing component files');
-    console.log('  volt add <component>... --install     Add component(s) and install runtime deps');
+    console.log(
+      '  volt add <component>... [target-dir] --force    Overwrite existing component files'
+    );
+    console.log(
+      '  volt add <component>... --install     Add component(s) and install runtime deps'
+    );
     console.log('  volt list                             List all available components');
     console.log('  volt list --status=stable             List components by stability');
     console.log('  volt list --json                      Print component metadata as JSON');
+    console.log(
+      '  volt list --base=quartz               List components that have a Quartz implementation'
+    );
+    console.log(
+      '  volt add <component>... --base=quartz Copy the experimental Quartz Headless version'
+    );
     console.log('');
     console.log('Examples:');
     console.log('  npx @voltui/cli init');
     console.log('  npx @voltui/cli add button');
     console.log('  npx @voltui/cli add button card input');
     console.log('  npx @voltui/cli add card --install');
+    console.log('  npx @voltui/cli add checkbox switch toggle --base=quartz');
   }
 }
 

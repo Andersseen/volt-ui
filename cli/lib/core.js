@@ -30,6 +30,107 @@ const RUNTIME_DEPENDENCIES = [
   'tailwind-merge',
 ];
 
+// ---------------------------------------------------------------------------
+// Headless backend selection
+// ---------------------------------------------------------------------------
+
+const DEFAULT_BASE = 'ng-primitives';
+const BASES = ['ng-primitives', 'quartz'];
+const CONFIG_FILE = 'volt.json';
+
+// Bare module specifiers a copied file may import, mapped to the package to install. Which of them
+// a backend needs is read from the files actually copied, so a Quartz-only project is never told to
+// install ng-primitives.
+const KNOWN_PACKAGES = [
+  'ng-primitives',
+  'class-variance-authority',
+  'clsx',
+  'tailwind-merge',
+  '@quartz-headless/core',
+  '@quartz-headless/primitives',
+];
+
+function validateBase(base) {
+  if (!BASES.includes(base)) {
+    throw new Error(`Unknown --base "${base}". Use one of: ${BASES.join(', ')}.`);
+  }
+  return base;
+}
+
+function readConfig(projectRoot = process.cwd()) {
+  const configPath = path.join(projectRoot, CONFIG_FILE);
+  if (!fs.existsSync(configPath)) return null;
+  let config;
+  try {
+    config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
+  } catch {
+    throw new Error(`${CONFIG_FILE} is not valid JSON. Fix or delete it.`);
+  }
+  if (config.base !== undefined) validateBase(config.base);
+  return config;
+}
+
+function writeConfig(base, projectRoot = process.cwd()) {
+  fs.writeFileSync(path.join(projectRoot, CONFIG_FILE), `${JSON.stringify({ base }, null, 2)}\n`);
+}
+
+/**
+ * The backend this invocation uses: an explicit flag, else the project's `volt.json`, else the
+ * default. A flag that contradicts the recorded base is an error — engines are never mixed silently.
+ */
+function resolveBase(flag, projectRoot = process.cwd()) {
+  const requested = flag === undefined || flag === true ? undefined : validateBase(flag);
+  if (flag === true)
+    throw new Error('--base needs a value: --base=ng-primitives or --base=quartz.');
+  const config = readConfig(projectRoot);
+  const recorded = config && config.base;
+  if (requested && recorded && requested !== recorded) {
+    throw new Error(
+      `This project is configured for the "${recorded}" base (${CONFIG_FILE}), but --base=${requested} was given.\n` +
+        `Mixing headless engines is not supported by the CLI. Remove --base, or edit ${CONFIG_FILE} deliberately.`
+    );
+  }
+  return { base: requested || recorded || DEFAULT_BASE, requested, recorded: recorded || null };
+}
+
+/** Components that have an implementation for `base` (every component has the default one). */
+function componentsForBase(manifest, base) {
+  if (base === DEFAULT_BASE) return Object.keys(manifest.components);
+  return Object.entries(manifest.components)
+    .filter(([, meta]) => meta.backends && meta.backends[base])
+    .map(([name]) => name)
+    .sort();
+}
+
+function assertSupportedForBase(componentNames, manifest, base) {
+  if (base === DEFAULT_BASE) return;
+  const supported = componentsForBase(manifest, base);
+  const unsupported = componentNames.filter(name => !supported.includes(name));
+  if (unsupported.length === 0) return;
+  throw new Error(
+    `The "${base}" base does not support: ${unsupported.join(', ')}.\n` +
+      `Components available with --base=${base}: ${supported.join(', ') || '(none)'}.\n` +
+      `To use ${unsupported.length === 1 ? 'it' : 'them'} run the same command without --base (ng-primitives, the default).`
+  );
+}
+
+/** Whether a directory of copied components already contains ng-primitives-based source. */
+function targetUsesNgPrimitives(targetDir) {
+  if (!fs.existsSync(targetDir)) return false;
+  const stack = [targetDir];
+  while (stack.length) {
+    const dir = stack.pop();
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) stack.push(full);
+      else if (entry.name.endsWith('.ts') && !entry.name.endsWith('.spec.ts')) {
+        if (/from\s+['"]ng-primitives(\/|['"])/.test(fs.readFileSync(full, 'utf-8'))) return true;
+      }
+    }
+  }
+  return false;
+}
+
 // Files living directly in packages/volt/src/lib (not under components/ or layouts/)
 // that some components import via a relative path, e.g. `from '../../utils'`. The
 // manifest's dependency detector only resolves components/layouts imports, so these are
@@ -144,7 +245,20 @@ function transformContent(content) {
 // Shared lib-root file dependencies (utils.ts, form-control-state.ts)
 // ---------------------------------------------------------------------------
 
-function detectSharedFileDependencies(componentNames, manifest) {
+function filesBackend(component, base) {
+  const backend = component.backends && component.backends[base];
+  if (!backend) throw new Error(`No "${base}" implementation for this component.`);
+  return backend;
+}
+
+function filesFor(component, base = DEFAULT_BASE) {
+  if (base === DEFAULT_BASE) return component.files;
+  const backend = component.backends && component.backends[base];
+  if (!backend) throw new Error(`No "${base}" implementation for this component.`);
+  return backend.files;
+}
+
+function detectSharedFileDependencies(componentNames, manifest, base = DEFAULT_BASE) {
   const { componentsRoot } = resolveRegistryPaths();
   const shared = new Set();
 
@@ -152,7 +266,7 @@ function detectSharedFileDependencies(componentNames, manifest) {
     const component = findComponentInManifest(name, manifest);
     if (!component) continue;
 
-    for (const file of component.files) {
+    for (const file of filesFor(component, base)) {
       const sourcePath = path.join(componentsRoot, file);
       if (!fs.existsSync(sourcePath)) continue;
       const content = fs.readFileSync(sourcePath, 'utf-8');
@@ -215,16 +329,19 @@ function findComponentInManifest(componentName, manifest) {
   return manifest.components[componentName] || null;
 }
 
-function collectDependencies(componentName, manifest, collected = new Set()) {
+function collectDependencies(componentName, manifest, collected = new Set(), base = DEFAULT_BASE) {
   if (collected.has(componentName)) return collected;
   const component = findComponentInManifest(componentName, manifest);
   if (!component) return collected;
 
   collected.add(componentName);
 
-  const direct = component.dependencies || [];
+  const direct =
+    base === DEFAULT_BASE
+      ? component.dependencies || []
+      : filesBackend(component, base).dependencies;
   for (const dep of direct) {
-    collectDependencies(dep, manifest, collected);
+    collectDependencies(dep, manifest, collected, base);
   }
 
   return collected;
@@ -241,8 +358,10 @@ function listComponents(manifest, options = {}) {
       stability: meta.stability || 'experimental',
       category: meta.category || 'components',
       dependencies: meta.dependencies || [],
+      bases: [DEFAULT_BASE, ...Object.keys(meta.backends || {})],
     }))
     .filter(component => !status || component.stability === status)
+    .filter(component => !options.base || component.bases.includes(options.base))
     .sort((a, b) => a.group.localeCompare(b.group) || a.name.localeCompare(b.name));
 
   return components;
@@ -256,7 +375,7 @@ function groupComponents(components) {
   }, {});
 }
 
-function getComponentFiles(componentName, targetDir, manifest) {
+function getComponentFiles(componentName, targetDir, manifest, base = DEFAULT_BASE) {
   const { componentsRoot } = resolveRegistryPaths();
   const component = findComponentInManifest(componentName, manifest);
   if (!component) {
@@ -264,7 +383,7 @@ function getComponentFiles(componentName, targetDir, manifest) {
   }
 
   const componentDir = path.join(targetDir, componentName);
-  return component.files.map(file => {
+  return filesFor(component, base).map(file => {
     const sourcePath = path.join(componentsRoot, file);
     const fileName = path.basename(file);
     const targetPath = path.join(componentDir, fileName);
@@ -290,7 +409,7 @@ function assertCanWriteFiles(files, options = {}) {
 }
 
 function copySingleComponent(componentName, targetDir, manifest, options = {}) {
-  const files = getComponentFiles(componentName, targetDir, manifest);
+  const files = getComponentFiles(componentName, targetDir, manifest, options.base);
 
   if (options.dryRun) {
     return files.map(file => file.targetPath);
@@ -309,9 +428,32 @@ function copySingleComponent(componentName, targetDir, manifest, options = {}) {
   return files.map(file => file.targetPath);
 }
 
+/**
+ * Packages a set of copied files needs at runtime. The default base keeps the historical fixed list;
+ * another base installs only what its copied source imports, plus the backend's own packages.
+ */
+function runtimeDependenciesFor(base, manifest, copiedSources = []) {
+  if (base === DEFAULT_BASE) return RUNTIME_DEPENDENCIES;
+  const ranges = Object.fromEntries(
+    ((manifest.backends && manifest.backends[base] && manifest.backends[base].packages) || []).map(
+      spec => [spec.slice(0, spec.lastIndexOf('@')), spec]
+    )
+  );
+  const used = new Set();
+  for (const source of copiedSources) {
+    for (const pkg of KNOWN_PACKAGES) {
+      if (new RegExp(`from\\s+['"]${pkg}(/[^'"]*)?['"]`).test(source)) used.add(pkg);
+    }
+  }
+  // Quartz's primitives need its core at the same range, whether or not the source names it.
+  for (const pkg of Object.keys(ranges)) used.add(pkg);
+  return KNOWN_PACKAGES.filter(pkg => used.has(pkg)).map(pkg => ranges[pkg] || pkg);
+}
+
 function installDependencies(targetDir, options = {}) {
   const packageManager = detectPackageManager(targetDir);
-  const cmd = `${installCommand(packageManager)} ${RUNTIME_DEPENDENCIES.join(' ')}`;
+  const dependencies = options.dependencies || RUNTIME_DEPENDENCIES;
+  const cmd = `${installCommand(packageManager)} ${dependencies.join(' ')}`;
 
   if (options.dryRun) {
     return { packageManager, cmd, executed: false };
@@ -352,6 +494,7 @@ function updateIndexFile(targetDir, addedComponents, options = {}) {
 
 function copyComponent(componentName, targetDir, manifest, options = {}) {
   const component = findComponentInManifest(componentName, manifest);
+  const base = options.base || DEFAULT_BASE;
 
   if (!component) {
     throw new Error(
@@ -359,20 +502,23 @@ function copyComponent(componentName, targetDir, manifest, options = {}) {
     );
   }
 
-  const dependencies = Array.from(collectDependencies(componentName, manifest)).filter(
-    name => name !== componentName
-  );
+  const dependencies = Array.from(
+    collectDependencies(componentName, manifest, new Set(), base)
+  ).filter(name => name !== componentName);
   const componentNames = [componentName, ...dependencies];
-  const plannedFiles = componentNames.flatMap(name => getComponentFiles(name, targetDir, manifest));
+  assertSupportedForBase(componentNames, manifest, base);
+  const plannedFiles = componentNames.flatMap(name =>
+    getComponentFiles(name, targetDir, manifest, base)
+  );
 
   assertCanWriteFiles(plannedFiles, options);
 
-  const sharedFiles = detectSharedFileDependencies(componentNames, manifest);
+  const sharedFiles = detectSharedFileDependencies(componentNames, manifest, base);
 
   if (!options.dryRun) {
-    copySingleComponent(componentName, targetDir, manifest, options);
+    copySingleComponent(componentName, targetDir, manifest, { ...options, base });
     for (const dep of dependencies) {
-      copySingleComponent(dep, targetDir, manifest, options);
+      copySingleComponent(dep, targetDir, manifest, { ...options, base });
     }
     for (const sharedFile of sharedFiles) {
       copySharedFileIfNeeded(sharedFile, targetDir, options);
@@ -382,11 +528,22 @@ function copyComponent(componentName, targetDir, manifest, options = {}) {
   updateIndexFile(targetDir, componentNames, options);
 
   const packageManager = detectPackageManager(process.cwd());
-  const installCmd = `${installCommand(packageManager)} ${RUNTIME_DEPENDENCIES.join(' ')}`;
+  const { componentsRoot } = resolveRegistryPaths();
+  const copiedSources = [
+    ...plannedFiles.map(f => f.sourcePath),
+    ...sharedFiles.map(f => path.join(componentsRoot, f)),
+  ]
+    .filter(file => fs.existsSync(file))
+    .map(file => fs.readFileSync(file, 'utf-8'));
+  const runtimeDependencies = runtimeDependenciesFor(base, manifest, copiedSources);
+  const installCmd = `${installCommand(packageManager)} ${runtimeDependencies.join(' ')}`;
 
   let installResult = null;
   if (options.install) {
-    installResult = installDependencies(process.cwd(), { dryRun: options.dryRun });
+    installResult = installDependencies(process.cwd(), {
+      dryRun: options.dryRun,
+      dependencies: runtimeDependencies,
+    });
   }
 
   return {
@@ -399,6 +556,8 @@ function copyComponent(componentName, targetDir, manifest, options = {}) {
       ...sharedFiles.map(sharedFile => path.join(targetDir, sharedFile)),
     ],
     sharedFiles,
+    base,
+    runtimeDependencies,
     dryRun: !!options.dryRun,
     force: !!options.force,
     installCommand: installCmd,
@@ -481,6 +640,17 @@ function formatTailwindGuidance(tailwind) {
 }
 
 module.exports = {
+  BASES,
+  DEFAULT_BASE,
+  CONFIG_FILE,
+  validateBase,
+  readConfig,
+  writeConfig,
+  resolveBase,
+  componentsForBase,
+  assertSupportedForBase,
+  targetUsesNgPrimitives,
+  runtimeDependenciesFor,
   getLocalManifest,
   loadManifest,
   listComponents,

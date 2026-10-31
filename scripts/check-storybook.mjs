@@ -45,7 +45,14 @@ const REQUIRED_STATES = {
   dialog: ['Controlled', 'NotDismissible'],
 };
 
-const FOUNDATIONS = ['introduction', 'installation', 'package-vs-copy', 'theming', 'accessibility'];
+const FOUNDATIONS = [
+  'introduction',
+  'installation',
+  'package-vs-copy',
+  'theming',
+  'accessibility',
+  'headless-backends',
+];
 const problems = [];
 const components = publicComponents();
 

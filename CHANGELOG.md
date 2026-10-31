@@ -7,6 +7,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-10-30
+
+Minor release: the first opt-in alternative headless backend. Additive; every existing import, selector and
+the default ng-primitives implementation are unchanged.
+
+### Added — `@voltui/components`
+
+- **`@voltui/components/quartz`**: Checkbox, Switch and Toggle backed by Quartz Headless (experimental).
+  Same class names, selectors, inputs, models and outputs as the main entry point; the same Tailwind classes
+  and `data-*` styling hooks, so colour and style presets apply unchanged. `@quartz-headless/core` and
+  `@quartz-headless/primitives` `^0.16.0` are optional peer dependencies. Import one implementation per component.
+- The main entry point does not load Quartz and the Quartz entry point does not load ng-primitives
+  (checked on the built bundles).
+
+### Added — `@voltui/cli` 1.4.0
+
+- `volt init|add --base=ng-primitives|quartz` (default `ng-primitives`), recorded in a small `volt.json` and reused
+  by later `volt add` calls. `volt list --base=quartz` lists what a base supports.
+- A Quartz request for a component without a Quartz implementation, an unknown base, a base that contradicts
+  `volt.json`, or a Quartz copy into a directory already holding ng-primitives copies is rejected before anything is
+  written. `--install` installs only the packages the copied source imports.
+- The manifest gains an additive `backends` field; its existing shape is unchanged.
+
+### Known limitations
+
+- Quartz 0.16.0 declares `@angular/*` peers of `^21.0.0`: Angular 22 works (the full suite passes on 22.2.4) but npm
+  needs `--legacy-peer-deps` until Quartz widens its ranges.
+- A disabled Quartz Toggle is natively `disabled` (out of the tab order); the ng-primitives one keeps focus with `aria-disabled`.
+- voltui.dev pages are not updated yet: the Glossa token was rejected (HTTP 401) while preparing this release. The
+  documentation is in Storybook, `docs/headless-backends.md` and the package README.
+
 ## [1.3.3] - 2026-10-19
 
 Patch release: improve visual state contrast without changing component APIs.

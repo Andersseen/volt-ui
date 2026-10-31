@@ -1,6 +1,6 @@
 {
   "name": "@voltui/components",
-  "version": "1.3.3",
+  "version": "1.4.0",
   "description": "Accessible Angular UI components built on ng-primitives with signals, zoneless change detection and Tailwind CSS v4. Use the package, or copy the source with @voltui/cli.",
   "license": "MIT",
   "homepage": "https://voltui.dev",
@@ -39,7 +39,17 @@
     "@angular/common": "^21.2.0 || ^22.0.0",
     "@angular/core": "^21.2.0 || ^22.0.0",
     "@angular/forms": "^21.2.0 || ^22.0.0",
-    "@angular/router": "^21.2.0 || ^22.0.0"
+    "@angular/router": "^21.2.0 || ^22.0.0",
+    "@quartz-headless/core": "^0.16.0",
+    "@quartz-headless/primitives": "^0.16.0"
+  },
+  "peerDependenciesMeta": {
+    "@quartz-headless/core": {
+      "optional": true
+    },
+    "@quartz-headless/primitives": {
+      "optional": true
+    }
   },
   "dependencies": {
     "tslib": "^2.3.0",
