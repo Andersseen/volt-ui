@@ -231,6 +231,160 @@ for (const [name, url] of BACKENDS) {
       ).toBeFocused();
     });
 
+    test('tabs: roles and relationships are prerendered; keyboard drives selection and the model', async ({
+      page,
+      request,
+      browserName,
+    }) => {
+      const html = await (await request.get(url!)).text();
+      expect(html).toContain('role="tablist"');
+      expect(html).toContain('role="tabpanel"');
+      const problems = await open(page, url!);
+      const profile = page.getByRole('tab', { name: 'Profile', exact: true });
+      const security = page.getByRole('tab', { name: 'Security', exact: true });
+      await expect(profile).toHaveAttribute('aria-selected', 'true');
+      await expect(page.locator('#tab-value')).toHaveText('profile');
+
+      // Every aria-controls / aria-labelledby points at a real element, once.
+      const dangling = await page.evaluate(() => {
+        const bad: string[] = [];
+        for (const el of document.querySelectorAll('[aria-controls],[aria-labelledby]')) {
+          for (const attr of ['aria-controls', 'aria-labelledby']) {
+            for (const id of (el.getAttribute(attr) ?? '').split(/\s+/).filter(Boolean)) {
+              if (document.querySelectorAll(`[id="${id}"]`).length !== 1) bad.push(`${attr}=${id}`);
+            }
+          }
+        }
+        return bad;
+      });
+      expect(dangling).toEqual([]);
+
+      // Only the selected panel is exposed; its content is the only panel content in the Tab order.
+      await expect(page.getByRole('button', { name: 'Edit profile' })).toBeVisible();
+      await expect(page.getByRole('button', { name: 'Change password' })).toHaveCount(0);
+      await profile.focus();
+      await page.keyboard.press('ArrowRight');
+      await expect(security).toBeFocused();
+      await expect(security).toHaveAttribute('aria-selected', 'true');
+      await expect(page.locator('#tab-value')).toHaveText('security');
+      await expect(page.getByRole('button', { name: 'Change password' })).toBeVisible();
+      await expect(page.getByRole('button', { name: 'Edit profile' })).toHaveCount(0);
+      // Tab leaves the tablist for the active panel (it is focusable), then its content.
+      await page.keyboard.press('Tab');
+      await expect(page.locator('[role="tabpanel"][value="security"]')).toBeFocused();
+      // WebKit (Safari) does not Tab onto buttons by default.
+      if (browserName !== 'webkit') {
+        await page.keyboard.press('Tab');
+        await expect(page.getByRole('button', { name: 'Change password' })).toBeFocused();
+      }
+      await security.focus();
+      await page.keyboard.press('End');
+      await expect(page.getByRole('tab', { name: 'Billing', exact: true })).toHaveAttribute(
+        'aria-selected',
+        'true'
+      );
+      await page.keyboard.press('Home');
+      await expect(profile).toHaveAttribute('aria-selected', 'true');
+      expect(problems).toEqual([]);
+    });
+
+    test('tabs: with activateOnFocus off, arrows move focus and a click selects', async ({
+      page,
+    }) => {
+      await open(page, url!);
+      const one = page.getByRole('tab', { name: 'Manual one' });
+      const two = page.getByRole('tab', { name: 'Manual two' });
+      await one.focus();
+      await page.keyboard.press('ArrowRight');
+      await expect(two).toBeFocused();
+      await expect(two).toHaveAttribute('aria-selected', 'false');
+      await expect(one).toHaveAttribute('aria-selected', 'true');
+      await two.click();
+      await expect(two).toHaveAttribute('aria-selected', 'true');
+      await expect(page.getByText('Manual panel two')).toBeVisible();
+      await expect(page.getByText('Manual panel one')).toBeHidden();
+      if (name.startsWith('quartz')) {
+        // ng-primitives' tab is a custom element with no Enter/Space handling; Quartz's is activated by both.
+        await one.focus();
+        await page.keyboard.press('Enter');
+        await expect(one).toHaveAttribute('aria-selected', 'true');
+        await page.keyboard.press('ArrowRight');
+        await page.keyboard.press('Space');
+        await expect(two).toHaveAttribute('aria-selected', 'true');
+      }
+    });
+
+    test('tabs: RTL mirrors Left/Right (Quartz); ng-primitives keeps ArrowLeft as previous', async ({
+      page,
+    }) => {
+      await open(page, url!);
+      await page.getByRole('tab', { name: 'RTL first' }).focus();
+      await page.keyboard.press('ArrowLeft');
+      // Either engine lands on the other tab of a two-tab list; Quartz does so because it mirrors.
+      await expect(page.getByRole('tab', { name: 'RTL second' })).toBeFocused();
+      if (name.startsWith('quartz')) {
+        await page.keyboard.press('ArrowRight');
+        await expect(page.getByRole('tab', { name: 'RTL first' })).toBeFocused();
+      }
+    });
+
+    test('accordion: toggles by pointer and keyboard, hides closed content from the keyboard and the a11y tree', async ({
+      page,
+      request,
+      browserName,
+    }) => {
+      const html = await (await request.get(url!)).text();
+      expect(html).toContain('aria-expanded="false"');
+      const problems = await open(page, url!);
+      const shipping = page.getByRole('button', { name: 'Shipping' });
+      const returns = page.getByRole('button', { name: 'Returns' });
+      await expect(shipping).toHaveAttribute('aria-expanded', 'false');
+      await expect(page.getByRole('button', { name: 'Track parcel' })).toHaveCount(0);
+
+      await shipping.click();
+      await expect(shipping).toHaveAttribute('aria-expanded', 'true');
+      await expect(page.locator('#section-value')).toHaveText('shipping');
+      await expect(page.getByRole('button', { name: 'Track parcel' })).toBeVisible();
+      // WebKit (Safari) does not Tab onto buttons by default, so the Tab order is checked elsewhere.
+      if (browserName !== 'webkit') {
+        await shipping.focus();
+        // The panel content is next in the Tab order; the closed one after "Returns" is skipped.
+        await page.keyboard.press('Tab');
+        await expect(page.getByRole('button', { name: 'Track parcel' })).toBeFocused();
+        await page.keyboard.press('Tab');
+        await expect(returns).toBeFocused();
+        await page.keyboard.press('Tab');
+        await expect(page.getByRole('button', { name: 'Start return' })).toHaveCount(0);
+        await expect(page.getByRole('button', { name: 'Faq one' })).toBeFocused();
+      }
+
+      await returns.focus();
+      await page.keyboard.press('Enter');
+      await expect(returns).toHaveAttribute('aria-expanded', 'true');
+      await expect(shipping).toHaveAttribute('aria-expanded', 'false');
+      await expect(page.locator('#section-value')).toHaveText('returns');
+      await page.keyboard.press('Space'); // collapsible: closes
+      await expect(returns).toHaveAttribute('aria-expanded', 'false');
+      await expect(page.locator('#section-value')).toHaveText('none');
+
+      // A panel is a labelled region, wired both ways.
+      await shipping.click();
+      const region = page.getByRole('region', { name: 'Shipping' });
+      await expect(region).toBeVisible();
+      expect(problems).toEqual([]);
+    });
+
+    test('accordion: multiple keeps several panels open', async ({ page }) => {
+      await open(page, url!);
+      await expect(page.getByText('Faq answer one')).toBeHidden();
+      await page.getByRole('button', { name: 'Faq one' }).click();
+      await expect(page.getByText('Faq answer one')).toBeVisible();
+      await expect(page.getByText('Faq answer two')).toBeHidden();
+      await page.getByRole('button', { name: 'Faq two' }).click();
+      await expect(page.getByText('Faq answer one')).toBeVisible();
+      await expect(page.getByText('Faq answer two')).toBeVisible();
+    });
+
     test('group items: disabled ones and disabled groups ignore input', async ({ page }) => {
       await open(page, url!);
       for (const [role, label, attr] of [
@@ -283,6 +437,11 @@ test('every backend paints and measures the same', async ({ browser }) => {
     ['button', 'Group on'],
     ['button', 'Group off'],
     ['button', 'Group disabled'],
+    ['tab', 'Profile'],
+    ['tab', 'Security'],
+    ['tab', 'Manual one'],
+    ['button', 'Faq one'],
+    ['button', 'Faq two'],
   ] as const;
   const read = async (url: string) => {
     const page = await browser.newPage();
@@ -311,6 +470,17 @@ test('every backend paints and measures the same', async ({ browser }) => {
           return [s.display, s.backgroundColor, s.width, s.height].join('|');
         });
     }
+    // Tab panel, accordion panel and chevron: shown and hidden states paint alike.
+    await page.getByRole('button', { name: 'Faq one', exact: true }).click();
+    await page.getByRole('button', { name: 'Faq one', exact: true }).evaluate(el => el.blur());
+    out['Tab panel'] = await paint(page.getByRole('tabpanel'));
+    out['Faq panel'] = await paint(page.getByText('Faq answer one'));
+    for (const name of ['Faq one', 'Faq two']) {
+      out[`${name} chevron`] = await page
+        .getByRole('button', { name, exact: true })
+        .locator('svg')
+        .evaluate(el => getComputedStyle(el).rotate);
+    }
     await page.close();
     return out;
   };
@@ -326,4 +496,6 @@ test('every backend paints and measures the same', async ({ browser }) => {
   expect(reference['Radio A']).not.toBe(reference['Radio B']);
   expect(reference['Radio A dot']).not.toBe(reference['Radio B dot']);
   expect(reference['Group on']).not.toBe(reference['Group off']);
+  expect(reference['Profile']).not.toBe(reference['Security']);
+  expect(reference['Faq one chevron']).not.toBe(reference['Faq two chevron']);
 });

@@ -15,3 +15,18 @@ export class VoltQuartzIds {
     return `${prefix}-${++this.next}`;
   }
 }
+
+/**
+ * Replaces the ids a Quartz directive generated for itself. Tabs and Accordion cross-reference
+ * their parts (`aria-controls`, `aria-labelledby`) through the directives' own `id`/`panelId`
+ * fields, which Quartz 0.16.0 fills from module-level counters. Assigning here, in the wrapper's
+ * constructor, runs before Quartz registers the part (`ngOnInit`) and before any host binding is
+ * evaluated, so the replaced id is the only one that ever reaches the DOM or the other parts —
+ * nothing is patched after render. The fields are `readonly` in Quartz's typings only.
+ */
+export function replaceQuartzIds(
+  directive: { readonly id: string },
+  ids: { id: string; panelId?: string }
+): void {
+  Object.assign(directive, ids);
+}

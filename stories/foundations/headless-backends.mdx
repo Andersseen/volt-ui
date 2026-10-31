@@ -17,8 +17,8 @@ contract belongs to Volt UI; the primitive library is an implementation detail o
 
 ## Quartz Headless — experimental
 
-Five component families can be backed by [Quartz Headless](https://github.com/Andersseen/quartz) instead of
-ng-primitives: **Checkbox**, **Radio** (group + item), **Switch**, **Toggle** and **ToggleGroup** (group + item). Everything else is ng-primitives only.
+Seven component families can be backed by [Quartz Headless](https://github.com/Andersseen/quartz) instead of
+ng-primitives: **Accordion** (accordion + item + trigger + content), **Checkbox**, **Radio** (group + item), **Switch**, **Tabs** (tabs + list + trigger + content), **Toggle** and **ToggleGroup** (group + item). Everything else is ng-primitives only.
 
 ### Package mode
 
@@ -48,7 +48,7 @@ point never loads ng-primitives and the main entry point never loads Quartz.
 
 ```bash
 npx @voltui/cli init --base=quartz
-npx @voltui/cli add checkbox radio switch toggle toggle-group --base=quartz
+npx @voltui/cli add checkbox radio switch toggle toggle-group tabs accordion --base=quartz
 ```
 
 The base is recorded in `volt.json` and reused by later `volt add` calls. A flag that contradicts
@@ -67,6 +67,16 @@ generating the other engine's source.
 `ToggleGroup.value` is a `string[]` in single **and** multiple mode under both backends: Quartz's
 `T | null` / `T[]` split is mapped inside the wrapper, so switching backend never changes your data model.
 `RadioGroup.value` is `string | null`. Ids rendered by Quartz's counter are replaced, so server and browser agree.
+
+### Tabs and Accordion
+
+- **Tabs**: `activateOnFocus` (default on) is Volt's boolean; Quartz's `activationMode` is mapped inside the wrapper. With it off, arrows move
+  focus only and a click, Enter or Space selects (ng-primitives: pointer only). An undefined `value` shows the first tab and emits nothing.
+- **Accordion**: `type`, `collapsible`, `value` (`string | string[] | null`) and `disabled` behave as with ng-primitives; Quartz's habit of opening
+  the first item is suppressed. Every enabled trigger stays a Tab stop. A closed panel is `visibility: hidden`, so it leaves the keyboard and the
+  accessibility tree and still animates.
+- Ids are counted per application, so the `aria-controls` / `aria-labelledby` references in the server HTML equal the hydrated ones.
+- The single non-collapsible open accordion item is `aria-disabled` with Quartz (as the WAI-ARIA pattern asks); ng-primitives omits it.
 
 ### What is guaranteed to match
 

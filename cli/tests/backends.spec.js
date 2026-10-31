@@ -14,7 +14,7 @@ import { join, resolve } from 'node:path';
 
 const core = require('../lib/core.js');
 const CLI = resolve(__dirname, '../bin/volt');
-const QUARTZ = ['checkbox', 'radio', 'switch', 'toggle', 'toggle-group'];
+const QUARTZ = ['accordion', 'checkbox', 'radio', 'switch', 'tabs', 'toggle', 'toggle-group'];
 
 /** Runs the real binary in a throwaway project root, as a consumer would. */
 function volt(cwd, ...args) {
@@ -100,7 +100,7 @@ describe('headless bases', () => {
       expect(JSON.parse(readFileSync(join(project, 'volt.json'), 'utf-8'))).toEqual({
         base: 'quartz',
       });
-      expect(result.out).toContain('checkbox, radio, switch, toggle, toggle-group');
+      expect(result.out).toContain('accordion, checkbox, radio, switch, tabs, toggle, toggle-group');
       expect(result.out).toContain('experimental');
     });
 
@@ -110,6 +110,11 @@ describe('headless bases', () => {
       const files = sources(ui());
       expect(files.map(f => f.slice(ui().length + 1)).sort()).toEqual(
         [
+          'accordion/accordion-content.ts',
+          'accordion/accordion-item.ts',
+          'accordion/accordion-trigger.ts',
+          'accordion/accordion.ts',
+          'accordion/index.ts',
           'checkbox/checkbox.ts',
           'checkbox/index.ts',
           'form-control-state.ts',
@@ -122,6 +127,11 @@ describe('headless bases', () => {
           'radio/radio-item.ts',
           'switch/index.ts',
           'switch/switch.ts',
+          'tabs/index.ts',
+          'tabs/tabs-content.ts',
+          'tabs/tabs-list.ts',
+          'tabs/tabs-trigger.ts',
+          'tabs/tabs.ts',
           'toggle-group/index.ts',
           'toggle-group/toggle-group-item.ts',
           'toggle-group/toggle-group.ts',
@@ -177,6 +187,42 @@ describe('headless bases', () => {
       );
       expect(readFileSync(join(ui(), 'toggle-group/toggle-group-item.ts'), 'utf-8')).toContain(
         "from '../toggle-group/variants'"
+      );
+    });
+
+    it('adds tabs and accordion alone: every part, the id helper, no ng-primitives', () => {
+      const result = volt(project, 'add', 'tabs', 'accordion', ui(), '--base=quartz');
+      expect(result.status).toBe(0);
+      const copied = sources(ui())
+        .map(f => f.slice(ui().length + 1))
+        .sort();
+      expect(copied).toEqual(
+        [
+          'accordion/accordion-content.ts',
+          'accordion/accordion-item.ts',
+          'accordion/accordion-trigger.ts',
+          'accordion/accordion.ts',
+          'accordion/index.ts',
+          'index.ts',
+          'quartz-attributes.ts',
+          'quartz-ids.ts',
+          'tabs/index.ts',
+          'tabs/tabs-content.ts',
+          'tabs/tabs-list.ts',
+          'tabs/tabs-trigger.ts',
+          'tabs/tabs.ts',
+          'utils.ts',
+        ].sort()
+      );
+      const all = copied.map(f => readFileSync(join(ui(), f), 'utf-8')).join('\n');
+      expect(all).not.toMatch(/from\s+['"]ng-primitives/);
+      expect(all).not.toMatch(/\bVolt[A-Z]|selector:\s*'volt-/);
+      expect(all).toContain("from '@quartz-headless/primitives'");
+      expect(readFileSync(join(ui(), 'tabs/tabs-trigger.ts'), 'utf-8')).toContain(
+        "selector: 'ui-tabs-trigger'"
+      );
+      expect(readFileSync(join(ui(), 'accordion/accordion-trigger.ts'), 'utf-8')).toContain(
+        "from './accordion'"
       );
     });
 
@@ -282,7 +328,7 @@ describe('headless bases', () => {
       const result = volt(project, 'add', 'checkbox', 'button', ui(), '--base=quartz');
       expect(result.status).toBe(1);
       expect(result.out).toContain('does not support: button');
-      expect(result.out).toContain('checkbox, radio, switch, toggle, toggle-group');
+      expect(result.out).toContain('accordion, checkbox, radio, switch, tabs, toggle, toggle-group');
       expect(result.out).toContain('without --base');
       expect(existsSync(ui())).toBe(false);
       expect(existsSync(join(project, 'volt.json'))).toBe(false);

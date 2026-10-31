@@ -143,7 +143,7 @@ These apply to everything under `src/app/` (the official site), not to the libra
 
 Volt's behaviour contract is its own; the headless engine is an implementation detail. The default is
 ng-primitives (`@voltui/components`). `@voltui/components/quartz` is an **opt-in, experimental** secondary
-entry point with Checkbox, Radio, Switch, Toggle and ToggleGroup on Quartz Headless (`@quartz-headless/*`, optional peers).
+entry point with Accordion, Checkbox, Radio, Switch, Tabs, Toggle and ToggleGroup on Quartz Headless (`@quartz-headless/*`, optional peers).
 
 - Sources: `packages/volt/src/lib/quartz/<name>/`, exported from `packages/volt/src/quartz-api.ts`; ng-packagr entry
   `packages/volt/quartz/ng-package.json`. Same selectors, inputs, models, outputs and Tailwind classes as the default
