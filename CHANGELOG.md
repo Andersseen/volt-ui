@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+Planned as the 1.5.0 minor (not yet versioned: see `specs/plans/v1.5.md` for the release blockers).
+
+### Added — `@voltui/components`
+
+- **`@voltui/components/quartz`**: `VoltRadioGroup` / `VoltRadioItem` and `VoltToggleGroup` / `VoltToggleGroupItem` on
+  Quartz Headless (experimental), with the same selectors, inputs, models, outputs, classes and `data-*` hooks as the
+  ng-primitives ones. `ToggleGroup.value` stays a `string[]` in both modes; the Quartz `T | null` / `T[]` split is mapped
+  inside the wrapper. Quartz's process-wide element ids are not rendered, so SSR and hydration agree.
+
+### Added — `@voltui/cli`
+
+- `volt add radio toggle-group --base=quartz` (and `volt init --base=quartz` now lists five supported components).
+  The copy includes the two small shared helpers the Quartz wrappers use (`quartz-ids.ts`, `quartz-attributes.ts`).
+
 ## [1.4.0] - 2026-10-30
 
 Minor release: the first opt-in alternative headless backend. Additive; every existing import, selector and

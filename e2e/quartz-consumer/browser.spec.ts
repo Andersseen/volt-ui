@@ -81,7 +81,7 @@ for (const [name, url] of BACKENDS) {
       await expect(sw).toHaveAttribute('aria-checked', 'false');
       await expect(value).toContainText('"notify": false');
 
-      const bold = page.getByRole('button', { name: 'Bold' });
+      const bold = page.getByRole('button', { name: 'Bold', exact: true });
       await bold.focus();
       await page.keyboard.press('Space');
       await expect(bold).toHaveAttribute('aria-pressed', 'true');
@@ -127,6 +127,124 @@ for (const [name, url] of BACKENDS) {
       expect(ring).not.toBe('none');
     });
 
+    test('radio group: prerendered, forms-bound, roving focus, label-for, touched', async ({
+      page,
+      request,
+    }) => {
+      const html = await (await request.get(url!)).text();
+      expect(html).toContain('role="radiogroup"');
+      expect(html).toMatch(
+        /role="radio"[^>]*aria-checked="true"|aria-checked="true"[^>]*role="radio"/
+      );
+
+      const problems = await open(page, url!);
+      const value = page.locator('#value');
+      const pear = page.getByRole('radio', { name: 'Pear' });
+      await expect(pear).toHaveAttribute('aria-checked', 'true');
+      await expect(page.locator('#dirty')).toHaveText('false');
+
+      // Tab lands on the checked radio only; arrows move and select; Home/End are not part of the contract.
+      await page.getByRole('checkbox', { name: 'Accept terms' }).focus();
+      await page.keyboard.press('Tab'); // switch
+      await page.keyboard.press('Tab'); // toggle
+      await page.keyboard.press('Tab'); // radio group
+      await expect(pear).toBeFocused();
+      await page.keyboard.press('ArrowRight');
+      const plum = page.getByRole('radio', { name: 'Plum' });
+      await expect(plum).toBeFocused();
+      await expect(plum).toHaveAttribute('aria-checked', 'true');
+      await expect(value).toContainText('"fruit": "plum"');
+      await page.keyboard.press('ArrowRight'); // wraps
+      await expect(page.getByRole('radio', { name: 'Apple' })).toBeFocused();
+      await expect(value).toContainText('"fruit": "apple"');
+
+      // An external <label for> names the radio button and clicking it selects.
+      const email = page.getByRole('radio', { name: 'Email me' });
+      await expect(email).toHaveAttribute('id', 'email-radio');
+      await page.getByText('Email me').click();
+      await expect(email).toHaveAttribute('aria-checked', 'true');
+      await expect(value).toContainText('"contact": "email"');
+      await expect(page.locator('#dirty')).toHaveText('true');
+      expect(problems).toEqual([]);
+    });
+
+    test('toggle groups: multiple keeps order, single replaces, arrows only move focus', async ({
+      page,
+    }) => {
+      const problems = await open(page, url!);
+      const value = page.locator('#value');
+      const italic = page.getByRole('button', { name: 'Italic text' });
+      await expect(italic).toHaveAttribute('aria-pressed', 'true');
+      await page.getByRole('button', { name: 'Bold text' }).click();
+      const compact = async () => (await value.textContent())!.replace(/\s+/g, '');
+      await expect.poll(compact).toContain('"format":["italic","bold"]');
+
+      const left = page.getByRole('radio', { name: 'Left' });
+      await left.click();
+      await expect(left).toHaveAttribute('aria-checked', 'true');
+      await expect.poll(compact).toContain('"align":["left"]');
+      await page.keyboard.press('ArrowRight');
+      await expect(page.getByRole('radio', { name: 'Center' })).toBeFocused();
+      await expect(left).toHaveAttribute('aria-checked', 'true'); // focus moved, value did not
+      await page.keyboard.press('Space');
+      await expect(page.getByRole('radio', { name: 'Center' })).toHaveAttribute(
+        'aria-checked',
+        'true'
+      );
+      await expect(left).toHaveAttribute('aria-checked', 'false');
+      await page.getByRole('radio', { name: 'Center' }).click(); // deselect
+      await expect.poll(compact).toContain('"align":[]');
+      expect(problems).toEqual([]);
+    });
+
+    test('server ids equal client ids: nothing is renumbered by hydration', async ({
+      page,
+      request,
+    }) => {
+      const html = await (await request.get(url!)).text();
+      const server = [...html.matchAll(/\sid="([^"]+)"/g)].map(m => m[1]).sort();
+      expect(server.length).toBeGreaterThan(0);
+      await open(page, url!);
+      await page.waitForTimeout(300);
+      const client = (await page.locator('[id]').evaluateAll(els => els.map(e => e.id))).sort();
+      expect(client).toEqual(server);
+      expect(client.filter(id => /^qz-/.test(id))).toEqual([]);
+    });
+
+    test('RTL: horizontal arrows and the reading direction', async ({ page }) => {
+      await open(page, url!);
+      // Quartz mirrors Left/Right in an RTL group (the WAI-ARIA expectation). ng-primitives 0.131 does
+      // not: ArrowLeft always means "previous". Documented in docs/headless-backends.md; the test pins
+      // each engine's actual behaviour so a change in either is noticed.
+      const mirrors = name.startsWith('quartz');
+      const radios = ['RTL one', 'RTL two', 'RTL three'];
+      await page.getByRole('radio', { name: 'RTL one' }).focus();
+      await page.keyboard.press('ArrowLeft');
+      await expect(
+        page.getByRole('radio', { name: mirrors ? radios[1] : radios[2] })
+      ).toBeFocused();
+
+      await page.getByRole('button', { name: 'RTL tone' }).focus();
+      await page.keyboard.press('ArrowLeft');
+      await expect(
+        page.getByRole('button', { name: mirrors ? 'RTL ttwo' : 'RTL tthree' })
+      ).toBeFocused();
+    });
+
+    test('group items: disabled ones and disabled groups ignore input', async ({ page }) => {
+      await open(page, url!);
+      for (const [role, label, attr] of [
+        ['radio', 'Radio C', 'aria-checked'],
+        ['radio', 'Radio D', 'aria-checked'],
+        ['button', 'Group disabled', 'aria-pressed'],
+      ] as const) {
+        const el = page.getByRole(role, { name: label });
+        const before = await el.getAttribute(attr);
+        await el.click({ force: true });
+        await expect(el).toHaveAttribute(attr, before!);
+      }
+    });
+
     test('disabled controls ignore input', async ({ page }) => {
       await open(page, url!);
       for (const [role, label, attr] of [
@@ -158,6 +276,13 @@ test('every backend paints and measures the same', async ({ browser }) => {
     ['button', 'Toggle off'],
     ['button', 'Toggle disabled'],
     ['button', 'Bold'],
+    ['radio', 'Radio A'],
+    ['radio', 'Radio B'],
+    ['radio', 'Radio C'],
+    ['radio', 'Radio D'],
+    ['button', 'Group on'],
+    ['button', 'Group off'],
+    ['button', 'Group disabled'],
   ] as const;
   const read = async (url: string) => {
     const page = await browser.newPage();
@@ -165,7 +290,8 @@ test('every backend paints and measures the same', async ({ browser }) => {
     // Computed values are sampled: let no transition (the switch thumb slides) be caught mid-way.
     await page.addStyleTag({ content: '*, *::before, *::after { transition: none !important; }' });
     const out: Record<string, string> = {};
-    for (const [role, name] of targets) out[name] = await paint(page.getByRole(role, { name }));
+    for (const [role, name] of targets)
+      out[name] = await paint(page.getByRole(role, { name, exact: true }));
     // The switch thumb moves by `translate`: the "on" thumb must sit further right than the "off" one.
     for (const name of ['Switch on', 'Switch off']) {
       out[`${name} thumb`] = await page
@@ -174,6 +300,16 @@ test('every backend paints and measures the same', async ({ browser }) => {
         .evaluate(
           el => getComputedStyle(el).translate + '|' + getComputedStyle(el).backgroundColor
         );
+    }
+    // The radio dot (indicator) is painted only on the checked item.
+    for (const name of ['Radio A', 'Radio B']) {
+      out[`${name} dot`] = await page
+        .getByRole('radio', { name })
+        .locator('span span')
+        .evaluate(el => {
+          const s = getComputedStyle(el);
+          return [s.display, s.backgroundColor, s.width, s.height].join('|');
+        });
     }
     await page.close();
     return out;
@@ -187,4 +323,7 @@ test('every backend paints and measures the same', async ({ browser }) => {
   expect(reference['Checked box']).not.toBe(reference['Unchecked box']);
   expect(reference['Switch on thumb']).not.toBe(reference['Switch off thumb']);
   expect(reference['Toggle on']).not.toBe(reference['Toggle off']);
+  expect(reference['Radio A']).not.toBe(reference['Radio B']);
+  expect(reference['Radio A dot']).not.toBe(reference['Radio B dot']);
+  expect(reference['Group on']).not.toBe(reference['Group off']);
 });

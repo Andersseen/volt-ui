@@ -1,11 +1,23 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { moduleMetadata, type Meta, type StoryObj } from '@storybook/angular-vite';
-import { VoltCheckbox, VoltSwitch, VoltToggle } from 'volt';
+import {
+  VoltCheckbox,
+  VoltRadioGroup,
+  VoltRadioItem,
+  VoltSwitch,
+  VoltToggle,
+  VoltToggleGroup,
+  VoltToggleGroupItem,
+} from 'volt';
 import {
   VoltCheckbox as QuartzCheckbox,
+  VoltRadioGroup as QuartzRadioGroup,
+  VoltRadioItem as QuartzRadioItem,
   VoltSwitch as QuartzSwitch,
   VoltToggle as QuartzToggle,
+  VoltToggleGroup as QuartzToggleGroup,
+  VoltToggleGroupItem as QuartzToggleGroupItem,
 } from 'volt/quartz';
 
 /*
@@ -27,12 +39,35 @@ const TEMPLATE = `
       <volt-toggle ariaLabel="Unpressed" variant="outline">Unpressed</volt-toggle>
       <volt-toggle ariaLabel="Disabled toggle" [disabled]="true" variant="outline">Disabled</volt-toggle>
     </div>
+    <volt-radio-group aria-label="Fruit" orientation="horizontal" value="pear">
+      <volt-radio-item value="apple">Apple</volt-radio-item>
+      <volt-radio-item value="pear">Pear</volt-radio-item>
+      <volt-radio-item value="plum" disabled>Plum</volt-radio-item>
+    </volt-radio-group>
+    <volt-toggle-group aria-label="Format" type="multiple" [value]="['bold']">
+      <volt-toggle-group-item value="bold" variant="outline">Bold</volt-toggle-group-item>
+      <volt-toggle-group-item value="italic" variant="outline">Italic</volt-toggle-group-item>
+      <volt-toggle-group-item value="underline" variant="outline" disabled>Underline</volt-toggle-group-item>
+    </volt-toggle-group>
+    <volt-toggle-group aria-label="Alignment" [value]="['left']">
+      <volt-toggle-group-item value="left">Left</volt-toggle-group-item>
+      <volt-toggle-group-item value="right">Right</volt-toggle-group-item>
+    </volt-toggle-group>
   </div>`;
 
 @Component({
   selector: 'app-ngp-controls',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [VoltCheckbox, VoltSwitch, VoltToggle, ReactiveFormsModule],
+  imports: [
+    VoltCheckbox,
+    VoltSwitch,
+    VoltToggle,
+    VoltRadioGroup,
+    VoltRadioItem,
+    VoltToggleGroup,
+    VoltToggleGroupItem,
+    ReactiveFormsModule,
+  ],
   template: TEMPLATE,
 })
 class NgPrimitivesControls {
@@ -42,7 +77,16 @@ class NgPrimitivesControls {
 @Component({
   selector: 'app-quartz-controls',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [QuartzCheckbox, QuartzSwitch, QuartzToggle, ReactiveFormsModule],
+  imports: [
+    QuartzCheckbox,
+    QuartzSwitch,
+    QuartzToggle,
+    QuartzRadioGroup,
+    QuartzRadioItem,
+    QuartzToggleGroup,
+    QuartzToggleGroupItem,
+    ReactiveFormsModule,
+  ],
   template: TEMPLATE,
 })
 class QuartzControls {
@@ -56,7 +100,7 @@ const meta: Meta = {
     docs: {
       description: {
         component:
-          'Checkbox, Switch and Toggle rendered by both headless backends from the same template. ' +
+          'Checkbox, Radio, Switch, Toggle and ToggleGroup rendered by both headless backends from the same template. ' +
           'The Quartz column imports from `@voltui/components/quartz` (experimental, opt-in); the other is the default ng-primitives implementation. ' +
           'Colour and style presets apply to both; switch them in the toolbar.',
       },
