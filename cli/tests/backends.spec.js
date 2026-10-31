@@ -100,7 +100,9 @@ describe('headless bases', () => {
       expect(JSON.parse(readFileSync(join(project, 'volt.json'), 'utf-8'))).toEqual({
         base: 'quartz',
       });
-      expect(result.out).toContain('accordion, checkbox, radio, switch, tabs, toggle, toggle-group');
+      expect(result.out).toContain(
+        'accordion, checkbox, radio, switch, tabs, toggle, toggle-group'
+      );
       expect(result.out).toContain('experimental');
     });
 
@@ -328,7 +330,9 @@ describe('headless bases', () => {
       const result = volt(project, 'add', 'checkbox', 'button', ui(), '--base=quartz');
       expect(result.status).toBe(1);
       expect(result.out).toContain('does not support: button');
-      expect(result.out).toContain('accordion, checkbox, radio, switch, tabs, toggle, toggle-group');
+      expect(result.out).toContain(
+        'accordion, checkbox, radio, switch, tabs, toggle, toggle-group'
+      );
       expect(result.out).toContain('without --base');
       expect(existsSync(ui())).toBe(false);
       expect(existsSync(join(project, 'volt.json'))).toBe(false);
