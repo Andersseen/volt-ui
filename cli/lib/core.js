@@ -142,6 +142,8 @@ const SHARED_LIB_FILES = [
   'host-forwarding.ts',
   'aria-invalid.ts',
   'mirror-value.ts',
+  'quartz-ids.ts',
+  'quartz-attributes.ts',
 ];
 
 // ---------------------------------------------------------------------------

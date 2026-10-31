@@ -6,7 +6,7 @@
  *   1. build + `npm pack` the library (no workspace alias, no symlink);
  *   2. outside the repository, install that tarball with a given Angular version and the published
  *      Quartz packages (`@quartz-headless/{core,primitives}`, never a Git ref or workspace path);
- *   3. build apps from the same template — `./backend` re-exports Checkbox/Switch/Toggle from
+ *   3. build apps from the same template — `./backend` re-exports Checkbox/Radio/Switch/Toggle/ToggleGroup from
  *      `@voltui/components` in one and from `@voltui/components/quartz` in the other — with strict
  *      AOT, strict templates, zoneless, prerendered (SSR) and hydrated;
  *   4. isolation: the default bundle must not contain Quartz and the Quartz bundle must not contain
@@ -168,11 +168,11 @@ if (result.status !== 0) {
 // 3. two apps from one template
 const template = join(ROOT, 'e2e/quartz-consumer');
 const BACKENDS = {
-  primitives: `export { VoltCheckbox, VoltSwitch, VoltToggle } from '@voltui/components';\n`,
-  quartz: `export { VoltCheckbox, VoltSwitch, VoltToggle } from '@voltui/components/quartz';\n`,
+  primitives: `export { VoltCheckbox, VoltRadioGroup, VoltRadioItem, VoltSwitch, VoltToggle, VoltToggleGroup, VoltToggleGroupItem } from '@voltui/components';\n`,
+  quartz: `export { VoltCheckbox, VoltRadioGroup, VoltRadioItem, VoltSwitch, VoltToggle, VoltToggleGroup, VoltToggleGroupItem } from '@voltui/components/quartz';\n`,
   // The CLI copies are renamed (`ui-*` / `Ui*`); the demo is run through the CLI's own transform.
-  'primitives-copy': `export { UiCheckbox, UiSwitch, UiToggle } from './ui';\n`,
-  'quartz-copy': `export { UiCheckbox, UiSwitch, UiToggle } from './ui';\n`,
+  'primitives-copy': `export { UiCheckbox, UiRadioGroup, UiRadioItem, UiSwitch, UiToggle, UiToggleGroup, UiToggleGroupItem } from './ui';\n`,
+  'quartz-copy': `export { UiCheckbox, UiRadioGroup, UiRadioItem, UiSwitch, UiToggle, UiToggleGroup, UiToggleGroupItem } from './ui';\n`,
 };
 const require = createRequire(import.meta.url);
 const { transformContent } = require(join(ROOT, 'cli/lib/core.js'));
@@ -198,9 +198,19 @@ for (const [name, backend] of Object.entries(BACKENDS)) {
     const cli = join(ROOT, 'cli/bin/volt');
     run(`volt init (${name})`, 'node', [cli, 'init', join(src, 'ui'), ...base], { cwd: root });
     run(
-      `volt add checkbox switch toggle (${name})`,
+      `volt add checkbox radio switch toggle toggle-group (${name})`,
       'node',
-      [cli, 'add', 'checkbox', 'switch', 'toggle', join(src, 'ui'), ...base],
+      [
+        cli,
+        'add',
+        'checkbox',
+        'radio',
+        'switch',
+        'toggle',
+        'toggle-group',
+        join(src, 'ui'),
+        ...base,
+      ],
       { cwd: root }
     );
     if (
@@ -264,6 +274,72 @@ for (const [name, backend] of Object.entries(BACKENDS)) {
     },
   };
 }
+// Negative compilation: the public API must be strict. Each engine gets an app whose template
+// breaks the Volt contract (a string where `value` is a string[]; a number for a radio value; a
+// radio item without its required value); the build has to FAIL, naming the problem.
+const NEGATIVE = {
+  'negative-primitives': '@voltui/components',
+  'negative-quartz': '@voltui/components/quartz',
+};
+for (const [name, entry] of Object.entries(NEGATIVE)) {
+  const src = join(app, `src-${name}`);
+  mkdirSync(src, { recursive: true });
+  writeFileSync(
+    join(src, 'main.ts'),
+    `import { Component } from '@angular/core';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { VoltRadioGroup, VoltRadioItem, VoltToggleGroup, VoltToggleGroupItem } from '${entry}';
+
+@Component({
+  selector: 'app-negative',
+  imports: [VoltRadioGroup, VoltRadioItem, VoltToggleGroup, VoltToggleGroupItem],
+  template: \`
+    <volt-toggle-group [value]="'bold'" type="sideways">
+      <volt-toggle-group-item value="bold">Bold</volt-toggle-group-item>
+    </volt-toggle-group>
+    <volt-radio-group [value]="42">
+      <volt-radio-item />
+    </volt-radio-group>
+  \`,
+})
+class Negative {}
+bootstrapApplication(Negative);
+`
+  );
+  writeFileSync(join(src, 'index.html'), '<app-negative></app-negative>');
+  writeFileSync(
+    join(app, `tsconfig.${name}.json`),
+    JSON.stringify({
+      compilerOptions: {
+        strict: true,
+        target: 'ES2022',
+        module: 'ES2022',
+        moduleResolution: 'bundler',
+        importHelpers: true,
+        lib: ['ES2022', 'dom'],
+        types: [],
+      },
+      angularCompilerOptions: { strictTemplates: true },
+      files: [`src-${name}/main.ts`],
+    })
+  );
+  projects[name] = {
+    projectType: 'application',
+    root: '',
+    sourceRoot: `src-${name}`,
+    architect: {
+      build: {
+        builder: '@angular/build:application',
+        options: {
+          outputPath: `dist/${name}`,
+          browser: `src-${name}/main.ts`,
+          index: `src-${name}/index.html`,
+          tsConfig: `tsconfig.${name}.json`,
+        },
+      },
+    },
+  };
+}
 writeFileSync(
   join(app, '.postcssrc.json'),
   JSON.stringify({ plugins: { '@tailwindcss/postcss': {} } })
@@ -288,6 +364,21 @@ console.log(
     `@quartz-headless/primitives ${installed('@quartz-headless/primitives')}`
 );
 const angularVersion = installed('@angular/core');
+for (const name of Object.keys(NEGATIVE)) {
+  console.log(`\n▶ negative compilation: ${name} must fail`);
+  const broken = spawnSync(join(app, 'node_modules/.bin/ng'), ['build', name], {
+    cwd: app,
+    env,
+    encoding: 'utf8',
+  });
+  const output = `${broken.stdout}${broken.stderr}`.replace(/\x1b\[[0-9;]*m/g, '');
+  if (broken.status === 0) fail(`${name}: a template that breaks the public API compiled.`);
+  for (const expected of [/not assignable/, /sideways|42|'bold'/, /required|\bvalue\b/]) {
+    if (!expected.test(output))
+      fail(`${name}: the failure does not name the problem (${expected}):\n${output}`);
+  }
+  console.log('  ✔ rejected, as it must be');
+}
 for (const name of Object.keys(BACKENDS)) {
   run(
     `strict AOT production build + prerender: ${name}`,
@@ -319,11 +410,15 @@ const measure = name => {
 };
 const sizes = Object.fromEntries(Object.keys(BACKENDS).map(name => [name, measure(name)]));
 const MARKERS = {
-  quartz: [/@quartz-headless/, /data-qz-state/, /qzCheckbox|qzSwitch|qzToggle/],
+  quartz: [
+    /@quartz-headless/,
+    /data-qz-state/,
+    /qzCheckbox|qzSwitch|qzToggle|qzRadio|qzToggleItem/,
+  ],
   primitives: [
-    /ngpCheckbox|ngpSwitch|ngpToggle/,
+    /ngpCheckbox|ngpSwitch|ngpToggle|ngpRadio|ngpToggleGroup/,
     /ng-primitives/,
-    /NgpCheckbox|NgpSwitch|NgpToggle/,
+    /NgpCheckbox|NgpSwitch|NgpToggle|NgpRadio|NgpToggleGroup/,
     /data-hover|ngpInteractions/,
   ],
 };
@@ -340,7 +435,7 @@ for (const [name, size] of Object.entries(sizes)) {
     leaks.push(`positive control failed: ${name} bundle lacks its own engine`);
 }
 const kb = n => `${(n / 1024).toFixed(1)} kB`;
-console.log(`\n  bundle (browser JS: the three components + Forms + Angular):`);
+console.log(`\n  bundle (browser JS: the five component families + Forms + Angular):`);
 for (const [name, size] of Object.entries(sizes)) {
   console.log(
     `    ${name.padEnd(16)}: ${kb(size.raw).padStart(9)} raw, ${kb(size.gzip).padStart(9)} gzip`
