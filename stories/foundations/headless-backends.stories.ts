@@ -2,19 +2,35 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { moduleMetadata, type Meta, type StoryObj } from '@storybook/angular-vite';
 import {
+  VoltAccordion,
+  VoltAccordionContent,
+  VoltAccordionItem,
+  VoltAccordionTrigger,
   VoltCheckbox,
   VoltRadioGroup,
   VoltRadioItem,
   VoltSwitch,
+  VoltTabs,
+  VoltTabsContent,
+  VoltTabsList,
+  VoltTabsTrigger,
   VoltToggle,
   VoltToggleGroup,
   VoltToggleGroupItem,
 } from 'volt';
 import {
+  VoltAccordion as QuartzAccordion,
+  VoltAccordionContent as QuartzAccordionContent,
+  VoltAccordionItem as QuartzAccordionItem,
+  VoltAccordionTrigger as QuartzAccordionTrigger,
   VoltCheckbox as QuartzCheckbox,
   VoltRadioGroup as QuartzRadioGroup,
   VoltRadioItem as QuartzRadioItem,
   VoltSwitch as QuartzSwitch,
+  VoltTabs as QuartzTabs,
+  VoltTabsContent as QuartzTabsContent,
+  VoltTabsList as QuartzTabsList,
+  VoltTabsTrigger as QuartzTabsTrigger,
   VoltToggle as QuartzToggle,
   VoltToggleGroup as QuartzToggleGroup,
   VoltToggleGroupItem as QuartzToggleGroupItem,
@@ -53,6 +69,26 @@ const TEMPLATE = `
       <volt-toggle-group-item value="left">Left</volt-toggle-group-item>
       <volt-toggle-group-item value="right">Right</volt-toggle-group-item>
     </volt-toggle-group>
+    <volt-tabs value="account">
+      <volt-tabs-list aria-label="Settings">
+        <volt-tabs-trigger value="account">Account</volt-tabs-trigger>
+        <volt-tabs-trigger value="security">Security</volt-tabs-trigger>
+        <volt-tabs-trigger value="billing">Billing</volt-tabs-trigger>
+      </volt-tabs-list>
+      <volt-tabs-content value="account">Account settings</volt-tabs-content>
+      <volt-tabs-content value="security">Security settings</volt-tabs-content>
+      <volt-tabs-content value="billing">Billing settings</volt-tabs-content>
+    </volt-tabs>
+    <volt-accordion value="shipping" [collapsible]="true">
+      <volt-accordion-item value="shipping">
+        <volt-accordion-trigger>Shipping</volt-accordion-trigger>
+        <volt-accordion-content>Ships in two days.</volt-accordion-content>
+      </volt-accordion-item>
+      <volt-accordion-item value="returns">
+        <volt-accordion-trigger>Returns</volt-accordion-trigger>
+        <volt-accordion-content>Thirty days to return.</volt-accordion-content>
+      </volt-accordion-item>
+    </volt-accordion>
   </div>`;
 
 @Component({
@@ -66,6 +102,14 @@ const TEMPLATE = `
     VoltRadioItem,
     VoltToggleGroup,
     VoltToggleGroupItem,
+    VoltTabs,
+    VoltTabsList,
+    VoltTabsTrigger,
+    VoltTabsContent,
+    VoltAccordion,
+    VoltAccordionItem,
+    VoltAccordionTrigger,
+    VoltAccordionContent,
     ReactiveFormsModule,
   ],
   template: TEMPLATE,
@@ -85,6 +129,14 @@ class NgPrimitivesControls {
     QuartzRadioItem,
     QuartzToggleGroup,
     QuartzToggleGroupItem,
+    QuartzTabs,
+    QuartzTabsList,
+    QuartzTabsTrigger,
+    QuartzTabsContent,
+    QuartzAccordion,
+    QuartzAccordionItem,
+    QuartzAccordionTrigger,
+    QuartzAccordionContent,
     ReactiveFormsModule,
   ],
   template: TEMPLATE,
@@ -100,7 +152,7 @@ const meta: Meta = {
     docs: {
       description: {
         component:
-          'Checkbox, Radio, Switch, Toggle and ToggleGroup rendered by both headless backends from the same template. ' +
+          'Checkbox, Radio, Switch, Toggle, ToggleGroup, Tabs and Accordion rendered by both headless backends from the same template. ' +
           'The Quartz column imports from `@voltui/components/quartz` (experimental, opt-in); the other is the default ng-primitives implementation. ' +
           'Colour and style presets apply to both; switch them in the toolbar.',
       },

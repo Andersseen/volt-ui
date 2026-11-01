@@ -16,8 +16,14 @@ Planned as the 1.5.0 minor (not yet versioned: see `specs/plans/v1.5.md` for the
   ng-primitives ones. `ToggleGroup.value` stays a `string[]` in both modes; the Quartz `T | null` / `T[]` split is mapped
   inside the wrapper. Quartz's process-wide element ids are not rendered, so SSR and hydration agree.
 
+- **`@voltui/components/quartz`**: `VoltTabs` / `VoltTabsList` / `VoltTabsTrigger` / `VoltTabsContent` and `VoltAccordion` /
+  `VoltAccordionItem` / `VoltAccordionTrigger` / `VoltAccordionContent` on Quartz Headless (experimental), same selectors, inputs,
+  models, outputs, classes and `data-state` / `data-open` hooks. Ids are counted per application; Quartz's implicit first-tab / first-item
+  selection never reaches the model. Differences from ng-primitives are listed in `docs/headless-backends.md`.
+
 ### Added — `@voltui/cli`
 
+- `volt add tabs accordion --base=quartz` (the supported list is now seven components).
 - `volt add radio toggle-group --base=quartz` (and `volt init --base=quartz` now lists five supported components).
   The copy includes the two small shared helpers the Quartz wrappers use (`quartz-ids.ts`, `quartz-attributes.ts`).
 

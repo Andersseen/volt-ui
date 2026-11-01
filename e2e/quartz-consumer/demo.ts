@@ -1,9 +1,13 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, model } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
 // `./backend` is the only file that differs between the two fixture apps: it re-exports the same
 // five component families from `@voltui/components` (ng-primitives) or `@voltui/components/quartz`.
 import {
+  VoltAccordion,
+  VoltAccordionContent,
+  VoltAccordionItem,
+  VoltAccordionTrigger,
   VoltCheckbox,
   VoltRadioGroup,
   VoltRadioItem,
@@ -11,6 +15,10 @@ import {
   VoltToggle,
   VoltToggleGroup,
   VoltToggleGroupItem,
+  VoltTabs,
+  VoltTabsContent,
+  VoltTabsList,
+  VoltTabsTrigger,
 } from './backend';
 
 @Component({
@@ -26,6 +34,14 @@ import {
     VoltRadioItem,
     VoltToggleGroup,
     VoltToggleGroupItem,
+    VoltTabs,
+    VoltTabsList,
+    VoltTabsTrigger,
+    VoltTabsContent,
+    VoltAccordion,
+    VoltAccordionItem,
+    VoltAccordionTrigger,
+    VoltAccordionContent,
   ],
   template: `
     <main class="mx-auto flex max-w-md flex-col gap-4 p-6">
@@ -106,6 +122,69 @@ import {
         <volt-toggle ariaLabel="Toggle disabled" disabled>Disabled</volt-toggle>
       </section>
 
+      <section aria-label="Disclosure" class="flex flex-col gap-3">
+        <volt-tabs [(value)]="tab">
+          <volt-tabs-list aria-label="Account sections">
+            <volt-tabs-trigger value="profile">Profile</volt-tabs-trigger>
+            <volt-tabs-trigger value="security">Security</volt-tabs-trigger>
+            <volt-tabs-trigger value="billing">Billing</volt-tabs-trigger>
+          </volt-tabs-list>
+          <volt-tabs-content value="profile"
+            ><button type="button">Edit profile</button></volt-tabs-content
+          >
+          <volt-tabs-content value="security"
+            ><button type="button">Change password</button></volt-tabs-content
+          >
+          <volt-tabs-content value="billing"
+            ><button type="button">Update card</button></volt-tabs-content
+          >
+        </volt-tabs>
+        <volt-tabs value="m1" [activateOnFocus]="false">
+          <volt-tabs-list aria-label="Manual sections">
+            <volt-tabs-trigger value="m1">Manual one</volt-tabs-trigger>
+            <volt-tabs-trigger value="m2">Manual two</volt-tabs-trigger>
+          </volt-tabs-list>
+          <volt-tabs-content value="m1">Manual panel one</volt-tabs-content>
+          <volt-tabs-content value="m2">Manual panel two</volt-tabs-content>
+        </volt-tabs>
+        <div dir="rtl">
+          <volt-tabs value="r1">
+            <volt-tabs-list aria-label="RTL sections">
+              <volt-tabs-trigger value="r1">RTL first</volt-tabs-trigger>
+              <volt-tabs-trigger value="r2">RTL second</volt-tabs-trigger>
+            </volt-tabs-list>
+            <volt-tabs-content value="r1">RTL panel one</volt-tabs-content>
+            <volt-tabs-content value="r2">RTL panel two</volt-tabs-content>
+          </volt-tabs>
+        </div>
+        <volt-accordion [(value)]="section" [collapsible]="true">
+          <volt-accordion-item value="shipping">
+            <volt-accordion-trigger>Shipping</volt-accordion-trigger>
+            <volt-accordion-content
+              ><button type="button">Track parcel</button></volt-accordion-content
+            >
+          </volt-accordion-item>
+          <volt-accordion-item value="returns">
+            <volt-accordion-trigger>Returns</volt-accordion-trigger>
+            <volt-accordion-content
+              ><button type="button">Start return</button></volt-accordion-content
+            >
+          </volt-accordion-item>
+        </volt-accordion>
+        <volt-accordion type="multiple">
+          <volt-accordion-item value="faq-1">
+            <volt-accordion-trigger>Faq one</volt-accordion-trigger>
+            <volt-accordion-content>Faq answer one</volt-accordion-content>
+          </volt-accordion-item>
+          <volt-accordion-item value="faq-2">
+            <volt-accordion-trigger>Faq two</volt-accordion-trigger>
+            <volt-accordion-content>Faq answer two</volt-accordion-content>
+          </volt-accordion-item>
+        </volt-accordion>
+        <output id="tab-value">{{ tab() }}</output>
+        <output id="section-value">{{ section() ?? 'none' }}</output>
+      </section>
+
       <output id="value">{{ form.getRawValue() | json }}</output>
       <output id="touched">{{ form.touched }}</output>
       <output id="dirty">{{ form.dirty }}</output>
@@ -113,6 +192,8 @@ import {
   `,
 })
 export class Demo {
+  readonly tab = model<string | undefined>('profile');
+  readonly section = model<string | string[] | null>(null);
   readonly form = new FormGroup({
     accept: new FormControl(false, { nonNullable: true }),
     notify: new FormControl(true, { nonNullable: true }),

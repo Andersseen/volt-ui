@@ -6,7 +6,7 @@
  *   1. build + `npm pack` the library (no workspace alias, no symlink);
  *   2. outside the repository, install that tarball with a given Angular version and the published
  *      Quartz packages (`@quartz-headless/{core,primitives}`, never a Git ref or workspace path);
- *   3. build apps from the same template — `./backend` re-exports Checkbox/Radio/Switch/Toggle/ToggleGroup from
+ *   3. build apps from the same template — `./backend` re-exports Checkbox/Radio/Switch/Toggle/ToggleGroup/Tabs/Accordion from
  *      `@voltui/components` in one and from `@voltui/components/quartz` in the other — with strict
  *      AOT, strict templates, zoneless, prerendered (SSR) and hydrated;
  *   4. isolation: the default bundle must not contain Quartz and the Quartz bundle must not contain
@@ -168,11 +168,11 @@ if (result.status !== 0) {
 // 3. two apps from one template
 const template = join(ROOT, 'e2e/quartz-consumer');
 const BACKENDS = {
-  primitives: `export { VoltCheckbox, VoltRadioGroup, VoltRadioItem, VoltSwitch, VoltToggle, VoltToggleGroup, VoltToggleGroupItem } from '@voltui/components';\n`,
-  quartz: `export { VoltCheckbox, VoltRadioGroup, VoltRadioItem, VoltSwitch, VoltToggle, VoltToggleGroup, VoltToggleGroupItem } from '@voltui/components/quartz';\n`,
+  primitives: `export { VoltCheckbox, VoltRadioGroup, VoltRadioItem, VoltSwitch, VoltToggle, VoltToggleGroup, VoltToggleGroupItem, VoltAccordion, VoltAccordionContent, VoltAccordionItem, VoltAccordionTrigger, VoltTabs, VoltTabsContent, VoltTabsList, VoltTabsTrigger } from '@voltui/components';\n`,
+  quartz: `export { VoltCheckbox, VoltRadioGroup, VoltRadioItem, VoltSwitch, VoltToggle, VoltToggleGroup, VoltToggleGroupItem, VoltAccordion, VoltAccordionContent, VoltAccordionItem, VoltAccordionTrigger, VoltTabs, VoltTabsContent, VoltTabsList, VoltTabsTrigger } from '@voltui/components/quartz';\n`,
   // The CLI copies are renamed (`ui-*` / `Ui*`); the demo is run through the CLI's own transform.
-  'primitives-copy': `export { UiCheckbox, UiRadioGroup, UiRadioItem, UiSwitch, UiToggle, UiToggleGroup, UiToggleGroupItem } from './ui';\n`,
-  'quartz-copy': `export { UiCheckbox, UiRadioGroup, UiRadioItem, UiSwitch, UiToggle, UiToggleGroup, UiToggleGroupItem } from './ui';\n`,
+  'primitives-copy': `export { UiCheckbox, UiRadioGroup, UiRadioItem, UiSwitch, UiToggle, UiToggleGroup, UiToggleGroupItem, UiAccordion, UiAccordionContent, UiAccordionItem, UiAccordionTrigger, UiTabs, UiTabsContent, UiTabsList, UiTabsTrigger } from './ui';\n`,
+  'quartz-copy': `export { UiCheckbox, UiRadioGroup, UiRadioItem, UiSwitch, UiToggle, UiToggleGroup, UiToggleGroupItem, UiAccordion, UiAccordionContent, UiAccordionItem, UiAccordionTrigger, UiTabs, UiTabsContent, UiTabsList, UiTabsTrigger } from './ui';\n`,
 };
 const require = createRequire(import.meta.url);
 const { transformContent } = require(join(ROOT, 'cli/lib/core.js'));
@@ -198,7 +198,7 @@ for (const [name, backend] of Object.entries(BACKENDS)) {
     const cli = join(ROOT, 'cli/bin/volt');
     run(`volt init (${name})`, 'node', [cli, 'init', join(src, 'ui'), ...base], { cwd: root });
     run(
-      `volt add checkbox radio switch toggle toggle-group (${name})`,
+      `volt add checkbox radio switch toggle toggle-group tabs accordion (${name})`,
       'node',
       [
         cli,
@@ -208,6 +208,8 @@ for (const [name, backend] of Object.entries(BACKENDS)) {
         'switch',
         'toggle',
         'toggle-group',
+        'tabs',
+        'accordion',
         join(src, 'ui'),
         ...base,
       ],
@@ -413,12 +415,12 @@ const MARKERS = {
   quartz: [
     /@quartz-headless/,
     /data-qz-state/,
-    /qzCheckbox|qzSwitch|qzToggle|qzRadio|qzToggleItem/,
+    /qzCheckbox|qzSwitch|qzToggle|qzRadio|qzToggleItem|qzTabs|qzTabPanel|qzAccordion/,
   ],
   primitives: [
-    /ngpCheckbox|ngpSwitch|ngpToggle|ngpRadio|ngpToggleGroup/,
+    /ngpCheckbox|ngpSwitch|ngpToggle|ngpRadio|ngpToggleGroup|ngpTabset|ngpTabButton|ngpAccordion/,
     /ng-primitives/,
-    /NgpCheckbox|NgpSwitch|NgpToggle|NgpRadio|NgpToggleGroup/,
+    /NgpCheckbox|NgpSwitch|NgpToggle|NgpRadio|NgpToggleGroup|NgpTabset|NgpAccordion/,
     /data-hover|ngpInteractions/,
   ],
 };
@@ -435,7 +437,7 @@ for (const [name, size] of Object.entries(sizes)) {
     leaks.push(`positive control failed: ${name} bundle lacks its own engine`);
 }
 const kb = n => `${(n / 1024).toFixed(1)} kB`;
-console.log(`\n  bundle (browser JS: the five component families + Forms + Angular):`);
+console.log(`\n  bundle (browser JS: the seven component families + Forms + Angular):`);
 for (const [name, size] of Object.entries(sizes)) {
   console.log(
     `    ${name.padEnd(16)}: ${kb(size.raw).padStart(9)} raw, ${kb(size.gzip).padStart(9)} gzip`
