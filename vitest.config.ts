@@ -45,6 +45,7 @@ export default defineConfig({
       'apps/**/*.spec.ts',
       'packages/volt/src/**/*.spec.ts',
       'cli/**/*.spec.js',
+      'scripts/**/*.spec.mjs',
     ],
     coverage: {
       reporter: ['text', 'html', 'lcov'],

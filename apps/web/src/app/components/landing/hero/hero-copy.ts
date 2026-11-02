@@ -98,8 +98,8 @@ export class HeroCopy {
   protected readonly t = this.translations.t;
   protected readonly path = this.translations.path;
 
-  /** Generated from packages/volt/package.json, so the badge cannot outlive a release. */
-  protected readonly version = SITE_STATS.version;
+  /** What npm serves as `latest`, never the source version: the badge cannot get ahead of a release. */
+  protected readonly version = SITE_STATS.publishedVersion;
   protected readonly lift = HOVER_LIFT;
   protected readonly press = TAP_PRESS;
 }

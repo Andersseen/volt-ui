@@ -7,15 +7,28 @@
  *   node scripts/generate-site-stats.mjs --with-tests # also re-runs the suite for the test count
  *
  *   node scripts/generate-site-stats.mjs --check      # write nothing; exit 1 if the committed file is stale
+ *   node scripts/generate-site-stats.mjs --offline    # never ask npm; keep the last known publishedVersion
  *
  * The structural facts (component count, preset counts) are cheap and exact, so they
  * regenerate on every dev/build. The test count needs a real run, so it refreshes only
  * on --with-tests and is otherwise carried over from the previously generated file.
+ *
+ * Two versions, never confused:
+ *   sourceVersion     packages/volt/package.json - what the repository will publish next
+ *   publishedVersion  npm's `latest` dist-tag for @voltui/components - what a visitor can install
+ *
+ * The site advertises publishedVersion only. A version bump in the source therefore cannot announce
+ * a release before npm has it. publishedVersion is read from the registry at generation time
+ * (every dev/build); if npm cannot be reached, or answers something unusable, the value already in
+ * the committed file is kept and a warning is printed - the build never fails on the network and
+ * never invents a number. `--check` and `--offline` never touch the network, and `--check` ignores
+ * publishedVersion (it is the one field that legitimately moves without a commit).
  */
 import { execFileSync } from 'node:child_process';
 import { mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { resolvePublishedVersion } from './lib/published-version.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const OUTPUT = resolve(root, 'apps/web/src/app/lib/generated/site-stats.ts');
@@ -58,17 +71,42 @@ function runTestCount() {
   }
 }
 
-/** The published library version — what "Volt UI x.y.z" on the site means. */
-const libraryVersion = () =>
+const sourceVersion = () =>
   JSON.parse(readFileSync(resolve(root, 'packages/volt/package.json'), 'utf8')).version;
 
+/** The last publishedVersion written to the generated file, or null. */
+function previousPublishedVersion() {
+  try {
+    return readFileSync(OUTPUT, 'utf8').match(/publishedVersion: '([^']+)'/)?.[1] ?? null;
+  } catch {
+    return null;
+  }
+}
+
 const withTests = process.argv.includes('--with-tests');
-const version = libraryVersion();
+const version = sourceVersion();
+const fixtureArg = process.argv.find(arg => arg.startsWith('--published-from='));
+const checking = process.argv.includes('--check');
+const publishedVersion = checking
+  ? previousPublishedVersion()
+  : await resolvePublishedVersion({
+      previous: previousPublishedVersion(),
+      offline: process.argv.includes('--offline'),
+      fixture: fixtureArg?.slice('--published-from='.length),
+    });
 const components = countDirs('packages/volt/src/lib/components');
 const layouts = countDirs('packages/volt/src/lib/layouts');
 const colorPresets = countCssPresets('packages/volt/src/themes/colors');
 const stylePresets = countCssPresets('packages/volt/src/themes/styles');
 const tests = (withTests ? runTestCount() : null) ?? previousTestCount();
+
+if (publishedVersion === null) {
+  console.error(
+    '[site-stats] no published version known: npm was unreachable and the generated file has none.\n' +
+      'Run `pnpm stats` once with network access and commit the result.'
+  );
+  process.exit(1);
+}
 
 if (tests === null) {
   console.error('[site-stats] no test count available; run once with --with-tests');
@@ -78,7 +116,10 @@ if (tests === null) {
 const contents = `// GENERATED FILE - do not edit by hand.
 // Regenerate with: pnpm stats (structural only) or pnpm stats:full (re-runs the suite).
 export const SITE_STATS = {
-  version: '${version}',
+  /** packages/volt/package.json: the next release. NOT what the site advertises as installable. */
+  sourceVersion: '${version}',
+  /** npm's \`latest\` for @voltui/components, read at build time with the last known value as fallback. */
+  publishedVersion: '${publishedVersion}',
   components: ${components},
   layouts: ${layouts},
   tests: ${tests},
@@ -101,7 +142,7 @@ try {
 if (process.argv.includes('--check')) {
   if (previous !== contents) {
     console.error(
-      `[site-stats] ${OUTPUT} is stale (library ${version}, ${components} components, ${layouts} layouts).\n` +
+      `[site-stats] ${OUTPUT} is stale (source ${version}, published ${publishedVersion}, ${components} components, ${layouts} layouts).\n` +
         'Run `pnpm stats` and commit the result.'
     );
     process.exit(1);
@@ -115,6 +156,6 @@ mkdirSync(dirname(OUTPUT), { recursive: true });
 if (previous !== contents) {
   writeFileSync(OUTPUT, contents);
   console.log(
-    `[site-stats] wrote v${version}, ${components} components, ${tests} tests, ${colorPresets * stylePresets} theme combos`
+    `[site-stats] wrote source v${version}, published v${publishedVersion}, ${components} components, ${tests} tests, ${colorPresets * stylePresets} theme combos`
   );
 }

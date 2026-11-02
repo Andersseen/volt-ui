@@ -1,108 +1,146 @@
 name: Release
 
-# Publishes after CI has passed on main, instead of repeating CI. This workflow used to re-run
-# lint, typecheck, the generated-file checks, the unit tests and every e2e suite on each push to
-# main (about eight serial minutes), which is the same work the CI workflow had just done on the
-# same commit, and it failed whenever something outside the commit moved in between (a Glossa
-# catalog edit, for instance). Now it waits for CI to succeed and only builds and validates the
-# packages it is about to publish.
+# Publishes after CI has passed on main, instead of repeating CI.
 #
-# A manual run (workflow_dispatch) has no CI behind it, so it keeps the full gate.
+# Authentication is npm Trusted Publishing (OIDC): there is no NPM_TOKEN, no ~/.npmrc token and no
+# NODE_AUTH_TOKEN anywhere. The `release` job asks GitHub for a short-lived OIDC identity
+# (`id-token: write`) and `npm publish` exchanges it for a one-package publish credential.
+# Provenance is attached. If a package has no Trusted Publisher configured on npmjs.com the publish
+# fails (it does not fall back to a token): see RELEASING.md "One-time setup".
 #
-# The release script is idempotent: it publishes only packages whose local version is new on npm
-# and creates a GitHub Release for each, so releases appear in the repo sidebar.
+# Three jobs, three trust levels:
+#   authorize     read-only. Decides whether this run may publish at all (scripts/lib/release-guard.mjs).
+#   release       the only job with `id-token: write`. Builds the exact validated commit and runs
+#                 scripts/release.mjs, which verifies npm before it creates any GitHub Release.
+#   refresh-site  only after something was actually published: re-runs the main pipeline so the
+#                 website reads the new npm dist-tag. No version bump is needed for that.
+#
+# The release script is idempotent: a version npm already has is never republished, only
+# reconciled with its GitHub tag and Release.
 on:
   workflow_run:
     workflows: [CI]
     types: [completed]
     branches:
       - main
+  # A manual run gets no shortcut around CI: the guard requires a successful CI run on main for the
+  # exact commit being released.
   workflow_dispatch:
 
 concurrency:
   group: release
   cancel-in-progress: false
 
-permissions:
-  contents: write # create git tags + GitHub Releases
+permissions: {}
 
 jobs:
-  release:
-    name: Publish changed packages
+  authorize:
+    name: Authorize publication
     if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+    outputs:
+      authorized: ${{ steps.guard.outputs.authorized }}
+      sha: ${{ steps.guard.outputs.sha }}
+    steps:
+      # Only the guard script is needed, taken from main's own workflow definition. Nothing from the
+      # triggering run's branch is executed here.
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          persist-credentials: false
 
+      - name: Verify the trigger is validated CI on the tip of main
+        id: guard
+        run: node scripts/release-guard.mjs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENT_NAME: ${{ github.event_name }}
+          REPOSITORY: ${{ github.repository }}
+          REF: ${{ github.ref }}
+          SHA: ${{ github.sha }}
+          WORKFLOW_RUN_JSON: ${{ github.event_name == 'workflow_run' && toJSON(github.event.workflow_run) || '' }}
+
+  release:
+    name: Publish changed packages
+    needs: authorize
+    if: needs.authorize.outputs.authorized == 'true'
+    # npm Trusted Publishing only works from GitHub-hosted runners.
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # git tags + GitHub Releases
+      id-token: write # npm Trusted Publishing (OIDC) and provenance
+    outputs:
+      published: ${{ steps.release.outputs.published }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
         with:
-          # The commit CI just verified, not whatever main has moved to since.
-          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
-          fetch-depth: 0 # full history so release notes can diff from the last tag
+          # The commit CI just verified, which the guard has confirmed is still the tip of main.
+          ref: ${{ needs.authorize.outputs.sha }}
+          fetch-depth: 0 # full history: reconciling an old release finds the commit that introduced a version
+          persist-credentials: false
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v6
 
+      # Node 24 and no package-manager cache: this job holds publishing authority, so it must not
+      # restore anything an earlier (less trusted) run could have written.
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
-          node-version: 22
-          cache: pnpm
+          node-version: 24
+          registry-url: https://registry.npmjs.org
 
-      - name: Authenticate to npm
+      # Trusted Publishing needs npm >= 11.5.1 (Node 24 ships a compatible one). Fail loudly rather
+      # than publish with a CLI that would ignore the OIDC identity.
+      - name: Require an OIDC-capable npm
         run: |
-          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > "$HOME/.npmrc"
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          npm --version
+          node -e "
+            const v = require('node:child_process').execSync('npm --version').toString().trim().split('.').map(Number);
+            const ok = v[0] > 11 || (v[0] === 11 && (v[1] > 5 || (v[1] === 5 && v[2] >= 1)));
+            if (!ok) { console.error('npm ' + v.join('.') + ' is too old for Trusted Publishing (needs >= 11.5.1)'); process.exit(1); }
+          "
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # Only a manual run needs these: on workflow_run, CI has already passed them.
-      - name: Lint
-        if: github.event_name == 'workflow_dispatch'
-        run: pnpm lint
-
-      - name: Typecheck
-        if: github.event_name == 'workflow_dispatch'
-        run: pnpm typecheck
-
-      - name: Check committed generated files are current
-        if: github.event_name == 'workflow_dispatch'
-        run: pnpm check:generated
-
-      - name: Check generated AI and component documentation
-        if: github.event_name == 'workflow_dispatch'
-        run: pnpm check:ai-docs
-
-      - name: Run unit tests with enforced coverage
-        if: github.event_name == 'workflow_dispatch'
-        run: pnpm test:coverage
-
       - name: Build library
         run: pnpm build:lib
 
-      # apps/web/public/manifest.json is generated and ignored by git. The unit-test step used to write it as a
-      # side effect; a run that follows CI skips that step, so pack:cli failed with "Missing
-      # apps/web/public/manifest.json" and the release of 1.3.1 never went out.
+      # apps/web/public/manifest.json is generated and ignored by git. A run that follows CI skips the
+      # step that used to write it as a side effect, so pack:cli would fail without this.
       - name: Generate the CLI manifest
         run: pnpm manifest
 
       - name: Validate all publishable packages
         run: pnpm pack:lib && pnpm pack:cli && pnpm pack:agent
 
-      - name: Install Playwright Chromium
-        if: github.event_name == 'workflow_dispatch'
-        uses: ./.github/actions/setup-playwright
-
-      - name: Run docs and consumer end-to-end tests
-        if: github.event_name == 'workflow_dispatch'
-        run: pnpm test:e2e:ci && pnpm test:e2e:consumer && pnpm test:e2e:consumer-cli
-
+      # No token in this step on purpose: npm authenticates with the job's OIDC identity.
       - name: Publish new versions & create releases
+        id: release
         run: node scripts/release.mjs
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_SHA: ${{ needs.authorize.outputs.sha }}
+
+  # A publication changes what the website must say ("latest on npm"), not what the source says, so
+  # the site is rebuilt from the same commit instead of requiring a no-op version bump. The refresh
+  # is a CI run on main; it triggers this workflow again, finds nothing to publish, and stops: no loop.
+  refresh-site:
+    name: Refresh the website's published version
+    needs: release
+    # always(): a publication whose GitHub Release then failed is still on npm, so the site must follow.
+    if: always() && needs.release.outputs.published == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - name: Re-run the main pipeline (rebuilds and redeploys the sites)
+        run: gh workflow run ci.yml --repo "$GITHUB_REPOSITORY" --ref main
+        env:
+          GH_TOKEN: ${{ github.token }}

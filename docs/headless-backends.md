@@ -3,6 +3,9 @@
 Volt UI exposes one component experience over interchangeable headless engines. The behavioural and
 accessibility contract belongs to Volt; the engine is an implementation detail of the backend you pick.
 
+> **Availability.** `@voltui/components/quartz` and `volt add --base=quartz` first ship in `@voltui/components` /
+> `@voltui/cli` **1.4.0**. They are not in 1.3.3 or earlier. The whole backend is experimental.
+
 |                 | ng-primitives (default)        | Quartz Headless (experimental)                                                                        |
 | --------------- | ------------------------------ | ----------------------------------------------------------------------------------------------------- |
 | Package import  | `@voltui/components`           | `@voltui/components/quartz`                                                                           |

@@ -36,9 +36,32 @@ const SEMVER = /\b\d+\.\d+\.\d+\b/g;
 describe('version', () => {
   const library = json('packages/volt/package.json').version;
 
-  it('is the same in the workspace, the library and the generated site stats', () => {
+  it('is the same in the workspace, the library and the generated site stats source version', () => {
     expect(json('package.json').version).toBe(library);
-    expect(SITE_STATS.version).toBe(library);
+    expect(SITE_STATS.sourceVersion).toBe(library);
+  });
+
+  it('keeps the published version (what the site advertises) separate from the source version', () => {
+    // publishedVersion is npm's `latest` captured at generation time; it may lag the source until a
+    // release lands, but it can never be ahead of it, and it must be a real version.
+    expect(SITE_STATS.publishedVersion).toMatch(/^\d+\.\d+\.\d+$/);
+    const [a, b] = [SITE_STATS.publishedVersion, SITE_STATS.sourceVersion].map(v =>
+      v.split('.').map(Number)
+    );
+    const ahead = a[0] - b[0] || a[1] - b[1] || a[2] - b[2];
+    expect(ahead, 'the site advertises a version the source has not reached').toBeLessThanOrEqual(
+      0
+    );
+  });
+
+  it('the landing and header derive their badge from publishedVersion only', () => {
+    for (const file of [
+      'apps/web/src/app/components/header.ts',
+      'apps/web/src/app/components/landing/hero/hero-copy.ts',
+    ]) {
+      expect(read(file), file).toContain('SITE_STATS.publishedVersion');
+      expect(read(file), file).not.toContain('SITE_STATS.sourceVersion');
+    }
   });
 
   it('is not hand-copied into the current-facing headers', () => {

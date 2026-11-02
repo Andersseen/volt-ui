@@ -25,8 +25,8 @@ export class Header {
   /** Keeps every link in the locale the visitor is already reading. */
   protected readonly path = this.translations.path;
 
-  /** Generated from packages/volt/package.json, so the badge cannot outlive a release. */
-  protected readonly version = SITE_STATS.version;
+  /** What npm serves as `latest`, never the source version: the badge cannot get ahead of a release. */
+  protected readonly version = SITE_STATS.publishedVersion;
 
   protected readonly links = computed((): readonly SiteNavLink[] => {
     const { t, path } = this.translations;
