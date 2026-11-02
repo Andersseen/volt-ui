@@ -21,7 +21,7 @@ export class VoltListboxSection {
 
   protected readonly classes = computed(() => cn('grid gap-1', this.class()));
 
-  private readonly labelledBy = signal<string | undefined>(undefined);
+  protected readonly labelledBy = signal<string | undefined>(undefined);
 
   setLabelledBy(id: string): void {
     this.labelledBy.set(id);
