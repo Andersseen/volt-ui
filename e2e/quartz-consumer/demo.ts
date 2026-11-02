@@ -9,8 +9,17 @@ import {
   VoltAccordionItem,
   VoltAccordionTrigger,
   VoltCheckbox,
+  VoltListbox,
+  VoltListboxHeader,
+  VoltListboxOption,
+  VoltListboxSection,
   VoltRadioGroup,
   VoltRadioItem,
+  VoltSelect,
+  VoltSelectContent,
+  VoltSelectItem,
+  VoltSelectLabel,
+  VoltSelectSeparator,
   VoltSwitch,
   VoltToggle,
   VoltToggleGroup,
@@ -42,6 +51,15 @@ import {
     VoltAccordionItem,
     VoltAccordionTrigger,
     VoltAccordionContent,
+    VoltListbox,
+    VoltListboxHeader,
+    VoltListboxOption,
+    VoltListboxSection,
+    VoltSelect,
+    VoltSelectContent,
+    VoltSelectItem,
+    VoltSelectLabel,
+    VoltSelectSeparator,
   ],
   template: `
     <main class="mx-auto flex max-w-md flex-col gap-4 p-6">
@@ -185,6 +203,47 @@ import {
         <output id="section-value">{{ section() ?? 'none' }}</output>
       </section>
 
+      <section aria-label="Selection" class="flex flex-col gap-3" [formGroup]="picks">
+        <volt-listbox formControlName="stack" aria-label="Stack">
+          <volt-listbox-section>
+            <volt-listbox-header>Frameworks</volt-listbox-header>
+            <volt-listbox-option value="angular">Angular stack</volt-listbox-option>
+            <volt-listbox-option value="react">React stack</volt-listbox-option>
+            <volt-listbox-option value="vue" disabled>Vue stack</volt-listbox-option>
+          </volt-listbox-section>
+          <volt-listbox-option value="svelte">Svelte stack</volt-listbox-option>
+        </volt-listbox>
+        <volt-listbox formControlName="tags" aria-label="Tags" mode="multiple">
+          <volt-listbox-option value="a11y">Tag a11y</volt-listbox-option>
+          <volt-listbox-option value="perf">Tag perf</volt-listbox-option>
+          <volt-listbox-option value="ssr">Tag ssr</volt-listbox-option>
+        </volt-listbox>
+        <volt-select formControlName="meta" aria-label="Meta framework" placeholder="Pick one">
+          <volt-select-content>
+            <volt-select-label>Meta frameworks</volt-select-label>
+            <volt-select-item value="next">Next</volt-select-item>
+            <volt-select-item value="nuxt">Nuxt</volt-select-item>
+            <volt-select-separator />
+            <volt-select-item value="remix">Remix</volt-select-item>
+            <volt-select-item value="astro" disabled>Astro</volt-select-item>
+          </volt-select-content>
+        </volt-select>
+        <volt-select formControlName="tools" aria-label="Tooling" placeholder="Pick tools" multiple>
+          <volt-select-content>
+            <volt-select-item value="vite">Vite</volt-select-item>
+            <volt-select-item value="esbuild">Esbuild</volt-select-item>
+            <volt-select-item value="webpack">Webpack</volt-select-item>
+          </volt-select-content>
+        </volt-select>
+        <volt-select aria-label="Select disabled" placeholder="Nope" disabled>
+          <volt-select-content>
+            <volt-select-item value="x">Never</volt-select-item>
+          </volt-select-content>
+        </volt-select>
+        <output id="picks-value">{{ picks.getRawValue() | json }}</output>
+        <output id="picks-touched">{{ picks.touched }}</output>
+      </section>
+
       <output id="value">{{ form.getRawValue() | json }}</output>
       <output id="touched">{{ form.touched }}</output>
       <output id="dirty">{{ form.dirty }}</output>
@@ -194,6 +253,12 @@ import {
 export class Demo {
   readonly tab = model<string | undefined>('profile');
   readonly section = model<string | string[] | null>(null);
+  readonly picks = new FormGroup({
+    stack: new FormControl<string[]>(['react'], { nonNullable: true }),
+    tags: new FormControl<string[]>(['perf'], { nonNullable: true }),
+    meta: new FormControl<string | null>('nuxt'),
+    tools: new FormControl<string[]>([], { nonNullable: true }),
+  });
   readonly form = new FormGroup({
     accept: new FormControl(false, { nonNullable: true }),
     notify: new FormControl(true, { nonNullable: true }),

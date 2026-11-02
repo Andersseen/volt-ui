@@ -97,8 +97,8 @@ provideVoltTheme({ color: 'ember', style: 'soft', dark: true });
 
 ## Headless backends (experimental)
 
-Volt's default components are built on [ng-primitives](https://ng-primitives.dev). **Accordion, Checkbox, Radio, Switch,
-Tabs, Toggle and ToggleGroup** also ship an opt-in implementation on [Quartz Headless](https://github.com/Andersseen/quartz):
+Volt's default components are built on [ng-primitives](https://ng-primitives.dev). **Accordion, Checkbox, Listbox, Radio,
+Select, Switch, Tabs, Toggle and ToggleGroup** also ship an opt-in implementation on [Quartz Headless](https://github.com/Andersseen/quartz):
 
 ```bash
 npm install @quartz-headless/core @quartz-headless/primitives   # optional peers, ^0.16.0
@@ -112,6 +112,11 @@ import {
   VoltAccordionItem,
   VoltAccordionTrigger,
   VoltCheckbox,
+  VoltListbox,
+  VoltListboxOption,
+  VoltSelect,
+  VoltSelectContent,
+  VoltSelectItem,
   VoltTabs,
   VoltTabsContent,
   VoltTabsList,

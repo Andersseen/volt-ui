@@ -21,8 +21,18 @@ Planned as the 1.5.0 minor (not yet versioned: see `specs/plans/v1.5.md` for the
   models, outputs, classes and `data-state` / `data-open` hooks. Ids are counted per application; Quartz's implicit first-tab / first-item
   selection never reaches the model. Differences from ng-primitives are listed in `docs/headless-backends.md`.
 
+### Added — `@voltui/components` (Quartz Listbox and Select)
+
+- **`@voltui/components/quartz`**: `VoltListbox` / `VoltListboxOption` / `VoltListboxSection` / `VoltListboxHeader` / `VoltListboxTrigger` and `VoltSelect` /
+  `VoltSelectContent` / `VoltSelectItem` / `VoltSelectLabel` / `VoltSelectSeparator` on Quartz Headless (experimental), with the same selectors, inputs, models, outputs,
+  classes and `data-selected` / `data-active` / `data-disabled` hooks. `Listbox.value` stays a `T[]` in both modes and `Select.value` a scalar (an array with
+  `multiple`); the Quartz split is mapped inside the wrappers and programmatic writes are never echoed into Angular Forms. `container`, `scrollToOption` and
+  `allOptions` have no Quartz equivalent and are absent from the Quartz `VoltSelect` (a template that sets them fails to compile). `VoltNativeSelect` is unchanged.
+  Differences from ng-primitives are listed in `docs/headless-backends.md`.
+
 ### Added — `@voltui/cli`
 
+- `volt add listbox select --base=quartz` (the supported list is now nine components).
 - `volt add tabs accordion --base=quartz` (the supported list is now seven components).
 - `volt add radio toggle-group --base=quartz` (and `volt init --base=quartz` now lists five supported components).
   The copy includes the two small shared helpers the Quartz wrappers use (`quartz-ids.ts`, `quartz-attributes.ts`).

@@ -385,6 +385,176 @@ for (const [name, url] of BACKENDS) {
       await expect(page.getByText('Faq answer two')).toBeVisible();
     });
 
+    test('listbox: prerendered selection, roles and ids; keyboard and pointer drive the Forms value', async ({
+      page,
+      request,
+    }) => {
+      const html = await (await request.get(url!)).text();
+      expect(html).toContain('role="listbox"');
+      expect(html).toContain('role="combobox"');
+      const problems = await open(page, url!);
+      const picks = page.locator('#picks-value');
+      const stack = page.getByRole('listbox', { name: 'Stack' });
+      await expect(stack.getByRole('option', { name: 'React stack' })).toHaveAttribute(
+        'aria-selected',
+        'true'
+      );
+      await expect(stack.getByRole('group', { name: 'Frameworks' })).toBeVisible();
+      await expect(stack.getByRole('option', { name: 'Vue stack' })).toHaveAttribute(
+        'aria-disabled',
+        'true'
+      );
+      // Pointer replaces the single selection; a disabled option does nothing.
+      await stack.getByRole('option', { name: 'Svelte stack' }).click();
+      await expect(picks).toContainText('"svelte"');
+      await stack.getByRole('option', { name: 'Vue stack' }).click({ force: true });
+      await expect(picks).not.toContainText('"vue"');
+      // Keyboard: Tab enters on the selected option, arrows skip the disabled one, Enter selects.
+      await stack.focus();
+      const active = () =>
+        stack.evaluate(el =>
+          document
+            .getElementById(el.getAttribute('aria-activedescendant') ?? '')
+            ?.textContent?.trim()
+        );
+      await expect.poll(active).toBe('Svelte stack');
+      await page.keyboard.press('Home');
+      await expect.poll(active).toBe('Angular stack');
+      await page.keyboard.press('ArrowDown');
+      await page.keyboard.press('ArrowDown');
+      await expect.poll(active).toBe('Svelte stack');
+      await page.keyboard.press('ArrowUp');
+      await page.keyboard.press('Enter');
+      await expect(picks).toContainText('"react"');
+      // Multiple toggles and keeps order of selection.
+      const tags = page.getByRole('listbox', { name: 'Tags' });
+      await expect(tags).toHaveAttribute('aria-multiselectable', 'true');
+      await tags.getByRole('option', { name: 'Tag ssr' }).click();
+      await tags.getByRole('option', { name: 'Tag perf' }).click();
+      await expect(picks).toContainText('"ssr"');
+      await expect(picks).not.toContainText('"perf"');
+      // Leaving the listbox marks the group touched.
+      await page.locator('body').click({ position: { x: 1, y: 1 } });
+      await expect(page.locator('#picks-touched')).toHaveText('true');
+      expect(problems).toEqual([]);
+    });
+
+    test('listbox: every aria-activedescendant / aria-labelledby resolves, ids are unique', async ({
+      page,
+    }) => {
+      await open(page, url!);
+      const broken = await page.evaluate(() => {
+        const bad: string[] = [];
+        for (const el of document.querySelectorAll(
+          '[aria-activedescendant],[aria-labelledby],[aria-controls]'
+        )) {
+          for (const attr of ['aria-activedescendant', 'aria-labelledby', 'aria-controls']) {
+            for (const id of (el.getAttribute(attr) ?? '').split(/\s+/).filter(Boolean)) {
+              if (document.querySelectorAll(`[id="${id}"]`).length !== 1) bad.push(`${attr}=${id}`);
+            }
+          }
+        }
+        return bad;
+      });
+      expect(broken).toEqual([]);
+    });
+
+    test('select: opens under the trigger at its width, selects, closes and gives focus back', async ({
+      page,
+    }) => {
+      const problems = await open(page, url!);
+      const trigger = page.getByRole('combobox', { name: 'Meta framework' });
+      await expect(trigger).toContainText('nuxt');
+      await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+      await trigger.click();
+      await expect(trigger).toHaveAttribute('aria-expanded', 'true');
+      const remix = page.getByRole('option', { name: 'Remix' });
+      await expect(remix).toBeVisible();
+      await expect(page.getByRole('option', { name: 'Nuxt' })).toHaveAttribute(
+        'aria-selected',
+        'true'
+      );
+      // Geometry: the popup sits below the trigger and is as wide as it.
+      const t = (await trigger.boundingBox())!;
+      const panel = (await page
+        .getByRole('option', { name: 'Next' })
+        .locator('xpath=ancestor::*[contains(@class,"shadow-md")][1]')
+        .boundingBox())!;
+      expect(Math.abs(panel.width - t.width)).toBeLessThan(3);
+      expect(panel.y).toBeGreaterThanOrEqual(t.y + t.height - 1);
+      await remix.click();
+      await expect(page.locator('#picks-value')).toContainText('"remix"');
+      await expect(trigger).toContainText('remix');
+      await expect(page.getByRole('option', { name: 'Next' })).toHaveCount(0);
+      // Quartz hands focus back to the trigger on close; ng-primitives leaves it on the body.
+      if (name.startsWith('quartz')) await expect(trigger).toBeFocused();
+      expect(problems).toEqual([]);
+    });
+
+    test('select: keyboard opens, moves past the disabled option, selects; Escape and outside press close', async ({
+      page,
+    }) => {
+      await open(page, url!);
+      const trigger = page.getByRole('combobox', { name: 'Meta framework' });
+      await trigger.focus();
+      await page.keyboard.press('Enter');
+      await expect(page.getByRole('option', { name: 'Nuxt' })).toBeVisible();
+      // Opening activates the selected option (Nuxt); one step down is Remix.
+      // Quartz activates it one frame after mounting the popup: do not outrun it.
+      if (name.startsWith('quartz'))
+        await expect(page.getByRole('option', { name: 'Nuxt' })).toBeFocused();
+      await page.keyboard.press('ArrowDown');
+      await page.keyboard.press('Enter');
+      await expect(page.locator('#picks-value')).toContainText('"remix"');
+      await expect(page.getByRole('option', { name: 'Next' })).toHaveCount(0);
+      await trigger.focus();
+      await page.keyboard.press('ArrowDown');
+      await expect(page.getByRole('option', { name: 'Next' })).toBeVisible();
+      await page.keyboard.press('Escape');
+      await expect(page.getByRole('option', { name: 'Next' })).toHaveCount(0);
+      await trigger.click();
+      await expect(page.getByRole('option', { name: 'Next' })).toBeVisible();
+      await page.locator('body').click({ position: { x: 1, y: 1 } });
+      await expect(page.getByRole('option', { name: 'Next' })).toHaveCount(0);
+    });
+
+    test('select: multiple keeps the popup open and writes an array; disabled select does not open', async ({
+      page,
+    }) => {
+      await open(page, url!);
+      const tools = page.getByRole('combobox', { name: 'Tooling' });
+      // An empty multiple select shows its placeholder on Quartz; ng-primitives renders it blank.
+      if (name.startsWith('quartz')) await expect(tools).toContainText('Pick tools');
+      await tools.click();
+      await page.getByRole('option', { name: 'Vite' }).click();
+      await page.getByRole('option', { name: 'Webpack' }).click();
+      await expect(page.getByRole('option', { name: 'Vite' })).toBeVisible();
+      await expect(page.locator('#picks-value')).toContainText('"vite"');
+      await expect(page.locator('#picks-value')).toContainText('"webpack"');
+      await expect(tools).toContainText('vite, webpack');
+      await page.keyboard.press('Escape');
+      const disabled = page.getByRole('combobox', { name: 'Select disabled' });
+      await disabled.click({ force: true });
+      await expect(page.getByRole('option', { name: 'Never' })).toHaveCount(0);
+    });
+
+    test('select: leaves nothing behind after many open/close cycles', async ({ page }) => {
+      await open(page, url!);
+      const trigger = page.getByRole('combobox', { name: 'Meta framework' });
+      for (let i = 0; i < 5; i++) {
+        await trigger.click();
+        await expect(page.getByRole('option', { name: 'Next' })).toBeVisible();
+        await page.keyboard.press('Escape');
+        await expect(page.getByRole('option', { name: 'Next' })).toHaveCount(0);
+      }
+      expect(await page.locator('[role="listbox"]:not([aria-label])').count()).toBe(0);
+      const popups = await page
+        .locator('[role="option"]')
+        .filter({ hasText: /^(Next|Nuxt|Remix)$/ })
+        .count();
+      expect(popups).toBe(0);
+    });
+
     test('group items: disabled ones and disabled groups ignore input', async ({ page }) => {
       await open(page, url!);
       for (const [role, label, attr] of [
@@ -442,7 +612,14 @@ test('every backend paints and measures the same', async ({ browser }) => {
     ['tab', 'Manual one'],
     ['button', 'Faq one'],
     ['button', 'Faq two'],
+    ['option', 'Angular stack'],
+    ['option', 'React stack'],
+    ['option', 'Vue stack'],
+    ['combobox', 'Meta framework'],
+    ['combobox', 'Tooling'],
+    ['combobox', 'Select disabled'],
   ] as const;
+  const extras = new Map<string, Record<string, string>>();
   const read = async (url: string) => {
     const page = await browser.newPage();
     await open(page, url);
@@ -481,6 +658,32 @@ test('every backend paints and measures the same', async ({ browser }) => {
         .locator('svg')
         .evaluate(el => getComputedStyle(el).rotate);
     }
+    // The open popup: panel, selected / unselected / disabled items, painted alike.
+    await page.getByRole('combobox', { name: 'Meta framework' }).click();
+    await expect(page.getByRole('option', { name: 'Next' })).toBeVisible();
+    // Quartz sizes and places the popup one animation frame after mounting it: sample after that.
+    await expect
+      .poll(
+        async () => (await page.getByRole('option', { name: 'Next' }).boundingBox())?.width ?? 0
+      )
+      .toBeGreaterThan(300);
+    await page.addStyleTag({ content: '*, *::before, *::after { animation: none !important; }' });
+    out['Popup Next'] = await paint(page.getByRole('option', { name: 'Next', exact: true }));
+    // Differences that are intended and asserted below instead of compared: Quartz focuses the
+    // active option (`focus:bg-muted`) and writes `aria-disabled` (`aria-disabled:opacity-50`).
+    extras.set(url, {
+      active: await paint(page.getByRole('option', { name: 'Nuxt', exact: true })),
+      disabled: await paint(page.getByRole('option', { name: 'Astro', exact: true })),
+    });
+    out['Popup panel'] = await paint(
+      page
+        .getByRole('option', { name: 'Next' })
+        .locator('xpath=ancestor::*[contains(@class,"shadow-md")][1]')
+    );
+    out['Popup check'] = await page
+      .getByRole('option', { name: 'Nuxt', exact: true })
+      .locator('svg')
+      .evaluate(el => getComputedStyle(el).display);
     await page.close();
     return out;
   };
@@ -498,4 +701,11 @@ test('every backend paints and measures the same', async ({ browser }) => {
   expect(reference['Group on']).not.toBe(reference['Group off']);
   expect(reference['Profile']).not.toBe(reference['Security']);
   expect(reference['Faq one chevron']).not.toBe(reference['Faq two chevron']);
+  expect(reference['React stack']).not.toBe(reference['Angular stack']);
+  for (const [name, url] of urls) {
+    if (!name.startsWith('quartz')) continue;
+    const { active, disabled } = extras.get(url!)!;
+    expect(active, `${name}: the active option is highlighted`).not.toBe(reference['Popup Next']);
+    expect(disabled.split('|')[5], `${name}: a disabled option is dimmed`).toBe('0.5');
+  }
 });
