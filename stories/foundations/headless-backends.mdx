@@ -17,8 +17,8 @@ contract belongs to Volt UI; the primitive library is an implementation detail o
 
 ## Quartz Headless — experimental
 
-Seven component families can be backed by [Quartz Headless](https://github.com/Andersseen/quartz) instead of
-ng-primitives: **Accordion** (accordion + item + trigger + content), **Checkbox**, **Radio** (group + item), **Switch**, **Tabs** (tabs + list + trigger + content), **Toggle** and **ToggleGroup** (group + item). Everything else is ng-primitives only.
+Nine component families can be backed by [Quartz Headless](https://github.com/Andersseen/quartz) instead of
+ng-primitives: **Accordion** (accordion + item + trigger + content), **Checkbox**, **Listbox** (listbox + option + section + header + trigger), **Radio** (group + item), **Select** (select + content + item + label + separator), **Switch**, **Tabs** (tabs + list + trigger + content), **Toggle** and **ToggleGroup** (group + item). Everything else is ng-primitives only.
 
 ### Package mode
 
@@ -48,7 +48,7 @@ point never loads ng-primitives and the main entry point never loads Quartz.
 
 ```bash
 npx @voltui/cli init --base=quartz
-npx @voltui/cli add checkbox radio switch toggle toggle-group tabs accordion --base=quartz
+npx @voltui/cli add checkbox radio switch toggle toggle-group tabs accordion listbox select --base=quartz
 ```
 
 The base is recorded in `volt.json` and reused by later `volt add` calls. A flag that contradicts
@@ -77,6 +77,13 @@ generating the other engine's source.
   accessibility tree and still animates.
 - Ids are counted per application, so the `aria-controls` / `aria-labelledby` references in the server HTML equal the hydrated ones.
 - The single non-collapsible open accordion item is `aria-disabled` with Quartz (as the WAI-ARIA pattern asks); ng-primitives omits it.
+
+### Listbox and Select
+
+- **Listbox**: `value` is a `T[]` in single and multiple mode; `mode` is Volt's and may change at runtime. Sections are named by their header only while one exists.
+- **Select**: `value` is the scalar (an array with `multiple`); Forms writes are never echoed back. The popup lives in the browser only, so the server HTML is the closed
+  trigger. `container`, `scrollToOption` and `allOptions` have no Quartz equivalent and are absent from the Quartz `VoltSelect`: a template that sets them does not compile.
+- Quartz moves focus into the popup and back to the trigger on close; ng-primitives keeps it on the trigger.
 
 ### What is guaranteed to match
 

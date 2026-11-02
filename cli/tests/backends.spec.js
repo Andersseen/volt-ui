@@ -14,7 +14,18 @@ import { join, resolve } from 'node:path';
 
 const core = require('../lib/core.js');
 const CLI = resolve(__dirname, '../bin/volt');
-const QUARTZ = ['accordion', 'checkbox', 'radio', 'switch', 'tabs', 'toggle', 'toggle-group'];
+const QUARTZ = [
+  'accordion',
+  'checkbox',
+  'listbox',
+  'radio',
+  'select',
+  'switch',
+  'tabs',
+  'toggle',
+  'toggle-group',
+];
+const QUARTZ_LIST = QUARTZ.join(', ');
 
 /** Runs the real binary in a throwaway project root, as a consumer would. */
 function volt(cwd, ...args) {
@@ -46,7 +57,7 @@ describe('headless bases', () => {
   const ui = () => join(project, 'src/app/ui');
 
   describe('manifest', () => {
-    it('records the Quartz implementation of exactly the five supported components', () => {
+    it('records the Quartz implementation of exactly the supported components', () => {
       const manifest = core.getLocalManifest();
       expect(manifest.backends.quartz.components).toEqual(QUARTZ);
       expect(core.componentsForBase(manifest, 'quartz')).toEqual(QUARTZ);
@@ -100,9 +111,7 @@ describe('headless bases', () => {
       expect(JSON.parse(readFileSync(join(project, 'volt.json'), 'utf-8'))).toEqual({
         base: 'quartz',
       });
-      expect(result.out).toContain(
-        'accordion, checkbox, radio, switch, tabs, toggle, toggle-group'
-      );
+      expect(result.out).toContain(QUARTZ_LIST);
       expect(result.out).toContain('experimental');
     });
 
@@ -122,11 +131,24 @@ describe('headless bases', () => {
           'form-control-state.ts',
           'host-forwarding.ts',
           'index.ts',
+          'listbox/index.ts',
+          'listbox/listbox-header.ts',
+          'listbox/listbox-option.ts',
+          'listbox/listbox-section.ts',
+          'listbox/listbox-trigger.ts',
+          'listbox/listbox.ts',
+          'listbox/variants.ts',
           'quartz-attributes.ts',
           'quartz-ids.ts',
           'radio/index.ts',
           'radio/radio-group.ts',
           'radio/radio-item.ts',
+          'select/index.ts',
+          'select/select-content.ts',
+          'select/select-item.ts',
+          'select/select-label.ts',
+          'select/select-separator.ts',
+          'select/select.ts',
           'switch/index.ts',
           'switch/switch.ts',
           'tabs/index.ts',
@@ -225,6 +247,50 @@ describe('headless bases', () => {
       );
       expect(readFileSync(join(ui(), 'accordion/accordion-trigger.ts'), 'utf-8')).toContain(
         "from './accordion'"
+      );
+    });
+
+    it('adds listbox and select alone: every part, the shared helpers, no ng-primitives', () => {
+      const result = volt(project, 'add', 'listbox', 'select', ui(), '--base=quartz');
+      expect(result.status).toBe(0);
+      const copied = sources(ui())
+        .map(f => f.slice(ui().length + 1))
+        .sort();
+      expect(copied).toEqual(
+        [
+          'form-control-state.ts',
+          'host-forwarding.ts',
+          'index.ts',
+          'listbox/index.ts',
+          'listbox/listbox-header.ts',
+          'listbox/listbox-option.ts',
+          'listbox/listbox-section.ts',
+          'listbox/listbox-trigger.ts',
+          'listbox/listbox.ts',
+          'listbox/variants.ts',
+          'quartz-ids.ts',
+          'select/index.ts',
+          'select/select-content.ts',
+          'select/select-item.ts',
+          'select/select-label.ts',
+          'select/select-separator.ts',
+          'select/select.ts',
+          'utils.ts',
+        ].sort()
+      );
+      const all = copied.map(f => readFileSync(join(ui(), f), 'utf-8')).join('\n');
+      expect(all).not.toMatch(/from\s+['"]ng-primitives/);
+      expect(all).not.toMatch(/from\s+['"]@floating-ui/);
+      expect(all).not.toMatch(/\bVolt[A-Z]|selector:\s*'volt-/);
+      expect(all).toContain("from '@quartz-headless/primitives'");
+      expect(readFileSync(join(ui(), 'listbox/listbox-option.ts'), 'utf-8')).toContain(
+        "selector: 'ui-listbox-option'"
+      );
+      expect(readFileSync(join(ui(), 'listbox/listbox-option.ts'), 'utf-8')).toMatch(
+        /from '\.\/variants'|from '\.\.\/listbox\/variants'/
+      );
+      expect(readFileSync(join(ui(), 'select/select.ts'), 'utf-8')).toContain(
+        "selector: 'ui-select'"
       );
     });
 
@@ -330,9 +396,7 @@ describe('headless bases', () => {
       const result = volt(project, 'add', 'checkbox', 'button', ui(), '--base=quartz');
       expect(result.status).toBe(1);
       expect(result.out).toContain('does not support: button');
-      expect(result.out).toContain(
-        'accordion, checkbox, radio, switch, tabs, toggle, toggle-group'
-      );
+      expect(result.out).toContain(QUARTZ_LIST);
       expect(result.out).toContain('without --base');
       expect(existsSync(ui())).toBe(false);
       expect(existsSync(join(project, 'volt.json'))).toBe(false);

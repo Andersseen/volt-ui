@@ -3,14 +3,14 @@
 Volt UI exposes one component experience over interchangeable headless engines. The behavioural and
 accessibility contract belongs to Volt; the engine is an implementation detail of the backend you pick.
 
-|                 | ng-primitives (default)        | Quartz Headless (experimental)                                                       |
-| --------------- | ------------------------------ | ------------------------------------------------------------------------------------ |
-| Package import  | `@voltui/components`           | `@voltui/components/quartz`                                                          |
-| CLI             | `volt add checkbox`            | `volt add checkbox --base=quartz`                                                    |
-| Components      | every component                | Accordion, Checkbox, Radio, Switch, Tabs, Toggle, ToggleGroup (groups + their parts) |
-| Engine packages | `ng-primitives` (a dependency) | `@quartz-headless/core`, `@quartz-headless/primitives` `^0.16.0` (optional peers)    |
-| Angular         | 21.2+ and 22                   | 21.2+; 22 needs `--legacy-peer-deps`¹                                                |
-| Quartz version  | n/a                            | `0.16.0` (the only published release)                                                |
+|                 | ng-primitives (default)        | Quartz Headless (experimental)                                                                        |
+| --------------- | ------------------------------ | ----------------------------------------------------------------------------------------------------- |
+| Package import  | `@voltui/components`           | `@voltui/components/quartz`                                                                           |
+| CLI             | `volt add checkbox`            | `volt add checkbox --base=quartz`                                                                     |
+| Components      | every component                | Accordion, Checkbox, Listbox, Radio, Select, Switch, Tabs, Toggle, ToggleGroup (groups + their parts) |
+| Engine packages | `ng-primitives` (a dependency) | `@quartz-headless/core`, `@quartz-headless/primitives` `^0.16.0` (optional peers)                     |
+| Angular         | 21.2+ and 22                   | 21.2+; 22 needs `--legacy-peer-deps`¹                                                                 |
+| Quartz version  | n/a                            | `0.16.0` (the only published release)                                                                 |
 
 ¹ Quartz 0.16.0 declares `@angular/*` peers of `^21.0.0`. The components pass the whole suite on Angular 22.2.4,
 but a strict `npm install` reports `ERESOLVE` until Quartz widens its ranges.
@@ -31,8 +31,17 @@ import {
   VoltAccordionItem,
   VoltAccordionTrigger,
   VoltCheckbox,
+  VoltListbox,
+  VoltListboxHeader,
+  VoltListboxOption,
+  VoltListboxSection,
   VoltRadioGroup,
   VoltRadioItem,
+  VoltSelect,
+  VoltSelectContent,
+  VoltSelectItem,
+  VoltSelectLabel,
+  VoltSelectSeparator,
   VoltSwitch,
   VoltTabs,
   VoltTabsContent,
@@ -52,7 +61,7 @@ entry points are independent: using Quartz's Checkbox never loads ng-primitives,
 
 ```bash
 npx @voltui/cli init --base=quartz        # records { "base": "quartz" } in volt.json
-npx @voltui/cli add checkbox radio switch toggle toggle-group tabs accordion --base=quartz
+npx @voltui/cli add checkbox radio switch toggle toggle-group tabs accordion listbox select --base=quartz
 npx @voltui/cli list --base=quartz        # what the base supports
 ```
 
@@ -76,6 +85,8 @@ spec (`backend-parity.spec.ts`), and a packed-tarball browser suite in Chromium,
 - **ToggleGroup**: single mode = `role="radio"` + `aria-checked`, multiple mode = `aria-pressed`; the value is always a `string[]`; arrows move focus only, Space/Enter press; `allowDeselection`; disabled item and group;
 - **Tabs**: `tablist` / `tab` / `tabpanel` with `aria-selected`, `aria-controls` ⇄ `aria-labelledby` (no dangling reference, unique ids), roving `tabindex`, `data-state="active|inactive"` on trigger and panel, arrows/Home/End, vertical `orientation`, `[(value)]`, `activateOnFocus`;
 - **Accordion**: native-button triggers with `aria-expanded` / `aria-controls`, a labelled `region` per panel, `single` / `multiple`, `collapsible`, `[(value)]` (`string | string[] | null`), group `disabled`, every trigger in the Tab order, `data-open` / `data-closed` styling hooks;
+- **Listbox**: `listbox` / `option` with `aria-selected`, `aria-multiselectable`, `aria-activedescendant` (never dangling), `role="group"` sections named by their header only while one exists, `mode` `single` / `multiple`, a `T[]` value in both modes, `compareWith`, disabled option and listbox, Home/End/arrows/typeahead, `data-selected` / `data-active` / `data-disabled`;
+- **Select**: a native `<button role="combobox">` trigger (`aria-expanded`, `aria-controls`, `aria-invalid`, `aria-label` on the trigger only), a body-level `listbox` popup under the trigger at its width, `value` (scalar, or an array with `multiple`), `compareWith`, `displayWith`, `dropdownPlacement`, `flip`, `disabled`, placeholder, Escape / outside press / selection close it, one `valueChange` per genuine change, Forms (silent writes, touched on blur, reset, disable, `ngModel`);
 - Space/Enter/click activation, native `<label for>`, keyboard reachability in WebKit (`tabindex`), `:focus-visible` ring;
 - `ControlValueAccessor`: silent programmatic writes, one emission per activation, dirty/touched on blur, reset, disable, `null` as off, `ngModel` and reactive forms;
 - the `checked` / `indeterminate` / `pressed` models, two-way binding and outputs;
@@ -125,15 +136,53 @@ own more than the controls above. Everything below is verified against the publi
 - Quartz roves the accordion's `tabindex` (one Tab stop, arrows between triggers). Volt's contract is ng-primitives': every enabled trigger is a Tab stop.
   The wrapper writes `tabindex` after Quartz's binding; the arrow keys, Home and End still work on top.
 
+## Listbox and Select
+
+Both families keep a value in a shape Quartz does not use, and Select opens a popup, so the wrappers own more than the controls above. Verified
+against the published `@quartz-headless/primitives@0.16.0` (`packages/volt/testing/selection-contract.ts`, `quartz/selection-quartz.spec.ts`,
+`quartz/selection-ssr.spec.ts`, `quartz/backend-parity-selection.spec.ts`, and the packed-tarball browser suite).
+
+**Listbox** — `VoltListbox` (`mode: 'single' | 'multiple'`, `value: T[]`, `compareWith`, `disabled`, `id`), `VoltListboxOption`, `VoltListboxSection`,
+`VoltListboxHeader`, `VoltListboxTrigger`.
+
+- `value` is an array in **both** modes. Quartz's is `T | null` (single) or `T[]` (multiple); `VoltListbox` narrows on the way in and widens on the way
+  out, so the data model does not change with the backend. A `T` that is itself an array is not supported in single mode. In single mode a written
+  `['a', 'b']` shows `a` only and the model is untouched until the user acts.
+- `mode` is Volt's; Quartz's `multiple` is a boolean input that a host directive cannot be bound to. The wrapper replaces the directive's field with a
+  signal derived from `mode` (`overrideQuartzInput`), so `mode` can change at runtime.
+- Entering the listbox lands on the selected option (else the first). An option is `data-active` only while the listbox has focus.
+- `VoltListboxSection` / `VoltListboxHeader` do not use Quartz's group directives: those always point `aria-labelledby` at a label, while Volt's header is
+  optional (and may sit outside any section). The section is `role="group"` and is named by its header only while it has one, so nothing dangles.
+- `VoltListboxTrigger` is a marker in the default entry point too (`NgpListboxTrigger` binds nothing in ng-primitives 0.131); it is provided as the same
+  marker.
+- An option's `id` is a static attribute or a bound `[id]` read once (the option registers again under it); changing it later is not followed.
+
+**Select** — `VoltSelect` (`value`, `placeholder`, `multiple`, `compareWith`, `displayWith`, `dropdownPlacement`, `flip`, `disabled`, `aria-label` / `ariaLabel`,
+`class`), `VoltSelectContent`, `VoltSelectItem`, `VoltSelectLabel`, `VoltSelectSeparator`. `VoltNativeSelect` is a native `<select>`, not a headless component,
+and stays in the main entry point.
+
+- `value` is the scalar in single mode and an array with `multiple`, `undefined` when empty. Quartz keeps `value` / `values` and `null`; the wrapper maps
+  them and listens to Quartz's `valueChangeCommitted` / `valuesChangeCommitted`, which fire once per genuine user change and never for a programmatic write:
+  a value written by Forms or `[(value)]` is not echoed back. Volt's `ControlValueAccessor` is the only Forms adapter.
+- The popup template lives in `VoltSelect` and is handed to Quartz through its `content` input (another unexposed signal input, overridden the same way);
+  the panel is `volt-select-content` itself, because Quartz sizes (anchor width) and places the first element of that template.
+- Quartz's trigger has no `role`; the wrapper adds `role="combobox"` (the select-only combobox pattern) and a native `disabled` when disabled, as the ng-primitives
+  trigger has. The popup is named after the trigger (`aria-label` / `aria-labelledby`) by Quartz; ng-primitives leaves it unnamed.
+- **Not carried over** — a template that sets them fails to compile instead of being ignored: `container` (Quartz's popup always lives in its own body-level
+  layer), `scrollToOption` and `allOptions` (virtual scrolling: Quartz's options are the rendered DOM). `flip` takes `true` / `false`, not ng-primitives' option object.
+- The popup exists only in the browser (it needs a window): the server HTML is the closed trigger, and hydration adopts it. Closing or destroying the select removes the layer's content (`selection-quartz.spec.ts`, and the browser suite over repeated open/close cycles).
+
 ## Ids
 
-Quartz 0.16.0 numbers ids with a module-level counter (`qz-radio-1`, `qz-toggle-item-1`, `qz-tab-1`, `qz-tab-panel-1`, `qz-accordion-trigger-1`) that is not scoped to an
+Quartz 0.16.0 numbers ids with a module-level counter (`qz-radio-1`, `qz-toggle-item-1`, `qz-tab-1`, `qz-tab-panel-1`, `qz-accordion-trigger-1`, `qz-listbox-option-1`, `qz-select-trigger-1`) that is not scoped to an
 Angular application, so a long-lived SSR process never matches the browser's count. Volt does not render those ids:
 the radio button carries the `id` you supply (or none), a radio group gets an id counted per application, and
 toggle items carry no id. Tabs and Accordion cannot drop theirs (the ids are the `aria-controls` / `aria-labelledby` targets), so the wrapper's constructor
 replaces the directive's `id` / `panelId` fields (`replaceQuartzIds`, readonly in Quartz's typings only) with ids counted per application before Quartz registers the
 part: no attribute is patched after render and every cross-reference stays consistent. The prerendered HTML and the hydrated DOM contain the same set of ids (checked in the
-consumer suite), and no `qz-*` id reaches the page.
+consumer suite), and no `qz-*` id reaches the page. Listbox options, the Select trigger and the listbox header get ids counted per application the same way
+(`volt-listbox-option-1`, `volt-select-trigger-1`, …); a consumer-supplied `id` wins. The Select popup's ids (`qz-select-N-listbox`, option ids) only exist after
+it opens in the browser, so they never reach the server HTML; they are unique within the page.
 
 ## Known differences
 
@@ -148,6 +197,17 @@ consumer suite), and no `qz-*` id reaches the page.
 - **Tabs**: setting `value` back to `undefined` after mount leaves the current selection with Quartz (ng-primitives shows the first tab again); a `value` no tab has selects nothing with Quartz (ng-primitives falls back to the first tab).
 - **Accordion**: the one open item of a single, non-collapsible accordion has `aria-disabled="true"` with Quartz (the WAI-ARIA accordion pattern asks for exactly that); ng-primitives does not set it.
 - **Accordion**: Quartz also moves focus with the arrow keys / Home / End and recovers focus when the focused trigger is removed; ng-primitives has neither.
+- **Select, focus**: Quartz moves DOM focus into the popup (to the selected option, else the first) and back to the trigger on close; ng-primitives keeps focus on
+  the trigger and does not restore it after a selection. Because the Volt classes light an item on `focus:`, the active option is highlighted with Quartz and not with
+  ng-primitives.
+- **Select, disabled item**: Quartz writes `aria-disabled`, so the class `aria-disabled:opacity-50` dims it; ng-primitives never writes that attribute, so its disabled item
+  keeps full opacity (it is still inert and carries `data-disabled`).
+- **Select, empty `multiple`**: Quartz shows the placeholder; ng-primitives renders an empty trigger. A falsy-but-defined single value (`0`, `''`) shows its label with Quartz and
+  the placeholder with ng-primitives.
+- **Select, positioning**: Quartz sizes and places the popup one animation frame after mounting it, so the first frame is unpositioned (upstream 0.16 behaviour, shared by every
+  Quartz overlay). The ng-primitives popup uses Floating UI.
+- **Listbox**: Quartz sets `aria-orientation="vertical"` and an `aria-activedescendant` before the listbox is focused; ng-primitives writes `aria-multiselectable="false"` and sets
+  the active descendant on focus.
 - Engine-owned attributes differ (`data-qz-*`; `data-hover`, `data-press`, `data-focus-visible`, `ngp*`). They are not part of Volt's contract; do not style them.
 
 ## Upstream finding: ng-primitives Accordion and server rendering
