@@ -1,30 +1,32 @@
 #!/usr/bin/env node
 /**
- * Auto-publish release script.
+ * Release orchestrator.
  *
- * For each publishable package, compares the version in its package.json with
- * the versions already on npm. If the local version is new, it:
- *   1. publishes the package to npm (reusing the existing `publish:*` scripts), and
- *   2. creates a GitHub Release (which also creates the git tag) so the release
- *      shows up in the repo's right-hand sidebar.
+ * For each publishable package it reads the exact published state from the npm registry, then:
+ *   - publishes the version if npm does not have it (and it is not a downgrade),
+ *   - VERIFIES the version is on the registry,
+ *   - only then creates the GitHub Release (and tag), and
+ *   - for a version that is already on npm but has no GitHub Release, creates the missing one.
  *
- * It is idempotent: versions already on npm are skipped, so re-running never
- * double-publishes. Run from CI (`.github/workflows/release.yml`) or locally
- * with the right credentials (NPM auth in ~/.npmrc and `gh` logged in).
+ * The decisions live in scripts/lib/release-core.mjs and are unit-tested against a mocked registry
+ * and a mocked GitHub (scripts/release.spec.mjs). This file only wires the real thing.
+ *
+ * Authentication: npm Trusted Publishing (OIDC). There is no token anywhere: `npm publish` in the
+ * Release workflow exchanges the job's GitHub OIDC identity for a short-lived credential. This
+ * script never runs `npm whoami` (it does not work with OIDC) and never reads NPM_TOKEN.
  *
  * Env:
- *   RELEASE_SHA commit the releases should point at; wins over GITHUB_SHA, which on a
- *               workflow_run is the tip of main rather than the commit CI verified
- *   GITHUB_SHA  fallback (defaults to HEAD)
- *   DRY_RUN=1   log what would happen without publishing or creating releases
+ *   RELEASE_SHA  commit the releases should point at; wins over GITHUB_SHA
+ *   DRY_RUN=1    read-only: reads the registry and GitHub, publishes and creates nothing
+ *                (also `--dry-run`)
  */
-import { execSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
-
-const DRY_RUN = process.env.DRY_RUN === '1' || process.argv.includes('--dry-run');
+import { execFileSync, execSync } from 'node:child_process';
+import { appendFileSync, readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { fetchPackument, runRelease } from './lib/release-core.mjs';
 
 /** Packages published from this repo, in publish order. */
-const PACKAGES = [
+export const PACKAGES = [
   {
     name: '@voltui/components',
     label: 'Components library',
@@ -48,70 +50,106 @@ const PACKAGES = [
   },
 ];
 
-const sha =
-  process.env.RELEASE_SHA ||
-  process.env.GITHUB_SHA ||
-  execSync('git rev-parse HEAD').toString().trim();
+const readManifest = file => JSON.parse(readFileSync(file, 'utf8'));
 
-const versionOf = file => JSON.parse(readFileSync(file, 'utf8')).version;
+const realPublisher = {
+  async publish(pkg) {
+    console.log(`  $ ${pkg.publish}`);
+    // OIDC: npm picks the identity up from the job; provenance is requested explicitly so it can
+    // never be silently dropped.
+    execSync(pkg.publish, {
+      stdio: 'inherit',
+      env: { ...process.env, NPM_CONFIG_PROVENANCE: 'true' },
+    });
+  },
+};
 
-/** Returns the list of versions already published to npm (empty if unpublished). */
-function publishedVersions(name) {
-  try {
-    const out = execSync(`npm view ${name} versions --json`, {
-      stdio: ['ignore', 'pipe', 'ignore'],
-    })
-      .toString()
-      .trim();
-    if (!out) return [];
-    const parsed = JSON.parse(out);
-    return Array.isArray(parsed) ? parsed : [parsed];
-  } catch {
-    // E404 — the package has never been published.
-    return [];
+const realGithub = {
+  async releaseExists(tag) {
+    try {
+      execFileSync('gh', ['release', 'view', tag], { stdio: ['ignore', 'pipe', 'pipe'] });
+      return true;
+    } catch (error) {
+      if (/release not found|HTTP 404/i.test(String(error.stderr))) return false;
+      throw new Error(`gh release view ${tag}: ${String(error.stderr || error.message).trim()}`);
+    }
+  },
+  async createRelease({ tag, title, target }) {
+    console.log(`  $ gh release create ${tag} --target ${target.slice(0, 8)}`);
+    execFileSync(
+      'gh',
+      ['release', 'create', tag, '--target', target, '--title', title, '--generate-notes'],
+      { stdio: 'inherit' }
+    );
+  },
+  /** The first commit on this history whose version file carries `version`; null when unknown. */
+  async commitForVersion(pkg, version) {
+    const out = execFileSync(
+      'git',
+      ['log', '--format=%H', '--reverse', `-S"version": "${version}"`, '--', pkg.versionFile],
+      { encoding: 'utf8' }
+    ).trim();
+    return out.split('\n')[0] || null;
+  },
+};
+
+const ICON = {
+  published: '🚀',
+  reconciled: '🔁',
+  'up-to-date': '✓',
+  'would-publish': '…',
+  'would-reconcile': '…',
+  'on-npm': '✓',
+};
+
+export async function main(argv = process.argv, env = process.env) {
+  const dryRun = env.DRY_RUN === '1' || argv.includes('--dry-run');
+  const sha = env.RELEASE_SHA || env.GITHUB_SHA || execSync('git rev-parse HEAD').toString().trim();
+
+  console.log(`Release check @ ${sha.slice(0, 8)}${dryRun ? ' (dry run: read-only)' : ''}\n`);
+
+  const report = await runRelease({
+    packages: PACKAGES,
+    readManifest,
+    registry: { fetchPackument: name => fetchPackument(name) },
+    publisher: realPublisher,
+    github: realGithub,
+    sha,
+    dryRun,
+    log: console.log,
+  });
+
+  const lines = report.results.map(
+    r =>
+      `${ICON[r.status] ?? '✗'} ${r.name}@${r.version ?? '?'} — ${r.status}${r.detail ? `: ${r.detail}` : ''}`
+  );
+  console.log(`\n${lines.join('\n')}`);
+
+  if (env.GITHUB_OUTPUT) {
+    appendFileSync(env.GITHUB_OUTPUT, `published=${report.published.length > 0}\n`);
   }
+  if (env.GITHUB_STEP_SUMMARY) {
+    appendFileSync(
+      env.GITHUB_STEP_SUMMARY,
+      `## Release${dryRun ? ' (dry run)' : ''}\n\n${lines.map(l => `- ${l}`).join('\n')}\n`
+    );
+  }
+
+  if (!report.ok) {
+    console.error(
+      '\nRelease did not complete cleanly. Fix the cause and re-run: it is idempotent.'
+    );
+    return 1;
+  }
+  return 0;
 }
 
-function run(cmd) {
-  console.log(`  $ ${cmd}`);
-  if (DRY_RUN) return;
-  execSync(cmd, { stdio: 'inherit' });
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  main().then(
+    code => process.exit(code),
+    error => {
+      console.error(error);
+      process.exit(1);
+    }
+  );
 }
-
-let released = 0;
-let failed = false;
-
-console.log(`Release check @ ${sha.slice(0, 8)}${DRY_RUN ? ' (dry run)' : ''}\n`);
-
-for (const pkg of PACKAGES) {
-  const version = versionOf(pkg.versionFile);
-  const published = publishedVersions(pkg.name);
-
-  if (published.includes(version)) {
-    console.log(`✓ ${pkg.name}@${version} already on npm — skip`);
-    continue;
-  }
-
-  const latest = published.slice(-1)[0] || 'nothing';
-  console.log(`\n▲ ${pkg.label}: releasing ${pkg.name}@${version} (npm latest: ${latest})`);
-
-  try {
-    run(pkg.publish);
-    const tag = `${pkg.tagPrefix}-v${version}`;
-    const title = `${pkg.name} v${version}`;
-    // `gh release create` creates the tag at --target and the GitHub Release.
-    run(`gh release create "${tag}" --target "${sha}" --title "${title}" --generate-notes`);
-    console.log(`✓ ${tag} published + released`);
-    released += 1;
-  } catch (err) {
-    console.error(`✗ ${pkg.name}@${version} failed: ${err.message}`);
-    failed = true;
-  }
-}
-
-console.log(
-  `\n${released} package(s) ${DRY_RUN ? 'would be ' : ''}released.` +
-    (released === 0 && !failed ? ' Nothing to do — all versions are current.' : '')
-);
-
-if (failed) process.exit(1);

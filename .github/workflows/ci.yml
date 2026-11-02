@@ -15,7 +15,9 @@ on:
 
 concurrency:
   # The weekly run gets its own group so a push to main never cancels it, nor the other way round.
-  group: ci-${{ github.event_name == 'schedule' && 'schedule' || github.ref }}
+  # A run dispatched by the Release workflow (to refresh the website after a publication) must not cancel,
+  # or be cancelled by, the push run of the same branch: either could be mid-deploy.
+  group: ci-${{ github.event_name == 'schedule' && 'schedule' || github.event_name == 'workflow_dispatch' && format('dispatch-{0}', github.ref) || github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -450,6 +452,10 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    # One production deployment at a time; a queued one waits instead of racing a running one.
+    concurrency:
+      group: deploy-production
+      cancel-in-progress: false
     environment:
       name: production
       url: https://voltui.dev

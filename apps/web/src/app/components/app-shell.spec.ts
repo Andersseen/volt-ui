@@ -30,7 +30,7 @@ describe('application shell', () => {
     // the primary navigation stays about the library.
     expect(screen.queryByRole('link', { name: /Gallery|Recipes/ })).not.toBeInTheDocument();
     expect(screen.queryByRole('link', { name: 'Layouts' })).not.toBeInTheDocument();
-    expect(screen.getByText(`v${SITE_STATS.version}`)).toBeInTheDocument();
+    expect(screen.getByText(`v${SITE_STATS.publishedVersion}`)).toBeInTheDocument();
   });
 
   it('renders useful footer navigation and repository metadata', async () => {

@@ -7,7 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-Planned as the 1.5.0 minor (not yet versioned: see `specs/plans/v1.5.md` for the release blockers).
+## [1.4.0] - 2026-11-02
+
+Minor release: the first opt-in alternative headless backend, **experimental**. Additive; every existing import,
+selector and the default ng-primitives implementation are unchanged. `1.4.0` was prepared on 2026-10-30 but never
+reached npm (its publish was rejected), so it is released as the cumulative version of everything merged since 1.3.3:
+Quartz Checkbox, Switch, Toggle, Radio, ToggleGroup, Tabs, Accordion, Listbox and Select, and the CLI `--base` option.
+The internal milestones 1.5-1.7 were never npm versions and are not skipped numbers: they are folded in here.
+
+**Experimental Quartz backend, known limits:** nine components, not the full catalog; Quartz Headless `0.16.0` declares
+`@angular/*` peers of `^21.0.0`, so Angular 22 needs `--legacy-peer-deps` until Quartz widens them (the contract suite
+passes on Angular 22.2); Quartz `Select` lacks `container`, `scrollToOption` and `allOptions`. See `docs/headless-backends.md`.
 
 ### Added — `@voltui/components`
 
@@ -36,11 +46,6 @@ Planned as the 1.5.0 minor (not yet versioned: see `specs/plans/v1.5.md` for the
 - `volt add tabs accordion --base=quartz` (the supported list is now seven components).
 - `volt add radio toggle-group --base=quartz` (and `volt init --base=quartz` now lists five supported components).
   The copy includes the two small shared helpers the Quartz wrappers use (`quartz-ids.ts`, `quartz-attributes.ts`).
-
-## [1.4.0] - 2026-10-30
-
-Minor release: the first opt-in alternative headless backend. Additive; every existing import, selector and
-the default ng-primitives implementation are unchanged.
 
 ### Added — `@voltui/components`
 
