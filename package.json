@@ -119,7 +119,7 @@
     "@angular/platform-browser": "^22.2.2",
     "@angular/platform-server": "^22.2.2",
     "@angular/router": "^22.2.2",
-    "@doqs/analog": "^0.12.0",
+    "@doqs/analog": "^0.13.0",
     "@etyma/analog": "1.0.0",
     "@etyma/angular": "1.0.0",
     "@etyma/core": "1.0.0",
