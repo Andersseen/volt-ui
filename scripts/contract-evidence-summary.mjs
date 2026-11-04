@@ -66,10 +66,15 @@ if (!tests.length) {
   process.exit(1);
 }
 
-const installs = readdirSync(dir)
-  .map(s => join(dir, s, 'install.json'))
-  .filter(existsSync)
-  .map(p => JSON.parse(readFileSync(p, 'utf8')));
+const installs = [
+  ...new Map(
+    readdirSync(dir)
+      .map(s => join(dir, s, 'install.json'))
+      .filter(existsSync)
+      .map(p => JSON.parse(readFileSync(p, 'utf8')))
+      .map(i => [JSON.stringify({ ...i, sizes: undefined }), i])
+  ).values(),
+];
 
 // ---------------------------------------------------------------------------------------------
 // The nine dual-backend families. Title patterns match e2e/quartz-consumer/*.spec.ts.
@@ -341,8 +346,8 @@ if (catalog.length) {
   lines.push(`| --- | ${projects.map(() => '---').join(' | ')} |`);
   for (const title of [...new Set(catalog.map(t => t.title))]) {
     const cells = projects.map(p => {
-      const t = catalog.find(c => c.title === title && c.project === p);
-      return t ? icon(verdict([t])) : icon('NOT TESTED');
+      // Every suite that ran it in this browser (default contracts and each Angular compat build).
+      return icon(verdict(catalog.filter(c => c.title === title && c.project === p)));
     });
     lines.push(`| ${title} | ${cells.join(' | ')} |`);
   }

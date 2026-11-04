@@ -197,7 +197,7 @@ test.describe('catalog', () => {
     await expect(s.getByRole('button', { name: /previous/i })).toBeDisabled();
   });
 
-  test('navigation menu: the trigger opens its panel by pointer and keyboard; Escape closes it', async ({
+  test('navigation menu: a click opens the panel; Escape closes it and removes its links', async ({
     page,
   }) => {
     const trigger = page.getByRole('button', { name: 'Getting started' });

@@ -556,6 +556,8 @@ for (const [name, url] of BACKENDS) {
 }
 
 test('every backend paints and measures the same', async ({ browser }) => {
+  // Four consumers × ~40 computed-style reads each: a budget for the work, not a wait for a race.
+  test.setTimeout(120_000);
   const urls = BACKENDS.map(([name, url]) => [name, url] as const).filter(([, url]) => url);
   test.skip(urls.length < 2, 'needs at least two URLs');
   const targets = [
