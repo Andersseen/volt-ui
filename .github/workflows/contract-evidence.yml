@@ -1,0 +1,225 @@
+name: Volt UI — Contract Evidence
+
+# Additional, downloadable evidence that the packed library keeps its behavioural, accessibility,
+# Forms and visual contracts — in Chromium, Firefox and WebKit, for the default backend and for the
+# nine families that also run on Quartz Headless. It is NOT a required check, and it replaces none
+# of CI: it re-runs the same suites in evidence mode (HTML + JSON + JUnit reports, no retries, traces
+# and screenshots kept for failures) and writes a summary. See docs/quality/headless-contract-verification.md.
+#
+# It never publishes, deploys or merges, holds no secrets and asks for read access only.
+#
+# Triggers:
+# - workflow_dispatch: Actions → "Volt UI — Contract Evidence" → Run workflow, on any branch. Only
+#   available once this file is on the default branch (GitHub registers workflows from there).
+# - pull_request: runs on the PR's own head commit when it touches the library, the fixtures or the
+#   scripts these suites use — the PR path that works before the file reaches main.
+
+on:
+  workflow_dispatch:
+    inputs:
+      angular:
+        description: 'Angular versions for the dual-backend job (JSON array)'
+        default: '["21.2.0", "22"]'
+        required: false
+  pull_request:
+    branches: [main]
+    paths:
+      - 'packages/volt/**'
+      - 'cli/**'
+      - 'e2e/contracts/**'
+      - 'e2e/consumer/src/contracts/**'
+      - 'e2e/consumer/contracts.html'
+      - 'e2e/quartz-consumer/**'
+      - 'e2e/utils/evidence.ts'
+      - 'playwright.contracts.config.ts'
+      - 'playwright.quartz-consumer.config.ts'
+      - 'scripts/check-quartz-consumer.mjs'
+      - 'scripts/check-angular-compat.mjs'
+      - 'scripts/contract-evidence-summary.mjs'
+      - 'scripts/serve-static.mjs'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - '.github/workflows/contract-evidence.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: contract-evidence-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  EVIDENCE_DIR: ${{ github.workspace }}/evidence
+  EVIDENCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+  # Volt's own trace/screenshot policy in evidence mode lives in e2e/utils/evidence.ts.
+  CI: 'true'
+
+jobs:
+  # JOB A — the default (ng-primitives) library: every browser contract, including the Tier 1
+  # catalog smoke, against the built package, one browser per job.
+  default-library:
+    name: A · default backend contracts (${{ matrix.browser }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+    env:
+      EVIDENCE_LABEL: default-${{ matrix.browser }}
+    steps:
+      # The PR's head commit, not GitHub's synthetic merge commit: the evidence is for the branch SHA.
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: ./.github/actions/setup
+
+      - name: Build the library package
+        run: pnpm build:lib
+
+      - name: Install Playwright ${{ matrix.browser }}
+        uses: ./.github/actions/setup-playwright
+        with:
+          browser: ${{ matrix.browser }}
+
+      - name: Run the browser contracts (packed fixtures, no retries)
+        run: pnpm exec playwright test -c playwright.contracts.config.ts --project=${{ matrix.browser }}
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: evidence-A-default-${{ matrix.browser }}
+          path: evidence/
+          retention-days: 30
+          if-no-files-found: warn
+
+  # JOB B — the nine dual-backend families: the packed tarball and the published Quartz packages
+  # installed outside the repository, four apps (ng-primitives / Quartz × package / CLI copy) built
+  # with strict AOT, prerendered and hydrated, then the same suites against all four.
+  dual-backend:
+    name: B · dual backend (Angular ${{ matrix.angular }}, ${{ matrix.browser }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    strategy:
+      fail-fast: false
+      matrix:
+        angular: ${{ fromJSON(github.event.inputs.angular || '["21.2.0", "22"]') }}
+        browser: [chromium, firefox, webkit]
+    env:
+      EVIDENCE_LABEL: ng${{ matrix.angular }}-${{ matrix.browser }}
+    steps:
+      # The PR's head commit, not GitHub's synthetic merge commit: the evidence is for the branch SHA.
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: ./.github/actions/setup
+
+      - name: Install Playwright ${{ matrix.browser }}
+        uses: ./.github/actions/setup-playwright
+        with:
+          browser: ${{ matrix.browser }}
+
+      # Tries a strict install first; if Quartz's peer ranges exclude this Angular, install.json
+      # records strictPeerResolution FAIL and the --legacy-peer-deps retry (runtime evidence only).
+      - name: Install, build, isolate and exercise both engines
+        run: node scripts/check-quartz-consumer.mjs ${{ matrix.angular }} --project=${{ matrix.browser }}
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: evidence-B-dual-backend-ng${{ matrix.angular }}-${{ matrix.browser }}
+          path: evidence/
+          retention-days: 30
+          if-no-files-found: warn
+
+  # JOB C — declared Angular support for the default entry point: strict AOT build of the contract
+  # fixtures (catalog included) from the packed tarball with each major, then the contracts in Chromium.
+  compatibility:
+    name: C · packed package on Angular ${{ matrix.angular }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        angular: ['21', '22']
+    env:
+      EVIDENCE_LABEL: compat-ng${{ matrix.angular }}
+    steps:
+      # The PR's head commit, not GitHub's synthetic merge commit: the evidence is for the branch SHA.
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: ./.github/actions/setup
+      - name: Install Playwright Chromium
+        uses: ./.github/actions/setup-playwright
+
+      - name: Strict install, strict AOT build and contracts
+        run: node scripts/check-angular-compat.mjs ${{ matrix.angular }}
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: evidence-C-compat-ng${{ matrix.angular }}
+          path: evidence/
+          retention-days: 30
+          if-no-files-found: warn
+
+  summary:
+    name: Evidence summary
+    needs: [default-library, dual-backend, compatibility]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      # The PR's head commit, not GitHub's synthetic merge commit: the evidence is for the branch SHA.
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - name: Download every evidence artifact
+        uses: actions/download-artifact@v8
+        with:
+          pattern: evidence-*
+          path: downloaded
+
+      # Each artifact holds one or more suite folders (<suite>/results.json …); suite names carry
+      # the label, so merging them into one directory never overwrites anything.
+      - name: Merge suites
+        run: |
+          mkdir -p merged
+          for artifact in downloaded/*/; do
+            cp -R "$artifact"/. merged/
+          done
+          ls merged
+
+      - name: Write the summary
+        run: |
+          export EVIDENCE_VOLT_VERSION="$(node -p "require('./packages/volt/package.json').version")"
+          node scripts/contract-evidence-summary.mjs merged --out merged/SUMMARY.md
+          {
+            echo ''
+            echo '### Downloads'
+            echo ''
+            echo "Artifacts of this run: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}#artifacts"
+            echo ''
+            echo '| artifact | what |'
+            echo '| --- | --- |'
+            echo '| `evidence-A-default-<browser>` | default backend browser contracts + Tier 1 catalog |'
+            echo '| `evidence-B-dual-backend-ng<angular>-<browser>` | nine families × ng-primitives / Quartz × package / CLI copy, axe, paint sweep, install.json |'
+            echo '| `evidence-C-compat-ng<major>` | strict AOT build from the tarball on that Angular major + contracts (Chromium) |'
+            echo '| `evidence-summary` | this summary as Markdown |'
+          } | tee -a merged/SUMMARY.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload the summary
+        uses: actions/upload-artifact@v7
+        with:
+          name: evidence-summary
+          path: merged/SUMMARY.md
+          retention-days: 30
