@@ -126,18 +126,25 @@ run(
 
 // 3. the app: the same fixtures the repository's own browser contracts use
 const fixtures = join(ROOT, 'e2e/consumer/src/contracts');
-for (const file of ['fixtures.ts', 'host.ts']) cpSync(join(fixtures, file), join(app, 'src', file));
+for (const file of ['fixtures.ts', 'catalog.ts', 'host.ts'])
+  cpSync(join(fixtures, file), join(app, 'src', file));
 cpSync(join(ROOT, 'e2e/consumer/contracts.html'), join(app, 'src/contracts.html'));
 writeFileSync(
   join(app, 'src/main.ts'),
   `import '@angular/compiler';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
+import { provideRouter, withDisabledInitialNavigation } from '@angular/router';
 import { ContractsHost } from './host';
 
-bootstrapApplication(ContractsHost, { providers: [provideZonelessChangeDetection()] }).catch(e =>
-  console.error(e)
-);
+bootstrapApplication(ContractsHost, {
+  // Only the catalog needs a router (its sidebar item is a routerLink). Elsewhere it would react to
+  // the hash navigation other fixtures rely on, so it is not provided there.
+  providers: [
+    provideZonelessChangeDetection(),
+    ...(location.hash === '#catalog' ? [provideRouter([], withDisabledInitialNavigation())] : []),
+  ],
+}).catch(e => console.error(e));
 `
 );
 // The same stylesheet the repository's consumer fixture uses: geometry and visible state need CSS.
@@ -229,7 +236,19 @@ const server = spawn(
 );
 const stop = () => server.kill();
 process.on('exit', stop);
-await new Promise(resolve => setTimeout(resolve, 800));
+// Wait until the server answers instead of sleeping a fixed time.
+for (const deadline = Date.now() + 15_000; ;) {
+  try {
+    if ((await fetch(`http://127.0.0.1:${PORT}/contracts.html`)).ok) break;
+  } catch {
+    // not listening yet
+  }
+  if (Date.now() > deadline) {
+    console.error(`\n✖ the server on port ${PORT} did not start`);
+    process.exit(1);
+  }
+  await new Promise(resolve => setTimeout(resolve, 100));
+}
 
 const playwright = spawnSync(
   'pnpm',

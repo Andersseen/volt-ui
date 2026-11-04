@@ -1,5 +1,11 @@
-import { ChangeDetectionStrategy, Component, model } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, model, signal } from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { JsonPipe } from '@angular/common';
 // `./backend` is the only file that differs between the two fixture apps: it re-exports the same
 // five component families from `@voltui/components` (ng-primitives) or `@voltui/components/quartz`.
@@ -34,6 +40,7 @@ import {
   selector: 'app-demo',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    FormsModule,
     ReactiveFormsModule,
     JsonPipe,
     VoltCheckbox,
@@ -244,6 +251,83 @@ import {
         <output id="picks-touched">{{ picks.touched }}</output>
       </section>
 
+      <!--
+        Programmatic writes, validation and template-driven Forms (e2e/quartz-consumer/forms-state.spec.ts).
+        Every name starts with "P " / "TD " so it never collides with a control above.
+      -->
+      <section aria-label="Programmatic" class="flex flex-col gap-3" [formGroup]="prog">
+        <volt-checkbox formControlName="check" ariaLabel="P check" />
+        <volt-switch formControlName="sw" ariaLabel="P switch" />
+        <volt-toggle formControlName="tog" ariaLabel="P toggle">T</volt-toggle>
+        <volt-radio-group formControlName="radio" aria-label="P radio">
+          <volt-radio-item value="x">P radio x</volt-radio-item>
+          <volt-radio-item value="y">P radio y</volt-radio-item>
+        </volt-radio-group>
+        <volt-toggle-group formControlName="group" aria-label="P group">
+          <volt-toggle-group-item value="x">P group x</volt-toggle-group-item>
+          <volt-toggle-group-item value="y">P group y</volt-toggle-group-item>
+        </volt-toggle-group>
+        <volt-listbox formControlName="list" aria-label="P list">
+          <volt-listbox-option value="x">P list x</volt-listbox-option>
+          <volt-listbox-option value="y">P list y</volt-listbox-option>
+        </volt-listbox>
+        <volt-select formControlName="sel" aria-label="P select" placeholder="P pick">
+          <volt-select-content>
+            <volt-select-item value="x">P select x</volt-select-item>
+            <volt-select-item value="y">P select y</volt-select-item>
+          </volt-select-content>
+        </volt-select>
+        <volt-tabs [value]="progTab()">
+          <volt-tabs-list aria-label="P tabs">
+            <volt-tabs-trigger value="x">P tab x</volt-tabs-trigger>
+            <volt-tabs-trigger value="y">P tab y</volt-tabs-trigger>
+          </volt-tabs-list>
+          <volt-tabs-content value="x">P tab panel x</volt-tabs-content>
+          <volt-tabs-content value="y">P tab panel y</volt-tabs-content>
+        </volt-tabs>
+        <volt-accordion [value]="progOpen()" [collapsible]="true">
+          <volt-accordion-item value="x">
+            <volt-accordion-trigger>P section x</volt-accordion-trigger>
+            <volt-accordion-content>P answer x</volt-accordion-content>
+          </volt-accordion-item>
+          <volt-accordion-item value="y">
+            <volt-accordion-trigger>P section y</volt-accordion-trigger>
+            <volt-accordion-content>P answer y</volt-accordion-content>
+          </volt-accordion-item>
+        </volt-accordion>
+        <div class="flex flex-wrap gap-2">
+          <button type="button" (click)="setAll()">Set all</button>
+          <button type="button" (click)="prog.reset()">Reset all</button>
+          <button type="button" (click)="prog.disable()">Disable all</button>
+          <button type="button" (click)="prog.enable()">Enable all</button>
+          <button type="button" (click)="prog.markAllAsTouched()">Touch all</button>
+        </div>
+        <output id="prog-value">{{ prog.getRawValue() | json }}</output>
+        <output id="prog-dirty">{{ prog.dirty }}</output>
+        <output id="prog-changes">{{ progChanges() }}</output>
+      </section>
+
+      <section aria-label="Template-driven" class="flex flex-col gap-3">
+        <volt-checkbox [(ngModel)]="tdCheck" name="tdCheck" ariaLabel="TD check" />
+        <volt-radio-group [(ngModel)]="tdRadio" name="tdRadio" aria-label="TD radio">
+          <volt-radio-item value="x">TD radio x</volt-radio-item>
+          <volt-radio-item value="y">TD radio y</volt-radio-item>
+        </volt-radio-group>
+        <volt-select
+          [(ngModel)]="tdSelect"
+          name="tdSelect"
+          aria-label="TD select"
+          placeholder="TD pick"
+        >
+          <volt-select-content>
+            <volt-select-item value="x">TD select x</volt-select-item>
+            <volt-select-item value="y">TD select y</volt-select-item>
+          </volt-select-content>
+        </volt-select>
+        <button type="button" (click)="tdSetAll()">TD set all</button>
+        <output id="td-value">{{ tdCheck() }}|{{ tdRadio() }}|{{ tdSelect() }}</output>
+      </section>
+
       <output id="value">{{ form.getRawValue() | json }}</output>
       <output id="touched">{{ form.touched }}</output>
       <output id="dirty">{{ form.dirty }}</output>
@@ -259,6 +343,49 @@ export class Demo {
     meta: new FormControl<string | null>('nuxt'),
     tools: new FormControl<string[]>([], { nonNullable: true }),
   });
+  // Programmatic section: every control is required, so validation is observable as `aria-invalid`.
+  readonly prog = new FormGroup({
+    check: new FormControl(false, { nonNullable: true, validators: Validators.requiredTrue }),
+    sw: new FormControl(false, { nonNullable: true, validators: Validators.requiredTrue }),
+    tog: new FormControl(false, { nonNullable: true, validators: Validators.requiredTrue }),
+    radio: new FormControl<string | null>(null, Validators.required),
+    group: new FormControl<string[]>([], { nonNullable: true, validators: Validators.required }),
+    list: new FormControl<string[]>([], { nonNullable: true, validators: Validators.required }),
+    sel: new FormControl<string | null>(null, Validators.required),
+  });
+  /** valueChanges of the whole group: a user action is one emission, `setAll()` is exactly one. */
+  readonly progChanges = signal(0);
+  readonly progTab = signal<string | undefined>('x');
+  readonly progOpen = signal<string | string[] | null>(null);
+  readonly tdCheck = signal(false);
+  readonly tdRadio = signal<string | null>(null);
+  readonly tdSelect = signal<string | undefined>(undefined);
+
+  constructor() {
+    this.prog.valueChanges.subscribe(() => this.progChanges.update(n => n + 1));
+  }
+
+  setAll(): void {
+    // One programmatic write for the group (one valueChanges), plus the two one-way bindings.
+    this.prog.setValue({
+      check: true,
+      sw: true,
+      tog: true,
+      radio: 'y',
+      group: ['y'],
+      list: ['y'],
+      sel: 'y',
+    });
+    this.progTab.set('y');
+    this.progOpen.set('y');
+  }
+
+  tdSetAll(): void {
+    this.tdCheck.set(true);
+    this.tdRadio.set('y');
+    this.tdSelect.set('y');
+  }
+
   readonly form = new FormGroup({
     accept: new FormControl(false, { nonNullable: true }),
     notify: new FormControl(true, { nonNullable: true }),

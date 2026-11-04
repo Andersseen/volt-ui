@@ -1,4 +1,10 @@
 import { defineConfig, devices } from '@playwright/test';
+import {
+  evidenceEnabled,
+  evidenceOutputDir,
+  evidenceReporters,
+  evidenceUse,
+} from './e2e/utils/evidence';
 
 /**
  * Component behaviour contracts in real browsers — the things jsdom cannot prove: focus order,
@@ -21,13 +27,18 @@ export default defineConfig({
   testDir: './e2e/contracts',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 1 : 0,
+  retries: process.env.CI && !evidenceEnabled ? 1 : 0,
+  outputDir: evidenceOutputDir(`contracts-${process.env['EVIDENCE_LABEL'] ?? 'local'}`),
   workers: process.env.CI ? 2 : undefined,
-  reporter: process.env.CI ? [['github'], ['html', { open: 'never' }]] : 'list',
+  reporter: evidenceReporters(
+    `contracts-${process.env['EVIDENCE_LABEL'] ?? 'local'}`,
+    process.env.CI ? [['github'], ['html', { open: 'never' }]] : 'list'
+  ),
   use: {
     baseURL,
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
+    ...evidenceUse,
   },
   projects: [
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },

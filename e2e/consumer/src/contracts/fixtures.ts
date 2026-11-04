@@ -576,6 +576,11 @@ export class OverlayFixtures {
     <div class="flex flex-col gap-4">
       <volt-toggle aria-label="Toggle on" [pressed]="true">On</volt-toggle>
       <volt-toggle aria-label="Toggle off">Off</volt-toggle>
+      @for (variant of toggleVariants; track variant) {
+        <volt-toggle [variant]="variant" [attr.data-testid]="'pressed-' + variant" [pressed]="true">
+          {{ variant }} pressed
+        </volt-toggle>
+      }
 
       <volt-toggle-group [value]="['a']" aria-label="Group">
         <volt-toggle-group-item value="a">Pressed</volt-toggle-group-item>
@@ -609,4 +614,6 @@ export class OverlayFixtures {
     </div>
   `,
 })
-export class VisualStateFixture {}
+export class VisualStateFixture {
+  protected readonly toggleVariants = ['default', 'outline', 'ghost', 'solid'] as const;
+}

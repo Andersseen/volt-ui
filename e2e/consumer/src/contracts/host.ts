@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { CatalogFixture } from './catalog';
 import {
   ComboboxFixtures,
   DatePickerFixture,
@@ -25,6 +26,7 @@ import {
   selector: 'app-contracts',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    CatalogFixture,
     ComboboxFixtures,
     DatePickerFixture,
     FileUploadFixture,
@@ -84,6 +86,9 @@ import {
         }
         @case ('visual') {
           <app-visual />
+        }
+        @case ('catalog') {
+          <app-catalog />
         }
       }
     </main>

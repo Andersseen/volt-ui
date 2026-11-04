@@ -466,6 +466,39 @@ writeFileSync(
     2
   )
 );
+// Evidence mode (.github/workflows/contract-evidence.yml): what was installed, how, and the
+// isolation verdict, next to the Playwright report of the same run.
+const evidenceDir = process.env.EVIDENCE_DIR
+  ? join(
+      process.env.EVIDENCE_DIR,
+      `quartz-consumer-${process.env.EVIDENCE_LABEL ?? `angular-${major}`}`
+    )
+  : null;
+if (evidenceDir) {
+  mkdirSync(evidenceDir, { recursive: true });
+  writeFileSync(
+    join(evidenceDir, 'install.json'),
+    JSON.stringify(
+      {
+        requestedAngular: version,
+        angular: installed('@angular/core'),
+        voltComponents: lib.version,
+        quartzCore: installed('@quartz-headless/core'),
+        quartzPrimitives: installed('@quartz-headless/primitives'),
+        ngPrimitives: installed('ng-primitives'),
+        strictPeerResolution: peerGap ? 'FAIL' : 'PASS',
+        installedWith: peerGap ? 'npm install --legacy-peer-deps' : 'npm install (strict)',
+        peerGap,
+        isolation: leaks.length ? leaks : 'PASS',
+        sizes: Object.fromEntries(
+          Object.entries(sizes).map(([k, v]) => [k, { raw: v.raw, gzip: v.gzip }])
+        ),
+      },
+      null,
+      2
+    )
+  );
+}
 if (leaks.length) fail(`engine isolation broken:\n  - ${leaks.join('\n  - ')}`);
 console.log('  ✔ isolation: no bundle contains the other headless engine (package and CLI copy)');
 
@@ -481,7 +514,19 @@ const servers = Object.keys(BACKENDS).map((name, i) =>
 );
 const stop = () => servers.forEach(s => s.kill());
 process.on('exit', stop);
-await new Promise(resolve => setTimeout(resolve, 800));
+// Wait until every server answers instead of sleeping a fixed time.
+for (let i = 0; i < Object.keys(BACKENDS).length; i++) {
+  const deadline = Date.now() + 15_000;
+  for (;;) {
+    try {
+      if ((await fetch(`http://127.0.0.1:${PORT + i}/`)).ok) break;
+    } catch {
+      // not listening yet
+    }
+    if (Date.now() > deadline) fail(`the server on port ${PORT + i} did not start`);
+    await new Promise(resolve => setTimeout(resolve, 100));
+  }
+}
 const playwright = spawnSync(
   'pnpm',
   [
