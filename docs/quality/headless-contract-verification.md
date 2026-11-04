@@ -73,10 +73,29 @@ including an intended difference the tests assert (§4). Manual screen reader: *
 
 ### Cloud evidence
 
-**Pending.** The workflow `.github/workflows/contract-evidence.yml` (**Volt UI — Contract Evidence**)
-runs on the pull request's head commit. Its run URL and artifacts are linked from the pull request;
-this section is updated with the completed run once it exists. No run URL is recorded here before it
-has run.
+**Completed run:** [Volt UI — Contract Evidence #41862692037](https://github.com/Andersseen/volt-ui/actions/runs/41862692037)
+on the pull request's head commit `3ad23cd`, 2026-11-04, GitHub-hosted Ubuntu, Node 22.23.4 — conclusion
+**success**. Artifacts: [run artifacts](https://github.com/Andersseen/volt-ui/actions/runs/41862692037#artifacts).
+
+1187 results: **1172 passed, 0 failed, 0 flaky, 15 skipped** (no retries in evidence mode).
+
+| suite                                                                       | chromium    | firefox          | webkit            |
+| --------------------------------------------------------------------------- | ----------- | ---------------- | ----------------- |
+| A — default contracts + Tier 1 catalog                                      | 91 ✓        | 89 ✓ · 2 skipped | 86 ✓ · 5 skipped  |
+| B — dual backend, Angular 21.2.0 (strict peers PASS)                        | 122 ✓       | 122 ✓            | 118 ✓ · 4 skipped |
+| B — dual backend, Angular 22.2.4 (strict peers FAIL → `--legacy-peer-deps`) | 122 ✓       | 122 ✓            | 118 ✓ · 4 skipped |
+| C — strict AOT from the tarball, Angular 21 / 22                            | 91 ✓ / 91 ✓ | –                | –                 |
+
+Skipped, and therefore **NOT TESTED** in that engine (never counted as passed): OTP paste in Firefox
+(2) and WebKit (1); WebKit Tab-order checks — radio Tab entry, dialog/drawer Tab trap, tooltip on keyboard
+focus, and the new focus-visibility sweep in all four consumer modes ×2 Angular versions — because
+Safari does not Tab to buttons by default (`TAB_SKIPS_BUTTONS`). Keyboard behaviour in WebKit is still
+exercised by arrow / Enter / Space / Escape tests that focus the control first.
+
+Nine-family matrix from that run (every cell aggregated over three engines and four consumer modes):
+all **PASS** except the cells marked **DOCUMENTED DIFFERENCE** (Toggle a11y; Radio, ToggleGroup, Tabs,
+Accordion keyboard + a11y; Listbox a11y; Select keyboard, a11y, value and styling — see §4); Forms
+**N/A** for Tabs and Accordion. No cell is FAIL, BLOCKED or NOT TESTED. Manual screen reader: NOT TESTED.
 
 Artifacts per run (30-day retention):
 
