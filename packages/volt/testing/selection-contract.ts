@@ -443,6 +443,25 @@ export function describeSelectContract(label: string, spec: SelectSpec): void {
       expect(trigger()).toHaveTextContent('VUE');
     });
 
+    // Was a documented backend difference; it is a Volt template defect in the default entry
+    // point (`@if (value())`): an empty array is truthy, `0` / `''` are falsy.
+    it('shows the placeholder exactly when nothing is selected (empty multiple, falsy values)', async () => {
+      await render(
+        `${select('multiple [value]="none"')}
+         <volt-select aria-label="Count" placeholder="Pick a count" [value]="zero">
+           <volt-select-content><volt-select-item [value]="0">Zero</volt-select-item></volt-select-content>
+         </volt-select>
+         <volt-select aria-label="Blank" placeholder="Pick blank" [value]="blank">
+           <volt-select-content><volt-select-item value="">Blank</volt-select-item></volt-select-content>
+         </volt-select>`,
+        { imports, componentProperties: { none: [], zero: 0, blank: '' } }
+      );
+      expect(screen.getByRole('combobox', { name: 'Framework' })).toHaveTextContent('Pick one');
+      expect(screen.getByRole('combobox', { name: 'Count' })).toHaveTextContent('0');
+      expect(screen.getByRole('combobox', { name: 'Count' })).not.toHaveTextContent('Pick a count');
+      expect(screen.getByRole('combobox', { name: 'Blank' })).not.toHaveTextContent('Pick blank');
+    });
+
     it('opens on click with a labelled listbox of options the trigger controls', async () => {
       const user = userEvent.setup();
       await render(select('[value]="\'vue\'"'), { imports });
@@ -468,6 +487,8 @@ export function describeSelectContract(label: string, spec: SelectSpec): void {
       await waitFor(() => expect(screen.queryByRole('listbox')).toBeNull());
       expect(trigger()).toHaveTextContent('svelte');
       expect(trigger()).toHaveAttribute('aria-expanded', 'false');
+      // The title promised this and nothing asserted it: with ng-primitives focus fell to <body>.
+      await waitFor(() => expect(trigger()).toHaveFocus());
       expect(changed).toHaveBeenCalledTimes(1);
       expect(changed).toHaveBeenCalledWith('svelte');
     });
