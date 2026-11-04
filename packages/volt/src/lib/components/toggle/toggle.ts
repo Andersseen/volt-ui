@@ -13,6 +13,7 @@ import { NgpToggle } from 'ng-primitives/toggle';
 import { forwardAttributesFromHost } from '../../host-forwarding';
 import { injectFormControlState } from '../../form-control-state';
 import { toggleVariants, type ToggleVariants } from './variants';
+import { cn } from '../../utils';
 
 @Component({
   selector: 'volt-toggle',
@@ -58,11 +59,15 @@ export class VoltToggle implements ControlValueAccessor {
   private readonly controlDisabled = signal(false);
   protected readonly isDisabled = computed(() => this.disabled() || this.controlDisabled());
 
+  // Through cn(): the variants override the base `data-[selected]:*` classes, which only twMerge
+  // resolves; both in the class list let CSS order pick (solid pressed was white on a 15% tint).
   protected readonly classes = computed(() =>
-    toggleVariants({
-      variant: this.variant(),
-      size: this.size(),
-    })
+    cn(
+      toggleVariants({
+        variant: this.variant(),
+        size: this.size(),
+      })
+    )
   );
 
   private onChange: (value: boolean) => void = () => {};

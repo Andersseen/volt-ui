@@ -1,3 +1,4 @@
+import { createRequire } from 'node:module';
 import { expect, test, type Locator } from '@playwright/test';
 import { load, paint } from './helpers';
 
@@ -13,6 +14,47 @@ test.describe('selected, pressed and checked states are visibly different', () =
   async function differs(on: Locator, off: Locator) {
     const [a, b] = await Promise.all([paint(on), paint(off)]);
     expect(a, 'the on and off states paint identically').not.toBe(b);
+  }
+
+  // 1.4.0: Toggle's classes skipped twMerge, so the base `data-[selected]:bg-primary/15` survived next
+  // to `solid`'s `data-[selected]:bg-primary` and won: primary-foreground text on a 15% tint.
+  for (const scheme of ['light', 'dark'] as const) {
+    test(`toggle: every pressed variant meets WCAG AA text contrast (${scheme})`, async ({
+      page,
+    }) => {
+      await page.evaluate(
+        dark => document.documentElement.classList.toggle('dark', dark),
+        scheme === 'dark'
+      );
+      await page.addStyleTag({
+        content: '*, *::before, *::after { transition: none !important; }',
+      });
+      await page.addScriptTag({
+        path: createRequire(import.meta.url).resolve('axe-core/axe.min.js'),
+      });
+      const failures = await page.evaluate(async () => {
+        const axe = (
+          window as unknown as {
+            axe: {
+              run: (
+                c: unknown,
+                o: object
+              ) => Promise<{
+                violations: { nodes: { target: string[]; any: { message: string }[] }[] }[];
+              }>;
+            };
+          }
+        ).axe;
+        const result = await axe.run(
+          { include: [['[data-testid^="pressed-"]']] },
+          { runOnly: { type: 'rule', values: ['color-contrast'] } }
+        );
+        return result.violations.flatMap(v =>
+          v.nodes.map(n => `${n.target.join(' ')}: ${n.any[0]?.message}`)
+        );
+      });
+      expect(failures).toEqual([]);
+    });
   }
 
   test('toggle', async ({ page }) => {
