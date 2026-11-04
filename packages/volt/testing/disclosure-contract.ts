@@ -182,6 +182,31 @@ export function describeTabsContract(label: string, spec: TabsSpec): void {
       expect(changed).toHaveBeenCalledWith('security');
     });
 
+    // WAI-ARIA tabs pattern, manual activation: Enter or Space activates the focused tab. Without it
+    // a keyboard user cannot select anything in a manual tablist (was a documented ng-primitives gap).
+    it('with activateOnFocus off, Enter and Space select the focused tab, once each', async () => {
+      const changed = vi.fn();
+      const user = userEvent.setup();
+      await render(
+        tabs('value="account" [activateOnFocus]="false" (valueChange)="changed($event)"'),
+        { imports, componentProperties: { changed } }
+      );
+      await user.tab();
+      await user.keyboard('{ArrowRight}');
+      expect(tab('Security')).toHaveFocus();
+      await user.keyboard('{Enter}');
+      expect(tab('Security')).toHaveAttribute('aria-selected', 'true');
+      expect(changed).toHaveBeenCalledTimes(1);
+      expect(changed).toHaveBeenLastCalledWith('security');
+      await user.keyboard('{ArrowLeft}');
+      expect(tab('Account')).toHaveFocus();
+      expect(tab('Security')).toHaveAttribute('aria-selected', 'true');
+      await user.keyboard(' ');
+      expect(tab('Account')).toHaveAttribute('aria-selected', 'true');
+      expect(changed).toHaveBeenCalledTimes(2);
+      expect(changed).toHaveBeenLastCalledWith('account');
+    });
+
     it('uses Up/Down in a vertical list and reports the orientation', async () => {
       const user = userEvent.setup();
       await render(tabs('value="account" orientation="vertical"'), { imports });
