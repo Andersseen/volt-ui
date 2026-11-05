@@ -1495,7 +1495,10 @@ export const TABLE_API: ComponentApi = {
     {
       className: 'VoltTableCaption',
       selector: 'volt-table-caption',
-      inputs: [{ name: 'class', type: 'string', default: "''" }],
+      inputs: [
+        { name: 'class', type: 'string', default: "''" },
+        { name: 'id', type: 'string', default: "uniqueId('volt-table-caption')" },
+      ],
       outputs: [],
     },
     {
@@ -1531,7 +1534,11 @@ export const TABLE_API: ComponentApi = {
     {
       className: 'VoltTable',
       selector: 'volt-table',
-      inputs: [{ name: 'class', type: 'string', default: "''" }],
+      inputs: [
+        { name: 'class', type: 'string', default: "''" },
+        { name: 'aria-label', type: 'string | undefined', default: 'undefined' },
+        { name: 'aria-labelledby', type: 'string | undefined', default: 'undefined' },
+      ],
       outputs: [],
     },
   ],

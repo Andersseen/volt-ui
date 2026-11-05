@@ -2,14 +2,17 @@ import {
   booleanAttribute,
   ChangeDetectionStrategy,
   Component,
-  input,
   computed,
+  ElementRef,
+  inject,
+  input,
 } from '@angular/core';
 import {
   NgpNavigationMenuContent,
   provideNavigationMenuContentState,
 } from 'ng-primitives/navigation-menu';
 import { cn } from '../../utils';
+import { VoltNavigationMenuItem } from './navigation-menu-item';
 
 @Component({
   selector: 'volt-navigation-menu-content',
@@ -41,4 +44,11 @@ export class VoltNavigationMenuContent {
 
   readonly orientation = input<'vertical' | 'horizontal'>('vertical');
   readonly wrap = input<boolean, unknown>(false, { transform: booleanAttribute });
+
+  constructor() {
+    // The panel is declared inside its item (as an <ng-template>), so the item is in the injector
+    // even though the panel renders in a body-level overlay. The trigger needs it for Escape.
+    const host = inject<ElementRef<HTMLElement>>(ElementRef).nativeElement;
+    inject(VoltNavigationMenuItem, { optional: true })?.trigger()?.registerPanel(host);
+  }
 }

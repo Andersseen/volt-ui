@@ -41,7 +41,7 @@ export class VoltAccordionContent implements AfterViewChecked {
 
   protected readonly classes = computed(() =>
     cn(
-      'grid grid-rows-[0fr] data-[open]:grid-rows-[1fr] transition-[grid-template-rows,visibility] duration-200 ease-in-out motion-reduce:transition-none overflow-hidden text-sm w-full block invisible data-[open]:visible',
+      'grid grid-rows-[0fr] data-[open]:grid-rows-[1fr] transition-[grid-template-rows,visibility] duration-200 ease-in-out motion-reduce:transition-none overflow-hidden text-sm w-full invisible data-[open]:visible',
       this.class()
     )
   );

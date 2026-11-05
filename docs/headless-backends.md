@@ -121,8 +121,8 @@ own more than the controls above. Everything below is verified against the publi
 
 - `activateOnFocus` (default `true`) is Volt's boolean. Quartz has `activationMode`, a signal input that only a template can bind, and a
   host directive cannot be bound from its host's own bindings; so Quartz always runs `automatic` and, with `activateOnFocus` off,
-  `VoltTabs` puts the selection back in the same keydown, before anything renders: arrows move focus only, a click selects. Enter and Space
-  select the focused tab with Quartz (see Known differences).
+  `VoltTabs` puts the selection back in the same keydown, before anything renders: arrows move focus only; a click, Enter or Space selects
+  (the default trigger handles Enter / Space itself, since ng-primitives' tab only selects on click and focus).
 - With `value` undefined the first tab is shown and **nothing is emitted or written** (ng-primitives derives it; Quartz writes its own `value`).
   `VoltTabs` takes Quartz's value into the model only after a user click or keyboard move.
 - If the selected tab is removed, Quartz moves its own selection to the first tab; the Volt model keeps its value and the tab is selected again
@@ -194,24 +194,36 @@ it opens in the browser, so they never reach the server HTML; they are unique wi
 - **ToggleGroup, single mode** with several values written at once (`['a','b']`): ng-primitives marks both pressed;
   Quartz shows the first only. A single-select group holding two values is invalid input; Quartz normalises it.
 - **Removing the checked radio** and adding it back: Quartz keeps the group's `value` and re-checks it; ng-primitives does not.
-- **Tabs, `activateOnFocus` off**: Quartz's tab is activated by Enter and Space; ng-primitives' tab is a custom element with no such handler, so with it a manual-activation tablist can be selected by pointer only.
 - **Tabs, RTL**: Quartz mirrors Left/Right; ng-primitives does not (same as Radio/ToggleGroup).
 - **Tabs**: an unrelated `aria-controls` is omitted for a tab with no panel with Quartz; ng-primitives always writes one (it can dangle). An inactive panel is `hidden` with Quartz, `aria-hidden="true"` with ng-primitives; both carry `data-state="inactive"`, which the Volt classes turn into `display: none`.
 - **Tabs**: setting `value` back to `undefined` after mount leaves the current selection with Quartz (ng-primitives shows the first tab again); a `value` no tab has selects nothing with Quartz (ng-primitives falls back to the first tab).
 - **Accordion**: the one open item of a single, non-collapsible accordion has `aria-disabled="true"` with Quartz (the WAI-ARIA accordion pattern asks for exactly that); ng-primitives does not set it.
 - **Accordion**: Quartz also moves focus with the arrow keys / Home / End and recovers focus when the focused trigger is removed; ng-primitives has neither.
 - **Select, focus**: Quartz moves DOM focus into the popup (to the selected option, else the first) and back to the trigger on close; ng-primitives keeps focus on
-  the trigger and does not restore it after a selection. Because the Volt classes light an item on `focus:`, the active option is highlighted with Quartz and not with
-  ng-primitives.
+  the trigger while the popup is open (`aria-activedescendant`). With both, a selection by keyboard or pointer leaves focus on the trigger. Because the Volt classes light
+  an item on `focus:`, the active option is highlighted with Quartz and not with ng-primitives.
 - **Select, disabled item**: Quartz writes `aria-disabled`, so the class `aria-disabled:opacity-50` dims it; ng-primitives never writes that attribute, so its disabled item
   keeps full opacity (it is still inert and carries `data-disabled`).
-- **Select, empty `multiple`**: Quartz shows the placeholder; ng-primitives renders an empty trigger. A falsy-but-defined single value (`0`, `''`) shows its label with Quartz and
-  the placeholder with ng-primitives.
 - **Select, positioning**: Quartz sizes and places the popup one animation frame after mounting it, so the first frame is unpositioned (upstream 0.16 behaviour, shared by every
   Quartz overlay). The ng-primitives popup uses Floating UI.
 - **Listbox**: Quartz sets `aria-orientation="vertical"` and an `aria-activedescendant` before the listbox is focused; ng-primitives writes `aria-multiselectable="false"` and sets
   the active descendant on focus.
 - Engine-owned attributes differ (`data-qz-*`; `data-hover`, `data-press`, `data-focus-visible`, `ngp*`). They are not part of Volt's contract; do not style them.
+
+## Resolved in the 1.4 contract verification
+
+These were listed as backend differences or went unnoticed; each had a failing test first and now holds on **both** engines
+(`docs/quality/headless-contract-verification.md`):
+
+- **Tabs, `activateOnFocus` off**: Enter and Space activate the focused tab (ng-primitives previously allowed pointer selection only — a keyboard user could not
+  select in a manual tablist).
+- **Select**: a pointer selection returns focus to the trigger (ng-primitives left it on `<body>`); an empty `multiple` value shows the placeholder and a falsy
+  single value (`0`, `''`) shows its label (the default template tested truthiness).
+- **Accordion**: a closed panel takes no space and an item closed after being opened is hidden again. The content's `grid … block` classes went through
+  `twMerge`, which kept `block`, so the `0fr` grid row never applied: with Quartz every closed panel left a blank gap of its full height, and with ng-primitives
+  the exit transition never ran, so a re-closed `multiple` item stayed visible.
+- **Toggle**: pressed `solid` / `outline` / `ghost` colours resolve as declared. The classes skipped `twMerge`, so the base `data-[selected]:bg-primary/15`
+  survived next to `solid`'s `data-[selected]:bg-primary` (1.2:1 text contrast in light, 1.1:1 in dark).
 
 ## Upstream finding: ng-primitives Accordion and server rendering
 

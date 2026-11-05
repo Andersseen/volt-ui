@@ -1,12 +1,17 @@
 import {
+  afterNextRender,
   booleanAttribute,
   ChangeDetectionStrategy,
   Component,
   computed,
+  DOCUMENT,
   forwardRef,
+  inject,
+  Injector,
   input,
   model,
   signal,
+  viewChild,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import type { Placement } from '@floating-ui/dom';
@@ -57,10 +62,10 @@ const HOST_CLASSES = 'block w-full';
       [class]="triggerClasses()"
     >
       <span class="block text-left truncate flex-1 pointer-events-none">
-        @if (value(); as selected) {
-          {{ displayValue(selected) }}
-        } @else {
+        @if (isEmpty()) {
           <span class="text-muted-foreground">{{ placeholder() }}</span>
+        } @else {
+          {{ displayValue(value()) }}
         }
       </span>
       <svg
@@ -130,9 +135,42 @@ export class VoltSelect implements ControlValueAccessor {
     forwardAttributesFromHost('aria-label');
   }
 
+  private readonly trigger = viewChild.required(NgpSelect);
+  private readonly document = inject(DOCUMENT);
+  private readonly injector = inject(Injector);
+
   protected onValueChange(value: unknown): void {
     this.value.set(value);
     this.onChange(value);
+    if (!this.multiple()) this.restoreFocusAfterClose();
+  }
+
+  /** Nothing selected: `undefined`, `null` or an empty array — not every falsy value (`0`, `''`). */
+  protected readonly isEmpty = computed(() => {
+    const value = this.value();
+    return value === undefined || value === null || (Array.isArray(value) && value.length === 0);
+  });
+
+  /**
+   * A pointer selection closes the popup while focus sits on the clicked option, which is then
+   * removed, so focus fell to <body>; the combobox pattern returns it to the trigger. Runs after the
+   * next render, and only when focus is lost (on the closing popup or on <body>) — focus the user
+   * moved elsewhere is left alone.
+   */
+  private restoreFocusAfterClose(): void {
+    afterNextRender(
+      () => {
+        const active = this.document.activeElement;
+        const lost =
+          !active ||
+          active === this.document.body ||
+          !active.isConnected ||
+          // still on an option of the popup that is closing (it leaves after its exit animation)
+          !!active.closest('[role="listbox"]');
+        if (lost) this.trigger().focus();
+      },
+      { injector: this.injector }
+    );
   }
 
   protected displayValue(value: unknown): string {

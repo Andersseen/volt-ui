@@ -247,6 +247,8 @@ function playwrightTests(config, layer) {
 const unit = unitTests();
 const contracts = playwrightTests('playwright.contracts.config.ts', 'browser');
 const storybook = playwrightTests('playwright.storybook.config.ts', 'storybook');
+// The packed dual-backend consumers (ng-primitives and Quartz, package and CLI copy): layer Q.
+const quartz = playwrightTests('playwright.quartz-consumer.config.ts', 'quartz');
 const docsE2E = playwrightTests('playwright.config.ts', 'e2e').filter(t =>
   /file-upload|button|consumer\.spec/.test(t.file)
 );
@@ -272,6 +274,7 @@ function evidence(key) {
     browser: mentions(contracts).map(t => t.title),
     e2e: mentions(docsE2E).map(t => t.title),
     storybook: mentions(storybook).map(t => t.title),
+    quartz: mentions(quartz).map(t => t.title),
   };
 }
 
@@ -305,10 +308,18 @@ tests were found for each (\`GAP\` = applies, none found).
 
 Letters name the layer: **U** component spec (jsdom, Testing Library), **C** cross-cutting spec
 (\`behavior-contract.spec.ts\`, \`static-value.spec.ts\`), **B** real-browser contract (\`e2e/contracts\`),
-**E** docs/consumer e2e, **S** Storybook interaction (\`e2e/storybook/states.spec.ts\`).
+**E** docs/consumer e2e, **S** Storybook interaction (\`e2e/storybook/states.spec.ts\`), **Q** packed
+dual-backend consumers (\`e2e/quartz-consumer\`, both engines × package and CLI copy).
 
 Evidence is attributed per component by test title; it is a map to the tests, not proof — open the
 test. Nothing is credited to a component because a similar one is covered.
+
+**Known limits of this map** (audited in \`docs/quality/headless-contract-verification.md\`): a title
+can name a contract its body does not assert (one Select test promised focus return and did not check
+it until the 1.4 verification), and broad patterns (\`model\`, \`press\`, \`tab\`, \`label\`) over-match. A
+count is never a pass: per-run results with PASS / FAIL / NOT TESTED come from the contract-evidence
+workflow. Presentation-only families (alert, avatar, badge, card, …) are not rows here; their browser
+smoke is \`e2e/contracts/catalog.spec.ts\`.
 
 | component | ${header.join(' | ')} |
 | --- | ${header.map(() => '---').join(' | ')} |

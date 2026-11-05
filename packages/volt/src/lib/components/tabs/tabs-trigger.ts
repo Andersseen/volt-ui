@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, computed } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { NgpTabButton, injectTabButtonState, provideTabButtonState } from 'ng-primitives/tabs';
 import { cn } from '../../utils';
 
@@ -9,6 +9,10 @@ import { cn } from '../../utils';
   host: {
     '[class]': 'classes()',
     '[attr.data-state]': "tabButtonState().active() ? 'active' : 'inactive'",
+    // WAI-ARIA tabs, manual activation: Enter / Space activate the focused tab. ng-primitives only
+    // selects on click and (with activateOnFocus) on focus; the trigger is not a native button.
+    '(keydown.enter)': 'activate($event)',
+    '(keydown.space)': 'activate($event)',
   },
   hostDirectives: [
     {
@@ -30,4 +34,11 @@ export class VoltTabsTrigger {
 
   readonly value = input.required<string>();
   protected readonly tabButtonState = injectTabButtonState();
+  private readonly tabButton = inject(NgpTabButton);
+
+  protected activate(event: Event): void {
+    event.preventDefault(); // Space would scroll the page.
+    if (this.tabButton.disabled() || this.tabButton.active()) return;
+    this.tabButton.select();
+  }
 }

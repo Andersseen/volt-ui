@@ -22,7 +22,7 @@ export class VoltAccordionContent {
 
   protected readonly classes = computed(() =>
     cn(
-      'grid grid-rows-[0fr] data-[open]:grid-rows-[1fr] transition-[grid-template-rows] duration-200 ease-in-out overflow-hidden text-sm w-full block',
+      'grid grid-rows-[0fr] data-[open]:grid-rows-[1fr] transition-[grid-template-rows] duration-200 ease-in-out overflow-hidden text-sm w-full',
       this.class()
     )
   );

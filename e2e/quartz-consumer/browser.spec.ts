@@ -1,45 +1,13 @@
-import { expect, test, type Locator, type Page } from '@playwright/test';
+import { expect, test } from '@playwright/test';
+import { BACKENDS, open, paint } from './harness';
 
 /**
  * Both fixture apps (ng-primitives and Quartz) are built from the packed tarball by
  * `scripts/check-quartz-consumer.mjs` and served at E2E_PRIMITIVES_URL / E2E_QUARTZ_URL. The same
  * assertions run against each — the Volt contract — and a last test compares what the two paint.
+ * Programmatic writes, validation and `ngModel` are in `forms-state.spec.ts`; axe and the
+ * theme × appearance paint sweep in `a11y-paint.spec.ts`. Shared helpers: `harness.ts`.
  */
-const BACKENDS = [
-  ['ng-primitives', process.env['E2E_PRIMITIVES_URL']],
-  ['quartz', process.env['E2E_QUARTZ_URL']],
-  ['ng-primitives (CLI copy)', process.env['E2E_PRIMITIVES_COPY_URL']],
-  ['quartz (CLI copy)', process.env['E2E_QUARTZ_COPY_URL']],
-] as const;
-
-async function open(page: Page, url: string) {
-  const problems: string[] = [];
-  page.on('pageerror', e => problems.push(`pageerror: ${e.message}`));
-  page.on('console', m => {
-    if (m.type() === 'error' || m.type() === 'warning') problems.push(`${m.type()}: ${m.text()}`);
-  });
-  await page.goto(url);
-  await expect(page.getByRole('checkbox', { name: 'Accept terms' })).toBeVisible();
-  return problems;
-}
-
-const paint = (l: Locator) =>
-  l.first().evaluate(el => {
-    const s = getComputedStyle(el);
-    return [
-      s.backgroundColor,
-      s.color,
-      s.borderTopColor,
-      s.borderTopWidth,
-      s.boxShadow,
-      s.opacity,
-      s.cursor,
-      s.width,
-      s.height,
-      s.borderRadius,
-    ].join('|');
-  });
-
 for (const [name, url] of BACKENDS) {
   test.describe(`${name} consumer`, () => {
     test.skip(!url, `the URL for ${name} is not set`);
@@ -288,7 +256,7 @@ for (const [name, url] of BACKENDS) {
       expect(problems).toEqual([]);
     });
 
-    test('tabs: with activateOnFocus off, arrows move focus and a click selects', async ({
+    test('tabs: with activateOnFocus off, arrows move focus; a click, Enter or Space selects', async ({
       page,
     }) => {
       await open(page, url!);
@@ -303,15 +271,17 @@ for (const [name, url] of BACKENDS) {
       await expect(two).toHaveAttribute('aria-selected', 'true');
       await expect(page.getByText('Manual panel two')).toBeVisible();
       await expect(page.getByText('Manual panel one')).toBeHidden();
-      if (name.startsWith('quartz')) {
-        // ng-primitives' tab is a custom element with no Enter/Space handling; Quartz's is activated by both.
-        await one.focus();
-        await page.keyboard.press('Enter');
-        await expect(one).toHaveAttribute('aria-selected', 'true');
-        await page.keyboard.press('ArrowRight');
-        await page.keyboard.press('Space');
-        await expect(two).toHaveAttribute('aria-selected', 'true');
-      }
+      // Enter and Space activate the focused tab with both engines (the default trigger handles them
+      // itself since ng-primitives does not; it used to be a documented difference).
+      await one.focus();
+      await page.keyboard.press('Enter');
+      await expect(one).toHaveAttribute('aria-selected', 'true');
+      await expect(page.getByText('Manual panel one')).toBeVisible();
+      await page.keyboard.press('ArrowRight');
+      await expect(two).toBeFocused();
+      await expect(two).toHaveAttribute('aria-selected', 'false');
+      await page.keyboard.press('Space');
+      await expect(two).toHaveAttribute('aria-selected', 'true');
     });
 
     test('tabs: RTL mirrors Left/Right (Quartz); ng-primitives keeps ArrowLeft as previous', async ({
@@ -586,6 +556,8 @@ for (const [name, url] of BACKENDS) {
 }
 
 test('every backend paints and measures the same', async ({ browser }) => {
+  // Four consumers × ~40 computed-style reads each: a budget for the work, not a wait for a race.
+  test.setTimeout(120_000);
   const urls = BACKENDS.map(([name, url]) => [name, url] as const).filter(([, url]) => url);
   test.skip(urls.length < 2, 'needs at least two URLs');
   const targets = [

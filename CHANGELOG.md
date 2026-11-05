@@ -7,6 +7,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+Found by the 1.4 contract verification (`docs/quality/headless-contract-verification.md`); each fix has a failing test
+first and is verified on both headless engines where the family has two. No API is removed or renamed. **Release note:**
+1.4.0 is not on npm yet (npm `latest` is 1.3.3); if it is still unpublished when this merges, these ship in 1.4.0,
+otherwise they need 1.4.1.
+
+### Fixed — `@voltui/components`
+
+- **Tabs** (default entry point): with `[activateOnFocus]="false"`, Enter and Space now activate the focused tab. Before,
+  a manual-activation tablist could only be changed with a pointer.
+- **Select** (default entry point): a pointer selection returns focus to the trigger instead of leaving it on `<body>`;
+  an empty `multiple` value shows the placeholder, and a falsy single value (`0`, `''`) shows its label instead of the
+  placeholder.
+- **Accordion** (both entry points): a closed panel takes no space, and an item closed after being opened is hidden
+  again. The content's `grid` class was discarded by `twMerge` in favour of `block`, so the panel never collapsed
+  (Quartz: a blank gap per closed item; ng-primitives: a re-closed `multiple` item stayed visible). The 200 ms open /
+  close transition now runs.
+- **Toggle** (both entry points): the pressed `solid`, `outline` and `ghost` colours apply as declared. The classes did
+  not go through `cn()`, so a pressed `solid` toggle painted primary-foreground text on a 15% tint (1.2:1 contrast).
+- **Navigation Menu**: Escape inside an open panel closes it and returns focus to its trigger. With
+  ng-primitives 0.131 the overlay's own Escape listener removed the panel before the panel could reset
+  the item and restore focus, so focus fell to `<body>`.
+- **Skeleton**: is `block`, so `width` / `height` apply in any parent. Inside a block container (the documented
+  `space-y-2` text lines) it painted 0×0.
+- **Table**: a `volt-table-caption` names its table (`aria-labelledby`); a consumer `aria-label` / `aria-labelledby`
+  wins. `role="caption"` on a custom element does not name a table by itself, so captioned tables were unnamed.
+
+### Added — verification
+
+- `.github/workflows/contract-evidence.yml` (**Volt UI — Contract Evidence**, not a required check): browser contracts
+  for the default backend, the nine dual-backend families against the packed tarball and published Quartz in four
+  consumer modes, and the Angular compatibility matrix, in Chromium, Firefox and WebKit, with downloadable HTML / JSON /
+  JUnit reports and a job summary (`scripts/contract-evidence-summary.mjs`).
+- Tier 1 catalog smoke (`e2e/contracts/catalog.spec.ts`) for the 21 families with no previous browser assertion;
+  programmatic-write, validation, `ngModel`, axe, focus-visibility, closed-panel layout and theme × appearance paint
+  parity suites for the dual-backend consumers (`e2e/quartz-consumer/`).
+
 ## [1.4.0] - 2026-11-02
 
 Minor release: the first opt-in alternative headless backend, **experimental**. Additive; every existing import,

@@ -1,4 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
+import { evidenceOutputDir, evidenceReporters, evidenceUse } from './e2e/utils/evidence';
 
 /**
  * The two fixture apps built by `scripts/check-quartz-consumer.mjs` are already being served
@@ -6,11 +7,15 @@ import { defineConfig, devices } from '@playwright/test';
  */
 export default defineConfig({
   testDir: './e2e/quartz-consumer',
-  testMatch: /browser\.spec\.ts/,
+  testMatch: /(browser|forms-state|a11y-paint)\.spec\.ts/,
+  outputDir: evidenceOutputDir(`quartz-consumer-${process.env['EVIDENCE_LABEL'] ?? 'local'}`),
   fullyParallel: true,
   retries: 0,
-  reporter: process.env.CI ? [['github'], ['list']] : 'list',
-  use: { trace: 'on-first-retry', screenshot: 'only-on-failure' },
+  reporter: evidenceReporters(
+    `quartz-consumer-${process.env['EVIDENCE_LABEL'] ?? 'local'}`,
+    process.env.CI ? [['github'], ['list']] : 'list'
+  ),
+  use: { trace: 'on-first-retry', screenshot: 'only-on-failure', ...evidenceUse },
   projects: [
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
     { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
