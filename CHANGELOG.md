@@ -25,6 +25,9 @@ otherwise they need 1.4.1.
   close transition now runs.
 - **Toggle** (both entry points): the pressed `solid`, `outline` and `ghost` colours apply as declared. The classes did
   not go through `cn()`, so a pressed `solid` toggle painted primary-foreground text on a 15% tint (1.2:1 contrast).
+- **Navigation Menu**: Escape inside an open panel closes it and returns focus to its trigger. With
+  ng-primitives 0.131 the overlay's own Escape listener removed the panel before the panel could reset
+  the item and restore focus, so focus fell to `<body>`.
 - **Skeleton**: is `block`, so `width` / `height` apply in any parent. Inside a block container (the documented
   `space-y-2` text lines) it painted 0×0.
 - **Table**: a `volt-table-caption` names its table (`aria-labelledby`); a consumer `aria-label` / `aria-labelledby`

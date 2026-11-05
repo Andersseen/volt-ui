@@ -185,6 +185,16 @@ Each had a failing test before the change, observed in a real browser or the sha
 | 6   | Skeleton         | Inline host: 0×0 inside a block parent (the documented usage)                                                                                                                          | `catalog.spec.ts` "skeleton: takes the requested size…" (received width 0)                                         | Chromium + Firefox                            |
 | 7   | Table            | Caption did not name the table                                                                                                                                                         | `table.spec.ts` "a caption names the table…", `catalog.spec.ts` table                                              | jsdom + browsers                              |
 
+| 8 | Navigation Menu | Escape inside the panel closed it but left focus on `<body>`: ng-primitives' overlay Escape listener (capture phase, `restoreFocus: false`) removes the panel before the panel's own handler can reset the item and restore focus. Found when the cloud run failed in Firefox and WebKit. | `catalog.spec.ts` "navigation menu: Enter opens the panel, Escape closes it…" (Chromium: focus on `<body>` every time) | 60/60 after the fix (Chromium + Firefox, 15 repeats) |
+
+**Upstream defect reproduced, not fixed (BLOCKED):** ng-primitives 0.131.2 navigation menu — `pointerenter`
+schedules `show()` after `showDelay` (200 ms) and neither a click nor Escape clears that timeout, so a menu
+dismissed within 200 ms of the pointer entering reopens by itself. This is what made the first catalog test
+fail intermittently. Volt cannot clear the primitive's private timer without patching it; the reproduction
+(`catalog.spec.ts` › "a hover-then-dismiss stays dismissed (upstream defect)", `showDelay` 1 s) is a
+`test.fail()` annotated `upstream-defect`, reported as **BLOCKED** by the summary, and turns red once
+ng-primitives fixes it.
+
 Release requirement: none of these is on npm. If 1.4.0 is still unpublished at merge they ship in
 1.4.0, otherwise in 1.4.1 (`RELEASING.md`: never re-publish a version).
 
@@ -204,7 +214,7 @@ Release requirement: none of these is on npm. If 1.4.0 is still unpublished at m
   (wrapper key remap) or waits for ng-primitives; today it is a documented per-engine difference.
 - Quartz peer ranges: 0.16.0 declares `@angular/* ^21`; Angular 22 installs only with
   `--legacy-peer-deps` (strict resolution: FAIL, recorded in `install.json`). Needs a Quartz release.
-- Navigation Menu, Escape under load: `navigation-menu.spec.ts` › "closes the open submenu on Escape"
+- ~~Navigation Menu, Escape under load~~ — explained and fixed (§5 #8, plus the upstream hover timer). Original note: `navigation-menu.spec.ts` › "closes the open submenu on Escape"
   timed out once under `test:coverage` (passed 4/4 in isolation, also on clean `main`), and the catalog
   smoke saw the panel outlive `aria-expanded="false"` once under machine load (§1 ³). Two independent
   signals on the same close path: investigate the content's exit-animation wait before calling it flaky.

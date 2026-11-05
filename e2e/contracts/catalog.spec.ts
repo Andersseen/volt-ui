@@ -197,17 +197,53 @@ test.describe('catalog', () => {
     await expect(s.getByRole('button', { name: /previous/i })).toBeDisabled();
   });
 
-  test('navigation menu: a click opens the panel; Escape closes it and removes its links', async ({
+  // Opened from the keyboard on purpose: a pointer click also arms ng-primitives' hover-show timer,
+  // which Escape does not cancel (reproduced on its own in the next test).
+  test('navigation menu: Enter opens the panel, Escape closes it, removes its links and returns focus', async ({
     page,
   }) => {
     const trigger = page.getByRole('button', { name: 'Getting started' });
-    await trigger.click();
+    await trigger.focus();
+    await page.keyboard.press('Enter');
     await expect(trigger).toHaveAttribute('aria-expanded', 'true');
-    await expect(page.getByRole('link', { name: 'Introduction link' })).toBeVisible();
+    // Opening from the keyboard moves focus to the first link (asynchronously, in ng-primitives).
+    // Escape pressed before that lands can lose focus — recorded as an upstream finding, not asserted.
+    await expect(page.getByRole('link', { name: 'Introduction link' })).toBeFocused();
     await page.keyboard.press('Escape');
     await expect(trigger).toHaveAttribute('aria-expanded', 'false');
     await expect(page.getByRole('link', { name: 'Introduction link' })).toHaveCount(0);
+    await expect(trigger).toBeFocused();
     await expect(page.getByRole('link', { name: 'Components link' })).toBeVisible();
+  });
+
+  // UPSTREAM DEFECT, ng-primitives 0.131.2 (navigation-menu trigger): pointerenter schedules show()
+  // after showDelay; neither click nor Escape clears that timeout, so a menu dismissed within
+  // showDelay of the pointer entering opens again by itself. Users hit it with a quick hover, click,
+  // Escape (default showDelay 200 ms). `test.fail`: this passes while the defect exists and turns red
+  // when ng-primitives fixes it. The evidence summary reports it as BLOCKED, never as a pass.
+  test('navigation menu: a hover-then-dismiss stays dismissed (upstream defect)', async ({
+    page,
+  }) => {
+    test.info().annotations.push({
+      type: 'upstream-defect',
+      description:
+        'ng-primitives 0.131.2: the hover show timer is not cleared by click/Escape; a dismissed navigation menu reopens',
+    });
+    test.fail();
+    const trigger = page.getByRole('button', { name: 'Hover menu' });
+    await trigger.click(); // the pointer enters (timer armed for 1 s) and the click opens at once
+    await expect(trigger).toHaveAttribute('aria-expanded', 'true');
+    await page.keyboard.press('Escape');
+    await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+    // Past the 1 s showDelay, with no further user action, the menu must still be closed.
+    await expect
+      .poll(() => trigger.getAttribute('aria-expanded'), { intervals: [250], timeout: 2000 })
+      .toBe('true')
+      .catch(() => undefined);
+    await expect(trigger).toHaveAttribute('aria-expanded', 'false', { timeout: 100 });
+    await expect(page.getByRole('link', { name: 'Hover panel link' })).toHaveCount(0, {
+      timeout: 100,
+    });
   });
 
   test('sidebar: items are links; collapsing narrows it and keeps an accessible name', async ({

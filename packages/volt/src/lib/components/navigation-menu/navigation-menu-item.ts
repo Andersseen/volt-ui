@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, Component, input, computed } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, contentChild, input } from '@angular/core';
 import {
   NgpNavigationMenuItem,
   provideNavigationMenuItemState,
 } from 'ng-primitives/navigation-menu';
 import { cn } from '../../utils';
+import { VoltNavigationMenuTrigger } from './navigation-menu-trigger';
 
 @Component({
   selector: 'volt-navigation-menu-item',
@@ -26,4 +27,7 @@ export class VoltNavigationMenuItem {
   protected readonly classes = computed(() => cn('relative', this.class()));
 
   readonly value = input<string>();
+
+  /** @internal The item's trigger; its panel returns focus to it on Escape. */
+  readonly trigger = contentChild(VoltNavigationMenuTrigger);
 }

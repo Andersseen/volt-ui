@@ -50,6 +50,14 @@ function collect() {
             project: t.projectName,
             // expected | unexpected | flaky | skipped
             status: t.status,
+            // A `test.fail()` reproduction of a known upstream defect: "expected" means the defect is
+            // still there. Reported as BLOCKED, never as a pass.
+            upstream: [
+              ...(t.annotations ?? []),
+              ...(t.results ?? []).flatMap(r => r.annotations ?? []),
+            ]
+              .filter(a => a.type === 'upstream-defect')
+              .map(a => a.description)[0],
           });
         }
       }
@@ -213,6 +221,7 @@ const modeOf = t =>
 
 function verdict(matching, dd = false) {
   if (!matching.length) return 'NOT TESTED';
+  if (matching.some(t => t.upstream && t.status === 'expected')) return 'BLOCKED';
   if (matching.some(t => t.status === 'unexpected' || t.status === 'flaky')) return 'FAIL';
   const ran = matching.filter(t => t.status !== 'skipped');
   if (!ran.length) return 'BLOCKED';
@@ -253,7 +262,9 @@ const icon = s =>
     'N/A': 'N/A',
   })[s] ?? s;
 
-const count = (list, status) => list.filter(t => t.status === status).length;
+const count = (list, status) =>
+  list.filter(t => t.status === status && !(status === 'expected' && t.upstream)).length;
+const blockedCount = list => list.filter(t => t.upstream && t.status === 'expected').length;
 const suites = [...new Set(tests.map(t => t.suite))].sort();
 const lines = [];
 const env = process.env;
@@ -281,14 +292,14 @@ lines.push(`| Browsers | ${[...new Set(tests.map(t => t.project))].sort().join('
 lines.push('');
 lines.push('## Totals per suite and browser');
 lines.push('');
-lines.push('| suite | browser | passed | failed | flaky | skipped |');
-lines.push('| --- | --- | ---: | ---: | ---: | ---: |');
+lines.push('| suite | browser | passed | failed | flaky | skipped | blocked (upstream) |');
+lines.push('| --- | --- | ---: | ---: | ---: | ---: | ---: |');
 for (const suite of suites) {
   const inSuite = tests.filter(t => t.suite === suite);
   for (const project of [...new Set(inSuite.map(t => t.project))].sort()) {
     const l = inSuite.filter(t => t.project === project);
     lines.push(
-      `| ${suite} | ${project} | ${count(l, 'expected')} | ${count(l, 'unexpected')} | ${count(l, 'flaky')} | ${count(l, 'skipped')} |`
+      `| ${suite} | ${project} | ${count(l, 'expected')} | ${count(l, 'unexpected')} | ${count(l, 'flaky')} | ${count(l, 'skipped')} | ${blockedCount(l)} |`
     );
   }
 }
@@ -299,6 +310,22 @@ if (failed.length) {
   lines.push('');
   for (const t of failed.slice(0, 60))
     lines.push(`- **${t.status}** · ${t.suite} · ${t.project} · ${t.describe} › ${t.title}`);
+  lines.push('');
+}
+const upstream = [...new Map(tests.filter(t => t.upstream).map(t => [t.title, t])).values()];
+if (upstream.length) {
+  lines.push(`## Known upstream defects reproduced (${upstream.length}) — BLOCKED, not passed`);
+  lines.push('');
+  for (const t of upstream) {
+    const runs = tests.filter(x => x.title === t.title);
+    const still = runs.filter(x => x.status === 'expected').length;
+    lines.push(
+      `- ${t.title} — ${t.upstream}. Reproduced in ${still}/${runs.length} runs` +
+        (still < runs.length
+          ? ' (a run where it no longer reproduces fails: the upstream fix landed)'
+          : '')
+    );
+  }
   lines.push('');
 }
 const skipped = tests.filter(t => t.status === 'skipped');
@@ -367,5 +394,5 @@ if (outFile) writeFileSync(outFile, md);
 if (env.GITHUB_STEP_SUMMARY) appendFileSync(env.GITHUB_STEP_SUMMARY, md);
 if (!outFile && !env.GITHUB_STEP_SUMMARY) process.stdout.write(md);
 console.error(
-  `[contract-evidence] ${tests.length} results · ${count(tests, 'expected')} passed · ${failed.length} failed/flaky · ${skipped.length} skipped`
+  `[contract-evidence] ${tests.length} results · ${count(tests, 'expected')} passed · ${failed.length} failed/flaky · ${skipped.length} skipped · ${blockedCount(tests)} blocked (upstream)`
 );

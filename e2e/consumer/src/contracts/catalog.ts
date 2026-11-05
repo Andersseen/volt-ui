@@ -328,6 +328,25 @@ import {
         </volt-navigation-menu>
       </section>
 
+      <!-- Reproduces an ng-primitives 0.131.2 defect (catalog.spec.ts): a long showDelay makes the
+           hover timer that click / Escape fail to cancel observable on purpose. -->
+      <section aria-label="Navigation menu hover timer">
+        <volt-navigation-menu [showDelay]="1000">
+          <volt-navigation-menu-list>
+            <volt-navigation-menu-item>
+              <volt-navigation-menu-trigger [content]="hover"
+                >Hover menu</volt-navigation-menu-trigger
+              >
+              <ng-template #hover>
+                <volt-navigation-menu-content>
+                  <a voltNavigationMenuLink href="#catalog">Hover panel link</a>
+                </volt-navigation-menu-content>
+              </ng-template>
+            </volt-navigation-menu-item>
+          </volt-navigation-menu-list>
+        </volt-navigation-menu>
+      </section>
+
       <section aria-label="Sidebar family" class="h-64">
         <volt-sidebar>
           <volt-sidebar-header>Console</volt-sidebar-header>
