@@ -73,6 +73,14 @@ including an intended difference the tests assert (§4). Manual screen reader: *
 
 ### Cloud evidence
 
+**Latest completed run:** [#41987491417](https://github.com/Andersseen/volt-ui/actions/runs/41987491417) on
+`cdb337d` (after the Navigation Menu fix) — **success**, 0 failed in every suite and engine; the
+Navigation Menu hover-timer reproduction is **BLOCKED** (upstream, reproduced 5/5) and counted separately
+from passes. [Artifacts](https://github.com/Andersseen/volt-ui/actions/runs/41987491417#artifacts).
+Run #41867048964 on `3428589` had failed in Firefox and WebKit on that Navigation Menu test (§5 #8).
+
+Earlier run, kept for the record:
+
 **Completed run:** [Volt UI — Contract Evidence #41862692037](https://github.com/Andersseen/volt-ui/actions/runs/41862692037)
 on the pull request's head commit `3ad23cd`, 2026-11-04, GitHub-hosted Ubuntu, Node 22.23.4 — conclusion
 **success**. Artifacts: [run artifacts](https://github.com/Andersseen/volt-ui/actions/runs/41862692037#artifacts).
