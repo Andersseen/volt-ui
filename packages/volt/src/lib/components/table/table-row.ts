@@ -15,7 +15,7 @@ export class VoltTableRow {
 
   protected readonly classes = computed(() =>
     cn(
-      'table-row border-b border-border transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted',
+      'table-row border-b-(length:--volt-divider-width) border-border transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted',
       this.class()
     )
   );

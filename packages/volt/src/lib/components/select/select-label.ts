@@ -13,6 +13,6 @@ export class VoltSelectLabel {
   readonly class = input<string>('');
 
   protected readonly classes = computed(() =>
-    cn('py-1.5 pl-8 pr-2 text-sm font-semibold text-muted-foreground', this.class())
+    cn('py-item-y pl-8 pr-2 text-sm font-semibold text-muted-foreground', this.class())
   );
 }

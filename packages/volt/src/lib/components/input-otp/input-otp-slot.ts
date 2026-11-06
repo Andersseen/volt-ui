@@ -16,7 +16,7 @@ export class VoltInputOtpSlot {
 
   protected readonly classes = computed(() =>
     cn(
-      'relative flex h-10 w-10 items-center justify-center rounded-md border border-input bg-background text-sm font-medium text-foreground transition-all focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 data-[active]:ring-2 data-[active]:ring-ring data-[active]:ring-offset-2 data-[filled]:border-primary data-[filled]:bg-primary/5',
+      'relative flex h-control-md w-control-md items-center justify-center rounded-md border-(length:--volt-control-border-width) border-input bg-background text-sm font-medium text-foreground transition-all focus-within:ring-(length:--ring-width) focus-within:ring-ring focus-within:ring-offset-(length:--ring-offset-width) data-[active]:ring-(length:--ring-width) data-[active]:ring-ring data-[active]:ring-offset-(length:--ring-offset-width) data-[filled]:border-primary data-[filled]:bg-primary/5',
       this.class()
     )
   );

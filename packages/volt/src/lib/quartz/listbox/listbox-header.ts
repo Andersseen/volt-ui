@@ -25,7 +25,7 @@ export class VoltListboxHeader {
   readonly class = input<string>('');
 
   protected readonly classes = computed(() =>
-    cn('px-2 py-1.5 text-xs font-medium text-muted-foreground', this.class())
+    cn('px-inset-xs py-item-y text-xs font-medium text-muted-foreground', this.class())
   );
 
   readonly id = input<string>();

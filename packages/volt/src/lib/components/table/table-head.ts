@@ -15,7 +15,7 @@ export class VoltTableHead {
 
   protected readonly classes = computed(() =>
     cn(
-      'table-cell h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0',
+      'table-cell h-control-lg px-inset-md text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0',
       this.class()
     )
   );

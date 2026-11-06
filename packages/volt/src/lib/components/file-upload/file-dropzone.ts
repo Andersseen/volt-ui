@@ -38,7 +38,7 @@ export class VoltFileDropzone {
 
   protected readonly classes = computed(() =>
     cn(
-      'flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-input bg-background p-8 text-sm text-muted-foreground transition-colors hover:bg-accent/50 hover:text-accent-foreground data-[dragover]:border-primary data-[dragover]:bg-primary/5 cursor-pointer',
+      'flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-input bg-background p-card text-sm text-muted-foreground transition-colors hover:bg-accent/50 hover:text-accent-foreground data-[dragover]:border-primary data-[dragover]:bg-primary/5 cursor-pointer',
       this.class()
     )
   );

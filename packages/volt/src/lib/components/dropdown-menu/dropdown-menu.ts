@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { NgpMenu } from 'ng-primitives/menu';
 import { cn } from '../../utils';
+import { VoltThemeInherit } from '../theme/theme-scope';
 
 @Component({
   selector: 'volt-dropdown-menu',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [NgpMenu],
+  hostDirectives: [NgpMenu, VoltThemeInherit],
   host: {
     role: 'menu',
     '(keydown)': 'stopEscapePropagation($event)',
@@ -18,7 +19,7 @@ export class VoltDropdownMenu {
 
   protected readonly classes = computed(() =>
     cn(
-      'fixed z-50 min-w-[8rem] overflow-hidden rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md',
+      'fixed z-50 min-w-[8rem] overflow-hidden rounded-md border-(length:--border-width) border-border bg-popover p-1 text-popover-foreground shadow-md',
       this.class()
     )
   );

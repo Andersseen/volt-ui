@@ -35,7 +35,7 @@ export class VoltNavigationMenuLink {
 
   protected readonly classes = computed(() =>
     cn(
-      'inline-flex h-9 items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 cursor-pointer',
+      'inline-flex h-control-dense items-center justify-center rounded-md bg-background px-inset-md py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-(length:--ring-width) focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 cursor-pointer',
       this.class()
     )
   );

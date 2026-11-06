@@ -160,7 +160,14 @@ describe('VoltInput', () => {
       const { container } = await render(`<volt-input />`, { imports: [VoltInput] });
       const native = container.querySelector('input')!;
 
-      expect(native).toHaveClass('h-10', 'px-3', 'py-2', 'text-sm', 'border-input', 'rounded-lg');
+      expect(native).toHaveClass(
+        'h-control-md',
+        'px-inset-sm',
+        'py-2',
+        'text-sm',
+        'border-input',
+        'rounded-md'
+      );
       expect(native).toHaveAttribute('data-size', 'md');
     });
 
@@ -170,9 +177,9 @@ describe('VoltInput', () => {
       });
       const [sm, lg] = Array.from(container.querySelectorAll('input'));
 
-      expect(sm).toHaveClass('h-8', 'px-2.5');
-      expect(sm).not.toHaveClass('h-10');
-      expect(lg).toHaveClass('h-11', 'text-base');
+      expect(sm).toHaveClass('h-control-sm', 'px-inset-xs');
+      expect(sm).not.toHaveClass('h-control-md');
+      expect(lg).toHaveClass('h-control-lg', 'text-base');
     });
 
     it('marks state="error" as invalid and styles success', async () => {

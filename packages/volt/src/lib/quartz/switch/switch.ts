@@ -44,12 +44,12 @@ let nextSwitchId = 0;
       [attr.data-disabled]="isDisabled() ? '' : null"
       (checkedChangeCommitted)="onCommitted($event)"
       (blur)="onTouched()"
-      class="relative inline-flex h-6 w-10 shrink-0 cursor-pointer items-center rounded-full border border-input bg-input p-0 transition-colors duration-150 ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[checked]:border-primary data-[checked]:bg-primary"
+      class="relative inline-flex h-6 w-10 shrink-0 cursor-pointer items-center rounded-pill border-(length:--volt-control-border-width) border-input bg-input p-0 transition-colors duration-150 ease-in-out focus-visible:outline-none focus-visible:ring-(length:--ring-width) focus-visible:ring-ring focus-visible:ring-offset-(length:--ring-offset-width) focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[checked]:border-primary data-[checked]:bg-primary"
     >
       <span
         [attr.data-checked]="checked() ? '' : null"
         [attr.data-disabled]="isDisabled() ? '' : null"
-        class="pointer-events-none block h-5 w-5 translate-x-[2px] rounded-full bg-background shadow-sm ring-0 transition-transform duration-150 ease-in-out data-[checked]:translate-x-[18px]"
+        class="pointer-events-none block h-5 w-5 translate-x-px rounded-pill bg-background shadow-sm ring-0 transition-transform duration-150 ease-in-out data-[checked]:translate-x-[calc(1.25rem-2*var(--volt-control-border-width)-1px)]"
       ></span>
     </button>
   `,

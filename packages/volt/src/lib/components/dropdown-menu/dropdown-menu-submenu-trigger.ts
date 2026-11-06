@@ -43,7 +43,7 @@ export class VoltDropdownMenuSubmenuTrigger {
 
   protected readonly classes = computed(() =>
     cn(
-      'relative flex w-full cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none data-[hover]:bg-accent data-[hover]:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+      'relative flex w-full cursor-default select-none items-center gap-2 rounded-sm px-inset-xs py-item-y text-sm outline-none data-[hover]:bg-accent data-[hover]:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
       this.class()
     )
   );

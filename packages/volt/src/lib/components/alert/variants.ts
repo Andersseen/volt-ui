@@ -5,7 +5,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 // the page in all presets (see scripts/contrast-audit.mjs). No warning token is, so the warning
 // icon inherits the text colour.
 export const alertVariants = cva(
-  'relative flex w-full items-start gap-3 rounded-lg border px-4 py-3 text-sm [&>[slot=icon]]:mt-0.5 [&>[slot=icon]]:size-4 [&>[slot=icon]]:shrink-0',
+  'relative flex w-full items-start gap-3 rounded-lg border-(length:--border-width) px-inset-md py-inset-sm text-sm [&>[slot=icon]]:mt-0.5 [&>[slot=icon]]:size-4 [&>[slot=icon]]:shrink-0',
   {
     variants: {
       variant: {

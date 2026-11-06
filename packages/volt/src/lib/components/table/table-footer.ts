@@ -14,6 +14,9 @@ export class VoltTableFooter {
   readonly class = input<string>('');
 
   protected readonly classes = computed(() =>
-    cn('table-footer-group border-t bg-muted/50 font-medium [&>tr]:last:border-b-0', this.class())
+    cn(
+      'table-footer-group border-t-(length:--volt-divider-width) border-border bg-muted/50 font-medium [&>tr]:last:border-b-0',
+      this.class()
+    )
   );
 }

@@ -44,7 +44,7 @@ export class VoltDateRangePicker {
 
   protected readonly classes = computed(() =>
     cn(
-      'grid w-fit gap-3 rounded-md border border-border bg-popover p-3 text-popover-foreground shadow-sm',
+      'grid w-fit gap-inset-sm rounded-md border-(length:--border-width) border-border bg-popover p-inset-sm text-popover-foreground shadow-sm',
       this.class()
     )
   );

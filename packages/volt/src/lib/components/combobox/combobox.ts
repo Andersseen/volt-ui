@@ -27,6 +27,7 @@ import {
 import type { NgpFlipInput } from 'ng-primitives/portal';
 import { VoltComboboxOption } from './combobox-option';
 import { cn } from '../../utils';
+import { VoltThemeInherit } from '../theme/theme-scope';
 
 let nextComboboxId = 0;
 
@@ -36,6 +37,7 @@ export type VoltComboboxFilterMode = 'local' | 'manual';
   selector: 'volt-combobox',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    VoltThemeInherit,
     NgpCombobox,
     NgpComboboxInput,
     NgpComboboxButton,
@@ -70,7 +72,7 @@ export type VoltComboboxFilterMode = 'local' | 'manual';
       [ngpComboboxOptions]="allOptions()"
       (ngpComboboxValueChange)="onValueChange($event)"
       (ngpComboboxOpenChange)="onOpenChange($event)"
-      class="relative flex h-9 w-full items-center justify-between rounded-md border border-input bg-background shadow-sm transition-colors focus-within:ring-1 focus-within:ring-ring data-[disabled]:opacity-50"
+      class="relative flex h-control-md w-full items-center justify-between rounded-md border-(length:--volt-control-border-width) border-input bg-background shadow-sm transition-colors focus-within:ring-(length:--ring-width) focus-within:ring-ring data-[disabled]:opacity-50"
     >
       <input
         #inputRef
@@ -81,14 +83,14 @@ export type VoltComboboxFilterMode = 'local' | 'manual';
         (focus)="onInputFocus(combobox)"
         (input)="onFilterChange($event, combobox)"
         (blur)="onTouched()"
-        class="h-full flex-1 border-0 bg-transparent px-3 py-1 text-sm text-foreground outline-none placeholder:text-muted-foreground focus:ring-0 disabled:cursor-not-allowed disabled:opacity-50"
+        class="h-full flex-1 border-0 bg-transparent px-inset-sm py-1 text-sm text-foreground outline-none placeholder:text-muted-foreground focus:ring-0 disabled:cursor-not-allowed disabled:opacity-50"
       />
 
       <button
         ngpComboboxButton
         type="button"
         aria-label="Toggle dropdown"
-        class="inline-flex h-full w-9 shrink-0 cursor-pointer items-center justify-center rounded-md border-0 bg-transparent text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
+        class="inline-flex h-full w-control-dense shrink-0 cursor-pointer items-center justify-center rounded-md border-0 bg-transparent text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -109,12 +111,13 @@ export type VoltComboboxFilterMode = 'local' | 'manual';
       <div
         *ngpComboboxPortal
         ngpComboboxDropdown
+        voltThemeInherit
         [attr.aria-busy]="loading() ? 'true' : null"
-        class="absolute top-full left-0 z-50 mt-1 max-h-[240px] w-[var(--ngp-combobox-width)] overflow-y-auto rounded-md border border-border bg-surface p-1 text-surface-foreground shadow-md outline-none"
+        class="absolute top-full left-0 z-50 mt-1 max-h-[240px] w-[var(--ngp-combobox-width)] overflow-y-auto rounded-md border-(length:--border-width) border-border bg-popover p-1 text-popover-foreground shadow-md outline-none"
       >
         @if (loading()) {
           <div
-            class="flex items-center gap-2 px-2 py-1.5 text-sm text-muted-foreground"
+            class="flex items-center gap-2 px-inset-xs py-item-y text-sm text-muted-foreground"
             role="presentation"
             data-combobox-loading
             aria-hidden="true"
@@ -143,7 +146,7 @@ export type VoltComboboxFilterMode = 'local' | 'manual';
         } @empty {
           @if (!loading()) {
             <div
-              class="px-2 py-1.5 text-sm text-muted-foreground"
+              class="px-inset-xs py-item-y text-sm text-muted-foreground"
               role="presentation"
               data-combobox-empty
               aria-hidden="true"

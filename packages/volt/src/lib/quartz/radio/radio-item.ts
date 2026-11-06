@@ -35,7 +35,7 @@ import { VoltRadioGroup } from './radio-group';
       [attr.aria-labelledby]="hasInlineLabel() ? labelId : null"
       [attr.data-checked]="checked() ? '' : null"
       [attr.data-disabled]="isDisabled() ? '' : null"
-      class="peer relative flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center rounded-full border border-input bg-background transition-colors hover:bg-accent hover:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background data-[disabled]:cursor-not-allowed data-[disabled]:hover:bg-background data-[disabled]:hover:border-input data-[disabled]:opacity-50 data-[checked]:border-primary"
+      class="peer relative flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center rounded-full border-(length:--volt-control-border-width) border-input bg-background transition-colors hover:bg-accent hover:border-primary focus-visible:outline-none focus-visible:ring-(length:--ring-width) focus-visible:ring-ring focus-visible:ring-offset-(length:--ring-offset-width) focus-visible:ring-offset-background data-[disabled]:cursor-not-allowed data-[disabled]:hover:bg-background data-[disabled]:hover:border-input data-[disabled]:opacity-50 data-[checked]:border-primary"
     >
       <span
         class="items-center justify-center hidden data-[checked]:flex"

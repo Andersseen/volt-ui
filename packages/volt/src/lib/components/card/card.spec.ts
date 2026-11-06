@@ -48,7 +48,7 @@ describe('VoltCard', () => {
 
     const card = container.querySelector('volt-card');
     expect(card).toHaveClass('rounded-xl');
-    expect(card).toHaveClass('border');
-    expect(card).toHaveClass('bg-surface');
+    expect(card).toHaveClass('border-(length:--border-width)');
+    expect(card).toHaveClass('bg-card');
   });
 });

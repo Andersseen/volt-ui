@@ -13,7 +13,7 @@ import { cn } from '../../utils';
     <button
       ngpAccordionTrigger
       type="button"
-      class="group flex w-full flex-1 items-center justify-between py-4 font-medium text-left transition-all hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+      class="group flex w-full flex-1 items-center justify-between py-inset-md font-medium text-left transition-all hover:underline focus-visible:outline-none focus-visible:ring-(length:--ring-width) focus-visible:ring-ring focus-visible:ring-offset-(length:--ring-offset-width)"
     >
       <ng-content />
       <svg

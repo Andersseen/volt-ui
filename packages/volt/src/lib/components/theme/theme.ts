@@ -9,10 +9,13 @@ import { DOCUMENT } from '@angular/common';
 export type VoltThemeColor = 'volt' | 'ember' | 'sage' | 'dusk' | 'glacier';
 export type VoltThemeStyle = 'sharp' | 'soft' | 'brutal' | 'ghost' | 'retro';
 
+export type VoltThemeDensity = 'compact' | 'comfortable' | 'spacious';
+
 export interface VoltThemeOptions {
   color?: VoltThemeColor;
   style?: VoltThemeStyle;
   dark?: boolean;
+  density?: VoltThemeDensity;
 }
 
 function getDocument(doc?: Document): Document | null {
@@ -37,6 +40,10 @@ export function applyVoltTheme(options: VoltThemeOptions = {}, doc?: Document): 
 
   if (options.style) {
     root.setAttribute('data-style', options.style);
+  }
+
+  if (options.density) {
+    root.setAttribute('data-density', options.density);
   }
 
   if (options.dark !== undefined) {

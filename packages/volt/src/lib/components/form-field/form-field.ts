@@ -14,5 +14,5 @@ import { cn } from '../../utils';
 export class VoltFormField {
   readonly class = input<string>('');
 
-  protected readonly classes = computed(() => cn('space-y-2 w-full block', this.class()));
+  protected readonly classes = computed(() => cn('space-y-stack w-full block', this.class()));
 }

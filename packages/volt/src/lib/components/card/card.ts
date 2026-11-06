@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
 import { cn } from '../../utils';
 
 // Every part merges its `class` input over the defaults with `cn()`, so
-// `<volt-card-content class="p-3">` replaces `p-6 pt-0` instead of competing with it.
+// `<volt-card-content class="p-3">` replaces `p-card pt-0` instead of competing with it.
 
 @Component({
   selector: 'volt-card',
@@ -17,7 +17,7 @@ export class VoltCard {
 
   protected readonly classes = computed(() =>
     cn(
-      'block rounded-xl border border-border bg-surface text-surface-foreground shadow-sm',
+      'block rounded-xl border-(length:--border-width) border-border bg-card text-card-foreground shadow-sm',
       this.class()
     )
   );
@@ -34,7 +34,7 @@ export class VoltCard {
 export class VoltCardHeader {
   readonly class = input<string>('');
 
-  protected readonly classes = computed(() => cn('flex flex-col gap-1.5 p-6', this.class()));
+  protected readonly classes = computed(() => cn('flex flex-col gap-1.5 p-card', this.class()));
 }
 
 @Component({
@@ -80,7 +80,7 @@ export class VoltCardDescription {
 export class VoltCardContent {
   readonly class = input<string>('');
 
-  protected readonly classes = computed(() => cn('block p-6 pt-0', this.class()));
+  protected readonly classes = computed(() => cn('block p-card pt-0', this.class()));
 }
 
 @Component({
@@ -94,5 +94,5 @@ export class VoltCardContent {
 export class VoltCardFooter {
   readonly class = input<string>('');
 
-  protected readonly classes = computed(() => cn('flex items-center p-6 pt-0', this.class()));
+  protected readonly classes = computed(() => cn('flex items-center p-card pt-0', this.class()));
 }

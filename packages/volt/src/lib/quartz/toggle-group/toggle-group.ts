@@ -51,7 +51,7 @@ export class VoltToggleGroup implements ControlValueAccessor {
 
   protected readonly classes = computed(() =>
     cn(
-      'inline-flex items-center rounded-md border border-input bg-background p-1 shadow-sm',
+      'inline-flex items-center rounded-md border-(length:--volt-control-border-width) border-input bg-background p-1 shadow-sm',
       this.class()
     )
   );

@@ -37,7 +37,7 @@ export class VoltDatePickerPreviousMonth {
 
   protected readonly classes = computed(() =>
     cn(
-      'inline-flex size-8 cursor-pointer items-center justify-center rounded-sm border border-input bg-background text-sm transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+      'inline-flex size-control-sm cursor-pointer items-center justify-center rounded-sm border-(length:--volt-control-border-width) border-input bg-background text-sm transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
       this.class()
     )
   );

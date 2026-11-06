@@ -61,9 +61,9 @@ describe('VoltButton', () => {
     });
 
     const button = container.querySelector('button');
-    expect(button).toHaveClass('h-11');
-    expect(button).toHaveClass('px-8');
-    expect(button).toHaveClass('border');
+    expect(button).toHaveClass('h-control-lg');
+    expect(button).toHaveClass('px-inset-lg');
+    expect(button).toHaveClass('border-input');
   });
 
   it('should merge consumer classes from class and customClass inputs', async () => {
@@ -188,7 +188,7 @@ describe('VoltNativeButton (voltButton)', () => {
     expect(container.firstElementChild).toBe(button);
     expect(button).toHaveAttribute('type', 'submit');
     expect(button).not.toHaveAttribute('role');
-    expect(button).toHaveClass('bg-primary', 'h-10');
+    expect(button).toHaveClass('bg-primary', 'h-control-md');
   });
 
   it('matches <volt-button> classes for every variant and size', async () => {
@@ -252,7 +252,7 @@ describe('VoltNativeButton (voltButton)', () => {
 
     const link = screen.getByRole('link', { name: 'Documentation' });
     expect(link).toHaveAttribute('href', '/docs');
-    expect(link).toHaveClass('border', 'h-11');
+    expect(link).toHaveClass('border-input', 'h-control-lg');
     expect(container.querySelector('a button, button a')).toBeNull();
     expect(screen.queryByRole('button')).toBeNull();
   });
