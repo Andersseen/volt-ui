@@ -75,8 +75,8 @@ importers:
         specifier: ^0.1.0
         version: 0.1.0(@angular/common@22.2.3(@angular/core@22.2.3(@angular/compiler@22.2.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.3(@angular/compiler@22.2.3)(rxjs@7.8.2))
       ng-primitives:
-        specifier: 0.131.2
-        version: 0.131.2(7aa35b6c8e9985f10ccd9cbfdb223e23)
+        specifier: 0.131.4
+        version: 0.131.4(7aa35b6c8e9985f10ccd9cbfdb223e23)
       prismjs:
         specifier: ^1.30.0
         version: 1.30.0
@@ -3457,6 +3457,9 @@ packages:
   '@types/esrecurse@4.3.1':
     resolution: {integrity: sha512-xJBAbDifo5hpffDBuHl0Y8ywswbiAp/Wi7Y/GtAgSlZyIABppyurxVueOPE8LUQOxdlgi6Zqce7uoEpqNTeiUw==}
 
+  '@types/estree@1.0.10':
+    resolution: {integrity: sha512-lTyOMnOcmRBzdCv6/4zUZCrEhV0xrqQiUZBZtVcbmLHBXKLnN8q89v/wKRF/Q0HbwVsqbIG3o5HDoFl9sduM+g==}
+
   '@types/estree@1.0.9':
     resolution: {integrity: sha512-GhdPgy1el4/ImP05X05Uw4cw2/M93BCUmnEvWZNStlCzEKME4Fkk+YpoA5OiHNQmoS7Cafb8Xa3Pya8m1Qrzeg==}
 
@@ -5446,8 +5449,8 @@ packages:
       tailwindcss:
         optional: true
 
-  ng-primitives@0.131.2:
-    resolution: {integrity: sha512-UaAxV/GLbPURaDqerV/BRkB++Gmxe9hoazaQ9+sOvxlObZ++k1/mOBso9jA5v305aqyNRQmpFkVjJg7fSsiygg==}
+  ng-primitives@0.131.4:
+    resolution: {integrity: sha512-e7syT7rX3CzwKW63QnI5+EeoLbQ7JcvjH5QQ8FLv7XVxS09VzYzfjjVpl8/Eu7bVCctvXNOD0XR9EvqVb+fnVA==}
     peerDependencies:
       '@angular/cdk': ^21.0.0 || ^22.0.0
       '@angular/common': ^21.0.0 || ^22.0.0
@@ -9099,7 +9102,7 @@ snapshots:
 
   '@rollup/pluginutils@5.4.0(rollup@4.62.4)':
     dependencies:
-      '@types/estree': 1.0.9
+      '@types/estree': 1.0.10
       estree-walker: 2.0.2
       picomatch: 4.0.7
     optionalDependencies:
@@ -9418,9 +9421,11 @@ snapshots:
 
   '@types/esquery@1.5.4':
     dependencies:
-      '@types/estree': 1.0.9
+      '@types/estree': 1.0.10
 
   '@types/esrecurse@4.3.1': {}
+
+  '@types/estree@1.0.10': {}
 
   '@types/estree@1.0.9': {}
 
@@ -10537,7 +10542,7 @@ snapshots:
 
   estree-walker@3.0.3:
     dependencies:
-      '@types/estree': 1.0.9
+      '@types/estree': 1.0.10
 
   esutils@2.0.3: {}
 
@@ -10949,7 +10954,7 @@ snapshots:
 
   is-reference@1.2.1:
     dependencies:
-      '@types/estree': 1.0.9
+      '@types/estree': 1.0.10
 
   is-stream@2.0.1: {}
 
