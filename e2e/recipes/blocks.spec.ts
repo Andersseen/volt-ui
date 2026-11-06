@@ -1,3 +1,4 @@
+import { BLOCKS } from '../../apps/recipes/src/app/lib/blocks-metadata';
 import { expect, test } from '../fixtures';
 
 test.describe('Blocks gallery', () => {
@@ -205,7 +206,7 @@ test.describe('Blocks gallery cards', () => {
     await thumbnail.waitFor();
     await thumbnail.click({ position: { x: 40, y: 40 }, force: true });
 
-    await expect(page).toHaveURL(/\/blocks\/hero$/);
+    await expect(page).toHaveURL(new RegExp(`${BLOCKS[0].path}$`));
   });
 });
 

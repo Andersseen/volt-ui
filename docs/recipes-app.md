@@ -80,13 +80,5 @@ The third category is **Patterns** — reusable compositions that demonstrate be
 
 - Routes are `/patterns` and `/patterns/<slug>`. `/recipes[/<slug>]` (and `/es`, `/uk` prefixes) redirect permanently, straight to the new URL, from `renamedSectionRouteRules` in `packages/shared/legacy-redirects.ts`; Nitro emits them into Cloudflare Pages `_redirects`. `voltui.dev/docs/recipes/*` goes to `/patterns/*` in a single hop.
 - Catalog entry ids stay `recipes/<slug>` (stable references), the kind is `patterns`, and the source lives in `src/app/patterns/`.
-- The visible label still reads Glossa's `recipes.*` messages. `KIND_TITLE_KEY` / `KIND_LEDE_KEY` in `lib/catalog.ts` are the only place to change once Glossa has `gallery.patterns.title` and `recipes.kinds.patterns`.
-
-### Sources waiting to be registered
-
-`blocks/{navbar-marketing,navbar-app,page-header,header-editorial,footer-compact}` and `patterns/section-nav` are complete, tested, copyable sources that compile in `check:copied-source`. Registering each needs Glossa messages (en/es/uk) and then the usual steps above:
-
-- `blocks.items.<slug>.{label,tagline,motion}` for each block, and a category label/blurb for a "Navigation & headers" group.
-- A name for `section-nav`, and `seo.*` entries if the SEO patterns need new keys.
-- `gallery.patterns.title`, `recipes.kinds.patterns` (the Patterns category label and its explainer).
-- `nav.density` (+ option labels) for the density control in the theme popover. `ThemeSwitcher.setDensity()` and the cookie already carry density.
+- The label comes from `gallery.patterns.title` (`KIND_TITLE_KEY`). `recipes.title` still says Recipes on purpose: the footer and docs sidebar use it to name the website.
+- Glossa token: `.mcp.json` expands `${GLOSSA_TOKEN}` from the process environment, never from `.env`. If it is only in `.env`, the server gets an empty bearer and answers 401; start the agent with `set -a; source .env; set +a` first.

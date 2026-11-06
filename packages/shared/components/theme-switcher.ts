@@ -21,10 +21,11 @@ import {
   type VoltThemeDensity,
   type VoltThemeStyle,
 } from 'volt';
-import { injectAppI18n } from '../i18n/i18n';
+import { injectAppI18n, type PlainTranslationKey } from '../i18n/i18n';
 import {
   DEFAULT_THEME_PREFS,
   isColor,
+  isDensity,
   isStyle,
   loadThemePrefs,
   safeLocalStorage,
@@ -49,8 +50,15 @@ const STYLES: readonly { id: VoltThemeStyle; label: string }[] = [
   { id: 'retro', label: 'Retro' },
 ];
 
+/* Unlike the palette and shape names, these are ordinary words, so they are translated. */
+const DENSITIES = [
+  { id: 'compact', labelKey: 'nav.densityCompact' },
+  { id: 'comfortable', labelKey: 'nav.densityComfortable' },
+  { id: 'spacious', labelKey: 'nav.densitySpacious' },
+] as const satisfies readonly { id: VoltThemeDensity; labelKey: PlainTranslationKey }[];
+
 /**
- * Palette and shape pickers, behind one button.
+ * Palette, shape and density pickers, behind one button.
  *
  * These used to be two inline selects, roughly 280px of a header that also carries a
  * logo, five links, a version badge and two icon buttons — enough that the nav wrapped
@@ -173,6 +181,29 @@ const STYLES: readonly { id: VoltThemeStyle; label: string }[] = [
             }
           </volt-toggle-group>
         </div>
+
+        <div>
+          <p
+            id="theme-density-label"
+            class="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground"
+          >
+            {{ t('nav.density') }}
+          </p>
+          <volt-toggle-group
+            class="w-full flex-wrap justify-between gap-1"
+            type="single"
+            [allowDeselection]="false"
+            [value]="densityValue()"
+            (valueChange)="onDensityChange($event)"
+            aria-labelledby="theme-density-label"
+          >
+            @for (option of densities; track option.id) {
+              <volt-toggle-group-item [value]="option.id" size="sm">
+                {{ t(option.labelKey) }}
+              </volt-toggle-group-item>
+            }
+          </volt-toggle-group>
+        </div>
       </volt-popover-content>
     </ng-template>
   `,
@@ -187,6 +218,7 @@ export class ThemeSwitcher {
 
   protected readonly colors = COLORS;
   protected readonly styles = STYLES;
+  protected readonly densities = DENSITIES;
 
   /**
    * The single source of truth. It is written only by `load()` (the stored preference) and
@@ -203,6 +235,7 @@ export class ThemeSwitcher {
   /** The toggle groups speak in arrays, even the single-selection ones. */
   protected readonly colorValue = computed(() => [this.color()]);
   protected readonly styleValue = computed(() => [this.style()]);
+  protected readonly densityValue = computed(() => [this.density()]);
 
   /*
    * The palette and shape names are product names — "Volt", "Brutal" — so they stay as
@@ -273,9 +306,12 @@ export class ThemeSwitcher {
     }
   }
 
-  /** Not yet in the popover: its label needs a Glossa message (see the Patterns PR notes). */
-  setDensity(density: VoltThemeDensity): void {
-    this.update({ density });
+  protected onDensityChange(value: string[]): void {
+    const [next] = value;
+
+    if (isDensity(next)) {
+      this.update({ density: next });
+    }
   }
 
   toggleDark(): void {

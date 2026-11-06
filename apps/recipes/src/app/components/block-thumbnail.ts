@@ -22,6 +22,11 @@ import { FeatureBento } from '../blocks/feature-bento/feature-bento';
 import { FeatureCarousel } from '../blocks/feature-carousel/feature-carousel';
 import { FeatureTour } from '../blocks/feature-tour/feature-tour';
 import { FooterSitemap } from '../blocks/footer-sitemap/footer-sitemap';
+import { NavbarMarketing } from '../blocks/navbar-marketing/navbar-marketing';
+import { NavbarApp } from '../blocks/navbar-app/navbar-app';
+import { PageHeader } from '../blocks/page-header/page-header';
+import { HeaderEditorial } from '../blocks/header-editorial/header-editorial';
+import { FooterCompact } from '../blocks/footer-compact/footer-compact';
 import { FeatureShowcase } from '../blocks/feature-showcase/feature-showcase';
 import { HeroGlyphs } from '../blocks/hero-glyphs/hero-glyphs';
 import { HeroInstall } from '../blocks/hero-install/hero-install';
@@ -74,6 +79,11 @@ import { TestimonialMarquee } from '../blocks/testimonial-marquee/testimonial-ma
     AppDashboard,
     CtaMagnetic,
     FooterSitemap,
+    NavbarMarketing,
+    NavbarApp,
+    PageHeader,
+    HeaderEditorial,
+    FooterCompact,
   ],
   host: {
     inert: '',
@@ -154,6 +164,21 @@ import { TestimonialMarquee } from '../blocks/testimonial-marquee/testimonial-ma
         }
         @case ('footer') {
           <app-footer-sitemap />
+        }
+        @case ('navbar-marketing') {
+          <app-navbar-marketing />
+        }
+        @case ('navbar-app') {
+          <app-navbar-app />
+        }
+        @case ('page-header') {
+          <app-page-header />
+        }
+        @case ('header-editorial') {
+          <app-header-editorial />
+        }
+        @case ('footer-compact') {
+          <app-footer-compact />
         }
       }
     </div>

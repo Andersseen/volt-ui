@@ -65,6 +65,24 @@ describe('ThemeSwitcher', () => {
     scoped.remove();
   });
 
+  it('offers density in the popover and shares the choice', async () => {
+    await render(ThemeSwitcher);
+
+    fireEvent.click(screen.getByRole('button', { name: /theme/i }));
+    fireEvent.click(await screen.findByRole('radio', { name: 'Spacious' }));
+
+    expect(document.documentElement).toHaveAttribute('data-density', 'spacious');
+    expect(document.cookie).toContain('volt-theme=1.volt.sharp.light.spacious');
+    expect(await screen.findByRole('radio', { name: 'Spacious' })).toHaveAttribute(
+      'aria-checked',
+      'true'
+    );
+    expect(screen.getByRole('radio', { name: 'Comfortable' })).toHaveAttribute(
+      'aria-checked',
+      'false'
+    );
+  });
+
   it('uses Volt sharp light defaults when no preference is stored', async () => {
     await render(ThemeSwitcher);
 

@@ -17,9 +17,9 @@ describe('landing signpost to Volt UI Recipes', () => {
       'href',
       'https://recipes.voltui.dev/layouts'
     );
-    expect(screen.getByRole('link', { name: 'Recipes' })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: 'Patterns' })).toHaveAttribute(
       'href',
-      'https://recipes.voltui.dev/recipes'
+      'https://recipes.voltui.dev/patterns'
     );
     expect(screen.getByRole('link', { name: /Open Volt UI Recipes/ })).toHaveAttribute(
       'href',

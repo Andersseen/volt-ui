@@ -19,7 +19,7 @@ import { RelatedComponents } from './related-components';
     <div class="space-y-8">
       <div>
         <p class="text-xs font-medium uppercase tracking-wider text-primary">
-          {{ t('recipes.title') }}
+          {{ t('gallery.patterns.title') }}
         </p>
         <h1 class="mt-1.5 text-3xl font-bold tracking-tight">{{ t(recipe().labelKey) }}</h1>
       </div>

@@ -18,7 +18,11 @@
     "shape": "Shape",
     "logoAlt": "Volt UI Logo",
     "storybook": "Storybook",
-    "externalLink": "(opens in a new tab)"
+    "externalLink": "(opens in a new tab)",
+    "density": "Density",
+    "densityCompact": "Compact",
+    "densityComfortable": "Comfortable",
+    "densitySpacious": "Spacious"
   },
   "footer": {
     "tagline": "Angular components you own.",
@@ -62,7 +66,10 @@
     "layoutSourceNote": "The arrangement, with the sample data kept in plain arrays at the bottom. Swap those for yours and the template stops being an example.",
     "layoutUnbrandedNote": "Layouts stay unbranded on purpose: no gradients, no logos, no stock photography, and nothing fetched from a third party. If you want a section that is finished rather than a shape to fill,",
     "blocksGalleryLink": "the blocks gallery",
-    "isTheOtherTab": "is the other tab."
+    "isTheOtherTab": "is the other tab.",
+    "patterns": {
+      "title": "Patterns"
+    }
   },
   "language": {
     "switch": "Change language",
@@ -177,7 +184,7 @@
     "recipes": {
       "eyebrow": "Beyond components",
       "title": "Whole screens, ready to copy.",
-      "lede": "Blocks, layouts and recipes assembled from Volt components live on their own site, **Volt UI Recipes**: a live preview, the complete source and the components each one is made of.",
+      "lede": "Blocks, layouts and patterns assembled from Volt components live on their own site, **Volt UI Recipes**: a live preview, the complete source and the components each one is made of.",
       "open": "Open Volt UI Recipes"
     }
   },
@@ -1035,6 +1042,10 @@
       "backgrounds": {
         "label": "Backgrounds",
         "blurb": "Animated surfaces to put behind a hero or a call to action. Your content sits on top."
+      },
+      "navigation": {
+        "label": "Navigation",
+        "blurb": "Navbars and page headers: how people get around, and how they know where they are."
       }
     },
     "items": {
@@ -1152,6 +1163,31 @@
         "label": "Glyph Field",
         "tagline": "A grid of code glyphs that lights up around the pointer.",
         "motion": "Glyphs near the pointer take the brand colour; with no pointer, a slow light wanders on its own. With reduced motion the field only redraws when the pointer moves."
+      },
+      "navbarMarketing": {
+        "label": "Marketing Navbar",
+        "tagline": "Brand, links and one call to action, with a disclosure menu on small screens.",
+        "motion": "Nothing moves on its own. The mobile menu opens in place, and Escape closes it and returns focus to the toggle."
+      },
+      "navbarApp": {
+        "label": "Application Navbar",
+        "tagline": "Workspace, destinations, contextual actions and the signed-in account, in one compact bar.",
+        "motion": "Links change colour on hover and an underline marks the current destination. On narrow containers the destinations fold into a disclosure panel."
+      },
+      "pageHeader": {
+        "label": "Page Header",
+        "tagline": "Breadcrumbs, title, description and wired actions for dashboards, settings and detail pages.",
+        "motion": "Static by design. When its container narrows, the actions drop under the title and share a row."
+      },
+      "headerEditorial": {
+        "label": "Editorial Header",
+        "tagline": "Category, title, standfirst and metadata for articles, guides and case studies.",
+        "motion": "Static by design: the hierarchy is typographic, and the title scales with its container."
+      },
+      "footerCompact": {
+        "label": "Compact Footer",
+        "tagline": "Brand, ownership line and links on one row, wrapping cleanly on narrow screens.",
+        "motion": "Links underline on hover. Nothing else moves, so it can sit under any page."
       }
     },
     "upcoming": {
@@ -1449,8 +1485,8 @@
       "description": "A {$name} application layout for Angular assembled from Volt UI components, styled only with theme tokens so it fits your brand."
     },
     "recipe": {
-      "title": "Angular {$name} Recipe — Volt UI",
-      "description": "A tested {$name} recipe for Angular showing the workflow with Volt UI components, including validation and failure states."
+      "title": "Angular {$name} Pattern — Volt UI",
+      "description": "A tested {$name} pattern for Angular showing the workflow with Volt UI components, including validation and failure states."
     },
     "imageAlt": "Volt UI — accessible Angular components"
   },
@@ -1462,7 +1498,8 @@
       "asyncSearch": "Async search",
       "dataTable": "Data table",
       "componentExplorer": "Component explorer",
-      "livePlayground": "Live playground"
+      "livePlayground": "Live playground",
+      "sectionNav": "Section navigation"
     },
     "doqs": {
       "documentation": "Documentation",
@@ -1488,14 +1525,14 @@
       "lede": "Page sections, application layouts and tested workflows. Each one comes with a live preview, its complete source and the components it is made of.",
       "statComponents": "Volt components in use",
       "blocksTitle": "Sections that already move.",
-      "shellsEyebrow": "Layouts and recipes",
+      "shellsEyebrow": "Layouts and patterns",
       "shellsTitle": "Frames and workflows to fill in.",
-      "shellsLede": "Layouts give an application its frame. Recipes show behaviour over time: a form that validates, a search that waits for the network, a table that paginates.",
+      "shellsLede": "Layouts give an application its frame. Patterns show behaviour over time: a form that validates, a search that waits for the network, a table that paginates.",
       "ctaTitle": "Copy it, then make it yours.",
       "ctaBody": "Every entry imports from `@voltui/components`, so it follows your theme and keeps the accessibility of the components underneath.",
       "ctaComponents": "Browse the components"
     },
-    "browse": "Browse Recipes",
+    "browse": "Browse Patterns",
     "browser": {
       "searchLabel": "Search the catalog",
       "searchPlaceholder": "Search by name, purpose or component…",
@@ -1511,7 +1548,7 @@
       "catalog": "Catalog"
     },
     "kinds": {
-      "heading": "Blocks, layouts or recipes?",
+      "heading": "Blocks, layouts or patterns?",
       "blocks": "Finished page sections — a hero, pricing, a footer. Styled and animated: copy one and change the words.",
       "layouts": "Unbranded page structures — app shells, sign-in screens, boards. The skeleton you fill with your own product.",
       "recipes": "Behaviour over time — validation, async search, recovery. A tested workflow rather than a look."

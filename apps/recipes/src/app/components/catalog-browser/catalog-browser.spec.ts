@@ -105,7 +105,7 @@ describe('CatalogBrowser', () => {
 
   it('explains the three catalogs and marks the one on screen', async () => {
     await listing('layouts');
-    const kinds = screen.getByRole('navigation', { name: 'Blocks, layouts or recipes?' });
+    const kinds = screen.getByRole('navigation', { name: 'Blocks, layouts or patterns?' });
 
     expect(within(kinds).getByRole('link', { name: 'Layouts' })).toHaveAttribute(
       'aria-current',

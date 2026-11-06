@@ -92,7 +92,7 @@ const PAGES = RECIPES
       { path: '/blocks/pricing', lang: 'en', title: /Pricing Tiers/, breadcrumbs: true },
       { path: '/layouts', lang: 'en', title: /Layouts/ },
       { path: '/layouts/kanban', lang: 'en', title: /Kanban/, breadcrumbs: true },
-      { path: '/patterns', lang: 'en', title: /Recipes/ },
+      { path: '/patterns', lang: 'en', title: /Patterns/ },
       { path: '/patterns/async-search', lang: 'en', title: /Async search/, breadcrumbs: true },
       { path: '/es/blocks/pricing', lang: 'es', title: /Bloque Pricing Tiers/, breadcrumbs: true },
       { path: '/uk/layouts', lang: 'uk', title: /Макети/ },

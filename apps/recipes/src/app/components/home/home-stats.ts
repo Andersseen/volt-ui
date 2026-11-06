@@ -13,7 +13,7 @@ interface Stat {
 const STATS: readonly Stat[] = [
   { value: entriesOf('blocks').length, labelKey: 'gallery.blocks.title' },
   { value: entriesOf('layouts').length, labelKey: 'gallery.layouts.title' },
-  { value: entriesOf('patterns').length, labelKey: 'recipes.title' },
+  { value: entriesOf('patterns').length, labelKey: 'gallery.patterns.title' },
   {
     value: new Set(CATALOG.flatMap(entry => entry.atoms.map(atom => atom.name))).size,
     labelKey: 'recipes.home.statComponents',
