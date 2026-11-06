@@ -97,8 +97,8 @@ importers:
         version: 4.6.7
     devDependencies:
       '@agentyx/cli':
-        specifier: ^0.20.0
-        version: 0.20.0
+        specifier: ^0.24.0
+        version: 0.24.0
       '@analogjs/vite-plugin-angular':
         specifier: ^2.8.0
         version: 2.8.1(@angular/build@22.2.5(e64590e1e20a3a905ce327fd75f7e53a))(@emnapi/core@2.0.0-alpha.3)(@emnapi/runtime@2.0.0-alpha.3)(vite@8.3.5(@types/node@26.6.5)(esbuild@0.28.2)(jiti@2.6.1)(less@4.9.0)(sass-embedded@1.104.1)(sass@1.104.1)(terser@5.46.1)(yaml@2.9.1))
@@ -303,17 +303,17 @@ packages:
   '@adobe/css-tools@4.4.4':
     resolution: {integrity: sha512-Elp+iwUx5rN5+Y8xLt5/GRoG20WGoDCQ/1Fb+1LiGtvwbDavuSk0jhD/eZdckHAuzcDzccnkv+rEjyWfRx18gg==}
 
-  '@agentyx/adapters@0.20.0':
-    resolution: {integrity: sha512-ODKjeE86+3cys8JT90yiHfAb5KKkyqJxS575y6udaXSvA+P8z08nckLByQABsakVz5zTtwKBAaqMZjkVkAezqg==}
+  '@agentyx/adapters@0.24.0':
+    resolution: {integrity: sha512-ucBBHM/gA8T6Y5O51NXUL6iTOOUG6bwCfQLHhO6ImZfLx3b3jpodHY2FjAV/GWL/BZpbE6Cag7CfEdTWITpcXQ==}
     engines: {node: '>=22'}
 
-  '@agentyx/cli@0.20.0':
-    resolution: {integrity: sha512-Tvm8gFdIcVX/cPzSG6GR1dqaAjioIWj1IOqwPom+gjdaQpDdL7U7NS7AB+ygVqR12nVYXdpyPe627IvslbMSMQ==}
+  '@agentyx/cli@0.24.0':
+    resolution: {integrity: sha512-Y2rqXCyTPWK31KDRSesSNGN1ZvI2SDTFWCGLCa/DoAuvdOTYq5NopIlCmLwsU0a7dgXJjFGcpKwFuXBmgTL0EA==}
     engines: {node: '>=22'}
     hasBin: true
 
-  '@agentyx/core@0.20.0':
-    resolution: {integrity: sha512-603E0p2z7MqS/8Ew2XM8a21q+SJXW4eV2NSZAGqgy4RCvCcOiSlzSoPB/5bv9tPm5ffQInp2DMlHh2AAcD0Sug==}
+  '@agentyx/core@0.24.0':
+    resolution: {integrity: sha512-Mmd0k2ybzkFZzynwRfFCpFz0WcZIbn82Lt4cjMpTQvTmMTHwJtnfYKc5mUWfVWmdmateoiH/xzz3JhX5eHGVow==}
     engines: {node: '>=22'}
 
   '@alloc/quick-lru@5.2.0':
@@ -1489,6 +1489,9 @@ packages:
 
   '@floating-ui/utils@0.2.11':
     resolution: {integrity: sha512-RiB/yIh78pcIxl6lLMG0CgBXAZ2Y0eVHqMPYugu+9U0AeT6YBeiJpf7lbdJNIugFP5SIjwNRgo4DhR1Qxi26Gg==}
+
+  '@flowview/runtime@0.2.0':
+    resolution: {integrity: sha512-vz0Kr4EHnEPgsaoiSiksb0IMrMOfHr4PmpPjPUuSsb9g4Mi3Ba+pwaXOgmueoGGx1KWVap+2muw/smlG8QR2ew==}
 
   '@harperfast/extended-iterable@1.0.3':
     resolution: {integrity: sha512-sSAYhQca3rDWtQUHSAPeO7axFIUJOI6hn1gjRC5APVE1a90tuyT8f5WIgRsFhhWA7htNkju2veB9eWL6YHi/Lw==}
@@ -6919,20 +6922,21 @@ snapshots:
 
   '@adobe/css-tools@4.4.4': {}
 
-  '@agentyx/adapters@0.20.0':
+  '@agentyx/adapters@0.24.0':
     dependencies:
-      '@agentyx/core': 0.20.0
+      '@agentyx/core': 0.24.0
       '@iarna/toml': 2.2.5
 
-  '@agentyx/cli@0.20.0':
+  '@agentyx/cli@0.24.0':
     dependencies:
-      '@agentyx/adapters': 0.20.0
-      '@agentyx/core': 0.20.0
+      '@agentyx/adapters': 0.24.0
+      '@agentyx/core': 0.24.0
       '@clack/prompts': 1.8.1
+      '@flowview/runtime': 0.2.0
       commander: 14.0.3
       zod: 4.6.7
 
-  '@agentyx/core@0.20.0':
+  '@agentyx/core@0.24.0':
     dependencies:
       zod: 4.6.7
 
@@ -8025,6 +8029,8 @@ snapshots:
       '@floating-ui/utils': 0.2.11
 
   '@floating-ui/utils@0.2.11': {}
+
+  '@flowview/runtime@0.2.0': {}
 
   '@harperfast/extended-iterable@1.0.3':
     optional: true
