@@ -52,11 +52,7 @@ Volt UI itself — the components, theming and API reference — is documented a
 
 ## Recipes
 
-- [Settings Form](https://recipes.voltui.dev/recipes/settings-form)
-- [Async Search](https://recipes.voltui.dev/recipes/async-search)
-- [Data Table](https://recipes.voltui.dev/recipes/data-table)
-- [Live Playground](https://recipes.voltui.dev/recipes/live-playground)
-- [Component Explorer](https://recipes.voltui.dev/recipes/component-explorer)
+
 
 ## Optional
 

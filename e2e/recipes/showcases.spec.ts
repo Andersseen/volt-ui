@@ -55,7 +55,7 @@ test.describe('Scroll story', () => {
 
 test.describe('Live playground', () => {
   test('a control change reaches both the preview and the generated code', async ({ page }) => {
-    await page.goto('/recipes/live-playground');
+    await page.goto('/patterns/live-playground');
     await page.waitForLoadState('networkidle');
 
     await page.getByRole('radio', { name: 'success' }).click();
@@ -71,7 +71,7 @@ test.describe('Live playground', () => {
 
   test('copies the code on screen', async ({ page, context }) => {
     await context.grantPermissions(['clipboard-read', 'clipboard-write']).catch(() => undefined);
-    await page.goto('/recipes/live-playground');
+    await page.goto('/patterns/live-playground');
     await page.waitForLoadState('networkidle');
 
     await page.getByRole('radio', { name: 'warning' }).click();
@@ -86,7 +86,7 @@ test.describe('Live playground', () => {
 
 test.describe('Component explorer', () => {
   test('variant and state controls drive the real component', async ({ page }) => {
-    await page.goto('/recipes/component-explorer');
+    await page.goto('/patterns/component-explorer');
     await page.waitForLoadState('networkidle');
 
     await page.getByRole('radio', { name: 'destructive' }).click();
@@ -98,7 +98,7 @@ test.describe('Component explorer', () => {
   });
 
   test('arrow keys move through a control group', async ({ page }) => {
-    await page.goto('/recipes/component-explorer');
+    await page.goto('/patterns/component-explorer');
     await page.waitForLoadState('networkidle');
 
     await page.getByRole('radio', { name: 'Button' }).focus();

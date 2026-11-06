@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { AsyncSearchRecipe } from '../../../recipes/async-search/async-search';
+import { AsyncSearchRecipe } from '../../../patterns/async-search/async-search';
 import { RecipeShowcase } from '../../../components/recipe-showcase';
 import { recipeBySlug } from '../../../lib/recipes-metadata';
 import { ASYNC_SEARCH_RECIPE } from '../../../lib/snippets/recipes';

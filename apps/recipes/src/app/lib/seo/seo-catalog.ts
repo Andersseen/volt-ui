@@ -15,7 +15,7 @@ export type SeoEntry =
   | { readonly kind: 'entry'; readonly path: string; readonly id: string }
   | { readonly kind: 'doc'; readonly path: string; readonly slug: string };
 
-const KINDS: readonly CatalogKind[] = ['blocks', 'layouts', 'recipes'];
+const KINDS: readonly CatalogKind[] = ['blocks', 'layouts', 'patterns'];
 
 export const SEO_ENTRIES: readonly SeoEntry[] = [
   { kind: 'home', path: '/' },

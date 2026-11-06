@@ -14,9 +14,9 @@ import { RECIPES, type RecipeMetadata } from './recipes-metadata';
  * Adding an entry (docs/recipes-app.md "Adding a recipe"): author its metadata, add its source to
  * `lib/snippets/`, add its `*.page.ts`. `catalog.spec.ts` fails if any of the three is missing.
  */
-export type CatalogKind = 'blocks' | 'layouts' | 'recipes';
+export type CatalogKind = 'blocks' | 'layouts' | 'patterns';
 
-export const CATALOG_KINDS: readonly CatalogKind[] = ['blocks', 'layouts', 'recipes'];
+export const CATALOG_KINDS: readonly CatalogKind[] = ['blocks', 'layouts', 'patterns'];
 
 export interface CatalogAtom {
   /** Exported class name, e.g. `VoltCard`. */
@@ -70,7 +70,7 @@ const fromLayout = (layout: LayoutMetadata): CatalogEntry => ({
 
 const fromRecipe = (recipe: RecipeMetadata): CatalogEntry => ({
   id: `recipes/${recipe.slug}`,
-  kind: 'recipes',
+  kind: 'patterns',
   slug: recipe.slug,
   path: recipe.path,
   nameKey: recipe.labelKey,
@@ -108,3 +108,23 @@ export const entryForPath = (path: string): CatalogEntry | undefined =>
 
 /** The listing path of a kind: `/blocks`. */
 export const listingPath = (kind: CatalogKind): string => `/${kind}`;
+
+/**
+ * The Glossa keys that name a kind and explain it, in one place.
+ *
+ * The category is "Patterns", but its Glossa messages are still the `recipes.*` ones, whose English
+ * value reads "Recipes". Adding `gallery.patterns.title` / `recipes.kinds.patterns` (en, es, uk) in
+ * Glossa and pointing the `patterns` row at them is the whole remaining change: every header,
+ * sidebar, card, head and breadcrumb reads these two maps.
+ */
+export const KIND_TITLE_KEY = {
+  blocks: 'gallery.blocks.title',
+  layouts: 'gallery.layouts.title',
+  patterns: 'recipes.title',
+} as const satisfies Record<CatalogKind, PlainTranslationKey>;
+
+export const KIND_LEDE_KEY = {
+  blocks: 'recipes.kinds.blocks',
+  layouts: 'recipes.kinds.layouts',
+  patterns: 'recipes.kinds.recipes',
+} as const satisfies Record<CatalogKind, PlainTranslationKey>;

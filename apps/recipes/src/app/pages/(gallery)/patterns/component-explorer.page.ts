@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ComponentExplorer } from '../../../recipes/component-explorer/component-explorer';
+import { ComponentExplorer } from '../../../patterns/component-explorer/component-explorer';
 import { RecipeShowcase } from '../../../components/recipe-showcase';
 import { recipeBySlug } from '../../../lib/recipes-metadata';
 import { COMPONENT_EXPLORER_RECIPE } from '../../../lib/snippets/recipes';

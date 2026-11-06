@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { DataTableRecipe } from '../../../recipes/data-table/data-table';
+import { DataTableRecipe } from '../../../patterns/data-table/data-table';
 import { RecipeShowcase } from '../../../components/recipe-showcase';
 import { recipeBySlug } from '../../../lib/recipes-metadata';
 import { DATA_TABLE_RECIPE } from '../../../lib/snippets/recipes';

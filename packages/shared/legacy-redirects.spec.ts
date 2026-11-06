@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { CATALOG } from '../../apps/recipes/src/app/lib/catalog';
-import { legacyRedirects, legacyRouteRules, RECIPES_ORIGIN } from './legacy-redirects';
+import {
+  legacyRedirects,
+  legacyRouteRules,
+  renamedSectionRedirects,
+  RECIPES_ORIGIN,
+} from './legacy-redirects';
 import { I18N_PROJECT } from './i18n/project';
 
 const input = {
@@ -15,7 +20,9 @@ describe('legacy redirects to Volt UI Recipes', () => {
   it('maps the documented examples', () => {
     expect(byFrom.get('/docs/blocks/hero')).toBe(`${RECIPES_ORIGIN}/blocks/hero`);
     expect(byFrom.get('/docs/layouts/kanban')).toBe(`${RECIPES_ORIGIN}/layouts/kanban`);
-    expect(byFrom.get('/docs/recipes/async-search')).toBe(`${RECIPES_ORIGIN}/recipes/async-search`);
+    expect(byFrom.get('/docs/recipes/async-search')).toBe(
+      `${RECIPES_ORIGIN}/patterns/async-search`
+    );
   });
 
   it('keeps the visitor in their language', () => {
@@ -27,15 +34,19 @@ describe('legacy redirects to Volt UI Recipes', () => {
     for (const entry of CATALOG) {
       for (const locale of I18N_PROJECT.locales) {
         const prefix = locale === I18N_PROJECT.sourceLocale ? '' : `/${locale}`;
-        const old = `${prefix}/docs${entry.path}`;
+        const old = `${prefix}/docs${entry.path.replace(/^\/patterns/, '/recipes')}`;
         expect(byFrom.get(old), old).toBe(`${RECIPES_ORIGIN}${prefix}${entry.path}`);
       }
     }
   });
 
   it('redirects the section indexes too', () => {
-    for (const kind of ['blocks', 'layouts', 'recipes']) {
-      expect(byFrom.get(`/docs/${kind}`)).toBe(`${RECIPES_ORIGIN}/${kind}`);
+    for (const [old, kind] of [
+      ['blocks', 'blocks'],
+      ['layouts', 'layouts'],
+      ['recipes', 'patterns'],
+    ]) {
+      expect(byFrom.get(`/docs/${old}`)).toBe(`${RECIPES_ORIGIN}/${kind}`);
     }
   });
 
@@ -43,7 +54,7 @@ describe('legacy redirects to Volt UI Recipes', () => {
     const served = new Set([
       '/blocks',
       '/layouts',
-      '/recipes',
+      '/patterns',
       ...CATALOG.map(entry => entry.path),
     ]);
     for (const { to } of rules) {
@@ -63,6 +74,33 @@ describe('legacy redirects to Volt UI Recipes', () => {
     expect(new Set(rules.map(rule => rule.from)).size).toBe(rules.length);
     for (const rule of Object.values(legacyRouteRules(input))) {
       expect(rule.redirect.statusCode).toBe(301);
+    }
+  });
+});
+
+describe('the Recipes → Patterns rename on the Recipes origin', () => {
+  const slugs = CATALOG.filter(entry => entry.kind === 'patterns').map(entry => entry.slug);
+  const renamed = renamedSectionRedirects({
+    locales: I18N_PROJECT.locales,
+    sourceLocale: I18N_PROJECT.sourceLocale,
+    slugs,
+  });
+  const byOld = new Map(renamed.map(rule => [rule.from, rule.to]));
+
+  it('moves the index and every entry, keeping the locale prefix', () => {
+    expect(slugs.length).toBeGreaterThanOrEqual(5);
+    expect(byOld.get('/recipes')).toBe('/patterns');
+    expect(byOld.get('/recipes/settings-form')).toBe('/patterns/settings-form');
+    expect(byOld.get('/es/recipes/async-search')).toBe('/es/patterns/async-search');
+    expect(byOld.get('/uk/recipes')).toBe('/uk/patterns');
+  });
+
+  it('targets only served routes, with no loops or chains', () => {
+    const served = new Set(['/patterns', ...CATALOG.map(entry => entry.path)]);
+    for (const { from, to } of renamed) {
+      expect(served.has(to.replace(/^\/(es|uk)(?=\/|$)/, '')), to).toBe(true);
+      expect(byOld.has(to), to).toBe(false);
+      expect(from).not.toBe(to);
     }
   });
 });

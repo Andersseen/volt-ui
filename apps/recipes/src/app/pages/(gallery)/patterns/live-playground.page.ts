@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { LivePlayground } from '../../../recipes/live-playground/live-playground';
+import { LivePlayground } from '../../../patterns/live-playground/live-playground';
 import { RecipeShowcase } from '../../../components/recipe-showcase';
 import { recipeBySlug } from '../../../lib/recipes-metadata';
 import { LIVE_PLAYGROUND_RECIPE } from '../../../lib/snippets/recipes';

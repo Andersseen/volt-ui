@@ -6,7 +6,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { entriesOf, groupsOf } from '../../lib/catalog';
 import { CatalogBrowser } from './catalog-browser';
 
-const listing = async (kind: 'blocks' | 'layouts' | 'recipes' = 'blocks', url = '/') => {
+const listing = async (kind: 'blocks' | 'layouts' | 'patterns' = 'blocks', url = '/') => {
   const view = await render(CatalogBrowser, {
     inputs: { kind, titleKey: 'gallery.blocks.title', ledeKey: 'gallery.blocks.lede' },
     providers: [provideRouter([])],
@@ -96,7 +96,7 @@ describe('CatalogBrowser', () => {
   });
 
   it('offers no categories or sort for a catalog that has no groups', async () => {
-    await listing('recipes');
+    await listing('patterns');
 
     expect(screen.queryByRole('radio', { name: /^All/ })).not.toBeInTheDocument();
     expect(screen.queryByRole('radio', { name: 'A–Z' })).not.toBeInTheDocument();

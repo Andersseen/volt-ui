@@ -40,7 +40,7 @@ interface Preference {
  *
  * This is structure only. It deliberately holds no save state: validation, a pending request,
  * failure and retry are behaviour, and live in the "Settings form" recipe
- * (/recipes/settings-form), which you can drop into the form column of this layout.
+ * (/patterns/settings-form), which you can drop into the form column of this layout.
  */
 @Component({
   selector: 'app-settings-layout',
