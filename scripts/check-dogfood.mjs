@@ -49,6 +49,13 @@ const EXCEPTIONS = [
     reason:
       'An inline text affordance inside a sentence-sized row; voltButton variant="link" would add the button box model (h-10, px-4) to what is a running-text link.',
   },
+  {
+    rule: 'button-like-link',
+    file: 'apps/recipes/src/app/patterns/section-nav/section-nav.ts',
+    match: '[href]="\'#\' + section.id"',
+    reason:
+      'A scroll-spy link is an in-page fragment link whose active state is aria-current="location"; the native anchor is the point (middle-click, copy link, deep links), and a button box model would misrepresent it.',
+  },
 ];
 
 const SKIP_DIRS = new Set(['blocks', 'layouts']);
@@ -148,7 +155,7 @@ function check() {
 /** Where a file sits in the product, for the usage inventory. */
 function surface(rel) {
   if (/^src\/app\/pages\/\(components-docs\)/.test(rel)) return 'docs-demo';
-  if (rel.startsWith('apps/recipes/src/app/recipes/')) return 'docs-demo';
+  if (rel.startsWith('apps/recipes/src/app/patterns/')) return 'docs-demo';
   if (rel === 'apps/web/src/app/components/component-preview.ts') return 'docs-demo';
   if (rel.startsWith('apps/web/src/app/components/docs/')) return 'application';
   return 'application';

@@ -15,8 +15,10 @@ const redirect = async (request: import('@playwright/test').APIRequestContext, u
 };
 
 for (const entry of CATALOG) {
-  test(`/docs${entry.path} -> ${entry.path} on recipes.voltui.dev`, async ({ request }) => {
-    const { status, location } = await redirect(request, `/docs${entry.path}`);
+  // The Patterns category was published as /docs/recipes on the docs site.
+  const old = `/docs${entry.path.replace(/^\/patterns/, '/recipes')}`;
+  test(`${old} -> ${entry.path} on recipes.voltui.dev`, async ({ request }) => {
+    const { status, location } = await redirect(request, old);
     expect(status).toBe(301);
     expect(location).toBe(`https://recipes.voltui.dev${entry.path}`);
   });
