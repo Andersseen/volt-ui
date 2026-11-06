@@ -139,10 +139,11 @@ try {
     // SSR defect in our code, so that one cause (and only that one) is retried.
     let status = 0;
     let errors = [];
-    // A dropped connection on a CI runner can last a few seconds, so back off between tries
-    // (0.5s, 1s, 2s, 4s) instead of retrying into the same outage.
-    for (let attempt = 0; attempt < 5; attempt++) {
-      if (attempt > 0) await sleep(500 * 2 ** (attempt - 1));
+    // A dropped connection — or a short Glossa outage, which has already happened in CI —
+    // can outlast a couple of seconds, so back off between tries (0.5s, 1s, 2s, 4s, 8s, 16s,
+    // 30s — about a minute in total) instead of retrying into the same outage.
+    for (let attempt = 0; attempt < 8; attempt++) {
+      if (attempt > 0) await sleep(Math.min(500 * 2 ** (attempt - 1), 30_000));
       const before = log.length;
       const res = await fetch(`http://127.0.0.1:${PORT}${route}`);
       status = res.status;
