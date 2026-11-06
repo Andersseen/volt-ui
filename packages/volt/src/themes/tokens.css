@@ -1,0 +1,268 @@
+/*
+ * Volt's token contract: every custom property and Tailwind mapping, with no effect on the page
+ * beyond declaring them. `core.css` adds the global rules (body colours, scrollbars) on top of this
+ * file; import this one instead to keep your own.
+ *
+ * Self-registered Tailwind source. Consumers only need to
+ * `@import '@voltui/components/themes.css'` — Tailwind will scan the compiled
+ * component bundle for every utility class the components use, so none of them
+ * are purged. The path is relative to this file inside the published package
+ * (node_modules/@voltui/components/themes/tokens.css -> ../fesm2022).
+ */
+@source '../fesm2022';
+
+/*
+ * Volt's theming is driven by the `.dark` class on <html> (see applyVoltTheme).
+ * Align Tailwind's `dark:` variant with that class so a consumer's own `dark:`
+ * utilities follow the same toggle, including a light `voltTheme` scope inside a
+ * dark page. Override in your own CSS if you'd rather key off `prefers-color-scheme`.
+ */
+@custom-variant dark (&:where(.dark, .dark *):not(:where([data-mode='light'], [data-mode='light'] *)));
+
+/*
+ * `inline` writes each value into the utility that uses it, so `var(--radius)` and friends resolve
+ * on the element being painted. That is what lets a density or theme set on a container reach
+ * everything inside it, and why a nested density replaces the outer one instead of multiplying it.
+ */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-foreground: var(--surface-foreground);
+  --color-card: color-mix(in oklch, var(--surface), var(--muted) var(--volt-surface-tint));
+  --color-card-foreground: var(--surface-foreground);
+  --color-popover: var(--surface-elevated);
+  --color-popover-foreground: var(--surface-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--muted);
+  --color-accent-foreground: var(--foreground);
+  --color-track: var(--track);
+  --color-border: color-mix(in oklch, var(--border), var(--foreground) var(--volt-border-emphasis));
+  --color-ring: var(--ring);
+  --color-input: color-mix(in oklch, var(--input), var(--foreground) var(--volt-border-emphasis));
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+
+  --color-error: var(--error);
+  --color-error-foreground: var(--error-foreground);
+
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+
+  --scrollbar-size: 0.75rem;
+  --scrollbar-track: color-mix(in oklch, var(--background) 88%, var(--surface));
+  --scrollbar-thumb: color-mix(in oklch, var(--primary) 42%, var(--border));
+  --scrollbar-thumb-hover: color-mix(in oklch, var(--primary) 64%, var(--border));
+
+  /*
+   * A multiple of `--radius`, not an offset from it: `calc(0rem + 0.25rem)` would round a corner
+   * Brutal says is square, and a subtraction goes negative below 0.125rem.
+   */
+  --radius-sm: calc(var(--radius) * 0.667);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) * 1.333);
+  --radius-xl: calc(var(--radius) * 1.667);
+  --radius-full: 9999px;
+  --radius-pill: var(--volt-radius-pill);
+
+  --shadow-sm: var(--volt-shadow-sm);
+  --shadow: var(--volt-shadow);
+  --shadow-md: var(--volt-shadow-md);
+  --shadow-lg: var(--volt-shadow-lg);
+  --shadow-xl: var(--volt-shadow-xl);
+  --font-weight-normal: var(--volt-font-weight-base);
+  --font-weight-medium: var(--volt-font-weight-label);
+  --font-weight-semibold: var(--volt-font-weight-heading);
+  --font-weight-bold: var(--volt-font-weight-heading);
+
+  /*
+   * Component metrics, as `h-control-md`, `px-inset-sm`, `gap-stack`… The style sets
+   * `--spacing-component`, the app sets `--volt-density`. The `max()` floors keep the pointer target
+   * of a control at or above WCAG 2.2's 24px however the two combine.
+   */
+  --spacing-control-xs: max(1.5rem, calc(1.75rem * var(--spacing-component) * var(--volt-density)));
+  --spacing-control-sm: max(1.75rem, calc(2rem * var(--spacing-component) * var(--volt-density)));
+  --spacing-control-dense: max(
+    2rem,
+    calc(2.25rem * var(--spacing-component) * var(--volt-density))
+  );
+  --spacing-control-md: max(2rem, calc(2.5rem * var(--spacing-component) * var(--volt-density)));
+  --spacing-control-lg: max(
+    2.25rem,
+    calc(2.75rem * var(--spacing-component) * var(--volt-density))
+  );
+  --spacing-inset-xs: calc(0.5rem * var(--spacing-component) * var(--volt-density));
+  --spacing-inset-sm: calc(0.75rem * var(--spacing-component) * var(--volt-density));
+  --spacing-inset-md: calc(1rem * var(--spacing-component) * var(--volt-density));
+  --spacing-inset-lg: calc(2rem * var(--spacing-component) * var(--volt-density));
+  --spacing-item-y: calc(0.375rem * var(--spacing-component) * var(--volt-density));
+  --spacing-panel: calc(1rem * var(--spacing-component) * var(--volt-density));
+  --spacing-card: calc(1.5rem * var(--spacing-component) * var(--volt-density));
+  --spacing-stack: calc(var(--spacing-gap) * var(--volt-density));
+  --spacing-track: var(--volt-track-size);
+  --spacing-thumb: var(--volt-thumb-size);
+}
+
+/* The Volt palette, and the defaults every custom palette starts from. */
+:root,
+:root[data-color='volt'],
+[data-volt-theme][data-color='volt'] {
+  --background: oklch(0.985 0.002 265);
+  --foreground: oklch(0.2 0.02 265);
+  --surface: oklch(1 0 0);
+  --surface-foreground: oklch(0.2 0.02 265);
+  --muted: oklch(0.955 0.006 265);
+  --muted-foreground: oklch(0.5 0.02 265);
+  --border: oklch(0.905 0.008 265);
+  --input: oklch(0.635 0.015 265);
+  --ring: oklch(0.58 0.2 265);
+
+  --primary: oklch(0.545 0.215 265);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.935 0.02 265);
+  --secondary-foreground: oklch(0.3 0.05 265);
+
+  --destructive: oklch(0.55 0.21 25);
+  --destructive-foreground: oklch(1 0 0);
+  --success: oklch(0.5 0.13 150);
+  --success-foreground: oklch(1 0 0);
+  --warning: oklch(0.8 0.15 80);
+  --warning-foreground: oklch(0.26 0.06 70);
+  --error: oklch(0.55 0.21 25);
+  --error-foreground: oklch(1 0 0);
+  --info: oklch(0.52 0.13 245);
+  --info-foreground: oklch(1 0 0);
+}
+
+.dark,
+.dark[data-color='volt'],
+.dark [data-volt-theme][data-color='volt']:not([data-mode='light']) {
+  --background: oklch(0.17 0.012 265);
+  --foreground: oklch(0.96 0.004 265);
+  --surface: oklch(0.21 0.014 265);
+  --surface-foreground: oklch(0.96 0.004 265);
+  --muted: oklch(0.27 0.016 265);
+  --muted-foreground: oklch(0.74 0.015 265);
+  --border: oklch(0.335 0.018 265);
+  --input: oklch(0.55 0.02 265);
+  --ring: oklch(0.72 0.15 265);
+
+  --primary: oklch(0.72 0.16 265);
+  --primary-foreground: oklch(0.17 0.03 265);
+  --secondary: oklch(0.3 0.03 265);
+  --secondary-foreground: oklch(0.93 0.01 265);
+
+  --destructive: oklch(0.7 0.17 25);
+  --destructive-foreground: oklch(0.18 0.05 25);
+  --success: oklch(0.74 0.14 150);
+  --success-foreground: oklch(0.18 0.04 150);
+  --warning: oklch(0.82 0.14 85);
+  --warning-foreground: oklch(0.24 0.06 70);
+  --error: oklch(0.7 0.17 25);
+  --error-foreground: oklch(0.18 0.05 25);
+  --info: oklch(0.74 0.11 240);
+  --info-foreground: oklch(0.18 0.04 240);
+}
+
+/*
+ * Roles derived from the palette, so a palette that does not know them still gets a sensible value
+ * (and may set its own). Declared wherever a palette can change, because a custom property is
+ * resolved on the element that declares it.
+ */
+:root,
+[data-volt-theme] {
+  /* Raised surfaces: popovers, menus, dialogs. */
+  --surface-elevated: var(--surface);
+  /* The unfilled part of Progress, Meter and Slider: quiet in every palette. */
+  --track: color-mix(in oklch, var(--foreground) 12%, var(--background));
+  --volt-shadow-tint: oklch(0 0 0 / 0.1);
+}
+
+.dark,
+.dark [data-volt-theme]:not([data-mode='light']) {
+  --surface-elevated: color-mix(in oklch, var(--surface) 92%, var(--foreground));
+  --volt-shadow-tint: oklch(0 0 0 / 0.5);
+}
+
+/* The Sharp style. Each style file below sets this same list. */
+:root,
+:root[data-style='sharp'],
+[data-volt-theme][data-style='sharp'] {
+  --radius: 0.375rem;
+  --volt-radius-pill: 9999px;
+
+  /* Surfaces (cards, popovers), controls (inputs, outlines), dividers (table rows, accordion). */
+  --border-width: 1px;
+  --border-style: solid; /* Deprecated: no style uses another value and nothing reads it. */
+  --volt-control-border-width: 1px;
+  --volt-divider-width: 1px;
+  /* How far borders lean towards the text colour, and cards towards `--muted`. */
+  --volt-border-emphasis: 0%;
+  --volt-surface-tint: 0%;
+  /* The outline of a filled control. */
+  --volt-control-solid-border: transparent;
+
+  --ring-width: 2px;
+  --ring-offset-width: 2px;
+
+  --volt-shadow-sm: 0 1px 2px 0 var(--volt-shadow-tint);
+  --volt-shadow: 0 1px 3px 0 var(--volt-shadow-tint), 0 1px 2px -1px var(--volt-shadow-tint);
+  --volt-shadow-md: 0 4px 6px -1px var(--volt-shadow-tint), 0 2px 4px -2px var(--volt-shadow-tint);
+  --volt-shadow-lg:
+    0 10px 15px -3px var(--volt-shadow-tint), 0 4px 6px -4px var(--volt-shadow-tint);
+  --volt-shadow-xl:
+    0 20px 25px -5px var(--volt-shadow-tint), 0 8px 10px -6px var(--volt-shadow-tint);
+
+  /* What a press does to a button. */
+  --volt-press-x: 0px;
+  --volt-press-y: 0px;
+  --volt-press-scale: 0.98;
+
+  --spacing-component: 1;
+  --spacing-gap: 0.5rem;
+  --volt-track-size: 0.5rem;
+  --volt-track-border-width: 0px;
+  --volt-thumb-size: 1.25rem;
+
+  --volt-font-weight-base: 400;
+  --volt-font-weight-heading: 600;
+  --volt-font-weight-label: 500;
+}
+
+/*
+ * Density is the app's choice and independent of the style. Set it on <html> or on any container;
+ * the innermost one wins, it never multiplies.
+ */
+:root,
+[data-density='comfortable'] {
+  --volt-density: 1;
+}
+
+[data-density='compact'] {
+  --volt-density: 0.875;
+}
+
+[data-density='spacious'] {
+  --volt-density: 1.125;
+}
+
+/* A themed container paints its own page, so its text stays legible on any background behind it. */
+@layer base {
+  [data-volt-theme] {
+    color: var(--foreground);
+    background-color: var(--background);
+  }
+}

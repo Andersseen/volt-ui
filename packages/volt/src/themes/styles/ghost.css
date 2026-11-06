@@ -1,19 +1,42 @@
-:root[data-style='ghost'] {
-  --radius: 0.25rem;
-  --border-width: 0;
+/*
+ * Hierarchy from space and surfaces: no surface borders or resting shadows. Controls keep their
+ * outline and focus keeps its full ring, because those are how an input or a selection is recognised,
+ * and overlays keep a hairline, because nothing else separates them from the page.
+ */
+:root[data-style='ghost'],
+[data-volt-theme][data-style='ghost'] {
+  --radius: 0.5rem;
+  --volt-radius-pill: 9999px;
+
+  --border-width: 0px;
   --border-style: solid;
-  --ring-width: 1px;
-  --ring-offset-width: 1px;
+  --volt-control-border-width: 1px;
+  --volt-divider-width: 1px;
+  --volt-border-emphasis: 0%;
+  --volt-surface-tint: 65%;
+  --volt-control-solid-border: transparent;
 
-  --volt-shadow-sm: none;
-  --volt-shadow: none;
-  --volt-shadow-md: none;
-  --volt-shadow-lg: none;
+  --ring-width: 2px;
+  --ring-offset-width: 2px;
 
-  --spacing-component: 1.25;
-  --spacing-gap: 1rem;
+  /* Not `none`: Tailwind joins this with the focus ring in one `box-shadow`, which `none` would void. */
+  --volt-shadow-sm: 0 0 #0000;
+  --volt-shadow: 0 0 #0000;
+  --volt-shadow-md: 0 0 0 1px var(--border);
+  --volt-shadow-lg: 0 0 0 1px var(--border);
+  --volt-shadow-xl: 0 0 0 1px var(--border);
 
-  --volt-font-weight-base: 300;
+  --volt-press-x: 0px;
+  --volt-press-y: 0px;
+  --volt-press-scale: 0.99;
+
+  --spacing-component: 1.125;
+  --spacing-gap: 0.75rem;
+  --volt-track-size: 0.25rem;
+  --volt-track-border-width: 0px;
+  --volt-thumb-size: 1.125rem;
+
+  --volt-font-weight-base: 400;
   --volt-font-weight-heading: 500;
-  --volt-font-weight-label: 400;
+  --volt-font-weight-label: 500;
 }

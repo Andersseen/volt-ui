@@ -1,0 +1,13 @@
+/*
+ * Every palette and style, for an app that switches theme at runtime or uses `voltTheme` scopes.
+ * For one fixed look, a single `presets/<color>-<style>.css` is smaller.
+ */
+@import './core.css';
+@import './colors/ember.css';
+@import './colors/sage.css';
+@import './colors/dusk.css';
+@import './colors/glacier.css';
+@import './styles/soft.css';
+@import './styles/brutal.css';
+@import './styles/ghost.css';
+@import './styles/retro.css';

@@ -1,17 +1,47 @@
-:root[data-style='retro'] {
-  --radius: 0.5rem;
+/*
+ * Relief: a lit top edge over stepped shadows, and a press that pushes the control into its shadow.
+ * The ink mixes text into page colour, so the steps read in both modes.
+ */
+:root[data-style='retro'],
+[data-volt-theme][data-style='retro'] {
+  --radius: 0.625rem;
+  --volt-radius-pill: 0.625rem;
+
   --border-width: 2px;
   --border-style: solid;
+  --volt-control-border-width: 2px;
+  --volt-divider-width: 1px;
+  --volt-border-emphasis: 35%;
+  --volt-surface-tint: 0%;
+  --volt-control-solid-border: color-mix(in oklch, var(--foreground) 55%, var(--background));
+
   --ring-width: 3px;
   --ring-offset-width: 2px;
 
-  --volt-shadow-sm: 0 2px 0 var(--border);
-  --volt-shadow: 0 4px 0 var(--border);
-  --volt-shadow-md: 0 6px 0 var(--border), 0 8px 0 oklch(0 0 0 / 0.1);
-  --volt-shadow-lg: 0 8px 0 var(--border), 0 12px 0 oklch(0 0 0 / 0.15);
+  --volt-shadow-ink: color-mix(in oklch, var(--foreground) 55%, var(--background));
+  --volt-shadow-glint: inset 0 1px 0 oklch(1 0 0 / 0.2);
 
-  --spacing-component: 1.125;
-  --spacing-gap: 0.5rem;
+  --volt-shadow-sm: var(--volt-shadow-glint), 0 3px 0 var(--volt-shadow-ink);
+  --volt-shadow: var(--volt-shadow-glint), 0 4px 0 var(--volt-shadow-ink);
+  --volt-shadow-md:
+    var(--volt-shadow-glint), 0 5px 0 var(--volt-shadow-ink),
+    0 9px 0 color-mix(in oklch, var(--volt-shadow-ink) 35%, transparent);
+  --volt-shadow-lg:
+    var(--volt-shadow-glint), 0 6px 0 var(--volt-shadow-ink),
+    0 11px 0 color-mix(in oklch, var(--volt-shadow-ink) 35%, transparent);
+  --volt-shadow-xl:
+    var(--volt-shadow-glint), 0 8px 0 var(--volt-shadow-ink),
+    0 14px 0 color-mix(in oklch, var(--volt-shadow-ink) 35%, transparent);
+
+  --volt-press-x: 0px;
+  --volt-press-y: 3px;
+  --volt-press-scale: 1;
+
+  --spacing-component: 1;
+  --spacing-gap: 0.625rem;
+  --volt-track-size: 0.75rem;
+  --volt-track-border-width: 2px;
+  --volt-thumb-size: 1.375rem;
 
   --volt-font-weight-base: 500;
   --volt-font-weight-heading: 700;

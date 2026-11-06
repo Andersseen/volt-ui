@@ -1,47 +1,58 @@
-:root[data-color='glacier'] {
-  --primary: oklch(0.42 0.16 225);
-  --primary-foreground: oklch(0.98 0 0);
-  --secondary: oklch(0.53 0.12 200);
-  --secondary-foreground: oklch(0.98 0 0);
-  --background: oklch(0.98 0.005 225);
-  --foreground: oklch(0.15 0.02 225);
-  --surface: oklch(0.98 0.005 225);
-  --surface-foreground: oklch(0.15 0.02 225);
-  --muted: oklch(0.94 0.01 225);
-  --muted-foreground: oklch(0.524 0.03 225);
-  --border: oklch(0.88 0.02 225);
-  --input: oklch(0.652 0.02 225);
-  --ring: oklch(0.58 0.16 225);
-  --success: oklch(0.531 0.12 165);
-  --success-foreground: oklch(0.98 0 0);
-  --warning: oklch(0.7 0.12 85);
-  --warning-foreground: oklch(0.15 0.05 85);
-  --error: oklch(0.55 0.18 350);
-  --error-foreground: oklch(0.98 0 0);
-  --info: oklch(0.55 0.14 245);
-  --info-foreground: oklch(0.98 0 0);
+/* Cold: a clean cyan accent on blue-grey neutrals. See the token contract in ../tokens.css. */
+:root[data-color='glacier'],
+[data-volt-theme][data-color='glacier'] {
+  --background: oklch(0.982 0.005 225);
+  --foreground: oklch(0.22 0.025 240);
+  --surface: oklch(1 0 0);
+  --surface-foreground: oklch(0.22 0.025 240);
+  --muted: oklch(0.95 0.01 225);
+  --muted-foreground: oklch(0.49 0.03 235);
+  --border: oklch(0.895 0.016 225);
+  --input: oklch(0.64 0.03 230);
+  --ring: oklch(0.58 0.11 215);
+
+  --primary: oklch(0.5 0.1 220);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.93 0.025 215);
+  --secondary-foreground: oklch(0.3 0.05 230);
+
+  --destructive: oklch(0.55 0.21 25);
+  --destructive-foreground: oklch(1 0 0);
+  --success: oklch(0.5 0.13 150);
+  --success-foreground: oklch(1 0 0);
+  --warning: oklch(0.8 0.15 80);
+  --warning-foreground: oklch(0.26 0.06 70);
+  --error: oklch(0.55 0.21 25);
+  --error-foreground: oklch(1 0 0);
+  --info: oklch(0.52 0.15 265);
+  --info-foreground: oklch(1 0 0);
 }
 
-.dark[data-color='glacier'] {
-  --primary: oklch(0.72 0.16 225);
-  --primary-foreground: oklch(0.14 0.02 225);
-  --secondary: oklch(0.53 0.12 200);
-  --secondary-foreground: oklch(0.98 0 0);
-  --background: oklch(0.06 0.01 225);
-  --foreground: oklch(0.96 0.01 225);
-  --surface: oklch(0.1 0.015 225);
-  --surface-foreground: oklch(0.96 0.01 225);
-  --muted: oklch(0.16 0.02 225);
-  --muted-foreground: oklch(0.65 0.02 225);
-  --border: oklch(0.16 0.02 225);
-  --input: oklch(0.464 0.02 225);
-  --ring: oklch(0.65 0.16 225);
-  --success: oklch(0.531 0.12 165);
-  --success-foreground: oklch(0.98 0 0);
-  --warning: oklch(0.556 0.12 85);
-  --warning-foreground: oklch(0.98 0 0);
-  --error: oklch(0.576 0.18 350);
-  --error-foreground: oklch(0.98 0 0);
-  --info: oklch(0.55 0.14 245);
-  --info-foreground: oklch(0.98 0 0);
+.dark[data-color='glacier'],
+.dark [data-volt-theme][data-color='glacier']:not([data-mode='light']) {
+  --background: oklch(0.18 0.018 235);
+  --foreground: oklch(0.96 0.008 220);
+  --surface: oklch(0.22 0.02 235);
+  --surface-foreground: oklch(0.96 0.008 220);
+  --muted: oklch(0.275 0.024 235);
+  --muted-foreground: oklch(0.76 0.025 225);
+  --border: oklch(0.345 0.03 235);
+  --input: oklch(0.56 0.035 230);
+  --ring: oklch(0.8 0.11 210);
+
+  --primary: oklch(0.8 0.11 210);
+  --primary-foreground: oklch(0.19 0.04 230);
+  --secondary: oklch(0.31 0.04 230);
+  --secondary-foreground: oklch(0.93 0.015 220);
+
+  --destructive: oklch(0.7 0.17 25);
+  --destructive-foreground: oklch(0.18 0.05 25);
+  --success: oklch(0.74 0.14 150);
+  --success-foreground: oklch(0.18 0.04 150);
+  --warning: oklch(0.82 0.14 85);
+  --warning-foreground: oklch(0.24 0.06 70);
+  --error: oklch(0.7 0.17 25);
+  --error-foreground: oklch(0.18 0.05 25);
+  --info: oklch(0.76 0.11 265);
+  --info-foreground: oklch(0.18 0.04 265);
 }
