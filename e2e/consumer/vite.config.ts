@@ -13,6 +13,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@voltui/components/themes.css': resolve(repoRoot, 'dist/volt/themes.css'),
+      '@voltui/components/themes': resolve(repoRoot, 'dist/volt/themes'),
       '@voltui/components': resolve(repoRoot, 'dist/volt/fesm2022/voltui-components.mjs'),
     },
   },

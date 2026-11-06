@@ -1,5 +1,6 @@
 import type { PlainTranslationKey } from '@shared/i18n/i18n';
 import type { ColorToken, ModePalette } from './palette';
+import { shippedPalette } from './shipped-palettes';
 
 /**
  * The data behind the theme studio: token names, the editable field list, the starting
@@ -162,167 +163,18 @@ export const colorFields: ColorField[] = [
   },
 ];
 
-export const presets: Record<PresetName, Omit<ThemeDraft, 'name'>> = {
-  glacier: {
-    radius: 6,
-    borderWidth: 1,
-    ringWidth: 2,
-    shadowIntensity: 10,
-    light: {
-      background: '#f7fbff',
-      foreground: '#172938',
-      surface: '#f7fbff',
-      surfaceForeground: '#172938',
-      muted: '#eef6fb',
-      mutedForeground: '#647888',
-      border: '#d4e6ef',
-      input: '#d4e6ef',
-      ring: '#1896d4',
-      primary: '#1896d4',
-      primaryForeground: '#ffffff',
-      secondary: '#32b7cf',
-      secondaryForeground: '#ffffff',
-      success: '#2bb891',
-      successForeground: '#ffffff',
-      warning: '#d9b03d',
-      warningForeground: '#172938',
-      error: '#d64c7a',
-      errorForeground: '#ffffff',
-      info: '#268ee8',
-      infoForeground: '#ffffff',
-    },
-    dark: {
-      background: '#031014',
-      foreground: '#effcff',
-      surface: '#071c22',
-      surfaceForeground: '#effcff',
-      muted: '#102a32',
-      mutedForeground: '#9bb8c3',
-      border: '#17323b',
-      input: '#17323b',
-      ring: '#28aee8',
-      primary: '#28aee8',
-      primaryForeground: '#ffffff',
-      secondary: '#4dc4d7',
-      secondaryForeground: '#ffffff',
-      success: '#2cb68e',
-      successForeground: '#ffffff',
-      warning: '#caa43c',
-      warningForeground: '#ffffff',
-      error: '#dc5d86',
-      errorForeground: '#ffffff',
-      info: '#3aa5f2',
-      infoForeground: '#ffffff',
-    },
-  },
-  sage: {
-    radius: 16,
-    borderWidth: 1,
-    ringWidth: 2,
-    shadowIntensity: 8,
-    light: {
-      background: '#f7fbf8',
-      foreground: '#21352d',
-      surface: '#f7fbf8',
-      surfaceForeground: '#21352d',
-      muted: '#eef5ef',
-      mutedForeground: '#667a70',
-      border: '#d8e5dc',
-      input: '#d8e5dc',
-      ring: '#299b69',
-      primary: '#299b69',
-      primaryForeground: '#ffffff',
-      secondary: '#35a5a0',
-      secondaryForeground: '#ffffff',
-      success: '#1f7d55',
-      successForeground: '#ffffff',
-      warning: '#c8a13d',
-      warningForeground: '#21352d',
-      error: '#c84f48',
-      errorForeground: '#ffffff',
-      info: '#3d87c8',
-      infoForeground: '#ffffff',
-    },
-    dark: {
-      background: '#06100c',
-      foreground: '#eff8f2',
-      surface: '#0d1b15',
-      surfaceForeground: '#eff8f2',
-      muted: '#16261e',
-      mutedForeground: '#99aea3',
-      border: '#1d3026',
-      input: '#1d3026',
-      ring: '#2fa66f',
-      primary: '#2fa66f',
-      primaryForeground: '#ffffff',
-      secondary: '#37aaa4',
-      secondaryForeground: '#ffffff',
-      success: '#329a68',
-      successForeground: '#ffffff',
-      warning: '#c19d38',
-      warningForeground: '#ffffff',
-      error: '#d35b52',
-      errorForeground: '#ffffff',
-      info: '#3b8bcf',
-      infoForeground: '#ffffff',
-    },
-  },
-  ember: {
-    radius: 6,
-    borderWidth: 1,
-    ringWidth: 2,
-    shadowIntensity: 12,
-    light: {
-      background: '#fff9f0',
-      foreground: '#3d2719',
-      surface: '#fff9f0',
-      surfaceForeground: '#3d2719',
-      muted: '#f8ead8',
-      mutedForeground: '#896c55',
-      border: '#edd7bf',
-      input: '#edd7bf',
-      ring: '#e44e2e',
-      primary: '#e44e2e',
-      primaryForeground: '#ffffff',
-      secondary: '#d89522',
-      secondaryForeground: '#3d2719',
-      success: '#50ad49',
-      successForeground: '#ffffff',
-      warning: '#d89522',
-      warningForeground: '#3d2719',
-      error: '#d9362b',
-      errorForeground: '#ffffff',
-      info: '#417ed4',
-      infoForeground: '#ffffff',
-    },
-    dark: {
-      background: '#140c07',
-      foreground: '#fff2df',
-      surface: '#21140c',
-      surfaceForeground: '#fff2df',
-      muted: '#332114',
-      mutedForeground: '#c69c77',
-      border: '#3a2819',
-      input: '#3a2819',
-      ring: '#f05b35',
-      primary: '#f05b35',
-      primaryForeground: '#ffffff',
-      secondary: '#d99824',
-      secondaryForeground: '#2a1a10',
-      success: '#58b34f',
-      successForeground: '#ffffff',
-      warning: '#d99824',
-      warningForeground: '#ffffff',
-      error: '#e34a3d',
-      errorForeground: '#ffffff',
-      info: '#4b88df',
-      infoForeground: '#ffffff',
-    },
-  },
+const SHAPES: Record<
+  PresetName,
+  Pick<ThemeDraft, 'radius' | 'borderWidth' | 'ringWidth' | 'shadowIntensity'>
+> = {
+  glacier: { radius: 6, borderWidth: 1, ringWidth: 2, shadowIntensity: 10 },
+  sage: { radius: 16, borderWidth: 1, ringWidth: 2, shadowIntensity: 8 },
+  ember: { radius: 6, borderWidth: 1, ringWidth: 2, shadowIntensity: 12 },
 };
 
+/** A starting draft: the shipped palette, as the hex values the colour fields edit. */
 export function clonePreset(name: PresetName, themeName = 'custom-theme'): ThemeDraft {
-  return structuredClone({ name: themeName, ...presets[name] });
+  return { name: themeName, ...SHAPES[name], ...shippedPalette(name) };
 }
 
 export function normalizeThemeName(name: string): string {
@@ -348,19 +200,60 @@ export function isPresetName(value: unknown): value is PresetName {
   return value === 'glacier' || value === 'sage' || value === 'ember';
 }
 
-/** The `--token: value;` inline style map the live preview is rendered with. */
-export function paletteStyleVars(palette: ModePalette): Record<string, string> {
-  return Object.fromEntries(
-    Object.entries(tokenNames).map(([key, tokenName]) => [
-      `--${tokenName}`,
-      palette[key as ColorToken],
-    ])
-  );
+/** Every palette token of one mode, as the custom properties the library reads. */
+export function paletteVars(palette: ModePalette): Record<string, string> {
+  return {
+    ...Object.fromEntries(
+      Object.entries(tokenNames).map(([key, tokenName]) => [
+        `--${tokenName}`,
+        palette[key as ColorToken],
+      ])
+    ),
+    // The studio edits one danger colour; the library paints with both roles.
+    '--destructive': palette.error,
+    '--destructive-foreground': palette.errorForeground,
+  };
 }
 
-/** The same tokens as declaration lines, for the exported stylesheet. */
-export function paletteCssLines(palette: ModePalette): string[] {
-  return Object.entries(tokenNames).map(
-    ([key, tokenName]) => `--${tokenName}: ${palette[key as ColorToken]};`
-  );
+/**
+ * The shape tokens a draft sets. The preview and the exported stylesheet both come from here, so
+ * what the studio shows is what an app gets. Surfaces take the chosen border; a control never drops
+ * below 1px, because its outline is what makes it recognisable.
+ */
+export function shapeVars(theme: ThemeDraft): Record<string, string> {
+  const shadow = (geometry: string, divisor: number) =>
+    `${geometry} rgb(0 0 0 / ${theme.shadowIntensity / divisor})`;
+
+  return {
+    '--radius': `${theme.radius}px`,
+    '--volt-radius-pill': theme.radius === 0 ? '0px' : '9999px',
+    '--border-width': `${theme.borderWidth}px`,
+    '--volt-control-border-width': `${Math.max(theme.borderWidth, 1)}px`,
+    '--ring-width': `${theme.ringWidth}px`,
+    '--ring-offset-width': '2px',
+    '--volt-shadow-sm': shadow('0 1px 2px 0', 400),
+    '--volt-shadow': shadow('0 2px 8px 0', 300),
+    '--volt-shadow-md': shadow('0 8px 20px 0', 260),
+    '--volt-shadow-lg': shadow('0 18px 38px 0', 220),
+    '--volt-shadow-xl': shadow('0 28px 56px 0', 180),
+  };
+}
+
+function declarations(vars: Record<string, string>): string {
+  return indent(Object.entries(vars).map(([name, value]) => `${name}: ${value};`));
+}
+
+/**
+ * A stylesheet for an app that already imports Volt's tokens. The selectors are the ones a shipped
+ * palette uses, so `data-color` and `voltTheme` both pick it up.
+ */
+export function themeCss(theme: ThemeDraft): string {
+  const name = normalizeThemeName(theme.name);
+  const light = declarations({ ...paletteVars(theme.light), ...shapeVars(theme) });
+  const dark = declarations(paletteVars(theme.dark));
+
+  return [
+    `:root[data-color='${name}'],\n[data-volt-theme][data-color='${name}'] {\n${light}\n}`,
+    `.dark[data-color='${name}'],\n.dark [data-volt-theme][data-color='${name}']:not([data-mode='light']) {\n${dark}\n}`,
+  ].join('\n\n');
 }

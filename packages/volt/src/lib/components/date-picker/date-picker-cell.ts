@@ -15,6 +15,6 @@ export class VoltDatePickerCell {
   readonly class = input<string>('');
 
   protected readonly classes = computed(() =>
-    cn('relative size-9 p-0 text-center text-sm', this.class())
+    cn('relative size-control-dense p-0 text-center text-sm', this.class())
   );
 }

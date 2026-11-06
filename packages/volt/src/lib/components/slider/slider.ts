@@ -57,23 +57,32 @@ import { cn } from '../../utils';
   template: `
     <div
       ngpSliderTrack
-      class="relative h-2 w-full grow overflow-hidden rounded-full bg-muted-foreground/20"
+      class="relative grow overflow-hidden rounded-pill border-(length:--volt-track-border-width) border-border bg-track data-[orientation=horizontal]:h-track data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-track"
     >
-      <div ngpSliderRange class="absolute h-full rounded-full bg-primary"></div>
+      <div
+        ngpSliderRange
+        class="absolute rounded-pill bg-primary data-[orientation=horizontal]:h-full data-[orientation=vertical]:w-full"
+      ></div>
     </div>
     <div
       ngpSliderThumb
       [attr.aria-label]="ariaLabel()"
       [attr.aria-invalid]="formControlState.invalid() ? 'true' : null"
-      class="absolute top-1/2 block h-5 w-5 -translate-x-1/2 -translate-y-1/2 cursor-grab rounded-full border-2 border-primary bg-background ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[press]:cursor-grabbing"
+      class="absolute block size-thumb -translate-x-1/2 -translate-y-1/2 cursor-grab rounded-pill border-2 border-primary bg-background shadow-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-(length:--ring-width) focus-visible:ring-ring focus-visible:ring-offset-(length:--ring-offset-width) aria-invalid:border-error data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[orientation=horizontal]:top-1/2 data-[orientation=vertical]:left-1/2 data-[press]:cursor-grabbing"
     ></div>
   `,
 })
 export class VoltSlider implements ControlValueAccessor {
   readonly class = input<string>('');
 
+  // On the host, not as `data-[orientation=…]:` variants: a consumer's `h-72` has to replace the
+  // default through `cn()`, and a variant would outrank it.
   protected readonly classes = computed(() =>
-    cn('relative flex w-full touch-none select-none items-center', this.class())
+    cn(
+      'relative flex touch-none select-none items-center',
+      this.orientation() === 'vertical' ? 'h-48 min-w-thumb flex-col' : 'min-h-thumb w-full',
+      this.class()
+    )
   );
 
   /** Access the slider state to wire up forms integration. */
@@ -120,11 +129,14 @@ export class VoltSlider implements ControlValueAccessor {
     });
   }
 
+  /**
+   * A slider always shows a position, so it has no empty state to show for `null`: it returns to
+   * where it rests without a form, its `value` input clamped into `min`/`max`. The control keeps
+   * `null` until someone moves the thumb.
+   */
   writeValue(value: number | null | undefined): void {
-    if (value != null) {
-      this.writtenByForm = true;
-      this.state().setValue(value, { emit: false });
-    }
+    this.writtenByForm = value != null;
+    this.state().setValue(value ?? this.value(), { emit: false });
   }
 
   registerOnChange(fn: (value: number) => void): void {

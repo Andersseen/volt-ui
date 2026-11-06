@@ -87,6 +87,10 @@ Your app can still use Tailwind normally for its own templates:
 
 ## Themes
 
+Set a density with `provideVoltTheme({ density: 'compact' })`, or theme one container with
+`<section [voltTheme]="{ color: 'ember', style: 'soft' }">` and `@voltui/components/themes/all.css`.
+`themes/tokens.css` is the same contract without the body and scrollbar rules.
+
 Available theme colors: `volt`, `ember`, `sage`, `dusk`, `glacier`.
 
 Available styles: `sharp`, `soft`, `brutal`, `ghost`, `retro`.

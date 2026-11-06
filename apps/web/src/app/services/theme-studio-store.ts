@@ -14,11 +14,11 @@ import {
   clonePreset,
   colorFields,
   eventValue,
-  indent,
   isPresetName,
   normalizeThemeName,
-  paletteCssLines,
-  paletteStyleVars,
+  paletteVars,
+  shapeVars,
+  themeCss,
   type PresetName,
   type ThemeDraft,
   type ThemeMode,
@@ -64,45 +64,12 @@ export class ThemeStudioStore {
     this.previewDark() ? this.theme().dark : this.theme().light
   );
 
-  readonly previewStyle = computed(() => {
-    const palette = this.activePalette();
-    const theme = this.theme();
+  readonly previewStyle = computed(() => ({
+    ...paletteVars(this.activePalette()),
+    ...shapeVars(this.theme()),
+  }));
 
-    return {
-      ...paletteStyleVars(palette),
-      '--radius': `${theme.radius}px`,
-      '--border-width': `${theme.borderWidth}px`,
-      '--ring-width': `${theme.ringWidth}px`,
-      '--shadow-sm': `0 1px 2px 0 rgb(0 0 0 / ${theme.shadowIntensity / 400})`,
-      '--shadow': `0 2px 8px 0 rgb(0 0 0 / ${theme.shadowIntensity / 300})`,
-      '--shadow-md': `0 8px 20px 0 rgb(0 0 0 / ${theme.shadowIntensity / 260})`,
-      '--shadow-lg': `0 18px 38px 0 rgb(0 0 0 / ${theme.shadowIntensity / 220})`,
-      '--scrollbar-track': 'color-mix(in oklch, var(--background) 88%, var(--surface))',
-      '--scrollbar-thumb': 'color-mix(in oklch, var(--primary) 42%, var(--border))',
-      '--scrollbar-thumb-hover': 'color-mix(in oklch, var(--primary) 64%, var(--border))',
-    };
-  });
-
-  readonly generatedCss = computed(() => {
-    const theme = this.theme();
-    const name = this.normalizedName();
-    const shape = [
-      `--radius: ${theme.radius}px;`,
-      `--border-width: ${theme.borderWidth}px;`,
-      `--border-style: solid;`,
-      `--ring-width: ${theme.ringWidth}px;`,
-      `--ring-offset-width: 2px;`,
-      `--shadow-sm: 0 1px 2px 0 rgb(0 0 0 / ${theme.shadowIntensity / 400});`,
-      `--shadow: 0 2px 8px 0 rgb(0 0 0 / ${theme.shadowIntensity / 300});`,
-      `--shadow-md: 0 8px 20px 0 rgb(0 0 0 / ${theme.shadowIntensity / 260});`,
-      `--shadow-lg: 0 18px 38px 0 rgb(0 0 0 / ${theme.shadowIntensity / 220});`,
-    ];
-
-    return `:root[data-color='${name}'] {\n${indent([
-      ...paletteCssLines(theme.light),
-      ...shape,
-    ])}\n}\n\n.dark[data-color='${name}'] {\n${indent(paletteCssLines(theme.dark))}\n}`;
-  });
+  readonly generatedCss = computed(() => themeCss(this.theme()));
 
   setName(value: unknown): void {
     if (typeof value !== 'string') return;

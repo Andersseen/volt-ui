@@ -1,6 +1,7 @@
 import { Directive, input, computed } from '@angular/core';
 import { NgpDialog } from 'ng-primitives/dialog';
 import { cn } from '../../utils';
+import { VoltThemeInherit } from '../theme/theme-scope';
 
 export type DrawerSide = 'left' | 'right' | 'top' | 'bottom';
 
@@ -11,6 +12,7 @@ export type DrawerSide = 'left' | 'right' | 'top' | 'bottom';
       directive: NgpDialog,
       inputs: ['ngpDialogRole: role', 'ngpDialogModal: modal'],
     },
+    VoltThemeInherit,
   ],
   host: {
     '[class]': 'computedClass()',
@@ -25,15 +27,15 @@ export class VoltDrawerContent {
     // and keeps the element mounted until the exit animation finishes. It never sets
     // `data-state`, so keying animations off that attribute leaves them dead.
     const baseStyles =
-      'fixed z-50 bg-surface text-surface-foreground shadow-xl animate-in data-[exit]:animate-out duration-300 ease-out';
+      'fixed z-50 bg-popover text-popover-foreground shadow-xl animate-in data-[exit]:animate-out duration-300 ease-out';
 
     const sideStyles: Record<DrawerSide, string> = {
-      left: 'inset-y-0 left-0 h-full w-[300px] max-w-[85vw] border-r border-border slide-in-from-left data-[exit]:slide-out-to-left',
+      left: 'inset-y-0 left-0 h-full w-[300px] max-w-[85vw] border-r-(length:--border-width) border-border slide-in-from-left data-[exit]:slide-out-to-left',
       right:
-        'inset-y-0 right-0 h-full w-[300px] max-w-[85vw] border-l border-border slide-in-from-right data-[exit]:slide-out-to-right',
-      top: 'inset-x-0 top-0 w-full h-[300px] max-h-[85vh] border-b border-border slide-in-from-top data-[exit]:slide-out-to-top',
+        'inset-y-0 right-0 h-full w-[300px] max-w-[85vw] border-l-(length:--border-width) border-border slide-in-from-right data-[exit]:slide-out-to-right',
+      top: 'inset-x-0 top-0 w-full h-[300px] max-h-[85vh] border-b-(length:--border-width) border-border slide-in-from-top data-[exit]:slide-out-to-top',
       bottom:
-        'inset-x-0 bottom-0 w-full h-[300px] max-h-[85vh] border-t border-border slide-in-from-bottom data-[exit]:slide-out-to-bottom',
+        'inset-x-0 bottom-0 w-full h-[300px] max-h-[85vh] border-t-(length:--border-width) border-border slide-in-from-bottom data-[exit]:slide-out-to-bottom',
     };
 
     return cn(baseStyles, sideStyles[this.side()], this.class());

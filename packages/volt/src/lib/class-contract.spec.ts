@@ -31,7 +31,7 @@ describeClassContract({
   imports: [VoltCard],
   target: q('volt-card'),
   conflict: ['rounded-md', 'rounded-xl'],
-  keep: ['border', 'bg-surface'],
+  keep: ['border-(length:--border-width)', 'bg-card'],
 });
 
 describeClassContract({
@@ -39,7 +39,7 @@ describeClassContract({
   template: cls => `<volt-card-header class="${cls}">x</volt-card-header>`,
   imports: [VoltCardHeader],
   target: q('volt-card-header'),
-  conflict: ['p-3', 'p-6'],
+  conflict: ['p-3', 'p-card'],
   keep: ['flex', 'flex-col'],
 });
 
@@ -76,7 +76,7 @@ describeClassContract({
   template: cls => `<volt-card-footer class="${cls}">x</volt-card-footer>`,
   imports: [VoltCardFooter],
   target: q('volt-card-footer'),
-  conflict: ['p-3', 'p-6'],
+  conflict: ['p-3', 'p-card'],
   keep: ['flex', 'items-center'],
 });
 
@@ -85,7 +85,7 @@ describeClassContract({
   template: cls => `<volt-badge class="${cls}">x</volt-badge>`,
   imports: [VoltBadge],
   target: q('volt-badge'),
-  conflict: ['rounded-md', 'rounded-full'],
+  conflict: ['rounded-md', 'rounded-pill'],
   keep: ['inline-flex', 'bg-primary'],
 });
 
@@ -94,7 +94,7 @@ describeClassContract({
   template: cls => `<volt-alert variant="success" class="${cls}">x</volt-alert>`,
   imports: [VoltAlert],
   target: q('volt-alert'),
-  conflict: ['p-6', 'px-4'],
+  conflict: ['p-6', 'px-inset-md'],
   keep: ['flex', 'bg-success/10'],
 });
 
@@ -157,7 +157,7 @@ describeClassContract({
   template: cls => `<volt-table-cell class="${cls}">x</volt-table-cell>`,
   imports: [VoltTableCell],
   target: q('volt-table-cell'),
-  conflict: ['p-2', 'p-4'],
+  conflict: ['p-2', 'p-inset-md'],
   keep: ['table-cell'],
 });
 
@@ -166,7 +166,7 @@ describeClassContract({
   template: cls => `<volt-form-field class="${cls}"></volt-form-field>`,
   imports: [VoltFormField],
   target: q('volt-form-field'),
-  conflict: ['space-y-1', 'space-y-2'],
+  conflict: ['space-y-1', 'space-y-stack'],
   keep: ['block'],
 });
 
@@ -190,7 +190,7 @@ describeClassContract({
   `,
   imports: [VoltTabs, VoltTabsList, VoltTabsTrigger],
   target: q('volt-tabs-trigger'),
-  conflict: ['px-6', 'px-3'],
+  conflict: ['px-6', 'px-inset-sm'],
   keep: ['inline-flex'],
 });
 
@@ -200,7 +200,7 @@ describeClassContract({
   template: cls => `<button voltButton class="${cls}">Save</button>`,
   imports: [VoltNativeButton],
   target: q('button'),
-  conflict: ['h-9', 'h-10'],
+  conflict: ['h-9', 'h-control-md'],
   keep: ['inline-flex', 'bg-primary'],
 });
 
@@ -218,8 +218,8 @@ describeClassContract({
   template: cls => `<select voltNativeSelect class="${cls}"><option>a</option></select>`,
   imports: [VoltNativeSelect],
   target: q('select'),
-  conflict: ['h-8', 'h-10'],
-  keep: ['border', 'w-full'],
+  conflict: ['h-8', 'h-control-md'],
+  keep: ['border-(length:--volt-control-border-width)', 'w-full'],
 });
 
 // Wrappers: the consumer class belongs to the native element, not the host.
@@ -228,7 +228,7 @@ describeClassContract({
   template: cls => `<volt-button class="${cls}">Save</volt-button>`,
   imports: [VoltButton],
   target: q('volt-button > button'),
-  conflict: ['h-9', 'h-10'],
+  conflict: ['h-9', 'h-control-md'],
   keep: ['inline-flex', 'bg-primary'],
   // No `host` check: for 1.x compatibility <volt-button> keeps the static class on the host too.
 });
@@ -239,8 +239,8 @@ describeClassContract({
   imports: [VoltInput],
   target: q('volt-input > input'),
   host: q('volt-input'),
-  conflict: ['px-2.5', 'px-3'],
-  keep: ['border', 'rounded-lg'],
+  conflict: ['px-2.5', 'px-inset-sm'],
+  keep: ['border-(length:--volt-control-border-width)', 'rounded-md'],
 });
 
 describeClassContract({
@@ -249,8 +249,8 @@ describeClassContract({
   imports: [VoltTextarea],
   target: q('volt-textarea > textarea'),
   host: q('volt-textarea'),
-  conflict: ['px-2', 'px-4'],
-  keep: ['border', 'w-full'],
+  conflict: ['px-2', 'px-inset-md'],
+  keep: ['border-(length:--volt-control-border-width)', 'w-full'],
 });
 
 describeClassContract({
@@ -259,8 +259,8 @@ describeClassContract({
   imports: [VoltSelect],
   target: q('volt-select > button'),
   host: q('volt-select'),
-  conflict: ['h-8', 'h-10'],
-  keep: ['border', 'justify-between'],
+  conflict: ['h-8', 'h-control-md'],
+  keep: ['border-(length:--volt-control-border-width)', 'justify-between'],
 });
 
 describeClassContract({
@@ -300,7 +300,7 @@ describeClassContract({
   imports: [VoltSearch, VoltSearchClear],
   target: q('volt-search-clear > button'),
   host: q('volt-search-clear'),
-  conflict: ['h-6', 'h-8'],
+  conflict: ['h-6', 'h-control-sm'],
   keep: ['inline-flex'],
 });
 

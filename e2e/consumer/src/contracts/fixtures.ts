@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import {
   NgpDatePickerCellRender,
@@ -371,6 +372,86 @@ export class SliderFixtures {
   protected readonly volume = signal(50);
   protected readonly low = signal(20);
   protected readonly high = signal(80);
+}
+
+/**
+ * Both orientations and the Forms path of Slider and Range Slider. `e2e/contracts/range.spec.ts`
+ * reads real geometry from these, because `aria-orientation` alone says nothing about layout.
+ */
+@Component({
+  selector: 'app-slider-contract',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [ReactiveFormsModule, VoltSlider, VoltRangeSlider, VoltNativeButton],
+  template: `
+    <div class="flex gap-16 p-6">
+      <volt-slider
+        class="h-48"
+        orientation="vertical"
+        ariaLabel="Vertical volume"
+        [value]="30"
+        (valueChange)="verticalEmits.push($event)"
+      />
+      <volt-range-slider
+        class="h-48"
+        orientation="vertical"
+        ariaLabelLow="Vertical low"
+        ariaLabelHigh="Vertical high"
+        [low]="20"
+        [high]="60"
+      />
+    </div>
+
+    <div class="grid gap-6 p-6">
+      <volt-slider
+        [formControl]="level"
+        ariaLabel="Form level"
+        [min]="10"
+        [max]="50"
+        (valueChange)="levelEmits.push($event)"
+      />
+      <volt-slider [formControl]="seeded" ariaLabel="Seeded level" [value]="35" />
+      <volt-range-slider
+        [formControl]="span"
+        ariaLabelLow="Form low"
+        ariaLabelHigh="Form high"
+        [low]="10"
+        [high]="90"
+      />
+    </div>
+
+    <button voltButton type="button" (click)="level.reset()">Reset level</button>
+    <button voltButton type="button" (click)="level.reset(40)">Reset level to 40</button>
+    <button voltButton type="button" (click)="seeded.reset()">Reset seeded</button>
+    <button voltButton type="button" (click)="span.reset()">Reset span</button>
+    <button voltButton type="button" (click)="span.reset([30, 40])">Reset span to 30-40</button>
+    <button voltButton type="button" (click)="toggleDisabled()">Toggle disabled</button>
+
+    <output id="level">{{ levelJson() }}</output>
+    <output id="span">{{ spanJson() }}</output>
+  `,
+})
+export class SliderContractFixture {
+  protected readonly level = new FormControl<number | null>(20);
+  protected readonly seeded = new FormControl<number | null>(15);
+  protected readonly span = new FormControl<[number, number] | null>([25, 75]);
+  protected readonly verticalEmits: number[] = [];
+  protected readonly levelEmits: number[] = [];
+  private readonly levelValue = toSignal(this.level.valueChanges, {
+    initialValue: this.level.value,
+  });
+  private readonly spanValue = toSignal(this.span.valueChanges, { initialValue: this.span.value });
+  protected readonly levelJson = computed(() =>
+    JSON.stringify({ value: this.levelValue(), emits: this.levelEmits })
+  );
+  protected readonly spanJson = computed(() => JSON.stringify(this.spanValue()));
+
+  protected toggleDisabled(): void {
+    if (this.level.disabled) {
+      this.level.enable();
+    } else {
+      this.level.disable();
+    }
+  }
 }
 
 @Component({

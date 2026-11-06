@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
 import { ThemeStudioStore } from '../services/theme-studio-store';
 import CreateThemePage from './create-theme.page';
+import { shippedPalette } from '../lib/shipped-palettes';
 
 /**
  * The generated CSS is rendered by `app-code-editor`, whose `vertex-editor-lite` web
@@ -25,8 +26,29 @@ describe('Theme Studio', () => {
     expect(screen.getByRole('tab', { name: 'Light' })).toHaveAttribute('aria-selected', 'true');
     expect(
       within(screen.getByRole('tabpanel', { name: 'Light' })).getByLabelText('Background')
-    ).toHaveValue('#f7fbff');
+    ).toHaveValue(shippedPalette('glacier').light.background);
     expect(store.generatedCss()).toContain(":root[data-color='custom-theme']");
+  });
+
+  it('exports what a consumer needs and the library actually reads', async () => {
+    const { store } = await renderStudio();
+    const css = store.generatedCss();
+
+    // `--shadow-*` are Tailwind's inlined names; only `--volt-shadow-*` reach a component.
+    expect(css).toContain('--volt-shadow-md:');
+    expect(css).not.toMatch(/^\s*--shadow-/m);
+    expect(css).toContain('--volt-control-border-width: 1px;');
+    expect(css).toContain('--destructive:');
+    expect(css).toContain("[data-volt-theme][data-color='custom-theme']");
+  });
+
+  it('never lets a control lose its outline when surfaces drop their border', async () => {
+    const { store } = await renderStudio();
+
+    store.setNumber('borderWidth', 0);
+
+    expect(store.generatedCss()).toContain('--border-width: 0px;');
+    expect(store.generatedCss()).toContain('--volt-control-border-width: 1px;');
   });
 
   it('normalizes theme names in the preview and generated selectors', async () => {
@@ -54,7 +76,7 @@ describe('Theme Studio', () => {
     expect(screen.getByRole('switch', { name: 'Dark preview' })).toBeChecked();
     expect(
       within(screen.getByRole('tabpanel', { name: 'Dark' })).getByLabelText('Primary')
-    ).toHaveValue('#28aee8');
+    ).toHaveValue(shippedPalette('glacier').dark.primary);
 
     fireEvent.click(screen.getByRole('switch', { name: 'Dark preview' }));
     expect(screen.getByRole('switch', { name: 'Dark preview' })).not.toBeChecked();

@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { NgpPopover } from 'ng-primitives/popover';
 import { cn } from '../../utils';
+import { VoltThemeInherit } from '../theme/theme-scope';
 
 @Component({
   selector: 'volt-popover-content',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [NgpPopover],
+  hostDirectives: [NgpPopover, VoltThemeInherit],
   host: {
     '[class]': 'classes()',
   },
@@ -16,7 +17,7 @@ export class VoltPopoverContent {
 
   protected readonly classes = computed(() =>
     cn(
-      'fixed z-50 w-72 rounded-lg border border-border bg-popover p-4 text-popover-foreground shadow-md outline-none',
+      'fixed z-50 w-72 rounded-lg border-(length:--border-width) border-border bg-popover p-panel text-popover-foreground shadow-md outline-none',
       this.class()
     )
   );

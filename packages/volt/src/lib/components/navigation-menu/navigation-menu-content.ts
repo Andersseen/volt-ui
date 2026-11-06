@@ -12,6 +12,7 @@ import {
   provideNavigationMenuContentState,
 } from 'ng-primitives/navigation-menu';
 import { cn } from '../../utils';
+import { VoltThemeInherit } from '../theme/theme-scope';
 import { VoltNavigationMenuItem } from './navigation-menu-item';
 
 @Component({
@@ -29,6 +30,7 @@ import { VoltNavigationMenuItem } from './navigation-menu-item';
         'ngpNavigationMenuContentWrap: wrap',
       ],
     },
+    VoltThemeInherit,
   ],
   template: `<ng-content />`,
 })
@@ -37,7 +39,7 @@ export class VoltNavigationMenuContent {
 
   protected readonly classes = computed(() =>
     cn(
-      'fixed z-50 min-w-[8rem] overflow-hidden rounded-lg border border-border bg-surface p-1 shadow-md hidden data-[open]:block',
+      'fixed z-50 min-w-[8rem] overflow-hidden rounded-lg border-(length:--border-width) border-border bg-popover p-1 shadow-md hidden data-[open]:block',
       this.class()
     )
   );

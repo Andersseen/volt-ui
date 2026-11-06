@@ -32,7 +32,9 @@ import { VoltAccordion } from './accordion';
 export class VoltAccordionItem implements OnInit {
   readonly class = input<string>('');
 
-  protected readonly classes = computed(() => cn('border-b border-border/50', this.class()));
+  protected readonly classes = computed(() =>
+    cn('border-b-(length:--volt-divider-width) border-border/50', this.class())
+  );
 
   readonly value = input.required<string>();
   protected readonly item = inject(AccordionItemDirective, { self: true });

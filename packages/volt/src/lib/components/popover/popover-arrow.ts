@@ -9,7 +9,7 @@ import { NgpPopoverArrow } from 'ng-primitives/popover';
     <span
       ngpPopoverArrow
       [ngpPopoverArrowPadding]="padding()"
-      class="block h-2 w-2 rotate-45 border border-border bg-popover"
+      class="block h-2 w-2 rotate-45 border-(length:--border-width) border-border bg-popover"
       [class.hidden]="hidden()"
     ></span>
   `,

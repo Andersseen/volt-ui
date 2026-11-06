@@ -15,6 +15,9 @@ export class VoltProgressValue {
   readonly class = input<string>('');
 
   protected readonly classes = computed(() =>
-    cn('block text-sm text-muted-foreground', this.class())
+    cn(
+      'col-start-2 row-start-1 mb-1.5 block text-right text-sm tabular-nums text-muted-foreground',
+      this.class()
+    )
   );
 }

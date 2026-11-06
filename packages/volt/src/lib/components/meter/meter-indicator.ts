@@ -16,7 +16,7 @@ export class VoltMeterIndicator {
 
   protected readonly classes = computed(() =>
     cn(
-      'block h-full rounded-full bg-primary transition-[width] duration-300 ease-in-out',
+      'block h-full rounded-pill bg-primary transition-[width] duration-300 ease-in-out motion-reduce:transition-none',
       this.class()
     )
   );

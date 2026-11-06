@@ -52,7 +52,7 @@ export class VoltListbox<T = unknown> implements ControlValueAccessor {
 
   protected readonly classes = computed(() =>
     cn(
-      'grid min-w-[12rem] gap-1 rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-sm outline-none',
+      'grid min-w-[12rem] gap-1 rounded-md border-(length:--border-width) border-border bg-popover p-1 text-popover-foreground shadow-sm outline-none',
       this.class()
     )
   );

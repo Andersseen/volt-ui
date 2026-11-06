@@ -37,7 +37,7 @@ export class VoltEmptyState {
 
   protected readonly classes = computed(() =>
     cn(
-      'flex w-full min-w-0 flex-col items-center justify-center gap-4 rounded-lg border border-dashed border-border px-6 py-10 text-center text-foreground [&>[slot=icon]]:size-10 [&>[slot=icon]]:shrink-0 [&>[slot=icon]]:text-muted-foreground [&>[slot=actions]]:flex [&>[slot=actions]]:flex-wrap [&>[slot=actions]]:justify-center [&>[slot=actions]]:gap-2',
+      'flex w-full min-w-0 flex-col items-center justify-center gap-4 rounded-lg border-(length:--border-width) border-dashed border-border px-6 py-10 text-center text-foreground [&>[slot=icon]]:size-10 [&>[slot=icon]]:shrink-0 [&>[slot=icon]]:text-muted-foreground [&>[slot=actions]]:flex [&>[slot=actions]]:flex-wrap [&>[slot=actions]]:justify-center [&>[slot=actions]]:gap-2',
       this.class()
     )
   );

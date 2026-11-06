@@ -16,6 +16,7 @@ Both modes use the same source. Pick the one that matches how much of the compon
 ## Copy-and-own mode: `@voltui/cli`
 
 - `npx @voltui/cli add <component>` copies the source and its local dependencies into your project.
+- Copied components read the same tokens as the package, so keep `themes.css` at the version you copied them from.
 - Names become `Ui*` and `ui-*`, so what you read here maps one-to-one onto your copy.
 - You edit the files directly; updates are manual.
 - Best when you need to change a component's markup or behaviour.

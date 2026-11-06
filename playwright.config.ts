@@ -14,7 +14,7 @@ export default defineConfig({
   testDir: './e2e',
   // contracts/ has its own config and server (playwright.contracts.config.ts).
   testIgnore: [
-    /consumer(-cli)?(-workflow|-async)?\.spec\.ts/,
+    /consumer(-cli)?(-workflow|-async|-themes)?\.spec\.ts/,
     /storybook\//,
     /contracts\//,
     // The Recipes app has its own config and server (playwright.recipes.config.ts).

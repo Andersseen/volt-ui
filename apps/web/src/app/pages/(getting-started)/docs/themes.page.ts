@@ -8,12 +8,14 @@ import {
   VoltCardDescription,
   VoltCardHeader,
   VoltCardTitle,
+  VoltTheme,
 } from 'volt';
 
 @Component({
   selector: 'app-themes-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    VoltTheme,
     Prose,
     RouterLink,
     VoltCard,
@@ -46,19 +48,19 @@ import {
             >
               <div class="flex items-center gap-3 mb-3">
                 <div
-                  class="w-10 h-10 rounded-lg flex items-center justify-center text-white font-bold"
-                  [class]="preset.badge"
+                  class="w-10 h-10 rounded-lg flex items-center justify-center bg-primary text-primary-foreground font-bold"
+                  [voltTheme]="{ color: preset.id }"
                 >
                   {{ preset.initial }}
                 </div>
                 <div>
-                  <h3 class="font-medium" [class]="preset.hover">{{ preset.name }}</h3>
+                  <h3 class="font-medium group-hover:text-primary">{{ preset.name }}</h3>
                   <p class="text-xs text-muted-foreground">{{ t(preset.descriptionKey) }}</p>
                 </div>
               </div>
-              <div class="flex gap-2">
-                @for (swatch of preset.swatches; track $index) {
-                  <div class="w-6 h-6 rounded-full" [class]="swatch"></div>
+              <div class="flex gap-2 bg-transparent" [voltTheme]="{ color: preset.id }">
+                @for (swatch of swatches; track swatch) {
+                  <div class="w-6 h-6 rounded-full border border-border" [class]="swatch"></div>
                 }
               </div>
             </div>
@@ -206,24 +208,34 @@ import {
           <pre>
 /* Color tokens — one block per data-color, one per .dark[data-color] */
 --background / --foreground
---surface / --surface-foreground        /* cards, popovers, dropdowns */
+--surface / --surface-foreground        /* cards */
+--surface-elevated                      /* popovers, menus, dialogs; derived, may be set */
+--track                                 /* the unfilled part of Progress, Meter, Slider; derived */
 --muted / --muted-foreground
 --border / --input / --ring             /* --input is the form-control border */
 --primary / --primary-foreground
---secondary / --secondary-foreground
---destructive / --destructive-foreground /* shared by all colors, only in core.css */
+--secondary / --secondary-foreground    /* a quiet fill, never a second accent */
+--destructive / --destructive-foreground
 --success / --success-foreground
 --warning / --warning-foreground
 --error / --error-foreground
 --info / --info-foreground
 
 /* Style tokens — one block per data-style */
---radius
---border-width / --border-style
+--radius / --volt-radius-pill
+--border-width                          /* surfaces */
+--volt-control-border-width             /* inputs, outlines */
+--volt-divider-width                    /* table rows, accordion items */
+--volt-border-emphasis / --volt-surface-tint / --volt-control-solid-border
 --ring-width / --ring-offset-width
---volt-shadow-sm / --volt-shadow / --volt-shadow-md / --volt-shadow-lg
+--volt-shadow-sm / --volt-shadow / --volt-shadow-md / --volt-shadow-lg / --volt-shadow-xl
+--volt-press-x / --volt-press-y / --volt-press-scale
 --spacing-component / --spacing-gap
---volt-font-weight-base / --volt-font-weight-heading / --volt-font-weight-label</pre>
+--volt-track-size / --volt-track-border-width / --volt-thumb-size
+--volt-font-weight-base / --volt-font-weight-heading / --volt-font-weight-label
+
+/* Density — data-density on the document or any container */
+--volt-density                          /* compact 0.875, comfortable 1, spacious 1.125 */</pre>
         </div>
       </div>
 
@@ -289,17 +301,22 @@ import {
           class="p-4 rounded-lg border border-border bg-muted/30 font-mono text-sm overflow-x-auto"
         >
           <pre>
-:root[data-style='mystyle'] {{ '{' }}
-  --radius: 0.5rem;
+:root[data-style='mystyle'],
+[data-volt-theme][data-style='mystyle'] {{ '{' }}
+  --radius: 0.5rem; /* a length: 0rem, never a bare 0 */
+  --volt-radius-pill: 9999px;
   --border-width: 1px;
-  --border-style: solid;
+  --volt-control-border-width: 1px;
+  --volt-divider-width: 1px;
   --ring-width: 2px;
   --ring-offset-width: 2px;
 
-  --volt-shadow-sm: 0 1px 2px 0 oklch(0 0 0 / 0.05);
-  --volt-shadow: 0 1px 3px 0 oklch(0 0 0 / 0.1);
-  --volt-shadow-md: 0 4px 6px -1px oklch(0 0 0 / 0.1);
-  --volt-shadow-lg: 0 10px 15px -3px oklch(0 0 0 / 0.1);
+  /* Not none: that would void the focus ring. Use 0 0 #0000. */
+  --volt-shadow-sm: 0 1px 2px 0 var(--volt-shadow-tint);
+  --volt-shadow: 0 1px 3px 0 var(--volt-shadow-tint);
+  --volt-shadow-md: 0 4px 6px -1px var(--volt-shadow-tint);
+  --volt-shadow-lg: 0 10px 15px -3px var(--volt-shadow-tint);
+  --volt-shadow-xl: 0 20px 25px -5px var(--volt-shadow-tint);
 
   --spacing-component: 1;
   --spacing-gap: 0.5rem;
@@ -327,57 +344,43 @@ export default class ThemesPage {
    * The five presets, as data. They used to be five near-identical blocks of markup, which
    * is a hundred lines to keep in sync by hand and five places to forget a translation.
    *
-   * The colours are fixed brand swatches rather than theme tokens on purpose: this grid
-   * has to show a palette the page is not currently using. Tailwind reads these literals
-   * straight out of this file, so they are emitted like any class in a template.
+   * Each card is a `voltTheme` scope, so it shows a palette the page is not using from the same
+   * tokens that palette ships, in the page's current mode.
    */
   protected readonly presets = [
     {
       id: 'volt',
       name: 'Volt',
       initial: 'V',
-      badge: 'bg-blue-500',
-      hover: 'group-hover:text-blue-500',
-      swatches: ['bg-blue-500', 'bg-blue-600', 'bg-slate-500'],
       descriptionKey: 'guide.themesPage.presets.volt',
     },
     {
       id: 'ember',
       name: 'Ember',
       initial: 'E',
-      badge: 'bg-orange-500',
-      hover: 'group-hover:text-orange-500',
-      swatches: ['bg-orange-500', 'bg-red-500', 'bg-amber-500'],
       descriptionKey: 'guide.themesPage.presets.ember',
     },
     {
       id: 'sage',
       name: 'Sage',
       initial: 'S',
-      badge: 'bg-emerald-500',
-      hover: 'group-hover:text-emerald-500',
-      swatches: ['bg-emerald-500', 'bg-green-600', 'bg-teal-500'],
       descriptionKey: 'guide.themesPage.presets.sage',
     },
     {
       id: 'dusk',
       name: 'Dusk',
       initial: 'D',
-      badge: 'bg-violet-500',
-      hover: 'group-hover:text-violet-500',
-      swatches: ['bg-violet-500', 'bg-purple-600', 'bg-indigo-500'],
       descriptionKey: 'guide.themesPage.presets.dusk',
     },
     {
       id: 'glacier',
       name: 'Glacier',
       initial: 'G',
-      badge: 'bg-cyan-500',
-      hover: 'group-hover:text-cyan-500',
-      swatches: ['bg-cyan-500', 'bg-sky-500', 'bg-blue-400'],
       descriptionKey: 'guide.themesPage.presets.glacier',
     },
   ] as const;
+
+  protected readonly swatches = ['bg-primary', 'bg-secondary', 'bg-surface'] as const;
 
   protected readonly colorKeys = [
     'guide.themesPage.colors.volt',

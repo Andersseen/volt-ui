@@ -51,7 +51,7 @@ import { cn } from '../../utils';
 export class VoltRadioGroup implements ControlValueAccessor {
   readonly class = input<string>('');
 
-  protected readonly classes = computed(() => cn('flex gap-2', this.class()));
+  protected readonly classes = computed(() => cn('flex gap-stack', this.class()));
 
   private readonly state = injectRadioGroupState<string>();
   protected readonly formControlState = injectFormControlState();

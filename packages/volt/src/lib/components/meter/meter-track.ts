@@ -15,6 +15,9 @@ export class VoltMeterTrack {
   readonly class = input<string>('');
 
   protected readonly classes = computed(() =>
-    cn('relative block h-2 w-full overflow-hidden rounded-full bg-secondary', this.class())
+    cn(
+      'relative block h-track w-full overflow-hidden rounded-pill border-(length:--volt-track-border-width) border-border bg-track',
+      this.class()
+    )
   );
 }

@@ -122,7 +122,7 @@ export class VoltSelect implements ControlValueAccessor {
 
   protected readonly triggerClasses = computed(() =>
     cn(
-      'flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background cursor-pointer placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1',
+      'flex h-control-md w-full items-center justify-between rounded-md border-(length:--volt-control-border-width) border-input bg-background px-inset-sm py-2 text-sm ring-offset-background cursor-pointer placeholder:text-muted-foreground focus:outline-none focus:ring-(length:--ring-width) focus:ring-ring focus:ring-offset-(length:--ring-offset-width) disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1',
       this.class()
     )
   );

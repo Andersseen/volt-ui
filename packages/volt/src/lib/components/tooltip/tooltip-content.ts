@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { NgpTooltip } from 'ng-primitives/tooltip';
 import { cn } from '../../utils';
+import { VoltThemeInherit } from '../theme/theme-scope';
 
 @Component({
   selector: 'volt-tooltip-content',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [NgpTooltip],
+  hostDirectives: [NgpTooltip, VoltThemeInherit],
   host: {
     '[class]': 'classes()',
   },

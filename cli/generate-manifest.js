@@ -226,7 +226,7 @@ const COMPONENT_METADATA = {
   theme: {
     group: 'Theming',
     label: 'Theme',
-    description: 'Document-level theme provider',
+    description: 'Theme provider, density and scoped theming',
   },
   toast: {
     group: 'Overlays',
@@ -280,12 +280,9 @@ function resolveInternalImport(importPath, currentCategory, currentName) {
   // ../button (when inside same category) -> button
   const normalized = importPath.replace(/\\/g, '/');
   const match = normalized.match(/(?:components|layouts)\/([^/]+)(?:\/|$)/);
-  if (match) {
-    const target = match[1];
-    return target === currentName ? null : target;
-  }
-
-  return null;
+  const sibling = normalized.match(/^\.\.\/([^/.]+)(?:\/|$)/);
+  const target = match?.[1] ?? sibling?.[1];
+  return target && target !== currentName ? target : null;
 }
 
 function stabilityOf(name) {

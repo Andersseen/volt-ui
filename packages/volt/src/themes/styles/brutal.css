@@ -1,17 +1,39 @@
-:root[data-style='brutal'] {
-  --radius: 0;
+/*
+ * Heavy ink: square corners, thick borders in the text colour, hard offset shadows. The ink is the
+ * foreground, so the shadows stay visible in dark mode, where it is light.
+ */
+:root[data-style='brutal'],
+[data-volt-theme][data-style='brutal'] {
+  /* A length, not a bare `0`: `calc(0 * 1.333)` is a number and not a valid radius. */
+  --radius: 0rem;
+  --volt-radius-pill: 0rem;
+
   --border-width: 2px;
   --border-style: solid;
-  --ring-width: 2px;
+  --volt-control-border-width: 2px;
+  --volt-divider-width: 2px;
+  --volt-border-emphasis: 100%;
+  --volt-surface-tint: 0%;
+  --volt-control-solid-border: var(--foreground);
+
+  --ring-width: 3px;
   --ring-offset-width: 2px;
 
-  --volt-shadow-sm: 2px 2px 0 var(--border);
-  --volt-shadow: 4px 4px 0 var(--border);
-  --volt-shadow-md: 6px 6px 0 var(--border);
-  --volt-shadow-lg: 8px 8px 0 var(--border);
+  --volt-shadow-sm: 2px 2px 0 var(--foreground);
+  --volt-shadow: 4px 4px 0 var(--foreground);
+  --volt-shadow-md: 6px 6px 0 var(--foreground);
+  --volt-shadow-lg: 8px 8px 0 var(--foreground);
+  --volt-shadow-xl: 10px 10px 0 var(--foreground);
 
-  --spacing-component: 0.875;
-  --spacing-gap: 0.375rem;
+  --volt-press-x: 2px;
+  --volt-press-y: 2px;
+  --volt-press-scale: 1;
+
+  --spacing-component: 1;
+  --spacing-gap: 0.5rem;
+  --volt-track-size: 0.875rem;
+  --volt-track-border-width: 2px;
+  --volt-thumb-size: 1.375rem;
 
   --volt-font-weight-base: 500;
   --volt-font-weight-heading: 800;

@@ -30,7 +30,7 @@ export class VoltSearchClear {
 
   protected readonly classes = computed(() =>
     cn(
-      'inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors data-[empty]:hidden data-[hover]:bg-accent data-[hover]:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+      'inline-flex h-control-sm w-control-sm items-center justify-center rounded-md text-muted-foreground transition-colors data-[empty]:hidden data-[hover]:bg-accent data-[hover]:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
       this.class()
     )
   );

@@ -53,7 +53,7 @@ import { VoltQuartzIds } from '../../quartz-ids';
 export class VoltRadioGroup implements ControlValueAccessor {
   readonly class = input<string>('');
 
-  protected readonly classes = computed(() => cn('flex gap-2', this.class()));
+  protected readonly classes = computed(() => cn('flex gap-stack', this.class()));
 
   private readonly group = inject(RadioGroupDirective, { self: true });
   /** ng-primitives gives every group an id; this one is counted per application, so SSR and the browser agree. */

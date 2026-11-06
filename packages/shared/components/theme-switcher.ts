@@ -14,6 +14,7 @@ import {
   VoltNativeButton,
   VoltPopoverContent,
   VoltPopoverTrigger,
+  VoltTheme,
   VoltToggleGroup,
   VoltToggleGroupItem,
   type VoltThemeColor,
@@ -21,19 +22,12 @@ import {
 } from 'volt';
 import { injectAppI18n } from '../i18n/i18n';
 
-interface ColorOption {
-  readonly id: VoltThemeColor;
-  readonly label: string;
-  /** Fixed brand colour, not a token: this swatch has to show a palette the page is not using. */
-  readonly swatch: string;
-}
-
-const COLORS: readonly ColorOption[] = [
-  { id: 'volt', label: 'Volt', swatch: 'bg-indigo-500' },
-  { id: 'ember', label: 'Ember', swatch: 'bg-orange-500' },
-  { id: 'sage', label: 'Sage', swatch: 'bg-emerald-500' },
-  { id: 'dusk', label: 'Dusk', swatch: 'bg-purple-500' },
-  { id: 'glacier', label: 'Glacier', swatch: 'bg-sky-500' },
+const COLORS: readonly { id: VoltThemeColor; label: string }[] = [
+  { id: 'volt', label: 'Volt' },
+  { id: 'ember', label: 'Ember' },
+  { id: 'sage', label: 'Sage' },
+  { id: 'dusk', label: 'Dusk' },
+  { id: 'glacier', label: 'Glacier' },
 ];
 
 const STYLES: readonly { id: VoltThemeStyle; label: string }[] = [
@@ -56,6 +50,9 @@ const STYLES: readonly { id: VoltThemeStyle; label: string }[] = [
  * Toggle groups rather than selects, now that there is space: a select would open a
  * second overlay inside this one, and the outside-click handling of two stacked portals
  * is not a fight worth having for five options.
+ *
+ * Each swatch is a one-element `voltTheme` scope painted `bg-primary`: the primary of that palette
+ * in the page's current mode, read from the real tokens, so a swatch can never show another colour.
  */
 @Component({
   selector: 'app-theme-switcher',
@@ -64,6 +61,7 @@ const STYLES: readonly { id: VoltThemeStyle; label: string }[] = [
     VoltNativeButton,
     VoltPopoverTrigger,
     VoltPopoverContent,
+    VoltTheme,
     VoltToggleGroup,
     VoltToggleGroupItem,
     LmnSunIcon,
@@ -81,7 +79,10 @@ const STYLES: readonly { id: VoltThemeStyle; label: string }[] = [
         class="h-9 shrink-0 gap-1.5 px-2.5"
         [attr.aria-label]="triggerLabel()"
       >
-        <span class="h-4 w-4 rounded-full ring-1 ring-border" [class]="activeSwatch()"></span>
+        <span
+          class="h-4 w-4 rounded-full bg-primary ring-1 ring-border"
+          [voltTheme]="{ color: color() }"
+        ></span>
         <lmn-chevron-down [size]="12" class="text-muted-foreground" />
       </button>
 
@@ -124,7 +125,10 @@ const STYLES: readonly { id: VoltThemeStyle; label: string }[] = [
           >
             @for (option of colors; track option.id) {
               <volt-toggle-group-item [value]="option.id" size="sm">
-                <span class="h-4 w-4 rounded-full ring-1 ring-border" [class]="option.swatch">
+                <span
+                  class="h-4 w-4 rounded-full bg-primary ring-1 ring-border"
+                  [voltTheme]="{ color: option.id }"
+                >
                 </span>
                 <!-- The swatch is the whole control, so the name has to come from here. -->
                 <span class="sr-only">{{ option.label }}</span>
@@ -178,10 +182,6 @@ export class ThemeSwitcher {
   /** The toggle groups speak in arrays, even the single-selection ones. */
   protected readonly colorValue = computed(() => [this.color()]);
   protected readonly styleValue = computed(() => [this.style()]);
-
-  protected readonly activeSwatch = computed(
-    () => COLORS.find(option => option.id === this.color())?.swatch ?? COLORS[0].swatch
-  );
 
   /*
    * The palette and shape names are product names — "Volt", "Brutal" — so they stay as

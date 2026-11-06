@@ -87,7 +87,7 @@ Selector: <code>{"volt-progress-value"}</code>
 
 Selector: <code>{"volt-progress"}</code>
 
-<table><thead><tr><th>Input</th><th>Type</th><th>Default</th></tr></thead><tbody><tr><td><code>{"class"}</code></td><td><code>{"string"}</code></td><td><code>{"''"}</code></td></tr><tr><td><code>{"value"}</code> {"(transform: numberAttribute)"}</td><td><code>{"number | null"}</code></td><td><code>{"null"}</code></td></tr><tr><td><code>{"min"}</code> {"(transform: numberAttribute)"}</td><td><code>{"number"}</code></td><td><code>{"0"}</code></td></tr><tr><td><code>{"max"}</code> {"(transform: numberAttribute)"}</td><td><code>{"number"}</code></td><td><code>{"100"}</code></td></tr><tr><td><code>{"valueLabel"}</code></td><td><code>{"(value: number, max: number) => string"}</code></td><td><code>{"(value, max) => `${Math.round((value / max) * 100)}%`"}</code></td></tr></tbody></table>
+<table><thead><tr><th>Input</th><th>Type</th><th>Default</th></tr></thead><tbody><tr><td><code>{"class"}</code></td><td><code>{"string"}</code></td><td><code>{"''"}</code></td></tr><tr><td><code>{"value"}</code> {"(transform: numberAttribute)"}</td><td><code>{"number | null"}</code></td><td><code>{"null"}</code></td></tr><tr><td><code>{"min"}</code> {"(transform: numberAttribute)"}</td><td><code>{"number"}</code></td><td><code>{"0"}</code></td></tr><tr><td><code>{"max"}</code> {"(transform: numberAttribute)"}</td><td><code>{"number"}</code></td><td><code>{"100"}</code></td></tr><tr><td><code>{"valueLabel"}</code></td><td><code>{"(value: number, max: number, min: number) => string"}</code></td><td><code>{"(value, max, min) => `${max === min ? 0 : Math.round(((value - min) / (max - min)) * 100)}%`"}</code></td></tr></tbody></table>
 
 ## Playground
 

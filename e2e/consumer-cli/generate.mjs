@@ -43,6 +43,7 @@ const { transformContent } = createRequire(import.meta.url)(join(REPO_ROOT, 'cli
 const FIXTURES = [
   { src: 'workflow', files: ['admin-workflow.ts', 'main.ts'] },
   { src: 'async', files: ['async-data.ts', 'main.ts'] },
+  { src: 'themes', files: ['gallery.ts', 'scope.ts', 'main.ts'] },
 ];
 for (const { src, files } of FIXTURES) {
   const fixtureSrc = join(REPO_ROOT, 'e2e/consumer/src', src);
@@ -58,5 +59,14 @@ for (const { src, files } of FIXTURES) {
     writeFileSync(join(fixtureOut, file), transformed);
   }
 }
+
+// The theme gallery's stylesheet, scanning the copied source instead of the package's bundle.
+writeFileSync(
+  join(__dirname, 'src/themes/themes.css'),
+  readFileSync(join(REPO_ROOT, 'e2e/consumer/src/themes/themes.css'), 'utf-8').replace(
+    "@source './**/*.{html,ts}';",
+    "@source './**/*.{html,ts}';\n@source '../ui/**/*.ts';"
+  )
+);
 
 console.log('Done.');

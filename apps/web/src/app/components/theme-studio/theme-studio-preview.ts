@@ -11,14 +11,15 @@ import {
   VoltInput,
   VoltSlider,
   VoltSwitch,
+  VoltTheme,
 } from 'volt';
 import { ThemeStudioStore } from '../../services/theme-studio-store';
 import { injectAppI18n } from '@shared/i18n/i18n';
 
 /**
- * The live canvas. Everything inside the shell is rendered under the draft's own tokens
- * via an inline custom-property map, which is what keeps it from inheriting — or
- * leaking into — the docs theme around it.
+ * The live canvas. The draft is a `voltTheme` scope with the draft's tokens written over it, the
+ * same scope a consumer would use, which keeps it from inheriting — or leaking into — the docs
+ * theme around it.
  */
 @Component({
   selector: 'app-theme-studio-preview',
@@ -39,6 +40,7 @@ import { injectAppI18n } from '@shared/i18n/i18n';
     VoltInput,
     VoltSlider,
     VoltSwitch,
+    VoltTheme,
   ],
   template: `
     <aside class="space-y-4">
@@ -81,6 +83,7 @@ import { injectAppI18n } from '@shared/i18n/i18n';
         <div class="h-[680px] overflow-auto p-3 sm:p-4">
           <div
             class="overflow-hidden rounded-xl border border-border shadow-lg transition-colors duration-300"
+            [voltTheme]="{ dark: store.previewDark() }"
             [ngStyle]="store.previewStyle()"
           >
             <div class="min-h-[620px] bg-background p-5 text-foreground">

@@ -29,9 +29,7 @@ describe('landing theme playground', () => {
 
     expect(fixture.componentInstance.color()).toBe('sage');
     expect(screen.getByText('sage · soft')).toBeInTheDocument();
-    expect(fixture.nativeElement.querySelector('.preview').getAttribute('style')).toContain(
-      '--primary'
-    );
+    expect(fixture.nativeElement.querySelector('.preview')).toHaveAttribute('data-color', 'sage');
   });
 
   it('stops the tour as soon as the visitor makes a choice', async () => {

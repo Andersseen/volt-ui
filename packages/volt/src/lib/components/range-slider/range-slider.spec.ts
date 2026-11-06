@@ -153,4 +153,26 @@ describe('VoltRangeSlider', () => {
 
     expect(fixture.componentInstance.value).toEqual([11, 90]);
   });
+
+  it('returns both thumbs to the template values on reset()', async () => {
+    @Component({
+      imports: [VoltRangeSlider, ReactiveFormsModule],
+      template: `<volt-range-slider [formControl]="control" [low]="10" [high]="90" />`,
+    })
+    class ResetHost {
+      readonly control = new FormControl<[number, number] | null>([40, 60]);
+    }
+
+    const { fixture } = await render(ResetHost);
+    const [low, high] = screen.getAllByRole('slider');
+    expect(low).toHaveAttribute('aria-valuenow', '40');
+    expect(high).toHaveAttribute('aria-valuenow', '60');
+
+    fixture.componentInstance.control.reset();
+    await fixture.whenStable();
+
+    expect(low).toHaveAttribute('aria-valuenow', '10');
+    expect(high).toHaveAttribute('aria-valuenow', '90');
+    expect(fixture.componentInstance.control.value).toBeNull();
+  });
 });

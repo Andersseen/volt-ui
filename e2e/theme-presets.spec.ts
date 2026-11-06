@@ -91,9 +91,9 @@ test.describe('Theme preset cycling', () => {
     // (Already selected last in the loop above when STYLE_OPTIONS ends in
     // 'Retro' it would not be; re-select explicitly for a stable assertion.)
     await pickTheme(page, 'Shape', 'Brutal');
-    // Custom properties report their raw authored value, not a resolved
-    // length — brutal.css literally writes `--radius: 0;` (no unit).
-    expect((await readTokens(page)).radius).toBe('0');
+    // Custom properties report their raw authored value. It carries a unit so
+    // that the `calc()` of the radius scale stays a valid length.
+    expect((await readTokens(page)).radius).toBe('0rem');
   });
 
   test('toggling dark mode flips the .dark class and background token', async ({ page }) => {

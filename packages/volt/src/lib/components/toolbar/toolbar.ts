@@ -25,7 +25,7 @@ export class VoltToolbar {
 
   protected readonly classes = computed(() =>
     cn(
-      'inline-flex items-center gap-1 rounded-md border border-input bg-background p-1 shadow-sm data-[orientation=vertical]:flex-col',
+      'inline-flex items-center gap-1 rounded-md border-(length:--border-width) border-input bg-background p-1 shadow-sm data-[orientation=vertical]:flex-col',
       this.class()
     )
   );

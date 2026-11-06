@@ -7,6 +7,85 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Theme system — `@voltui/components`, `@voltui/cli`
+
+The five palettes and five styles now reach the parts that paint, in the package and in CLI copies. No
+selector, input, output or Forms contract changed, and no public token was removed. The default look
+moves a little: see **Visible changes**. Contract: [`docs/theme-contract.md`](docs/theme-contract.md).
+
+#### Added
+
+- **Token contract.** `--border-width`, `--ring-width`, `--ring-offset-width`, `--spacing-component` and
+  `--spacing-gap` were declared by every preset and read by no component; they are now consumed. New roles,
+  each with a reader: `--surface-elevated`, `--track`, `--volt-control-border-width`, `--volt-divider-width`,
+  `--volt-radius-pill`, `--volt-border-emphasis`, `--volt-surface-tint`, `--volt-control-solid-border`,
+  `--volt-shadow-xl`, `--volt-shadow-tint`, `--volt-press-x|y|scale`, `--volt-track-size`,
+  `--volt-track-border-width`, `--volt-thumb-size`.
+- **Tailwind utilities** from those tokens (`h-control-md`, `px-inset-sm`, `p-card`, `gap-stack`,
+  `rounded-pill`, `bg-track`, …). `cn()` knows them, so a consumer's `class` replaces them.
+- **Density**, independent of the style: `density: 'compact' | 'comfortable' | 'spacious'` on
+  `provideVoltTheme` and `applyVoltTheme`, or `data-density` on any container. Nested densities replace each
+  other instead of multiplying, and a control never drops below a 24px target.
+- **`[voltTheme]`** themes one container with the same tokens, on the server too. Overlays declared inside
+  the scope keep it even though they render at the end of the body (`VoltThemeInherit`, also a
+  `voltThemeInherit` attribute for your own portalled content).
+- **`themes/tokens.css`** (the contract without body and scrollbar rules) and **`themes/all.css`** (every
+  palette and style). `themes.css` and the presets are unchanged entry points.
+- Theme Studio exports reproduce in a standalone app: see **Fixed**.
+
+#### Fixed
+
+- **Slider, Range Slider — vertical orientation.** `orientation="vertical"` announced itself correctly and
+  rendered a horizontal track. Track, range and thumbs now follow the orientation; the host defaults to
+  `h-48`, which `class` replaces.
+- **Slider, Range Slider — `FormControl.reset()`.** `writeValue(null)` was ignored, so the thumb stayed where
+  it was while the control held `null`. It now returns to the `value` (or `low`/`high`) input, clamped to
+  `min`/`max`, without emitting. The control keeps `null` until someone moves the thumb.
+- **Ghost — focus.** `--volt-shadow-sm: none` voided the whole `box-shadow` Tailwind builds, so anything with
+  `shadow-sm` (outline buttons, inputs in a group) showed no focus ring. Ghost also raises its ring to 2px.
+- **Brutal — radius.** `--radius: 0` made `calc(0 + 0.125rem)` invalid, which only looked right by falling back
+  to zero. It is `0rem`, and the radius scale is a multiple of `--radius`, so `rounded-xl` stays square.
+- **Brutal, Retro — dark mode.** Their offset shadows were drawn in `--border`, close to the page in dark mode.
+  They are now drawn from the text colour and are visible in all five palettes.
+- **Progress — indeterminate.** With `value = null` the bar painted full. It now shows a short centred bar,
+  which pulses unless the visitor prefers reduced motion.
+- **Switch.** The thumb no longer leaves the track when a style draws a 2px border.
+- **`shadow-xl`** on Dialog and Drawer now follows the style. It was Tailwind's default in every preset.
+- **Theme Studio.** The export wrote `--shadow-*`, which Tailwind inlines and no component reads, so exported
+  shadows had no effect; it now writes `--volt-shadow-*`, plus `--destructive` and the scope selectors. The
+  preview uses the same function. Starting palettes are read from the shipped CSS instead of a second copy.
+
+#### Changed
+
+- **Palettes.** All five were reworked: neutrals carry the palette's hue, dark mode separates page, surface,
+  raised surface and border, and status colours keep their meaning next to the accent (Sage's success, Glacier's
+  info). `--secondary` is a quiet tinted fill in every palette; in Sage and Ember it was a second accent.
+- **Styles** differ in borders, shadows, weight, spacing, focus and press, not only in radius.
+- **Progress** puts label and value on one row above the track, with the same `volt-progress-label` and
+  `volt-progress-value` projection. Progress and Meter draw their track with `--track`.
+- **Docs site.** The header swatches, playground, Theme Studio preview and theme guide render with `voltTheme` and
+  the shipped tokens; the site's own copy of the Tailwind mapping and of its scrollbars is gone. The landing
+  tour's timer is a row of segments, so it no longer reads as a task in progress.
+
+#### Visible changes to plan for
+
+- Default `background` is `oklch(0.985 …)` rather than pure white, and dark backgrounds are lighter than before.
+- Input is `rounded-md`, matching Select. Combobox is 40px, matching Input and Select (it was 36px).
+  Toggle `lg` is 44px, matching Button `lg` (it was 48px). Table header cells are 44px (they were 48px).
+- `rounded-sm|lg|xl` are multiples of `--radius` rather than offsets from it. At the Sharp default they are the
+  same values; at other radii they differ.
+- Soft and Ghost are slightly taller than Sharp (`--spacing-component`). Their values were retuned, since they had
+  never been applied: at the old 1.25, a 40px control would have become 50px.
+- Slider and Range Slider reserve the thumb's height, so they no longer overlap the row below.
+- Custom palettes keep working: new roles are derived. To use a custom palette in a `voltTheme` scope, add the
+  scope selectors (`docs/theme-contract.md`). A custom `--radius: 0` should become `0rem`, and a custom shadow of
+  `none` should become `0 0 #0000`.
+- A CLI copy needs `themes.css` from the same version: re-copied components use the new utilities.
+
+#### Deprecated
+
+- `--border-style`: declared, read by nothing, kept through 1.x.
+
 Found by the 1.4 contract verification (`docs/quality/headless-contract-verification.md`); each fix has a failing test
 first and is verified on both headless engines where the family has two. No API is removed or renamed. **Release note:**
 1.4.0 is not on npm yet (npm `latest` is 1.3.3); if it is still unpublished when this merges, these ship in 1.4.0,

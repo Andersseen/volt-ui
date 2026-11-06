@@ -27,7 +27,7 @@ export class VoltSelectContent {
 
   protected readonly classes = computed(() =>
     cn(
-      'block z-50 w-full overflow-hidden rounded-md border border-border bg-surface text-surface-foreground shadow-md animate-in fade-in-80 zoom-in-95',
+      'block z-50 w-full overflow-hidden rounded-md border-(length:--border-width) border-border bg-popover text-popover-foreground shadow-md animate-in fade-in-80 zoom-in-95',
       this.class()
     )
   );

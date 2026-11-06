@@ -146,6 +146,7 @@ instead and import from `@voltui/components`.
 | Spinner         | beta   | `./ui/spinner`         | `<ui-spinner>`                                                                                                                                                                                                             |
 | Empty State     | beta   | `./ui/empty-state`     | `<ui-empty-state-description>`, `<ui-empty-state-title>`, `<ui-empty-state>`                                                                                                                                               |
 | Sidebar         | stable | `./ui/sidebar`         | `<ui-sidebar-content>`, `<ui-sidebar-footer>`, `<ui-sidebar-group>`, `<ui-sidebar-header>`, `<ui-sidebar-item>`, `<ui-sidebar>`                                                                                            |
+| Theme           | stable | `./ui/theme`           | `[uiThemeInherit]`, `[uiTheme]`                                                                                                                                                                                            |
 
 <!-- volt:catalog:end -->
 

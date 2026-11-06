@@ -14,6 +14,6 @@ export class VoltTableCell {
   readonly class = input<string>('');
 
   protected readonly classes = computed(() =>
-    cn('table-cell p-4 align-middle [&:has([role=checkbox])]:pr-0', this.class())
+    cn('table-cell p-inset-md align-middle [&:has([role=checkbox])]:pr-0', this.class())
   );
 }

@@ -3,12 +3,15 @@
  * WCAG 2.x contrast audit for every Volt theme preset.
  *
  * Volt's presets are a cross product of *color* (`data-color`) and *style*
- * (`data-style`), but style presets (sharp/soft/brutal/ghost/retro) only ever
- * set radius/shadow/spacing/font-weight tokens — never a color token. Verified
- * by grepping `packages/volt/src/themes/styles/*.css` for exact `--<token>:`
- * matches against the semantic color variable names; there are none. So the
- * meaningful contrast surface is 5 colors x 2 modes (light/dark) = 10
- * combinations, not the full 50 color x style x mode cross product.
+ * (`data-style`). Style presets set no semantic color token, but two of their
+ * knobs change a painted color: `--volt-border-emphasis` leans borders towards
+ * the text, and `--volt-surface-tint` leans cards towards `--muted`. Both are
+ * covered below with the values each style really ships, so the audit walks
+ * 5 colors x 2 modes for the palette pairs, plus those pairs per style.
+ *
+ * This is a token analysis: it says which color pairs clear WCAG thresholds, not
+ * that a rendered page is accessible. `e2e/contracts/theme-matrix.spec.ts` checks
+ * the rendered gallery; neither replaces testing with assistive technology.
  *
  * Usage: node scripts/contrast-audit.mjs [--json]
  * Exit code: 1 if any pair fails its WCAG threshold, 0 otherwise.
@@ -63,17 +66,50 @@ function contrastRatio(rgbA, rgbB) {
   return (hi + 0.05) / (lo + 0.05);
 }
 
-const OKLCH_RE = /oklch\(\s*([\d.]+)\s+([\d.]+)\s+([\d.]+)\s*(?:\/\s*[\d.]+\s*)?\)/;
-function toRgb(value) {
-  const m = value && value.match(OKLCH_RE);
-  return m ? oklchToLinearSrgb(Number(m[1]), Number(m[2]), Number(m[3])) : null;
+const OKLCH_RE = /^oklch\(\s*([\d.]+)\s+([\d.]+)\s+([\d.]+)\s*(?:\/\s*[\d.]+\s*)?\)$/;
+const VAR_RE = /^var\(--([\w-]+)\)$/;
+const MIX_RE = /^color-mix\(in oklch,\s*(.+?)(?:\s+([\d.]+)%)?,\s*(.+?)(?:\s+([\d.]+)%)?\)$/;
+
+/** A token value as [L, C, H]: a literal, a `var()` of another token, or an oklch `color-mix()`. */
+function toOklch(value, tokens) {
+  const text = value?.trim();
+  if (!text) return null;
+  const literal = text.match(OKLCH_RE);
+  if (literal) return [Number(literal[1]), Number(literal[2]), Number(literal[3])];
+  const reference = text.match(VAR_RE);
+  if (reference) return toOklch(tokens[`--${reference[1]}`], tokens);
+  const mix = text.match(MIX_RE);
+  if (!mix) return null;
+  const [a, b] = [toOklch(mix[1], tokens), toOklch(mix[3], tokens)];
+  if (!a || !b) return null;
+  const weightA = mix[2] ? Number(mix[2]) / 100 : mix[4] ? 1 - Number(mix[4]) / 100 : 0.5;
+  const hueGap = ((b[2] - a[2] + 540) % 360) - 180; // the shorter arc, as color-mix() takes it
+  return [
+    a[0] * weightA + b[0] * (1 - weightA),
+    a[1] * weightA + b[1] * (1 - weightA),
+    a[2] + hueGap * (1 - weightA),
+  ];
+}
+
+function toRgb(value, tokens) {
+  const lch = toOklch(value, tokens);
+  return lch ? oklchToLinearSrgb(...lch) : null;
+}
+
+const encode = c => (c <= 0.0031308 ? 12.92 * c : 1.055 * c ** (1 / 2.4) - 0.055);
+const decode = c => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
+
+/** `overlay` at `alpha` painted over `base`: browsers composite in encoded sRGB. */
+function over(overlay, alpha, base) {
+  return overlay.map((c, i) => decode(encode(c) * alpha + encode(base[i]) * (1 - alpha)));
 }
 
 // ---------------------------------------------------------------------------
 // Minimal CSS custom-property extraction (no nesting, which our theme files
 // never use, so a plain brace-matched pass is sufficient).
 // ---------------------------------------------------------------------------
-function parseBlocks(css) {
+function parseBlocks(source) {
+  const css = source.replace(/\/\*[\s\S]*?\*\//g, '');
   const blocks = [];
   const re = /([^{}]+)\{([^{}]*)\}/g;
   let m;
@@ -94,16 +130,18 @@ function parseBlocks(css) {
 
 function collectTokens(color, dark) {
   const vars = {};
-  const files = [join(THEMES, 'core.css'), join(THEMES, `colors/${color}.css`)];
+  const files = [join(THEMES, 'tokens.css'), join(THEMES, `colors/${color}.css`)];
   for (const file of files) {
     for (const { selector, vars: blockVars } of parseBlocks(readFileSync(file, 'utf8'))) {
       const isDarkSelector = selector.includes('.dark');
-      if (isDarkSelector !== dark) continue;
+      if (isDarkSelector && !dark) continue;
 
       const targetsThisColor = selector.includes(`data-color='${color}'`);
       const targetsRootDefault = selector
         .split(',')
         .some(part => part.trim() === ':root' || part.trim() === '.dark');
+      // Tailwind's `@theme` block and the style defaults hold no palette values.
+      if (selector.startsWith('@')) continue;
 
       if (!targetsThisColor && !targetsRootDefault) continue;
       Object.assign(vars, blockVars);
@@ -116,6 +154,29 @@ function collectTokens(color, dark) {
 // Pairs to check. Thresholds follow WCAG 2.x SC 1.4.3 (text, 4.5:1) and
 // SC 1.4.11 (non-text UI components / focus indicators, 3:1).
 // ---------------------------------------------------------------------------
+const STYLE_FILES = ['soft', 'brutal', 'ghost', 'retro'];
+
+/** The value a style sets for a knob, or the Sharp default from tokens.css. */
+function styleKnobs(name) {
+  const source = name ? `styles/${name}.css` : 'tokens.css';
+  const css = readFileSync(join(THEMES, source), 'utf8');
+  const read = key => Number(css.match(new RegExp(`${key}:\\s*([\\d.]+)%`))?.[1] ?? 0);
+  return {
+    name: name ?? 'sharp',
+    borderEmphasis: read('--volt-border-emphasis'),
+    surfaceTint: read('--volt-surface-tint'),
+  };
+}
+const STYLE_KNOBS = [styleKnobs(null), ...STYLE_FILES.map(styleKnobs)];
+
+/** Colors components paint that are not a single token: `[name, tokens => value]`, by style. */
+function stylePaints(tokens, knobs) {
+  return {
+    '--card': `color-mix(in oklch, ${tokens['--surface']}, ${tokens['--muted']} ${knobs.surfaceTint}%)`,
+    '--painted-input': `color-mix(in oklch, ${tokens['--input']}, ${tokens['--foreground']} ${knobs.borderEmphasis}%)`,
+  };
+}
+
 const PAIRS = [
   ['foreground', 'background', 4.5, 'body text on page'],
   ['surface-foreground', 'surface', 4.5, 'text on card/popover surface'],
@@ -142,6 +203,40 @@ const PAIRS = [
   ['info', 'background', 3, 'info icon vs page (non-text UI, SC 1.4.11)'],
   ['error', 'background', 3, 'error border vs page (non-text UI, SC 1.4.11)'],
   ['destructive', 'background', 3, 'destructive icon vs page (non-text UI, SC 1.4.11)'],
+  // Raised surfaces: menus, popovers and dialogs carry the same text and focus as the page.
+  ['surface-foreground', 'surface-elevated', 4.5, 'text on popover/dialog'],
+  ['muted-foreground', 'surface-elevated', 4.5, 'muted text on popover/dialog'],
+  ['muted-foreground', 'surface', 4.5, 'muted text on card'],
+  ['ring', 'surface', 3, 'focus ring on card (non-text UI, SC 1.4.11)'],
+  ['ring', 'surface-elevated', 3, 'focus ring in popover/dialog (non-text UI, SC 1.4.11)'],
+  ['input', 'surface', 3, 'form field border on card (non-text UI, SC 1.4.11)'],
+  ['input', 'surface-elevated', 3, 'form field border in dialog (non-text UI, SC 1.4.11)'],
+  // Progress, Meter and Slider: the filled part has to stand apart from what is left.
+  ['primary', 'track', 3, 'filled progress vs track (non-text UI, SC 1.4.11)'],
+  ['track', 'primary', 3, 'track vs filled progress (non-text UI, SC 1.4.11)'],
+  // Switch: the off track carries the thumb, the on track carries it too.
+  ['background', 'input', 3, 'switch thumb on off track (non-text UI, SC 1.4.11)'],
+  ['background', 'primary', 3, 'switch thumb on on track (non-text UI, SC 1.4.11)'],
+  // Tooltip inverts the page.
+  ['background', 'foreground', 4.5, 'tooltip text'],
+  // Selected rows and pressed items paint the accent fill.
+  ['primary', 'muted', 3, 'selected control on accent surface (non-text UI, SC 1.4.11)'],
+  // Badge and alert fills that hold a status on a raised surface.
+  ['success', 'surface', 3, 'success icon/border on card (non-text UI, SC 1.4.11)'],
+  ['info', 'surface', 3, 'info icon on card (non-text UI, SC 1.4.11)'],
+  ['error', 'surface', 3, 'error border on card (non-text UI, SC 1.4.11)'],
+];
+
+// Alert: text stays `text-foreground` on a 10% status tint of the page.
+const TINTS = ['info', 'success', 'warning', 'destructive'];
+
+// Painted per style: text on a card, and a form field on the page.
+const STYLE_PAIRS = [
+  ['surface-foreground', 'card', 4.5, 'text on styled card'],
+  ['muted-foreground', 'card', 4.5, 'muted text on styled card'],
+  ['ring', 'card', 3, 'focus ring on styled card (non-text UI, SC 1.4.11)'],
+  ['painted-input', 'background', 3, 'styled form field border vs page (non-text UI, SC 1.4.11)'],
+  ['painted-input', 'card', 3, 'styled form field border on card (non-text UI, SC 1.4.11)'],
 ];
 
 const COLORS = readdirSync(join(THEMES, 'colors'))
@@ -153,14 +248,13 @@ const results = [];
 for (const color of COLORS) {
   for (const dark of [false, true]) {
     const tokens = collectTokens(color, dark);
-    for (const [fgToken, bgToken, min, label] of PAIRS) {
-      const fg = toRgb(tokens[`--${fgToken}`]);
-      const bg = toRgb(tokens[`--${bgToken}`]);
-      if (!fg || !bg) continue; // token not defined for this preset — nothing to check
+    const record = (fg, bg, min, label, fgToken, bgToken, style) => {
+      if (!fg || !bg) throw new Error(`Unresolved token in "${label}" for ${color}`);
       const ratio = contrastRatio(fg, bg);
       results.push({
         color,
         mode: dark ? 'dark' : 'light',
+        style,
         label,
         fgToken,
         bgToken,
@@ -168,6 +262,28 @@ for (const color of COLORS) {
         min,
         pass: ratio >= min,
       });
+    };
+
+    for (const [fgToken, bgToken, min, label] of PAIRS) {
+      const fg = toRgb(tokens[`--${fgToken}`], tokens);
+      const bg = toRgb(tokens[`--${bgToken}`], tokens);
+      record(fg, bg, min, label, fgToken, bgToken);
+    }
+
+    const page = toRgb(tokens['--background'], tokens);
+    for (const tint of TINTS) {
+      const fill = over(toRgb(tokens[`--${tint}`], tokens), 0.1, page);
+      const text = toRgb(tokens['--foreground'], tokens);
+      record(text, fill, 4.5, `text on ${tint} alert`, 'foreground', `${tint}/10`);
+    }
+
+    for (const knobs of STYLE_KNOBS) {
+      const painted = { ...tokens, ...stylePaints(tokens, knobs) };
+      for (const [fgToken, bgToken, min, label] of STYLE_PAIRS) {
+        const fg = toRgb(painted[`--${fgToken}`], painted);
+        const bg = toRgb(painted[`--${bgToken}`], painted);
+        record(fg, bg, min, label, fgToken, bgToken, knobs.name);
+      }
     }
   }
 }
@@ -181,7 +297,7 @@ if (asJson) {
   );
 } else {
   console.log(
-    `Checked ${COLORS.length} colors x 2 modes x ${PAIRS.length} pairs = ${results.length} checks`
+    `Checked ${COLORS.length} colors x 2 modes: ${PAIRS.length} palette pairs, ${TINTS.length} alert tints, ${STYLE_PAIRS.length} pairs x ${STYLE_KNOBS.length} styles = ${results.length} checks`
   );
   console.log(`Failures: ${failures.length}\n`);
 
@@ -195,7 +311,7 @@ if (asJson) {
     console.log(`## ${group}`);
     for (const f of items) {
       console.log(
-        `   ${String(f.ratio).padStart(5)}:1 (need ${f.min}:1)  ${f.label} (--${f.fgToken} on --${f.bgToken})`
+        `   ${String(f.ratio).padStart(5)}:1 (need ${f.min}:1)  ${f.label} (--${f.fgToken} on --${f.bgToken})${f.style ? ` [${f.style}]` : ''}`
       );
     }
     console.log();

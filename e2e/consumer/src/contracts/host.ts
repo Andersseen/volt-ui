@@ -10,6 +10,7 @@ import {
   RadioFixture,
   ResizableFixture,
   SelectFixture,
+  SliderContractFixture,
   SliderFixtures,
   StaticValueFixture,
   TabsAccordionFixture,
@@ -36,6 +37,7 @@ import {
     RadioFixture,
     ResizableFixture,
     SelectFixture,
+    SliderContractFixture,
     SliderFixtures,
     StaticValueFixture,
     TabsAccordionFixture,
@@ -68,6 +70,9 @@ import {
         }
         @case ('sliders') {
           <app-sliders />
+        }
+        @case ('slider-contract') {
+          <app-slider-contract />
         }
         @case ('resizable') {
           <app-resizable />

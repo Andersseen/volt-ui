@@ -123,6 +123,173 @@ test.describe('range slider', () => {
   });
 });
 
+/** The centre of a thumb, in page pixels. */
+async function centre(thumb: Locator) {
+  const box = (await thumb.boundingBox())!;
+  return { x: box.x + box.width / 2, y: box.y + box.height / 2 };
+}
+
+const now = async (thumb: Locator) => Number(await thumb.getAttribute('aria-valuenow'));
+
+test.describe('vertical orientation', () => {
+  test.beforeEach(async ({ page }) => load(page, 'slider-contract'));
+
+  test('slider: the track stands upright and the thumb sits on it, value going up', async ({
+    page,
+  }) => {
+    const host = page.locator('volt-slider').first();
+    const thumb = page.getByRole('slider', { name: 'Vertical volume' });
+    await expect(thumb).toHaveAttribute('aria-orientation', 'vertical');
+
+    const box = (await host.boundingBox())!;
+    expect(box.height, 'the consumer height is honoured').toBeCloseTo(192, 0);
+    expect(box.width, 'the host shrinks to the thumb, not the whole row').toBeLessThan(48);
+
+    const track = (await host.locator('[data-orientation]').first().boundingBox())!;
+    expect(track.height).toBeGreaterThan(track.width * 4);
+
+    const at30 = await centre(thumb);
+    expect(Math.abs(at30.x - (box.x + box.width / 2)), 'centred on the track').toBeLessThan(2);
+    // 30% up from the bottom edge.
+    expect(Math.abs(at30.y - (box.y + box.height * 0.7))).toBeLessThan(4);
+
+    await thumb.focus();
+    await page.keyboard.press('ArrowUp');
+    await expect(thumb).toHaveAttribute('aria-valuenow', '31');
+    await page.keyboard.press('ArrowDown');
+    await page.keyboard.press('ArrowDown');
+    await expect(thumb).toHaveAttribute('aria-valuenow', '29');
+    await page.keyboard.press('End');
+    await expect(thumb).toHaveAttribute('aria-valuenow', '100');
+    await expect.poll(async () => (await centre(thumb)).y).toBeLessThan(box.y + 4);
+  });
+
+  test('slider: the filled range grows from the bottom and matches the value', async ({ page }) => {
+    const host = page.locator('volt-slider').first();
+    const box = (await host.boundingBox())!;
+    const range = (await host.locator('[data-orientation] > *').first().boundingBox())!;
+    expect(Math.abs(range.height - box.height * 0.3)).toBeLessThan(4);
+    expect(Math.abs(range.y + range.height - (box.y + box.height))).toBeLessThan(2);
+  });
+
+  test('slider: dragging along the real track height sets the value, repeatedly', async ({
+    page,
+  }) => {
+    const host = page.locator('volt-slider').first();
+    const thumb = page.getByRole('slider', { name: 'Vertical volume' });
+    const box = (await host.boundingBox())!;
+    const x = box.x + box.width / 2;
+    await dragTo(page, thumb, x, box.y + box.height * 0.25);
+    await expect.poll(() => now(thumb)).toBeGreaterThanOrEqual(73);
+    expect(await now(thumb)).toBeLessThanOrEqual(77);
+    await dragTo(page, thumb, x, box.y + box.height * 0.75);
+    await expect.poll(() => now(thumb)).toBeLessThanOrEqual(27);
+    expect(await now(thumb)).toBeGreaterThanOrEqual(23);
+  });
+
+  test('range slider: both thumbs sit on one upright track and cannot cross', async ({ page }) => {
+    const host = page.locator('volt-range-slider').first();
+    const low = page.getByRole('slider', { name: 'Vertical low' });
+    const high = page.getByRole('slider', { name: 'Vertical high' });
+    const box = (await host.boundingBox())!;
+    expect(box.width).toBeLessThan(48);
+    const [l, h] = [await centre(low), await centre(high)];
+    expect(Math.abs(l.x - h.x)).toBeLessThan(1);
+    expect(Math.abs(l.y - (box.y + box.height * 0.8))).toBeLessThan(4);
+    expect(Math.abs(h.y - (box.y + box.height * 0.4))).toBeLessThan(4);
+
+    const range = (await host.locator('[data-orientation] > *').first().boundingBox())!;
+    expect(Math.abs(range.height - box.height * 0.4)).toBeLessThan(4);
+
+    await dragTo(page, low, l.x, box.y + box.height * 0.1);
+    await expect.poll(() => now(low)).toBe(await now(high));
+    expect(await now(high)).toBe(60);
+  });
+});
+
+test.describe('forms', () => {
+  test.beforeEach(async ({ page }) => load(page, 'slider-contract'));
+
+  const reset = (page: Page, name: string) =>
+    page.getByRole('button', { name, exact: true }).click();
+
+  test('reset() with no value returns to the resting value, repaints, and does not emit', async ({
+    page,
+  }) => {
+    const thumb = page.getByRole('slider', { name: 'Form level' });
+    await expect(thumb).toHaveAttribute('aria-valuenow', '20');
+    await reset(page, 'Reset level');
+    // `[value]` is unset, so the resting value is the input default clamped into [min, max].
+    await expect(thumb).toHaveAttribute('aria-valuenow', '10');
+    const output = JSON.parse((await page.locator('#level').textContent())!);
+    expect(output).toEqual({ value: null, emits: [] });
+  });
+
+  test('reset() falls back to the template value when there is one', async ({ page }) => {
+    const thumb = page.getByRole('slider', { name: 'Seeded level' });
+    await expect(thumb).toHaveAttribute('aria-valuenow', '15');
+    await reset(page, 'Reset seeded');
+    await expect(thumb).toHaveAttribute('aria-valuenow', '35');
+  });
+
+  test('reset(value) writes that value without echoing it back as a user change', async ({
+    page,
+  }) => {
+    const thumb = page.getByRole('slider', { name: 'Form level' });
+    await reset(page, 'Reset level to 40');
+    await expect(thumb).toHaveAttribute('aria-valuenow', '40');
+    const output = JSON.parse((await page.locator('#level').textContent())!);
+    expect(output).toEqual({ value: 40, emits: [] });
+    await thumb.focus();
+    await page.keyboard.press('ArrowRight');
+    await expect(thumb).toHaveAttribute('aria-valuenow', '41');
+    await expect
+      .poll(async () => JSON.parse((await page.locator('#level').textContent())!))
+      .toEqual({ value: 41, emits: [41] });
+  });
+
+  test('disabling a control stops the keyboard and enabling restores it', async ({ page }) => {
+    const thumb = page.getByRole('slider', { name: 'Form level' });
+    await page.getByRole('button', { name: 'Toggle disabled' }).click();
+    await thumb.focus({ timeout: 1000 }).catch(() => undefined);
+    await page.keyboard.press('ArrowRight');
+    await expect(thumb).toHaveAttribute('aria-valuenow', '20');
+    await page.getByRole('button', { name: 'Toggle disabled' }).click();
+    await thumb.focus();
+    await page.keyboard.press('ArrowRight');
+    await expect(thumb).toHaveAttribute('aria-valuenow', '21');
+  });
+
+  test('range: reset() restores low and high; reset(pair) writes both, in either direction', async ({
+    page,
+  }) => {
+    const low = page.getByRole('slider', { name: 'Form low' });
+    const high = page.getByRole('slider', { name: 'Form high' });
+    await expect(low).toHaveAttribute('aria-valuenow', '25');
+    await expect(high).toHaveAttribute('aria-valuenow', '75');
+    await reset(page, 'Reset span');
+    await expect(low).toHaveAttribute('aria-valuenow', '10');
+    await expect(high).toHaveAttribute('aria-valuenow', '90');
+    await expect(page.locator('#span')).toHaveText('null');
+    await reset(page, 'Reset span to 30-40');
+    await expect(low).toHaveAttribute('aria-valuenow', '30');
+    await expect(high).toHaveAttribute('aria-valuenow', '40');
+  });
+
+  test('geometry follows a resize: a drag after the page narrows still lands on the track', async ({
+    page,
+  }) => {
+    const host = page.locator('volt-slider').nth(1);
+    const thumb = page.getByRole('slider', { name: 'Form level' });
+    await page.setViewportSize({ width: 700, height: 800 });
+    const track = await trackBox(host);
+    await dragTo(page, thumb, track.x + track.width * 0.5, track.y);
+    // min 10, max 50: the middle of the track is 30.
+    await expect.poll(() => now(thumb)).toBeGreaterThanOrEqual(28);
+    expect(await now(thumb)).toBeLessThanOrEqual(32);
+  });
+});
+
 test.describe('resizable', () => {
   test.beforeEach(async ({ page }) => load(page, 'resizable'));
 

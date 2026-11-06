@@ -29,6 +29,8 @@ on:
       - 'e2e/contracts/**'
       - 'e2e/consumer/src/contracts/**'
       - 'e2e/consumer/contracts.html'
+      - 'e2e/consumer/src/themes/**'
+      - 'e2e/consumer/themes.html'
       - 'e2e/quartz-consumer/**'
       - 'e2e/utils/evidence.ts'
       - 'playwright.contracts.config.ts'

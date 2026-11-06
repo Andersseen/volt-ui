@@ -70,7 +70,8 @@ test.describe('documentation', () => {
 
     await page.getByTestId('language-trigger').click();
     await page.getByTestId('language-option-es').click();
-    await expect(page).toHaveURL(/\/es\/docs\/copying-a-recipe$/);
+    // The navigation waits for the Spanish catalog, a network fetch to Glossa.
+    await expect(page).toHaveURL(/\/es\/docs\/copying-a-recipe$/, { timeout: 20_000 });
     await expect(page.locator('html')).toHaveAttribute('lang', 'es');
     // Doqs's own interface text comes from the same Glossa catalog as the rest of the site.
     await expect(page.getByText('En esta página').first()).toBeVisible();

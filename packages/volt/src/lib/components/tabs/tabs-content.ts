@@ -23,7 +23,7 @@ export class VoltTabsContent {
 
   protected readonly classes = computed(() =>
     cn(
-      'block mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 data-[state=inactive]:hidden',
+      'block mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-(length:--ring-width) focus-visible:ring-ring focus-visible:ring-offset-(length:--ring-offset-width) data-[state=inactive]:hidden',
       this.class()
     )
   );

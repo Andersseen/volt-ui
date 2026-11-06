@@ -57,6 +57,7 @@ apps/web/public/manifest.json
 /e2e/consumer-cli/src/ui/
 /e2e/consumer-cli/src/workflow/
 /e2e/consumer-cli/src/async/
+/e2e/consumer-cli/src/themes/
 
 # codebase-memory-mcp local index (the graph is rebuilt per clone via index_repository)
 .codebase-memory/

@@ -1,47 +1,58 @@
-:root[data-color='dusk'] {
-  --primary: oklch(0.55 0.2 295);
-  --primary-foreground: oklch(0.98 0 0);
-  --secondary: oklch(0.5 0.15 320);
-  --secondary-foreground: oklch(0.98 0 0);
-  --background: oklch(0.96 0.01 295);
-  --foreground: oklch(0.18 0.02 295);
-  --surface: oklch(0.96 0.01 295);
-  --surface-foreground: oklch(0.18 0.02 295);
-  --muted: oklch(0.9 0.02 295);
-  --muted-foreground: oklch(0.48 0.03 295);
-  --border: oklch(0.85 0.03 295);
-  --input: oklch(0.64 0.03 295);
-  --ring: oklch(0.55 0.2 295);
-  --success: oklch(0.536 0.15 150);
-  --success-foreground: oklch(0.98 0 0);
-  --warning: oklch(0.559 0.15 60);
-  --warning-foreground: oklch(0.98 0 0);
-  --error: oklch(0.55 0.2 15);
-  --error-foreground: oklch(0.98 0 0);
-  --info: oklch(0.55 0.15 285);
-  --info-foreground: oklch(0.98 0 0);
+/* Violet accent on slightly plum neutrals. See the token contract in ../tokens.css. */
+:root[data-color='dusk'],
+[data-volt-theme][data-color='dusk'] {
+  --background: oklch(0.98 0.006 330);
+  --foreground: oklch(0.22 0.03 320);
+  --surface: oklch(0.998 0.002 330);
+  --surface-foreground: oklch(0.22 0.03 320);
+  --muted: oklch(0.945 0.012 325);
+  --muted-foreground: oklch(0.49 0.035 320);
+  --border: oklch(0.89 0.016 325);
+  --input: oklch(0.64 0.03 320);
+  --ring: oklch(0.56 0.19 300);
+
+  --primary: oklch(0.5 0.2 300);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.925 0.03 310);
+  --secondary-foreground: oklch(0.32 0.07 305);
+
+  --destructive: oklch(0.55 0.21 25);
+  --destructive-foreground: oklch(1 0 0);
+  --success: oklch(0.5 0.13 150);
+  --success-foreground: oklch(1 0 0);
+  --warning: oklch(0.8 0.15 80);
+  --warning-foreground: oklch(0.26 0.06 70);
+  --error: oklch(0.55 0.21 25);
+  --error-foreground: oklch(1 0 0);
+  --info: oklch(0.52 0.13 245);
+  --info-foreground: oklch(1 0 0);
 }
 
-.dark[data-color='dusk'] {
-  --primary: oklch(0.72 0.2 295);
-  --primary-foreground: oklch(0.14 0.02 295);
-  --secondary: oklch(0.576 0.18 320);
-  --secondary-foreground: oklch(0.98 0 0);
-  --background: oklch(0.08 0.015 295);
-  --foreground: oklch(0.95 0.01 295);
-  --surface: oklch(0.12 0.02 295);
-  --surface-foreground: oklch(0.95 0.01 295);
-  --muted: oklch(0.18 0.03 295);
-  --muted-foreground: oklch(0.6 0.04 295);
-  --border: oklch(0.18 0.03 295);
-  --input: oklch(0.47 0.03 295);
-  --ring: oklch(0.65 0.2 295);
-  --success: oklch(0.536 0.15 150);
-  --success-foreground: oklch(0.98 0 0);
-  --warning: oklch(0.559 0.15 60);
-  --warning-foreground: oklch(0.98 0 0);
-  --error: oklch(0.578 0.2 15);
-  --error-foreground: oklch(0.98 0 0);
-  --info: oklch(0.564 0.15 285);
-  --info-foreground: oklch(0.98 0 0);
+.dark[data-color='dusk'],
+.dark [data-volt-theme][data-color='dusk']:not([data-mode='light']) {
+  --background: oklch(0.175 0.02 320);
+  --foreground: oklch(0.95 0.01 320);
+  --surface: oklch(0.215 0.024 320);
+  --surface-foreground: oklch(0.95 0.01 320);
+  --muted: oklch(0.275 0.028 320);
+  --muted-foreground: oklch(0.75 0.03 320);
+  --border: oklch(0.345 0.034 320);
+  --input: oklch(0.56 0.04 320);
+  --ring: oklch(0.74 0.15 300);
+
+  --primary: oklch(0.74 0.15 300);
+  --primary-foreground: oklch(0.18 0.05 300);
+  --secondary: oklch(0.31 0.05 310);
+  --secondary-foreground: oklch(0.93 0.015 320);
+
+  --destructive: oklch(0.7 0.17 25);
+  --destructive-foreground: oklch(0.18 0.05 25);
+  --success: oklch(0.74 0.14 150);
+  --success-foreground: oklch(0.18 0.04 150);
+  --warning: oklch(0.82 0.14 85);
+  --warning-foreground: oklch(0.24 0.06 70);
+  --error: oklch(0.7 0.17 25);
+  --error-foreground: oklch(0.18 0.05 25);
+  --info: oklch(0.74 0.11 240);
+  --info-foreground: oklch(0.18 0.04 240);
 }

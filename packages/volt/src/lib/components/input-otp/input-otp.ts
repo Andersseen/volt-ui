@@ -53,7 +53,7 @@ import { cn } from '../../utils';
 export class VoltInputOtp implements ControlValueAccessor {
   readonly class = input<string>('');
 
-  protected readonly classes = computed(() => cn('flex items-center gap-2', this.class()));
+  protected readonly classes = computed(() => cn('flex items-center gap-stack', this.class()));
 
   protected readonly formControlState = injectFormControlState();
 

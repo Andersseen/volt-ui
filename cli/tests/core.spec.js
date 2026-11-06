@@ -558,5 +558,28 @@ describe('CLI Core', () => {
         })
       );
     });
+
+    it('records a sibling import as a dependency, so a copy is complete', () => {
+      const components = core.getLocalManifest().components;
+      const dependencies = name =>
+        (Array.isArray(components) ? components.find(c => c.name === name) : components[name])
+          .dependencies;
+      for (const overlay of ['popover', 'tooltip', 'select', 'combobox', 'dialog', 'drawer']) {
+        expect(dependencies(overlay)).toContain('theme');
+      }
+    });
+  });
+
+  describe('transformContent with theme tokens', () => {
+    it('renames the scope API and leaves tokens and data attributes alone', () => {
+      const output = core.transformContent(
+        `selector: '[voltTheme]', class="h-control-md border-(length:--volt-control-border-width)" data-volt-theme voltThemeInherit VoltTheme`
+      );
+      expect(output).toContain("selector: '[uiTheme]'");
+      expect(output).toContain('uiThemeInherit');
+      expect(output).toContain('UiTheme');
+      expect(output).toContain('border-(length:--volt-control-border-width)');
+      expect(output).toContain('data-volt-theme');
+    });
   });
 });

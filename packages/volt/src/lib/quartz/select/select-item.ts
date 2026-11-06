@@ -58,7 +58,7 @@ export class VoltSelectItem {
 
   protected readonly classes = computed(() =>
     cn(
-      'group relative flex w-full cursor-pointer select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-muted focus:text-muted-foreground aria-disabled:pointer-events-none aria-disabled:opacity-50 transition-colors',
+      'group relative flex w-full cursor-pointer select-none items-center rounded-sm py-item-y pl-8 pr-2 text-sm outline-none focus:bg-muted focus:text-muted-foreground aria-disabled:pointer-events-none aria-disabled:opacity-50 transition-colors',
       this.class()
     )
   );
