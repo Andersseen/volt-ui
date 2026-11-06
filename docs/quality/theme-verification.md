@@ -41,13 +41,15 @@ Screenshots: `node scripts/capture-theme-gallery.mjs --out <dir> --all`, 1280×9
 
 ## Failures not caused by this work
 
-`node scripts/check-quartz-consumer.mjs 22` fails locally on Angular 22.2.4: RTL arrows (three consumer modes), Quartz
+`node scripts/check-quartz-consumer.mjs 22` fails on the development Mac: RTL arrows in three consumer modes, Quartz
 Select keyboard, and the shared paint comparison that depends on them. The base commit `56a4896` fails the same tests
-and one more on the same machine, so this branch did not introduce them. Angular 21.2.0 passes in Chromium and Firefox.
+and one more on that machine. GitHub Actions passes the dual-backend job on Angular 22 in Chromium, Firefox and WebKit,
+so this is specific to the local environment and is not a known Angular 22 defect.
 
 ## Limits
 
-- **WebKit** cannot launch on the development Mac. Its results come only from GitHub Actions.
+- **WebKit** cannot launch on the development Mac. Its results come only from GitHub Actions, where the contracts
+  pass, the theme matrix included.
 - **Hover, press and focus** run on one palette per style, since those paths do not vary by palette. Reduced motion
   is asserted on the Progress bar only.
 - **Touch** is exercised through the same pointer path as the mouse. No touch-device emulation was run.
