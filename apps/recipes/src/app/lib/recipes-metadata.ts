@@ -92,6 +92,12 @@ export const RECIPES: readonly RecipeMetadata[] = [
       atom('VoltSpinner', 'spinner'),
     ],
   },
+  {
+    slug: 'section-nav',
+    labelKey: 'recipes.items.sectionNav',
+    path: '/patterns/section-nav',
+    atoms: [atom('VoltSeparator', 'separator')],
+  },
 ];
 
 /** Looks a recipe up by its route segment. Throws on a miss: the callers' slugs are typos the build should surface. */

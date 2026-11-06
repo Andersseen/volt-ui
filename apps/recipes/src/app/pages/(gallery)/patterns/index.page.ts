@@ -7,7 +7,11 @@ import { CatalogBrowser } from '../../../components/catalog-browser/catalog-brow
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CatalogBrowser],
   template: `
-    <app-catalog-browser kind="patterns" titleKey="recipes.title" ledeKey="recipes.kinds.recipes" />
+    <app-catalog-browser
+      kind="patterns"
+      titleKey="gallery.patterns.title"
+      ledeKey="recipes.kinds.recipes"
+    />
   `,
 })
 export default class PatternsIndexPage {}

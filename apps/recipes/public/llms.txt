@@ -13,6 +13,11 @@ Volt UI itself — the components, theming and API reference — is documented a
 
 ## Blocks
 
+- [Navbar Marketing](https://recipes.voltui.dev/blocks/navbar-marketing)
+- [Navbar App](https://recipes.voltui.dev/blocks/navbar-app)
+- [Page Header](https://recipes.voltui.dev/blocks/page-header)
+- [Header Editorial](https://recipes.voltui.dev/blocks/header-editorial)
+- [Footer Compact](https://recipes.voltui.dev/blocks/footer-compact)
 - [Hero](https://recipes.voltui.dev/blocks/hero)
 - [Hero Split](https://recipes.voltui.dev/blocks/hero-split)
 - [Hero Product](https://recipes.voltui.dev/blocks/hero-product)

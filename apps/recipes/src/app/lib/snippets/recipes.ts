@@ -7,6 +7,7 @@ import asyncSearchSource from '../../patterns/async-search/async-search.ts?raw';
 import dataTableSource from '../../patterns/data-table/data-table.ts?raw';
 import livePlaygroundSource from '../../patterns/live-playground/live-playground.ts?raw';
 import componentExplorerSource from '../../patterns/component-explorer/component-explorer.ts?raw';
+import sectionNavSource from '../../patterns/section-nav/section-nav.ts?raw';
 import settingsFormSource from '../../patterns/settings-form/settings-form.ts?raw';
 
 export const SETTINGS_FORM_RECIPE = toConsumerSource(settingsFormSource);
@@ -14,3 +15,4 @@ export const ASYNC_SEARCH_RECIPE = toConsumerSource(asyncSearchSource);
 export const DATA_TABLE_RECIPE = toConsumerSource(dataTableSource);
 export const LIVE_PLAYGROUND_RECIPE = toConsumerSource(livePlaygroundSource);
 export const COMPONENT_EXPLORER_RECIPE = toConsumerSource(componentExplorerSource);
+export const SECTION_NAV_RECIPE = toConsumerSource(sectionNavSource);

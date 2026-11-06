@@ -85,6 +85,111 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://recipes.voltui.dev/patterns"/>
   </url>
   <url>
+    <loc>https://recipes.voltui.dev/blocks/navbar-marketing</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://recipes.voltui.dev/blocks/navbar-marketing"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://recipes.voltui.dev/es/blocks/navbar-marketing"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://recipes.voltui.dev/uk/blocks/navbar-marketing"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://recipes.voltui.dev/blocks/navbar-marketing"/>
+  </url>
+  <url>
+    <loc>https://recipes.voltui.dev/es/blocks/navbar-marketing</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://recipes.voltui.dev/blocks/navbar-marketing"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://recipes.voltui.dev/es/blocks/navbar-marketing"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://recipes.voltui.dev/uk/blocks/navbar-marketing"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://recipes.voltui.dev/blocks/navbar-marketing"/>
+  </url>
+  <url>
+    <loc>https://recipes.voltui.dev/uk/blocks/navbar-marketing</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://recipes.voltui.dev/blocks/navbar-marketing"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://recipes.voltui.dev/es/blocks/navbar-marketing"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://recipes.voltui.dev/uk/blocks/navbar-marketing"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://recipes.voltui.dev/blocks/navbar-marketing"/>
+  </url>
+  <url>
+    <loc>https://recipes.voltui.dev/blocks/navbar-app</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://recipes.voltui.dev/blocks/navbar-app"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://recipes.voltui.dev/es/blocks/navbar-app"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://recipes.voltui.dev/uk/blocks/navbar-app"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://recipes.voltui.dev/blocks/navbar-app"/>
+  </url>
+  <url>
+    <loc>https://recipes.voltui.dev/es/blocks/navbar-app</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://recipes.voltui.dev/blocks/navbar-app"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://recipes.voltui.dev/es/blocks/navbar-app"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://recipes.voltui.dev/uk/blocks/navbar-app"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://recipes.voltui.dev/blocks/navbar-app"/>
+  </url>
+  <url>
+    <loc>https://recipes.voltui.dev/uk/blocks/navbar-app</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://recipes.voltui.dev/blocks/navbar-app"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://recipes.voltui.dev/es/blocks/navbar-app"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://recipes.voltui.dev/uk/blocks/navbar-app"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://recipes.voltui.dev/blocks/navbar-app"/>
+  </url>
+  <url>
+    <loc>https://recipes.voltui.dev/blocks/page-header</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://recipes.voltui.dev/blocks/page-header"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://recipes.voltui.dev/es/blocks/page-header"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://recipes.voltui.dev/uk/blocks/page-header"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://recipes.voltui.dev/blocks/page-header"/>
+  </url>
+  <url>
+    <loc>https://recipes.voltui.dev/es/blocks/page-header</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://recipes.voltui.dev/blocks/page-header"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://recipes.voltui.dev/es/blocks/page-header"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://recipes.voltui.dev/uk/blocks/page-header"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://recipes.voltui.dev/blocks/page-header"/>
+  </url>
+  <url>
+    <loc>https://recipes.voltui.dev/uk/blocks/page-header</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://recipes.voltui.dev/blocks/page-header"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://recipes.voltui.dev/es/blocks/page-header"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://recipes.voltui.dev/uk/blocks/page-header"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://recipes.voltui.dev/blocks/page-header"/>
+  </url>
+  <url>
+    <loc>https://recipes.voltui.dev/blocks/header-editorial</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://recipes.voltui.dev/blocks/header-editorial"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://recipes.voltui.dev/es/blocks/header-editorial"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://recipes.voltui.dev/uk/blocks/header-editorial"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://recipes.voltui.dev/blocks/header-editorial"/>
+  </url>
+  <url>
+    <loc>https://recipes.voltui.dev/es/blocks/header-editorial</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://recipes.voltui.dev/blocks/header-editorial"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://recipes.voltui.dev/es/blocks/header-editorial"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://recipes.voltui.dev/uk/blocks/header-editorial"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://recipes.voltui.dev/blocks/header-editorial"/>
+  </url>
+  <url>
+    <loc>https://recipes.voltui.dev/uk/blocks/header-editorial</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://recipes.voltui.dev/blocks/header-editorial"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://recipes.voltui.dev/es/blocks/header-editorial"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://recipes.voltui.dev/uk/blocks/header-editorial"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://recipes.voltui.dev/blocks/header-editorial"/>
+  </url>
+  <url>
+    <loc>https://recipes.voltui.dev/blocks/footer-compact</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://recipes.voltui.dev/blocks/footer-compact"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://recipes.voltui.dev/es/blocks/footer-compact"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://recipes.voltui.dev/uk/blocks/footer-compact"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://recipes.voltui.dev/blocks/footer-compact"/>
+  </url>
+  <url>
+    <loc>https://recipes.voltui.dev/es/blocks/footer-compact</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://recipes.voltui.dev/blocks/footer-compact"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://recipes.voltui.dev/es/blocks/footer-compact"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://recipes.voltui.dev/uk/blocks/footer-compact"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://recipes.voltui.dev/blocks/footer-compact"/>
+  </url>
+  <url>
+    <loc>https://recipes.voltui.dev/uk/blocks/footer-compact</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://recipes.voltui.dev/blocks/footer-compact"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://recipes.voltui.dev/es/blocks/footer-compact"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://recipes.voltui.dev/uk/blocks/footer-compact"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://recipes.voltui.dev/blocks/footer-compact"/>
+  </url>
+  <url>
     <loc>https://recipes.voltui.dev/blocks/hero</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://recipes.voltui.dev/blocks/hero"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://recipes.voltui.dev/es/blocks/hero"/>
@@ -881,6 +986,27 @@
     <xhtml:link rel="alternate" hreflang="es" href="https://recipes.voltui.dev/es/patterns/component-explorer"/>
     <xhtml:link rel="alternate" hreflang="uk" href="https://recipes.voltui.dev/uk/patterns/component-explorer"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://recipes.voltui.dev/patterns/component-explorer"/>
+  </url>
+  <url>
+    <loc>https://recipes.voltui.dev/patterns/section-nav</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://recipes.voltui.dev/patterns/section-nav"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://recipes.voltui.dev/es/patterns/section-nav"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://recipes.voltui.dev/uk/patterns/section-nav"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://recipes.voltui.dev/patterns/section-nav"/>
+  </url>
+  <url>
+    <loc>https://recipes.voltui.dev/es/patterns/section-nav</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://recipes.voltui.dev/patterns/section-nav"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://recipes.voltui.dev/es/patterns/section-nav"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://recipes.voltui.dev/uk/patterns/section-nav"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://recipes.voltui.dev/patterns/section-nav"/>
+  </url>
+  <url>
+    <loc>https://recipes.voltui.dev/uk/patterns/section-nav</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://recipes.voltui.dev/patterns/section-nav"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://recipes.voltui.dev/es/patterns/section-nav"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://recipes.voltui.dev/uk/patterns/section-nav"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://recipes.voltui.dev/patterns/section-nav"/>
   </url>
   <url>
     <loc>https://recipes.voltui.dev/docs/adding-a-recipe</loc>

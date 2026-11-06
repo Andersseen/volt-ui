@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { VoltSeparator } from 'volt';
 
 export interface FooterLink {
   readonly label: string;
@@ -30,9 +31,11 @@ const DEFAULT_SOCIAL: readonly FooterLink[] = [
 @Component({
   selector: 'app-footer-compact',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [VoltSeparator],
   host: { class: 'block' },
   template: `
-    <footer class="@container border-t border-border bg-background">
+    <footer class="@container bg-background">
+      <volt-separator />
       <div
         class="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-6 @2xl:flex-row @2xl:items-center @2xl:justify-between"
       >

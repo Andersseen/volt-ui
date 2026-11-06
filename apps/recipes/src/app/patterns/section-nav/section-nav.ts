@@ -12,6 +12,7 @@ import {
   viewChild,
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
+import { VoltSeparator } from 'volt';
 
 export interface NavSection {
   /** The element id, and the `#fragment` of the link. Must be unique on the page. */
@@ -86,6 +87,7 @@ const DEFAULT_SECTIONS: readonly NavSection[] = [
 @Component({
   selector: 'app-section-nav',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [VoltSeparator],
   host: { class: 'block' },
   template: `
     <div
@@ -142,6 +144,9 @@ const DEFAULT_SECTIONS: readonly NavSection[] = [
                 <p class="mt-3 max-w-prose text-sm leading-6 text-muted-foreground">{{ text }}</p>
               }
             </section>
+            @if (!$last) {
+              <volt-separator class="mb-10" />
+            }
           }
         </div>
       </div>

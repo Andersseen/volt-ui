@@ -18,7 +18,11 @@
     "shape": "Forma",
     "logoAlt": "Logotipo de Volt UI",
     "storybook": "Storybook",
-    "externalLink": "(se abre en una pestaña nueva)"
+    "externalLink": "(se abre en una pestaña nueva)",
+    "density": "Densidad",
+    "densityCompact": "Compacta",
+    "densityComfortable": "Cómoda",
+    "densitySpacious": "Amplia"
   },
   "footer": {
     "tagline": "Componentes de Angular que son tuyos.",
@@ -62,7 +66,10 @@
     "layoutSourceNote": "La disposición, con los datos de ejemplo en arrays planos al final. Cámbialos por los tuyos y la plantilla deja de ser un ejemplo.",
     "layoutUnbrandedNote": "Los layouts se quedan sin marca a propósito: sin degradados, sin logotipos, sin fotos de stock y sin nada traído de terceros. Si buscas una sección terminada en vez de una forma que rellenar,",
     "blocksGalleryLink": "la galería de bloques",
-    "isTheOtherTab": "es la otra pestaña."
+    "isTheOtherTab": "es la otra pestaña.",
+    "patterns": {
+      "title": "Patrones"
+    }
   },
   "language": {
     "switch": "Cambiar idioma",
@@ -177,7 +184,7 @@
     "recipes": {
       "eyebrow": "Más allá de los componentes",
       "title": "Pantallas completas, listas para copiar.",
-      "lede": "Los bloques, layouts y recetas hechos con componentes de Volt tienen su propio sitio, **Volt UI Recipes**: vista previa en vivo, el código completo y los componentes con los que está hecho cada uno.",
+      "lede": "Los bloques, layouts y patrones hechos con componentes de Volt tienen su propio sitio, **Volt UI Recipes**: vista previa en vivo, el código completo y los componentes con los que está hecho cada uno.",
       "open": "Abrir Volt UI Recipes"
     }
   },
@@ -1241,6 +1248,10 @@
       "backgrounds": {
         "label": "Fondos",
         "blurb": "Superficies animadas para poner detrás de un hero o una llamada a la acción. Tu contenido va encima."
+      },
+      "navigation": {
+        "label": "Navegación",
+        "blurb": "Barras de navegación y cabeceras de página: cómo se mueve la gente y cómo sabe dónde está."
       }
     },
     "items": {
@@ -1358,6 +1369,31 @@
         "label": "Campo de glifos",
         "tagline": "Una rejilla de glifos de código que se ilumina alrededor del puntero.",
         "motion": "Los glifos cerca del puntero toman el color de marca; sin puntero, una luz lenta deambula sola. Con movimiento reducido el campo solo se redibuja cuando se mueve el puntero."
+      },
+      "navbarMarketing": {
+        "label": "Navbar de marketing",
+        "tagline": "Marca, enlaces y una llamada a la acción, con un menú desplegable en pantallas pequeñas.",
+        "motion": "Nada se mueve por sí solo. El menú móvil se abre en su sitio, y Escape lo cierra y devuelve el foco al botón."
+      },
+      "navbarApp": {
+        "label": "Navbar de aplicación",
+        "tagline": "Espacio de trabajo, destinos, acciones contextuales y la cuenta activa en una barra compacta.",
+        "motion": "Los enlaces cambian de color al pasar el cursor y un subrayado marca el destino actual. En contenedores estrechos, los destinos se pliegan en un panel desplegable."
+      },
+      "pageHeader": {
+        "label": "Cabecera de página",
+        "tagline": "Migas de pan, título, descripción y acciones conectadas para paneles, ajustes y páginas de detalle.",
+        "motion": "Estática a propósito. Cuando su contenedor se estrecha, las acciones bajan bajo el título y comparten fila."
+      },
+      "headerEditorial": {
+        "label": "Cabecera editorial",
+        "tagline": "Categoría, título, entradilla y metadatos para artículos, guías y casos de estudio.",
+        "motion": "Estática a propósito: la jerarquía es tipográfica y el título escala con su contenedor."
+      },
+      "footerCompact": {
+        "label": "Pie de página compacto",
+        "tagline": "Marca, línea de propiedad y enlaces en una sola fila, que se reajusta bien en pantallas estrechas.",
+        "motion": "Los enlaces se subrayan al pasar el cursor. Nada más se mueve, así que encaja bajo cualquier página."
       }
     },
     "upcoming": {
@@ -1449,8 +1485,8 @@
       "description": "Un layout de aplicación {$name} para Angular montado con componentes de Volt UI, con estilos solo de tokens del tema para adaptarse a tu marca."
     },
     "recipe": {
-      "title": "Receta {$name} para Angular — Volt UI",
-      "description": "Una receta {$name} probada para Angular que muestra el flujo con componentes de Volt UI, incluidos validación y estados de error."
+      "title": "Patrón {$name} para Angular — Volt UI",
+      "description": "Un patrón {$name} probado para Angular que muestra el flujo con componentes de Volt UI, incluidos validación y estados de error."
     },
     "imageAlt": "Volt UI — componentes Angular accesibles"
   },
@@ -1462,7 +1498,8 @@
       "asyncSearch": "Búsqueda asíncrona",
       "dataTable": "Tabla de datos",
       "componentExplorer": "Explorador de componentes",
-      "livePlayground": "Playground en vivo"
+      "livePlayground": "Playground en vivo",
+      "sectionNav": "Navegación por secciones"
     },
     "doqs": {
       "documentation": "Documentación",
@@ -1488,14 +1525,14 @@
       "lede": "Secciones de página, layouts de aplicación y flujos probados. Cada uno trae vista previa en vivo, su código completo y los componentes con los que está hecho.",
       "statComponents": "Componentes de Volt en uso",
       "blocksTitle": "Secciones que ya se mueven.",
-      "shellsEyebrow": "Layouts y recetas",
+      "shellsEyebrow": "Layouts y patrones",
       "shellsTitle": "Estructuras y flujos para completar.",
-      "shellsLede": "Los layouts dan a una aplicación su estructura. Las recetas muestran comportamiento en el tiempo: un formulario que valida, una búsqueda que espera a la red, una tabla que pagina.",
+      "shellsLede": "Los layouts dan a una aplicación su estructura. Los patrones muestran comportamiento en el tiempo: un formulario que valida, una búsqueda que espera a la red, una tabla que pagina.",
       "ctaTitle": "Cópialo y hazlo tuyo.",
       "ctaBody": "Cada entrada importa desde `@voltui/components`, así que sigue tu tema y conserva la accesibilidad de los componentes que lleva dentro.",
       "ctaComponents": "Ver los componentes"
     },
-    "browse": "Ver recetas",
+    "browse": "Ver patrones",
     "browser": {
       "searchLabel": "Buscar en el catálogo",
       "searchPlaceholder": "Busca por nombre, propósito o componente…",
@@ -1511,7 +1548,7 @@
       "catalog": "Catálogo"
     },
     "kinds": {
-      "heading": "¿Bloques, layouts o recetas?",
+      "heading": "¿Bloques, layouts o patrones?",
       "blocks": "Secciones de página terminadas — un hero, precios, un footer. Con estilo y animación: copia una y cambia los textos.",
       "layouts": "Estructuras de página sin marca — shells de aplicación, pantallas de acceso, tableros. El esqueleto que llenas con tu producto.",
       "recipes": "Comportamiento en el tiempo — validación, búsqueda asíncrona, recuperación. Un flujo probado, no un aspecto."

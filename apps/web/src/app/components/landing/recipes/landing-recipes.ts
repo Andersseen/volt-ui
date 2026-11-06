@@ -26,14 +26,18 @@ const SECTIONS: readonly RecipesSection[] = [
     titleKey: 'gallery.layouts.title',
     descriptionKey: 'gallery.layouts.description',
   },
-  { path: '/recipes', titleKey: 'recipes.title', descriptionKey: 'recipes.description' },
+  {
+    path: '/patterns',
+    titleKey: 'gallery.patterns.title',
+    descriptionKey: 'recipes.description',
+  },
 ];
 
 /**
  * The way from the library to Volt UI Recipes: what it holds, a numbered link into each listing in
  * the visitor's language, and a stage of the three kinds of entry floating in perspective.
  *
- * Blocks, layouts and recipes are a separate application on their own origin, so every link here
+ * Blocks, layouts and patterns are a separate application on their own origin, so every link here
  * is absolute; this section is the site's signpost to it (the footer carries the other).
  */
 @Component({

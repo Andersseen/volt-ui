@@ -110,17 +110,13 @@ export const entryForPath = (path: string): CatalogEntry | undefined =>
 export const listingPath = (kind: CatalogKind): string => `/${kind}`;
 
 /**
- * The Glossa keys that name a kind and explain it, in one place.
- *
- * The category is "Patterns", but its Glossa messages are still the `recipes.*` ones, whose English
- * value reads "Recipes". Adding `gallery.patterns.title` / `recipes.kinds.patterns` (en, es, uk) in
- * Glossa and pointing the `patterns` row at them is the whole remaining change: every header,
- * sidebar, card, head and breadcrumb reads these two maps.
+ * The Glossa keys that name a kind and explain it, in one place. `recipes.title` is deliberately not
+ * here: it names the Recipes website (the footer and docs sidebar link to it), not this category.
  */
 export const KIND_TITLE_KEY = {
   blocks: 'gallery.blocks.title',
   layouts: 'gallery.layouts.title',
-  patterns: 'recipes.title',
+  patterns: 'gallery.patterns.title',
 } as const satisfies Record<CatalogKind, PlainTranslationKey>;
 
 export const KIND_LEDE_KEY = {

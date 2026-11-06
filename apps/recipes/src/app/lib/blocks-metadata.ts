@@ -49,6 +49,11 @@ export interface BlockGroup {
 /** Ordered the way a landing page is assembled, top to bottom. */
 export const BLOCK_CATEGORIES: readonly BlockCategory[] = [
   {
+    id: 'navigation',
+    labelKey: 'blocks.categories.navigation.label',
+    blurbKey: 'blocks.categories.navigation.blurb',
+  },
+  {
     id: 'hero',
     labelKey: 'blocks.categories.hero.label',
     blurbKey: 'blocks.categories.hero.blurb',
@@ -106,6 +111,60 @@ export const BLOCK_CATEGORIES: readonly BlockCategory[] = [
 ];
 
 export const BLOCKS: readonly BlockMetadata[] = [
+  {
+    slug: 'navbar-marketing',
+    path: '/blocks/navbar-marketing',
+    labelKey: 'blocks.items.navbarMarketing.label',
+    category: 'navigation',
+    taglineKey: 'blocks.items.navbarMarketing.tagline',
+    motionKey: 'blocks.items.navbarMarketing.motion',
+    atoms: [{ name: 'VoltButton', path: '/docs/components/button' }],
+  },
+  {
+    slug: 'navbar-app',
+    path: '/blocks/navbar-app',
+    labelKey: 'blocks.items.navbarApp.label',
+    category: 'navigation',
+    taglineKey: 'blocks.items.navbarApp.tagline',
+    motionKey: 'blocks.items.navbarApp.motion',
+    atoms: [
+      { name: 'VoltButton', path: '/docs/components/button' },
+      { name: 'VoltAvatar', path: '/docs/components/avatar' },
+    ],
+  },
+  {
+    slug: 'page-header',
+    path: '/blocks/page-header',
+    labelKey: 'blocks.items.pageHeader.label',
+    category: 'navigation',
+    taglineKey: 'blocks.items.pageHeader.tagline',
+    motionKey: 'blocks.items.pageHeader.motion',
+    atoms: [
+      { name: 'VoltBreadcrumbs', path: '/docs/components/breadcrumbs' },
+      { name: 'VoltButton', path: '/docs/components/button' },
+    ],
+  },
+  {
+    slug: 'header-editorial',
+    path: '/blocks/header-editorial',
+    labelKey: 'blocks.items.headerEditorial.label',
+    category: 'navigation',
+    taglineKey: 'blocks.items.headerEditorial.tagline',
+    motionKey: 'blocks.items.headerEditorial.motion',
+    atoms: [
+      { name: 'VoltBadge', path: '/docs/components/badge' },
+      { name: 'VoltButton', path: '/docs/components/button' },
+    ],
+  },
+  {
+    slug: 'footer-compact',
+    path: '/blocks/footer-compact',
+    labelKey: 'blocks.items.footerCompact.label',
+    category: 'footer',
+    taglineKey: 'blocks.items.footerCompact.tagline',
+    motionKey: 'blocks.items.footerCompact.motion',
+    atoms: [{ name: 'VoltSeparator', path: '/docs/components/separator' }],
+  },
   {
     slug: 'hero',
     path: '/blocks/hero',

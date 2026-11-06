@@ -44,9 +44,10 @@ describe('blocks catalog', () => {
     const headings = BLOCK_GROUPS.map(group => group.headingKey);
     const footer = headings.indexOf('blocks.categories.footer.label');
 
-    // Hero to footer, top to bottom, the way you would build the page.
-    expect(headings[0]).toBe('blocks.categories.hero.label');
-    expect(headings.indexOf('blocks.categories.features.label')).toBeGreaterThan(0);
+    // Navbar to footer, top to bottom, the way you would build the page.
+    expect(headings[0]).toBe('blocks.categories.navigation.label');
+    expect(headings[1]).toBe('blocks.categories.hero.label');
+    expect(headings.indexOf('blocks.categories.features.label')).toBeGreaterThan(1);
     expect(footer).toBeGreaterThan(headings.indexOf('blocks.categories.cta.label'));
   });
 

@@ -66,7 +66,7 @@ export class HomeShells {
   protected readonly groups = [
     {
       path: listingPath('patterns'),
-      titleKey: 'recipes.title',
+      titleKey: 'gallery.patterns.title',
       browseKey: 'recipes.browse',
       entries: entriesOf('patterns').slice(0, 3),
     },
