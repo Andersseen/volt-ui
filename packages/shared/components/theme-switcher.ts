@@ -1,9 +1,9 @@
-import { isPlatformBrowser } from '@angular/common';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  effect,
+  DestroyRef,
   inject,
   PLATFORM_ID,
   signal,
@@ -18,9 +18,20 @@ import {
   VoltToggleGroup,
   VoltToggleGroupItem,
   type VoltThemeColor,
+  type VoltThemeDensity,
   type VoltThemeStyle,
 } from 'volt';
 import { injectAppI18n } from '../i18n/i18n';
+import {
+  DEFAULT_THEME_PREFS,
+  isColor,
+  isStyle,
+  loadThemePrefs,
+  safeLocalStorage,
+  saveThemePrefs,
+  themePrefsEqual,
+  type ThemePrefs,
+} from '../lib/theme-preferences';
 
 const COLORS: readonly { id: VoltThemeColor; label: string }[] = [
   { id: 'volt', label: 'Volt' },
@@ -168,6 +179,8 @@ const STYLES: readonly { id: VoltThemeStyle; label: string }[] = [
 })
 export class ThemeSwitcher {
   private readonly platformId = inject(PLATFORM_ID);
+  private readonly document = inject(DOCUMENT);
+  private readonly destroyRef = inject(DestroyRef);
   private readonly translations = injectAppI18n();
 
   protected readonly t = this.translations.t;
@@ -175,9 +188,17 @@ export class ThemeSwitcher {
   protected readonly colors = COLORS;
   protected readonly styles = STYLES;
 
-  readonly color = signal<VoltThemeColor>('volt');
-  readonly style = signal<VoltThemeStyle>('sharp');
-  readonly isDark = signal(false);
+  /**
+   * The single source of truth. It is written only by `load()` (the stored preference) and
+   * `update()` (a choice the visitor made); there are no effects, so a change cannot echo back
+   * into storage and a stored default never overwrites a shared preference.
+   */
+  private readonly prefs = signal<ThemePrefs>(DEFAULT_THEME_PREFS);
+
+  readonly color = computed(() => this.prefs().color);
+  readonly style = computed(() => this.prefs().style);
+  readonly isDark = computed(() => this.prefs().dark);
+  readonly density = computed(() => this.prefs().density);
 
   /** The toggle groups speak in arrays, even the single-selection ones. */
   protected readonly colorValue = computed(() => [this.color()]);
@@ -195,51 +216,69 @@ export class ThemeSwitcher {
   });
 
   constructor() {
-    if (isPlatformBrowser(this.platformId)) {
-      const savedColor = (localStorage.getItem('volt-color') as VoltThemeColor | null) ?? 'volt';
-      const savedStyle = (localStorage.getItem('volt-style') as VoltThemeStyle | null) ?? 'sharp';
-      const isDarkMode = localStorage.getItem('volt-dark') === 'true';
+    if (!isPlatformBrowser(this.platformId)) return;
 
-      this.color.set(savedColor);
-      this.style.set(savedStyle);
-      this.isDark.set(isDarkMode);
+    this.load();
 
-      applyVoltTheme({ color: savedColor, style: savedStyle, dark: isDarkMode });
+    // A tab that was open while the visitor changed the theme on the sibling site catches up when it
+    // comes back to the foreground. Events, not polling; each handler only re-reads the cookie.
+    const refresh = () => this.load();
+    const onVisible = () => {
+      if (this.document.visibilityState === 'visible') refresh();
+    };
+    const view = this.document.defaultView;
+    view?.addEventListener('pageshow', refresh);
+    view?.addEventListener('focus', refresh);
+    this.document.addEventListener('visibilitychange', onVisible);
+    this.destroyRef.onDestroy(() => {
+      view?.removeEventListener('pageshow', refresh);
+      view?.removeEventListener('focus', refresh);
+      this.document.removeEventListener('visibilitychange', onVisible);
+    });
+  }
 
-      effect(() => {
-        const color = this.color();
-        applyVoltTheme({ color });
-        localStorage.setItem('volt-color', color);
-      });
+  /** Reads the stored preference and applies it if it differs from what is on screen. */
+  private load(): void {
+    const { prefs } = loadThemePrefs(this.document, safeLocalStorage());
+    if (themePrefsEqual(prefs, this.prefs()) && this.applied) return;
+    this.applied = true;
+    this.prefs.set(prefs);
+    applyVoltTheme(prefs, this.document);
+  }
 
-      effect(() => {
-        const style = this.style();
-        applyVoltTheme({ style });
-        localStorage.setItem('volt-style', style);
-      });
-    }
+  private applied = false;
+
+  /** A choice the visitor made: state, DOM, shared cookie, local fallback — once each. */
+  private update(change: Partial<ThemePrefs>): void {
+    const next = { ...this.prefs(), ...change };
+    this.prefs.set(next);
+    applyVoltTheme(next, this.document);
+    saveThemePrefs(this.document, safeLocalStorage(), next);
   }
 
   /** Deselection is off, so an empty array only ever means a re-click on the active item. */
   protected onColorChange(value: string[]): void {
     const [next] = value;
 
-    if (next) {
-      this.color.set(next as VoltThemeColor);
+    if (isColor(next)) {
+      this.update({ color: next });
     }
   }
 
   protected onStyleChange(value: string[]): void {
     const [next] = value;
 
-    if (next) {
-      this.style.set(next as VoltThemeStyle);
+    if (isStyle(next)) {
+      this.update({ style: next });
     }
   }
 
+  /** Not yet in the popover: its label needs a Glossa message (see the Patterns PR notes). */
+  setDensity(density: VoltThemeDensity): void {
+    this.update({ density });
+  }
+
   toggleDark(): void {
-    this.isDark.set(!this.isDark());
-    applyVoltTheme({ dark: this.isDark() });
-    localStorage.setItem('volt-dark', String(this.isDark()));
+    this.update({ dark: !this.isDark() });
   }
 }

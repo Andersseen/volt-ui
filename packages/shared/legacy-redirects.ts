@@ -19,7 +19,7 @@ export const RECIPES_ORIGIN = 'https://recipes.voltui.dev';
 export const LEGACY_PREFIX = {
   blocks: '/docs/blocks',
   layouts: '/docs/layouts',
-  recipes: '/docs/recipes',
+  patterns: '/docs/recipes',
 } as const;
 
 export type LegacyKind = keyof typeof LEGACY_PREFIX;
@@ -63,5 +63,43 @@ export function legacyRouteRules(
 ): Record<string, { redirect: { to: string; statusCode: 301 } }> {
   return Object.fromEntries(
     legacyRedirects(input).map(({ from, to }) => [from, { redirect: { to, statusCode: 301 } }])
+  );
+}
+
+/**
+ * The Patterns category used to be called Recipes: `recipes.voltui.dev/recipes/*` is now
+ * `/patterns/*`. Same discipline as the table above — a finite, generated list, one permanent
+ * redirect per old path and locale, straight to the final URL (never through the docs-site hop).
+ * Relative targets keep the visitor on the Recipes origin, and Nitro carries the query string.
+ */
+export interface RenamedSectionInput {
+  readonly locales: readonly string[];
+  readonly sourceLocale: string;
+  /** Slugs of the entries that were published under the old section name. */
+  readonly slugs: readonly string[];
+}
+
+export function renamedSectionRedirects({
+  locales,
+  sourceLocale,
+  slugs,
+}: RenamedSectionInput): LegacyRedirect[] {
+  return locales.flatMap(locale => {
+    const prefix = locale === sourceLocale ? '' : `/${locale}`;
+    return ['', ...slugs.map(slug => `/${slug}`)].map(tail => ({
+      from: `${prefix}/recipes${tail}`,
+      to: `${prefix}/patterns${tail}`,
+    }));
+  });
+}
+
+export function renamedSectionRouteRules(
+  input: RenamedSectionInput
+): Record<string, { redirect: { to: string; statusCode: 301 } }> {
+  return Object.fromEntries(
+    renamedSectionRedirects(input).map(({ from, to }) => [
+      from,
+      { redirect: { to, statusCode: 301 } },
+    ])
   );
 }

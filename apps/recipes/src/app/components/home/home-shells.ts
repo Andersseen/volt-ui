@@ -65,10 +65,10 @@ export class HomeShells {
 
   protected readonly groups = [
     {
-      path: listingPath('recipes'),
+      path: listingPath('patterns'),
       titleKey: 'recipes.title',
       browseKey: 'recipes.browse',
-      entries: entriesOf('recipes').slice(0, 3),
+      entries: entriesOf('patterns').slice(0, 3),
     },
     {
       path: listingPath('layouts'),

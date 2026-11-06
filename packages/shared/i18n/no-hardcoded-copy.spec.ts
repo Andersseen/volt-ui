@@ -13,7 +13,7 @@ import { describe, expect, it } from 'vitest';
  * Two kinds of text are deliberately NOT translated, and the rule for telling them apart
  * is structural rather than a judgement call:
  *
- *  - **Product source** — `apps/recipes/src/app/{blocks,layouts,recipes}/` are read with Vite's
+ *  - **Product source** — `apps/recipes/src/app/{blocks,layouts,patterns}/` are read with Vite's
  *    `?raw` and shown as code to copy. A `t()` call in there would break the moment it
  *    landed in a consumer's project, which has no Volt docs i18n setup.
  *  - **Specimens** — the live demo projected into `<app-code-panel>`, and the miniatures
@@ -42,7 +42,7 @@ const EXEMPT = [
   // Copied wholesale into a consumer's project by the CLI; a `t()` here would break there.
   'apps/recipes/src/app/blocks/',
   'apps/recipes/src/app/layouts/',
-  'apps/recipes/src/app/recipes/',
+  'apps/recipes/src/app/patterns/',
   // Miniature live renders of every component and block, for the catalog and gallery cards.
   'apps/web/src/app/components/component-preview.ts',
   'apps/recipes/src/app/components/block-thumbnail.ts',

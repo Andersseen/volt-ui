@@ -3,7 +3,14 @@ import { RouterLink } from '@angular/router';
 import { VoltCard } from 'volt';
 import { LmnFolderIcon, LmnGridIcon, LmnZapIcon } from 'lumen-icons';
 import { injectAppI18n } from '@shared/i18n/i18n';
-import { CATALOG_KINDS, entriesOf, listingPath, type CatalogKind } from '../../lib/catalog';
+import {
+  CATALOG_KINDS,
+  KIND_LEDE_KEY,
+  KIND_TITLE_KEY,
+  entriesOf,
+  listingPath,
+  type CatalogKind,
+} from '../../lib/catalog';
 
 /**
  * The three catalogs side by side, each with one sentence on what it is for.
@@ -39,7 +46,7 @@ import { CATALOG_KINDS, entriesOf, listingPath, type CatalogKind } from '../../l
                   @case ('layouts') {
                     <lmn-folder [size]="16" />
                   }
-                  @case ('recipes') {
+                  @case ('patterns') {
                     <lmn-zap [size]="16" />
                   }
                 }
@@ -101,8 +108,8 @@ export class CatalogKinds {
     CATALOG_KINDS.map(id => ({
       id,
       path: this.translations.path(listingPath(id)),
-      title: id === 'recipes' ? this.t('recipes.title') : this.t(`gallery.${id}.title`),
-      body: this.t(`recipes.kinds.${id}`),
+      title: this.t(KIND_TITLE_KEY[id]),
+      body: this.t(KIND_LEDE_KEY[id]),
       count: entriesOf(id).length,
     }))
   );

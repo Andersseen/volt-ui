@@ -13,7 +13,7 @@ import { provideEtyma } from '@etyma/angular';
 import { provideMovement } from 'angular-movement';
 import { appI18n } from '@shared/i18n/i18n';
 import { doqPaths } from '../doq.paths';
-import { AsyncSearchRecipe } from './recipes/async-search/async-search';
+import { AsyncSearchRecipe } from './patterns/async-search/async-search';
 import { provideEtymaDoqI18n, withEtymaLocale } from './lib/doq-i18n';
 import { MOTION } from '@shared/lib/motion';
 import { SITE_IDENTITY } from '@shared/seo/seo.service';

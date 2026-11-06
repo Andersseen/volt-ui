@@ -6,6 +6,7 @@ import { filter, map } from 'rxjs';
 import { injectAppI18n } from '@shared/i18n/i18n';
 import {
   CATALOG_KINDS,
+  KIND_TITLE_KEY,
   entriesOf,
   groupsOf,
   listingPath,
@@ -89,7 +90,7 @@ export class CatalogSidebar {
       return {
         id,
         path: this.translations.path(listingPath(id)),
-        title: id === 'recipes' ? this.t('recipes.title') : this.t(`gallery.${id}.title`),
+        title: this.t(KIND_TITLE_KEY[id]),
         count: entries.length,
         groups: groupsOf(id).map(group => ({
           ...group,

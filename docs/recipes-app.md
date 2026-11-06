@@ -37,7 +37,7 @@ Findings for Doqs (to take to the voltui.dev adoption):
 
 ## Listings
 
-`/blocks`, `/layouts` and `/recipes` share one `CatalogBrowser` (`components/catalog-browser/`): a
+`/blocks`, `/layouts` and `/patterns` share one `CatalogBrowser` (`components/catalog-browser/`): a
 three-catalog explainer, search (name, summary, category and the Volt atoms an entry uses), category
 chips and an A–Z sort. The query lives in the URL (`?q=`, `?category=`, `?sort=name`), so filtered
 views can be linked and are server-rendered as-is; `catalog-query.ts` holds the pure filtering. The
@@ -47,7 +47,7 @@ gallery layout adds `CatalogSidebar` from `lg` up, built on `volt-sidebar-item`.
 
 ## Adding a block, layout or recipe
 
-1. Source: `apps/recipes/src/app/{blocks,layouts,recipes}/<name>/<name>.ts`, importing Volt from `'volt'` (rewritten to `@voltui/components` for the copy) and nothing from the app.
+1. Source: `apps/recipes/src/app/{blocks,layouts,patterns}/<name>/<name>.ts`, importing Volt from `'volt'` (rewritten to `@voltui/components` for the copy) and nothing from the app.
 2. Metadata: an entry in `lib/{blocks,layouts,recipes}-metadata.ts` (slug, path, atoms). `lib/catalog.ts` picks it up; routes, cards, sitemap, SEO and redirects derive from the catalog.
 3. Source for display: export in `lib/snippets/{blocks,layouts,recipes}.ts` via `?raw` + `toConsumerSource`.
 4. Page: `pages/(gallery)/<kind>/<slug>.page.ts` using `app-block-showcase` / `app-layout-showcase` / `app-recipe-showcase`.
@@ -73,3 +73,20 @@ Environment variables: none required (Glossa catalogs are public). Optional anal
 - Per-recipe sentence copy (what each recipe teaches, when to use it): not written yet.
 - A dedicated Glossa project for Recipes. Not needed today: the shared header, footer, switchers and SEO use the same `nav.*`/`seo.*` keys in both apps, and one project means one generated contract. Everything Recipes-only lives under `recipes.*`, so it can move out in one step if Recipes grows its own copy.
 - Recipes-specific OG image (reuses the docs card).
+
+## Patterns (formerly "Recipes")
+
+The third category is **Patterns** — reusable compositions that demonstrate behaviour over time. The product is still _Volt UI Recipes_.
+
+- Routes are `/patterns` and `/patterns/<slug>`. `/recipes[/<slug>]` (and `/es`, `/uk` prefixes) redirect permanently, straight to the new URL, from `renamedSectionRouteRules` in `packages/shared/legacy-redirects.ts`; Nitro emits them into Cloudflare Pages `_redirects`. `voltui.dev/docs/recipes/*` goes to `/patterns/*` in a single hop.
+- Catalog entry ids stay `recipes/<slug>` (stable references), the kind is `patterns`, and the source lives in `src/app/patterns/`.
+- The visible label still reads Glossa's `recipes.*` messages. `KIND_TITLE_KEY` / `KIND_LEDE_KEY` in `lib/catalog.ts` are the only place to change once Glossa has `gallery.patterns.title` and `recipes.kinds.patterns`.
+
+### Sources waiting to be registered
+
+`blocks/{navbar-marketing,navbar-app,page-header,header-editorial,footer-compact}` and `patterns/section-nav` are complete, tested, copyable sources that compile in `check:copied-source`. Registering each needs Glossa messages (en/es/uk) and then the usual steps above:
+
+- `blocks.items.<slug>.{label,tagline,motion}` for each block, and a category label/blurb for a "Navigation & headers" group.
+- A name for `section-nav`, and `seo.*` entries if the SEO patterns need new keys.
+- `gallery.patterns.title`, `recipes.kinds.patterns` (the Patterns category label and its explainer).
+- `nav.density` (+ option labels) for the density control in the theme popover. `ThemeSwitcher.setDensity()` and the cookie already carry density.

@@ -43,7 +43,11 @@ if (urlArg === -1) {
     join(ROOT, 'node_modules/.bin/wrangler'),
     ['pages', 'dev', '--ip', '127.0.0.1', '--port', String(PORT)],
     // From the app's folder, so its wrangler.toml (output dir, compatibility date) applies.
-    { cwd: join(ROOT, 'apps', APP === 'recipes' ? 'recipes' : 'web'), env: { ...process.env, NO_COLOR: '1' }, stdio: 'ignore' }
+    {
+      cwd: join(ROOT, 'apps', APP === 'recipes' ? 'recipes' : 'web'),
+      env: { ...process.env, NO_COLOR: '1' },
+      stdio: 'ignore',
+    }
   );
 }
 
@@ -88,8 +92,8 @@ const PAGES = RECIPES
       { path: '/blocks/pricing', lang: 'en', title: /Pricing Tiers/, breadcrumbs: true },
       { path: '/layouts', lang: 'en', title: /Layouts/ },
       { path: '/layouts/kanban', lang: 'en', title: /Kanban/, breadcrumbs: true },
-      { path: '/recipes', lang: 'en', title: /Recipes/ },
-      { path: '/recipes/async-search', lang: 'en', title: /Async search/, breadcrumbs: true },
+      { path: '/patterns', lang: 'en', title: /Recipes/ },
+      { path: '/patterns/async-search', lang: 'en', title: /Async search/, breadcrumbs: true },
       { path: '/es/blocks/pricing', lang: 'es', title: /Bloque Pricing Tiers/, breadcrumbs: true },
       { path: '/uk/layouts', lang: 'uk', title: /Макети/ },
       { path: '/docs/copying-a-recipe', lang: 'en', title: /Copying a recipe/, breadcrumbs: true },
@@ -279,9 +283,9 @@ else {
         '/',
         '/blocks/hero',
         '/layouts/kanban',
-        '/recipes/data-table',
+        '/patterns/data-table',
         '/es/blocks/pricing',
-        '/uk/recipes',
+        '/uk/patterns',
       ]
     : [
         '/',

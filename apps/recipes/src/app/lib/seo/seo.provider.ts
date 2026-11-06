@@ -9,7 +9,13 @@ import { filter } from 'rxjs';
 import { injectAppI18n, LOCALES } from '@shared/i18n/i18n';
 import { plainText } from '@shared/seo/paths';
 import { SeoService } from '@shared/seo/seo.service';
-import { entryForPath, listingPath, type CatalogEntry, type CatalogKind } from '../catalog';
+import {
+  KIND_TITLE_KEY,
+  entryForPath,
+  listingPath,
+  type CatalogEntry,
+  type CatalogKind,
+} from '../catalog';
 import { breadcrumbJsonLd, homeJsonLd, type JsonLd } from './json-ld';
 import { DOC_PAGES } from './docs-pages';
 import { seoEntryFor, type SeoEntry } from './seo-catalog';
@@ -120,9 +126,9 @@ function describe(entry: SeoEntry, t: T, locale: string): { title: string; descr
             title: titled(t('gallery.layouts.title')),
             description: `${t('gallery.layouts.description')} ${t('gallery.layoutSourceNote')}`,
           };
-        case 'recipes':
+        case 'patterns':
           return {
-            title: titled(t('recipes.title')),
+            title: titled(t(KIND_TITLE_KEY.patterns)),
             description: t('recipes.description'),
           };
       }
@@ -166,12 +172,7 @@ function structuredData(entry: SeoEntry, locale: string, t: T): JsonLd[] {
   const catalogEntry = entryForPath(entry.path);
   if (!catalogEntry) return [];
 
-  const section =
-    catalogEntry.kind === 'blocks'
-      ? t('gallery.blocks.title')
-      : catalogEntry.kind === 'layouts'
-        ? t('gallery.layouts.title')
-        : t('recipes.title');
+  const section = t(KIND_TITLE_KEY[catalogEntry.kind]);
 
   return [
     breadcrumbJsonLd(

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed } from '@angular/core';
 import { SiteHeader } from '@shared/components/site-header';
 import type { SiteNavLink } from '@shared/components/site-nav';
 import { injectAppI18n } from '@shared/i18n/i18n';
-import { CATALOG_KINDS, listingPath } from '../lib/catalog';
+import { CATALOG_KINDS, KIND_TITLE_KEY, listingPath } from '../lib/catalog';
 import { docsUrl, GITHUB_URL } from '../lib/site';
 
 /**
@@ -33,7 +33,7 @@ export class Header {
     const { t, path, locale } = this.translations;
     return [
       ...CATALOG_KINDS.map(kind => ({
-        label: kind === 'recipes' ? t('recipes.title') : t(`gallery.${kind}.title`),
+        label: t(KIND_TITLE_KEY[kind]),
         path: path(listingPath(kind)),
       })),
       { label: t('nav.docs'), path: path('/docs') },

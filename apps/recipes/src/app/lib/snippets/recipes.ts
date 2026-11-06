@@ -3,11 +3,11 @@
  * approach as `blocks.ts`, so the code on the page is the code the tests exercise.
  */
 import { toConsumerSource } from './consumer-source';
-import asyncSearchSource from '../../recipes/async-search/async-search.ts?raw';
-import dataTableSource from '../../recipes/data-table/data-table.ts?raw';
-import livePlaygroundSource from '../../recipes/live-playground/live-playground.ts?raw';
-import componentExplorerSource from '../../recipes/component-explorer/component-explorer.ts?raw';
-import settingsFormSource from '../../recipes/settings-form/settings-form.ts?raw';
+import asyncSearchSource from '../../patterns/async-search/async-search.ts?raw';
+import dataTableSource from '../../patterns/data-table/data-table.ts?raw';
+import livePlaygroundSource from '../../patterns/live-playground/live-playground.ts?raw';
+import componentExplorerSource from '../../patterns/component-explorer/component-explorer.ts?raw';
+import settingsFormSource from '../../patterns/settings-form/settings-form.ts?raw';
 
 export const SETTINGS_FORM_RECIPE = toConsumerSource(settingsFormSource);
 export const ASYNC_SEARCH_RECIPE = toConsumerSource(asyncSearchSource);

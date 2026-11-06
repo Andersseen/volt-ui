@@ -18,7 +18,7 @@ const ROUTES = [
   '/',
   '/blocks',
   '/layouts',
-  '/recipes',
+  '/patterns',
   ...BLOCKS.map(block => block.path),
   ...LAYOUTS.map(layout => layout.path),
   ...RECIPES.map(recipe => recipe.path),

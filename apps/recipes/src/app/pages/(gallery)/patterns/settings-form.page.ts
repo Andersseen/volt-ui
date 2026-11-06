@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { SettingsFormRecipe } from '../../../recipes/settings-form/settings-form';
+import { SettingsFormRecipe } from '../../../patterns/settings-form/settings-form';
 import { RecipeShowcase } from '../../../components/recipe-showcase';
 import { recipeBySlug } from '../../../lib/recipes-metadata';
 import { SETTINGS_FORM_RECIPE } from '../../../lib/snippets/recipes';

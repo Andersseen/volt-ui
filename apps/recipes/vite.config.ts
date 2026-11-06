@@ -8,6 +8,8 @@ import { defineConfig } from 'vite';
 import { doqPaths } from './src/doq.paths.ts';
 import { resolve } from 'path';
 import { catalogUrl, I18N_PROJECT } from '../../packages/shared/i18n/project.ts';
+import { renamedSectionRouteRules } from '../../packages/shared/legacy-redirects.ts';
+import { RECIPES } from './src/app/lib/recipes-metadata.ts';
 import {
   freshRouteTablePlugin,
   noMarkdownDepsPlugin,
@@ -72,6 +74,12 @@ export default defineConfig(() => ({
       prerender: { routes: async () => doqPrerenderRoutes(doqPaths) },
       nitro: {
         preset: 'cloudflare-pages',
+        // The Patterns category was called Recipes: every old /recipes URL redirects, in every locale.
+        routeRules: renamedSectionRouteRules({
+          locales: I18N_PROJECT.locales,
+          sourceLocale: I18N_PROJECT.sourceLocale,
+          slugs: RECIPES.map(recipe => recipe.slug),
+        }),
         externals: {
           inline: ['@analogjs/router'],
         },

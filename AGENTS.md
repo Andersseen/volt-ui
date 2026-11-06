@@ -88,7 +88,7 @@ cli/              @voltui/cli and @voltui/agent (own release flow, outside the w
 
 `packages/shared/` holds only what both need and is imported as `@shared/*`: i18n (one Glossa project, one generated contract), theme presets and `styles/site.css` (the token imports), the code panel, copy button, theme/language switchers, SEO service and URL helpers. Neither app imports the other's private directories; the one sanctioned bridge is `packages/shared/legacy-redirects.ts`, built from the Recipes catalog.
 
-Recipes also hosts its own guides at `/docs`, written in Markdown (en/es/uk) and rendered by Doqs (`@doqs/analog`) — see `docs/recipes-app.md`. Recipes shows what you can **build**; it never re-documents a component's API (that is voltui.dev, linked with absolute URLs). Blocks, layouts and recipes stay copyable source, never `@voltui/components` exports. To add one, see `docs/recipes-app.md`; to deploy, same file. Old `/docs/{blocks,layouts,recipes}/*` URLs 301 to Recipes (`packages/shared/legacy-redirects.ts`).
+Recipes also hosts its own guides at `/docs`, written in Markdown (en/es/uk) and rendered by Doqs (`@doqs/analog`) — see `docs/recipes-app.md`. Recipes shows what you can **build**; it never re-documents a component's API (that is voltui.dev, linked with absolute URLs). Blocks, layouts and patterns stay copyable source, never `@voltui/components` exports. To add one, see `docs/recipes-app.md`; to deploy, same file. Old `/docs/{blocks,layouts,recipes}/*` URLs 301 to Recipes (`packages/shared/legacy-redirects.ts`).
 
 ## Docs site rules
 
@@ -219,10 +219,10 @@ config that connects to it.
 
 Two kinds of text are deliberately **not** translated:
 
-| Not translated                                     | Why                                                                                                                                   |
-| -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| `apps/recipes/src/app/{blocks,layouts,recipes}/**` | Read with `?raw` and shown as source to copy. A `t()` call would break in a consumer's project, which has no `Translations`.          |
-| The live demo inside `<app-code-panel>`            | It is an exhibit of the code shown beside it. A demo reading "Manzana" next to a snippet saying `Apple` looks broken, not translated. |
+| Not translated                                      | Why                                                                                                                                   |
+| --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `apps/recipes/src/app/{blocks,layouts,patterns}/**` | Read with `?raw` and shown as source to copy. A `t()` call would break in a consumer's project, which has no `Translations`.          |
+| The live demo inside `<app-code-panel>`             | It is an exhibit of the code shown beside it. A demo reading "Manzana" next to a snippet saying `Apple` looks broken, not translated. |
 
 The guard recognises both structurally; the handful of specimens that sit outside a code
 panel are listed with their reasons at the top of `no-hardcoded-copy.spec.ts`.

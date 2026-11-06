@@ -74,7 +74,7 @@ const allRoutes =
         '/',
         '/blocks',
         '/layouts',
-        '/recipes',
+        '/patterns',
         '/docs',
         ...readdirSync(join(ROOT, 'apps/recipes/src/content/docs'))
           .filter(file => file.endsWith('.md'))
@@ -97,8 +97,11 @@ let log = '';
 const server = spawn(
   join(ROOT, 'node_modules/.bin/wrangler'),
   ['pages', 'dev', '--ip', '127.0.0.1', '--port', String(PORT)],
-    // From the app's folder, so its wrangler.toml (output dir, compatibility date) applies.
-  { cwd: join(ROOT, 'apps', APP === 'recipes' ? 'recipes' : 'web'), env: { ...process.env, NO_COLOR: '1', FORCE_COLOR: '0' } }
+  // From the app's folder, so its wrangler.toml (output dir, compatibility date) applies.
+  {
+    cwd: join(ROOT, 'apps', APP === 'recipes' ? 'recipes' : 'web'),
+    env: { ...process.env, NO_COLOR: '1', FORCE_COLOR: '0' },
+  }
 );
 for (const stream of [server.stdout, server.stderr]) stream.on('data', d => (log += d));
 

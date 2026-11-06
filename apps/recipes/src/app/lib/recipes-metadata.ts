@@ -34,7 +34,7 @@ export const RECIPES: readonly RecipeMetadata[] = [
   {
     slug: 'settings-form',
     labelKey: 'recipes.items.settingsForm',
-    path: '/recipes/settings-form',
+    path: '/patterns/settings-form',
     atoms: [
       atom('VoltFormField', 'form-field'),
       atom('VoltInput', 'input'),
@@ -47,7 +47,7 @@ export const RECIPES: readonly RecipeMetadata[] = [
   {
     slug: 'async-search',
     labelKey: 'recipes.items.asyncSearch',
-    path: '/recipes/async-search',
+    path: '/patterns/async-search',
     atoms: [
       atom('VoltCombobox', 'combobox'),
       atom('VoltFormField', 'form-field'),
@@ -58,7 +58,7 @@ export const RECIPES: readonly RecipeMetadata[] = [
   {
     slug: 'data-table',
     labelKey: 'recipes.items.dataTable',
-    path: '/recipes/data-table',
+    path: '/patterns/data-table',
     atoms: [
       atom('VoltTable', 'table'),
       atom('VoltPagination', 'pagination'),
@@ -71,7 +71,7 @@ export const RECIPES: readonly RecipeMetadata[] = [
   {
     slug: 'live-playground',
     labelKey: 'recipes.items.livePlayground',
-    path: '/recipes/live-playground',
+    path: '/patterns/live-playground',
     atoms: [
       atom('VoltAlert', 'alert'),
       atom('VoltToggleGroup', 'toggle-group'),
@@ -83,7 +83,7 @@ export const RECIPES: readonly RecipeMetadata[] = [
   {
     slug: 'component-explorer',
     labelKey: 'recipes.items.componentExplorer',
-    path: '/recipes/component-explorer',
+    path: '/patterns/component-explorer',
     atoms: [
       atom('VoltToggleGroup', 'toggle-group'),
       atom('VoltButton', 'button'),

@@ -28,7 +28,7 @@ if (!existsSync(join(LIB, 'package.json'))) {
 rmSync(OUT, { recursive: true, force: true });
 
 let copied = 0;
-for (const kind of ['blocks', 'layouts', 'recipes']) {
+for (const kind of ['blocks', 'layouts', 'patterns']) {
   const dir = join(ROOT, 'apps/recipes/src/app', kind);
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
     if (!entry.isDirectory()) continue;
