@@ -256,6 +256,12 @@ Import themes once — that single line is all Tailwind v4 needs:
 
 The theme CSS self-registers the compiled component bundle as a `@source`, so every utility class the components use is generated automatically. It also aligns Tailwind's `dark:` variant with the `.dark` class Volt toggles.
 
+Five palettes, five styles, light and dark, and an independent density. Set them app-wide with
+`provideVoltTheme({ color, style, dark, density })`, or on one container with
+`<section [voltTheme]="{ color: 'ember', style: 'soft' }">`; import `@voltui/components/themes/all.css`
+to have them all available. [`docs/theme-contract.md`](https://github.com/Andersseen/volt-ui/blob/main/docs/theme-contract.md)
+lists every token and what reads it.
+
 Customize with `class` — on every component it is merged with `cn()` (tailwind-merge) over the
 defaults and applied to the element that paints, so `<volt-card-content class="p-3">` replaces the
 default padding and `<volt-input class="w-24">` sizes the native input.
