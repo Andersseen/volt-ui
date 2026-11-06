@@ -39,6 +39,12 @@ it was dead code: the primitive's default is the one that runs, and it was alrea
 Screenshots: `node scripts/capture-theme-gallery.mjs --out <dir> --all`, 1280×900, reproducible from the fixture.
 `docs/quality/theme-evidence/` holds six before/after pairs of real captures.
 
+## Failures not caused by this work
+
+`node scripts/check-quartz-consumer.mjs 22` fails locally on Angular 22.2.4: RTL arrows (three consumer modes), Quartz
+Select keyboard, and the shared paint comparison that depends on them. The base commit `56a4896` fails the same tests
+and one more on the same machine, so this branch did not introduce them. Angular 21.2.0 passes in Chromium and Firefox.
+
 ## Limits
 
 - **WebKit** cannot launch on the development Mac. Its results come only from GitHub Actions.
