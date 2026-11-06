@@ -34,10 +34,13 @@ import { cn } from '../../utils';
   imports: [NgpProgressTrack, NgpProgressIndicator],
   template: `
     <ng-content select="volt-progress-label" />
-    <div ngpProgressTrack class="relative h-2 w-full overflow-hidden rounded-full bg-secondary">
+    <div
+      ngpProgressTrack
+      class="relative col-span-2 row-start-2 block h-track w-full overflow-hidden rounded-pill border-(length:--volt-track-border-width) border-border bg-track"
+    >
       <div
         ngpProgressIndicator
-        class="h-full rounded-full bg-primary transition-[width] duration-300 ease-in-out"
+        class="h-full rounded-pill bg-primary transition-[width] duration-300 ease-in-out motion-reduce:transition-none data-[indeterminate]:mx-auto data-[indeterminate]:w-2/5 motion-safe:data-[indeterminate]:animate-pulse"
       ></div>
     </div>
     <ng-content select="volt-progress-value" />
@@ -46,14 +49,17 @@ import { cn } from '../../utils';
 export class VoltProgress {
   readonly class = input<string>('');
 
-  protected readonly classes = computed(() => cn('block w-full', this.class()));
+  // The label and value share a row above the track, whichever of them is projected.
+  protected readonly classes = computed(() =>
+    cn('grid w-full grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-inset-sm', this.class())
+  );
 
   readonly value = input<number | null, number | null>(null, {
     transform: numberAttribute as never,
   });
   readonly min = input<number, number>(0, { transform: numberAttribute });
   readonly max = input<number, number>(100, { transform: numberAttribute });
-  readonly valueLabel = input<(value: number, max: number) => string>(
-    (value, max) => `${Math.round((value / max) * 100)}%`
+  readonly valueLabel = input<(value: number, max: number, min: number) => string>(
+    (value, max, min) => `${max === min ? 0 : Math.round(((value - min) / (max - min)) * 100)}%`
   );
 }

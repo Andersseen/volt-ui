@@ -20,6 +20,9 @@ export class VoltProgressLabel {
   readonly class = input<string>('');
 
   protected readonly classes = computed(() =>
-    cn('block text-sm font-medium text-foreground', this.class())
+    cn(
+      'col-start-1 row-start-1 mb-1.5 block min-w-0 text-sm font-medium text-foreground',
+      this.class()
+    )
   );
 }

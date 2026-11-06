@@ -142,4 +142,34 @@ describe('VoltSlider', () => {
     await user.keyboard('{Home}');
     expect(thumb).toHaveAttribute('aria-valuenow', '0');
   });
+
+  describe('Forms: reset', () => {
+    @Component({
+      imports: [VoltSlider, ReactiveFormsModule],
+      template: `<volt-slider [formControl]="control" [min]="10" [value]="30" />`,
+    })
+    class ResetHost {
+      readonly control = new FormControl<number | null>(50);
+    }
+
+    it('returns to the template value on reset(), without touching the control value', async () => {
+      const { fixture } = await render(ResetHost);
+      const thumb = screen.getByRole('slider');
+      expect(thumb).toHaveAttribute('aria-valuenow', '50');
+
+      fixture.componentInstance.control.reset();
+      await fixture.whenStable();
+
+      expect(thumb).toHaveAttribute('aria-valuenow', '30');
+      expect(fixture.componentInstance.control.value).toBeNull();
+      expect(fixture.componentInstance.control.dirty).toBe(false);
+    });
+
+    it('writes an explicit reset value', async () => {
+      const { fixture } = await render(ResetHost);
+      fixture.componentInstance.control.reset(70);
+      await fixture.whenStable();
+      expect(screen.getByRole('slider')).toHaveAttribute('aria-valuenow', '70');
+    });
+  });
 });
