@@ -127,3 +127,33 @@ Kept on purpose, not because nobody got to them:
 | Slider thumb border                   | 2px in every style: it is the thumb's only edge against the track |
 | Checkbox, Radio, Switch size          | Fixed indicators; density does not resize them                    |
 | Sidebar padding, Breadcrumbs ellipsis | Page layout rather than a control                                 |
+
+## Sharing the visitor's theme between voltui.dev and recipes.voltui.dev
+
+`localStorage` belongs to one origin, so it alone cannot synchronise two sites. The two applications
+share one small functional cookie instead, implemented once in
+`packages/shared/lib/theme-preferences.ts` and used by the shared `ThemeSwitcher`.
+
+| Aspect      | Behaviour                                                                                                                                                                                                                                                                                    |
+| ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Cookie      | `__Secure-volt-theme=1.<color>.<style>.<light\|dark>.<density>` — e.g. `1.sage.brutal.dark.spacious`                                                                                                                                                                                         |
+| Attributes  | `Domain=voltui.dev; Path=/; Secure; SameSite=Lax; Max-Age=` six months. No `HttpOnly`: the page script has to read it.                                                                                                                                                                       |
+| Contents    | The four official preset choices only. No CSS, no custom palette, no identifier, no personal data.                                                                                                                                                                                           |
+| Validation  | Every segment is checked against the shipped presets; any mismatch, extra segment or oversized value is treated as absent.                                                                                                                                                                   |
+| Precedence  | valid shared cookie → legacy `volt-color/style/dark/density` in `localStorage` (promoted to the cookie once) → defaults.                                                                                                                                                                     |
+| Writes      | Only when the visitor changes an option, or when legacy local values are promoted. Defaults are never written.                                                                                                                                                                               |
+| Early paint | A small inline script in each `index.html` applies the same decision before first paint (a unit test runs that exact script).                                                                                                                                                                |
+| Stale tabs  | `pageshow`, `focus` and `visibilitychange` re-read the cookie. No polling, iframes or messaging.                                                                                                                                                                                             |
+| Development | Off `voltui.dev` (localhost, previews, plain HTTP) the cookie is host-only and named `volt-theme`. It never claims the production domain. Browsers share host-only cookies across ports, so two local dev servers do sync; that is **not** evidence the production `Domain` attribute works. |
+| Blocked     | If cookies or storage are denied the page keeps working with whatever it can read; nothing throws.                                                                                                                                                                                           |
+
+What is and is not synchronised:
+
+- **Shared official presets** — colour, style, light/dark, density chosen in the header popover.
+- **Scoped themes** — a `[voltTheme]` container sets its own `data-*` attributes and is never touched by
+  the global preference, so a preview showing Glacier + Soft keeps showing it.
+- **Theme Studio drafts** — arbitrary custom values stay in that page; they are never serialised into the cookie.
+
+Server rendering: both applications are prerendered/edge-served, so the cookie is applied by the
+early script rather than per request; the server markup carries the default attributes and the script
+corrects them before paint, the same mechanism the `localStorage` version used.
