@@ -1,0 +1,18 @@
+/* A consumer that lets people switch theme at runtime: every palette and style shipped by the package. */
+@import 'tailwindcss' source(none);
+@source './**/*.{html,ts}';
+
+@import '@voltui/components/themes.css';
+@import '@voltui/components/themes/colors/ember.css';
+@import '@voltui/components/themes/colors/sage.css';
+@import '@voltui/components/themes/colors/dusk.css';
+@import '@voltui/components/themes/colors/glacier.css';
+@import '@voltui/components/themes/styles/soft.css';
+@import '@voltui/components/themes/styles/brutal.css';
+@import '@voltui/components/themes/styles/ghost.css';
+@import '@voltui/components/themes/styles/retro.css';
+
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+}

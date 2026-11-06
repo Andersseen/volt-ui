@@ -16,6 +16,36 @@ test.describe('Theme studio', () => {
     await expect(page.getByRole('switch', { name: 'Dark preview' })).toBeChecked();
   });
 
+  test('the exported stylesheet themes a page that knows nothing of the studio', async ({
+    page,
+    context,
+  }) => {
+    await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+    const primary = await page.getByLabel('Primary', { exact: true }).first().inputValue();
+    await page.getByRole('button', { name: /copy/i }).first().click();
+    const css = await page.evaluate(() => navigator.clipboard.readText());
+    expect(css).toContain("[data-volt-theme][data-color='custom-theme']");
+
+    await page.goto('/docs/components/button');
+    await page.addStyleTag({ content: css });
+    await page.evaluate(() => {
+      const root = document.documentElement;
+      root.classList.remove('dark');
+      root.dataset.color = 'custom-theme';
+    });
+
+    const button = page.getByRole('button', { name: 'Solid' }).first();
+    const painted = await button.evaluate(el => {
+      const style = getComputedStyle(el);
+      const canvas = document.createElement('canvas').getContext('2d')!;
+      canvas.fillStyle = style.backgroundColor;
+      return { fill: canvas.fillStyle, radius: style.borderTopLeftRadius, shadow: style.boxShadow };
+    });
+    expect(painted.fill).toBe(primary);
+    expect(painted.radius).toBe('6px');
+    expect(painted.shadow).toMatch(/1px 2px/);
+  });
+
   test('generates a new palette on demand and feeds it to the preview', async ({ page }) => {
     const primary = page.getByLabel('Primary', { exact: true }).first();
     const before = await primary.inputValue();
