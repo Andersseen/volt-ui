@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import {
   VoltBadge,
   VoltButton,
@@ -10,15 +10,16 @@ import {
   VoltProgressLabel,
   VoltProgressValue,
   VoltSwitch,
+  VoltTheme,
 } from 'volt';
 import { injectAppI18n } from '@shared/i18n/i18n';
-import { presetStyle, type ColorPreset, type StylePreset } from '@shared/lib/theme-presets';
+import type { ColorPreset, StylePreset } from '@shared/lib/theme-presets';
 
 /**
  * A settings panel of real Volt components, themed by one preset pair.
  *
- * The pair is applied as custom properties on the panel, so no class in here names a color or
- * a radius: every utility resolves through the preset, exactly as it would in a consumer's app.
+ * The panel is a `voltTheme` scope, the API a consumer has, so no class in here names a color or a
+ * radius: every utility resolves through the preset. It follows the page's light or dark mode.
  */
 @Component({
   selector: 'app-theme-preview',
@@ -34,12 +35,13 @@ import { presetStyle, type ColorPreset, type StylePreset } from '@shared/lib/the
     VoltProgressLabel,
     VoltProgressValue,
     VoltSwitch,
+    VoltTheme,
   ],
   host: { class: 'block min-w-0' },
   template: `
     <div
-      class="preview rounded-2xl border border-border bg-background p-6 text-foreground shadow-lg sm:p-8"
-      [attr.style]="style()"
+      class="preview rounded-2xl border-(length:--border-width) border-border bg-background p-6 text-foreground shadow-lg sm:p-8"
+      [voltTheme]="{ color: color(), style: shape() }"
     >
       <div class="mb-6 flex items-center justify-between gap-3">
         <div class="min-w-0">
@@ -112,9 +114,6 @@ import { presetStyle, type ColorPreset, type StylePreset } from '@shared/lib/the
 export class ThemePreview {
   readonly color = input.required<ColorPreset>();
   readonly shape = input.required<StylePreset>();
-  /** Follow the page's dark mode, so the preview reads as part of it. */
-  readonly dark = input(false);
 
   protected readonly t = injectAppI18n().t;
-  protected readonly style = computed(() => presetStyle(this.color(), this.shape(), this.dark()));
 }

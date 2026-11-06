@@ -117,7 +117,7 @@ function hexToOklch(hex: string): Oklch {
   return { l: okL, c: chroma, h: hue };
 }
 
-function oklchToHex({ l, c, h }: Oklch): string {
+export function oklchToHex({ l, c, h }: Oklch): string {
   const hRad = (h * Math.PI) / 180;
   const a = c * Math.cos(hRad);
   const bb = c * Math.sin(hRad);

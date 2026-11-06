@@ -76,7 +76,7 @@ const TICK_MS = 50;
             </volt-button>
           </div>
 
-          <app-theme-preview [color]="color()" [shape]="shape()" [dark]="dark()" />
+          <app-theme-preview [color]="color()" [shape]="shape()" />
         </div>
       </div>
     </section>
@@ -99,19 +99,11 @@ export class LandingPlayground {
   /** How far the tour is into the current palette, 0–100. */
   protected readonly progress = signal(0);
   private readonly visible = signal(false);
-  protected readonly dark = signal(false);
 
   constructor() {
     const destroyRef = inject(DestroyRef);
 
     afterNextRender(() => {
-      const root = this.document.documentElement;
-
-      // The site's dark toggle is a class on <html>; follow it so the preview matches the page.
-      this.dark.set(root.classList.contains('dark'));
-      const classes = new MutationObserver(() => this.dark.set(root.classList.contains('dark')));
-      classes.observe(root, { attributes: true, attributeFilter: ['class'] });
-
       const visibility = new IntersectionObserver(([entry]) =>
         this.visible.set(entry.isIntersecting)
       );
@@ -133,7 +125,6 @@ export class LandingPlayground {
 
       destroyRef.onDestroy(() => {
         clearInterval(clock);
-        classes.disconnect();
         visibility.disconnect();
       });
 

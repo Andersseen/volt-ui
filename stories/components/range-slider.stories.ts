@@ -36,6 +36,12 @@ type Story = StoryObj<VoltRangeSlider>;
 
 export const Default: Story = {};
 
+export const Vertical: Story = {
+  render: () => ({
+    template: `<volt-range-slider class="h-48" orientation="vertical" ariaLabelLow="Minimum" ariaLabelHigh="Maximum" [low]="20" [high]="60" />`,
+  }),
+};
+
 export const WithFormControl: Story = {
   name: 'Reactive forms',
   render: () => ({

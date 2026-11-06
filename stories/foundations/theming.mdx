@@ -30,6 +30,30 @@ bootstrapApplication(AppComponent, {
 
 To change it at runtime, call `applyVoltTheme({ color: 'ember', dark: true })`. It only sets the attributes you pass. `provideVoltTheme` reads the platform document, so server-rendered pages carry the theme too.
 
+## Density
+
+Density is the app's choice and independent of the style. Pass `density: 'compact' | 'comfortable' | 'spacious'` to `provideVoltTheme` or `applyVoltTheme`, or write `data-density` on any container. It scales control heights, padding and gaps; pointer targets never drop below 24px. The innermost density wins and factors never multiply, so nesting compact inside compact is still compact.
+
+## One container
+
+`[voltTheme]` themes one element with the same tokens, on the server as well as in the browser, and leaves the rest of the page alone:
+
+```html
+<section [voltTheme]="{ color: 'ember', style: 'soft', dark: true }">…</section>
+```
+
+Anything you omit is inherited, including light or dark. Import `@voltui/components/themes/all.css` so that every palette and style is available. Overlays declared inside the scope (popover, menu, tooltip, select, combobox, dialog, drawer) carry it with them even though they render at the end of the body. A dialog opened from `VoltDialogService` needs an `injector` from inside the scope, and toasts belong to the page. For your own portalled content, add `voltThemeInherit`.
+
+Set `color` and `style` together for a self-contained island: the offset shadows of Brutal and Retro are drawn in the palette of the element that sets the style.
+
+## Without the global rules
+
+`themes.css` and the presets style `body` and the scrollbars. `@voltui/components/themes/tokens.css` is the same contract without those rules, for an app that keeps its own.
+
+## The token contract
+
+[`docs/theme-contract.md`](https://github.com/Andersseen/volt-ui/blob/main/docs/theme-contract.md) lists every token, who reads it, and the shapes that stay fixed on purpose.
+
 ## In this Storybook
 
 The **Colour preset**, **Style preset** and **Appearance** items in the toolbar call `applyVoltTheme` with the same values and load the same stylesheets as voltui.dev, so there is no Storybook-only theme. Open any component and switch presets to check how it behaves in all 5 × 5 combinations and in dark mode.

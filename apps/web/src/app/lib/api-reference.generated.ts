@@ -1199,8 +1199,9 @@ export const PROGRESS_API: ComponentApi = {
         { name: 'max', type: 'number', default: '100', transform: 'numberAttribute' },
         {
           name: 'valueLabel',
-          type: '(value: number, max: number) => string',
-          default: '(value, max) => `${Math.round((value / max) * 100)}%`',
+          type: '(value: number, max: number, min: number) => string',
+          default:
+            '(value, max, min) => `${max === min ? 0 : Math.round(((value - min) / (max - min)) * 100)}%`',
         },
       ],
       outputs: [],

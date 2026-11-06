@@ -30,6 +30,13 @@ export const Stepped: Story = {
   args: { step: 10, value: 50 },
 };
 
+export const Vertical: Story = {
+  render: args => ({
+    props: args,
+    template: `<volt-slider class="h-48" orientation="vertical" ariaLabel="Volume" [value]="value" />`,
+  }),
+};
+
 export const WithFormControl: Story = {
   name: 'Reactive forms',
   render: () => ({
