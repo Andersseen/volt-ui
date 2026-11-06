@@ -67,18 +67,22 @@ import { ShowcaseCard } from './showcase-card';
         </div>
       </div>
 
-      <ul
-        #track
-        tabindex="0"
-        [attr.aria-label]="t('landing.showcase.eyebrow')"
-        class="track mt-12 flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth pb-6"
-      >
-        @for (component of components; track component.name) {
-          <li class="w-[85%] shrink-0 snap-start sm:w-[22rem]">
-            <app-showcase-card class="h-full" [component]="component" />
-          </li>
-        }
-      </ul>
+      <!-- The track clips at the content column, not at the window: the next card is cut at the same
+           edge as the heading above, which says "there is more" without bleeding off the screen. -->
+      <div class="mx-auto mt-12 max-w-7xl px-4 sm:px-6">
+        <ul
+          #track
+          tabindex="0"
+          [attr.aria-label]="t('landing.showcase.eyebrow')"
+          class="track flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth pb-6"
+        >
+          @for (component of components; track component.name) {
+            <li class="w-[85%] shrink-0 snap-start sm:w-[22rem]">
+              <app-showcase-card class="h-full" [component]="component" />
+            </li>
+          }
+        </ul>
+      </div>
 
       <div class="mx-auto mt-6 max-w-7xl px-4 sm:px-6">
         <volt-button variant="outline" [routerLink]="path('/docs/components')">
@@ -88,29 +92,13 @@ import { ShowcaseCard } from './showcase-card';
     </section>
   `,
   styles: `
-    /* One edge for padding and snapping, aligned with the page's max-w-7xl content column. */
     .track {
-      --edge: 1rem;
-      padding-inline: var(--edge);
-      scroll-padding-inline: var(--edge);
       /* The arrows, swipe and trackpad all scroll it; a scrollbar under the cards is noise. */
       scrollbar-width: none;
     }
 
     .track::-webkit-scrollbar {
       display: none;
-    }
-
-    @media (min-width: 640px) {
-      .track {
-        --edge: 1.5rem;
-      }
-    }
-
-    @media (min-width: 1024px) {
-      .track {
-        --edge: max(1.5rem, calc((100vw - 80rem) / 2 + 1.5rem));
-      }
     }
 
     .track:focus-visible {

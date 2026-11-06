@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 import { VoltBadge, VoltNativeButton, VoltSidebarGroup, VoltSidebarItem } from 'volt';
 import { injectAppI18n, type PlainTranslationKey } from '@shared/i18n/i18n';
 import type { ComponentStability } from '../../lib/component-metadata';
 import { STORYBOOK_URL } from '@shared/lib/storybook';
+import { recipesUrl } from '../../lib/recipes-site';
 
 /*
  * Keys, not text. Most sidebars on the site are built from a static catalog const, which has no
@@ -75,6 +76,20 @@ export interface DocsSidebarGroup {
         >
         <span aria-hidden="true">↗</span>
       </a>
+      <a
+        voltButton
+        variant="ghost"
+        size="sm"
+        [href]="recipesHref()"
+        target="_blank"
+        rel="noopener"
+        class="w-full justify-between px-3 text-[13px] font-normal text-muted-foreground"
+      >
+        <span
+          >{{ t('recipes.title') }}<span class="sr-only"> {{ t('nav.externalLink') }}</span></span
+        >
+        <span aria-hidden="true">↗</span>
+      </a>
     </div>
   `,
 })
@@ -86,6 +101,7 @@ export class DocsNavList {
   private readonly translations = injectAppI18n();
   protected readonly t = this.translations.t;
   protected readonly storybookUrl = STORYBOOK_URL;
+  protected readonly recipesHref = computed(() => recipesUrl(this.translations.locale()));
   /** Every sidebar link on the site passes through here, so one call keeps them all in locale. */
   protected readonly path = this.translations.path;
 
