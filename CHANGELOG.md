@@ -7,6 +7,45 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Component polish — `@voltui/components`, `@voltui/cli`
+
+Additive: no selector, input, output or Forms contract was removed or renamed.
+
+#### Added
+
+- **Navigation Menu — `variant` and `layout`.** `variant: 'subtle' | 'pill' | 'underline' | 'outline'`
+  (default `subtle`, the previous look) sets how the current page (`active`, `aria-current="page"`) is
+  marked; `layout: 'inline' | 'contained'` (default `inline`) adds a self-sized, bordered surface for
+  centred or floating bars. Both are set once on `volt-navigation-menu`; links and triggers inherit them.
+  The root reflects them as `data-variant` / `data-layout`. Exported: `navigationMenuVariants`,
+  `navigationMenuItemVariants`, `VoltNavigationMenuVariant`, `VoltNavigationMenuLayout` (CLI copies get
+  `variants.ts`). The open-submenu state looks the same in every variant: it is not a destination.
+- **Date Picker — day names.** Each day button is named with its full date in `LOCALE_ID`
+  ("Wednesday, July 15, 2026") instead of only its number; an `aria-label` you set still wins.
+
+#### Fixed
+
+- **Navigation Menu — disabled items.** `disabled` links and triggers were announced but drawn as enabled
+  (the styles targeted `:disabled`, which an anchor never matches and the primitive never sets). They now
+  dim and drop the pointer; a disabled trigger also carries `aria-disabled`.
+- **Navigation Menu — vertical lists** stack their items when `orientation="vertical"`.
+- **Date Picker — pointer and selection.** Enabled days show the pointer cursor (they showed the text
+  cursor), disabled days do not, and dragging across the grid no longer selects text. Month controls
+  gained the focus-visible ring every other control has. Range corners use logical sides (correct in RTL)
+  and a one-day range keeps both corners.
+- **Date Picker / Date Range Picker — month of an outside date.** A range picker given a `[startDate]` in
+  another month now opens on that month (the single picker already did), and both pickers report the
+  month they moved to through `[(focusedDate)]` — the label bound to it showed the wrong month.
+- **Empty State — long words.** An unbroken word (a URL, a long compound) widened the panel past a narrow
+  screen; text now wraps anywhere it must. Spacing follows density.
+
+#### Changed
+
+- **Spinner and Empty State are `stable`.** Promoted against the acceptance bar in `COMPONENT_STATUS.md`
+  (browser, package, CLI copy, theme and SSR evidence). No API change.
+- Navigation Menu links are transparent at rest (they painted `bg-background`), so they sit correctly on
+  any surface; on the default page background nothing changes.
+
 ### Theme system — `@voltui/components`, `@voltui/cli`
 
 The five palettes and five styles now reach the parts that paint, in the package and in CLI copies. No

@@ -16,6 +16,7 @@ A site navigation bar whose items can open rich submenu panels.
 ## When to use
 
 - Top-level site navigation with grouped destinations.
+- Pick how the current page is marked with `variant` (`subtle`, `pill`, `underline`, `outline`) and whether the menu draws its own surface with `layout` (`inline`, `contained`).
 
 ## Installation
 
@@ -53,26 +54,33 @@ The same code as the [voltui.dev guide](https://voltui.dev/docs/components/navig
 
 ````ts
 import { Component } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import {
   VoltNavigationMenu,
   VoltNavigationMenuList,
   VoltNavigationMenuItem,
   VoltNavigationMenuTrigger,
   VoltNavigationMenuContent,
+  VoltNavigationMenuContentItem,
   VoltNavigationMenuLink,
 } from '@voltui/components';
 
 @Component({
   imports: [
+    RouterLink,
+    RouterLinkActive,
     VoltNavigationMenu,
     VoltNavigationMenuList,
     VoltNavigationMenuItem,
     VoltNavigationMenuTrigger,
     VoltNavigationMenuContent,
+    VoltNavigationMenuContentItem,
     VoltNavigationMenuLink,
   ],
   template: `
-    <volt-navigation-menu>
+    <!-- variant: subtle | pill | underline | outline — how the current page is marked.
+         layout: inline | contained — contained draws its own self-sized surface. -->
+    <volt-navigation-menu aria-label="Main" variant="subtle" layout="inline">
       <volt-navigation-menu-list>
         <volt-navigation-menu-item>
           <!-- The panel goes in as a template reference. `content` is a required input:
@@ -83,13 +91,27 @@ import {
           </volt-navigation-menu-trigger>
           <ng-template #gettingStarted>
             <volt-navigation-menu-content>
-              <a voltNavigationMenuLink href="/docs">Introduction</a>
-              <a voltNavigationMenuLink href="/docs/installation">Installation</a>
+              <volt-navigation-menu-content-item>
+                <a routerLink="/docs/introduction">Introduction</a>
+              </volt-navigation-menu-content-item>
+              <volt-navigation-menu-content-item>
+                <a routerLink="/docs/themes">Themes</a>
+              </volt-navigation-menu-content-item>
             </volt-navigation-menu-content>
           </ng-template>
         </volt-navigation-menu-item>
         <volt-navigation-menu-item>
-          <a voltNavigationMenuLink href="/docs/components">Components</a>
+          <!-- `active` marks the current destination (aria-current="page"). Derive it from
+               the router as here, or pass a plain boolean when you do not use the router. -->
+          <a
+            voltNavigationMenuLink
+            routerLink="/docs/components"
+            routerLinkActive
+            [routerLinkActiveOptions]="{ exact: true }"
+            #components="routerLinkActive"
+            [active]="components.isActive"
+            >Components</a
+          >
         </volt-navigation-menu-item>
       </volt-navigation-menu-list>
     </volt-navigation-menu>
@@ -100,9 +122,11 @@ export class MyComponent {}
 
 ## Accessibility
 
-- Escape closes submenus; opening and swapping submenus is covered by tests. Links should be real anchors.
+- Escape closes submenus and returns focus to the trigger; opening and swapping submenus is covered by tests. Links should be real anchors.
+- `active` sets `aria-current="page"`; an open submenu is `aria-expanded` and is never marked current. Disabled links and triggers are `aria-disabled`.
+- The logo, account menu and mobile shell belong to the application header, not to this component.
 
-<table><thead><tr><th>Aspect</th><th>Behaviour</th></tr></thead><tbody><tr><td>Keyboard</td><td>{"Escape covered"}</td></tr><tr><td>Focus and overlays</td><td>{"submenu open/swap covered"}</td></tr><tr><td>Forms</td><td>{"n/a"}</td></tr></tbody></table>
+<table><thead><tr><th>Aspect</th><th>Behaviour</th></tr></thead><tbody><tr><td>Keyboard</td><td>{"Enter/Escape and focus return covered in e2e"}</td></tr><tr><td>Focus and overlays</td><td>{"submenu open/swap covered; four"}<code>{"variant"}</code>{"s,"}<code>{"contained"}</code>{"layout"}</td></tr><tr><td>Forms</td><td>{"n/a"}</td></tr></tbody></table>
 
 The Accessibility panel under each story runs axe-core against that story. It is a development aid, not a conformance claim.
 
@@ -148,9 +172,15 @@ Selector: <code>{"volt-navigation-menu-trigger"}</code>
 
 Selector: <code>{"volt-navigation-menu"}</code>
 
-<table><thead><tr><th>Input</th><th>Type</th><th>Default</th></tr></thead><tbody><tr><td><code>{"class"}</code></td><td><code>{"string"}</code></td><td><code>{"''"}</code></td></tr><tr><td><code>{"orientation"}</code></td><td><code>{"'horizontal' | 'vertical'"}</code></td><td><code>{"'horizontal'"}</code></td></tr><tr><td><code>{"showDelay"}</code></td><td><code>{"number"}</code></td><td><code>{"200"}</code></td></tr><tr><td><code>{"hideDelay"}</code></td><td><code>{"number"}</code></td><td><code>{"150"}</code></td></tr><tr><td><code>{"value"}</code></td><td><code>{"string | null"}</code></td><td><code>{"null"}</code></td></tr></tbody></table>
+<table><thead><tr><th>Input</th><th>Type</th><th>Default</th></tr></thead><tbody><tr><td><code>{"class"}</code></td><td><code>{"string"}</code></td><td><code>{"''"}</code></td></tr><tr><td><code>{"variant"}</code></td><td><code>{"VoltNavigationMenuVariant"}</code></td><td><code>{"'subtle'"}</code></td></tr><tr><td><code>{"layout"}</code></td><td><code>{"VoltNavigationMenuLayout"}</code></td><td><code>{"'inline'"}</code></td></tr><tr><td><code>{"orientation"}</code></td><td><code>{"'horizontal' | 'vertical'"}</code></td><td><code>{"'horizontal'"}</code></td></tr><tr><td><code>{"showDelay"}</code></td><td><code>{"number"}</code></td><td><code>{"200"}</code></td></tr><tr><td><code>{"hideDelay"}</code></td><td><code>{"number"}</code></td><td><code>{"150"}</code></td></tr><tr><td><code>{"value"}</code></td><td><code>{"string | null"}</code></td><td><code>{"null"}</code></td></tr></tbody></table>
 
 <table><thead><tr><th>Output</th><th>Emits</th></tr></thead><tbody><tr><td><code>{"valueChange"}</code></td><td><code>{"string | null"}</code></td></tr></tbody></table>
+
+### Variants
+
+Class-variance-authority options; the default is marked.
+
+<table><thead><tr><th>Variant</th><th>Options</th><th>Default</th></tr></thead><tbody><tr><td><code>{"layout"}</code></td><td><code>{"inline"}</code> <code>{"contained"}</code></td><td><code>{"inline"}</code></td></tr><tr><td><code>{"variant"}</code></td><td><code>{"subtle"}</code> <code>{"pill"}</code> <code>{"underline"}</code> <code>{"outline"}</code></td><td><code>{"subtle"}</code></td></tr><tr><td><code>{"defaultVariants"}</code></td><td><code>{"layout"}</code> <code>{"variant"}</code></td><td>—</td></tr><tr><td><code>{"variants"}</code></td><td><code>{"subtle"}</code> <code>{"pill"}</code> <code>{"underline"}</code> <code>{"outline"}</code></td><td>—</td></tr></tbody></table>
 
 ## Playground
 

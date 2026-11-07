@@ -25,15 +25,23 @@ const meta: Meta<VoltNavigationMenu> = {
   ],
   argTypes: {
     orientation: { control: 'radio', options: ['horizontal', 'vertical'] },
+    variant: { control: 'radio', options: ['subtle', 'pill', 'underline', 'outline'] },
+    layout: { control: 'radio', options: ['inline', 'contained'] },
     showDelay: { control: 'number' },
     hideDelay: { control: 'number' },
     valueChange: { action: 'valueChange' },
   },
-  args: { orientation: 'horizontal', showDelay: 200, hideDelay: 150 },
+  args: {
+    orientation: 'horizontal',
+    showDelay: 200,
+    hideDelay: 150,
+    variant: 'subtle',
+    layout: 'inline',
+  },
   render: args => ({
     props: args,
     template: `
-      <volt-navigation-menu [orientation]="orientation" [showDelay]="showDelay" [hideDelay]="hideDelay" (valueChange)="valueChange($event)">
+      <volt-navigation-menu aria-label="Main" [variant]="variant" [layout]="layout" [orientation]="orientation" [showDelay]="showDelay" [hideDelay]="hideDelay" (valueChange)="valueChange($event)">
         <volt-navigation-menu-list>
           <volt-navigation-menu-item>
             <volt-navigation-menu-trigger [content]="gettingStarted">Getting started</volt-navigation-menu-trigger>
@@ -69,6 +77,50 @@ export const Default: Story = {
       description: {
         story:
           'Each trigger’s panel is passed as a template reference to the required `content` input; projecting it instead throws, because the overlay renders it elsewhere.',
+      },
+    },
+  },
+};
+
+export const Pill: Story = {
+  args: { variant: 'pill' },
+  parameters: {
+    docs: {
+      description: { story: 'A filled, fully rounded primary surface marks the current page.' },
+    },
+  },
+};
+
+export const Underline: Story = {
+  args: { variant: 'underline' },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'A primary bar under the current page. Its space is always reserved, so nothing moves.',
+      },
+    },
+  },
+};
+
+export const Outline: Story = {
+  args: { variant: 'outline' },
+  parameters: {
+    docs: {
+      description: {
+        story: 'A primary border. Every item reserves a transparent one, so nothing resizes.',
+      },
+    },
+  },
+};
+
+export const Contained: Story = {
+  args: { variant: 'pill', layout: 'contained' },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'A self-sized, bordered surface for a centred or floating bar. `layout` and `variant` are independent.',
       },
     },
   },

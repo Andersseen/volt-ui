@@ -538,9 +538,20 @@ describe('CLI Core', () => {
       expect(output).toContain('Forms');
       expect(output).toContain('button');
       expect(output).toContain('Interactive buttons');
-      // Dialog is a 1.0 component, so it is stable and listed; spinner is beta and is not.
+      // Dialog is a 1.0 component; spinner (1.1) was promoted, so both are listed.
       expect(output).toContain('dialog');
-      expect(output).not.toContain('spinner');
+      expect(output).toContain('spinner');
+    });
+
+    it('lists no beta components once every beta has been promoted', () => {
+      const components = JSON.parse(
+        execSync(`node ${cliPath} list --status=beta --json`, {
+          cwd: repoRoot,
+          stdio: 'pipe',
+          encoding: 'utf-8',
+        })
+      );
+      expect(components).toEqual([]);
     });
 
     it('should print list metadata as JSON', () => {

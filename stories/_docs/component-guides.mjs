@@ -261,9 +261,14 @@ export const COMPONENT_GUIDES = {
     title: 'Navigation Menu',
     group: 'navigation',
     summary: 'A site navigation bar whose items can open rich submenu panels.',
-    when: ['Top-level site navigation with grouped destinations.'],
+    when: [
+      'Top-level site navigation with grouped destinations.',
+      'Pick how the current page is marked with `variant` (`subtle`, `pill`, `underline`, `outline`) and whether the menu draws its own surface with `layout` (`inline`, `contained`).',
+    ],
     a11y: [
-      'Escape closes submenus; opening and swapping submenus is covered by tests. Links should be real anchors.',
+      'Escape closes submenus and returns focus to the trigger; opening and swapping submenus is covered by tests. Links should be real anchors.',
+      '`active` sets `aria-current="page"`; an open submenu is `aria-expanded` and is never marked current. Disabled links and triggers are `aria-disabled`.',
+      'The logo, account menu and mobile shell belong to the application header, not to this component.',
     ],
   },
   tabs: {

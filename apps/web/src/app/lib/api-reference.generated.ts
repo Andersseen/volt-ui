@@ -452,7 +452,10 @@ export const DATE_PICKER_API: ComponentApi = {
     {
       className: 'VoltDatePickerDateButton',
       selector: 'volt-date-picker-date-button',
-      inputs: [{ name: 'class', type: 'string', default: "''" }],
+      inputs: [
+        { name: 'class', type: 'string', default: "''" },
+        { name: 'aria-label', type: 'string | undefined', default: 'undefined' },
+      ],
       outputs: [],
     },
     {
@@ -1040,6 +1043,8 @@ export const NAVIGATION_MENU_API: ComponentApi = {
       selector: 'volt-navigation-menu',
       inputs: [
         { name: 'class', type: 'string', default: "''" },
+        { name: 'variant', type: 'VoltNavigationMenuVariant', default: "'subtle'" },
+        { name: 'layout', type: 'VoltNavigationMenuLayout', default: "'inline'" },
         { name: 'orientation', type: "'horizontal' | 'vertical'", default: "'horizontal'" },
         { name: 'showDelay', type: 'number', default: '200' },
         { name: 'hideDelay', type: 'number', default: '150' },
@@ -1048,7 +1053,12 @@ export const NAVIGATION_MENU_API: ComponentApi = {
       outputs: [{ name: 'valueChange', type: 'string | null' }],
     },
   ],
-  variants: undefined,
+  variants: [
+    { name: 'layout', options: ['inline', 'contained'], default: 'inline' },
+    { name: 'variant', options: ['subtle', 'pill', 'underline', 'outline'], default: 'subtle' },
+    { name: 'defaultVariants', options: ['layout', 'variant'], default: undefined },
+    { name: 'variants', options: ['subtle', 'pill', 'underline', 'outline'], default: undefined },
+  ],
 };
 
 export const PAGINATION_API: ComponentApi = {

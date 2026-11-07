@@ -142,10 +142,10 @@ returns the same fields live.
 - **Alert** (`alert`, stable) — A callout for information, success, warnings or errors that sits in the page flow.
   - Not for: A transient "saved" confirmation: use Toast.
   - See also: `toast`, `empty-state`, `dialog`
-- **Spinner** (`spinner`, beta) — An indeterminate loading indicator in three sizes.
+- **Spinner** (`spinner`, stable) — An indeterminate loading indicator in three sizes.
   - Not for: Content with a known layout: use Skeleton.
   - See also: `skeleton`, `progress`
-- **Empty State** (`empty-state`, beta) — A placeholder for an empty collection or a search with no results, with room for an action.
+- **Empty State** (`empty-state`, stable) — A placeholder for an empty collection or a search with no results, with room for an action.
   - Not for: An error or warning about the page: use Alert.
   - See also: `alert`, `skeleton`
 
