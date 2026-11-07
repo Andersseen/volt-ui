@@ -72,7 +72,9 @@ describe('VoltEmptyState', () => {
     );
     const root = container.querySelector('volt-empty-state')!;
 
-    expect(root).toHaveClass('min-w-0');
+    expect(root).toHaveClass('min-w-0', 'wrap-anywhere');
     expect(root.querySelector('div')).toHaveClass('min-w-0', 'max-w-md');
+    // Real wrapping (no horizontal overflow at 320px, 200% and 400% zoom) is measured in a
+    // browser: e2e/contracts/polish.spec.ts.
   });
 });

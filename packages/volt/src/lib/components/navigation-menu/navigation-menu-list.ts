@@ -30,7 +30,10 @@ export class VoltNavigationMenuList {
   readonly class = input<string>('');
 
   protected readonly classes = computed(() =>
-    cn('group flex flex-1 list-none items-center justify-center gap-1', this.class())
+    cn(
+      'group flex flex-1 list-none items-center justify-center gap-1 data-[orientation=vertical]:flex-col data-[orientation=vertical]:items-stretch',
+      this.class()
+    )
   );
 
   readonly wrap = input<boolean, unknown>(false, { transform: booleanAttribute });

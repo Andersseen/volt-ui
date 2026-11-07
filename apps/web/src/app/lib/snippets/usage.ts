@@ -437,26 +437,33 @@ import { VoltNativeButton } from '@voltui/components';
 export class MyComponent {}`;
 
 export const NAVIGATION_MENU_USAGE = `import { Component } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import {
   VoltNavigationMenu,
   VoltNavigationMenuList,
   VoltNavigationMenuItem,
   VoltNavigationMenuTrigger,
   VoltNavigationMenuContent,
+  VoltNavigationMenuContentItem,
   VoltNavigationMenuLink,
 } from '@voltui/components';
 
 @Component({
   imports: [
+    RouterLink,
+    RouterLinkActive,
     VoltNavigationMenu,
     VoltNavigationMenuList,
     VoltNavigationMenuItem,
     VoltNavigationMenuTrigger,
     VoltNavigationMenuContent,
+    VoltNavigationMenuContentItem,
     VoltNavigationMenuLink,
   ],
   template: \`
-    <volt-navigation-menu>
+    <!-- variant: subtle | pill | underline | outline — how the current page is marked.
+         layout: inline | contained — contained draws its own self-sized surface. -->
+    <volt-navigation-menu aria-label="Main" variant="subtle" layout="inline">
       <volt-navigation-menu-list>
         <volt-navigation-menu-item>
           <!-- The panel goes in as a template reference. \`content\` is a required input:
@@ -467,13 +474,27 @@ import {
           </volt-navigation-menu-trigger>
           <ng-template #gettingStarted>
             <volt-navigation-menu-content>
-              <a voltNavigationMenuLink href="/docs">Introduction</a>
-              <a voltNavigationMenuLink href="/docs/installation">Installation</a>
+              <volt-navigation-menu-content-item>
+                <a routerLink="/docs/introduction">Introduction</a>
+              </volt-navigation-menu-content-item>
+              <volt-navigation-menu-content-item>
+                <a routerLink="/docs/themes">Themes</a>
+              </volt-navigation-menu-content-item>
             </volt-navigation-menu-content>
           </ng-template>
         </volt-navigation-menu-item>
         <volt-navigation-menu-item>
-          <a voltNavigationMenuLink href="/docs/components">Components</a>
+          <!-- \`active\` marks the current destination (aria-current="page"). Derive it from
+               the router as here, or pass a plain boolean when you do not use the router. -->
+          <a
+            voltNavigationMenuLink
+            routerLink="/docs/components"
+            routerLinkActive
+            [routerLinkActiveOptions]="{ exact: true }"
+            #components="routerLinkActive"
+            [active]="components.isActive"
+            >Components</a
+          >
         </volt-navigation-menu-item>
       </volt-navigation-menu-list>
     </volt-navigation-menu>
@@ -969,7 +990,11 @@ import {
       </div>
 
       <volt-date-picker-grid>
-        <div class="grid grid-cols-7 gap-1 text-center text-xs text-muted-foreground">
+        <!-- Visual column labels only: each day is already named with its full date. -->
+        <div
+          aria-hidden="true"
+          class="grid grid-cols-7 gap-1 text-center text-xs text-muted-foreground"
+        >
           @for (day of weekDays; track day) {
             <span class="py-1">{{ day }}</span>
           }

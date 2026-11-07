@@ -8,149 +8,117 @@
     </p>
   </div>
 
-  <app-code-panel [title]="t('ui.codePanel.usage')" [code]="navigationMenuUsage" [tabbed]="true">
+  <app-code-panel [title]="t('ui.codePanel.usage')" [code]="navigationMenuUsage()" [tabbed]="true">
     <div
-      class="border rounded-xl border-border/50 p-6 md:p-10 flex items-center justify-center bg-background/50 relative min-h-[400px]"
+      class="grid gap-8 rounded-xl border border-border/50 bg-background/50 p-4 sm:p-6 md:p-10 min-h-[400px] content-start"
     >
-      <!-- The menu bar is wider than a phone; scroll it rather than clip it. -->
-      <div class="relative z-10 w-full min-w-0 max-w-4xl overflow-x-auto">
-        <volt-navigation-menu>
+      <!-- The two concerns are independent inputs, so each has its own control. The item labels
+           are the input values themselves, exactly as they appear in the code beside them. -->
+      <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
+        <volt-toggle-group
+          data-testid="nav-variant"
+          [attr.aria-label]="t('ui.section.variants')"
+          [(value)]="variantValue"
+          [allowDeselection]="false"
+        >
+          @for (option of variants; track option) {
+            <volt-toggle-group-item [value]="option" class="font-mono text-xs">{{
+              option
+            }}</volt-toggle-group-item>
+          }
+        </volt-toggle-group>
+        <volt-toggle-group
+          data-testid="nav-layout"
+          [attr.aria-label]="t('components.navigationMenu.showcase.layout')"
+          [(value)]="layoutValue"
+          [allowDeselection]="false"
+        >
+          @for (option of layouts; track option) {
+            <volt-toggle-group-item [value]="option" class="font-mono text-xs">{{
+              option
+            }}</volt-toggle-group-item>
+          }
+        </volt-toggle-group>
+      </div>
+
+      <!-- A narrow phone scrolls the bar rather than clipping it; the contained layout scrolls
+           inside its own surface. -->
+      <div class="flex min-w-0 justify-center overflow-x-auto py-1">
+        <volt-navigation-menu
+          aria-label="Showcase"
+          data-testid="nav-showcase"
+          [variant]="variant()"
+          [layout]="layout()"
+        >
           <volt-navigation-menu-list>
-            <!-- Getting Started Dropdown -->
-            <volt-navigation-menu-item>
+            <volt-navigation-menu-item value="getting-started">
               <volt-navigation-menu-trigger [content]="gettingStartedTpl">
                 Getting Started
               </volt-navigation-menu-trigger>
               <ng-template #gettingStartedTpl>
-                <volt-navigation-menu-content class="w-full max-w-[90vw] sm:w-[400px] md:w-[500px]">
-                  <div class="grid gap-3 p-2">
+                <volt-navigation-menu-content class="w-[min(90vw,22rem)]">
+                  @for (link of gettingStarted; track link.path) {
                     <volt-navigation-menu-content-item>
-                      <a href="#" class="block">
-                        <div class="text-sm font-medium text-foreground">Introduction</div>
-                        <p class="text-xs text-muted-foreground mt-1">
-                          Learn about the basics of Volt UI and how to get started.
-                        </p>
+                      <a [routerLink]="path(link.path)" class="block">
+                        <span class="block text-sm font-medium text-foreground">{{
+                          link.label
+                        }}</span>
+                        <span class="mt-1 block text-xs text-muted-foreground">{{
+                          link.hint
+                        }}</span>
                       </a>
                     </volt-navigation-menu-content-item>
-                    <volt-navigation-menu-content-item>
-                      <a href="#" class="block">
-                        <div class="text-sm font-medium text-foreground">Installation</div>
-                        <p class="text-xs text-muted-foreground mt-1">
-                          Step-by-step guide to install Volt UI in your project.
-                        </p>
-                      </a>
-                    </volt-navigation-menu-content-item>
-                    <volt-navigation-menu-content-item>
-                      <a href="#" class="block">
-                        <div class="text-sm font-medium text-foreground">Theming</div>
-                        <p class="text-xs text-muted-foreground mt-1">
-                          Customize the look and feel with themes and colors.
-                        </p>
-                      </a>
-                    </volt-navigation-menu-content-item>
-                    <volt-navigation-menu-content-item>
-                      <a href="#" class="block">
-                        <div class="text-sm font-medium text-foreground">Dark Mode</div>
-                        <p class="text-xs text-muted-foreground mt-1">
-                          Enable and configure dark mode for your application.
-                        </p>
-                      </a>
-                    </volt-navigation-menu-content-item>
-                  </div>
+                  }
                 </volt-navigation-menu-content>
               </ng-template>
             </volt-navigation-menu-item>
 
-            <!-- Components Dropdown -->
-            <volt-navigation-menu-item>
+            <volt-navigation-menu-item value="components">
               <volt-navigation-menu-trigger [content]="componentsTpl">
                 Components
               </volt-navigation-menu-trigger>
               <ng-template #componentsTpl>
-                <volt-navigation-menu-content class="w-full max-w-[90vw] sm:w-[400px] md:w-[500px]">
-                  <div class="grid grid-cols-2 gap-3 p-2">
-                    <volt-navigation-menu-content-item>
-                      <a href="#" class="block">
-                        <div class="text-sm font-medium text-foreground">Form Controls</div>
-                        <p class="text-xs text-muted-foreground mt-1">
-                          Inputs, checkboxes, switches, and more.
-                        </p>
-                      </a>
-                    </volt-navigation-menu-content-item>
-                    <volt-navigation-menu-content-item>
-                      <a href="#" class="block">
-                        <div class="text-sm font-medium text-foreground">Display</div>
-                        <p class="text-xs text-muted-foreground mt-1">
-                          Cards, badges, avatars, and separators.
-                        </p>
-                      </a>
-                    </volt-navigation-menu-content-item>
-                    <volt-navigation-menu-content-item>
-                      <a href="#" class="block">
-                        <div class="text-sm font-medium text-foreground">Navigation</div>
-                        <p class="text-xs text-muted-foreground mt-1">
-                          Tabs, navigation menus, and tooltips.
-                        </p>
-                      </a>
-                    </volt-navigation-menu-content-item>
-                    <volt-navigation-menu-content-item>
-                      <a href="#" class="block">
-                        <div class="text-sm font-medium text-foreground">Overlays</div>
-                        <p class="text-xs text-muted-foreground mt-1">
-                          Dialogs, dropdowns, and popovers.
-                        </p>
-                      </a>
-                    </volt-navigation-menu-content-item>
+                <volt-navigation-menu-content class="w-[min(90vw,30rem)]">
+                  <div class="grid gap-1 sm:grid-cols-2">
+                    @for (link of componentLinks; track link.path) {
+                      <volt-navigation-menu-content-item>
+                        <a [routerLink]="path(link.path)" class="block">
+                          <span class="block text-sm font-medium text-foreground">{{
+                            link.label
+                          }}</span>
+                          <span class="mt-1 block text-xs text-muted-foreground">{{
+                            link.hint
+                          }}</span>
+                        </a>
+                      </volt-navigation-menu-content-item>
+                    }
                   </div>
                 </volt-navigation-menu-content>
               </ng-template>
             </volt-navigation-menu-item>
 
-            <!-- Resources Dropdown -->
-            <volt-navigation-menu-item>
-              <volt-navigation-menu-trigger [content]="resourcesTpl">
-                Resources
-              </volt-navigation-menu-trigger>
-              <ng-template #resourcesTpl>
-                <volt-navigation-menu-content class="w-full max-w-[90vw] sm:w-[350px] md:w-[400px]">
-                  <div class="grid gap-3 p-2">
-                    <volt-navigation-menu-content-item>
-                      <a href="#" class="block">
-                        <div class="text-sm font-medium text-foreground">Documentation</div>
-                        <p class="text-xs text-muted-foreground mt-1">
-                          Comprehensive API reference and guides.
-                        </p>
-                      </a>
-                    </volt-navigation-menu-content-item>
-                    <volt-navigation-menu-content-item>
-                      <a href="#" class="block">
-                        <div class="text-sm font-medium text-foreground">GitHub</div>
-                        <p class="text-xs text-muted-foreground mt-1">
-                          Source code and issue tracking.
-                        </p>
-                      </a>
-                    </volt-navigation-menu-content-item>
-                    <volt-navigation-menu-content-item>
-                      <a href="#" class="block">
-                        <div class="text-sm font-medium text-foreground">Community</div>
-                        <p class="text-xs text-muted-foreground mt-1">
-                          Join our Discord and get help from the community.
-                        </p>
-                      </a>
-                    </volt-navigation-menu-content-item>
-                  </div>
-                </volt-navigation-menu-content>
-              </ng-template>
-            </volt-navigation-menu-item>
-
-            <!-- Direct Link -->
-            <volt-navigation-menu-item>
+            <!-- The real current page: active comes from the router, not a hard-coded flag. -->
+            <volt-navigation-menu-item value="navigation-menu">
               <a
-                href="#"
-                class="inline-flex h-9 items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                voltNavigationMenuLink
+                [routerLink]="path('/docs/components/navigation-menu')"
+                routerLinkActive
+                [routerLinkActiveOptions]="{ exact: true }"
+                #current="routerLinkActive"
+                [active]="current.isActive"
+                >Navigation Menu</a
               >
-                About
-              </a>
+            </volt-navigation-menu-item>
+
+            <volt-navigation-menu-item value="roadmap">
+              <a
+                voltNavigationMenuLink
+                [routerLink]="path('/docs/roadmap')"
+                routerLinkActive
+                #roadmap="routerLinkActive"
+                [active]="roadmap.isActive"
+                >Roadmap</a
+              >
             </volt-navigation-menu-item>
           </volt-navigation-menu-list>
         </volt-navigation-menu>
@@ -163,11 +131,13 @@
       {{ t('ui.section.features') }}
     </h2>
     <ul class="list-disc list-inside space-y-2 text-muted-foreground">
+      <li><app-prose key="components.navigationMenu.features.variants" /></li>
+      <li><app-prose key="components.navigationMenu.features.layout" /></li>
+      <li><app-prose key="components.navigationMenu.features.current" /></li>
       <li>{{ t('components.navigationMenu.features.keyboard') }}</li>
       <li>{{ t('components.navigationMenu.features.aria') }}</li>
-      <li>{{ t('components.navigationMenu.features.animations') }}</li>
       <li>{{ t('components.navigationMenu.features.layouts') }}</li>
-      <li>{{ t('components.navigationMenu.features.links') }}</li>
+      <li>{{ t('components.navigationMenu.features.scope') }}</li>
     </ul>
   </div>
 
@@ -181,6 +151,10 @@
   <app-code-panel
     [code]="navigationMenuCode"
     cliCommand="npx @voltui/cli add navigation-menu"
-    [description]="t('ui.codePanel.copyNoteDep', { dep: 'ng-primitives/navigation-menu' })"
+    [description]="
+      t('ui.codePanel.copyNoteDep', {
+        dep: 'ng-primitives/navigation-menu, class-variance-authority',
+      })
+    "
   />
 </div>

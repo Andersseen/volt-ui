@@ -13,12 +13,10 @@ Volt UI is stable (the current version is the one in `packages/volt/package.json
 ## Release Groups
 
 - **Stable**: every 1.0 component. The 1.0 surface ships entirely stable.
-- **Beta**: `spinner` (added in 1.1) and `empty-state` (added in 1.2). Their APIs follow the 1.x promise;
-  `beta` only means they have not yet had a release of real-world use. `alert` (added in 1.1) was promoted to
-  stable in 1.3: Agentyx and ForgeCMS ship it on 1.1.x, 1.2's application-workflow benchmark exercised it through
-  both the package and the CLI, and the 1.3 re-audit found no API or accessibility change to make. Spinner and
-  empty-state have no external consumer yet (the consumers that show a spinner or an empty panel still carry
-  their own, from before 1.1/1.2), so that is upgrade debt rather than evidence — they stay beta.
+- **Beta**: none. `spinner` (added in 1.1) and `empty-state` (added in 1.2) were promoted to stable in the
+  release after 1.4.0 against the acceptance bar below. `alert` (added in 1.1) was promoted in 1.3. The
+  promotion rests on verification, not adoption: Agentyx and ForgeCMS still ship their own spinner and empty
+  panel from before 1.1/1.2, so no external production use is claimed for either.
 - **Where this is written.** The status column below is the only hand-maintained copy. `cli/generate-manifest.js`
   reads it (so `volt list --status=stable` and the MCP server agree) and `src/app/lib/product-facts.spec.ts`
   fails if the docs catalog disagrees.
@@ -38,11 +36,11 @@ Volt UI is stable (the current version is the one in `packages/volt/package.json
 | card            | stable | n/a                       | n/a                                             | n/a                                                                                      | yes  | unit + e2e docs     |
 | checkbox        | stable | full CVA contract         | via ng-primitives                               | focus-visible styles                                                                     | yes  | unit                |
 | combobox        | stable | full CVA contract         | via ng-primitives                               | dropdown keyboard/focus covered                                                          | yes  | unit                |
-| date-picker     | stable | full CVA contract         | via ng-primitives                               | calendar grid selection covered                                                          | yes  | unit                |
+| date-picker     | stable | full CVA contract         | arrows/Enter covered; full-date day names       | single and range selection, pointer cursor covered in e2e                                | yes  | unit + e2e          |
 | dialog          | stable | n/a                       | Escape covered in e2e                           | trigger, controlled and service-opened dialogs: focus trap/return, outside click covered | yes  | unit + e2e          |
 | drawer          | stable | n/a                       | Escape covered in e2e                           | focus trap/return, outside click covered                                                 | yes  | unit + e2e          |
 | dropdown-menu   | stable | n/a                       | Arrow/Home/End/Enter covered                    | Escape, outside click, focus covered                                                     | yes  | unit + e2e          |
-| empty-state     | beta   | n/a                       | n/a (static content)                            | plain content, no live-region role                                                       | yes  | unit + e2e workflow |
+| empty-state     | stable | n/a                       | n/a (static content)                            | plain content, no live-region role                                                       | yes  | unit + e2e          |
 | file-upload     | stable | output-based API          | native input behavior                           | real-browser drag/drop covered                                                           | yes  | unit + e2e          |
 | form-field      | stable | projected-control wiring  | label/description semantics                     | n/a                                                                                      | yes  | unit                |
 | input           | stable | full CVA contract         | native input                                    | focus-visible styles                                                                     | yes  | unit + e2e docs     |
@@ -50,7 +48,7 @@ Volt UI is stable (the current version is the one in `packages/volt/package.json
 | listbox         | stable | full CVA contract         | Arrow/Enter via ng-primitives                   | active option covered                                                                    | yes  | unit                |
 | meter           | stable | n/a                       | n/a                                             | n/a                                                                                      | yes  | unit + e2e consumer |
 | native-select   | stable | native `<select>` element | native select                                   | n/a                                                                                      | yes  | unit                |
-| navigation-menu | stable | n/a                       | Escape covered                                  | submenu open/swap covered                                                                | yes  | unit                |
+| navigation-menu | stable | n/a                       | Enter/Escape and focus return covered in e2e    | submenu open/swap covered; four `variant`s, `contained` layout                           | yes  | unit + e2e          |
 | pagination      | stable | n/a                       | native buttons/links                            | focus-visible styles                                                                     | yes  | unit                |
 | popover         | stable | n/a                       | Escape covered in e2e                           | open/close/position covered                                                              | yes  | unit + e2e          |
 | progress        | stable | n/a                       | n/a                                             | n/a                                                                                      | yes  | unit + e2e consumer |
@@ -63,7 +61,7 @@ Volt UI is stable (the current version is the one in `packages/volt/package.json
 | sidebar         | stable | n/a                       | native links and Escape                         | tooltip dependency covered                                                               | yes  | unit + manifest     |
 | skeleton        | stable | n/a                       | n/a                                             | n/a                                                                                      | yes  | unit                |
 | slider          | stable | full CVA contract         | via ng-primitives                               | focus-visible styles                                                                     | yes  | unit + e2e consumer |
-| spinner         | beta   | n/a                       | n/a                                             | decorative by default, status when named                                                 | yes  | unit + e2e consumer |
+| spinner         | stable | n/a                       | n/a                                             | decorative by default, status when named                                                 | yes  | unit + e2e          |
 | switch          | stable | full CVA contract         | via ng-primitives                               | focus-visible styles                                                                     | yes  | unit + e2e consumer |
 | table           | stable | n/a                       | ARIA table semantics                            | n/a                                                                                      | yes  | unit                |
 | tabs            | stable | n/a                       | via ng-primitives                               | tab focus behavior via primitive                                                         | yes  | unit + e2e consumer |
@@ -93,6 +91,24 @@ shaped around, not by relabeling:
 | `input-otp`       | `NgpInputOtpInput` was never imported, so no slot ever filled                      |
 | `navigation-menu` | Submenu open/swap/Escape had no coverage; only static markup was asserted          |
 | `resizable`       | A handle inside a vertical group resized horizontally                              |
+
+## Promotion from beta: the acceptance bar
+
+A `beta` component becomes `stable` only when every row holds, each with a test or a build that would fail
+if it stopped holding. Spinner and Empty State were measured against it:
+
+| Criterion                        | Spinner                                                                                                     | Empty State                                                                                        |
+| -------------------------------- | ----------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| Public API unchanged since added | `size`, `label`, `class` — as in 1.1                                                                        | `class`, `[slot=icon]`, `[slot=actions]`, title, description — as in 1.2                           |
+| Contract asserted on the DOM     | decorative vs `role="status"`, one status across label changes, sizes, class override (`spinner.spec.ts`)   | order, optional parts, no role / live region, class override, wrapping (`empty-state.spec.ts`)     |
+| Real browser, computed styles    | stroke is `currentColor`, sizes differ, keeps spinning slower under reduced motion (`e2e/contracts/polish`) | no overflow with unbroken text at 320 px / 400 % and 200 % zoom; actions focus in order (`polish`) |
+| Accessibility                    | hidden when decorative; one polite status when named; never sets `aria-busy`                                | content, not an alert; title is not a heading so the page owns the outline                         |
+| Package consumer                 | `e2e/consumer` catalog + admin workflow, built from the packed tarball (Angular 21.2 and 22)                | same                                                                                               |
+| CLI copy-and-own                 | `e2e/consumer-cli` copies and compiles `ui-spinner` with no docs-app import                                 | same, `ui-empty-state` in the CLI admin workflow                                                   |
+| Themes                           | `currentColor` only; painted in the five reference palette × style × scheme combinations                    | semantic tokens only; spacing follows density (`gap-inset-md`, `p*-inset-lg`)                      |
+| SSR / hydration                  | no browser API; rendered by `pnpm check:ssr` on its docs page                                               | same                                                                                               |
+| Documentation                    | docs page with description and usage notes in en/es/uk; Storybook page                                      | same                                                                                               |
+| Known blockers                   | none                                                                                                        | none (long unbroken words overflowed at 320 px — fixed with `wrap-anywhere` before promotion)      |
 
 ## Ongoing hardening policy
 

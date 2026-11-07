@@ -5,3 +5,9 @@ export { VoltNavigationMenuTrigger } from './navigation-menu-trigger';
 export { VoltNavigationMenuContent } from './navigation-menu-content';
 export { VoltNavigationMenuContentItem } from './navigation-menu-content-item';
 export { VoltNavigationMenuLink } from './navigation-menu-link';
+export {
+  navigationMenuVariants,
+  navigationMenuItemVariants,
+  type VoltNavigationMenuVariant,
+  type VoltNavigationMenuLayout,
+} from './variants';

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { render, screen, waitFor } from '@testing-library/angular';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
@@ -144,5 +144,132 @@ describe('navigation menu components', () => {
       SLOW
     );
     await waitFor(() => expect(products).toHaveAttribute('aria-expanded', 'false'), SLOW);
+  });
+});
+
+@Component({
+  imports: [
+    VoltNavigationMenu,
+    VoltNavigationMenuContent,
+    VoltNavigationMenuContentItem,
+    VoltNavigationMenuItem,
+    VoltNavigationMenuLink,
+    VoltNavigationMenuList,
+    VoltNavigationMenuTrigger,
+  ],
+  template: `
+    <volt-navigation-menu aria-label="Site" [variant]="variant()" [layout]="layout()">
+      <volt-navigation-menu-list>
+        <volt-navigation-menu-item>
+          <a voltNavigationMenuLink href="/home">Home</a>
+        </volt-navigation-menu-item>
+        <volt-navigation-menu-item>
+          <a voltNavigationMenuLink [active]="current() === 'docs'" href="/docs">Docs</a>
+        </volt-navigation-menu-item>
+        <volt-navigation-menu-item>
+          <a voltNavigationMenuLink disabled href="/beta">Beta</a>
+        </volt-navigation-menu-item>
+        <volt-navigation-menu-item>
+          <volt-navigation-menu-trigger [content]="moreTpl">More</volt-navigation-menu-trigger>
+        </volt-navigation-menu-item>
+        <volt-navigation-menu-item>
+          <volt-navigation-menu-trigger disabled [content]="moreTpl"
+            >Locked</volt-navigation-menu-trigger
+          >
+        </volt-navigation-menu-item>
+      </volt-navigation-menu-list>
+    </volt-navigation-menu>
+    <ng-template #moreTpl>
+      <volt-navigation-menu-content>
+        <volt-navigation-menu-content-item
+          ><a href="/blog">Blog</a></volt-navigation-menu-content-item
+        >
+      </volt-navigation-menu-content>
+    </ng-template>
+  `,
+})
+class VariantMenuFixture {
+  readonly variant = signal<'subtle' | 'pill' | 'underline' | 'outline'>('subtle');
+  readonly layout = signal<'inline' | 'contained'>('inline');
+  readonly current = signal('docs');
+}
+
+describe('navigation menu presentation', () => {
+  it('defaults to the subtle variant and the inline layout', async () => {
+    await render(VariantMenuFixture);
+    const nav = screen.getByRole('navigation', { name: 'Site' });
+    expect(nav).toHaveAttribute('data-variant', 'subtle');
+    expect(nav).toHaveAttribute('data-layout', 'inline');
+  });
+
+  it('reflects a variant and layout change on the menu and restyles its links and triggers', async () => {
+    const { fixture } = await render(VariantMenuFixture);
+    const docs = screen.getByRole('link', { name: 'Docs' });
+    const more = screen.getByRole('button', { name: /More/ });
+    const before = { link: docs.className, trigger: more.className };
+
+    fixture.componentInstance.variant.set('pill');
+    fixture.componentInstance.layout.set('contained');
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const nav = screen.getByRole('navigation', { name: 'Site' });
+    expect(nav).toHaveAttribute('data-variant', 'pill');
+    expect(nav).toHaveAttribute('data-layout', 'contained');
+    // The exact look is proven with computed styles in e2e/contracts; here: the menu-level
+    // setting reaches both kinds of item, so a link and a trigger never disagree.
+    expect(docs.className).not.toBe(before.link);
+    expect(more.className).not.toBe(before.trigger);
+  });
+
+  it('marks only the current destination, and moves the mark when it changes', async () => {
+    const { fixture } = await render(VariantMenuFixture);
+    expect(screen.getByRole('link', { name: 'Docs' })).toHaveAttribute('aria-current', 'page');
+    expect(screen.getByRole('link', { name: 'Home' })).not.toHaveAttribute('aria-current');
+
+    fixture.componentInstance.current.set('elsewhere');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(screen.getByRole('link', { name: 'Docs' })).not.toHaveAttribute('aria-current');
+  });
+
+  it('an open submenu is not a destination: its trigger is expanded, never current', async () => {
+    const user = userEvent.setup();
+    await render(VariantMenuFixture);
+    const more = screen.getByRole('button', { name: /More/ });
+
+    await user.click(more);
+
+    await waitFor(() => expect(more).toHaveAttribute('aria-expanded', 'true'), SLOW);
+    expect(more).not.toHaveAttribute('aria-current');
+    expect(screen.getByRole('link', { name: 'Docs' })).toHaveAttribute('aria-current', 'page');
+  });
+
+  it('a disabled link is announced as disabled and does not navigate', async () => {
+    const user = userEvent.setup();
+    await render(VariantMenuFixture);
+    const beta = screen.getByRole('link', { name: 'Beta' });
+    expect(beta).toHaveAttribute('aria-disabled', 'true');
+
+    // jsdom has no layout, so pointer-events: none cannot stop the click here; the primitive's
+    // own listener must — it cancels the navigation (registered before this one, so seen here).
+    let navigated: boolean | undefined;
+    beta.addEventListener('click', event => (navigated = !event.defaultPrevented));
+    await user.click(beta, { pointerEventsCheck: 0 });
+    expect(navigated).toBe(false);
+  });
+
+  it('a disabled trigger is announced as disabled and does not open', async () => {
+    const user = userEvent.setup();
+    await render(VariantMenuFixture);
+    const locked = screen.getByRole('button', { name: /Locked/ });
+    expect(locked).toHaveAttribute('aria-disabled', 'true');
+
+    locked.focus();
+    await user.keyboard('{Enter}');
+    await user.click(locked, { pointerEventsCheck: 0 });
+
+    expect(locked).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.queryByRole('link', { name: 'Blog' })).not.toBeInTheDocument();
   });
 });

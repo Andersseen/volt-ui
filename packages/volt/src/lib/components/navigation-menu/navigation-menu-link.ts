@@ -4,12 +4,15 @@ import {
   Component,
   input,
   computed,
+  inject,
 } from '@angular/core';
 import {
   NgpNavigationMenuLink,
   provideNavigationMenuLinkState,
 } from 'ng-primitives/navigation-menu';
 import { cn } from '../../utils';
+import { VoltNavigationMenu } from './navigation-menu';
+import { navigationMenuItemVariants } from './variants';
 
 @Component({
   // Tag-scoped attribute selector (matches ng-primitives' own convention). ESLint's
@@ -33,11 +36,10 @@ import { cn } from '../../utils';
 export class VoltNavigationMenuLink {
   readonly class = input<string>('');
 
+  private readonly menu = inject(VoltNavigationMenu, { optional: true });
+
   protected readonly classes = computed(() =>
-    cn(
-      'inline-flex h-control-dense items-center justify-center rounded-md bg-background px-inset-md py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-(length:--ring-width) focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 cursor-pointer',
-      this.class()
-    )
+    cn(navigationMenuItemVariants({ variant: this.menu?.variant() ?? 'subtle' }), this.class())
   );
 
   readonly active = input<boolean, unknown>(false, { transform: booleanAttribute });

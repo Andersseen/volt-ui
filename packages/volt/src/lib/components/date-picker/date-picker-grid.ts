@@ -14,5 +14,5 @@ import { cn } from '../../utils';
 export class VoltDatePickerGrid {
   readonly class = input<string>('');
 
-  protected readonly classes = computed(() => cn('grid gap-1', this.class()));
+  protected readonly classes = computed(() => cn('grid select-none gap-1', this.class()));
 }

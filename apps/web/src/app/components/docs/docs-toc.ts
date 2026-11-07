@@ -15,9 +15,9 @@ import type { TocItem } from '../../lib/docs-nav';
         <p class="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
           {{ t('ui.docs.onThisPage') }}
         </p>
-        <ul class="space-y-0.5 border-l border-border">
+        <ul class="space-y-0.5">
           @for (item of items(); track item.id) {
-            <li>
+            <li [class.ps-3]="item.level === 3">
               <button
                 voltButton
                 type="button"
@@ -43,13 +43,19 @@ export class DocsToc {
 
   protected readonly t = injectAppI18n().t;
 
-  /** Merged through `voltButton`'s own `class` input, over the ghost variant. */
+  /**
+   * Merged through `voltButton`'s own `class` input, over the ghost variant — so the shape (radius),
+   * focus ring and border width are the active style preset's, never forced square.
+   *
+   * One indicator: the active entry gets the accent surface and foreground text; hover is a lighter
+   * tint of the same surface; focus-visible is the button's own ring. Weight and padding never
+   * change between states, so a heading becoming active never re-wraps or shifts the list.
+   */
   protected itemClass(item: TocItem): string {
     const base =
-      '-ml-px h-auto w-full justify-start whitespace-normal rounded-none border-l-2 py-1.5 text-left text-[13px] font-normal';
-    const indent = item.level === 3 ? ' pl-6' : ' pl-3';
+      'h-auto min-h-control-sm w-full justify-start whitespace-normal py-1.5 text-start text-[13px] font-normal wrap-break-word';
     return item.id === this.active()
-      ? `${base}${indent} border-primary text-foreground`
-      : `${base}${indent} border-transparent text-muted-foreground`;
+      ? `${base} bg-accent text-accent-foreground data-[hover]:bg-accent`
+      : `${base} text-muted-foreground data-[hover]:bg-accent/50 data-[hover]:text-foreground`;
   }
 }

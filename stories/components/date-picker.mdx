@@ -93,7 +93,11 @@ import {
       </div>
 
       <volt-date-picker-grid>
-        <div class="grid grid-cols-7 gap-1 text-center text-xs text-muted-foreground">
+        <!-- Visual column labels only: each day is already named with its full date. -->
+        <div
+          aria-hidden="true"
+          class="grid grid-cols-7 gap-1 text-center text-xs text-muted-foreground"
+        >
           @for (day of weekDays; track day) {
             <span class="py-1">{{ day }}</span>
           }
@@ -126,7 +130,7 @@ export class MyComponent {
 
 - Built on the ng-primitives date picker; calendar grid selection is covered by tests. The month label is a polite live region.
 
-<table><thead><tr><th>Aspect</th><th>Behaviour</th></tr></thead><tbody><tr><td>Keyboard</td><td>{"via ng-primitives"}</td></tr><tr><td>Focus and overlays</td><td>{"calendar grid selection covered"}</td></tr><tr><td>Forms</td><td>{"full CVA contract"}</td></tr></tbody></table>
+<table><thead><tr><th>Aspect</th><th>Behaviour</th></tr></thead><tbody><tr><td>Keyboard</td><td>{"arrows/Enter covered; full-date day names"}</td></tr><tr><td>Focus and overlays</td><td>{"single and range selection, pointer cursor covered in e2e"}</td></tr><tr><td>Forms</td><td>{"full CVA contract"}</td></tr></tbody></table>
 
 The Accessibility panel under each story runs axe-core against that story. It is a development aid, not a conformance claim.
 
@@ -142,7 +146,7 @@ Selector: <code>{"volt-date-picker-cell"}</code>
 
 Selector: <code>{"volt-date-picker-date-button"}</code>
 
-<table><thead><tr><th>Input</th><th>Type</th><th>Default</th></tr></thead><tbody><tr><td><code>{"class"}</code></td><td><code>{"string"}</code></td><td><code>{"''"}</code></td></tr></tbody></table>
+<table><thead><tr><th>Input</th><th>Type</th><th>Default</th></tr></thead><tbody><tr><td><code>{"class"}</code></td><td><code>{"string"}</code></td><td><code>{"''"}</code></td></tr><tr><td><code>{"aria-label"}</code></td><td><code>{"string | undefined"}</code></td><td><code>{"undefined"}</code></td></tr></tbody></table>
 
 ### VoltDatePickerGrid
 

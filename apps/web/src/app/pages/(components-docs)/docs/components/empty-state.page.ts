@@ -6,15 +6,13 @@ import {
   VoltNativeButton,
 } from 'volt';
 import { CodePanel } from '@shared/components/code-panel';
+import { Prose } from '@shared/components/prose';
 import { ApiReference } from '../../../../components/api-reference';
 import { EMPTY_STATE_SNIPPET } from '../../../../lib/snippets/index';
 import { EMPTY_STATE_USAGE } from '../../../../lib/snippets/usage';
 import { EMPTY_STATE_API } from '../../../../lib/api-reference.generated';
 import { injectAppI18n } from '@shared/i18n/i18n';
 
-// The heading is the component name, which is identical in every locale. Switch it to
-// t('components.emptyState.title') and add a description once those keys exist in Glossa —
-// see specs/plans/v1.2.md "Glossa keys pending".
 @Component({
   selector: 'app-empty-state-demo',
   standalone: true,
@@ -24,12 +22,20 @@ import { injectAppI18n } from '@shared/i18n/i18n';
     VoltEmptyStateDescription,
     VoltNativeButton,
     CodePanel,
+    Prose,
     ApiReference,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="space-y-6">
-      <h1 class="text-3xl font-bold tracking-tight text-foreground">Empty State</h1>
+      <div>
+        <h1 class="text-3xl font-bold tracking-tight text-foreground">
+          {{ t('components.emptyState.title') }}
+        </h1>
+        <p class="text-lg text-muted-foreground mt-2">
+          {{ t('components.emptyState.description') }}
+        </p>
+      </div>
 
       <app-code-panel [title]="t('ui.codePanel.usage')" [code]="usage" [tabbed]="true">
         <div class="grid gap-4 p-6 md:p-10 border border-border/50 rounded-xl bg-background/50">
@@ -61,6 +67,17 @@ import { injectAppI18n } from '@shared/i18n/i18n';
           </volt-empty-state>
         </div>
       </app-code-panel>
+
+      <div class="space-y-4">
+        <h2 class="text-xl font-semibold tracking-tight text-foreground">
+          {{ t('ui.section.usageNotes') }}
+        </h2>
+        <ul class="list-disc list-inside space-y-2 text-muted-foreground">
+          <li><app-prose key="components.emptyState.guidance.content" /></li>
+          <li><app-prose key="components.emptyState.guidance.heading" /></li>
+          <li><app-prose key="components.emptyState.guidance.actions" /></li>
+        </ul>
+      </div>
 
       <div class="space-y-3">
         <h2 class="text-lg font-semibold">{{ t('ui.api.title') }}</h2>

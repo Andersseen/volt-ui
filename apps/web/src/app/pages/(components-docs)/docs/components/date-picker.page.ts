@@ -11,6 +11,7 @@ import {
   VoltDatePickerPreviousMonth,
 } from 'volt';
 import { CodePanel } from '@shared/components/code-panel';
+import { Prose } from '@shared/components/prose';
 import { ApiReference } from '../../../../components/api-reference';
 import { DATE_PICKER_SNIPPET } from '../../../../lib/snippets/index';
 import { DATE_PICKER_USAGE } from '../../../../lib/snippets/usage';
@@ -31,6 +32,7 @@ import { injectAppI18n } from '@shared/i18n/i18n';
     NgpDatePickerCellRender,
     NgpDatePickerRowRender,
     CodePanel,
+    Prose,
     ApiReference,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -58,7 +60,11 @@ import { injectAppI18n } from '@shared/i18n/i18n';
               <volt-date-picker-next-month aria-label="Next month"> › </volt-date-picker-next-month>
             </div>
             <volt-date-picker-grid>
-              <div class="grid grid-cols-7 gap-1 text-center text-xs text-muted-foreground">
+              <!-- Visual column labels only: each day is already named with its full date. -->
+              <div
+                aria-hidden="true"
+                class="grid grid-cols-7 gap-1 text-center text-xs text-muted-foreground"
+              >
                 @for (day of weekDays; track day) {
                   <span class="py-1">{{ day }}</span>
                 }
@@ -75,6 +81,17 @@ import { injectAppI18n } from '@shared/i18n/i18n';
         </div>
       </app-code-panel>
       <!-- API Reference -->
+      <div class="space-y-4">
+        <h2 class="text-xl font-semibold tracking-tight text-foreground">
+          {{ t('ui.section.usageNotes') }}
+        </h2>
+        <ul class="list-disc list-inside space-y-2 text-muted-foreground">
+          <li><app-prose key="components.datePicker.guidance.keyboard" /></li>
+          <li><app-prose key="components.datePicker.guidance.forms" /></li>
+          <li><app-prose key="components.datePicker.guidance.disabled" /></li>
+        </ul>
+      </div>
+
       <div class="space-y-3">
         <h2 class="text-lg font-semibold">{{ t('ui.api.title') }}</h2>
         <app-api-reference [data]="datePickerApi" />

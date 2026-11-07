@@ -60,6 +60,21 @@ export class VoltDateRangePicker {
 
   private readonly state = injectDateRangePickerState<Date>();
 
+  /**
+   * A start date set from outside (a parent, a static `[startDate]`) in another month would be
+   * selected but off screen, so bring its month into view — as `volt-date-picker` does. A day the
+   * user picks is already in view and never comes through here.
+   */
+  private showMonthOf(date: Date | undefined): void {
+    const focused = this.state().focusedDate();
+    if (
+      date &&
+      (date.getFullYear() !== focused.getFullYear() || date.getMonth() !== focused.getMonth())
+    ) {
+      this.state().setFocusedDate(date, 'program', 'forward');
+    }
+  }
+
   constructor() {
     // Volt owns the dates and mirrors them into the primitive without ever binding its own
     // inputs: ng-primitives latches into controlled mode the first time they are defined,
@@ -68,8 +83,10 @@ export class VoltDateRangePicker {
     effect(() => {
       const start = this.startDate();
       untracked(() => {
-        if (!sameDay(start, this.state().startDate()))
+        if (!sameDay(start, this.state().startDate())) {
           this.state().setStart(start as Date, { emit: false });
+          this.showMonthOf(start);
+        }
       });
     });
     effect(() => {
@@ -90,11 +107,15 @@ export class VoltDateRangePicker {
         }
       });
     });
+    // The first run only stays quiet about the primitive's own default (today); a month the picker
+    // moved to during setup (an outside start date) is news the parent's `[(focusedDate)]` needs.
+    const initialFocused = this.state().focusedDate();
     let firstFocused = true;
     effect(() => {
       const focused = this.state().focusedDate();
       untracked(() => {
-        if (!firstFocused && !sameDay(focused, this.focusedDate())) this.focusedDate.set(focused);
+        const quiet = firstFocused && sameDay(focused, initialFocused);
+        if (!quiet && !sameDay(focused, this.focusedDate())) this.focusedDate.set(focused);
         firstFocused = false;
       });
     });

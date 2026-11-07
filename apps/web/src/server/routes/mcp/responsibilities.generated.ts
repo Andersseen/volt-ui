@@ -214,7 +214,10 @@ export const RESPONSIBILITIES: Record<string, ComponentResponsibility> = {
     category: 'Navigation',
     status: 'stable',
     summary: 'A site navigation bar whose items can open rich submenu panels.',
-    useWhen: ['Top-level site navigation with grouped destinations.'],
+    useWhen: [
+      'Top-level site navigation with grouped destinations.',
+      'Pick how the current page is marked with `variant` (`subtle`, `pill`, `underline`, `outline`) and whether the menu draws its own surface with `layout` (`inline`, `contained`).',
+    ],
     notFor: ['Persistent application chrome with sections: use Sidebar.'],
     related: ['sidebar', 'tabs', 'breadcrumbs'],
   },
@@ -445,7 +448,7 @@ export const RESPONSIBILITIES: Record<string, ComponentResponsibility> = {
   spinner: {
     title: 'Spinner',
     category: 'Display',
-    status: 'beta',
+    status: 'stable',
     summary: 'An indeterminate loading indicator in three sizes.',
     useWhen: ['Short waits where progress is unknown, such as a button in a pending state.'],
     notFor: ['Content with a known layout: use Skeleton.'],
@@ -454,7 +457,7 @@ export const RESPONSIBILITIES: Record<string, ComponentResponsibility> = {
   'empty-state': {
     title: 'Empty State',
     category: 'Display',
-    status: 'beta',
+    status: 'stable',
     summary:
       'A placeholder for an empty collection or a search with no results, with room for an action.',
     useWhen: ['First-use screens and “no results” views.'],

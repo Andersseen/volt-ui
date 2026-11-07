@@ -106,7 +106,9 @@ jobs:
 
   contracts:
     name: Component contracts (${{ matrix.browser }})
-    runs-on: ubuntu-latest
+    # Pinned: Playwright's WebKit does not launch on ubuntu-26.04, which ubuntu-latest started rolling
+    # out to on 2026-11-07 (every launch fails with "Target page, context or browser has been closed").
+    runs-on: ${{ matrix.browser == 'webkit' && 'ubuntu-24.04' || 'ubuntu-latest' }}
     permissions:
       contents: read
     strategy:
@@ -155,7 +157,9 @@ jobs:
 
   quartz:
     name: Quartz backend on Angular ${{ matrix.angular }}
-    runs-on: ubuntu-latest
+    # Pinned: Playwright's WebKit does not launch on ubuntu-26.04, which ubuntu-latest started rolling
+    # out to on 2026-11-07 (every launch fails with "Target page, context or browser has been closed").
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
     strategy:

@@ -190,7 +190,14 @@ describe('component responsibilities', () => {
     const beta = JSON.parse(
       textOf(await c.callTool({ name: 'list_components', arguments: { status: 'beta' } }))
     );
-    expect(beta.map((c: { name: string }) => c.name).sort()).toEqual(['empty-state', 'spinner']);
+    // Spinner and Empty State were the last beta components; both are stable now.
+    expect(beta).toEqual([]);
+    const stable = JSON.parse(
+      textOf(await c.callTool({ name: 'list_components', arguments: { status: 'stable' } }))
+    );
+    expect(stable.map((c: { name: string }) => c.name)).toEqual(
+      expect.arrayContaining(['empty-state', 'spinner'])
+    );
     const overlays = JSON.parse(
       textOf(await c.callTool({ name: 'list_components', arguments: { category: 'Overlays' } }))
     );
