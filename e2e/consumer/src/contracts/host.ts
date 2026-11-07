@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CatalogFixture } from './catalog';
+import { DateRangeFixture, FeedbackStableFixture, NavVariantsFixture } from './polish';
 import {
   ComboboxFixtures,
   DatePickerFixture,
@@ -28,6 +29,9 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CatalogFixture,
+    DateRangeFixture,
+    FeedbackStableFixture,
+    NavVariantsFixture,
     ComboboxFixtures,
     DatePickerFixture,
     FileUploadFixture,
@@ -95,10 +99,19 @@ import {
         @case ('catalog') {
           <app-catalog />
         }
+        @case ('nav-variants') {
+          <app-nav-variants />
+        }
+        @case ('date-range') {
+          <app-date-range />
+        }
+        @case ('feedback-stable') {
+          <app-feedback-stable />
+        }
       }
     </main>
   `,
 })
 export class ContractsHost {
-  protected readonly name = location.hash.slice(1);
+  protected readonly name = location.hash.slice(1).split('?')[0];
 }
