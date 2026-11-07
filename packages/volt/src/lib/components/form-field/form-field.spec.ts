@@ -198,4 +198,96 @@ describe('VoltFormField', () => {
       expect(label).not.toHaveClass('text-sm');
     });
   });
+
+  describe('error lifecycle', () => {
+    @Component({
+      selector: 'app-form-field-error-lifecycle',
+      imports: [ReactiveFormsModule, VoltFormField, VoltLabel, VoltHint, VoltError, VoltInput],
+      template: `
+        <volt-form-field>
+          <volt-label>Email</volt-label>
+          <volt-input [formControl]="email" />
+          <volt-hint>Use your work email.</volt-hint>
+          @if (email.touched && email.invalid) {
+            <volt-error>Email is required.</volt-error>
+          }
+        </volt-form-field>
+        <volt-form-field>
+          <volt-label>Name</volt-label>
+          <volt-input [formControl]="name" />
+          @if (name.touched && name.invalid) {
+            <volt-error>Name is required.</volt-error>
+          }
+        </volt-form-field>
+      `,
+    })
+    class ErrorLifecycleHost {
+      email = new FormControl('', { nonNullable: true, validators: Validators.required });
+      name = new FormControl('', { nonNullable: true, validators: Validators.required });
+    }
+
+    const describedBy = (element: HTMLElement) =>
+      (element.getAttribute('aria-describedby') ?? '').split(/\s+/).filter(Boolean);
+
+    it('describes the control by its error while it shows, and drops the reference once corrected', async () => {
+      const { fixture } = await render(ErrorLifecycleHost);
+      const user = userEvent.setup();
+      const email = screen.getByRole('textbox', { name: 'Email' });
+
+      expect(email).toHaveAccessibleDescription('Use your work email.');
+      expect(email).not.toHaveAttribute('aria-invalid');
+
+      await user.click(email);
+      await user.tab();
+      await fixture.whenStable();
+
+      const error = screen.getByText('Email is required.');
+      expect(email).toHaveAttribute('aria-invalid', 'true');
+      expect(describedBy(email)).toContain(error.id);
+      expect(email).toHaveAccessibleDescription('Use your work email. Email is required.');
+
+      await user.type(email, 'ada@example.com');
+      await fixture.whenStable();
+
+      expect(screen.queryByText('Email is required.')).not.toBeInTheDocument();
+      expect(email).not.toHaveAttribute('aria-invalid');
+      // Every id the control points at must still exist: no stale reference to the removed error.
+      for (const id of describedBy(email)) {
+        expect(document.getElementById(id)).not.toBeNull();
+      }
+      expect(email).toHaveAccessibleDescription('Use your work email.');
+    });
+
+    it('keeps each field wired to its own messages, with unique ids', async () => {
+      const { fixture } = await render(ErrorLifecycleHost);
+      fixture.componentInstance.email.markAsTouched();
+      fixture.componentInstance.name.markAsTouched();
+      await fixture.whenStable();
+
+      const email = screen.getByRole('textbox', { name: 'Email' });
+      const name = screen.getByRole('textbox', { name: 'Name' });
+      expect(email).toHaveAccessibleDescription('Use your work email. Email is required.');
+      expect(name).toHaveAccessibleDescription('Name is required.');
+
+      const ids = [...document.querySelectorAll('[id]')].map(element => element.id);
+      expect(new Set(ids).size).toBe(ids.length);
+    });
+
+    it('clears the invalid state and the error on form reset', async () => {
+      const { fixture } = await render(ErrorLifecycleHost);
+      const email = screen.getByRole('textbox', { name: 'Email' });
+      fixture.componentInstance.email.markAsTouched();
+      await fixture.whenStable();
+      expect(email).toHaveAttribute('aria-invalid', 'true');
+
+      fixture.componentInstance.email.reset();
+      await fixture.whenStable();
+
+      expect(email).not.toHaveAttribute('aria-invalid');
+      expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+      for (const id of describedBy(email)) {
+        expect(document.getElementById(id)).not.toBeNull();
+      }
+    });
+  });
 });

@@ -513,6 +513,8 @@ export function describeSelectContract(label: string, spec: SelectSpec): void {
         componentProperties: { changed },
       });
       await open(user);
+      expect(option('React')).toHaveAttribute('aria-disabled', 'true');
+      expect(option('Vue')).not.toHaveAttribute('aria-disabled');
       await user.click(option('React'));
       expect(changed).not.toHaveBeenCalled();
       expect(screen.getByRole('listbox')).toBeInTheDocument();
@@ -711,6 +713,26 @@ export function describeSelectContract(label: string, spec: SelectSpec): void {
         control.setValue('vue');
         await waitFor(() => expect(trigger()).toHaveTextContent('vue'));
         expect(spy).toHaveBeenCalledTimes(1);
+      });
+
+      it('is not touched while a pointer selection moves focus into the popup', async () => {
+        const control = new FormControl<string | null>(null, Validators.required);
+        const touchedWhileInvalid: unknown[] = [];
+        control.events.subscribe(() => {
+          if (control.touched && control.invalid) touchedWhileInvalid.push(control.value);
+        });
+        const user = userEvent.setup();
+        await render(select('[formControl]="control" required'), {
+          imports,
+          componentProperties: { control },
+        });
+        expect(trigger()).toHaveAttribute('aria-required', 'true');
+        await open(user);
+        await settled();
+        await user.click(option('Vue'));
+        expect(control.value).toBe('vue');
+        expect(touchedWhileInvalid).toEqual([]);
+        expect(trigger()).not.toHaveAttribute('aria-invalid');
       });
 
       it('writes an array in multiple mode', async () => {

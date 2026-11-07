@@ -328,6 +328,22 @@ export function describeCheckboxIndeterminateContract(
       expect(box()).toHaveAttribute('aria-checked', 'true');
     });
 
+    it('keeps a bound mixed state through the setup write and writes of the same value', async () => {
+      const ctrl = new FormControl(false);
+      const indeterminate = vi.fn();
+      const { fixture } = await render(
+        `<volt-checkbox aria-label="Subject" [indeterminate]="true" [formControl]="ctrl"
+           (indeterminateChange)="indeterminate($event)" />`,
+        { imports: [component, ReactiveFormsModule], componentProperties: { ctrl, indeterminate } }
+      );
+      expect(box()).toHaveAttribute('aria-checked', 'mixed');
+      // A "select all" parent re-syncing its control to the value it already has.
+      ctrl.setValue(false);
+      await fixture.whenStable();
+      expect(box()).toHaveAttribute('aria-checked', 'mixed');
+      expect(indeterminate).not.toHaveBeenCalled();
+    });
+
     it('marks the native control required', async () => {
       await render(`<volt-checkbox aria-label="Subject" required />`, { imports: [component] });
       expect(box()).toHaveAttribute('aria-required', 'true');

@@ -1,4 +1,5 @@
-import { Component, input, model } from '@angular/core';
+import { Component, input, model, signal } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/angular';
@@ -185,5 +186,115 @@ describe('VoltCheckbox', () => {
     await render(`<volt-checkbox ariaLabel="Remember me" />`, { imports: [VoltCheckbox] });
 
     expect(screen.getByRole('checkbox', { name: 'Remember me' })).toBeInTheDocument();
+  });
+
+  describe('indeterminate and forms', () => {
+    @Component({
+      selector: 'app-checkbox-select-all',
+      imports: [ReactiveFormsModule, VoltCheckbox],
+      template: `
+        <volt-checkbox
+          aria-label="Select all"
+          [formControl]="all"
+          [indeterminate]="mixed()"
+          (indeterminateChange)="indeterminateChanges.push($event)"
+        />
+      `,
+    })
+    class SelectAllHost {
+      all = new FormControl(false, { nonNullable: true });
+      readonly mixed = signal(true);
+      readonly indeterminateChanges: boolean[] = [];
+    }
+
+    it('keeps a bound mixed state through the initial forms write', async () => {
+      const { fixture } = await render(SelectAllHost);
+
+      expect(screen.getByRole('checkbox', { name: 'Select all' })).toHaveAttribute(
+        'aria-checked',
+        'mixed'
+      );
+      expect(fixture.componentInstance.indeterminateChanges).toEqual([]);
+    });
+
+    it('keeps the mixed state when forms write the value it already has', async () => {
+      const { fixture } = await render(SelectAllHost);
+
+      fixture.componentInstance.all.setValue(false);
+      await fixture.whenStable();
+
+      expect(screen.getByRole('checkbox', { name: 'Select all' })).toHaveAttribute(
+        'aria-checked',
+        'mixed'
+      );
+    });
+
+    it('resolves the mixed state when forms write a different value', async () => {
+      const { fixture } = await render(SelectAllHost);
+
+      fixture.componentInstance.all.setValue(true);
+      await fixture.whenStable();
+
+      expect(screen.getByRole('checkbox', { name: 'Select all' })).toHaveAttribute(
+        'aria-checked',
+        'true'
+      );
+      expect(fixture.componentInstance.indeterminateChanges).toEqual([false]);
+    });
+
+    it('turns a mixed checkbox checked on activation and reports it to forms once', async () => {
+      const { fixture } = await render(SelectAllHost);
+      const values: boolean[] = [];
+      fixture.componentInstance.all.valueChanges.subscribe(value => values.push(value));
+      const box = screen.getByRole('checkbox', { name: 'Select all' });
+
+      await userEvent.setup().click(box);
+
+      expect(box).toHaveAttribute('aria-checked', 'true');
+      expect(values).toEqual([true]);
+      expect(fixture.componentInstance.all.dirty).toBe(true);
+      expect(fixture.componentInstance.indeterminateChanges).toEqual([false]);
+    });
+
+    it('does not report a programmatic write back to forms as a change', async () => {
+      const { fixture } = await render(SelectAllHost);
+      const control = fixture.componentInstance.all;
+
+      control.setValue(true);
+      await fixture.whenStable();
+
+      expect(control.dirty).toBe(false);
+      expect(screen.getByRole('checkbox', { name: 'Select all' })).toHaveAttribute(
+        'aria-checked',
+        'true'
+      );
+    });
+
+    it('toggles with the Space key', async () => {
+      const { fixture } = await render(SelectAllHost);
+      fixture.componentInstance.mixed.set(false);
+      await fixture.whenStable();
+      const box = screen.getByRole('checkbox', { name: 'Select all' });
+
+      box.focus();
+      await userEvent.setup().keyboard(' ');
+
+      expect(fixture.componentInstance.all.value).toBe(true);
+      expect(box).toHaveAttribute('aria-checked', 'true');
+    });
+  });
+
+  it('numbers generated ids per application, not per JavaScript realm', async () => {
+    const first = await render(`<volt-checkbox aria-label="Terms" />`, { imports: [VoltCheckbox] });
+    const firstId = screen.getByRole('checkbox').id;
+    first.fixture.destroy();
+    TestBed.resetTestingModule();
+
+    // A second application in the same realm (a second server-rendered request) counts from the
+    // same start, so the server and the browser produce the same ids.
+    await render(`<volt-checkbox aria-label="Terms" />`, { imports: [VoltCheckbox] });
+
+    expect(firstId).toMatch(/^volt-checkbox-\d+$/);
+    expect(screen.getByRole('checkbox').id).toBe(firstId);
   });
 });

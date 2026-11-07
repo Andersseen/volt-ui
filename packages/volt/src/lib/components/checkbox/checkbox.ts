@@ -12,8 +12,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NgpCheckbox } from 'ng-primitives/checkbox';
 import { injectFormControlState } from '../../form-control-state';
 import { forwardAttributesFromHost } from '../../host-forwarding';
-
-let nextCheckboxId = 0;
+import { injectVoltId } from '../../volt-ids';
 
 @Component({
   selector: 'volt-checkbox',
@@ -77,7 +76,7 @@ let nextCheckboxId = 0;
 export class VoltCheckbox implements ControlValueAccessor {
   protected readonly formControlState = injectFormControlState();
 
-  readonly id = input(`volt-checkbox-${++nextCheckboxId}`);
+  readonly id = input(injectVoltId('volt-checkbox'));
   /** Accessible name for a checkbox without a visible `<label>`. */
   readonly ariaLabel = input('');
   /** Same as `ariaLabel`, for the attribute spelling consumers write naturally. */
@@ -110,9 +109,15 @@ export class VoltCheckbox implements ControlValueAccessor {
   }
 
   writeValue(value: boolean | null | undefined): void {
-    this.checked.set(!!value);
-    // Reset indeterminate when a new value is written programmatically.
-    this.indeterminate.set(false);
+    const next = !!value;
+    // A write that changes the value resolves a mixed state. Writing the value the checkbox already
+    // has — the forms setup write, a "select all" parent re-syncing — leaves the consumer's
+    // `indeterminate` binding alone; clearing it there wiped a bound mixed state that the parent's
+    // unchanged binding would never send again.
+    if (next !== this.checked()) {
+      this.checked.set(next);
+      this.indeterminate.set(false);
+    }
   }
 
   registerOnChange(fn: (value: boolean) => void): void {
