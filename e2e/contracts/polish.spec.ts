@@ -329,10 +329,14 @@ test.describe('date range picker', () => {
     await expect(day(20)).toHaveAttribute('aria-disabled', 'true');
     expect(await style(day(20), 'pointer-events')).toBe('none');
 
+    // Keys go where focus is, as for a person: each Enter waits for focus to have moved.
     await day(22).focus();
     await page.keyboard.press('Enter');
+    await expect(page.locator('#range')).toHaveText(/^22\.\./);
     await page.keyboard.press('ArrowRight');
+    await expect(day(23)).toBeFocused();
     await page.keyboard.press('ArrowRight');
+    await expect(day(24)).toBeFocused();
     await page.keyboard.press('Enter');
     await expect(page.locator('#range')).toHaveText('22..24');
   });
