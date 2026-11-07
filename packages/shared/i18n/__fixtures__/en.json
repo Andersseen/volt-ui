@@ -650,7 +650,8 @@
       "sizes": "Sizes",
       "features": "Features",
       "horizontal": "Horizontal",
-      "vertical": "Vertical"
+      "vertical": "Vertical",
+      "usageNotes": "Usage notes"
     },
     "codeEditor": {
       "loading": "Loading editor…"
@@ -725,7 +726,14 @@
         "aria": "Accessible with proper ARIA attributes",
         "animations": "Smooth animations and transitions",
         "layouts": "Flexible content layouts (single column, multi-column)",
-        "links": "Support for direct links and dropdown menus"
+        "links": "Support for direct links and dropdown menus",
+        "variants": "Four ways to mark the current page — `subtle` (default), `pill`, `underline` and `outline` — set once with `variant` on `volt-navigation-menu`; links and triggers inherit it.",
+        "layout": "`layout=\"contained\"` draws a self-sized, bordered surface for a centred or floating bar; `inline` (default) sits inside your own header. Both work with every variant.",
+        "current": "`active` marks the current destination with `aria-current=\"page\"`. An open submenu is a separate state (`aria-expanded`) and looks the same in every variant.",
+        "scope": "The menu owns links, submenus and their states. The logo, account menu and mobile shell belong to your header — the navbar blocks in Volt UI Recipes show complete compositions."
+      },
+      "showcase": {
+        "layout": "Layout"
       }
     },
     "popover": {
@@ -796,7 +804,12 @@
     },
     "datePicker": {
       "title": "Date Picker",
-      "description": "Calendar primitives for date and range selection."
+      "description": "Calendar primitives for date and range selection.",
+      "guidance": {
+        "keyboard": "The calendar is a single tab stop: the arrow keys move by day and week, Home and End jump to the first and last day of the month, Page Up and Page Down change month, and Enter or Space selects.",
+        "forms": "`volt-date-picker` is a form control: a `formControl` or `ngModel` write is silent, one selection emits one change, and the control is marked touched only when focus leaves the calendar.",
+        "disabled": "Days outside `min` and `max` or rejected by `dateDisabled` are announced as unavailable and cannot be picked; `disabled` blocks the whole calendar."
+      }
     },
     "fileUpload": {
       "title": "File Upload",
@@ -848,6 +861,25 @@
     "toolbar": {
       "title": "Toolbar",
       "description": "Grouped controls with toolbar semantics and roving focus."
+    },
+    "spinner": {
+      "title": "Spinner",
+      "description": "An indeterminate loading indicator drawn in the current text colour.",
+      "guidance": {
+        "decorative": "Without `label` it is decorative and hidden from assistive technology — use it next to text that already says what is happening, such as a button reading “Saving…”.",
+        "status": "With `label` it becomes `role=\"status\"` and the label is announced politely, once.",
+        "busy": "It never sets `aria-busy`; mark the region that is loading yourself.",
+        "motion": "With reduced motion requested it turns more slowly instead of stopping, so the wait is still visible."
+      }
+    },
+    "emptyState": {
+      "title": "Empty State",
+      "description": "A centred panel for a list, table or search with nothing to show, with an optional icon and actions.",
+      "guidance": {
+        "content": "It is content, not a notification: it has no role and no live region. Pair it with `volt-alert` when the list is empty because a request failed.",
+        "heading": "`volt-empty-state-title` is not a heading element; wrap it in the `h2`–`h6` that fits your page outline.",
+        "actions": "Actions are ordinary buttons or links in `[slot=actions]`: they keep the page's tab order and wrap on narrow screens."
+      }
     }
   },
   "catalog": {

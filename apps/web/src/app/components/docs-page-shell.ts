@@ -80,7 +80,8 @@ function outlineLevels(headings: readonly HTMLElement[]): readonly HTMLElement[]
               [sectionPath]="sectionPath()"
               [page]="pageLabel()"
             />
-            <article #content class="docs-content">
+            <!-- Headings land below the 4rem sticky header and inside the TOC spy line (120px). -->
+            <article #content class="docs-content [&_:is(h2,h3)]:scroll-mt-24">
               <ng-content />
             </article>
             <app-docs-pager
@@ -146,6 +147,9 @@ export class DocsPageShell {
       let tracked: readonly HTMLElement[] = [];
       let frame = 0;
       let spyFrame = 0;
+      // Heading ids are assigned in collect(), after the page renders, so the browser cannot resolve
+      // a `#heading` deep link (or a Back/Forward entry carrying one) by itself: do it once per page.
+      let pendingHash = true;
 
       // The heading being read is the last one that has passed under the sticky header; at the
       // very bottom of the page it is the last heading, even if it never reaches the top.
@@ -187,6 +191,17 @@ export class DocsPageShell {
         this.headings.set(items);
 
         tracked = elements;
+        const hash = view ? decodeURIComponent(view.location.hash.slice(1)) : '';
+        // A page loaded without a hash has nothing to resolve; a later goTo() must not re-scroll.
+        if (!hash) {
+          pendingHash = false;
+        }
+        if (pendingHash && hash && elements.some(heading => heading.id === hash)) {
+          pendingHash = false;
+          this.document.getElementById(hash)?.scrollIntoView({ block: 'start' });
+          this.activeHeading.set(hash);
+          return;
+        }
         spy();
       };
 
@@ -204,6 +219,7 @@ export class DocsPageShell {
         .pipe(filter(event => event instanceof NavigationEnd))
         .subscribe(() => {
           this.activeHeading.set(null);
+          pendingHash = true;
           schedule();
         });
 

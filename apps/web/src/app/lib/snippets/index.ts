@@ -59,6 +59,7 @@ import navigationMenuTriggerSource from '../../../../../../packages/volt/src/lib
 import navigationMenuContentSource from '../../../../../../packages/volt/src/lib/components/navigation-menu/navigation-menu-content.ts?raw';
 import navigationMenuLinkSource from '../../../../../../packages/volt/src/lib/components/navigation-menu/navigation-menu-link.ts?raw';
 import navigationMenuContentItemSource from '../../../../../../packages/volt/src/lib/components/navigation-menu/navigation-menu-content-item.ts?raw';
+import navigationMenuVariantsSource from '../../../../../../packages/volt/src/lib/components/navigation-menu/variants.ts?raw';
 
 import popoverTriggerSource from '../../../../../../packages/volt/src/lib/components/popover/popover-trigger.ts?raw';
 import popoverContentSource from '../../../../../../packages/volt/src/lib/components/popover/popover-content.ts?raw';
@@ -267,7 +268,8 @@ export const NAVIGATION_MENU_SNIPPET = join(
   ['navigation-menu-trigger.ts', navigationMenuTriggerSource],
   ['navigation-menu-content.ts', navigationMenuContentSource],
   ['navigation-menu-link.ts', navigationMenuLinkSource],
-  ['navigation-menu-content-item.ts', navigationMenuContentItemSource]
+  ['navigation-menu-content-item.ts', navigationMenuContentItemSource],
+  ['variants.ts', navigationMenuVariantsSource]
 );
 
 export const POPOVER_SNIPPET = join(

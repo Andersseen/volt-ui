@@ -1,23 +1,28 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { VoltNativeButton, VoltSpinner } from 'volt';
 import { CodePanel } from '@shared/components/code-panel';
+import { Prose } from '@shared/components/prose';
 import { ApiReference } from '../../../../components/api-reference';
 import { SPINNER_SNIPPET } from '../../../../lib/snippets/index';
 import { SPINNER_USAGE } from '../../../../lib/snippets/usage';
 import { SPINNER_API } from '../../../../lib/api-reference.generated';
 import { injectAppI18n } from '@shared/i18n/i18n';
 
-// The heading is the component name, which is identical in every locale (as every
-// `components.*.title` is). Switch it to t('components.spinner.title') and add a description
-// once those keys exist in Glossa — see specs/plans/v1.1.md "Glossa keys pending".
 @Component({
   selector: 'app-spinner-demo',
   standalone: true,
-  imports: [VoltSpinner, VoltNativeButton, CodePanel, ApiReference],
+  imports: [VoltSpinner, VoltNativeButton, CodePanel, Prose, ApiReference],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="space-y-6">
-      <h1 class="text-3xl font-bold tracking-tight text-foreground">Spinner</h1>
+      <div>
+        <h1 class="text-3xl font-bold tracking-tight text-foreground">
+          {{ t('components.spinner.title') }}
+        </h1>
+        <p class="text-lg text-muted-foreground mt-2">
+          {{ t('components.spinner.description') }}
+        </p>
+      </div>
 
       <app-code-panel [title]="t('ui.codePanel.usage')" [code]="usage" [tabbed]="true">
         <div
@@ -39,6 +44,18 @@ import { injectAppI18n } from '@shared/i18n/i18n';
           </div>
         </div>
       </app-code-panel>
+
+      <div class="space-y-4">
+        <h2 class="text-xl font-semibold tracking-tight text-foreground">
+          {{ t('ui.section.usageNotes') }}
+        </h2>
+        <ul class="list-disc list-inside space-y-2 text-muted-foreground">
+          <li><app-prose key="components.spinner.guidance.decorative" /></li>
+          <li><app-prose key="components.spinner.guidance.status" /></li>
+          <li><app-prose key="components.spinner.guidance.busy" /></li>
+          <li><app-prose key="components.spinner.guidance.motion" /></li>
+        </ul>
+      </div>
 
       <div class="space-y-3">
         <h2 class="text-lg font-semibold">{{ t('ui.api.title') }}</h2>

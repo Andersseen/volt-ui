@@ -650,7 +650,8 @@
       "sizes": "Tamaños",
       "features": "Características",
       "horizontal": "Horizontal",
-      "vertical": "Vertical"
+      "vertical": "Vertical",
+      "usageNotes": "Notas de uso"
     },
     "codeEditor": {
       "loading": "Cargando el editor…"
@@ -1078,7 +1079,14 @@
         "aria": "Accesible, con los atributos ARIA correctos",
         "animations": "Animaciones y transiciones suaves",
         "layouts": "Disposiciones de contenido flexibles (una o varias columnas)",
-        "links": "Soporte para enlaces directos y menús desplegables"
+        "links": "Soporte para enlaces directos y menús desplegables",
+        "variants": "Cuatro formas de marcar la página actual — `subtle` (por defecto), `pill`, `underline` y `outline` — que se indican una vez con `variant` en `volt-navigation-menu`; enlaces y disparadores la heredan.",
+        "layout": "`layout=\"contained\"` dibuja una superficie con borde que se ajusta a su contenido, para una barra centrada o flotante; `inline` (por defecto) se integra en tu propia cabecera. Ambas funcionan con todas las variantes.",
+        "current": "`active` marca el destino actual con `aria-current=\"page\"`. Un submenú abierto es un estado distinto (`aria-expanded`) y se ve igual en todas las variantes.",
+        "scope": "El menú se encarga de los enlaces, los submenús y sus estados. El logotipo, el menú de cuenta y la versión móvil pertenecen a tu cabecera: los bloques de barra de navegación de Volt UI Recipes muestran composiciones completas."
+      },
+      "showcase": {
+        "layout": "Disposición"
       }
     },
     "popover": {
@@ -1149,7 +1157,12 @@
     },
     "datePicker": {
       "title": "Date Picker",
-      "description": "Primitivas de calendario para seleccionar fechas y rangos."
+      "description": "Primitivas de calendario para seleccionar fechas y rangos.",
+      "guidance": {
+        "keyboard": "El calendario es una sola parada de tabulación: las flechas se mueven por días y semanas, Inicio y Fin saltan al primer y último día del mes, Re Pág y Av Pág cambian de mes, y Intro o Espacio seleccionan.",
+        "forms": "`volt-date-picker` es un control de formulario: una escritura desde `formControl` o `ngModel` es silenciosa, una selección emite un único cambio y el control solo se marca como tocado cuando el foco sale del calendario.",
+        "disabled": "Los días fuera de `min` y `max` o rechazados por `dateDisabled` se anuncian como no disponibles y no se pueden elegir; `disabled` bloquea todo el calendario."
+      }
     },
     "fileUpload": {
       "title": "File Upload",
@@ -1201,6 +1214,25 @@
     "toolbar": {
       "title": "Toolbar",
       "description": "Controles agrupados con semántica de barra de herramientas y foco itinerante."
+    },
+    "spinner": {
+      "title": "Spinner",
+      "description": "Un indicador de carga indeterminado que se dibuja con el color del texto actual.",
+      "guidance": {
+        "decorative": "Sin `label` es decorativo y queda oculto para las tecnologías de apoyo: úsalo junto a un texto que ya diga qué está pasando, como un botón que dice «Guardando…».",
+        "status": "Con `label` pasa a ser `role=\"status\"` y la etiqueta se anuncia de forma educada, una sola vez.",
+        "busy": "Nunca establece `aria-busy`; marca tú mismo la región que se está cargando.",
+        "motion": "Si se solicita movimiento reducido, gira más despacio en lugar de detenerse, de modo que la espera sigue siendo visible."
+      }
+    },
+    "emptyState": {
+      "title": "Empty State",
+      "description": "Un panel centrado para una lista, tabla o búsqueda sin nada que mostrar, con icono y acciones opcionales.",
+      "guidance": {
+        "content": "Es contenido, no una notificación: no tiene rol ni región en vivo. Combínalo con `volt-alert` cuando la lista esté vacía porque una petición falló.",
+        "heading": "`volt-empty-state-title` no es un elemento de encabezado; envuélvelo en el `h2`–`h6` que corresponda a la estructura de tu página.",
+        "actions": "Las acciones son botones o enlaces normales en `[slot=actions]`: conservan el orden de tabulación de la página y se reparten en varias líneas en pantallas estrechas."
+      }
     }
   },
   "blocks": {
