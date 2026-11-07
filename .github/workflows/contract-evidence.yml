@@ -61,7 +61,9 @@ jobs:
   # catalog smoke, against the built package, one browser per job.
   default-library:
     name: A · default backend contracts (${{ matrix.browser }})
-    runs-on: ubuntu-latest
+    # Pinned: Playwright's WebKit does not launch on ubuntu-26.04, which ubuntu-latest started rolling
+    # out to on 2026-11-07 (every launch fails with "Target page, context or browser has been closed").
+    runs-on: ${{ matrix.browser == 'webkit' && 'ubuntu-24.04' || 'ubuntu-latest' }}
     timeout-minutes: 40
     strategy:
       fail-fast: false
@@ -101,7 +103,9 @@ jobs:
   # with strict AOT, prerendered and hydrated, then the same suites against all four.
   dual-backend:
     name: B · dual backend (Angular ${{ matrix.angular }}, ${{ matrix.browser }})
-    runs-on: ubuntu-latest
+    # Pinned: Playwright's WebKit does not launch on ubuntu-26.04, which ubuntu-latest started rolling
+    # out to on 2026-11-07 (every launch fails with "Target page, context or browser has been closed").
+    runs-on: ${{ matrix.browser == 'webkit' && 'ubuntu-24.04' || 'ubuntu-latest' }}
     timeout-minutes: 50
     strategy:
       fail-fast: false

@@ -126,7 +126,7 @@ run(
 
 // 3. the app: the same fixtures the repository's own browser contracts use
 const fixtures = join(ROOT, 'e2e/consumer/src/contracts');
-for (const file of ['fixtures.ts', 'catalog.ts', 'host.ts'])
+for (const file of ['fixtures.ts', 'catalog.ts', 'polish.ts', 'host.ts'])
   cpSync(join(fixtures, file), join(app, 'src', file));
 cpSync(join(ROOT, 'e2e/consumer/contracts.html'), join(app, 'src/contracts.html'));
 writeFileSync(
