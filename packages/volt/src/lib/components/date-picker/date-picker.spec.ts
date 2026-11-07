@@ -164,4 +164,167 @@ describe('VoltDatePicker', () => {
     await user.keyboard('{Enter}');
     expect(screen.getByText('August 2026')).toBeInTheDocument();
   });
+
+  it('names every day with its full date, not just the number', async () => {
+    await render(DatePickerFixture);
+    expect(screen.getByRole('button', { name: 'Wednesday, July 29, 2026' })).toBe(dateButton('29'));
+    // The selected state is on the gridcell that owns the button.
+    expect(dateButton('29').closest('[role="gridcell"]')).toHaveAttribute('aria-selected', 'true');
+  });
+
+  it('a programmatic write is silent: the control stays pristine and untouched', async () => {
+    const { fixture } = await render(DatePickerFixture);
+    const control = fixture.componentInstance.control;
+    let emitted = 0;
+    control.valueChanges.subscribe(() => emitted++);
+
+    control.setValue(new Date(2026, 6, 10));
+    await fixture.whenStable();
+
+    expect(emitted).toBe(1); // setValue's own emission, no echo from the calendar
+    expect(control.pristine).toBe(true);
+    expect(control.touched).toBe(false);
+    expect(dateButton('10')).toHaveAttribute('data-selected');
+  });
+
+  it('one user selection emits exactly one change and marks the control dirty', async () => {
+    const user = userEvent.setup();
+    const { fixture } = await render(DatePickerFixture);
+    const control = fixture.componentInstance.control;
+    let emitted = 0;
+    control.valueChanges.subscribe(() => emitted++);
+
+    await user.click(dateButton('8'));
+    await fixture.whenStable();
+
+    expect(emitted).toBe(1);
+    expect(control.dirty).toBe(true);
+    expect(control.value).toEqual(new Date(2026, 6, 8));
+  });
+
+  it('selects from the keyboard: arrows move focus, Enter commits', async () => {
+    const user = userEvent.setup();
+    const { fixture } = await render(DatePickerFixture);
+
+    dateButton('29').focus();
+    await user.keyboard('{ArrowRight}');
+    await fixture.whenStable();
+    expect(dateButton('30')).toHaveFocus();
+    await user.keyboard('{Enter}');
+    await fixture.whenStable();
+
+    expect(fixture.componentInstance.control.value).toEqual(new Date(2026, 6, 30));
+  });
+
+  it('is touched only when focus leaves the calendar, not while it moves between days', async () => {
+    const user = userEvent.setup();
+    const { fixture } = await render(DatePickerFixture);
+    const control = fixture.componentInstance.control;
+
+    dateButton('29').focus();
+    await user.keyboard('{ArrowLeft}{ArrowUp}');
+    await fixture.whenStable();
+    expect(control.touched).toBe(false);
+
+    (document.activeElement as HTMLElement).blur();
+    await fixture.whenStable();
+    expect(control.touched).toBe(true);
+  });
+
+  it('reset() clears the selection; a disabled control cannot be changed', async () => {
+    const user = userEvent.setup();
+    const { fixture } = await render(DatePickerFixture);
+    const control = fixture.componentInstance.control;
+
+    control.reset();
+    await fixture.whenStable();
+    expect(control.value).toBeNull();
+    expect(document.querySelector('volt-date-picker-date-button[data-selected]')).toBeNull();
+
+    control.disable();
+    await fixture.whenStable();
+    await user.click(dateButton('3'), { pointerEventsCheck: 0 });
+    await fixture.whenStable();
+    expect(control.value).toBeNull();
+    expect(dateButton('3')).toHaveAttribute('aria-disabled', 'true');
+  });
+});
+
+@Component({
+  imports: [
+    VoltDatePicker,
+    VoltDatePickerCell,
+    VoltDatePickerDateButton,
+    VoltDatePickerGrid,
+    NgpDatePickerCellRender,
+    NgpDatePickerRowRender,
+  ],
+  template: `
+    <volt-date-picker [focusedDate]="focused">
+      <volt-date-picker-grid>
+        <div *ngpDatePickerRowRender>
+          <volt-date-picker-cell *ngpDatePickerCellRender="let day">
+            <volt-date-picker-date-button
+              [attr.data-day]="day.getDate()"
+              [aria-label]="day.getDate() === 4 ? 'Independence Day' : undefined"
+              >{{ day.getDate() }}</volt-date-picker-date-button
+            >
+          </volt-date-picker-cell>
+        </div>
+      </volt-date-picker-grid>
+    </volt-date-picker>
+  `,
+})
+class LabelledDayFixture {
+  readonly focused = new Date(2026, 6, 1);
+}
+
+describe('VoltDatePickerDateButton accessible name', () => {
+  it('keeps a consumer aria-label over the generated full date', async () => {
+    await render(LabelledDayFixture);
+    expect(screen.getByRole('button', { name: 'Independence Day' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Sunday, July 5, 2026' })).toBeInTheDocument();
+  });
+});
+
+@Component({
+  imports: [
+    ReactiveFormsModule,
+    VoltDatePicker,
+    VoltDatePickerCell,
+    VoltDatePickerDateButton,
+    VoltDatePickerGrid,
+    NgpDatePickerCellRender,
+    NgpDatePickerRowRender,
+  ],
+  template: `
+    <volt-date-picker [formControl]="control" [(focusedDate)]="focused">
+      <volt-date-picker-grid>
+        <div *ngpDatePickerRowRender>
+          <volt-date-picker-cell *ngpDatePickerCellRender="let day">
+            <volt-date-picker-date-button>{{ day.getDate() }}</volt-date-picker-date-button>
+          </volt-date-picker-cell>
+        </div>
+      </volt-date-picker-grid>
+    </volt-date-picker>
+  `,
+})
+class FarMonthFixture {
+  // Years from "today", and no focusedDate given: the picker must move and say so.
+  readonly control = new FormControl<Date | null>(new Date(2031, 2, 10));
+  readonly focused = signal<Date | undefined>(undefined);
+}
+
+describe('VoltDatePicker month of an outside value', () => {
+  it('opens on the written month and reports it through [(focusedDate)]', async () => {
+    const { fixture } = await render(FarMonthFixture);
+    await fixture.whenStable();
+
+    expect(screen.getByRole('button', { name: 'Monday, March 10, 2031' })).toHaveAttribute(
+      'data-selected'
+    );
+    const focused = fixture.componentInstance.focused();
+    expect(focused?.getFullYear()).toBe(2031);
+    expect(focused?.getMonth()).toBe(2);
+  });
 });

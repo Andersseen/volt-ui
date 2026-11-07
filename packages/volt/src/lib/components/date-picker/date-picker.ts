@@ -140,11 +140,15 @@ export class VoltDatePicker implements ControlValueAccessor {
         }
       });
     });
+    // The first run only stays quiet about the primitive's own default (today); a month the picker
+    // moved to during setup (an outside date) is news the parent's `[(focusedDate)]` needs.
+    const initialFocused = this.datePickerState().focusedDate();
     let firstFocused = true;
     effect(() => {
       const focused = this.datePickerState().focusedDate();
       untracked(() => {
-        if (!firstFocused && !sameDay(focused, this.focusedDate())) {
+        const quiet = firstFocused && sameDay(focused, initialFocused);
+        if (!quiet && !sameDay(focused, this.focusedDate())) {
           this.focusedDate.set(focused);
         }
         firstFocused = false;
