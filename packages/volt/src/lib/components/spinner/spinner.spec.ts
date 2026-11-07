@@ -1,3 +1,4 @@
+import { Component, signal } from '@angular/core';
 import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/angular';
 import { VoltSpinner } from './spinner';
@@ -42,5 +43,42 @@ describe('VoltSpinner', () => {
     expect(container.querySelector('volt-spinner')!.className).toContain(
       'motion-reduce:[&>svg]:[animation-duration:1.5s]'
     );
+  });
+
+  it('follows a changing label with one status, and drops it when the label is cleared', async () => {
+    @Component({
+      imports: [VoltSpinner],
+      template: `<volt-spinner [label]="label()" />`,
+    })
+    class Host {
+      readonly label = signal('Loading results');
+    }
+    const { fixture } = await render(Host);
+
+    fixture.componentInstance.label.set('Loading page 2');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(screen.getAllByRole('status')).toHaveLength(1);
+    expect(screen.getByRole('status')).toHaveTextContent('Loading page 2');
+
+    fixture.componentInstance.label.set('');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(screen.queryByRole('status')).toBeNull();
+    expect(fixture.nativeElement.querySelector('volt-spinner')).toHaveAttribute(
+      'aria-hidden',
+      'true'
+    );
+  });
+
+  it('takes its colour from the surrounding text and lets a consumer class override size', async () => {
+    const { container } = await render(`<volt-spinner size="sm" class="size-6 text-primary" />`, {
+      imports: [VoltSpinner],
+    });
+    const spinner = container.querySelector('volt-spinner')!;
+
+    expect(spinner).toHaveClass('size-6', 'text-primary');
+    expect(spinner).not.toHaveClass('size-4', 'text-current');
+    expect(container.querySelector('svg')).toHaveAttribute('stroke', 'currentColor');
   });
 });
