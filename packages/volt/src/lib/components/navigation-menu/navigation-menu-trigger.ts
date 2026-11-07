@@ -14,6 +14,8 @@ import {
 import { NgpNavigationMenuTrigger } from 'ng-primitives/navigation-menu';
 import type { NgpOverlayContent } from 'ng-primitives/portal';
 import { cn } from '../../utils';
+import { VoltNavigationMenu } from './navigation-menu';
+import { navigationMenuItemVariants } from './variants';
 
 export type NavigationMenuPlacement =
   | 'bottom-start'
@@ -36,7 +38,8 @@ export type NavigationMenuPlacement =
     <button
       #button
       type="button"
-      class="group/trigger inline-flex h-control-dense items-center justify-center gap-1 rounded-md bg-background px-inset-md py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-(length:--ring-width) focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 data-[open]:bg-accent/50"
+      [class]="buttonClasses()"
+      [attr.aria-disabled]="disabled() || null"
       [ngpNavigationMenuTrigger]="content()"
       [ngpNavigationMenuTriggerPlacement]="placement()"
       [ngpNavigationMenuTriggerOffset]="offset()"
@@ -66,6 +69,13 @@ export class VoltNavigationMenuTrigger {
   readonly class = input<string>('');
 
   protected readonly classes = computed(() => cn('inline-flex', this.class()));
+
+  private readonly menu = inject(VoltNavigationMenu, { optional: true });
+
+  /** Same shape, hover and focus as a sibling link; `data-open` is the open-submenu state. */
+  protected readonly buttonClasses = computed(() =>
+    cn('group/trigger', navigationMenuItemVariants({ variant: this.menu?.variant() ?? 'subtle' }))
+  );
 
   readonly content = input.required<NgpOverlayContent<unknown>>();
   readonly placement = input<NavigationMenuPlacement>('bottom-start');
