@@ -156,7 +156,7 @@
     "@storybook/addon-a11y": "10.6.2",
     "@storybook/addon-docs": "10.6.2",
     "@storybook/angular-vite": "10.6.2",
-    "@tailwindcss/postcss": "^4.3.0",
+    "@tailwindcss/postcss": "^4.3.5",
     "@tailwindcss/vite": "^4.3.0",
     "@testing-library/angular": "^19.6.0",
     "@testing-library/jest-dom": "^7.0.1",
