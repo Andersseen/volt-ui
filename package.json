@@ -154,7 +154,7 @@
     "@quartz-headless/core": "0.16.0",
     "@quartz-headless/primitives": "0.16.0",
     "@storybook/addon-a11y": "10.6.2",
-    "@storybook/addon-docs": "10.6.2",
+    "@storybook/addon-docs": "10.6.5",
     "@storybook/angular-vite": "10.6.2",
     "@tailwindcss/postcss": "^4.3.0",
     "@tailwindcss/vite": "^4.3.0",
