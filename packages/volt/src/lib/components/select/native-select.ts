@@ -5,7 +5,11 @@ import { cn } from '../../utils';
 @Directive({
   selector: 'select[voltNativeSelect]',
   standalone: true,
-  hostDirectives: [{ directive: NgpNativeSelect, inputs: ['ngpNativeSelectDisabled: disabled'] }],
+  // `id` is exposed so a consumer's id reaches the primitive: unexposed, its generated id replaced
+  // `id="fruit"` and `<label for="fruit">` named nothing.
+  hostDirectives: [
+    { directive: NgpNativeSelect, inputs: ['ngpNativeSelectDisabled: disabled', 'id'] },
+  ],
   providers: [provideNativeSelectState()],
   host: {
     '[class]': 'classes()',

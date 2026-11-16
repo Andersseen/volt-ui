@@ -327,7 +327,7 @@ export const CHECKBOX_API: ComponentApi = {
       className: 'VoltCheckbox',
       selector: 'volt-checkbox',
       inputs: [
-        { name: 'id', type: 'string', default: '`volt-checkbox-${++nextCheckboxId}`' },
+        { name: 'id', type: 'unknown', default: "injectVoltId('volt-checkbox')" },
         { name: 'ariaLabel', type: 'string', default: "''" },
         { name: 'aria-label', type: 'string | undefined', default: 'undefined' },
         { name: 'checked', type: 'boolean', default: 'false' },
@@ -1342,6 +1342,7 @@ export const SELECT_API: ComponentApi = {
       inputs: [
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
         { name: 'class', type: 'string', default: "''" },
+        { name: 'id', type: 'unknown' },
       ],
       outputs: [],
     },
@@ -1384,6 +1385,7 @@ export const SELECT_API: ComponentApi = {
         { name: 'value', type: 'unknown', default: 'undefined' },
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
         { name: 'multiple', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
+        { name: 'required', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
         { name: 'compareWith', type: '(a: unknown, b: unknown) => boolean', default: 'Object.is' },
         { name: 'dropdownPlacement', type: 'Placement', default: "'bottom-start'" },
         { name: 'container', type: 'string | HTMLElement | null', default: "'body'" },

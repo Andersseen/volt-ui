@@ -96,4 +96,26 @@ describe('VoltNativeSelect', () => {
     await user.selectOptions(select, 'banana');
     expect(fixture.componentInstance.fruit).toBe('banana');
   });
+
+  it('keeps a consumer id on the native select, so <label for> names it', async () => {
+    await render(
+      `<label for="fruit">Fruit</label>
+       <select voltNativeSelect id="fruit"><option value="apple">Apple</option></select>`,
+      { imports: [VoltNativeSelect] }
+    );
+
+    const select = screen.getByRole('combobox', { name: 'Fruit' });
+    expect(select).toHaveAttribute('id', 'fruit');
+  });
+
+  it('follows a bound id and still generates one when none is given', async () => {
+    await render(
+      `<select voltNativeSelect aria-label="Plain"><option>a</option></select>
+       <select voltNativeSelect [id]="'bound'" aria-label="Bound"><option>b</option></select>`,
+      { imports: [VoltNativeSelect] }
+    );
+
+    expect(screen.getByRole('combobox', { name: 'Plain' }).id).toMatch(/\S/);
+    expect(screen.getByRole('combobox', { name: 'Bound' })).toHaveAttribute('id', 'bound');
+  });
 });

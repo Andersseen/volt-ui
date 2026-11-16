@@ -141,6 +141,7 @@ const SHARED_LIB_FILES = [
   'form-control-state.ts',
   'host-forwarding.ts',
   'aria-invalid.ts',
+  'volt-ids.ts',
   'mirror-value.ts',
   'quartz-ids.ts',
   'quartz-attributes.ts',
