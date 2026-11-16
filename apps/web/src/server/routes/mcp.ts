@@ -1055,6 +1055,8 @@ function buildSystemContext(): string {
     "@import '@voltui/components/themes.css';",
     '```',
     '',
+    "Keep the full `@import 'tailwindcss'`: it includes preflight, the reset the components are styled on. Importing only `tailwindcss/theme.css` + `utilities.css` leaves native buttons, links and inputs with browser defaults.",
+    '',
     '```ts',
     "import { provideVoltTheme } from '@voltui/components';",
     '',

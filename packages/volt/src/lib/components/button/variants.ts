@@ -11,8 +11,10 @@ export const buttonVariants = cva(
           'border-(color:--volt-control-solid-border) bg-destructive text-destructive-foreground shadow-sm data-[hover]:bg-destructive/90 data-[press]:scale-(--volt-press-scale) data-[press]:translate-x-(--volt-press-x) data-[press]:translate-y-(--volt-press-y) data-[press]:shadow-none',
         outline:
           'border-input bg-background shadow-sm data-[hover]:bg-accent data-[hover]:text-accent-foreground data-[press]:scale-(--volt-press-scale) data-[press]:translate-x-(--volt-press-x) data-[press]:translate-y-(--volt-press-y) data-[press]:shadow-none',
-        ghost: 'data-[hover]:bg-accent data-[hover]:text-accent-foreground',
-        link: 'text-primary underline-offset-4 data-[hover]:underline',
+        // `bg-transparent` is explicit so the variant does not depend on Tailwind's preflight:
+        // without it a native <button> keeps the browser's grey `buttonface` background.
+        ghost: 'bg-transparent data-[hover]:bg-accent data-[hover]:text-accent-foreground',
+        link: 'bg-transparent text-primary underline-offset-4 data-[hover]:underline',
       },
       size: {
         sm: 'h-control-sm rounded-md px-inset-sm text-xs',

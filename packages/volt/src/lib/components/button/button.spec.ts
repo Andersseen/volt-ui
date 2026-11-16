@@ -66,6 +66,28 @@ describe('VoltButton', () => {
     expect(button).toHaveClass('border-input');
   });
 
+  // An app that imports Tailwind's theme + utilities without preflight keeps the browser's grey
+  // `buttonface` background on a native <button> unless the variant sets its own.
+  for (const variant of ['ghost', 'link'] as const) {
+    it(`${variant}: sets a transparent background and border itself, without relying on preflight`, async () => {
+      const { container } = await render(ButtonTestWrapper, { componentInputs: { variant } });
+
+      const button = container.querySelector('button');
+      expect(button).toHaveClass('bg-transparent');
+      expect(button).toHaveClass('border-transparent');
+    });
+  }
+
+  it('lets a consumer background replace the ghost background', async () => {
+    const { container } = await render(VoltButton, {
+      componentInputs: { variant: 'ghost', class: 'bg-muted' },
+    });
+
+    const button = container.querySelector('button');
+    expect(button).toHaveClass('bg-muted');
+    expect(button).not.toHaveClass('bg-transparent');
+  });
+
   it('should merge consumer classes from class and customClass inputs', async () => {
     const { container } = await render(VoltButton, {
       componentInputs: { class: 'w-full', customClass: 'justify-start' },
