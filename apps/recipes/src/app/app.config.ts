@@ -14,7 +14,7 @@ import { provideMovement } from 'angular-movement';
 import { appI18n } from '@shared/i18n/i18n';
 import { doqPaths } from '../doq.paths';
 import { AsyncSearchRecipe } from './patterns/async-search/async-search';
-import { provideEtymaDoqI18n, withEtymaLocale } from './lib/doq-i18n';
+import { provideRecipesDoqI18n, withEtymaLocale } from './lib/doq-i18n';
 import { MOTION } from '@shared/lib/motion';
 import { SITE_IDENTITY } from '@shared/seo/seo.service';
 import { provideSeo } from './lib/seo/seo.provider';
@@ -46,7 +46,7 @@ export const appConfig: ApplicationConfig = {
     ),
     provideContent(withMarkdownRenderer()),
     provideDoq(doqConfig),
-    provideEtymaDoqI18n(),
+    provideRecipesDoqI18n(),
     provideAnimationsAsync(),
     provideEtyma(appI18n),
     // Canonical and hreflang are written against this app's own origin, never the docs site's.

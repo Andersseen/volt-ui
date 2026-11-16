@@ -30,7 +30,7 @@ Adding, renaming, or deleting any file in `projects/volt/src/lib/` requires ALL 
 1. `projects/volt/src/public-api.ts` — export updated.
 2. `src/app/lib/snippets/index.ts` — `?raw` import + `*_SNIPPET` export updated.
 3. `src/app/lib/snippets/usage.ts` — usage example updated.
-4. Demo page in `src/app/pages/(components-docs)/docs/components/` updated.
+4. Documentation page updated: the host page in `apps/web/src/app/pages/(components-docs)/docs/components/`, or — once migrated — its Doqs Markdown in `apps/web/src/authoring/docs*/components/` (then `pnpm docs:content`). See `docs/doqs-docs.md`.
 5. `pnpm manifest` — regenerates `public/manifest.json`.
 6. `COMPONENT_STATUS.md` — if status/coverage changed.
 7. Storybook — `stories/components/<name>.stories.ts`, a `stories/_docs/component-guides.mjs` entry, then `pnpm generate:storybook-docs` (`pnpm check:storybook` fails otherwise).

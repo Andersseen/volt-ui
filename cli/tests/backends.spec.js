@@ -164,6 +164,7 @@ describe('headless bases', () => {
           'toggle/toggle.ts',
           'toggle/variants.ts',
           'utils.ts',
+          'volt-ids.ts',
         ].sort()
       );
       const all = files.map(f => readFileSync(f, 'utf-8')).join('\n');

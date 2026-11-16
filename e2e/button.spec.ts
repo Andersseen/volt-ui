@@ -65,12 +65,14 @@ test.describe('Input Demo Page', () => {
   });
 
   test('should render email input', async ({ page }) => {
-    await expect(page.getByRole('textbox', { name: 'Email' })).toBeVisible();
+    // The example's field; the playground below it has an "Email" field of its own.
+    await expect(page.getByRole('textbox', { name: 'Email' }).first()).toBeVisible();
   });
 
   test('should render textarea', async ({ page }) => {
     // Named by its <volt-label htmlFor>, which only started working in 1.1 (it used to fall
-    // back to the placeholder).
-    await expect(page.getByRole('textbox', { name: 'Message (Textarea)' })).toBeVisible();
+    // back to the placeholder). The page is a Doqs Markdown page since 1.x; the example is
+    // apps/web/src/app/doqs/examples/input-example.ts.
+    await expect(page.getByRole('textbox', { name: 'Message' })).toBeVisible();
   });
 });

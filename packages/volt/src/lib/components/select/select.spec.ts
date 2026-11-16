@@ -1,5 +1,11 @@
 import { Component, model } from '@angular/core';
-import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormsModule,
+  ReactiveFormsModule,
+  TouchedChangeEvent,
+  Validators,
+} from '@angular/forms';
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/angular';
 import userEvent from '@testing-library/user-event';
@@ -172,5 +178,92 @@ describe('VoltSelect', () => {
     await user.click(await screen.findByText('Option B'));
 
     expect(fixture.componentInstance.value).toBe('b');
+  });
+});
+
+describe('VoltSelect forms and ARIA contract', () => {
+  @Component({
+    selector: 'app-select-required-wrapper',
+    imports: [ReactiveFormsModule, VoltSelect, VoltSelectContent, VoltSelectItem],
+    template: `
+      <volt-select [formControl]="control" ariaLabel="Plan" required>
+        <volt-select-content>
+          <volt-select-item value="free">Free</volt-select-item>
+          <volt-select-item value="team" disabled>Team</volt-select-item>
+          <volt-select-item value="pro">Pro</volt-select-item>
+        </volt-select-content>
+      </volt-select>
+    `,
+  })
+  class SelectRequiredWrapper {
+    control = new FormControl<string | null>(null, Validators.required);
+  }
+
+  it('does not mark the control touched while the pointer moves focus into the popup', async () => {
+    const { fixture } = await render(SelectRequiredWrapper);
+    const control = fixture.componentInstance.control;
+    // Every moment the control was touched while still invalid: what a touched-and-invalid
+    // error message (and an assertive alert) would render for.
+    const touchedWhileInvalid: unknown[] = [];
+    control.events.subscribe(event => {
+      if (event instanceof TouchedChangeEvent && event.touched && control.invalid) {
+        touchedWhileInvalid.push(control.value);
+      }
+    });
+    const user = userEvent.setup();
+
+    await user.click(screen.getByRole('combobox', { name: 'Plan' }));
+    await user.click(await screen.findByRole('option', { name: 'Pro' }));
+    await fixture.whenStable();
+
+    expect(control.value).toBe('pro');
+    expect(touchedWhileInvalid).toEqual([]);
+    expect(screen.getByRole('combobox')).toHaveFocus();
+    expect(screen.getByRole('combobox')).not.toHaveAttribute('aria-invalid');
+
+    // Leaving the field is what touches it.
+    await user.tab();
+    expect(control.touched).toBe(true);
+  });
+
+  it('marks the control touched when the popup is dismissed by a click outside', async () => {
+    const { fixture } = await render(SelectRequiredWrapper);
+    const user = userEvent.setup();
+
+    await user.click(screen.getByRole('combobox', { name: 'Plan' }));
+    await user.click(await screen.findByRole('option', { name: 'Free' }));
+    fixture.componentInstance.control.setValue(null);
+    await user.click(screen.getByRole('combobox'));
+    await screen.findByRole('listbox');
+    await user.click(document.body);
+    await fixture.whenStable();
+
+    expect(fixture.componentInstance.control.touched).toBe(true);
+    expect(screen.getByRole('combobox')).toHaveAttribute('aria-invalid', 'true');
+  });
+
+  it('exposes required on the combobox', async () => {
+    await render(SelectRequiredWrapper);
+
+    expect(screen.getByRole('combobox', { name: 'Plan' })).toHaveAttribute('aria-required', 'true');
+  });
+
+  it('exposes a disabled option as disabled and skips it with the keyboard', async () => {
+    await render(SelectRequiredWrapper);
+    const user = userEvent.setup();
+    const trigger = screen.getByRole('combobox', { name: 'Plan' });
+
+    trigger.focus();
+    await user.keyboard('{ArrowDown}');
+    const team = await screen.findByRole('option', { name: 'Team' });
+    const free = screen.getByRole('option', { name: 'Free' });
+    const pro = screen.getByRole('option', { name: 'Pro' });
+
+    expect(team).toHaveAttribute('aria-disabled', 'true');
+    expect(free).not.toHaveAttribute('aria-disabled');
+    expect(trigger).toHaveAttribute('aria-activedescendant', free.id);
+
+    await user.keyboard('{ArrowDown}');
+    expect(trigger).toHaveAttribute('aria-activedescendant', pro.id);
   });
 });

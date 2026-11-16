@@ -1,4 +1,5 @@
 import { Component, input, model, signal } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/angular';
@@ -260,5 +261,17 @@ describe('VoltInput', () => {
       expect(b.id).toMatch(/^volt-input-/);
       expect(a.id).not.toBe(b.id);
     });
+  });
+
+  it('numbers generated ids per application, not per JavaScript realm', async () => {
+    const first = await render(`<volt-input aria-label="Email" />`, { imports: [VoltInput] });
+    const firstId = screen.getByRole('textbox').id;
+    first.fixture.destroy();
+    TestBed.resetTestingModule();
+
+    await render(`<volt-input aria-label="Email" />`, { imports: [VoltInput] });
+
+    expect(firstId).toMatch(/^volt-input-\d+$/);
+    expect(screen.getByRole('textbox').id).toBe(firstId);
   });
 });

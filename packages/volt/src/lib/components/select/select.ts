@@ -5,6 +5,7 @@ import {
   Component,
   computed,
   DOCUMENT,
+  ElementRef,
   forwardRef,
   inject,
   Injector,
@@ -56,9 +57,11 @@ const HOST_CLASSES = 'block w-full';
       [ngpSelectScrollToOption]="scrollToOption()"
       [ngpSelectOptions]="allOptions()"
       [attr.aria-label]="ariaLabel() || ariaLabelAttribute() || null"
+      [attr.aria-required]="required() ? 'true' : null"
       [attr.aria-invalid]="formControlState.invalid() ? 'true' : null"
       (ngpSelectValueChange)="onValueChange($event)"
-      (blur)="onTouched()"
+      (ngpSelectOpenChange)="onOpenChange($event)"
+      (blur)="onTriggerBlur($event)"
       [class]="triggerClasses()"
     >
       <span class="block text-left truncate flex-1 pointer-events-none">
@@ -102,6 +105,8 @@ export class VoltSelect implements ControlValueAccessor {
   readonly value = model<unknown>(undefined);
   readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly multiple = input<boolean, unknown>(false, { transform: booleanAttribute });
+  /** Exposes `aria-required` on the trigger. With `formControl`/`ngModel` it also adds Angular's required validator. */
+  readonly required = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly compareWith = input<(a: unknown, b: unknown) => boolean>(Object.is);
   readonly dropdownPlacement = input<Placement>('bottom-start');
   readonly container = input<string | HTMLElement | null>('body');
@@ -136,8 +141,42 @@ export class VoltSelect implements ControlValueAccessor {
   }
 
   private readonly trigger = viewChild.required(NgpSelect);
+  private readonly triggerElement = viewChild.required(NgpSelect, { read: ElementRef });
   private readonly document = inject(DOCUMENT);
   private readonly injector = inject(Injector);
+
+  /**
+   * Touched means the reader left the field. A pointer press on an option moves focus from the trigger
+   * into the popup, which blurred the trigger before the value was committed: a required select was
+   * reported touched and invalid while the reader was still choosing, flashing its error (and
+   * announcing an alert). Focus that moves into this select's own popup is not leaving the field.
+   */
+  protected onTriggerBlur(event: FocusEvent): void {
+    const next = event.relatedTarget;
+    const popupId = this.triggerElement().nativeElement.getAttribute('aria-controls');
+    const popup = popupId ? this.document.getElementById(popupId) : null;
+    if (popup && next instanceof Node && popup.contains(next)) return;
+    this.onTouched();
+  }
+
+  /** The popup closed while focus was inside it and then moved elsewhere (a click outside): left the field. */
+  protected onOpenChange(open: boolean): void {
+    if (open) return;
+    afterNextRender(
+      () => {
+        const active = this.document.activeElement;
+        const trigger = this.triggerElement().nativeElement;
+        const elsewhere =
+          !!active &&
+          active !== trigger &&
+          active !== this.document.body &&
+          active.isConnected &&
+          !active.closest('[role="listbox"]');
+        if (elsewhere) this.onTouched();
+      },
+      { injector: this.injector }
+    );
+  }
 
   protected onValueChange(value: unknown): void {
     this.value.set(value);

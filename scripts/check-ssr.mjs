@@ -83,7 +83,16 @@ const allRoutes =
         ...LAYOUTS.map(l => l.path),
         ...RECIPES.map(r => r.path),
       ]
-    : ['/docs/components', ...COMPONENTS.map(c => c.path)];
+    : [
+        '/docs/components',
+        ...COMPONENTS.map(c => c.path),
+        // The Doqs Markdown pages, in every language (the English component pages are listed above).
+        ...readdirSync(join(ROOT, 'apps/web/src/content/docs'), { recursive: true })
+          .map(String)
+          .filter(file => file.endsWith('.md'))
+          .flatMap(file => ['', '/es', '/uk'].map(prefix => `${prefix}/docs/${file.slice(0, -3)}`))
+          .filter(route => !COMPONENTS.some(c => c.path === route)),
+      ];
 const routes = allRoutes.filter((_, i) => i % shardCount === shardIndex - 1);
 
 if (!existsSync(join(ROOT, OUTPUT))) {

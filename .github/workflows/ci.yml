@@ -55,6 +55,9 @@ jobs:
       - name: Check docs completeness and colour contrast
         run: pnpm check:docs-completeness && pnpm check:contrast
 
+      - name: Check the Doqs Markdown pages are resolved from their authored source
+        run: pnpm docs:content:check
+
   unit:
     name: Unit tests (coverage enforced)
     runs-on: ubuntu-latest

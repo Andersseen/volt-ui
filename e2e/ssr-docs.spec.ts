@@ -1,3 +1,4 @@
+import { readdirSync } from 'node:fs';
 import { expect, test } from '@playwright/test';
 import { COMPONENTS } from '../apps/web/src/app/lib/component-metadata';
 
@@ -15,7 +16,12 @@ test.skip(process.env['E2E_SERVER'] !== 'wrangler', 'needs the built worker (E2E
 
 // `/docs/components` is left out on purpose: its server render logs a known upstream error
 // (ng-primitives' NgpCollapsible calls `new MutationObserver`; see KNOWN in scripts/check-ssr.mjs).
-const ROUTES = ['/', '/docs/introduction', ...COMPONENTS.map(c => c.path)];
+// The Doqs Markdown pages in every language: their documentation must hydrate in place too.
+const DOQS = readdirSync('apps/web/src/content/docs', { recursive: true })
+  .map(String)
+  .filter(file => file.endsWith('.md'))
+  .flatMap(file => ['', '/es', '/uk'].map(prefix => `${prefix}/docs/${file.slice(0, -3)}`));
+const ROUTES = [...new Set(['/', ...DOQS, ...COMPONENTS.map(c => c.path)])];
 
 const HYDRATION_PROBLEM = /NG0500|NG0501|NG0502|NG0503|NG0504|NG0505|NG0506|hydrat/i;
 

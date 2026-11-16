@@ -1,0 +1,164 @@
+---
+title: 'Вступ'
+description: 'Volt UI — це набір багаторазових доступних компонентів Angular, натхненний shadcn/ui. Встановіть пакет або скопіюйте вихідний код у свій проєкт і змінюйте його як власний.'
+group: 'Перші кроки'
+order: 1
+---
+
+Компоненти побудовано на [ng-primitives](https://ng-primitives.dev). Експериментальна друга точка входу, `@voltui/components/quartz`, запускає дев’ять із них (Accordion, Checkbox, Listbox, Radio, Select, Switch, Tabs, Toggle і Toggle Group) на Quartz Headless з тими самими селекторами та вхідними параметрами. Вона є у вихідному коді наступного релізу; версія, опублікована сьогодні в npm (1.3.3), її ще не містить.
+
+## Інструменти ШІ для користувачів
+
+Volt UI пропонує три взаємодоповнювальні способи дати ШІ-асистентам повний контекст про свої компоненти, селектори та домовленості.
+
+- [Skills для агентів](/uk/docs/ai-skill) — Короткі посібники для Claude Code, Codex і OpenCode: коли використовувати Volt, який компонент підходить і як його поєднувати.
+- [Сервер MCP](/uk/docs/ai-mcp) — Розміщені інструменти MCP для переліку компонентів, отримання прикладів і генерування команд CLI.
+- [Довідник промптів](/uk/docs/ai-prompt) — Промпт в одному файлі, який можна вставити в будь-який чат LLM, щоб отримати правильні селектори та приклади.
+
+## Варіанти встановлення
+
+Є три способи використати компоненти Volt UI у вашому проєкті:
+
+### Варіант 1: пакет npm
+
+Встановіть бібліотеку напряму з npm та імпортуйте компоненти у своєму проєкті.
+
+```bash
+npm install @voltui/components
+```
+
+```css
+@import '@voltui/components/themes.css';
+```
+
+Далі імпортуйте: `from '@voltui/components'`.
+
+### Варіант 2: CLI (у стилі shadcn)
+
+Скопіюйте вихідні файли компонентів у проєкт із префіксом ui-*. Повне налаштування.
+
+```bash
+npx @voltui/cli init
+npx @voltui/cli add button card input
+```
+
+Використовуйте `--dry-run`, щоб побачити файли наперед, і `--force`, щоб перезаписати вже змінені компоненти.
+
+### Варіант 3: копіювати та вставити
+
+Перегляньте демо компонентів і скопіюйте код напряму. Повний контроль над реалізацією. [Переглянути компоненти](/uk/docs/components)
+
+## Домовленості щодо назв
+
+Volt UI використовує різні префікси для коду бібліотеки та для того, що генерує CLI.
+
+| Контекст       | Селектор               | Назва класу | Шлях імпорту           |
+| -------------- | ---------------------- | ----------- | ---------------------- |
+| Код бібліотеки | `volt-*` / `[voltXxx]` | `VoltXxx`   | `'@voltui/components'` |
+| Вивід CLI      | `ui-*` / `[uiXxx]`     | `UiXxx`     | `'./ui/<component>'`   |
+
+## Передумови
+
+Перш ніж використовувати компоненти Volt UI, переконайтеся, що встановлено такі залежності:
+
+### пакет npm
+
+Залежності часу виконання додаються автоматично. Імпортуйте CSS теми один раз у глобальному файлі стилів.
+
+```bash
+npm install @voltui/components
+```
+
+### CLI / копіювання — залежності часу виконання
+
+```bash
+npm install ng-primitives class-variance-authority clsx tailwind-merge
+```
+
+### Tailwind CSS v4
+
+Компоненти Volt містять критичний CSS компонування, тож користувачам npm-пакета не потрібна директива `@source` для `node_modules`.
+
+```bash
+npm install -D tailwindcss @tailwindcss/postcss
+```
+
+## Система тем
+
+Volt UI надає семантичні токени Tailwind через CSS custom properties. Налаштуйте тему у конфігурації застосунку.
+
+```ts
+import { provideVoltTheme } from '@voltui/components';
+
+bootstrapApplication(AppComponent, {
+  providers: [
+    provideVoltTheme({
+      color: 'volt', // volt | ember | sage | dusk | glacier
+      style: 'sharp', // sharp | soft | brutal | ghost | retro
+      density: 'comfortable', // compact | comfortable | spacious
+      dark: false,
+    }),
+  ],
+});
+```
+
+## Структура проєкту
+
+При використанні CLI компоненти додаються до теки ui вашого проєкту:
+
+```text
+src/app/
+  ui/
+    button/
+      button.ts
+      index.ts
+    card/
+      card.ts
+      index.ts
+    ...
+```
+
+## Використання
+
+Після додавання компонента імпортуйте та використайте його у своїх компонентах Angular:
+
+```ts
+import { Component } from '@angular/core';
+import { UiButton } from './ui/button';
+
+@Component({
+  selector: 'app-my-component',
+  imports: [UiButton],
+  template: '<ui-button variant="solid">Click me</ui-button>',
+})
+export class MyComponent {}
+```
+
+## Компоненти-оверлеї
+
+Dialog, drawer, popover, tooltip і dropdown-menu використовують директиву-атрибут як тригер, що посилається на `<ng-template>` із вмістом накладки.
+
+```html
+<button [uiDialog]="dialogTpl">Open Dialog</button>
+
+<ng-template #dialogTpl let-close="close">
+  <div uiDialogOverlay></div>
+  <div uiDialogContent>
+    <h2 uiDialogTitle>Confirm</h2>
+    <p uiDialogDescription>Are you sure?</p>
+    <ui-button (click)="close()">Confirm</ui-button>
+  </div>
+</ng-template>
+```
+
+## Каталог компонентів
+
+Компоненти з позначкою **стабільний** мають усталений API, тести, що перевіряють їхню власну поведінку, і задокументоване використання. **Бета** позначає нещодавні додатки, чий API ще може змінитися в мінорному релізі. Повна політика — у розділі [Версіонування та стабільність](/uk/docs/versioning).
+
+::demo[component-catalog]
+
+## Наступні кроки
+
+- [Теми](/uk/docs/themes) — Дізнайтеся, як налаштувати кольори, типографіку та темний режим.
+- [Компоненти](/uk/docs/components) — Перегляньте всі доступні компоненти з прикладами та кодом.
+- [Інтеграція зі ШІ](/uk/docs/mcp) — Налаштуйте сервер MCP і сніпети IDE для Claude, Cursor, Copilot та інших.

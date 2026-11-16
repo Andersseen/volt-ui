@@ -56,6 +56,10 @@ const EXEMPT = [
   // Carries `SidebarDemo`, a full sample application shell, alongside its own docs.
   'apps/recipes/src/app/pages/(gallery)/layouts/sidebar.page.ts',
   'apps/web/src/app/pages/(components-docs)/docs/components/sidebar.page.ts',
+  // Doqs examples and playgrounds: live specimens shown beside their own source (`::source`) or
+  // their generated usage code on the Markdown pages, the Doqs equivalent of a code panel's demo.
+  'apps/web/src/app/doqs/examples/',
+  'apps/web/src/app/doqs/playgrounds/',
   // Its demo is a bare bordered box rather than a code panel, so nothing marks it as one.
   'apps/web/src/app/pages/(components-docs)/docs/components/popover.component.html',
 ];

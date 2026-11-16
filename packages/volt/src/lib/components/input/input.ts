@@ -10,10 +10,10 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NgpInput } from 'ng-primitives/input';
-import { uniqueId } from 'ng-primitives/utils';
 import { VoltAriaInvalid } from '../../aria-invalid';
 import { injectFormControlState } from '../../form-control-state';
 import { forwardAttributesFromHost, forwardClassFromHost } from '../../host-forwarding';
+import { injectVoltId } from '../../volt-ids';
 import { inputVariants, type InputVariants } from './variants';
 import { cn } from '../../utils';
 
@@ -85,7 +85,7 @@ export class VoltInput implements ControlValueAccessor {
   readonly required = input<boolean, unknown>(false, { transform: booleanAttribute });
 
   /** A generated id keeps `<volt-label>` / FormField associations working without one. */
-  private readonly generatedId = uniqueId('volt-input');
+  private readonly generatedId = injectVoltId('volt-input');
   protected readonly controlId = computed(() => this.id() || this.generatedId);
 
   private readonly controlDisabled = signal(false);

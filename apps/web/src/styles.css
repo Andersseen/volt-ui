@@ -4,3 +4,7 @@
 
 @source '../../../packages/shared';
 @source '../../../packages/volt/src/lib';
+
+/* Doqs (the Markdown documentation pages below /docs), mapped onto the shared Volt tokens. */
+@import '@doqs/analog/styles.css';
+@import '../../../packages/shared/styles/doqs.css';

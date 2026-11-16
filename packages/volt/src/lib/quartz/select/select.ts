@@ -68,6 +68,7 @@ const HOST_CLASSES = 'block w-full';
       [attr.id]="triggerId"
       [disabled]="isDisabled()"
       [attr.aria-label]="ariaLabel() || ariaLabelAttribute() || null"
+      [attr.aria-required]="required() ? 'true' : null"
       [attr.aria-invalid]="formControlState.invalid() ? 'true' : null"
       [attr.data-open]="select.isOpen() ? '' : null"
       [attr.data-multiple]="multiple() ? '' : null"
@@ -120,6 +121,8 @@ export class VoltSelect implements ControlValueAccessor {
   readonly value = model<unknown>(undefined);
   readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly multiple = input<boolean, unknown>(false, { transform: booleanAttribute });
+  /** Exposes `aria-required` on the trigger. With `formControl`/`ngModel` it also adds Angular's required validator. */
+  readonly required = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly compareWith = input<(a: unknown, b: unknown) => boolean>(Object.is);
   readonly dropdownPlacement = input<OverlayPlacement>('bottom-start');
   /** `true` / `false` or their string spellings; ng-primitives' flip option objects are not supported. */

@@ -1,0 +1,28 @@
+{
+  "targets": [
+    {
+      "name": "en",
+      "authoring": "apps/web/src/authoring/docs",
+      "out": "apps/web/src/content/docs",
+      "sourceRoots": ["packages/volt/src/lib", "apps/web/src/app/doqs/examples"],
+      "sourceUrl": "https://github.com/Andersseen/volt-ui/blob/{revision}/{path}{lines}",
+      "revision": "main"
+    },
+    {
+      "name": "es",
+      "authoring": "apps/web/src/authoring/docs-es",
+      "out": "apps/web/src/content/docs-es",
+      "sourceRoots": ["packages/volt/src/lib", "apps/web/src/app/doqs/examples"],
+      "sourceUrl": "https://github.com/Andersseen/volt-ui/blob/{revision}/{path}{lines}",
+      "revision": "main"
+    },
+    {
+      "name": "uk",
+      "authoring": "apps/web/src/authoring/docs-uk",
+      "out": "apps/web/src/content/docs-uk",
+      "sourceRoots": ["packages/volt/src/lib", "apps/web/src/app/doqs/examples"],
+      "sourceUrl": "https://github.com/Andersseen/volt-ui/blob/{revision}/{path}{lines}",
+      "revision": "main"
+    }
+  ]
+}

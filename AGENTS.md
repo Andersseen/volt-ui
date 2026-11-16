@@ -90,6 +90,14 @@ cli/              @voltui/cli and @voltui/agent (own release flow, outside the w
 
 Recipes also hosts its own guides at `/docs`, written in Markdown (en/es/uk) and rendered by Doqs (`@doqs/analog`) — see `docs/recipes-app.md`. Recipes shows what you can **build**; it never re-documents a component's API (that is voltui.dev, linked with absolute URLs). Blocks, layouts and patterns stay copyable source, never `@voltui/components` exports. To add one, see `docs/recipes-app.md`; to deploy, same file. Old `/docs/{blocks,layouts,recipes}/*` URLs 301 to Recipes (`packages/shared/legacy-redirects.ts`).
 
+## Documentation pages and Doqs
+
+Some voltui.dev documentation pages are Markdown served by Doqs (`@doqs/analog`), at the URLs they always
+had: the introduction, themes, customization and the Form Field, Input, Checkbox and Select pages, in
+en/es/uk. The rest are host Angular pages. Architecture, migration matrix and the procedure to migrate the
+next page: `docs/doqs-docs.md`. Edit the authored Markdown in `apps/web/src/authoring/docs*`, never the
+generated `apps/web/src/content/docs*` (`pnpm docs:content`; CI runs `pnpm docs:content:check`).
+
 ## Docs site rules
 
 These apply to everything under `src/app/` (the official site), not to the library itself.
@@ -250,7 +258,7 @@ generated map of which test proves which contract (`pnpm generate:behavior-matri
 
 1. Create/edit files under `packages/volt/src/lib/components/<name>/`.
 2. Update `packages/volt/src/public-api.ts` if it is a new public export.
-3. Add/update the demo page under `src/app/pages/(components-docs)/docs/components/<name>.page.ts`.
+3. Add/update the documentation page: the host page `apps/web/src/app/pages/(components-docs)/docs/components/<name>.page.ts`, or, for a page already migrated to Doqs (Form Field, Input, Checkbox, Select), its Markdown in `apps/web/src/authoring/docs*/components/<name>.md` in all three languages, then `pnpm docs:content` (see `docs/doqs-docs.md`).
 4. Add/update source-code snippet exports in `src/app/lib/snippets/index.ts` and `src/app/lib/snippets/usage.ts`.
 5. Add real unit tests using `@testing-library/angular` or `TestBed` (not just string checks).
 6. Run `pnpm typecheck`, `pnpm lint`, `pnpm test:run`, and `pnpm build:lib`.

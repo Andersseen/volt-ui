@@ -21,6 +21,8 @@ export default defineConfig({
   resolve: {
     alias: {
       volt: resolve(ROOT, 'packages/volt/src/public-api.ts'),
+      // The Doqs examples import the package by its published name (see apps/web/vite.config.ts).
+      '@voltui/components': resolve(ROOT, 'packages/volt/src/public-api.ts'),
       '@shared': resolve(ROOT, 'packages/shared'),
     },
   },
