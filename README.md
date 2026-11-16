@@ -96,6 +96,10 @@ npm install @voltui/components @angular/cdk
 @import '@voltui/components/themes.css';
 ```
 
+Keep the full `@import 'tailwindcss'`: it includes preflight, the reset Volt's components are styled
+on. Importing only `tailwindcss/theme.css` + `utilities.css` leaves native buttons, links and form
+controls with the browser's own font, padding and colours.
+
 ```ts
 import { RouterLink } from '@angular/router';
 import { VoltCard, VoltCardContent, VoltNativeButton } from '@voltui/components';

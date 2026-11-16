@@ -51,6 +51,9 @@ npm install @voltui/components
 @import '@voltui/components/themes.css';
 ```
 
+Keep the full `@import 'tailwindcss'` (it includes preflight, which the components are styled on);
+`theme.css` + `utilities.css` alone leave native buttons, links and inputs with browser defaults.
+
 ```ts
 import { provideVoltTheme } from '@voltui/components';
 

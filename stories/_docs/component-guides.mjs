@@ -217,6 +217,7 @@ export const COMPONENT_GUIDES = {
     when: ['Alignment, view mode or filter chips where options belong together.'],
     a11y: [
       'Roving focus comes from the ng-primitives toggle group. Icon-only items need `aria-label`.',
+      '`type="single"` is a `radiogroup` of `radio` items (`aria-checked`); `type="multiple"` is a `group` of toggle buttons (`aria-pressed`). Name the group with `aria-label` or `aria-labelledby`.',
     ],
   },
   toolbar: {

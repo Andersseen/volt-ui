@@ -1,6 +1,6 @@
 import { Component, signal, Type } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { render, screen } from '@testing-library/angular';
+import { render, screen, within } from '@testing-library/angular';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
@@ -330,9 +330,11 @@ export function describeToggleGroupContract(label: string, spec: ToggleGroupSpec
 
   describe(`${label} toggle group — Volt contract`, () => {
     it('is a set of radios in single mode and of pressable buttons in multiple mode', async () => {
-      const { container } = await render(tools(), { imports });
-      expect(container.querySelector('volt-toggle-group')).toHaveAttribute('role', 'group');
-      expect(screen.getAllByRole('radio')).toHaveLength(3);
+      await render(tools(), { imports });
+      // Radios must be owned by a radiogroup: `group` around `radio` items is an ARIA violation.
+      const group = screen.getByRole('radiogroup', { name: 'Format' });
+      expect(screen.queryByRole('group')).toBeNull();
+      expect(within(group).getAllByRole('radio')).toHaveLength(3);
       expect(single('Bold')).toHaveAttribute('aria-checked', 'false');
       expect(single('Bold')).not.toHaveAttribute('aria-pressed');
       expect(single('Bold').tagName).toBe('BUTTON');
@@ -340,9 +342,24 @@ export function describeToggleGroupContract(label: string, spec: ToggleGroupSpec
 
     it('uses aria-pressed, never radio semantics, in multiple mode', async () => {
       await render(tools('type="multiple"'), { imports });
+      expect(screen.getByRole('group', { name: 'Format' })).toBeInTheDocument();
+      expect(screen.queryByRole('radiogroup')).toBeNull();
       expect(screen.queryAllByRole('radio')).toHaveLength(0);
       expect(multi('Bold')).toHaveAttribute('aria-pressed', 'false');
       expect(multi('Bold')).not.toHaveAttribute('aria-checked');
+    });
+
+    it('switches between radiogroup and group when `type` changes', async () => {
+      const type = signal<'single' | 'multiple'>('single');
+      const { fixture } = await render(tools('[type]="type()"'), {
+        imports,
+        componentProperties: { type },
+      });
+      expect(screen.getByRole('radiogroup', { name: 'Format' })).toBeInTheDocument();
+      type.set('multiple');
+      await fixture.whenStable();
+      expect(screen.getByRole('group', { name: 'Format' })).toBeInTheDocument();
+      expect(screen.queryByRole('radiogroup')).toBeNull();
     });
 
     it('has unique ids', async () => {

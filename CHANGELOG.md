@@ -7,6 +7,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.4.1] - 2026-11-16
+
+Patch release of `@voltui/components`. Backward compatible: no selector, input or output is removed or
+renamed. It also carries the forms contract hardening and the Doqs documentation work listed below, which
+were merged after 1.4.0 was cut.
+
+### Tooltip, Toggle Group and Button fixes — `@voltui/components`
+
+No public API change: the same selectors, inputs and outputs. Each fix has a regression test that failed
+first.
+
+#### Fixed
+
+- **Tooltip — string content never showed.** `[voltTooltip]="'Save'"` (or `voltTooltip="Save"`) logged
+  `[ngpTooltipTrigger]: Tooltip must be a string, TemplateRef, or ComponentType…` on hover or focus and
+  rendered nothing. The cause was not the duplicate `voltTooltip` input on the wrapper — Angular writes a
+  bound value to both the host and its host directive — but the input transform of ng-primitives'
+  `NgpTooltipTrigger` (0.131), which turns every string into `null` before the primitive's own string
+  handling can see it. `VoltTooltip` no longer aliases `ngpTooltipTrigger`; it passes its content through
+  the trigger state, so strings and `TemplateRef`s both reach the primitive. Covered by unit tests (hover
+  and keyboard focus, string, `TemplateRef`, a string that changes) and a browser contract against the
+  built package. Popover and Dropdown Menu do not take strings and were not affected.
+- **Toggle Group — `radiogroup` in single mode.** With `type="single"` the items are `role="radio"`, but
+  the container was `role="group"`; radios must be owned by a `radiogroup`. The container is now
+  `radiogroup` in single mode and stays `group` with `type="multiple"`, and follows `type` when it changes.
+  Both headless backends (ng-primitives and Quartz). Queries such as `getByRole('group', { name })` on a
+  single-select group need `radiogroup`.
+- **Button — `ghost` and `link` without preflight.** These variants now set `bg-transparent` themselves.
+  An app that imported only `tailwindcss/theme.css` + `utilities.css` showed them with the browser's grey
+  button background. With preflight the rendered result is unchanged (measured in Chromium).
+
+#### Documented
+
+- The README, the `volt-ui-distribution` skill, the MCP setup guide and `VOLT_UI_PROMPT.md` say to keep
+  the full `@import 'tailwindcss'`: its preflight is the reset Volt's components are styled on, and
+  without it native buttons, links and inputs keep the browser's font, padding and colours.
+
 ### Forms contract hardening — `@voltui/components`, `@voltui/cli`
 
 Backward compatible: one additive input (`required` on Select), nothing removed or renamed. Each fix has a

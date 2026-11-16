@@ -2,7 +2,7 @@
 // Regenerate with: pnpm stats (structural only) or pnpm stats:full (re-runs the suite).
 export const SITE_STATS = {
   /** packages/volt/package.json: the next release. NOT what the site advertises as installable. */
-  sourceVersion: '1.4.0',
+  sourceVersion: '1.4.1',
   /** npm's `latest` for @voltui/components, read at build time with the last known value as fallback. */
   publishedVersion: '1.3.3',
   components: 44,

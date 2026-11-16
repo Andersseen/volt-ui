@@ -586,6 +586,7 @@ export class DatePickerFixture {
       <button voltButton variant="outline" [voltDrawer]="drawerTpl">Open drawer</button>
       <button voltButton variant="outline" [voltPopover]="popoverTpl">Open popover</button>
       <button voltButton variant="ghost" [voltTooltip]="tooltipTpl">Hover for tip</button>
+      <button voltButton variant="ghost" [voltTooltip]="'Plain text tip'">String tip</button>
       <button voltButton variant="outline" [voltDropdownMenu]="menuTpl">Open menu</button>
     </div>
 

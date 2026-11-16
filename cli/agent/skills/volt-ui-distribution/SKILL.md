@@ -42,6 +42,14 @@ Peer dependencies (`@angular/core`, `common`, `forms`, `router`, `cdk`) are decl
 `provideVoltTheme` (see `volt-ui-styling`). Updating is a version bump; read the changelog's
 migration notes for a major.
 
+```css
+@import 'tailwindcss'; /* the full import: it includes preflight */
+@import '@voltui/components/themes.css';
+```
+
+Components are styled on top of Tailwind's preflight reset. Importing only `tailwindcss/theme.css` +
+`utilities.css` leaves native buttons, links and inputs with the browser's font, padding and colours.
+
 ## Copy mode
 
 ```bash
@@ -73,11 +81,13 @@ only read a rules file it writes a short routing block.
 - Write `volt-*` selectors in a copy-mode project or `ui-*` in package mode.
 - Import from `'volt'` or from a path inside `node_modules/@voltui/components`.
 - Add `ng-primitives` imports to application code.
+- Replace `@import 'tailwindcss'` with only `theme.css` + `utilities.css`: that drops preflight.
 
 <!-- volt:digest:start -->
 
 - Detect the mode first: `@voltui/components` (package: `Volt*`, `volt-*`) or a copied `ui/` folder (copy: `Ui*`, `ui-*`). Never mix them; `'volt'` is not importable in a consumer.
 - Copy mode: `npx @voltui/cli add <name>`; package mode: `npm install @voltui/components`.
+- CSS: the full `@import 'tailwindcss'` (with preflight, which Volt is styled on), then `@import '@voltui/components/themes.css'`.
 - Pass the project's mode (`package` | `copy`) to the MCP tools to get matching selectors and imports.
 
 <!-- volt:digest:end -->

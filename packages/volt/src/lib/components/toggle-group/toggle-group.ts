@@ -32,6 +32,9 @@ import { cn } from '../../utils';
   ],
   host: {
     '[class]': 'classes()',
+    // Single mode renders its items as `role="radio"`, which must be owned by a radiogroup;
+    // the primitive always writes `group`. Multiple mode keeps `group` (toggle buttons).
+    '[attr.role]': 'type() === "multiple" ? "group" : "radiogroup"',
     '[attr.aria-invalid]': 'formControlState.invalid() ? "true" : null',
     '(focusout)': 'onTouched()',
   },

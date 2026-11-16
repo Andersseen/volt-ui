@@ -85,6 +85,14 @@ Your app can still use Tailwind normally for its own templates:
 @import '@voltui/components/themes.css';
 ```
 
+Import the whole of `tailwindcss`, not only `tailwindcss/theme.css` and `tailwindcss/utilities.css`.
+The full import includes **preflight**, Tailwind's reset, and Volt's components are styled on top of
+it: without it native elements keep the browser's defaults — a `<button>` keeps its system font and
+padding, an `<a voltButton>` its underline and link colour, headings and lists their margins. The
+button variants set their own background and border, but the rest of the reset is not repeated
+component by component. If you must leave preflight out (for example inside a page that already has
+another reset), add your own equivalent reset for `button`, `a`, `input`, `select` and `textarea`.
+
 ## Themes
 
 Set a density with `provideVoltTheme({ density: 'compact' })`, or theme one container with
