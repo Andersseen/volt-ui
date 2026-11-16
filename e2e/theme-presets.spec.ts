@@ -19,7 +19,7 @@ const STYLE_OPTIONS = ['Soft', 'Brutal', 'Ghost', 'Retro'] as const;
 
 /** Opens the header's theme popover if it is not already showing. */
 async function openThemePanel(page: Page) {
-  const panel = page.getByRole('group', { name: 'Palette' });
+  const panel = page.getByRole('radiogroup', { name: 'Palette' });
 
   if (!(await panel.isVisible().catch(() => false))) {
     await page.locator('header button[aria-label^="Theme:"]').click();
@@ -30,7 +30,7 @@ async function openThemePanel(page: Page) {
 /** Picks a palette or shape from the theme popover, which stays open between picks. */
 async function pickTheme(page: Page, group: 'Palette' | 'Shape', name: string) {
   await openThemePanel(page);
-  await page.getByRole('group', { name: group }).getByRole('radio', { name }).click();
+  await page.getByRole('radiogroup', { name: group }).getByRole('radio', { name }).click();
   await expect(page.getByRole('radio', { name })).toBeChecked();
 }
 

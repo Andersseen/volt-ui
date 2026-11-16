@@ -66,6 +66,7 @@ export class MyComponent {
 ## Accessibility
 
 - Roving focus comes from the ng-primitives toggle group. Icon-only items need `aria-label`.
+- `type="single"` is a `radiogroup` of `radio` items (`aria-checked`); `type="multiple"` is a `group` of toggle buttons (`aria-pressed`). Name the group with `aria-label` or `aria-labelledby`.
 
 <table><thead><tr><th>Aspect</th><th>Behaviour</th></tr></thead><tbody><tr><td>Keyboard</td><td>{"via ng-primitives"}</td></tr><tr><td>Focus and overlays</td><td>{"roving focus via primitive"}</td></tr><tr><td>Forms</td><td>{"full CVA contract"}</td></tr></tbody></table>
 
