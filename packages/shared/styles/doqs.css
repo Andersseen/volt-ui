@@ -1,0 +1,68 @@
+/*
+ * Doqs (https://github.com/Andersseen/doqs), the Markdown documentation region both sites render
+ * below /docs. Imported by each app's entry stylesheet right after `@doqs/analog/styles.css` (which
+ * each app imports itself, where `doq doctor` looks for it).
+ *
+ * Doqs reads only `--host-docs-*` tokens, so it is mapped once onto the Volt semantic tokens: every
+ * color preset, style preset, dark mode and scoped `voltTheme` applies to the documentation exactly
+ * as it does to the rest of the site. Nothing here names a color.
+ */
+/*
+ * One language control per page. Etyma owns the locale and the header's switcher changes it on every
+ * route, /docs included; Doqs renders its own selector whenever more than one locale is published,
+ * even when the host owns routing, and has no option to leave it out.
+ */
+doq-locale-switcher {
+  display: none;
+}
+
+:root {
+  --host-docs-background: var(--background);
+  --host-docs-foreground: var(--foreground);
+  --host-docs-primary: var(--primary);
+  /*
+   * No --host-docs-primary-text: Doqs derives primary-coloured text on its tinted surfaces (the active
+   * link, a pressed preview width, links in a callout) from a darker mix of --host-docs-primary.
+   * Mapping it to --primary itself measured 4.12–4.39:1 there with the default palette.
+   */
+  --host-docs-border: var(--border);
+  --host-docs-surface: var(--surface);
+  --host-docs-secondary: var(--muted-foreground);
+  --host-docs-muted: var(--muted-foreground);
+  --host-docs-focus: var(--ring);
+  --host-docs-code-background: var(--muted);
+  --host-docs-code-foreground: var(--foreground);
+  --host-docs-playground-surface: var(--surface);
+  --host-docs-playground-preview: var(--background);
+  --host-docs-callout-note: var(--info);
+  --host-docs-callout-tip: var(--success);
+  --host-docs-callout-important: var(--primary);
+  --host-docs-callout-warning: var(--warning);
+  --host-docs-callout-caution: var(--error);
+  /* The sticky site header (4rem) plus the section row shown below md. */
+  --host-docs-scroll-offset: 6.5rem;
+  --host-docs-sticky-offset: 4.5rem;
+}
+
+/*
+ * Doqs styles a navigation group as a small uppercase heading and its links inherit that: every page
+ * name in a group read "FORM FIELD". Only the group label keeps the heading style; the links read as
+ * the host navigation's links do.
+ */
+.doq-nav-group .doq-nav-tree {
+  font-size: 0.8125rem;
+  font-weight: 400;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+/*
+ * Doqs code blocks (Markdown and a playground's usage code) are plain <pre> elements with no
+ * tabindex. When a line was longer than the column they scrolled horizontally, and a keyboard user
+ * could not reach the end of it (axe: scrollable-region-focusable). Long lines wrap instead.
+ */
+.doq-markdown pre,
+.doq-pg-panel > pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}

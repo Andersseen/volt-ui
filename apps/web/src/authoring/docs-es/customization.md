@@ -1,0 +1,57 @@
+---
+title: 'Personalización'
+description: 'Cada componente que añades con `npx @voltui/cli add` se copia en tu proyecto como código fuente normal. No hay paquete del que hacer eject ni API de sobrescritura que aprender: editas el archivo igual que editarías cualquier otro componente que hubieras escrito tú.'
+group: 'Primeros pasos'
+order: 3
+---
+
+## Editar un componente copiado
+
+Después de `volt add button`, `src/app/ui/button/button.ts` es tuyo (o donde apunte la configuración de tu CLI). ¿Quieres un cuarto tamaño de botón? Añádelo directamente: no hay nada más que regenerar ni sincronizar.
+
+```ts
+// ui/button/variants.ts
+export const buttonVariants = cva('...', {
+  variants: {
+    size: {
+      sm: 'h-8 rounded-md px-3 text-xs',
+      md: 'h-10 rounded-md px-4 text-sm',
+      lg: 'h-11 rounded-md px-8 text-base',
+      icon: 'h-9 w-9 rounded-md',
+      xl: 'h-12 rounded-md px-10 text-base', // <- added
+    },
+  },
+});
+```
+
+El tipo `ButtonVariants['size']` se infiere de este objeto mediante `VariantProps<typeof buttonVariants>`, así que `<volt-button size="xl">` queda completamente tipado en cuanto guardas el archivo: no hay una declaración de tipo aparte que actualizar.
+
+## Cómo funcionan aquí las variantes de CVA
+
+Los componentes con variantes visuales (button, badge, toast, ...) separan el estilo en un `variants.ts` hermano usando [class-variance-authority](https://cva.style/docs). El componente en sí solo calcula qué variante está activa; nunca escribe clases condicionales a mano en la plantilla:
+
+```ts
+// button.ts
+protected readonly classes = computed(() =>
+  cn(buttonVariants({ variant: this.variant(), size: this.size() }), this.class())
+);
+```
+
+Añadir un grupo de variantes nuevo (no solo una opción más en uno existente, por ejemplo una variante `tone` junto a `variant` y `size`) sigue el mismo patrón: añade la clave a `variants` en `variants.ts`, luego añade `readonly tone = input<...>('default')` y pásala en el `computed()` de arriba.
+
+## Sobrescribir clases con cn()
+
+La mayoría de componentes exponen una entrada `class` que pasa por `cn()`: `clsx` para unir condicionalmente y `tailwind-merge` para resolver conflictos, de modo que gane la última utilidad en vez de acabar las dos en la lista de clases:
+
+::source{file="packages/volt/src/lib/utils.ts" title="utils.ts"}
+
+```html
+<!-- adds w-full; doesn't fight the variant's own width classes -->
+<volt-button class="w-full">Continue</volt-button>
+```
+
+Como por debajo es `tailwind-merge`, `class="bg-red-500"` sobrescribe de forma fiable la utilidad de fondo de la propia variante en vez de producir dos clases `bg-*` en conflicto en la salida final.
+
+## Color y forma frente a estructura
+
+Antes de editar las clases de Tailwind de un componente para cambiar un color o un radio de borde, comprueba si un [preset de tema](/es/docs/themes) ya lo cubre: `bg-primary`, `rounded-md` y `shadow-lg` se resuelven todos a través de tokens `--volt-*` que ya varían según el preset de color o de estilo. Escribir `bg-indigo-600` a mano en un componente copiado deja a ese componente fuera del cambio de tema; recurre a un preset de color o de estilo propio cuando el cambio deba aplicarse en todas partes. Las ediciones de componente son para cambios **estructurales** —nuevas variantes, nuevos slots, marcado distinto— que ningún token podría expresar.

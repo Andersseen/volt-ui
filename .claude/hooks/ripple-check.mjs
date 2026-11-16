@@ -51,13 +51,13 @@ function main(input) {
     if (!read('apps/web/src/app/lib/snippets/usage.ts').includes(`${constName}_USAGE`)) {
       missing.push(`\`apps/web/src/app/lib/snippets/usage.ts\` — add \`${constName}_USAGE\``);
     }
-    if (
-      !existsSync(
-        join(ROOT, `apps/web/src/app/pages/(components-docs)/docs/components/${name}.page.ts`)
-      )
-    ) {
+    // A component is documented by a host page or, once migrated, by a Doqs Markdown page
+    // (`pnpm check:docs-completeness` checks the Doqs page in every locale).
+    const hostPage = `apps/web/src/app/pages/(components-docs)/docs/components/${name}.page.ts`;
+    const doqsPage = `apps/web/src/authoring/docs/components/${name}.md`;
+    if (!existsSync(join(ROOT, hostPage)) && !existsSync(join(ROOT, doqsPage))) {
       missing.push(
-        `\`apps/web/src/app/pages/(components-docs)/docs/components/${name}.page.ts\` — demo page (needs \`export default\`)`
+        `\`${hostPage}\` (demo page, needs \`export default\`) or the Doqs page \`${doqsPage}\``
       );
     }
   }

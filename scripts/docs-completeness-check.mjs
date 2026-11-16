@@ -5,12 +5,18 @@
  * Compares every export in packages/volt/src/public-api.ts against:
  *   - a source snippet export in apps/web/src/app/lib/snippets/index.ts (<NAME>_SNIPPET)
  *   - a usage snippet export in apps/web/src/app/lib/snippets/usage.ts (<NAME>_USAGE)
- *   - a demo page under apps/web/src/app/pages/**\/docs/**\/<name>.page.ts
+ *   - a documentation page, exactly one of:
+ *       - a host page under apps/web/src/app/pages/**\/docs/**\/<name>.page.ts, or
+ *       - a Doqs Markdown page apps/web/src/content/docs/components/<name>.md that exists in
+ *         every published locale (docs, docs-es, docs-uk) and shows at least one live example:
+ *         a `::demo[id]` or `::playground[id]` whose id is registered in
+ *         apps/web/src/app/doqs/doq.config.ts.
+ *     Both at once is a gap too: Doqs would answer the URL and the host page would be dead code.
  *
  * `theme` is a set of functions (provideVoltTheme/applyVoltTheme), not a
  * renderable widget — there is nothing to put in a "Preview" tab. It's
  * documented as a full prose guide instead
- * (apps/web/src/app/pages/(getting-started)/docs/themes.page.ts) and is exempt
+ * (apps/web/src/authoring/docs/themes.md, served by Doqs) and is exempt
  * from all three checks below, not just the demo-page one.
  *
  * Usage: node scripts/docs-completeness-check.mjs
@@ -27,6 +33,9 @@ const PUBLIC_API = join(ROOT, 'packages/volt/src/public-api.ts');
 const SNIPPETS_INDEX = join(ROOT, 'apps/web/src/app/lib/snippets/index.ts');
 const SNIPPETS_USAGE = join(ROOT, 'apps/web/src/app/lib/snippets/usage.ts');
 const PAGES_ROOT = join(ROOT, 'apps/web/src/app/pages');
+const CONTENT_ROOT = join(ROOT, 'apps/web/src/content');
+const DOQ_LOCALE_DIRS = ['docs', 'docs-es', 'docs-uk'];
+const DOQ_CONFIG = join(ROOT, 'apps/web/src/app/doqs/doq.config.ts');
 
 const FULLY_EXEMPT = new Set(['theme']);
 const DEMO_PAGE_EXEMPT = new Set(['theme']);
@@ -57,7 +66,59 @@ function findAllPageFiles() {
   return files;
 }
 
+/** Ids registered under `demos:` and `playgrounds:` in the Doqs configuration (quoted or bare keys). */
+function registeredDoqIds() {
+  const src = readFileSync(DOQ_CONFIG, 'utf8');
+  const ids = new Set();
+  for (const block of ['demos', 'playgrounds']) {
+    const start = src.indexOf(`${block}: {`);
+    if (start === -1) continue;
+    let depth = 0;
+    let end = start;
+    for (let i = src.indexOf('{', start); i < src.length; i++) {
+      if (src[i] === '{') depth++;
+      if (src[i] === '}' && --depth === 0) {
+        end = i;
+        break;
+      }
+    }
+    const body = src.slice(src.indexOf('{', start) + 1, end);
+    // Keys at the first nesting level only.
+    let level = 0;
+    for (const line of body.split('\n')) {
+      const key = level === 0 && line.match(/^\s*(?:'([\w-]+)'|([\w]+))\s*:/);
+      if (key) ids.add(key[1] ?? key[2]);
+      level += (line.match(/[{[(]/g) ?? []).length - (line.match(/[}\])]/g) ?? []).length;
+    }
+  }
+  return ids;
+}
+
+/** Why the Doqs page for `name` is not a usable documentation page, or null when it is. */
+function doqsPageProblem(name, ids) {
+  const files = DOQ_LOCALE_DIRS.map(dir => join(CONTENT_ROOT, dir, 'components', `${name}.md`));
+  const present = files.filter(file => statSync(file, { throwIfNoEntry: false }));
+  if (present.length === 0) return 'none';
+  if (present.length !== files.length) {
+    return `components/${name}.md is missing in ${DOQ_LOCALE_DIRS.filter((_, i) => !present.includes(files[i])).join(', ')}`;
+  }
+  for (const file of files) {
+    const used = [
+      ...readFileSync(file, 'utf8').matchAll(/^::(?:demo|playground)\[([\w-]+)\]\s*$/gm),
+    ].map(m => m[1]);
+    if (!used.some(id => ids.has(id))) {
+      return `${file.replace(ROOT + '/', '')} has no registered ::demo or ::playground`;
+    }
+    const unknown = used.filter(id => !ids.has(id));
+    if (unknown.length) {
+      return `${file.replace(ROOT + '/', '')} uses unregistered ${unknown.join(', ')}`;
+    }
+  }
+  return null;
+}
+
 const components = extractComponents();
+const doqIds = registeredDoqIds();
 const snippetsIndexSrc = readFileSync(SNIPPETS_INDEX, 'utf8');
 const snippetsUsageSrc = readFileSync(SNIPPETS_USAGE, 'utf8');
 const allPageFiles = findAllPageFiles();
@@ -78,12 +139,22 @@ for (const name of components) {
 
   if (!DEMO_PAGE_EXEMPT.has(name)) {
     const hasPage = allPageFiles.some(f => f.endsWith(`/${name}.page.ts`));
-    if (!hasPage)
+    const doqs = doqsPageProblem(name, doqIds);
+    if (doqs !== null && doqs !== 'none') {
+      gaps.push({ name, kind: 'doqs-page', detail: doqs });
+    } else if (hasPage && doqs === null) {
+      gaps.push({
+        name,
+        kind: 'duplicate-page',
+        detail: `${name}.page.ts and a Doqs page both exist; Doqs serves the URL, remove the host page`,
+      });
+    } else if (!hasPage && doqs === 'none') {
       gaps.push({
         name,
         kind: 'demo-page',
-        detail: `no ${name}.page.ts found under apps/web/src/app/pages`,
+        detail: `no ${name}.page.ts under apps/web/src/app/pages and no Doqs page components/${name}.md`,
       });
+    }
   }
 }
 
@@ -121,7 +192,7 @@ for (const g of gaps) {
 }
 if (gaps.length === 0) {
   console.log(
-    'Every public-api export has a snippet, a usage example, and a demo page (or is exempt).'
+    'Every public-api export has a snippet, a usage example, and one documentation page — host or Doqs — (or is exempt).'
   );
 }
 

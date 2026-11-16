@@ -1585,5 +1585,30 @@
       "layouts": "Estructuras de página sin marca — shells de aplicación, pantallas de acceso, tableros. El esqueleto que llenas con tu producto.",
       "recipes": "Comportamiento en el tiempo — validación, búsqueda asíncrona, recuperación. Un flujo probado, no un aspecto."
     }
+  },
+  "doqs": {
+    "playground": {
+      "inputs": "Entradas",
+      "events": "Eventos",
+      "clearEvents": "Borrar",
+      "noEvents": "Aún no hay eventos. Interactúa con la vista previa para verlos aquí.",
+      "reset": "Restablecer",
+      "resetAnnouncement": "La zona de pruebas volvió a sus valores iniciales.",
+      "expand": "Ampliar",
+      "expandedPreview": "vista previa ampliada",
+      "close": "Cerrar",
+      "previewWidth": "Ancho de la vista previa",
+      "previewAnnouncement": "Ancho de la vista previa: {$label}, {$width}.",
+      "previewFullWidth": "ancho completo",
+      "notSet": "Sin definir",
+      "usageCode": "Código de uso",
+      "copyLabel": "Copiar el código {$label}",
+      "copiedLabel": "Código {$label} copiado",
+      "copyAnnouncement": "Código {$label} copiado al portapapeles.",
+      "clipboardUnavailable": "El acceso al portapapeles no está disponible.",
+      "required": "Se requiere un valor.",
+      "previewError": "No se pudo crear la vista previa: {$message}",
+      "codeExampleError": "// No se pudo generar este ejemplo de código: {$message}"
+    }
   }
 }

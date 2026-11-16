@@ -1585,5 +1585,30 @@
       "layouts": "Unbranded page structures — app shells, sign-in screens, boards. The skeleton you fill with your own product.",
       "recipes": "Behaviour over time — validation, async search, recovery. A tested workflow rather than a look."
     }
+  },
+  "doqs": {
+    "playground": {
+      "inputs": "Inputs",
+      "events": "Events",
+      "clearEvents": "Clear",
+      "noEvents": "No events yet. Interact with the preview to see them here.",
+      "reset": "Reset",
+      "resetAnnouncement": "Playground reset to its initial values.",
+      "expand": "Expand",
+      "expandedPreview": "expanded preview",
+      "close": "Close",
+      "previewWidth": "Preview width",
+      "previewAnnouncement": "Preview width: {$label}, {$width}.",
+      "previewFullWidth": "full width",
+      "notSet": "Not set",
+      "usageCode": "Usage code",
+      "copyLabel": "Copy {$label} code",
+      "copiedLabel": "{$label} code copied",
+      "copyAnnouncement": "{$label} code copied to the clipboard.",
+      "clipboardUnavailable": "Clipboard access is unavailable.",
+      "required": "A value is required.",
+      "previewError": "The preview could not be created: {$message}",
+      "codeExampleError": "// This code example could not be generated: {$message}"
+    }
   }
 }

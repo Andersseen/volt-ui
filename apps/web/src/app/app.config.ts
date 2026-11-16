@@ -5,7 +5,7 @@ import {
 } from '@angular/core';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { provideFileRouter } from '@analogjs/router';
+import { provideFileRouter, withExtraRoutes } from '@analogjs/router';
 import { provideEtymaAnalog, withLocalizedRoutes } from '@etyma/analog';
 import { provideEtyma } from '@etyma/angular';
 import { provideMovement } from 'angular-movement';
@@ -14,13 +14,16 @@ import { appI18n } from '@shared/i18n/i18n';
 import { provideSeo } from './lib/seo/seo.provider';
 import { SITE_IDENTITY } from '@shared/seo/seo.service';
 import { SITE_IDENTITY_VALUE, SITE_ORIGIN } from './lib/seo/site';
+import { DOQ_REGION_ROUTE } from './doqs/doq-region';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZonelessChangeDetection(),
     provideBrowserGlobalErrorListeners(),
     provideClientHydration(withEventReplay()),
-    provideFileRouter(withLocalizedRoutes()),
+    // The Doqs region first: Etyma's localized routes end in a catch-all that would otherwise answer a
+    // Markdown page's URL before Doqs could claim it. It loads lazily, only under /docs.
+    provideFileRouter(withExtraRoutes([DOQ_REGION_ROUTE]), withLocalizedRoutes()),
     provideAnimationsAsync(),
     provideEtyma(appI18n),
     provideEtymaAnalog({
