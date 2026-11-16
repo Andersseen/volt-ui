@@ -130,6 +130,26 @@ test.describe('tooltip', () => {
     await page.keyboard.press('Escape');
     await expect(tip).toBeHidden();
   });
+
+  test('a string tooltip renders its text on hover and on focus, without a console error', async ({
+    page,
+  }) => {
+    const errors: string[] = [];
+    page.on('console', msg => {
+      if (msg.type() === 'error') errors.push(msg.text());
+    });
+    const trigger = page.getByRole('button', { name: 'String tip' });
+    await trigger.hover();
+    const tip = page.getByRole('tooltip');
+    await expect(tip).toHaveText('Plain text tip');
+    await expect(trigger).toHaveAttribute('aria-describedby', /.+/);
+    await page.mouse.move(2, 300);
+    await expect(tip).toBeHidden();
+
+    await trigger.focus();
+    await expect(tip).toHaveText('Plain text tip');
+    expect(errors.filter(e => e.includes('ngpTooltipTrigger'))).toEqual([]);
+  });
 });
 
 test.describe('dropdown menu', () => {

@@ -1,5 +1,9 @@
-import { booleanAttribute, Directive, input } from '@angular/core';
-import { NgpTooltipTrigger, provideTooltipConfig } from 'ng-primitives/tooltip';
+import { booleanAttribute, Directive, effect, input, untracked } from '@angular/core';
+import {
+  injectTooltipTriggerState,
+  NgpTooltipTrigger,
+  provideTooltipConfig,
+} from 'ng-primitives/tooltip';
 import type { NgpTooltipPlacement } from 'ng-primitives/tooltip';
 import type {
   NgpFlip,
@@ -20,8 +24,11 @@ import type {
   hostDirectives: [
     {
       directive: NgpTooltipTrigger,
+      // `ngpTooltipTrigger` is deliberately NOT aliased to `voltTooltip`: the primitive's input
+      // transform turns every string into `null` (ng-primitives 0.131), so `voltTooltip="Save"`
+      // reached it as "no content" and nothing ever showed. The content is pushed through the
+      // trigger state instead (see the constructor), where strings are rendered as text.
       inputs: [
-        'ngpTooltipTrigger: voltTooltip',
         'ngpTooltipTriggerPlacement: placement',
         'ngpTooltipTriggerOffset: offset',
         'ngpTooltipTriggerShowDelay: delay',
@@ -58,4 +65,13 @@ export class VoltTooltip {
   readonly position = input<NgpPosition | null>(null);
   readonly scrollBehavior = input<'reposition' | 'close'>('reposition');
   readonly cooldown = input(300);
+
+  private readonly triggerState = injectTooltipTriggerState();
+
+  constructor() {
+    effect(() => {
+      const content = this.voltTooltip();
+      untracked(() => this.triggerState().setTooltip(content));
+    });
+  }
 }
