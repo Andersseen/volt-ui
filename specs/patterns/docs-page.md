@@ -1,7 +1,11 @@
 # Pattern — Docs Page & Snippet Registration
 
-Every public component needs: demo page + source snippet + usage snippet. This is
-GUARDRAILS "ripple effects" 2–4 spelled out. Reference: `checkbox`.
+Every public component needs: a documentation page + source snippet + usage snippet. This is
+GUARDRAILS "ripple effects" 2–4 spelled out. Reference: `button` (a host page).
+
+> Form Field, Input, Checkbox and Select are documented by Doqs Markdown pages instead of a
+> `.page.ts` (see `docs/doqs-docs.md`, "Migrating the next page"). The snippets below still apply:
+> Storybook's generated docs read `usage.ts`.
 
 ## 1. Demo page
 

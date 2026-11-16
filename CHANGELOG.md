@@ -7,6 +7,58 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Forms contract hardening — `@voltui/components`, `@voltui/cli`
+
+Backward compatible: one additive input (`required` on Select), nothing removed or renamed. Each fix has a
+regression test that failed first; the Checkbox and Select ones run against both headless backends.
+
+#### Added
+
+- **Select — `required`.** Exposes `aria-required="true"` on the combobox trigger; with `formControl` /
+  `ngModel` it also adds Angular's required validator, as on Input. Same input on the Quartz Select.
+
+#### Fixed
+
+- **Select — touched while choosing.** A pointer press on an option moved focus into the popup, which
+  blurred the trigger and marked the control touched _before_ the value was committed: a required select
+  briefly showed (and announced) its error while the reader was choosing. Focus moving into the select's
+  own popup is no longer leaving the field; dismissing the popup by clicking elsewhere still is. (The Quartz
+  Select already behaved this way and passes the same contract test.)
+- **Select — disabled options.** Options with `disabled` now carry `aria-disabled="true"`. The primitive
+  only wrote `data-disabled`, so assistive technology was not told and the dimmed style
+  (`aria-disabled:opacity-50`) never applied.
+- **Native Select — consumer `id`.** `<select voltNativeSelect id="fruit">` kept a generated id instead of
+  `fruit`, so `<label for="fruit">` named nothing. The `id` input of the primitive is now exposed.
+- **Checkbox — bound `indeterminate` with Forms.** The Forms setup write (and any write of the value the
+  checkbox already has, e.g. a "select all" parent re-syncing) cleared a bound `[indeterminate]="true"`,
+  which the parent's unchanged binding never sent again. Only a write that changes the value resolves the
+  mixed state now. Both backends.
+- **Checkbox, Input — generated ids are numbered per application.** They came from module-level counters,
+  so on a server the same page rendered `volt-checkbox-58` on one request and `volt-checkbox-3` on the
+  next, never matching the browser's count during hydration. A per-application source (`volt-ids.ts`,
+  copied by the CLI like the other shared helpers) makes every request render the same ids.
+- **Form Field — stale error reference.** When a `<volt-error>` was removed because the value became
+  valid, its id stayed in the control's `aria-describedby`, pointing at an element that no longer existed.
+
+#### Documented
+
+- The error-announcement policy of `<volt-error>` (an alert, announced when inserted: render it once the
+  field is touched, not per keystroke), the Select keyboard contract (no typeahead) and the trigger label
+  (`displayWith`, because closed options are not rendered).
+
+### voltui.dev documentation on Doqs (site only — no package change)
+
+- The introduction, themes and customization guides and the Form Field, Input, Checkbox and Select pages
+  are Markdown served by Doqs 0.15 (`@doqs/analog`, upgraded from 0.13) at their existing URLs, in
+  English, Spanish and Ukrainian, with live examples shown as their own source and interactive
+  playgrounds built on the real components. The rest of the documentation is unchanged. The Doqs region
+  is loaded only under `/docs`. See `docs/doqs-docs.md`.
+- `/es/docs` and `/uk/docs` now redirect to the introduction in that language; they used to land on the
+  unprefixed `/docs/introduction`.
+- Corrected copy: the introduction listed three installation options after announcing two, and described
+  Volt as built only on ng-primitives; the themes guide pointed at a moved file and left out
+  `data-density`.
+
 ### Component polish — `@voltui/components`, `@voltui/cli`
 
 Additive: no selector, input, output or Forms contract was removed or renamed.

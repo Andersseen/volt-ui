@@ -17,10 +17,10 @@ node scripts/check-seo.mjs --app recipes
 
 ## Documentation with Doqs (`/docs`)
 
-Recipes is the first site to adopt [Doqs](https://github.com/Andersseen/doqs) (`@doqs/analog`, 0.12) — a dogfooding trial before the same is done on voltui.dev.
+Recipes is the first site to adopt [Doqs](https://github.com/Andersseen/doqs) (`@doqs/analog`, 0.12; now 0.15) — a dogfooding trial before the same is done on voltui.dev.
 
 - Content: `apps/recipes/src/content/docs` (English), `docs-es`, `docs-uk`; matched by slug. Frontmatter `title`, `description`, `group`, `order`.
-- Wiring: `src/doq.paths.ts` (paths + locales, shared with `vite.config.ts`), `app.config.ts` (`doqRoutes` registered **before** `withLocalizedRoutes()`, `provideContent`, `provideDoq`), `lib/doq-i18n.ts` (`provideEtymaDoqI18n()`: the 0.12 `DoqI18nAdapter` reporting Etyma's locale and translating Doqs's interface text from Glossa — `recipes.doqs.*`, plus existing `ui.docs.*`/`ui.copy.*` keys; Etyma keeps owning the URL prefix, `<html lang>`, canonical, hreflang and the one language switcher), `styles.css` (`--host-docs-*` mapped onto the Volt tokens, so presets and dark mode apply).
+- Wiring: `src/doq.paths.ts` (paths + locales, shared with `vite.config.ts`), `app.config.ts` (`doqRoutes` registered **before** `withLocalizedRoutes()`, `provideContent`, `provideDoq`), `lib/doq-i18n.ts` (`provideRecipesDoqI18n()`, built on the adapter both apps share in `packages/shared/doqs/etyma-doq-i18n.ts`: the 0.12 `DoqI18nAdapter` reporting Etyma's locale and translating Doqs's interface text from Glossa — `recipes.doqs.*`, plus existing `ui.docs.*`/`ui.copy.*` keys; Etyma keeps owning the URL prefix, `<html lang>`, canonical, hreflang and the one language switcher), `styles.css` (imports `packages/shared/styles/doqs.css`: `--host-docs-*` mapped onto the Volt tokens, so presets and dark mode apply). voltui.dev adopted the same setup in v1.8; see `docs/doqs-docs.md`.
 - SEO: `lib/seo/docs-pages.ts` reads each file's frontmatter, so the page head, sitemap and `llms.txt` use the title/description the reader sees, in each language. `/docs` (the index) stays `noindex`.
 - A live recipe inside a guide: `::demo[async-search]` (registered in `app.config.ts`).
 - Prerendering: `doqPrerenderRoutes(doqPaths)` prerenders every doc page in all three languages; the catalog pages stay server-rendered.
