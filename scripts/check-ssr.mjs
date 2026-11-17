@@ -133,11 +133,25 @@ async function restartServer() {
   await ready();
 }
 
+/**
+ * Etyma's two messages for a catalog that did not arrive: the request failed, or a 200 whose body
+ * could not be read as JSON (it says "not valid JSON" also when the connection drops mid-body,
+ * which is how a Recipes shard of PR #234 failed while Glossa served valid JSON).
+ */
+const CATALOG_LOAD_FAILURE =
+  /Failed to fetch message catalog|Message catalog for "[^"]+" from "[^"]+" is not valid JSON/;
+
 /** Whether Node, outside the worker, can read the catalog the worker failed to fetch. */
 async function catalogReachable(url) {
   try {
     const res = await fetch(url, { signal: AbortSignal.timeout(10_000) });
-    return `${res.status}`;
+    const body = await res.text();
+    try {
+      JSON.parse(body);
+      return `HTTP ${res.status}, ${body.length} chars of valid JSON`;
+    } catch {
+      return `HTTP ${res.status}, ${body.length} chars, not JSON`;
+    }
   } catch (error) {
     return `unreachable (${error.cause?.code ?? error.message})`;
   }
@@ -173,8 +187,8 @@ const known = [];
 try {
   await ready();
   for (const route of routes) {
-    // The worker fetches the Glossa catalog over the network; a dropped connection is not an
-    // SSR defect in our code, so that one cause (and only that one) is retried.
+    // The worker fetches the Glossa catalog over the network; a catalog that did not arrive is
+    // not an SSR defect in our code, so that one cause (and only that one) is retried.
     let status = 0;
     let errors = [];
     // A dropped connection — or a short Glossa outage, which has already happened in CI —
@@ -197,8 +211,7 @@ try {
       await quiet();
       const chunk = log.slice(before).replace(/\x1b\[[0-9;]*m/g, '');
       errors = chunk.match(/ERROR[^\n]*/g) ?? [];
-      networkOnly =
-        errors.length > 0 && errors.every(e => /Failed to fetch message catalog/.test(e));
+      networkOnly = errors.length > 0 && errors.every(e => CATALOG_LOAD_FAILURE.test(e));
       if (!(networkOnly || (status === 500 && errors.length === 0))) break;
     }
     if (networkOnly) {
