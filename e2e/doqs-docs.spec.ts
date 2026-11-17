@@ -7,7 +7,7 @@ import { expect, test } from './fixtures';
  * The Doqs documentation region of voltui.dev (apps/web/src/app/doqs).
  *
  * Doqs owns the pages that have a Markdown file; every other /docs URL stays a host page. These
- * tests hold that boundary from the reader's side: one shell and one `<main>` per page, Etyma
+ * tests hold that boundary from the reader's side: the site's one documentation shell and one `<main>` per page, Etyma
  * still owning the language and the head, real Volt components in the playgrounds, and the Select
  * list reachable inside the expanded preview. They run against the dev server and the built
  * worker alike (`E2E_SERVER=wrangler`).
@@ -58,10 +58,11 @@ test.describe('Doqs owns the migrated pages', () => {
 
         await expect(page.locator('main')).toHaveCount(1);
         await expect(page.locator('h1')).toHaveCount(1);
-        await expect(
-          page.getByRole('navigation', { name: /Documentation|Documentación|Документація/ })
-        ).toHaveCount(1);
-        await expect(page.locator('app-docs-page-shell')).toHaveCount(0);
+        // The site's own documentation shell frames the page: one sidebar listing host and
+        // Markdown pages alike, not a Doqs sidebar that only knows the Markdown ones.
+        await expect(page.locator('app-docs-page-shell')).toHaveCount(1);
+        await expect(page.locator('app-docs-page-shell doq-docs')).toHaveCount(1);
+        await expect(page.locator('.doq-sidebar, .doq-toc')).toHaveCount(0);
         await expect(page.locator('header').first()).toBeVisible();
         await expect(page.locator('footer').first()).toBeVisible();
         expect(await page.evaluate(() => document.documentElement.lang)).toBe(
@@ -110,11 +111,11 @@ test.describe('navigation across the boundary', () => {
     await open(page, '/docs/components/button');
     await page.locator('app-docs-page-shell aside').getByRole('link', { name: 'Checkbox' }).click();
     await expect(page).toHaveURL(/\/docs\/components\/checkbox$/);
-    await expect(page.locator('app-docs-page-shell')).toHaveCount(0);
+    await expect(page.locator('doq-docs')).toHaveCount(1);
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('Checkbox');
     await page.waitForLoadState('networkidle');
 
-    await page.locator('.doq-sidebar').getByRole('link', { name: 'Select' }).click();
+    await page.locator('app-docs-page-shell aside').getByRole('link', { name: 'Select' }).click();
     await expect(page).toHaveURL(/\/docs\/components\/select$/);
 
     await page.waitForLoadState('networkidle');
@@ -125,18 +126,35 @@ test.describe('navigation across the boundary', () => {
     await page.waitForLoadState('networkidle');
     await page.goBack();
     await expect(page).toHaveURL(/\/docs\/components\/button$/);
-    await expect(page.locator('app-docs-page-shell')).toHaveCount(1);
+    await expect(page.locator('doq-docs')).toHaveCount(0);
     await page.waitForLoadState('networkidle');
     await page.goForward();
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('Checkbox');
     await expect(page.locator('main')).toHaveCount(1);
   });
 
+  test('a Markdown page keeps the whole documentation sidebar and pager', async ({ page }) => {
+    await open(page, '/docs/customization');
+    const sidebar = page.locator('app-docs-page-shell aside').first();
+    for (const name of ['Introduction', 'Versioning & Stability', 'Agent Skills', 'MCP Server']) {
+      await expect(sidebar.getByRole('link', { name, exact: true })).toBeVisible();
+    }
+    // The pager follows the site's order across the boundary: Customization → Versioning (host).
+    await page
+      .locator('app-docs-pager')
+      .getByRole('link', { name: /Versioning/ })
+      .click();
+    await expect(page).toHaveURL(/\/docs\/versioning$/);
+    await expect(page.locator('doq-docs')).toHaveCount(0);
+  });
+
   test('the outline links to the headings of the page', async ({ page }) => {
     await open(page, '/docs/components/select');
-    // Doqs renders the outline as a labelled <aside>.
-    const toc = page.getByRole('complementary', { name: 'On this page' });
-    await toc.getByRole('link', { name: 'Forms and accessibility' }).click();
+    // The site shell's outline, the same one host pages show (e2e/docs-toc.spec.ts).
+    await page
+      .getByRole('navigation', { name: 'On this page' })
+      .getByRole('button', { name: 'Forms and accessibility' })
+      .click();
     await expect(page).toHaveURL(/#forms-and-accessibility$/);
     await expect(page.getByRole('heading', { name: 'Forms and accessibility' })).toBeInViewport();
   });

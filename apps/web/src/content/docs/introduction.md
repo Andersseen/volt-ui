@@ -6,7 +6,7 @@ group: 'Getting Started'
 order: 1
 ---
 
-The components are built on [ng-primitives](https://ng-primitives.dev). An experimental second entry point, `@voltui/components/quartz`, runs nine of them (Accordion, Checkbox, Listbox, Radio, Select, Switch, Tabs, Toggle and Toggle Group) on Quartz Headless with the same selectors and inputs. It is in the source of the next release; the version published on npm today (1.3.3) does not include it yet.
+The components are built on [ng-primitives](https://ng-primitives.dev). An experimental second entry point, `@voltui/components/quartz`, runs nine of them (Accordion, Checkbox, Listbox, Radio, Select, Switch, Tabs, Toggle and Toggle Group) on Quartz Headless with the same selectors and inputs. It ships with `@voltui/components` since 1.4.0.
 
 ## AI Tools for Consumers
 

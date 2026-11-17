@@ -8,3 +8,19 @@
 /* Doqs (the Markdown documentation pages below /docs), mapped onto the shared Volt tokens. */
 @import '@doqs/analog/styles.css';
 @import '../../../packages/shared/styles/doqs.css';
+
+/*
+ * On voltui.dev a Doqs page sits inside the site's own documentation shell (doqs/doq-host-layout.ts),
+ * which owns the sidebar, breadcrumb, outline and pager for host and Markdown pages alike. Doqs's
+ * breadcrumb and pager only know the Markdown pages, so they are not shown; its frame takes the
+ * shell's reading column instead of laying out a second page grid.
+ */
+app-doq-host-layout .doq-root {
+  display: block;
+  max-width: none;
+  padding: 0;
+}
+app-doq-host-layout .doq-topbar,
+app-doq-host-layout .doq-pagination {
+  display: none;
+}

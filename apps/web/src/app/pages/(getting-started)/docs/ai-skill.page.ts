@@ -5,7 +5,7 @@ import { VoltNativeButton } from 'volt';
 import skillMarkdown from '../../../../../../../.agents/skills/volt-ui/SKILL.md?raw';
 
 /** The skills the installer writes, read from their files so the page cannot list a stale set. */
-const SKILL_FILES = import.meta.glob('../../../../../cli/agent/skills/*/SKILL.md', {
+const SKILL_FILES = import.meta.glob('../../../../../../../cli/agent/skills/*/SKILL.md', {
   query: '?raw',
   import: 'default',
   eager: true,

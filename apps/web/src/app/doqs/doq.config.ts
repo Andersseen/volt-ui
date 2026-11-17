@@ -39,6 +39,9 @@ export const doqConfig = defineDoqConfig({
   ...doqPaths,
   landmark: 'host',
   unmatched: 'continue',
+  // The site's shell (doq-host-layout.ts) draws the navigation and the outline for every page.
+  sidebar: 'hidden',
+  showTableOfContents: false,
   demos: {
     'input-example': InputExample,
     'checkbox-example': CheckboxExample,

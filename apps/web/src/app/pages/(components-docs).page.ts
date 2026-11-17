@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { DocsPageShell } from '../components/docs-page-shell';
-import type { DocsSidebarGroup } from '../components/docs/docs-nav-list';
-import { COMPONENT_GROUPS } from '../lib/component-metadata';
+import { COMPONENTS_SIDEBAR } from '../lib/docs-sidebar';
 import { injectAppI18n } from '@shared/i18n/i18n';
 
 @Component({
@@ -24,23 +23,6 @@ export default class ComponentsLayout {
 
   protected readonly t = this.translations.t;
 
-  /*
-   * A plain field again, now that the labels are keys: nothing here holds text, so there
-   * is nothing to rebuild when the language changes — the sidebar resolves each key as it
-   * renders.
-   */
-  readonly groups: DocsSidebarGroup[] = [
-    {
-      links: [{ path: '/docs/components', labelKey: 'catalog.all', exact: true }],
-    },
-    ...COMPONENT_GROUPS.map(group => ({
-      headingKey: group.titleKey,
-      links: group.components.map(component => ({
-        path: component.path,
-        labelKey: component.shortLabelKey ?? component.labelKey,
-        label: component.label,
-        stability: component.stability,
-      })),
-    })),
-  ];
+  /** Shared with the Doqs pages (`doqs/doq-host-layout.ts`), so both list every component. */
+  readonly groups = COMPONENTS_SIDEBAR;
 }

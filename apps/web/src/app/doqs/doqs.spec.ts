@@ -7,7 +7,10 @@ import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
+import { flattenLinks } from '../lib/docs-nav';
+import { COMPONENTS_SIDEBAR, GUIDE_SIDEBAR } from '../lib/docs-sidebar';
 import { doqConfig } from './doq.config';
+import { isComponentPage } from './doq-host-layout';
 import { provideSiteDoqI18n } from './doq-messages';
 import { DOQ_REGION_ROUTE } from './doq-region';
 import { CheckboxExample } from './examples/checkbox-example';
@@ -88,6 +91,41 @@ describe('the Doqs configuration', () => {
     );
     expect(code({ size: 'lg', state: 'error', disabled: true })).toContain('size="lg"');
     expect(code({ size: 'lg', state: 'error', disabled: true })).toContain('[disabled]="true"');
+  });
+});
+
+describe('one documentation navigation for host and Doqs pages', () => {
+  // Doqs's own sidebar, outline and pager know only the Markdown pages: on a migrated page the
+  // reader lost the guides, the AI tools and every host component page. The site's shell frames
+  // Doqs pages instead (doq-host-layout.ts), and Doqs's navigation stays off.
+  it('turns the Doqs sidebar and outline off', () => {
+    expect(doqConfig.sidebar).toBe('hidden');
+    expect(doqConfig.showTableOfContents).toBe(false);
+  });
+
+  it('lists every Markdown page in the site sidebar of its section', () => {
+    const guides = flattenLinks(GUIDE_SIDEBAR).map(link => link.path);
+    const components = flattenLinks(COMPONENTS_SIDEBAR).map(link => link.path);
+    const root = join(process.cwd(), 'apps/web/src/content/docs');
+    const pages = readdirSync(root, { recursive: true })
+      .map(String)
+      .filter(file => file.endsWith('.md'))
+      .map(file => `/docs/${file.replace(/\.md$/, '')}`);
+
+    expect(pages.length).toBeGreaterThan(0);
+    for (const path of pages) {
+      expect(isComponentPage(path) ? components : guides, path).toContain(path);
+    }
+    // Host pages stay in the same lists, so the sidebar is never only the Markdown pages.
+    expect(guides).toEqual(expect.arrayContaining(['/docs/versioning', '/docs/ai-skill']));
+    expect(components).toEqual(expect.arrayContaining(['/docs/components/button']));
+  });
+
+  it('picks the section from the URL, in every locale', () => {
+    expect(isComponentPage('/docs/components/select')).toBe(true);
+    expect(isComponentPage('/uk/docs/components/input?x=1#api')).toBe(true);
+    expect(isComponentPage('/docs/introduction')).toBe(false);
+    expect(isComponentPage('/es/docs/themes#dark-mode')).toBe(false);
   });
 });
 
