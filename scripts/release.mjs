@@ -23,7 +23,7 @@
 import { execFileSync, execSync } from 'node:child_process';
 import { appendFileSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { fetchPackument, runRelease } from './lib/release-core.mjs';
+import { checkTrustedPublishing, fetchPackument, runRelease } from './lib/release-core.mjs';
 
 /** Packages published from this repo, in publish order. */
 export const PACKAGES = [
@@ -53,6 +53,10 @@ export const PACKAGES = [
 const readManifest = file => JSON.parse(readFileSync(file, 'utf8'));
 
 const realPublisher = {
+  async preflight(pkg) {
+    const { checked } = await checkTrustedPublishing(pkg.name);
+    if (checked) console.log(`  ✓ npm accepts this job as Trusted Publisher of ${pkg.name}`);
+  },
   async publish(pkg) {
     console.log(`  $ ${pkg.publish}`);
     // OIDC: npm picks the identity up from the job; provenance is requested explicitly so it can

@@ -96,9 +96,14 @@ Production deploys are serialised (`concurrency: deploy-production`).
 
 ## Cutting a release
 
-1. Open a PR that bumps the version of whatever you're releasing, e.g. in
-   `packages/volt/package.json`, with the `CHANGELOG.md` entry. Label features that are not production-ready
-   (experimental) in the changelog and docs.
+1. Open a PR that bumps the version of whatever you're releasing with `pnpm release:bump <patch|minor|major>`
+   (`--package=cli` / `--package=agent` for the others; the default is `@voltui/components`). It computes the
+   next version **from npm**, not from the source, and writes every place that carries it: the package's
+   `package.json`, for components also the workspace `package.json`, the CHANGELOG (`[Unreleased]` becomes the
+   new version) and the site stats. If the source already holds a version npm does not have (a release that
+   has not gone out yet), it bumps nothing and says so: add the changes to that version's CHANGELOG entry
+   instead of skipping a number. Label features that are not production-ready (experimental) in the changelog
+   and docs.
 2. Merge to `main`. CI runs; when it succeeds on the tip of `main`, **Release** publishes the bumped package(s),
    verifies them on npm and creates the GitHub Releases.
 3. The website follows on its own (above).
@@ -110,12 +115,22 @@ successful CI run for that commit, and re-running is always safe.
 
 | Situation                                          | What happens / what to do                                                               |
 | -------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| Publish rejected (Trusted Publisher missing/wrong) | Run halts, no GitHub Release. Fix the npm setting, re-run Release.                      |
+| Publish rejected (Trusted Publisher missing/wrong) | Run halts, no GitHub Release. Fix the npm setting, re-run Release (see below).          |
 | Published, GitHub Release creation failed          | Reported as failed; the next run creates the Release. The site is refreshed regardless. |
 | Published but tag/Release missing (old failure)    | The next run creates it at the commit that introduced the version.                      |
 | Registry unreachable / 5xx / 401                   | Run stops without publishing. Re-run later.                                             |
 | Two runs at once                                   | `concurrency: release` serialises them; the second finds everything published.          |
 | Version lower than npm's                           | Refused. Fix the manifest; never publish a rollback.                                    |
+
+### "npm error 404 Not Found - PUT" when publishing
+
+npm 11 never fails on a rejected OIDC exchange: it writes the reason to its verbose log, publishes without a
+credential and the registry answers `E404`. That is how 1.4.0 and 1.4.1 of `@voltui/components` (and 1.4.0 of
+`@voltui/cli`) stayed off npm while the source moved on. `scripts/release.mjs` now does the same exchange
+**before** publishing (`checkTrustedPublishing`, `scripts/lib/release-core.mjs`). When npm refuses, the run
+publishes nothing and the job log says what npm answered and the identity it was shown (`repository`,
+`workflow_ref`, `event_name`, `ref`): compare those with the Trusted Publisher on
+`https://www.npmjs.com/package/<name>/access` (table above). The token is never printed.
 
 ## Preview locally
 

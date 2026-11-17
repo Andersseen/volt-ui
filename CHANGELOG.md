@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Release tooling
+
+- **Trusted Publishing preflight.** Every release from 1.4.0 on failed with a bare `npm error 404 … PUT`:
+  npm 11 swallows a rejected OIDC exchange and publishes without a credential. The release script now does
+  the exchange first and, when npm refuses, publishes nothing and reports npm's answer and the identity it
+  was shown. `@voltui/components` 1.4.0 and 1.4.1 and `@voltui/cli` 1.4.0 are not on npm yet (npm `latest`
+  is 1.3.3); the next successful run publishes the versions in the source (components 1.4.1, CLI 1.4.0).
+- **`pnpm release:bump <patch|minor|major>`** replaces `release:minor` (which only ran `release:check`). It
+  computes the next version from npm, updates every file that carries it, and refuses to skip a version that
+  was never published.
+
+### Docs site
+
+- Doqs pages (Introduction, Themes, Customization, Form Field, Input, Checkbox, Select) render in the site's
+  documentation shell again: the full sidebar, outline and pager instead of a sidebar listing only the
+  Markdown pages. The Agent Skills page lists the skills again (it read "0 skills").
+
 ## [1.4.1] - 2026-11-16
 
 Patch release of `@voltui/components`. Backward compatible: no selector, input or output is removed or
@@ -251,6 +268,9 @@ otherwise they need 1.4.1.
   parity suites for the dual-backend consumers (`e2e/quartz-consumer/`).
 
 ## [1.4.0] - 2026-11-02
+
+> Never published to npm: the release job was refused by npm (see 1.4.1 and "Release tooling" above). Its
+> changes ship in 1.4.1.
 
 Minor release: the first opt-in alternative headless backend, **experimental**. Additive; every existing import,
 selector and the default ng-primitives implementation are unchanged. `1.4.0` was prepared on 2026-10-30 but never

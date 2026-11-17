@@ -4,6 +4,7 @@ import { doqRoutes, provideDoq } from '@doqs/analog';
 import { withEtymaLocale } from '@shared/doqs/etyma-doq-i18n';
 import { doqConfig } from './doq.config';
 import { provideSiteDoqI18n } from './doq-messages';
+import DoqHostLayout from './doq-host-layout';
 
 /**
  * The documentation region, loaded only when a URL is under `/docs` (see `doq-region.ts`).
@@ -11,11 +12,13 @@ import { provideSiteDoqI18n } from './doq-messages';
  * Everything Doqs needs lives on this lazily loaded route: its configuration with the demos and
  * playgrounds, the Markdown renderer and the Etyma adapter. `doqRoutes()` claims only the URLs that
  * have a Markdown document (`unmatched: 'continue'`); any other `/docs/*` URL finds no child here and
- * the router carries on to the host's own file routes.
+ * the router carries on to the host's own file routes. `DoqHostLayout` frames every page in the
+ * site's documentation shell, so a Markdown page keeps the full sidebar, outline and pager.
  */
 export const DOQ_ROUTES: Routes = [
   {
     path: '',
+    component: DoqHostLayout,
     providers: [
       provideContent(withMarkdownRenderer()),
       provideDoq(doqConfig),

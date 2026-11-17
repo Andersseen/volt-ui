@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import {
+  checkTrustedPublishing,
   compareSemver,
   fetchPackument,
   planPackage,
@@ -7,6 +8,7 @@ import {
   RegistryError,
 } from './lib/release-core.mjs';
 import { evaluateTrigger } from './lib/release-guard.mjs';
+import { incrementVersion, planBump, releaseChangelog } from './lib/version-bump.mjs';
 
 const PKG = { name: '@voltui/components', versionFile: 'v.json', tagPrefix: 'components' };
 const SHA = 'a'.repeat(40);
@@ -353,6 +355,101 @@ describe('runRelease', () => {
   });
 });
 
+describe('Trusted Publishing preflight', () => {
+  const jwt = claims =>
+    ['e30', Buffer.from(JSON.stringify(claims)).toString('base64url'), 'sig'].join('.');
+  const ACTIONS = {
+    GITHUB_ACTIONS: 'true',
+    ACTIONS_ID_TOKEN_REQUEST_URL: 'https://token.actions.example/id?x=1',
+    ACTIONS_ID_TOKEN_REQUEST_TOKEN: 'request-bearer',
+  };
+  const reply = (status, body) => ({
+    status,
+    ok: status >= 200 && status < 300,
+    json: async () => body,
+  });
+  const idToken = jwt({
+    repository: 'Andersseen/volt-ui',
+    workflow_ref: 'Andersseen/volt-ui/.github/workflows/release.yml@refs/heads/main',
+    event_name: 'workflow_run',
+  });
+
+  it('is skipped off GitHub Actions, where npm uses the local login', async () => {
+    const fetchImpl = vi.fn();
+    await expect(
+      checkTrustedPublishing('@voltui/components', { env: {}, fetchImpl })
+    ).resolves.toEqual({ checked: false });
+    expect(fetchImpl).not.toHaveBeenCalled();
+  });
+
+  it('passes when npm exchanges the job identity for a publish token', async () => {
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValueOnce(reply(200, { value: idToken }))
+      .mockResolvedValueOnce(reply(201, { token: 'short-lived' }));
+    await expect(
+      checkTrustedPublishing('@voltui/components', { env: ACTIONS, fetchImpl })
+    ).resolves.toEqual({ checked: true });
+    expect(fetchImpl.mock.calls[0][0]).toContain('audience=npm%3Aregistry.npmjs.org');
+    expect(fetchImpl.mock.calls[1][0]).toBe(
+      'https://registry.npmjs.org/-/npm/v1/oidc/token/exchange/package/@voltui%2fcomponents'
+    );
+    expect(fetchImpl.mock.calls[1][1].headers.authorization).toBe(`Bearer ${idToken}`);
+  });
+
+  // npm itself swallows this and then answers the PUT with a bare E404 (every run since 1.4.0).
+  it("names npm's answer and the identity it was shown, never the token", async () => {
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValueOnce(reply(200, { value: idToken }))
+      .mockResolvedValueOnce(reply(404, { message: 'No matching trusted publisher found' }));
+    const error = await checkTrustedPublishing('@voltui/components', {
+      env: ACTIONS,
+      fetchImpl,
+    }).catch(e => e);
+    expect(error.message).toContain('HTTP 404: No matching trusted publisher found');
+    expect(error.message).toContain('repository=Andersseen/volt-ui');
+    expect(error.message).toContain('workflows/release.yml@refs/heads/main');
+    expect(error.message).toContain('event_name=workflow_run');
+    expect(error.message).not.toContain(idToken);
+  });
+
+  it('fails without an OIDC identity in the job', async () => {
+    await expect(
+      checkTrustedPublishing('@voltui/components', {
+        env: { GITHUB_ACTIONS: 'true' },
+        fetchImpl: vi.fn(),
+      })
+    ).rejects.toThrow(/id-token: write/);
+  });
+
+  it('a failed preflight publishes nothing and halts the run', async () => {
+    const { run, publisher, github } = setup();
+    publisher.preflight = vi.fn(async () => {
+      throw new Error('npm refused this job');
+    });
+    const report = await run();
+    expect(publisher.publish).not.toHaveBeenCalled();
+    expect(github.createRelease).not.toHaveBeenCalled();
+    expect(report.ok).toBe(false);
+    expect(report.results[0]).toMatchObject({
+      status: 'publish-failed',
+      detail: 'not published: npm refused this job',
+    });
+  });
+
+  it('is not run for a version npm already has, nor in a dry run', async () => {
+    const preflight = vi.fn();
+    const published = setup({ local: '1.3.3' });
+    published.publisher.preflight = preflight;
+    await published.run();
+    const dry = setup();
+    dry.publisher.preflight = preflight;
+    await dry.run({ dryRun: true });
+    expect(preflight).not.toHaveBeenCalled();
+  });
+});
+
 describe('release trigger guard', () => {
   const TIP = SHA;
   const run = (over = {}) => ({
@@ -463,5 +560,43 @@ describe('published version for the website', () => {
       await resolvePublishedVersion({ previous: '1.3.3', fixture: '2.0.0', fetchPackumentImpl })
     ).toBe('2.0.0');
     expect(fetchPackumentImpl).not.toHaveBeenCalled();
+  });
+});
+
+describe('release:bump', () => {
+  it('increments patch, minor and major', () => {
+    expect(incrementVersion('1.4.1', 'patch')).toBe('1.4.2');
+    expect(incrementVersion('1.4.1', 'minor')).toBe('1.5.0');
+    expect(incrementVersion('1.4.1', 'major')).toBe('2.0.0');
+    expect(() => incrementVersion('1.4.1', 'micro')).toThrow(/unknown bump/);
+  });
+
+  it('bumps from what npm has when the source is released', () => {
+    expect(planBump({ local: '1.4.1', published: ['1.3.3', '1.4.1'], type: 'patch' })).toEqual({
+      action: 'bump',
+      version: '1.4.2',
+      previous: '1.4.1',
+    });
+    expect(planBump({ local: '1.4.1', published: ['1.4.1'], type: 'minor' }).version).toBe('1.5.0');
+  });
+
+  // The state the repository was in: source 1.4.1, npm still 1.3.3 after failed releases.
+  it('keeps a version npm does not have yet instead of skipping numbers', () => {
+    for (const type of ['patch', 'minor']) {
+      const plan = planBump({ local: '1.4.1', published: ['1.3.3'], type });
+      expect(plan.action, type).toBe('keep');
+      expect(plan.reason).toMatch(/1\.4\.1 is not on npm yet/);
+    }
+    // A bigger step than the pending one is still possible.
+    expect(planBump({ local: '1.4.1', published: ['1.3.3'], type: 'major' }).version).toBe('2.0.0');
+  });
+
+  it('releases the Unreleased section of the CHANGELOG', () => {
+    const text = '# Changelog\n\n## [Unreleased]\n\n- Fixed a thing.\n\n## [1.4.1] - 2026-11-16\n';
+    expect(releaseChangelog(text, '1.4.2', '2026-12-01')).toBe(
+      '# Changelog\n\n## [Unreleased]\n\n## [1.4.2] - 2026-12-01\n\n- Fixed a thing.\n\n## [1.4.1] - 2026-11-16\n'
+    );
+    expect(() => releaseChangelog(text, '1.4.1', '2026-12-01')).toThrow(/already has 1\.4\.1/);
+    expect(() => releaseChangelog('# Changelog\n', '1.4.2', 'x')).toThrow(/Unreleased/);
   });
 });

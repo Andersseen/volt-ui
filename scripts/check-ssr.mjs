@@ -103,16 +103,59 @@ if (!existsSync(join(ROOT, OUTPUT))) {
 }
 
 let log = '';
-const server = spawn(
-  join(ROOT, 'node_modules/.bin/wrangler'),
-  ['pages', 'dev', '--ip', '127.0.0.1', '--port', String(PORT)],
-  // From the app's folder, so its wrangler.toml (output dir, compatibility date) applies.
-  {
-    cwd: join(ROOT, 'apps', APP === 'recipes' ? 'recipes' : 'web'),
-    env: { ...process.env, NO_COLOR: '1', FORCE_COLOR: '0' },
+let server;
+function startServer() {
+  log = '';
+  server = spawn(
+    join(ROOT, 'node_modules/.bin/wrangler'),
+    ['pages', 'dev', '--ip', '127.0.0.1', '--port', String(PORT)],
+    // From the app's folder, so its wrangler.toml (output dir, compatibility date) applies.
+    {
+      cwd: join(ROOT, 'apps', APP === 'recipes' ? 'recipes' : 'web'),
+      env: { ...process.env, NO_COLOR: '1', FORCE_COLOR: '0' },
+    }
+  );
+  for (const stream of [server.stdout, server.stderr]) stream.on('data', d => (log += d));
+}
+startServer();
+
+/**
+ * A fresh worker. workerd keeps its outbound connections to Glossa for the whole run; when one
+ * of them dies it answers "Network connection lost" and retrying on the same worker kept failing
+ * for a full minute in CI (twice in November 2026) while Glossa itself answered. A new process
+ * opens new connections.
+ */
+async function restartServer() {
+  const exited = new Promise(resolve => server.once('exit', resolve));
+  server.kill('SIGTERM');
+  await Promise.race([exited, sleep(10_000)]);
+  startServer();
+  await ready();
+}
+
+/**
+ * Etyma's two messages for a catalog that did not arrive: the request failed, or a 200 whose body
+ * could not be read as JSON (it says "not valid JSON" also when the connection drops mid-body,
+ * which is how a Recipes shard of PR #234 failed while Glossa served valid JSON).
+ */
+const CATALOG_LOAD_FAILURE =
+  /Failed to fetch message catalog|Message catalog for "[^"]+" from "[^"]+" is not valid JSON/;
+
+/** Whether Node, outside the worker, can read the catalog the worker failed to fetch. */
+async function catalogReachable(url) {
+  try {
+    const res = await fetch(url, { signal: AbortSignal.timeout(10_000) });
+    const body = await res.text();
+    try {
+      JSON.parse(body);
+      return `HTTP ${res.status}, ${body.length} chars of valid JSON`;
+    } catch {
+      return `HTTP ${res.status}, ${body.length} chars, not JSON`;
+    }
+  } catch (error) {
+    return `unreachable (${error.cause?.code ?? error.message})`;
   }
-);
-for (const stream of [server.stdout, server.stderr]) stream.on('data', d => (log += d));
+}
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 async function ready() {
@@ -144,15 +187,23 @@ const known = [];
 try {
   await ready();
   for (const route of routes) {
-    // The worker fetches the Glossa catalog over the network; a dropped connection is not an
-    // SSR defect in our code, so that one cause (and only that one) is retried.
+    // The worker fetches the Glossa catalog over the network; a catalog that did not arrive is
+    // not an SSR defect in our code, so that one cause (and only that one) is retried.
     let status = 0;
     let errors = [];
     // A dropped connection — or a short Glossa outage, which has already happened in CI —
     // can outlast a couple of seconds, so back off between tries (0.5s, 1s, 2s, 4s, 8s, 16s,
-    // 30s — about a minute in total) instead of retrying into the same outage.
+    // 30s — about a minute in total) instead of retrying into the same outage. From the third
+    // try on, each retry gets a fresh worker: the dead connection lives in the worker.
+    let networkOnly = false;
     for (let attempt = 0; attempt < 8; attempt++) {
       if (attempt > 0) await sleep(Math.min(500 * 2 ** (attempt - 1), 30_000));
+      if (attempt >= 2 && networkOnly) {
+        console.log(
+          `  ${route}: catalog fetch failed in the worker; restarting it (try ${attempt + 1})`
+        );
+        await restartServer();
+      }
       const before = log.length;
       const res = await fetch(`http://127.0.0.1:${PORT}${route}`);
       status = res.status;
@@ -160,15 +211,20 @@ try {
       await quiet();
       const chunk = log.slice(before).replace(/\x1b\[[0-9;]*m/g, '');
       errors = chunk.match(/ERROR[^\n]*/g) ?? [];
-      const networkOnly =
-        errors.length > 0 && errors.every(e => /Failed to fetch message catalog/.test(e));
+      networkOnly = errors.length > 0 && errors.every(e => CATALOG_LOAD_FAILURE.test(e));
       if (!(networkOnly || (status === 500 && errors.length === 0))) break;
+    }
+    if (networkOnly) {
+      // Still failing after fresh workers: say whether Glossa itself answers, so the log tells
+      // a Glossa outage from a worker problem.
+      const url = errors[0].match(/from "([^"]+)"/)?.[1];
+      if (url) errors.push(`(Node fetching ${url} directly: ${await catalogReachable(url)})`);
     }
     if (status !== 200) failures.push(`${route}: HTTP ${status}`);
     if (errors.length) {
       const reason = KNOWN.get(route);
       (reason ? known : failures).push(
-        `${route}: ${errors[0].trim()}${reason ? `  (known: ${reason})` : ''}`
+        `${route}: ${errors.map(e => e.trim()).join(' ')}${reason ? `  (known: ${reason})` : ''}`
       );
     }
   }
