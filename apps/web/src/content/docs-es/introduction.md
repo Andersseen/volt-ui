@@ -6,7 +6,7 @@ group: 'Primeros pasos'
 order: 1
 ---
 
-Los componentes se construyen sobre [ng-primitives](https://ng-primitives.dev). Un segundo punto de entrada experimental, `@voltui/components/quartz`, ejecuta nueve de ellos (Accordion, Checkbox, Listbox, Radio, Select, Switch, Tabs, Toggle y Toggle Group) sobre Quartz Headless con los mismos selectores e inputs. Se publica con `@voltui/components` desde la 1.4.0.
+Los componentes se construyen sobre [ng-primitives](https://ng-primitives.dev). Un segundo punto de entrada experimental, `@voltui/components/quartz`, ejecuta nueve de ellos (Accordion, Checkbox, Listbox, Radio, Select, Switch, Tabs, Toggle y Toggle Group) sobre Quartz Headless con los mismos selectores e inputs. Se publica con `@voltui/components` a partir de la 1.4.1.
 
 ## Herramientas de IA para consumidores
 

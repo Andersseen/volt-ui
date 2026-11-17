@@ -37,7 +37,7 @@
     "test:e2e:ui": "playwright test --ui",
     "test:all": "pnpm lint && pnpm typecheck && pnpm check:generated && pnpm check:ai-docs && pnpm test:coverage && pnpm build:lib && pnpm test:e2e:ci && pnpm test:e2e:consumer && pnpm test:e2e:consumer-cli",
     "release:check": "pnpm stats:full && pnpm check:generated && pnpm lint && pnpm typecheck && pnpm check:ai-docs && pnpm test:coverage && pnpm pack:lib && pnpm pack:cli && pnpm pack:agent",
-    "release:minor": "pnpm release:check",
+    "release:bump": "node scripts/bump-version.mjs",
     "lint": "eslint . --ext .ts,.html",
     "lint:fix": "eslint . --ext .ts,.html --fix",
     "format": "prettier --write .",

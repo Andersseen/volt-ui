@@ -5,7 +5,7 @@ group: 'Перші кроки'
 order: 1
 ---
 
-Компоненти побудовано на [ng-primitives](https://ng-primitives.dev). Експериментальна друга точка входу, `@voltui/components/quartz`, запускає дев’ять із них (Accordion, Checkbox, Listbox, Radio, Select, Switch, Tabs, Toggle і Toggle Group) на Quartz Headless з тими самими селекторами та вхідними параметрами. Вона постачається з `@voltui/components` починаючи з 1.4.0.
+Компоненти побудовано на [ng-primitives](https://ng-primitives.dev). Експериментальна друга точка входу, `@voltui/components/quartz`, запускає дев’ять із них (Accordion, Checkbox, Listbox, Radio, Select, Switch, Tabs, Toggle і Toggle Group) на Quartz Headless з тими самими селекторами та вхідними параметрами. Вона постачається з `@voltui/components` починаючи з 1.4.1.
 
 ## Інструменти ШІ для користувачів
 

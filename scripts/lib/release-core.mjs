@@ -125,6 +125,77 @@ export async function fetchPackument(
   throw lastError;
 }
 
+/** The claims npm matches against a Trusted Publisher, from a GitHub OIDC token (never the token). */
+export function oidcClaims(idToken) {
+  try {
+    const payload = JSON.parse(Buffer.from(idToken.split('.')[1], 'base64url').toString('utf8'));
+    const keys = [
+      'repository',
+      'workflow_ref',
+      'job_workflow_ref',
+      'event_name',
+      'ref',
+      'environment',
+    ];
+    return Object.fromEntries(keys.filter(key => payload[key]).map(key => [key, payload[key]]));
+  } catch {
+    return {};
+  }
+}
+
+/**
+ * Proves, before anything is published, that npm will accept this job as the package's Trusted
+ * Publisher, by doing the same OIDC exchange `npm publish` does.
+ *
+ * Why: npm (11.x, lib/utils/oidc.js) never fails on a rejected exchange. It writes the reason to
+ * its verbose log, carries on without a credential, and the PUT comes back as a bare
+ * `E404 Not Found`. Every release from 1.4.0 on failed that way with no hint of the cause.
+ *
+ * Off GitHub Actions it does nothing: a local `npm publish` uses the developer's own login.
+ * Throws an Error whose message says what npm answered and which identity it was shown.
+ */
+export async function checkTrustedPublishing(
+  name,
+  { env = process.env, fetchImpl = fetch, registry = 'https://registry.npmjs.org' } = {}
+) {
+  if (env.GITHUB_ACTIONS !== 'true') return { checked: false };
+  const { ACTIONS_ID_TOKEN_REQUEST_URL: requestUrl, ACTIONS_ID_TOKEN_REQUEST_TOKEN: bearer } = env;
+  if (!requestUrl || !bearer) {
+    throw new Error(
+      'no OIDC identity in this job: it needs `permissions: id-token: write` (npm Trusted Publishing)'
+    );
+  }
+
+  const url = new URL(requestUrl);
+  url.searchParams.set('audience', `npm:${new URL(registry).hostname}`);
+  const idResponse = await fetchImpl(url.href, {
+    headers: { accept: 'application/json', authorization: `Bearer ${bearer}` },
+    signal: AbortSignal.timeout(15_000),
+  });
+  const idToken = idResponse.ok ? (await idResponse.json())?.value : undefined;
+  if (!idToken) {
+    throw new Error(`GitHub did not issue an OIDC token (HTTP ${idResponse.status})`);
+  }
+
+  const exchange = `${registry.replace(/\/$/, '')}/-/npm/v1/oidc/token/exchange/package/${name.replace('/', '%2f')}`;
+  const response = await fetchImpl(exchange, {
+    method: 'POST',
+    headers: { accept: 'application/json', authorization: `Bearer ${idToken}` },
+    signal: AbortSignal.timeout(15_000),
+  });
+  const body = await response.json().catch(() => null);
+  if (response.ok && body?.token) return { checked: true };
+
+  const claims = Object.entries(oidcClaims(idToken))
+    .map(([key, value]) => `${key}=${value}`)
+    .join(', ');
+  throw new Error(
+    `npm refused this job as Trusted Publisher of ${name} (HTTP ${response.status}` +
+      `${body?.message ? `: ${body.message}` : ''}). npm was shown: ${claims || 'no readable claims'}. ` +
+      `Check https://www.npmjs.com/package/${name}/access → Trusted Publisher (RELEASING.md, "One-time setup").`
+  );
+}
+
 /** Highest version by semver precedence (prereleases included), or null. */
 export function highestVersion(versions) {
   return (
@@ -175,6 +246,7 @@ export const tagFor = (pkg, version) => `${pkg.tagPrefix}-v${version}`;
  *
  * deps:
  *   packages, readManifest(file), registry.fetchPackument(name), publisher.publish(pkg),
+ *   publisher.preflight?(pkg) (throws when publishing cannot succeed; nothing is published then),
  *   github.releaseExists(tag) / github.createRelease({tag,title,pkg,version}) /
  *   github.commitForVersion(pkg, version), sha, dryRun, log, sleep
  */
@@ -237,6 +309,20 @@ export async function runRelease(deps) {
         });
         continue;
       }
+      // A rejected Trusted Publisher is reported as such, before anything is attempted.
+      if (publisher.preflight) {
+        try {
+          await publisher.preflight(pkg);
+        } catch (error) {
+          Object.assign(entry, {
+            status: 'publish-failed',
+            detail: `not published: ${error.message}`,
+          });
+          halted = pkg.name;
+          continue;
+        }
+      }
+
       let publishError = null;
       try {
         await publisher.publish(pkg, version);
