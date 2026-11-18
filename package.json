@@ -170,7 +170,7 @@
     "@vitest/coverage-v8": "^5.0.5",
     "angular-eslint": "^22.6.0",
     "axe-core": "4.14.0",
-    "eslint": "^10.13.0",
+    "eslint": "^10.15.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.7",
     "h3": "1.15.11",
