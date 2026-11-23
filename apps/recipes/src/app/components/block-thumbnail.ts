@@ -42,6 +42,7 @@ import { TestimonialMarquee } from '../blocks/testimonial-marquee/testimonial-ma
 import { ServicePanels } from '../blocks/service-panels/service-panels';
 import { SwapStory } from '../blocks/swap-story/swap-story';
 import { GalleryTabs } from '../blocks/gallery-tabs/gallery-tabs';
+import { ContactMap } from '../blocks/contact-map/contact-map';
 
 /**
  * A real block, rendered at desktop width and scaled down to thumbnail size.
@@ -60,6 +61,7 @@ import { GalleryTabs } from '../blocks/gallery-tabs/gallery-tabs';
   selector: 'app-block-thumbnail',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    ContactMap,
     GalleryTabs,
     SwapStory,
     ServicePanels,
@@ -199,6 +201,9 @@ import { GalleryTabs } from '../blocks/gallery-tabs/gallery-tabs';
         }
         @case ('gallery-tabs') {
           <app-gallery-tabs />
+        }
+        @case ('contact-map') {
+          <app-contact-map />
         }
       }
     </div>

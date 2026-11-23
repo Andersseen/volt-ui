@@ -5,6 +5,12 @@ import { RelatedComponents } from './related-components';
 import { CodePanel } from '@shared/components/code-panel';
 import { injectAppI18n } from '@shared/i18n/i18n';
 
+export interface BlockFile {
+  /** The file name the block imports it by, e.g. `contact-map.data.ts`. */
+  readonly name: string;
+  readonly code: string;
+}
+
 /**
  * The frame every block page shares: heading, live section, what moves, and the source.
  *
@@ -54,6 +60,11 @@ import { injectAppI18n } from '@shared/i18n/i18n';
         [description]="t('gallery.blockSourceNote')"
       />
 
+      <!-- Files the block imports beside itself (generated data), copied along with it. -->
+      @for (file of files(); track file.name) {
+        <app-code-panel [title]="file.name" [code]="file.code" />
+      }
+
       <div class="rounded-lg border border-border bg-muted/30 p-4">
         <!-- The CSS media query is a literal, so it is passed in rather than translated. -->
         <p class="text-sm text-muted-foreground">
@@ -70,6 +81,8 @@ export class BlockShowcase {
 
   readonly block = input.required<BlockMetadata>();
   readonly code = input.required<string>();
+  /** Sibling files the block imports (`./<name>`), shown under it so the copy is complete. */
+  readonly files = input<readonly BlockFile[]>([]);
 
   /**
    * The packages the copied file imports, read off the source itself so a new dependency

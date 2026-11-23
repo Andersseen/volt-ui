@@ -459,6 +459,23 @@ export const BLOCKS: readonly BlockMetadata[] = [
     ],
   },
   {
+    slug: 'contact-map',
+    path: '/blocks/contact-map',
+    labelKey: 'blocks.items.contactMap.label',
+    category: 'contact',
+    taglineKey: 'blocks.items.contactMap.tagline',
+    motionKey: 'blocks.items.contactMap.motion',
+    atoms: [
+      { name: 'VoltCard', path: '/docs/components/card' },
+      { name: 'VoltFormField', path: '/docs/components/form-field' },
+      { name: 'VoltInput', path: '/docs/components/input' },
+      { name: 'VoltTextarea', path: '/docs/components/textarea' },
+      { name: 'VoltButton', path: '/docs/components/button' },
+      { name: 'VoltAlert', path: '/docs/components/alert' },
+      { name: 'VoltBadge', path: '/docs/components/badge' },
+    ],
+  },
+  {
     slug: 'cta',
     path: '/blocks/cta',
     labelKey: 'blocks.items.cta.label',
