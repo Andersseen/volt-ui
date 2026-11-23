@@ -1342,25 +1342,25 @@
         "tagline": "Shell con marca, cifras que cuentan hacia arriba y un gráfico que se dibuja solo.",
         "motion": "Las cifras cuentan hasta su valor la primera vez que la fila entra en pantalla, una vez y nunca más, y el gráfico se traza a medida que aparece. Ambos empiezan terminados si se reduce el movimiento."
       },
-      "featureShowcase": {
-        "label": "Escaparate de funciones",
-        "motion": "Las barras del gráfico crecen una vez. Todo lo demás está quieto, y con movimiento reducido las barras aparecen a altura completa.",
-        "tagline": "Una capacidad grande y tres de apoyo, cada una dibujada como pide su contenido."
-      },
       "heroProduct": {
         "label": "Hero de producto",
-        "motion": "El texto y el tablero aparecen deslizándose al cargar y un punto de estado pulsa. Ambos se detienen con movimiento reducido; el tablero es interactivo en cualquier caso.",
-        "tagline": "Un hero centrado cuya vista previa es un producto que funciona: filtra, marca tareas y mira avanzar el progreso."
+        "tagline": "Un hero centrado cuya vista previa es un producto que funciona: filtra, marca tareas y mira avanzar el progreso.",
+        "motion": "El texto y el tablero aparecen deslizándose al cargar y un punto de estado pulsa. Ambos se detienen con movimiento reducido; el tablero es interactivo en cualquier caso."
+      },
+      "featureShowcase": {
+        "label": "Escaparate de funciones",
+        "tagline": "Una capacidad grande y tres de apoyo, cada una dibujada como pide su contenido.",
+        "motion": "Las barras del gráfico crecen una vez. Todo lo demás está quieto, y con movimiento reducido las barras aparecen a altura completa."
       },
       "scrollStory": {
         "label": "Historia con scroll",
-        "motion": "Cada tarjeta se fija y la siguiente se desliza encima. El scroll nativo no se toca, así que nada atrapa la página; por debajo del punto md o con movimiento reducido las tarjetas fluyen normalmente.",
-        "tagline": "Pasos que se apilan al hacer scroll, con CSS puro: una lista normal en pantallas pequeñas y con movimiento reducido."
+        "tagline": "Pasos que se apilan al hacer scroll, con CSS puro: una lista normal en pantallas pequeñas y con movimiento reducido.",
+        "motion": "Cada tarjeta se fija y la siguiente se desliza encima. El scroll nativo no se toca, así que nada atrapa la página; por debajo del punto md o con movimiento reducido las tarjetas fluyen normalmente."
       },
       "sourcePreview": {
         "label": "Del código a la vista",
-        "motion": "Elegir un aviso reescribe el código y cambia la tarjeta con un breve fundido, anunciado de forma educada. El fundido se omite con movimiento reducido.",
-        "tagline": "Una configuración a la izquierda y el componente que produce a la derecha: ambos salen de un mismo valor, así que no pueden contradecirse."
+        "tagline": "Una configuración a la izquierda y el componente que produce a la derecha: ambos salen de un mismo valor, así que no pueden contradecirse.",
+        "motion": "Elegir un aviso reescribe el código y cambia la tarjeta con un breve fundido, anunciado de forma educada. El fundido se omite con movimiento reducido."
       },
       "heroInstall": {
         "label": "Hero con instalación",
@@ -1456,6 +1456,71 @@
         "label": "Pie de telón",
         "tagline": "La página se levanta como un telón y descubre el pie que espera detrás.",
         "motion": "El pie queda fijo detrás de la página, así que al desplazarte se descubre. Una cuadrícula de puntos brilla levemente en algunos sitios; deja de dibujarse fuera de pantalla y se queda quieta con movimiento reducido."
+      },
+      "navbarDocs": {
+        "label": "Barra de documentación",
+        "tagline": "Marca, versión, búsqueda y pestañas de sección sobre una ruta de migas, con una línea de progreso de lectura.",
+        "motion": "Una línea fina bajo la cabecera se llena mientras lees, movida por una línea de tiempo de scroll en CSS, sin escuchar el scroll. Los navegadores sin ella, y el movimiento reducido, no muestran la línea."
+      },
+      "heroWaitlist": {
+        "label": "Hero con lista de espera",
+        "tagline": "Una apertura con un solo objetivo, un email: se valida al enviar y se confirma en voz alta.",
+        "motion": "La pila de avatares se abre en abanico al pasar el puntero y la confirmación sube a su sitio, recibe el foco y se anuncia en una región de estado. Ambos se quedan quietos con movimiento reducido."
+      },
+      "dotRipple": {
+        "label": "Onda de puntos",
+        "tagline": "Una superficie de puntos con anillos de luz que salen del centro, como una gota en el agua.",
+        "motion": "Dos anillos crecen animando el tamaño de una máscara: solo CSS, sin propiedades registradas ni JavaScript, así que se renderiza en el servidor. Con movimiento reducido los anillos no se dibujan."
+      },
+      "glowGrid": {
+        "label": "Rejilla luminosa",
+        "tagline": "Seis tarjetas de funciones cuyos bordes recogen una sola luz que sigue al puntero por todas ellas.",
+        "motion": "El borde de cada tarjeta brilla alrededor del puntero y sus vecinas recogen el borde de la misma luz. Los cambios se agrupan en un fotograma y se desvanecen al salir; nunca se mueve sola."
+      },
+      "serviceSteps": {
+        "label": "Pasos del proceso",
+        "tagline": "Cómo funciona un proyecto, en pasos numerados unidos por una línea: columna en móvil, fila en escritorio.",
+        "motion": "La línea se llena mientras la lista pasa por la pantalla, con una línea de tiempo de vista en CSS. Sin ella, o con movimiento reducido, ya aparece llena."
+      },
+      "logoCloud": {
+        "label": "Nube de logos",
+        "tagline": "Logos de clientes que se asientan en su sitio cuando llega la sección.",
+        "motion": "Cada logo aparece desde un ligero desenfoque, escalonado según su posición, con una línea de tiempo de vista en CSS. Sin ella, o con movimiento reducido, simplemente están."
+      },
+      "statsBand": {
+        "label": "Banda de cifras",
+        "tagline": "Cifras que cuentan hacia arriba una sola vez, la primera vez que entran en pantalla.",
+        "motion": "El servidor pinta las cifras finales; el conteo se ejecuta una vez en el navegador si la banda empieza fuera de pantalla. Los lectores de pantalla solo oyen el valor final, y el movimiento reducido se salta el conteo."
+      },
+      "pricingCompare": {
+        "label": "Comparativa de planes",
+        "tagline": "Cada plan frente a cada función en una tabla de verdad, con el plan que te interesa resaltado.",
+        "motion": "Al elegir un plan se tiñe su columna y se marca su cabecera. En una pantalla estrecha la tabla se desplaza en horizontal dentro de su propia región enfocable en lugar de apretarse."
+      },
+      "contactFaq": {
+        "label": "Preguntas frecuentes",
+        "tagline": "Preguntas con búsqueda en un acordeón accesible, y una persona a quien preguntar si falta la respuesta.",
+        "motion": "Las respuestas se abren con la animación del propio acordeón. La lista se filtra al escribir, el recuento se anuncia con cortesía y sin coincidencias aparece un estado vacío con una sola acción."
+      },
+      "ctaNewsletter": {
+        "label": "CTA de newsletter",
+        "tagline": "Una banda de suscripción final con etiqueta visible, pista y error conectados por el campo de formulario.",
+        "motion": "Un sobre flota despacio detrás del texto. Tras un envío válido la confirmación sube, recibe el foco y se anuncia. Ambos se quedan quietos con movimiento reducido."
+      },
+      "footerColumns": {
+        "label": "Pie de columnas",
+        "tagline": "Marca, cuatro columnas de enlaces y la fila legal: acordeón en móvil, columnas en escritorio.",
+        "motion": "Por debajo de un punto de corte del contenedor las columnas pasan a acordeón, elegido con una consulta de contenedor para que el render del servidor valga en cualquier ancho. El punto de estado late y se queda quieto con movimiento reducido."
+      },
+      "signup": {
+        "label": "Tarjeta de registro",
+        "tagline": "Nombre, email, contraseña con medidor de fortaleza y los términos, con errores que dicen qué corregir.",
+        "motion": "El medidor de fortaleza se llena y cambia de color al escribir, con la palabra al lado para que el color nunca sea la única señal. Los errores aparecen tras el primer envío y se borran al corregirlos."
+      },
+      "orders": {
+        "label": "Tabla de pedidos",
+        "tagline": "Una pantalla de pedidos de administración: búsqueda, filtro por estado, la tabla y un total que siempre coinciden.",
+        "motion": "Las filas se filtran al instante al escribir o elegir un estado; el recuento y el total se anuncian con cortesía. Si no queda nada, un estado vacío ofrece limpiar los filtros."
       }
     },
     "upcoming": {
@@ -1559,8 +1624,8 @@
       "settingsForm": "Formulario de ajustes",
       "asyncSearch": "Búsqueda asíncrona",
       "dataTable": "Tabla de datos",
-      "componentExplorer": "Explorador de componentes",
       "livePlayground": "Playground en vivo",
+      "componentExplorer": "Explorador de componentes",
       "sectionNav": "Navegación por secciones"
     },
     "doqs": {

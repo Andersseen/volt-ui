@@ -276,7 +276,7 @@ test.describe('Catalog browser', () => {
 
     await expect(page).toHaveURL(/\/blocks\?category=backgrounds$/);
     await expect(page.locator('app-catalog-browser p[aria-live]').first()).toHaveText(
-      /Showing 3 of \d+/
+      /Showing 4 of \d+/
     );
     await expect(
       page.locator('app-catalog-sidebar').getByRole('link', { name: /^Backgrounds/ })

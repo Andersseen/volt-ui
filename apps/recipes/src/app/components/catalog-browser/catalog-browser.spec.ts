@@ -55,7 +55,9 @@ describe('CatalogBrowser', () => {
 
     // No category headings in a filtered view; each card names its category instead.
     expect(sectionHeadings(container)).toEqual([]);
-    expect(screen.getAllByText('Backgrounds', { selector: 'app-catalog-card p' })).toHaveLength(3);
+    expect(screen.getAllByText('Backgrounds', { selector: 'app-catalog-card p' })).toHaveLength(
+      entriesOf('blocks').filter(entry => entry.groupId === 'backgrounds').length
+    );
     expect(screen.getByRole('radio', { name: /^Backgrounds/ })).toHaveAttribute(
       'aria-checked',
       'true'
