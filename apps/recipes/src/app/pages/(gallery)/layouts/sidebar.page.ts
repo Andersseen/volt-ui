@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import {
   VoltAvatar,
+  VoltBadge,
   VoltCard,
   VoltNativeButton,
   VoltSeparator,
@@ -38,6 +39,7 @@ import sidebarServiceSource from '../../../../../../../packages/volt/src/lib/lay
     VoltSidebarHeader,
     VoltSidebarItem,
     VoltAvatar,
+    VoltBadge,
     VoltCard,
     VoltNativeButton,
     VoltSeparator,
@@ -57,7 +59,13 @@ import sidebarServiceSource from '../../../../../../../packages/volt/src/lib/lay
     >
       <!-- Trigger for Mobile Sidebar -->
       <div class="absolute top-4 left-4 z-10 md:hidden">
-        <button voltButton variant="outline" size="icon" (click)="sidebarService.toggleMobile()">
+        <button
+          voltButton
+          variant="outline"
+          size="icon"
+          aria-label="Open navigation"
+          (click)="sidebarService.toggleMobile()"
+        >
           <lmn-menu />
         </button>
       </div>
@@ -82,6 +90,7 @@ import sidebarServiceSource from '../../../../../../../packages/volt/src/lib/lay
                 variant="ghost"
                 size="icon"
                 class="h-6 w-6 shrink-0"
+                aria-label="Collapse sidebar"
                 (click)="sidebarService.toggleCollapse()"
               >
                 <lmn-settings class="h-4 w-4 text-muted-foreground" />
@@ -102,12 +111,7 @@ import sidebarServiceSource from '../../../../../../../packages/volt/src/lib/lay
               label="Inbox"
             >
               <lmn-mail slot="icon" class="h-4 w-4" />
-              <div
-                slot="trailing"
-                class="ml-auto inline-flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-medium text-primary-foreground"
-              >
-                3
-              </div>
+              <volt-badge slot="trailing" class="ml-auto px-1.5">3</volt-badge>
             </volt-sidebar-item>
             <volt-sidebar-item
               routerLink="/layouts/sidebar"
@@ -174,6 +178,9 @@ import sidebarServiceSource from '../../../../../../../packages/volt/src/lib/lay
               variant="ghost"
               size="icon"
               class="h-8 w-8"
+              [attr.aria-label]="
+                sidebarService.isCollapsed() ? 'Expand sidebar' : 'Collapse sidebar'
+              "
               (click)="sidebarService.toggleCollapse()"
             >
               <lmn-menu class="h-4 w-4" />

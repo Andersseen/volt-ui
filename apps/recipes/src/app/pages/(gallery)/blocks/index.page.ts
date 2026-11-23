@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CatalogBrowser } from '../../../components/catalog-browser/catalog-browser';
 import { UPCOMING_BLOCKS } from '../../../lib/blocks-metadata';
+import { VoltBadge, VoltCard } from 'volt';
 import { injectAppI18n } from '@shared/i18n/i18n';
 
 @Component({
   selector: 'app-blocks-index-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CatalogBrowser],
+  imports: [CatalogBrowser, VoltBadge, VoltCard],
   template: `
     <app-catalog-browser
       kind="blocks"
@@ -14,18 +15,18 @@ import { injectAppI18n } from '@shared/i18n/i18n';
       ledeKey="gallery.blocks.lede"
     >
       <div class="grid gap-3 border-t border-border pt-10 sm:grid-cols-3">
-        <div class="rounded-lg border border-border bg-muted/20 p-4">
+        <volt-card class="p-4 shadow-none">
           <p class="text-sm font-medium">{{ t('gallery.blocks.oneFile') }}</p>
           <p class="mt-1 text-xs text-muted-foreground">{{ t('gallery.blocks.oneFileBody') }}</p>
-        </div>
-        <div class="rounded-lg border border-border bg-muted/20 p-4">
+        </volt-card>
+        <volt-card class="p-4 shadow-none">
           <p class="text-sm font-medium">{{ t('gallery.blocks.noRuntime') }}</p>
           <p class="mt-1 text-xs text-muted-foreground">{{ t('gallery.blocks.noRuntimeBody') }}</p>
-        </div>
-        <div class="rounded-lg border border-border bg-muted/20 p-4">
+        </volt-card>
+        <volt-card class="p-4 shadow-none">
           <p class="text-sm font-medium">{{ t('gallery.blocks.themeAware') }}</p>
           <p class="mt-1 text-xs text-muted-foreground">{{ t('gallery.blocks.themeAwareBody') }}</p>
-        </div>
+        </volt-card>
       </div>
 
       <section class="space-y-4">
@@ -37,19 +38,15 @@ import { injectAppI18n } from '@shared/i18n/i18n';
         </div>
         <div class="grid gap-3 sm:grid-cols-2">
           @for (block of upcoming; track block.labelKey) {
-            <div
-              class="rounded-lg border border-dashed border-border bg-muted/10 p-4 text-muted-foreground"
-            >
+            <volt-card class="border-dashed bg-muted/10 p-4 text-muted-foreground shadow-none">
               <div class="flex items-center justify-between gap-2">
                 <p class="text-sm font-medium text-foreground/70">{{ t(block.labelKey) }}</p>
-                <span
-                  class="shrink-0 rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium leading-none"
-                >
-                  {{ t('gallery.soon') }}
-                </span>
+                <volt-badge variant="secondary" class="shrink-0">{{
+                  t('gallery.soon')
+                }}</volt-badge>
               </div>
               <p class="mt-1.5 text-sm">{{ t(block.taglineKey) }}</p>
-            </div>
+            </volt-card>
           }
         </div>
         <p class="text-sm text-muted-foreground">

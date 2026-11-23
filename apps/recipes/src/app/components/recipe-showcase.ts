@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { VoltCard } from 'volt';
 import { injectAppI18n } from '@shared/i18n/i18n';
 import { CodePanel } from '@shared/components/code-panel';
 import type { RecipeMetadata } from '../lib/recipes-metadata';
@@ -14,7 +15,7 @@ import { RelatedComponents } from './related-components';
 @Component({
   selector: 'app-recipe-showcase',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CodePanel, RelatedComponents],
+  imports: [CodePanel, RelatedComponents, VoltCard],
   template: `
     <div class="space-y-8">
       <div>
@@ -28,10 +29,10 @@ import { RelatedComponents } from './related-components';
         <ng-content />
       </div>
 
-      <div class="rounded-lg border border-border bg-muted/20 p-4">
+      <volt-card class="p-4 shadow-none">
         <h2 class="text-sm font-medium">{{ t('gallery.builtFrom') }}</h2>
         <app-related-components [atoms]="recipe().atoms" />
-      </div>
+      </volt-card>
 
       <app-code-panel
         [title]="t('ui.codePanel.usage')"
