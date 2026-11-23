@@ -224,9 +224,15 @@ for (const [name, url] of BACKENDS) {
       await page.getByRole('button', { name: 'Touch all', exact: true }).click();
       // checkbox, switch, toggle, radio group, toggle group, listbox, select trigger.
       await expect(invalid).toHaveCount(7);
-      const carriers = await invalid.evaluateAll(els =>
-        els.map(e => e.getAttribute('role') ?? e.tagName.toLowerCase()).sort()
-      );
+      // One element at a time: on Playwright 1.65's Firefox 159, `evaluateAll` over this page
+      // crashes the tab (even `els => els.length`), while per-element reads are fine.
+      const carriers: string[] = [];
+      for (const el of await invalid.all()) {
+        carriers.push(
+          (await el.getAttribute('role')) ?? (await el.evaluate(e => e.tagName.toLowerCase()))
+        );
+      }
+      carriers.sort();
       await test.info().attach('aria-invalid carriers', {
         body: JSON.stringify(carriers),
         contentType: 'application/json',
