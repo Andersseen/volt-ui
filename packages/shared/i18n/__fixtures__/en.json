@@ -1220,6 +1220,36 @@
         "label": "Compact Footer",
         "tagline": "Brand, ownership line and links on one row, wrapping cleanly on narrow screens.",
         "motion": "Links underline on hover. Nothing else moves, so it can sit under any page."
+      },
+      "heroRail": {
+        "label": "Hero Rail",
+        "tagline": "A tall photo with a strip of thumbnails cut into its edge, beside the headline and two calls to action.",
+        "motion": "Photos cross-fade on their own; a bar filling inside the active thumbnail is the timer, and it pauses while you point at or tab into the carousel. The copy rises in on first paint."
+      },
+      "servicePanels": {
+        "label": "Expanding Service Panels",
+        "tagline": "Three service cards in a row: one open with its description, two folded to their titles.",
+        "motion": "Choosing a panel widens it as the others narrow; the text is laid out at its final width so it never reflows, and the illustration slides with the column and gains colour."
+      },
+      "swapStory": {
+        "label": "Swap Story",
+        "tagline": "Chapters that alternate sides, with one photo that follows you down the page.",
+        "motion": "On wide screens one sticky photo stays centred and springs to the other side as each chapter arrives, shrinking slightly while it travels, so it never covers the text."
+      },
+      "galleryTabs": {
+        "label": "Gallery Tabs",
+        "tagline": "A tab per category, a featured photo that opens full size, and quiet half-colour thumbnails.",
+        "motion": "Stories-style segments fill under the photo and step through every photo and then every tab; it waits while you point, focus, open a photo or scroll it away."
+      },
+      "contactMap": {
+        "label": "Contact Map",
+        "tagline": "Details and a form side by side, over a dotted map of where you work, tilted back into the page.",
+        "motion": "A pin pulses on the highlighted country and its label stands upright on the tilted map. The map is two SVG paths, so it costs a few kilobytes and renders on the server."
+      },
+      "footerCurtain": {
+        "label": "Curtain Footer",
+        "tagline": "The page lifts away like a curtain to reveal the footer waiting behind it.",
+        "motion": "The footer is sticky behind the page, so scrolling uncovers it. A grid of dots glows faintly in a few places; it stops drawing off screen and holds still with reduced motion."
       }
     },
     "upcoming": {

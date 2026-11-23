@@ -30,6 +30,7 @@ import featureShowcaseSource from '../../blocks/feature-showcase/feature-showcas
 import scrollStorySource from '../../blocks/scroll-story/scroll-story.ts?raw';
 import sourcePreviewSource from '../../blocks/source-preview/source-preview.ts?raw';
 import heroSplitSource from '../../blocks/hero-split/hero-split.ts?raw';
+import heroRailSource from '../../blocks/hero-rail/hero-rail.ts?raw';
 import heroSpotlightSource from '../../blocks/hero-spotlight/hero-spotlight.ts?raw';
 import pricingTiersSource from '../../blocks/pricing-tiers/pricing-tiers.ts?raw';
 import serviceListSource from '../../blocks/service-list/service-list.ts?raw';
@@ -41,6 +42,7 @@ export const PRICING_TIERS_BLOCK = toConsumerSource(pricingTiersSource);
 export const TESTIMONIAL_MARQUEE_BLOCK = toConsumerSource(testimonialMarqueeSource);
 export const CTA_MAGNETIC_BLOCK = toConsumerSource(ctaMagneticSource);
 export const HERO_SPLIT_BLOCK = toConsumerSource(heroSplitSource);
+export const HERO_RAIL_BLOCK = toConsumerSource(heroRailSource);
 export const SERVICE_LIST_BLOCK = toConsumerSource(serviceListSource);
 export const CONTACT_SPLIT_BLOCK = toConsumerSource(contactSplitSource);
 export const FOOTER_SITEMAP_BLOCK = toConsumerSource(footerSitemapSource);

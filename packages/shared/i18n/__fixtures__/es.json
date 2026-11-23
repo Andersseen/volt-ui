@@ -1426,6 +1426,36 @@
         "label": "Pie de página compacto",
         "tagline": "Marca, línea de propiedad y enlaces en una sola fila, que se reajusta bien en pantallas estrechas.",
         "motion": "Los enlaces se subrayan al pasar el cursor. Nada más se mueve, así que encaja bajo cualquier página."
+      },
+      "heroRail": {
+        "label": "Hero con carril",
+        "tagline": "Una foto alta con una tira de miniaturas recortada en su borde, junto al titular y dos llamadas a la acción.",
+        "motion": "Las fotos se funden solas; una barra que se llena dentro de la miniatura activa es el temporizador, y se pausa mientras apuntas al carrusel o entras en él con el teclado. El texto aparece desde abajo en el primer pintado."
+      },
+      "servicePanels": {
+        "label": "Paneles de servicios desplegables",
+        "tagline": "Tres tarjetas de servicio en fila: una abierta con su descripción y dos plegadas a su título.",
+        "motion": "Al elegir un panel, este se ensancha mientras los demás se estrechan; el texto ya está maquetado a su ancho final, así que nunca se recoloca, y la ilustración se desliza con la columna y gana color."
+      },
+      "swapStory": {
+        "label": "Historia alterna",
+        "tagline": "Capítulos que alternan de lado, con una sola foto que te acompaña página abajo.",
+        "motion": "En pantallas anchas una foto fija se queda centrada y salta con efecto muelle al otro lado al llegar cada capítulo, encogiéndose un poco mientras viaja, sin tapar nunca el texto."
+      },
+      "galleryTabs": {
+        "label": "Galería con pestañas",
+        "tagline": "Una pestaña por categoría, una foto destacada que se abre a tamaño completo y miniaturas tranquilas a medio color.",
+        "motion": "Unos segmentos al estilo de las historias se llenan bajo la foto y recorren cada foto y luego cada pestaña; espera mientras apuntas, enfocas, abres una foto o la sacas de la pantalla."
+      },
+      "contactMap": {
+        "label": "Contacto con mapa",
+        "tagline": "Datos y formulario lado a lado, sobre un mapa de puntos de donde trabajas, inclinado hacia el fondo de la página.",
+        "motion": "Un pin late sobre el país destacado y su etiqueta se mantiene en pie sobre el mapa inclinado. El mapa son dos trazados SVG, así que pesa unos pocos kilobytes y se renderiza en el servidor."
+      },
+      "footerCurtain": {
+        "label": "Pie de telón",
+        "tagline": "La página se levanta como un telón y descubre el pie que espera detrás.",
+        "motion": "El pie queda fijo detrás de la página, así que al desplazarte se descubre. Una cuadrícula de puntos brilla levemente en algunos sitios; deja de dibujarse fuera de pantalla y se queda quieta con movimiento reducido."
       }
     },
     "upcoming": {

@@ -193,6 +193,20 @@ export const BLOCKS: readonly BlockMetadata[] = [
     ],
   },
   {
+    slug: 'hero-rail',
+    path: '/blocks/hero-rail',
+    labelKey: 'blocks.items.heroRail.label',
+    category: 'hero',
+    taglineKey: 'blocks.items.heroRail.tagline',
+    motionKey: 'blocks.items.heroRail.motion',
+    atoms: [
+      { name: 'VoltButton', path: '/docs/components/button' },
+      { name: 'VoltBadge', path: '/docs/components/badge' },
+      { name: 'VoltToggleGroup', path: '/docs/components/toggle-group' },
+      { name: 'VoltTooltip', path: '/docs/components/tooltip' },
+    ],
+  },
+  {
     slug: 'hero-product',
     path: '/blocks/hero-product',
     labelKey: 'blocks.items.heroProduct.label',

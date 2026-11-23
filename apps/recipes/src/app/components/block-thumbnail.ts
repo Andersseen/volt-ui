@@ -34,6 +34,7 @@ import { HeroProduct } from '../blocks/hero-product/hero-product';
 import { ScrollStory } from '../blocks/scroll-story/scroll-story';
 import { SourcePreview } from '../blocks/source-preview/source-preview';
 import { HeroSplit } from '../blocks/hero-split/hero-split';
+import { HeroRail } from '../blocks/hero-rail/hero-rail';
 import { HeroSpotlight } from '../blocks/hero-spotlight/hero-spotlight';
 import { PricingTiers } from '../blocks/pricing-tiers/pricing-tiers';
 import { ServiceList } from '../blocks/service-list/service-list';
@@ -58,6 +59,7 @@ import { TestimonialMarquee } from '../blocks/testimonial-marquee/testimonial-ma
   imports: [
     HeroSpotlight,
     HeroSplit,
+    HeroRail,
     HeroProduct,
     HeroInstall,
     HeroGlyphs,
@@ -101,6 +103,9 @@ import { TestimonialMarquee } from '../blocks/testimonial-marquee/testimonial-ma
         }
         @case ('hero-split') {
           <app-hero-split />
+        }
+        @case ('hero-rail') {
+          <app-hero-rail />
         }
         @case ('hero-product') {
           <app-hero-product />
