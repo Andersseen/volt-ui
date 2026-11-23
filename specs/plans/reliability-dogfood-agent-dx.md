@@ -91,8 +91,9 @@ dropdown-menu, toast, resizable, toolbar, file-upload, search, native-select, pr
   **Orphaned keys to delete once this is deployed** (the live site still reads them until then):
   `guide.aiSkillPage.coversStack|coversNaming|coversCatalog|coversTheme`, and the unrendered
   `guide.aiMcpPage.learns*`, `capTools|capResources|capPrompts`, `tools.*`, `resources.*`, `prompts.*`.
-- **Toggle-group tab stop** is its first item, not the pressed one (APG radio pattern). Needs a
-  roving-focus initial-item seam; not changed.
+- ~~**Toggle-group tab stop** is its first item, not the pressed one (APG radio pattern).~~ Fixed:
+  in single mode the selected item claims the roving tab stop (`setTabStop`, never moves focus);
+  `e2e/contracts/composites.spec.ts` now asserts it.
 - **Popover offset** is 4 px, not the documented 8 px (only tooltip's defaults were corrected).
 - **CLI copy mode on Angular 21** installs `ng-primitives` without pinning `@angular/cdk` to the app's
   major; `check:angular-compat` covers the package, not the CLI install step.

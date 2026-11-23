@@ -47,11 +47,9 @@ test.describe('toggle group and toolbar', () => {
     const right = page.getByRole('radio', { name: 'Right' });
     await expect(centre).toHaveAttribute('aria-checked', 'true');
 
-    // The tab stop is the first item (not the pressed one): a known gap against the APG radio
-    // pattern, tracked in specs/plans/reliability-dogfood-agent-dx.md.
-    await focusRoving(left);
-    await page.keyboard.press('ArrowRight');
-    await expect(centre).toBeFocused();
+    // As in the APG radio pattern, the tab stop is the pressed item, not the first one.
+    await expect(left).toHaveAttribute('tabindex', '-1');
+    await focusRoving(centre);
     await page.keyboard.press('ArrowRight');
     await expect(right).toBeFocused();
     await page.keyboard.press('Space');
