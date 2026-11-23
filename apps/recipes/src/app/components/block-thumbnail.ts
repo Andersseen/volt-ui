@@ -40,6 +40,7 @@ import { PricingTiers } from '../blocks/pricing-tiers/pricing-tiers';
 import { ServiceList } from '../blocks/service-list/service-list';
 import { TestimonialMarquee } from '../blocks/testimonial-marquee/testimonial-marquee';
 import { ServicePanels } from '../blocks/service-panels/service-panels';
+import { SwapStory } from '../blocks/swap-story/swap-story';
 
 /**
  * A real block, rendered at desktop width and scaled down to thumbnail size.
@@ -58,6 +59,7 @@ import { ServicePanels } from '../blocks/service-panels/service-panels';
   selector: 'app-block-thumbnail',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    SwapStory,
     ServicePanels,
     HeroSpotlight,
     HeroSplit,
@@ -189,6 +191,9 @@ import { ServicePanels } from '../blocks/service-panels/service-panels';
         }
         @case ('service-panels') {
           <app-service-panels />
+        }
+        @case ('swap-story') {
+          <app-swap-story />
         }
       }
     </div>

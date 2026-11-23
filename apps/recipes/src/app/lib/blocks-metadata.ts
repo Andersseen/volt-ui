@@ -329,6 +329,15 @@ export const BLOCKS: readonly BlockMetadata[] = [
     ],
   },
   {
+    slug: 'swap-story',
+    path: '/blocks/swap-story',
+    labelKey: 'blocks.items.swapStory.label',
+    category: 'features',
+    taglineKey: 'blocks.items.swapStory.tagline',
+    motionKey: 'blocks.items.swapStory.motion',
+    atoms: [{ name: 'VoltBadge', path: '/docs/components/badge' }],
+  },
+  {
     slug: 'source-preview',
     path: '/blocks/source-preview',
     labelKey: 'blocks.items.sourcePreview.label',

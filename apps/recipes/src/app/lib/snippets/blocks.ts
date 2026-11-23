@@ -36,6 +36,7 @@ import pricingTiersSource from '../../blocks/pricing-tiers/pricing-tiers.ts?raw'
 import serviceListSource from '../../blocks/service-list/service-list.ts?raw';
 import testimonialMarqueeSource from '../../blocks/testimonial-marquee/testimonial-marquee.ts?raw';
 import servicePanelsSource from '../../blocks/service-panels/service-panels.ts?raw';
+import swapStorySource from '../../blocks/swap-story/swap-story.ts?raw';
 
 export const HERO_SPOTLIGHT_BLOCK = toConsumerSource(heroSpotlightSource);
 export const FEATURE_BENTO_BLOCK = toConsumerSource(featureBentoSource);
@@ -67,3 +68,4 @@ export const BG_PARTICLE_WAVE_BLOCK = toConsumerSource(bgParticleWaveSource);
 export const BG_LIGHT_THREADS_BLOCK = toConsumerSource(bgLightThreadsSource);
 export const BG_GLYPH_FIELD_BLOCK = toConsumerSource(bgGlyphFieldSource);
 export const SERVICE_PANELS_BLOCK = toConsumerSource(servicePanelsSource);
+export const SWAP_STORY_BLOCK = toConsumerSource(swapStorySource);
