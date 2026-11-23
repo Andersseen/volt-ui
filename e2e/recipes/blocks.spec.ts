@@ -310,6 +310,21 @@ test.describe('Catalog browser', () => {
     expect(box.heightGap).toBeLessThan(0.5);
   });
 
+  test('rings the whole card when its stretched link has keyboard focus', async ({ page }) => {
+    await page.goto('/blocks?category=hero');
+    await page.waitForLoadState('networkidle');
+
+    const card = page.locator('app-catalog-card').first();
+    await card.getByRole('link').focus();
+    await page.keyboard.press('Shift+Tab');
+    await page.keyboard.press('Tab');
+
+    // The ring is a box-shadow on the card; it transitions in, so poll rather than read once.
+    await expect
+      .poll(() => card.locator('volt-card').evaluate(el => getComputedStyle(el).boxShadow))
+      .toMatch(/0px 0px 0px 4px/);
+  });
+
   test('searches by the Volt atom a block is built from', async ({ page }) => {
     await page.goto('/blocks');
     await page.waitForLoadState('networkidle');

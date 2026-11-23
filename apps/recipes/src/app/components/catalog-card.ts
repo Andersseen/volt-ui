@@ -37,7 +37,7 @@ import type { CatalogEntry } from '../lib/catalog';
   host: { class: 'block min-w-0' },
   template: `
     <volt-card
-      class="group relative flex h-full flex-col overflow-hidden transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5 motion-safe:hover:-translate-y-1"
+      class="group relative flex h-full flex-col overflow-hidden transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5 has-[a:focus-visible]:ring-2 has-[a:focus-visible]:ring-ring has-[a:focus-visible]:ring-offset-2 has-[a:focus-visible]:ring-offset-background motion-safe:hover:-translate-y-1"
     >
       @if (entry().kind === 'blocks') {
         <div
@@ -64,7 +64,7 @@ import type { CatalogEntry } from '../lib/catalog';
         }
         <div class="flex items-center justify-between gap-2">
           <volt-card-title class="text-base font-medium leading-snug group-hover:text-primary">
-            <a [routerLink]="path()" class="stretched">{{ name() }}</a>
+            <a [routerLink]="path()" class="stretched focus-visible:outline-none">{{ name() }}</a>
           </volt-card-title>
           @if (entry().atoms.length > 0) {
             <volt-badge variant="outline">
@@ -79,6 +79,8 @@ import type { CatalogEntry } from '../lib/catalog';
     </volt-card>
   `,
   styles: `
+    /* The link's focus ring is drawn around the whole card (has-[a:focus-visible]), the
+       target it stands for, rather than around the title text alone. */
     .stretched::after {
       content: '';
       position: absolute;
