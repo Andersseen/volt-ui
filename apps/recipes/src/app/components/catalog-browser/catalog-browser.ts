@@ -111,14 +111,19 @@ import {
             [value]="[query().group || 'all']"
             (valueChange)="filterBy($event)"
             [attr.aria-label]="t('recipes.browser.categories')"
-            class="chips -mx-4 flex justify-start gap-1.5 overflow-x-auto border-0 bg-transparent px-4 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0"
+            class="-mx-4 flex justify-start gap-1.5 overflow-x-auto border-0 bg-transparent px-4 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0"
           >
-            <volt-toggle-group-item value="all" size="sm" class="chip">
+            <volt-toggle-group-item value="all" size="sm" class="shrink-0" [buttonClass]="chip">
               {{ t('recipes.browser.all') }}
               <span class="count">{{ entries().length }}</span>
             </volt-toggle-group-item>
             @for (group of groups(); track group.id) {
-              <volt-toggle-group-item [value]="group.id" size="sm" class="chip">
+              <volt-toggle-group-item
+                [value]="group.id"
+                size="sm"
+                class="shrink-0"
+                [buttonClass]="chip"
+              >
                 {{ t(group.labelKey) }}
                 <span class="count">{{ counts()[group.id] }}</span>
               </volt-toggle-group-item>
@@ -183,16 +188,6 @@ import {
     </div>
   `,
   styles: `
-    /* Chips rather than a segmented bar: categories wrap onto as many lines as they need. */
-    .chips .chip {
-      flex-shrink: 0;
-      border: 1px solid var(--border);
-      border-radius: 9999px;
-      padding-inline: 0.85rem;
-    }
-    .chips .chip[data-selected] {
-      border-color: var(--primary);
-    }
     .count {
       margin-left: 0.4rem;
       font-size: 0.75rem;
@@ -207,6 +202,14 @@ export class CatalogBrowser {
   private readonly route = inject(ActivatedRoute);
 
   protected readonly t = this.translations.t;
+
+  /**
+   * Chips rather than a segmented bar: categories wrap onto as many lines as they need. The
+   * shape goes on the item's inner button (`buttonClass`), the element that carries
+   * `data-selected` and the fill — an outline on the host would frame a smaller fill.
+   */
+  protected readonly chip =
+    'rounded-full border border-border px-3.5 data-[selected]:border-primary';
 
   readonly kind = input.required<CatalogKind>();
   readonly titleKey = input.required<PlainTranslationKey>();

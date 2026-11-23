@@ -283,6 +283,33 @@ test.describe('Catalog browser', () => {
     ).toHaveAttribute('aria-current', 'page');
   });
 
+  test('paints the selected chip fill inside the same rounded outline', async ({ page }) => {
+    await page.goto('/blocks');
+    await page.waitForLoadState('networkidle');
+
+    // The fill (data-selected) lands on the inner button, so the outline must be on it too —
+    // an outline on the host drew a pill around a smaller, square-ish fill.
+    const selected = page.getByRole('radio', { name: /^All/ });
+    await expect(selected).toHaveAttribute('data-selected', '');
+    const box = await selected.evaluate(button => {
+      const style = getComputedStyle(button);
+      const own = button.getBoundingClientRect();
+      const host = button.parentElement!.getBoundingClientRect();
+      return {
+        border: parseFloat(style.borderTopWidth),
+        radius: parseFloat(style.borderTopLeftRadius),
+        widthGap: Math.abs(own.width - host.width),
+        heightGap: Math.abs(own.height - host.height),
+        height: own.height,
+      };
+    });
+
+    expect(box.border).toBeGreaterThan(0);
+    expect(box.radius).toBeGreaterThanOrEqual(box.height / 2 - 0.5);
+    expect(box.widthGap).toBeLessThan(0.5);
+    expect(box.heightGap).toBeLessThan(0.5);
+  });
+
   test('searches by the Volt atom a block is built from', async ({ page }) => {
     await page.goto('/blocks');
     await page.waitForLoadState('networkidle');
