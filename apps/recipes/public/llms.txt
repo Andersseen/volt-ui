@@ -47,6 +47,19 @@ Volt UI itself — the components, theming and API reference — is documented a
 - [Login](https://recipes.voltui.dev/blocks/login)
 - [Footer](https://recipes.voltui.dev/blocks/footer)
 - [Dashboard](https://recipes.voltui.dev/blocks/dashboard)
+- [Navbar Docs](https://recipes.voltui.dev/blocks/navbar-docs)
+- [Hero Waitlist](https://recipes.voltui.dev/blocks/hero-waitlist)
+- [Dot Ripple](https://recipes.voltui.dev/blocks/dot-ripple)
+- [Glow Grid](https://recipes.voltui.dev/blocks/glow-grid)
+- [Service Steps](https://recipes.voltui.dev/blocks/service-steps)
+- [Logo Cloud](https://recipes.voltui.dev/blocks/logo-cloud)
+- [Stats Band](https://recipes.voltui.dev/blocks/stats-band)
+- [Pricing Compare](https://recipes.voltui.dev/blocks/pricing-compare)
+- [Contact Faq](https://recipes.voltui.dev/blocks/contact-faq)
+- [Cta Newsletter](https://recipes.voltui.dev/blocks/cta-newsletter)
+- [Footer Columns](https://recipes.voltui.dev/blocks/footer-columns)
+- [Signup](https://recipes.voltui.dev/blocks/signup)
+- [Orders](https://recipes.voltui.dev/blocks/orders)
 
 ## Layouts
 
