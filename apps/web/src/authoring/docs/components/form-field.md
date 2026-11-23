@@ -24,6 +24,7 @@ Change the inputs and interact with the preview: the events panel shows what the
 - Inside `<volt-form-field>`, `<volt-label>` labels the control through `aria-labelledby`, and clicking it focuses the control. No ids are needed; outside a form field, use `<volt-label htmlFor>`.
 - `<volt-hint>` is always part of the control's description (`aria-describedby`).
 - `<volt-error>` joins the description while it is rendered and the control's validators fail, and leaves it when it is removed: no reference to a removed message is left behind.
+- Without Angular Forms — a field validated with signals, `<volt-input [state]="invalid() ? 'error' : 'default'" />` — there is no validator to read, so a rendered `<volt-error>` describes the control for as long as it is in the DOM. Render it under the same `@if` as the error state.
 - `aria-invalid="true"` is set on the control (not on a wrapper) once it is invalid and touched, so the error is not conveyed by color alone.
 - **Error announcement:** `<volt-error>` is an alert, announced when it is inserted. Render it once the field has been left or the form submitted (`@if (control.touched && control.invalid)`), as in the example, rather than on every keystroke. For validation that should wait until the reader leaves the field, use Angular's `updateOn: 'blur'`.
 - One control per form field. Works with `volt-input`, `volt-textarea`, `volt-select` and native controls with `ngpInput`.

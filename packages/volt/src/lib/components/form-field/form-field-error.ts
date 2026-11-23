@@ -3,6 +3,7 @@ import {
   Component,
   computed,
   DestroyRef,
+  effect,
   inject,
   input,
   viewChild,
@@ -16,6 +17,10 @@ import { cn } from '../../utils';
  * once the field has been left or the form submitted (`@if (control.touched && control.invalid)`),
  * not on every keystroke. While it is rendered and its validator fails, the field's control lists it
  * in `aria-describedby`. `class` styles the text.
+ *
+ * Without Angular Forms — a field validated with signals, `<volt-input [state]="…">` — nothing reports a
+ * failing validator, so being rendered is the signal: the message describes the control for as long as
+ * it is in the DOM.
  */
 @Component({
   selector: 'volt-error',
@@ -41,5 +46,12 @@ export class VoltError {
     // because the value became valid is destroyed in the same pass that clears the failure, so its
     // id stayed in the control's aria-describedby, pointing at an element that no longer exists.
     inject(DestroyRef).onDestroy(() => this.formField()?.removeDescription(this.error().id()));
+
+    // With a Forms control the field's status is known (`invalid()` is a boolean) and ngpError registers
+    // the message itself while its validator fails. Without one it stays `null` and nobody would.
+    effect(() => {
+      const field = this.formField();
+      if (field && field.invalid() === null) field.addDescription(this.error().id());
+    });
   }
 }

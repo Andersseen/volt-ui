@@ -103,6 +103,7 @@ export class FormFieldExample {
 - Усередині `<volt-form-field>` елемент `<volt-label>` підписує елемент керування через `aria-labelledby`, а клік по ньому переводить фокус на елемент керування. Id не потрібні; поза form field використовуйте `<volt-label htmlFor>`.
 - `<volt-hint>` завжди входить до опису елемента керування (`aria-describedby`).
 - `<volt-error>` додається до опису, поки він відрендерений і валідатори елемента керування не проходять, і зникає з нього після видалення: посилання на видалене повідомлення не лишається.
+- Без Angular Forms — поле, що валідується сигналами, `<volt-input [state]="invalid() ? 'error' : 'default'" />` — немає валідатора, який можна прочитати, тож відрендерений `<volt-error>` описує елемент керування, доки він є в DOM. Рендерте його під тим самим `@if`, що й стан помилки.
 - `aria-invalid="true"` ставиться на сам елемент керування (а не на обгортку), щойно він невалідний і торкнутий, тож помилку передає не лише колір.
 - **Оголошення помилок:** `<volt-error>` — це сповіщення (alert), яке оголошується в момент вставлення. Рендеріть його, коли користувач покинув поле або надіслав форму (`@if (control.touched && control.invalid)`), як у прикладі, а не на кожне натискання клавіші. Для валідації, що має чекати, поки користувач покине поле, використовуйте `updateOn: 'blur'` з Angular.
 - Один елемент керування на form field. Працює з `volt-input`, `volt-textarea`, `volt-select` і нативними елементами з `ngpInput`.
@@ -259,6 +260,7 @@ import {
   Component,
   computed,
   DestroyRef,
+  effect,
   inject,
   input,
   viewChild,
@@ -272,6 +274,10 @@ import { cn } from '../../utils';
  * once the field has been left or the form submitted (`@if (control.touched && control.invalid)`),
  * not on every keystroke. While it is rendered and its validator fails, the field's control lists it
  * in `aria-describedby`. `class` styles the text.
+ *
+ * Without Angular Forms — a field validated with signals, `<volt-input [state]="…">` — nothing reports a
+ * failing validator, so being rendered is the signal: the message describes the control for as long as
+ * it is in the DOM.
  */
 @Component({
   selector: 'volt-error',
@@ -297,6 +303,13 @@ export class VoltError {
     // because the value became valid is destroyed in the same pass that clears the failure, so its
     // id stayed in the control's aria-describedby, pointing at an element that no longer exists.
     inject(DestroyRef).onDestroy(() => this.formField()?.removeDescription(this.error().id()));
+
+    // With a Forms control the field's status is known (`invalid()` is a boolean) and ngpError registers
+    // the message itself while its validator fails. Without one it stays `null` and nobody would.
+    effect(() => {
+      const field = this.formField();
+      if (field && field.invalid() === null) field.addDescription(this.error().id());
+    });
   }
 }
 ```
