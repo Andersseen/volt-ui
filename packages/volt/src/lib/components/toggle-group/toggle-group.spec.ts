@@ -118,6 +118,36 @@ describe('VoltToggleGroup', () => {
     expect(document.activeElement).toBe(italic);
   });
 
+  it('tabs into a single group on its selected item, as a radio group does', async () => {
+    const user = userEvent.setup();
+    const { fixture } = await render(ToggleGroupTestWrapper, { inputs: { value: ['underline'] } });
+
+    const bold = screen.getByRole('radio', { name: /Bold/i });
+    const underline = screen.getByRole('radio', { name: /Underline/i });
+    expect(underline).toHaveAttribute('tabindex', '0');
+    expect(bold).toHaveAttribute('tabindex', '-1');
+
+    await user.tab();
+    expect(document.activeElement).toBe(underline);
+
+    // The tab stop follows a selection made from outside, without stealing focus.
+    (document.activeElement as HTMLElement).blur();
+    fixture.componentInstance.value.set(['bold']);
+    await fixture.whenStable();
+    expect(bold).toHaveAttribute('tabindex', '0');
+    expect(underline).toHaveAttribute('tabindex', '-1');
+    expect(document.activeElement).toBe(document.body);
+  });
+
+  it('keeps the first item as the tab stop of a multiple group', async () => {
+    await render(ToggleGroupTestWrapper, {
+      inputs: { type: 'multiple', value: ['underline'] },
+    });
+
+    expect(screen.getByRole('button', { name: /Bold/i })).toHaveAttribute('tabindex', '0');
+    expect(screen.getByRole('button', { name: /Underline/i })).toHaveAttribute('tabindex', '-1');
+  });
+
   it('should work with reactive forms', async () => {
     const user = userEvent.setup();
 
