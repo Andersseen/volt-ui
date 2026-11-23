@@ -1,4 +1,9 @@
-import { IMAGE_LOADER, type ImageLoaderConfig, NgOptimizedImage } from '@angular/common';
+import {
+  IMAGE_LOADER,
+  type ImageLoaderConfig,
+  NgOptimizedImage,
+  NgTemplateOutlet,
+} from '@angular/common';
 import {
   afterNextRender,
   ChangeDetectionStrategy,
@@ -139,6 +144,7 @@ function unsplashLoader({ src, width }: ImageLoaderConfig): string {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     NgOptimizedImage,
+    NgTemplateOutlet,
     VoltButton,
     VoltDialogContent,
     VoltDialogOverlay,
@@ -289,33 +295,8 @@ function unsplashLoader({ src, width }: ImageLoaderConfig): string {
                       }
                     </div>
 
-                    <!-- One photo chosen at a time; the arrow keys move between them. -->
-                    <volt-toggle-group
-                      type="single"
-                      [allowDeselection]="false"
-                      [value]="selectedValue()"
-                      (valueChange)="selectValue($event)"
-                      [attr.aria-label]="item.label + ' photos'"
-                      class="mt-auto grid grid-cols-4 gap-3 border-0 bg-transparent p-0 shadow-none @4xl:grid-cols-2 @4xl:gap-4"
-                    >
-                      @for (thumb of item.photos; track thumb.id; let index = $index) {
-                        <volt-toggle-group-item
-                          [value]="thumb.id"
-                          [aria-label]="thumb.title"
-                          [attr.data-chosen]="index === selected() ? '' : null"
-                          class="option aspect-[4/3] w-full rounded-xl @4xl:rounded-2xl [&>button]:relative [&>button]:size-full [&>button]:overflow-hidden [&>button]:rounded-[inherit] [&>button]:p-0 [&>button]:ring-offset-2 [&>button]:ring-offset-background [&>button]:data-[selected]:ring-2 [&>button]:data-[selected]:ring-foreground"
-                        >
-                          <img
-                            [ngSrc]="thumb.id"
-                            fill
-                            sizes="(min-width: 64rem) 20vw, 25vw"
-                            alt=""
-                            class="thumb object-cover"
-                            [style.object-position]="thumb.focus"
-                          />
-                        </volt-toggle-group-item>
-                      }
-                    </volt-toggle-group>
+                    <!-- Declared outside volt-tabs, see the thumbnails template below. -->
+                    <ng-container *ngTemplateOutlet="thumbnails" />
                   </div>
                 </div>
               }
@@ -324,6 +305,42 @@ function unsplashLoader({ src, width }: ImageLoaderConfig): string {
         </volt-tabs>
       </div>
     </section>
+
+    <!--
+      The thumbnails are declared out here, not inside <volt-tabs>, on purpose. A Volt toggle group
+      shares the roving focus of the nearest group around it, so inside the tabs its arrow keys
+      would move between the tabs instead of the photos. A template takes its injector from where
+      it is declared, so rendering it into the panel keeps the photos a group of their own.
+    -->
+    <ng-template #thumbnails>
+      <!-- One photo chosen at a time; the arrow keys move between them. -->
+      <volt-toggle-group
+        type="single"
+        [allowDeselection]="false"
+        [value]="selectedValue()"
+        (valueChange)="selectValue($event)"
+        [attr.aria-label]="current().label + ' photos'"
+        class="mt-auto grid grid-cols-4 gap-3 border-0 bg-transparent p-0 shadow-none @4xl:grid-cols-2 @4xl:gap-4"
+      >
+        @for (thumb of current().photos; track thumb.id; let index = $index) {
+          <volt-toggle-group-item
+            [value]="thumb.id"
+            [aria-label]="thumb.title"
+            [attr.data-chosen]="index === selected() ? '' : null"
+            class="option aspect-[4/3] w-full rounded-xl @4xl:rounded-2xl [&>button]:relative [&>button]:size-full [&>button]:overflow-hidden [&>button]:rounded-[inherit] [&>button]:p-0 [&>button]:ring-offset-2 [&>button]:ring-offset-background [&>button]:data-[selected]:ring-2 [&>button]:data-[selected]:ring-foreground"
+          >
+            <img
+              [ngSrc]="thumb.id"
+              fill
+              sizes="(min-width: 64rem) 20vw, 25vw"
+              alt=""
+              class="thumb object-cover"
+              [style.object-position]="thumb.focus"
+            />
+          </volt-toggle-group-item>
+        }
+      </volt-toggle-group>
+    </ng-template>
 
     <ng-template
       voltDialogRoot
@@ -480,7 +497,7 @@ export class GalleryTabs {
   protected readonly changed = signal(false);
   protected readonly open = signal<Photo | null>(null);
 
-  private readonly current = computed(
+  protected readonly current = computed(
     () => CATEGORIES.find(item => item.key === this.category()) ?? CATEGORIES[0]
   );
   protected readonly featured = computed(

@@ -186,6 +186,7 @@ function unsplashLoader({ src, width }: ImageLoaderConfig): string {
               type="single"
               [allowDeselection]="false"
               [orientation]="orientation()"
+              [attr.aria-orientation]="orientation()"
               [value]="selectedValue()"
               (valueChange)="pick($event)"
               aria-label="Choose a photo"
