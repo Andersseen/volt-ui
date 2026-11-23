@@ -576,6 +576,7 @@ export class DatePickerFixture {
     VoltPopoverContent,
     VoltTooltip,
     VoltTooltipContent,
+    VoltToggle,
     VoltDropdownMenu,
     VoltDropdownMenuItem,
     VoltDropdownMenuTrigger,
@@ -587,6 +588,7 @@ export class DatePickerFixture {
       <button voltButton variant="outline" [voltPopover]="popoverTpl">Open popover</button>
       <button voltButton variant="ghost" [voltTooltip]="tooltipTpl">Hover for tip</button>
       <button voltButton variant="ghost" [voltTooltip]="'Plain text tip'">String tip</button>
+      <volt-toggle aria-label="Night mode" voltTooltip="Toggle night mode">☾</volt-toggle>
       <button voltButton variant="outline" [voltDropdownMenu]="menuTpl">Open menu</button>
     </div>
 

@@ -194,6 +194,42 @@ class VariantMenuFixture {
   readonly current = signal('docs');
 }
 
+@Component({
+  imports: [
+    VoltNavigationMenu,
+    VoltNavigationMenuItem,
+    VoltNavigationMenuLink,
+    VoltNavigationMenuList,
+  ],
+  template: `
+    <volt-navigation-menu aria-label="Sections">
+      <volt-navigation-menu-list>
+        <volt-navigation-menu-item>
+          <a
+            voltNavigationMenuLink
+            current="location"
+            [active]="section() === 'about'"
+            href="#about"
+            >About</a
+          >
+        </volt-navigation-menu-item>
+        <volt-navigation-menu-item>
+          <a
+            voltNavigationMenuLink
+            current="location"
+            [active]="section() === 'contact'"
+            href="#contact"
+            >Contact</a
+          >
+        </volt-navigation-menu-item>
+      </volt-navigation-menu-list>
+    </volt-navigation-menu>
+  `,
+})
+class SectionMenuFixture {
+  readonly section = signal('about');
+}
+
 describe('navigation menu presentation', () => {
   it('defaults to the subtle variant and the inline layout', async () => {
     await render(VariantMenuFixture);
@@ -231,6 +267,24 @@ describe('navigation menu presentation', () => {
     fixture.detectChanges();
     await fixture.whenStable();
     expect(screen.getByRole('link', { name: 'Docs' })).not.toHaveAttribute('aria-current');
+  });
+
+  it('an in-page section link is the current location, not the current page', async () => {
+    const { fixture } = await render(SectionMenuFixture);
+    const about = screen.getByRole('link', { name: 'About' });
+    const contact = screen.getByRole('link', { name: 'Contact' });
+    expect(about).toHaveAttribute('aria-current', 'location');
+    expect(about).toHaveAttribute('data-active');
+    expect(contact).not.toHaveAttribute('aria-current');
+    expect(contact).not.toHaveAttribute('data-active');
+
+    fixture.componentInstance.section.set('contact');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(about).not.toHaveAttribute('aria-current');
+    expect(about).not.toHaveAttribute('data-active');
+    expect(contact).toHaveAttribute('aria-current', 'location');
+    expect(contact).toHaveAttribute('data-active');
   });
 
   it('an open submenu is not a destination: its trigger is expanded, never current', async () => {

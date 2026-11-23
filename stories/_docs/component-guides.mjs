@@ -214,7 +214,10 @@ export const COMPONENT_GUIDES = {
     title: 'Toggle Group',
     group: 'controls',
     summary: 'A set of toggles with single or multiple selection.',
-    when: ['Alignment, view mode or filter chips where options belong together.'],
+    when: [
+      'Alignment, view mode or filter chips where options belong together.',
+      '`class` styles the item host; `buttonClass` reshapes the inner button itself, e.g. `buttonClass="h-auto p-0"` for image thumbnails.',
+    ],
     a11y: [
       'Roving focus comes from the ng-primitives toggle group. Icon-only items need `aria-label`.',
       '`type="single"` is a `radiogroup` of `radio` items (`aria-checked`); `type="multiple"` is a `group` of toggle buttons (`aria-pressed`). Name the group with `aria-label` or `aria-labelledby`.',
@@ -268,7 +271,7 @@ export const COMPONENT_GUIDES = {
     ],
     a11y: [
       'Escape closes submenus and returns focus to the trigger; opening and swapping submenus is covered by tests. Links should be real anchors.',
-      '`active` sets `aria-current="page"`; an open submenu is `aria-expanded` and is never marked current. Disabled links and triggers are `aria-disabled`.',
+      '`active` sets `aria-current="page"`; on a one-page site, mark the visible section with `current="location"` instead (`step`, `date`, `time` and `true` are accepted too). An open submenu is `aria-expanded` and is never marked current. Disabled links and triggers are `aria-disabled`.',
       'The logo, account menu and mobile shell belong to the application header, not to this component.',
     ],
   },
@@ -339,6 +342,8 @@ export const COMPONENT_GUIDES = {
     when: ['Naming an icon button or adding brief, non-essential information.'],
     a11y: [
       'Shows on hover and focus, hides on blur or Escape, and is linked with `aria-describedby`. Never put essential or interactive content in a tooltip.',
+      'On a component that renders its own button (`volt-toggle`, `volt-switch`) it follows focus of that button and describes it.',
+      '`context` reaches the template as a signal: write `let-label` and read `label()`.',
     ],
   },
   toast: {
@@ -356,7 +361,7 @@ export const COMPONENT_GUIDES = {
     summary: 'Vertically stacked sections that expand and collapse.',
     when: ['FAQs and settings where most sections are not needed at once.'],
     a11y: [
-      'Header buttons expose expanded state and keyboard behaviour through ng-primitives. Keep trigger text descriptive.',
+      'Header buttons expose expanded state through ng-primitives. ↓/↑ (→/← when horizontal) move between headers, wrapping, and Home/End jump to the first/last; every header stays a tab stop. Keep trigger text descriptive.',
     ],
   },
   avatar: {

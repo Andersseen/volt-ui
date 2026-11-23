@@ -61,8 +61,14 @@ export class VoltToggleGroupItem implements AfterViewChecked {
   protected readonly isDisabled = computed(() => this.disabled() || this.group.isDisabled());
   protected readonly pressed = computed(() => this.group.isPressed(this.value()));
 
+  /**
+   * Classes for the inner `<button>`, merged over the variant's (`class` styles the host). Use it to
+   * reshape the button itself: `buttonClass="h-auto p-0"` for a full-bleed thumbnail option.
+   */
+  readonly buttonClass = input<string>('');
+
   protected readonly classes = computed(() =>
-    toggleGroupItemVariants({ variant: this.variant(), size: this.size() })
+    cn(toggleGroupItemVariants({ variant: this.variant(), size: this.size() }), this.buttonClass())
   );
 
   constructor() {

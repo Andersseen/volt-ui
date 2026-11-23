@@ -68,6 +68,8 @@ export class MyComponent {}
 ## Accessibility
 
 - Shows on hover and focus, hides on blur or Escape, and is linked with `aria-describedby`. Never put essential or interactive content in a tooltip.
+- On a component that renders its own button (`volt-toggle`, `volt-switch`) it follows focus of that button and describes it.
+- `context` reaches the template as a signal: write `let-label` and read `label()`.
 
 <table><thead><tr><th>Aspect</th><th>Behaviour</th></tr></thead><tbody><tr><td>Keyboard</td><td>{"hover/focus/Escape/blur covered"}</td></tr><tr><td>Focus and overlays</td><td>{"aria-describedby and position covered"}</td></tr><tr><td>Forms</td><td>{"n/a"}</td></tr></tbody></table>
 

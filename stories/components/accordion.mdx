@@ -81,9 +81,9 @@ export class MyComponent {}
 
 ## Accessibility
 
-- Header buttons expose expanded state and keyboard behaviour through ng-primitives. Keep trigger text descriptive.
+- Header buttons expose expanded state through ng-primitives. ↓/↑ (→/← when horizontal) move between headers, wrapping, and Home/End jump to the first/last; every header stays a tab stop. Keep trigger text descriptive.
 
-<table><thead><tr><th>Aspect</th><th>Behaviour</th></tr></thead><tbody><tr><td>Keyboard</td><td>{"via ng-primitives"}</td></tr><tr><td>Focus and overlays</td><td>{"n/a"}</td></tr><tr><td>Forms</td><td>{"n/a"}</td></tr></tbody></table>
+<table><thead><tr><th>Aspect</th><th>Behaviour</th></tr></thead><tbody><tr><td>Keyboard</td><td>{"arrows, Home/End between headers; Enter/Space"}</td></tr><tr><td>Focus and overlays</td><td>{"n/a"}</td></tr><tr><td>Forms</td><td>{"n/a"}</td></tr></tbody></table>
 
 The Accessibility panel under each story runs axe-core against that story. It is a development aid, not a conformance claim.
 

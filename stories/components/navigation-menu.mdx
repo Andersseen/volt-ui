@@ -123,7 +123,7 @@ export class MyComponent {}
 ## Accessibility
 
 - Escape closes submenus and returns focus to the trigger; opening and swapping submenus is covered by tests. Links should be real anchors.
-- `active` sets `aria-current="page"`; an open submenu is `aria-expanded` and is never marked current. Disabled links and triggers are `aria-disabled`.
+- `active` sets `aria-current="page"`; on a one-page site, mark the visible section with `current="location"` instead (`step`, `date`, `time` and `true` are accepted too). An open submenu is `aria-expanded` and is never marked current. Disabled links and triggers are `aria-disabled`.
 - The logo, account menu and mobile shell belong to the application header, not to this component.
 
 <table><thead><tr><th>Aspect</th><th>Behaviour</th></tr></thead><tbody><tr><td>Keyboard</td><td>{"Enter/Escape and focus return covered in e2e"}</td></tr><tr><td>Focus and overlays</td><td>{"submenu open/swap covered; four"}<code>{"variant"}</code>{"s,"}<code>{"contained"}</code>{"layout"}</td></tr><tr><td>Forms</td><td>{"n/a"}</td></tr></tbody></table>
@@ -154,7 +154,7 @@ Selector: <code>{"volt-navigation-menu-item"}</code>
 
 Selector: <code>{"a[voltNavigationMenuLink]"}</code>
 
-<table><thead><tr><th>Input</th><th>Type</th><th>Default</th></tr></thead><tbody><tr><td><code>{"class"}</code></td><td><code>{"string"}</code></td><td><code>{"''"}</code></td></tr><tr><td><code>{"active"}</code> {"(transform: booleanAttribute)"}</td><td><code>{"boolean"}</code></td><td><code>{"false"}</code></td></tr><tr><td><code>{"disabled"}</code> {"(transform: booleanAttribute)"}</td><td><code>{"boolean"}</code></td><td><code>{"false"}</code></td></tr></tbody></table>
+<table><thead><tr><th>Input</th><th>Type</th><th>Default</th></tr></thead><tbody><tr><td><code>{"class"}</code></td><td><code>{"string"}</code></td><td><code>{"''"}</code></td></tr><tr><td><code>{"active"}</code> {"(transform: booleanAttribute)"}</td><td><code>{"boolean"}</code></td><td><code>{"false"}</code></td></tr><tr><td><code>{"current"}</code></td><td><code>{"VoltNavigationMenuCurrent"}</code></td><td><code>{"'page'"}</code></td></tr><tr><td><code>{"disabled"}</code> {"(transform: booleanAttribute)"}</td><td><code>{"boolean"}</code></td><td><code>{"false"}</code></td></tr></tbody></table>
 
 ### VoltNavigationMenuList
 
