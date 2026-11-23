@@ -32,6 +32,8 @@ import {
   VoltSidebarHeader,
   VoltSidebarItem,
   VoltSidebarService,
+  VoltToggleGroup,
+  VoltToggleGroupItem,
 } from 'volt';
 
 interface NavItem {
@@ -99,6 +101,8 @@ const SERIES: readonly number[] = [42, 48, 44, 57, 63, 59, 71, 78, 74, 86, 92, 1
     VoltButton,
     VoltAvatar,
     VoltAvatarFallback,
+    VoltToggleGroup,
+    VoltToggleGroupItem,
     LmnHomeIcon,
     LmnGridIcon,
     LmnUserIcon,
@@ -192,23 +196,20 @@ const SERIES: readonly number[] = [42, 48, 44, 57, 63, 59, 71, 78, 74, 86, 92, 1
               </p>
             </div>
 
-            <div class="hidden items-center gap-1 rounded-md border border-border p-0.5 @xl:flex">
+            <volt-toggle-group
+              type="single"
+              [allowDeselection]="false"
+              [value]="[activeRange()]"
+              (valueChange)="pickRange($event)"
+              aria-label="Date range"
+              class="hidden p-0.5 shadow-none @xl:inline-flex"
+            >
               @for (range of ranges; track range) {
-                <button
-                  type="button"
-                  class="rounded-sm px-2.5 py-1 text-xs transition-colors"
-                  [class]="
-                    range === activeRange()
-                      ? 'bg-primary text-primary-foreground'
-                      : 'text-muted-foreground hover:text-foreground'
-                  "
-                  [attr.aria-pressed]="range === activeRange()"
-                  (click)="activeRange.set(range)"
-                >
-                  {{ range }}
-                </button>
+                <volt-toggle-group-item [value]="range" size="sm">{{
+                  range
+                }}</volt-toggle-group-item>
               }
-            </div>
+            </volt-toggle-group>
 
             <volt-button variant="outline" size="sm">Export</volt-button>
           </header>
@@ -406,6 +407,10 @@ export class AppDashboard {
 
   protected readonly activeRange = signal('12m');
   protected readonly ranges = ['7d', '30d', '12m'];
+
+  protected pickRange(value: readonly string[]): void {
+    if (value[0]) this.activeRange.set(value[0]);
+  }
 
   /** 0 to 1, driving every counter at once so the row lands together. */
   private readonly progress = signal(0);
