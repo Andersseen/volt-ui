@@ -35,6 +35,7 @@ import heroSpotlightSource from '../../blocks/hero-spotlight/hero-spotlight.ts?r
 import pricingTiersSource from '../../blocks/pricing-tiers/pricing-tiers.ts?raw';
 import serviceListSource from '../../blocks/service-list/service-list.ts?raw';
 import testimonialMarqueeSource from '../../blocks/testimonial-marquee/testimonial-marquee.ts?raw';
+import servicePanelsSource from '../../blocks/service-panels/service-panels.ts?raw';
 
 export const HERO_SPOTLIGHT_BLOCK = toConsumerSource(heroSpotlightSource);
 export const FEATURE_BENTO_BLOCK = toConsumerSource(featureBentoSource);
@@ -65,3 +66,4 @@ export const CONFIG_PLAYGROUND_BLOCK = toConsumerSource(configPlaygroundSource);
 export const BG_PARTICLE_WAVE_BLOCK = toConsumerSource(bgParticleWaveSource);
 export const BG_LIGHT_THREADS_BLOCK = toConsumerSource(bgLightThreadsSource);
 export const BG_GLYPH_FIELD_BLOCK = toConsumerSource(bgGlyphFieldSource);
+export const SERVICE_PANELS_BLOCK = toConsumerSource(servicePanelsSource);

@@ -317,6 +317,18 @@ export const BLOCKS: readonly BlockMetadata[] = [
     ],
   },
   {
+    slug: 'service-panels',
+    path: '/blocks/service-panels',
+    labelKey: 'blocks.items.servicePanels.label',
+    category: 'features',
+    taglineKey: 'blocks.items.servicePanels.tagline',
+    motionKey: 'blocks.items.servicePanels.motion',
+    atoms: [
+      { name: 'VoltCard', path: '/docs/components/card' },
+      { name: 'VoltButton', path: '/docs/components/button' },
+    ],
+  },
+  {
     slug: 'source-preview',
     path: '/blocks/source-preview',
     labelKey: 'blocks.items.sourcePreview.label',
