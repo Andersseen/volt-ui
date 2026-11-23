@@ -23,3 +23,6 @@ stories/components/*.mdx
 apps/web/src/content/docs
 apps/web/src/content/docs-es
 apps/web/src/content/docs-uk
+
+# Written by scripts/generate-dot-map.mjs; re-running the generator must reproduce it byte for byte.
+apps/recipes/src/app/blocks/contact-map/contact-map.data.ts

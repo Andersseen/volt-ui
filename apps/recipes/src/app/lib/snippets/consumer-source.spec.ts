@@ -30,10 +30,29 @@ describe('consumer-ready block, layout and recipe source', () => {
   it.each(SOURCES)('%s imports only public packages', (_name, source) => {
     for (const specifier of importSpecifiers(source)) {
       expect(specifier, `${_name} imports ${specifier}`).not.toBe('volt');
+      // One relative import is allowed: a generated `./<name>.data` file beside the block. Its
+      // page shows that file too, and check-copied-source compiles the two together.
+      if (/^\.\/[a-z-]+\.data$/.test(specifier)) continue;
       expect(specifier.startsWith('.'), `${_name} has relative import ${specifier}`).toBe(false);
       expect(specifier).not.toMatch(/^(src|app)\//);
       if (!specifier.startsWith('@angular/')) {
         expect(ALLOWED_PACKAGES, `${_name} imports ${specifier}`).toContain(packageName(specifier));
+      }
+    }
+  });
+
+  it('ships the data file of every block that imports one', () => {
+    const shipped = Object.values(blocks).join('\n');
+    const dataImport = /import\s*\{([^}]+)\}\s*from\s*'(\.\/[a-z-]+\.data)'/g;
+
+    for (const [name, source] of SOURCES) {
+      for (const [, names, specifier] of source.matchAll(dataImport)) {
+        for (const id of names.split(',').map(part => part.trim())) {
+          expect(
+            shipped,
+            `${name} imports ${id} from ${specifier}, which no snippet carries`
+          ).toMatch(new RegExp(`export const ${id}\\b`));
+        }
       }
     }
   });

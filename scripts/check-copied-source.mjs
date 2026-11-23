@@ -34,9 +34,14 @@ for (const kind of ['blocks', 'layouts', 'patterns']) {
     if (!entry.isDirectory()) continue;
     const file = join(dir, entry.name, `${entry.name}.ts`);
     if (!existsSync(file)) continue;
-    const target = join(OUT, kind, entry.name, `${entry.name}.ts`);
-    mkdirSync(dirname(target), { recursive: true });
-    writeFileSync(target, toConsumerSource(readFileSync(file, 'utf8')));
+    // The block plus any sibling it imports (a generated `<name>.data.ts`), never its specs:
+    // the page shows those files next to the block, so a visitor copies them together.
+    for (const sibling of readdirSync(join(dir, entry.name))) {
+      if (!sibling.endsWith('.ts') || sibling.endsWith('.spec.ts')) continue;
+      const target = join(OUT, kind, entry.name, sibling);
+      mkdirSync(dirname(target), { recursive: true });
+      writeFileSync(target, toConsumerSource(readFileSync(join(dir, entry.name, sibling), 'utf8')));
+    }
     copied++;
   }
 }

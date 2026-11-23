@@ -57,3 +57,27 @@ describe('BlockShowcase', () => {
     expect(screen.getByText(/^pnpm add @voltui\/components/)).toBeInTheDocument();
   });
 });
+
+@Component({
+  imports: [BlockShowcase],
+  template: `
+    <app-block-showcase [block]="block" [code]="code" [files]="files">
+      <p>the live block</p>
+    </app-block-showcase>
+  `,
+})
+class HostWithData {
+  readonly block = blockBySlug('contact-map');
+  readonly code = "import { CONTACT_MAP } from './contact-map.data';";
+  readonly files = [{ name: 'contact-map.data.ts', code: 'export const CONTACT_MAP = {};' }];
+}
+
+describe('BlockShowcase with sibling files', () => {
+  it('shows each file the block imports beside it, so the copy is complete', async () => {
+    await render(HostWithData, { providers: [provideRouter([])] });
+
+    expect(screen.getByRole('heading', { name: 'contact-map.data.ts' })).toBeInTheDocument();
+    // Source, install command, and the data file: each copyable on its own.
+    expect(screen.getAllByRole('button', { name: /copy/i })).toHaveLength(3);
+  });
+});

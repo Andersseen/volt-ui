@@ -34,10 +34,16 @@ import { HeroProduct } from '../blocks/hero-product/hero-product';
 import { ScrollStory } from '../blocks/scroll-story/scroll-story';
 import { SourcePreview } from '../blocks/source-preview/source-preview';
 import { HeroSplit } from '../blocks/hero-split/hero-split';
+import { HeroRail } from '../blocks/hero-rail/hero-rail';
 import { HeroSpotlight } from '../blocks/hero-spotlight/hero-spotlight';
 import { PricingTiers } from '../blocks/pricing-tiers/pricing-tiers';
 import { ServiceList } from '../blocks/service-list/service-list';
 import { TestimonialMarquee } from '../blocks/testimonial-marquee/testimonial-marquee';
+import { ServicePanels } from '../blocks/service-panels/service-panels';
+import { SwapStory } from '../blocks/swap-story/swap-story';
+import { GalleryTabs } from '../blocks/gallery-tabs/gallery-tabs';
+import { ContactMap } from '../blocks/contact-map/contact-map';
+import { FooterCurtain } from '../blocks/footer-curtain/footer-curtain';
 
 /**
  * A real block, rendered at desktop width and scaled down to thumbnail size.
@@ -56,8 +62,14 @@ import { TestimonialMarquee } from '../blocks/testimonial-marquee/testimonial-ma
   selector: 'app-block-thumbnail',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    FooterCurtain,
+    ContactMap,
+    GalleryTabs,
+    SwapStory,
+    ServicePanels,
     HeroSpotlight,
     HeroSplit,
+    HeroRail,
     HeroProduct,
     HeroInstall,
     HeroGlyphs,
@@ -101,6 +113,9 @@ import { TestimonialMarquee } from '../blocks/testimonial-marquee/testimonial-ma
         }
         @case ('hero-split') {
           <app-hero-split />
+        }
+        @case ('hero-rail') {
+          <app-hero-rail />
         }
         @case ('hero-product') {
           <app-hero-product />
@@ -179,6 +194,21 @@ import { TestimonialMarquee } from '../blocks/testimonial-marquee/testimonial-ma
         }
         @case ('footer-compact') {
           <app-footer-compact />
+        }
+        @case ('service-panels') {
+          <app-service-panels />
+        }
+        @case ('swap-story') {
+          <app-swap-story />
+        }
+        @case ('gallery-tabs') {
+          <app-gallery-tabs />
+        }
+        @case ('contact-map') {
+          <app-contact-map />
+        }
+        @case ('footer-curtain') {
+          <app-footer-curtain />
         }
       }
     </div>
