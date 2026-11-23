@@ -166,6 +166,19 @@ export const BLOCKS: readonly BlockMetadata[] = [
     atoms: [{ name: 'VoltSeparator', path: '/docs/components/separator' }],
   },
   {
+    slug: 'footer-curtain',
+    path: '/blocks/footer-curtain',
+    labelKey: 'blocks.items.footerCurtain.label',
+    category: 'footer',
+    taglineKey: 'blocks.items.footerCurtain.tagline',
+    motionKey: 'blocks.items.footerCurtain.motion',
+    atoms: [
+      { name: 'VoltButton', path: '/docs/components/button' },
+      { name: 'VoltSeparator', path: '/docs/components/separator' },
+      { name: 'VoltTooltip', path: '/docs/components/tooltip' },
+    ],
+  },
+  {
     slug: 'hero',
     path: '/blocks/hero',
     labelKey: 'blocks.items.hero.label',

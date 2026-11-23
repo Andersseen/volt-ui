@@ -43,6 +43,7 @@ import { ServicePanels } from '../blocks/service-panels/service-panels';
 import { SwapStory } from '../blocks/swap-story/swap-story';
 import { GalleryTabs } from '../blocks/gallery-tabs/gallery-tabs';
 import { ContactMap } from '../blocks/contact-map/contact-map';
+import { FooterCurtain } from '../blocks/footer-curtain/footer-curtain';
 
 /**
  * A real block, rendered at desktop width and scaled down to thumbnail size.
@@ -61,6 +62,7 @@ import { ContactMap } from '../blocks/contact-map/contact-map';
   selector: 'app-block-thumbnail',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    FooterCurtain,
     ContactMap,
     GalleryTabs,
     SwapStory,
@@ -204,6 +206,9 @@ import { ContactMap } from '../blocks/contact-map/contact-map';
         }
         @case ('contact-map') {
           <app-contact-map />
+        }
+        @case ('footer-curtain') {
+          <app-footer-curtain />
         }
       }
     </div>
