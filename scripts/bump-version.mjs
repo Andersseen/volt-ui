@@ -10,7 +10,8 @@
  * holds a version npm does not have yet, nothing is bumped and the reason is printed.
  *
  * For @voltui/components it also updates the workspace package.json, releases the CHANGELOG's
- * "Unreleased" section under the new version and regenerates the site stats (`sourceVersion`).
+ * "Unreleased" section under the new version and regenerates the site stats (`sourceVersion`) and the
+ * MCP's `LIBRARY_VERSION`.
  * Commit the result in the PR meant to be released (RELEASING.md, "Cutting a release").
  */
 import { execFileSync } from 'node:child_process';
@@ -72,6 +73,8 @@ for (const pkg of PACKAGES.filter(p => selected.includes(p.tagPrefix))) {
       failed = true;
     }
     execFileSync('node', ['scripts/generate-site-stats.mjs'], { stdio: 'inherit' });
+    // The MCP states which version its facts describe (`LIBRARY_VERSION`).
+    execFileSync('node', ['scripts/generate-agent-skills.mjs'], { stdio: 'inherit' });
   }
 }
 

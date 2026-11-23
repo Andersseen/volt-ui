@@ -93,6 +93,31 @@ applyVoltTheme({ dark: media.matches });
 media.addEventListener('change', e => applyVoltTheme({ dark: e.matches }));
 ```
 
+### Remember the visitor's choice without a flash
+
+`provideVoltTheme` renders the theme you configure. A theme the visitor picked lives in their browser, so the server cannot know it, and the page would first paint in the default theme. `voltThemeInitScript()` returns a few lines of JavaScript that read what `persistVoltTheme` stored and apply it before the first paint; inline them at the top of `<head>`. With no stored `dark` and no `defaults.dark` it follows `prefers-color-scheme` (`followSystem: false` turns that off). Unknown values are ignored, and `storageKey` changes the key both functions use.
+
+```ts
+import { persistVoltTheme, voltThemeInitScript } from '@voltui/components';
+
+// When the visitor picks a theme: store it (localStorage, key "volt-theme") and apply it.
+persistVoltTheme({ dark: true });
+
+// Once, at build or server-render time: the source of the inline script for <head>.
+const script = voltThemeInitScript({ defaults: { color: 'volt', style: 'soft' } });
+```
+
+```html
+<head>
+  <script>
+    /* paste the output of voltThemeInitScript() here, or write it from your server template */
+  </script>
+  <!-- stylesheets after it -->
+</head>
+```
+
+The script only reads storage and sets `data-color`, `data-style`, `data-density` and `.dark` on `<html>`, exactly as `applyVoltTheme` does, so a strict Content Security Policy needs its hash or a nonce like any inline script.
+
 > [!NOTE]
 > The docs site itself saves the visitor's choice in a cookie shared with Volt UI Recipes (falling back to older `localStorage` keys) and applies it from a small inline script in the `<head>` of `index.html`, before any stylesheet loads — see `packages/shared/components/theme-switcher.ts` and `packages/shared/lib/theme-preferences.ts` in the repository for a reference implementation if you want the same no-flash behavior.
 

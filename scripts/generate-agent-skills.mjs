@@ -77,6 +77,11 @@ function angularSupport() {
   return majors.length > 1 ? `${majors.slice(0, -1).join(', ')} and ${majors.at(-1)}` : majors[0];
 }
 
+/** The `@voltui/components` version this catalog describes (the source, which can be ahead of npm). */
+function libraryVersion() {
+  return JSON.parse(readFileSync(join(ROOT, 'packages/volt/package.json'), 'utf8')).version;
+}
+
 // 1. the catalog inside the selection skill
 const selection = readFileSync(SELECTION, 'utf8');
 if (!CATALOG.test(selection))
@@ -102,6 +107,12 @@ export interface ComponentResponsibility {
 
 /** The Angular versions the package supports: its peer dependency, so no prose has to repeat it. */
 export const ANGULAR_SUPPORT = ${JSON.stringify(angularSupport())};
+
+/**
+ * The \`@voltui/components\` version these facts describe. An installed package older than this can lack
+ * an input listed here, so answers carry it and consumers can compare.
+ */
+export const LIBRARY_VERSION = ${JSON.stringify(libraryVersion())};
 
 export const RESPONSIBILITIES: Record<string, ComponentResponsibility> = ${JSON.stringify(
   Object.fromEntries(catalog.map(({ key, ...rest }) => [key, rest])),
