@@ -7,6 +7,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Components
+
+Feedback from migrating a production AnalogJS 2.9 / Angular 21 SSR site from 1.3.3. Additive and backward
+compatible. Three of its reports are already fixed in the unreleased 1.4.x source (accordion panels that
+stayed open after closing, Navigation Menu `variant`/`layout`, `radiogroup` on a single toggle group); they
+reach consumers with the next publish.
+
+- **Navigation Menu link `current`.** `active` always wrote `aria-current="page"`, wrong for an in-page
+  section link on a one-page site. `current="location"` (or `step`, `date`, `time`, `true`) says which kind;
+  `page` stays the default. `data-active` is unchanged.
+- **Tooltip on components that render their own button.** `voltTooltip` on `volt-toggle` or `volt-switch`
+  never appeared on keyboard focus (the primitive listens for `focus` on the host, which is not what takes
+  focus). It now shows when focus lands inside the host, hides when it leaves, and describes the focused
+  button with `aria-describedby`.
+- **Accordion arrow keys (ng-primitives backend).** ↓/↑ (→/← when horizontal) move between headers, wrapping,
+  and Home/End jump to the first/last, as the Quartz backend already did. Every header stays a tab stop.
+- **Toggle Group item `buttonClass`.** Classes for the inner `<button>`, merged over the variant's, so an
+  item can be reshaped (a full-bleed image thumbnail) without global CSS. `class` still styles the host.
+  Both backends.
+- **`voltThemeInitScript()` and `persistVoltTheme()`.** The inline `<head>` script an SSR app needs so a
+  visitor's stored theme is applied before the first paint, and the function that stores it. Validates every
+  value, follows `prefers-color-scheme` until the visitor picks (`followSystem`), escapes itself for inline
+  use. Documented on the Themes page.
+- **Docs and MCP.** The tooltip `context` reaches the template as a signal (`label()`), now stated in the
+  guide and the MCP with an example. `get_project_info` and `get_component` report `describesVersion` (the
+  `@voltui/components` version the answers describe) so an agent can tell when the installed package is
+  older; `get_component` says when to pass `mode: "package"`. Navigation Menu metadata lists `variant`
+  and `layout`.
+
+Not in this change: a `string | null` value for single toggle groups (a breaking type change; noted for the
+next major) and a decorative, segmented progress indicator (a new atom, to be designed separately).
+
 ### Release tooling
 
 - **Trusted Publishing preflight.** Every release from 1.4.0 on failed with a bare `npm error 404 … PUT`:

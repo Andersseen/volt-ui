@@ -93,6 +93,31 @@ applyVoltTheme({ dark: media.matches });
 media.addEventListener('change', e => applyVoltTheme({ dark: e.matches }));
 ```
 
+### Recordar la elección del visitante sin parpadeo
+
+`provideVoltTheme` pinta el tema que configuras. El tema que elige el visitante vive en su navegador, así que el servidor no lo conoce y la página se pintaría primero con el tema por defecto. `voltThemeInitScript()` devuelve unas pocas líneas de JavaScript que leen lo que guardó `persistVoltTheme` y lo aplican antes del primer pintado; ponlas en línea al principio del `<head>`. Si no hay `dark` guardado ni `defaults.dark`, sigue a `prefers-color-scheme` (`followSystem: false` lo desactiva). Los valores desconocidos se ignoran, y `storageKey` cambia la clave que usan las dos funciones.
+
+```ts
+import { persistVoltTheme, voltThemeInitScript } from '@voltui/components';
+
+// When the visitor picks a theme: store it (localStorage, key "volt-theme") and apply it.
+persistVoltTheme({ dark: true });
+
+// Once, at build or server-render time: the source of the inline script for <head>.
+const script = voltThemeInitScript({ defaults: { color: 'volt', style: 'soft' } });
+```
+
+```html
+<head>
+  <script>
+    /* paste the output of voltThemeInitScript() here, or write it from your server template */
+  </script>
+  <!-- stylesheets after it -->
+</head>
+```
+
+El script solo lee el almacenamiento y pone `data-color`, `data-style`, `data-density` y `.dark` en `<html>`, igual que `applyVoltTheme`, así que con una Content Security Policy estricta necesita su hash o un nonce, como cualquier script en línea.
+
 > [!NOTE]
 > La propia web de documentación guarda la elección del visitante en una cookie compartida con Volt UI Recipes (con las claves antiguas de `localStorage` como respaldo) y la aplica desde un pequeño script en línea dentro del `<head>` de `index.html`, antes de que cargue ninguna hoja de estilos; mira `packages/shared/components/theme-switcher.ts` y `packages/shared/lib/theme-preferences.ts` en el repositorio como implementación de referencia si quieres el mismo comportamiento sin parpadeo.
 

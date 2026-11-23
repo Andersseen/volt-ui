@@ -26,7 +26,7 @@ Volt UI is stable (the current version is the one in `packages/volt/package.json
 
 | Component       | Status | Forms support             | Keyboard support                                | Overlay/focus behavior                                                                   | Docs | Tests               |
 | --------------- | ------ | ------------------------- | ----------------------------------------------- | ---------------------------------------------------------------------------------------- | ---- | ------------------- |
-| accordion       | stable | n/a                       | via ng-primitives                               | n/a                                                                                      | yes  | unit                |
+| accordion       | stable | n/a                       | arrows, Home/End between headers; Enter/Space   | n/a                                                                                      | yes  | unit                |
 | alert           | stable | n/a                       | n/a (static content)                            | opt-in `role="status"` / `"alert"`                                                       | yes  | unit + e2e consumer |
 | autofill        | stable | n/a                       | n/a                                             | n/a                                                                                      | yes  | unit                |
 | avatar          | stable | n/a                       | n/a                                             | n/a                                                                                      | yes  | unit                |

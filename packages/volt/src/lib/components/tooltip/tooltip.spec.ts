@@ -1,9 +1,10 @@
 import { Component, signal } from '@angular/core';
 import { afterEach, beforeEach, describe, expect, it, vi, type MockInstance } from 'vitest';
-import { render, screen } from '@testing-library/angular';
+import { render, screen, waitFor } from '@testing-library/angular';
 import userEvent from '@testing-library/user-event';
 import { VoltTooltip } from './tooltip';
 import { VoltTooltipContent } from './tooltip-content';
+import { VoltToggle } from '../toggle/toggle';
 
 @Component({
   selector: 'app-tooltip-test-wrapper',
@@ -123,5 +124,58 @@ describe('VoltTooltipContent', () => {
     expect(await screen.findByRole('tooltip', undefined, { timeout: 2000 })).toHaveTextContent(
       'Delayed body'
     );
+  });
+});
+
+@Component({
+  selector: 'app-tooltip-wrapped-button',
+  imports: [VoltTooltip, VoltToggle],
+  template: `
+    <volt-toggle aria-label="Dark mode" voltTooltip="Switch theme" [delay]="0">☾</volt-toggle>
+    <button type="button">After</button>
+  `,
+})
+class TooltipOnToggleWrapper {}
+
+@Component({
+  selector: 'app-tooltip-context',
+  imports: [VoltTooltip, VoltTooltipContent],
+  template: `
+    <button type="button" [voltTooltip]="tpl" [context]="label" [delay]="0">Ctx</button>
+    <ng-template #tpl let-label>
+      <volt-tooltip-content>{{ label() }}</volt-tooltip-content>
+    </ng-template>
+  `,
+})
+class TooltipContextWrapper {
+  readonly label = 'From context';
+}
+
+describe('VoltTooltip on a component that renders its own button', () => {
+  it('shows on keyboard focus of the inner button, describes it, and hides when focus leaves', async () => {
+    const user = userEvent.setup();
+    await render(TooltipOnToggleWrapper);
+
+    await user.tab();
+    const toggle = screen.getByRole('button', { name: 'Dark mode' });
+    expect(toggle).toHaveFocus();
+
+    expect(await screen.findByRole('tooltip')).toHaveTextContent('Switch theme');
+    expect(toggle).toHaveAccessibleDescription('Switch theme');
+
+    await user.tab();
+    await waitFor(() => expect(screen.queryByRole('tooltip')).not.toBeInTheDocument());
+    expect(toggle).not.toHaveAttribute('aria-describedby');
+  });
+});
+
+describe('VoltTooltip context', () => {
+  it('reaches the template as a signal: read it with label()', async () => {
+    const user = userEvent.setup();
+    await render(TooltipContextWrapper);
+
+    await user.hover(screen.getByRole('button', { name: 'Ctx' }));
+
+    expect(await screen.findByRole('tooltip')).toHaveTextContent('From context');
   });
 });

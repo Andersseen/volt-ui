@@ -93,6 +93,31 @@ applyVoltTheme({ dark: media.matches });
 media.addEventListener('change', e => applyVoltTheme({ dark: e.matches }));
 ```
 
+### Запам'ятати вибір відвідувача без спалаху
+
+`provideVoltTheme` рендерить тему, яку ви налаштували. Тема, яку обрав відвідувач, живе в його браузері, тож сервер про неї не знає, і сторінка спершу намалювалася б у темі за замовчуванням. `voltThemeInitScript()` повертає кілька рядків JavaScript, які читають збережене `persistVoltTheme` і застосовують його до першого малювання; вбудуйте їх на початку `<head>`. Якщо немає збереженого `dark` і `defaults.dark`, скрипт слідує `prefers-color-scheme` (`followSystem: false` це вимикає). Невідомі значення ігноруються, а `storageKey` змінює ключ, який використовують обидві функції.
+
+```ts
+import { persistVoltTheme, voltThemeInitScript } from '@voltui/components';
+
+// When the visitor picks a theme: store it (localStorage, key "volt-theme") and apply it.
+persistVoltTheme({ dark: true });
+
+// Once, at build or server-render time: the source of the inline script for <head>.
+const script = voltThemeInitScript({ defaults: { color: 'volt', style: 'soft' } });
+```
+
+```html
+<head>
+  <script>
+    /* paste the output of voltThemeInitScript() here, or write it from your server template */
+  </script>
+  <!-- stylesheets after it -->
+</head>
+```
+
+Скрипт лише читає сховище й ставить `data-color`, `data-style`, `data-density` і `.dark` на `<html>`, так само як `applyVoltTheme`, тож суворій Content Security Policy потрібен його хеш або nonce, як і будь-якому вбудованому скрипту.
+
 > [!NOTE]
 > Сайт документації сам зберігає вибір відвідувача в cookie, спільному з Volt UI Recipes (зі старими ключами `localStorage` як запасним варіантом), і застосовує його невеликим вбудованим скриптом у `<head>` файлу `index.html`, ще до завантаження будь-якої таблиці стилів — див. `packages/shared/components/theme-switcher.ts` і `packages/shared/lib/theme-preferences.ts` у репозиторії як зразкову реалізацію, якщо хочете таку саму поведінку без спалаху.
 

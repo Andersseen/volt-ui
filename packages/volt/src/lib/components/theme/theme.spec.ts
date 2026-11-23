@@ -1,7 +1,13 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { DOCUMENT } from '@angular/common';
-import { applyVoltTheme, provideVoltTheme } from './theme';
+import {
+  applyVoltTheme,
+  persistVoltTheme,
+  provideVoltTheme,
+  voltThemeInitScript,
+  VOLT_THEME_STORAGE_KEY,
+} from './theme';
 
 function createTestDocument(): Document {
   return document.implementation.createHTMLDocument('test');
@@ -90,5 +96,84 @@ describe('provideVoltTheme', () => {
     expect(ssrDoc.documentElement.getAttribute('data-style')).toBe('brutal');
     expect(ssrDoc.documentElement.classList.contains('dark')).toBe(true);
     expect(document.documentElement.getAttribute('data-color')).not.toBe('ember');
+  });
+});
+
+describe('voltThemeInitScript', () => {
+  const root = document.documentElement;
+  const run = (script: string) => new Function(script)();
+  const darkSystem = (matches: boolean) =>
+    vi.spyOn(window, 'matchMedia').mockImplementation(
+      query =>
+        ({
+          matches: matches && query.includes('dark'),
+          media: query,
+        }) as unknown as MediaQueryList
+    );
+
+  beforeEach(() => {
+    localStorage.clear();
+    root.removeAttribute('data-color');
+    root.removeAttribute('data-style');
+    root.removeAttribute('data-density');
+    root.classList.remove('dark');
+    root.style.colorScheme = '';
+  });
+  afterEach(() => vi.restoreAllMocks());
+
+  it('applies what persistVoltTheme stored, before Angular runs', () => {
+    persistVoltTheme({ color: 'ember', style: 'soft', dark: true });
+    root.removeAttribute('data-color');
+    root.classList.remove('dark');
+
+    run(voltThemeInitScript());
+
+    expect(root).toHaveAttribute('data-color', 'ember');
+    expect(root).toHaveAttribute('data-style', 'soft');
+    expect(root).toHaveClass('dark');
+    expect(root.style.colorScheme).toBe('dark');
+  });
+
+  it('merges a later choice over the stored one', () => {
+    persistVoltTheme({ color: 'sage', dark: true });
+    persistVoltTheme({ dark: false });
+    expect(JSON.parse(localStorage.getItem(VOLT_THEME_STORAGE_KEY)!)).toEqual({
+      color: 'sage',
+      dark: false,
+    });
+  });
+
+  it('follows the system colour scheme until the visitor picks one, then the defaults', () => {
+    darkSystem(true);
+    run(voltThemeInitScript({ defaults: { color: 'dusk' } }));
+    expect(root).toHaveClass('dark');
+    expect(root).toHaveAttribute('data-color', 'dusk');
+
+    localStorage.setItem(VOLT_THEME_STORAGE_KEY, JSON.stringify({ dark: false }));
+    run(voltThemeInitScript());
+    expect(root).not.toHaveClass('dark');
+  });
+
+  it('ignores tampered values and a custom key it was not given', () => {
+    localStorage.setItem(
+      'my-theme',
+      JSON.stringify({ color: '"><script>', style: 'retro', dark: 'yes' })
+    );
+    darkSystem(false);
+    run(voltThemeInitScript({ storageKey: 'my-theme', followSystem: false }));
+    expect(root).not.toHaveAttribute('data-color');
+    expect(root).toHaveAttribute('data-style', 'retro');
+    expect(root).not.toHaveClass('dark');
+    expect(root.style.colorScheme).toBe('');
+  });
+
+  it('survives corrupt storage and keeps a hostile key inside the script', () => {
+    localStorage.setItem(VOLT_THEME_STORAGE_KEY, '{not json');
+    expect(() => run(voltThemeInitScript({ defaults: { style: 'sharp' } }))).not.toThrow();
+    expect(root).toHaveAttribute('data-style', 'sharp');
+
+    const script = voltThemeInitScript({ storageKey: '</script><script>alert(1)</script>' });
+    expect(script).not.toContain('</script>');
+    expect(() => run(script)).not.toThrow();
   });
 });

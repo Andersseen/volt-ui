@@ -1011,6 +1011,7 @@ export const NAVIGATION_MENU_API: ComponentApi = {
       inputs: [
         { name: 'class', type: 'string', default: "''" },
         { name: 'active', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
+        { name: 'current', type: 'VoltNavigationMenuCurrent', default: "'page'" },
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
       ],
       outputs: [],
@@ -1712,6 +1713,7 @@ export const TOGGLE_GROUP_API: ComponentApi = {
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
         { name: 'variant', type: "ToggleGroupItemVariants['variant']", default: "'default'" },
         { name: 'size', type: "ToggleGroupItemVariants['size']", default: "'md'" },
+        { name: 'buttonClass', type: 'string', default: "''" },
       ],
       outputs: [],
     },

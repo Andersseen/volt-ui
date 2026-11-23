@@ -16,6 +16,12 @@ export interface ComponentResponsibility {
 /** The Angular versions the package supports: its peer dependency, so no prose has to repeat it. */
 export const ANGULAR_SUPPORT = '21 and 22';
 
+/**
+ * The `@voltui/components` version these facts describe. An installed package older than this can lack
+ * an input listed here, so answers carry it and consumers can compare.
+ */
+export const LIBRARY_VERSION = '1.4.1';
+
 export const RESPONSIBILITIES: Record<string, ComponentResponsibility> = {
   button: {
     title: 'Button',
@@ -310,7 +316,10 @@ export const RESPONSIBILITIES: Record<string, ComponentResponsibility> = {
     category: 'Controls',
     status: 'stable',
     summary: 'A set of toggles with single or multiple selection.',
-    useWhen: ['Alignment, view mode or filter chips where options belong together.'],
+    useWhen: [
+      'Alignment, view mode or filter chips where options belong together.',
+      '`class` styles the item host; `buttonClass` reshapes the inner button itself, e.g. `buttonClass="h-auto p-0"` for image thumbnails.',
+    ],
     notFor: ['Switching between views of a page: use Tabs.'],
     related: ['toggle', 'radio', 'toolbar', 'tabs'],
   },

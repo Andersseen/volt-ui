@@ -133,4 +133,26 @@ test.describe('tabs and accordion', () => {
     await expect(q2).toHaveAttribute('aria-expanded', 'true');
     await expect(page.getByText('Answer two')).toBeVisible();
   });
+
+  test('accordion: arrow keys, Home and End move focus between headers, wrapping', async ({
+    page,
+  }) => {
+    const headers = page.locator('volt-accordion-trigger button');
+    const count = await headers.count();
+    expect(count).toBeGreaterThan(1);
+
+    await headers.first().focus();
+    await page.keyboard.press('ArrowDown');
+    await expect(headers.nth(1)).toBeFocused();
+    await page.keyboard.press('End');
+    await expect(headers.nth(count - 1)).toBeFocused();
+    await page.keyboard.press('ArrowDown');
+    await expect(headers.first()).toBeFocused();
+    await page.keyboard.press('ArrowUp');
+    await expect(headers.nth(count - 1)).toBeFocused();
+    await page.keyboard.press('Home');
+    await expect(headers.first()).toBeFocused();
+    // Moving focus opens nothing.
+    await expect(headers.first()).toHaveAttribute('aria-expanded', 'false');
+  });
 });

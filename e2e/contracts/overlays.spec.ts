@@ -152,6 +152,29 @@ test.describe('tooltip', () => {
   });
 });
 
+test.describe('tooltip on a component that renders its own button', () => {
+  test.beforeEach(async ({ page }) => load(page, 'overlays'));
+
+  test('volt-toggle: keyboard focus on its button shows the tip and describes the button', async ({
+    page,
+    browserName,
+  }) => {
+    test.skip(browserName === TAB_SKIPS_BUTTONS, 'needs Tab to reach buttons');
+    const toggle = page.getByRole('button', { name: 'Night mode' });
+    const tip = page.getByRole('tooltip');
+
+    await page.getByRole('button', { name: 'String tip' }).focus();
+    await page.keyboard.press('Tab');
+    await expect(toggle).toBeFocused();
+    await expect(tip).toHaveText('Toggle night mode');
+    await expect(toggle).toHaveAccessibleDescription('Toggle night mode');
+
+    await page.keyboard.press('Tab');
+    await expect(tip).toBeHidden();
+    await expect(toggle).not.toHaveAttribute('aria-describedby');
+  });
+});
+
 test.describe('dropdown menu', () => {
   test.beforeEach(async ({ page }) => load(page, 'overlays'));
 

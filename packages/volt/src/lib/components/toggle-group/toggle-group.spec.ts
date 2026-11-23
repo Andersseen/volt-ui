@@ -247,4 +247,23 @@ describe('VoltToggleGroup', () => {
 
     expect(screen.getByRole('radio', { name: 'Align left' })).toBeInTheDocument();
   });
+
+  it('reshapes the inner button with buttonClass, and keeps class on the host', async () => {
+    await render(
+      `<volt-toggle-group>
+        <volt-toggle-group-item value="p1" aria-label="Photo 1" class="photo" buttonClass="h-auto p-0"
+          >img</volt-toggle-group-item
+        >
+      </volt-toggle-group>`,
+      { imports: [VoltToggleGroup, VoltToggleGroupItem] }
+    );
+
+    const button = screen.getByRole('radio', { name: 'Photo 1' });
+    // Merged with tailwind-merge: the size's height and padding give way to the consumer's.
+    expect(button).toHaveClass('h-auto', 'p-0');
+    expect(button).not.toHaveClass('h-control-dense', 'px-inset-sm');
+    expect(button).toHaveClass('text-sm');
+    expect(button.closest('volt-toggle-group-item')).toHaveClass('photo');
+    expect(button).not.toHaveClass('photo');
+  });
 });

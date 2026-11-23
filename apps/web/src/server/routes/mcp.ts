@@ -21,7 +21,11 @@ import {
 import { McpServer, ResourceTemplate } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { WebStandardStreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js';
 import { z } from 'zod';
-import { ANGULAR_SUPPORT, RESPONSIBILITIES } from './mcp/responsibilities.generated';
+import {
+  ANGULAR_SUPPORT,
+  LIBRARY_VERSION,
+  RESPONSIBILITIES,
+} from './mcp/responsibilities.generated';
 
 // ---------------------------------------------------------------------------
 // Component metadata (inlined — CF Workers have no filesystem access)
@@ -277,7 +281,8 @@ const components: Record<string, ComponentMeta> = {
   },
   accordion: {
     name: 'Accordion',
-    description: 'Collapsible accordion panels',
+    description:
+      'Collapsible accordion panels. Arrow keys (Up/Down, Left/Right when horizontal), Home and End move focus between headers.',
     dependencies: ['ng-primitives/accordion'],
     subComponents: ['accordion-item', 'accordion-trigger', 'accordion-content'],
     inputs: [
@@ -326,19 +331,25 @@ const components: Record<string, ComponentMeta> = {
   },
   tooltip: {
     name: 'Tooltip',
-    description: 'Floating tooltip on hover',
+    description:
+      'Floating tooltip on hover and keyboard focus, also on components that render their own button (ui-toggle, ui-switch). `context` reaches the template as a signal: read it as `label()`, not `label`.',
     dependencies: ['ng-primitives/tooltip'],
     subComponents: ['tooltip-content'],
     inputs: [
       { name: 'placement', type: 'string', default: 'top' },
       { name: 'delay', type: 'number', default: 300 },
       { name: 'closeDelay', type: 'number', default: 100 },
+      { name: 'context', type: 'unknown' },
       { name: 'disabled', type: 'boolean', default: false },
     ],
     examples: [
       `<button uiTooltip [uiTooltip]="tooltipTpl">Hover me</button>
 <ng-template #tooltipTpl>
   <ui-tooltip-content>More info</ui-tooltip-content>
+</ng-template>`,
+      `<button uiButton [uiTooltip]="tip" [context]="item.name">Edit</button>
+<ng-template #tip let-name>
+  <ui-tooltip-content>Edit {{ name() }}</ui-tooltip-content>
 </ng-template>`,
     ],
   },
@@ -353,7 +364,17 @@ const components: Record<string, ComponentMeta> = {
       'navigation-menu-content',
       'navigation-menu-link',
     ],
+    inputs: [
+      {
+        name: 'variant',
+        type: 'string',
+        default: 'subtle',
+        options: ['subtle', 'pill', 'underline', 'outline'],
+      },
+      { name: 'layout', type: 'string', default: 'inline', options: ['inline', 'contained'] },
+    ],
     examples: [
+      `<a uiNavigationMenuLink [active]="section() === 'about'" current="location" href="#about">About</a>`,
       `<ui-navigation-menu>
   <ui-navigation-menu-list>
     <ui-navigation-menu-item>
@@ -576,6 +597,9 @@ const components: Record<string, ComponentMeta> = {
   <ui-toggle-group-item value="bold">Bold</ui-toggle-group-item>
   <ui-toggle-group-item value="italic">Italic</ui-toggle-group-item>
 </ui-toggle-group>`,
+      `<ui-toggle-group-item value="p1" aria-label="Photo 1" buttonClass="h-auto p-0 overflow-hidden">
+  <img src="p1.jpg" alt="" />
+</ui-toggle-group-item>`,
     ],
   },
   meter: {
@@ -928,6 +952,10 @@ save() { this.toast.success('Changes saved', { description: 'Your workspace has 
     examples: [
       `provideVoltTheme({ color: 'volt', style: 'sharp', dark: false })`,
       `applyVoltTheme({ color: 'ember', style: 'soft', dark: true })`,
+      `persistVoltTheme({ dark: true }) // stores the choice and applies it`,
+      `// No flash of the wrong theme with SSR: inline the script's output at the top of <head>
+// (index.html or your server template), and store choices with persistVoltTheme.
+const script = voltThemeInitScript({ defaults: { color: 'volt' } });`,
     ],
   },
   alert: {
@@ -1140,6 +1168,9 @@ function buildSystemContext(): string {
 const projectInfo = {
   name: 'Volt UI',
   type: 'angular-component-library',
+  // What every answer of this server describes. An installed @voltui/components older than this may
+  // lack an input or option listed here: compare with the project's package.json before using it.
+  describesVersion: LIBRARY_VERSION,
   framework: `Angular ${ANGULAR_SUPPORT}`,
   primitives: 'ng-primitives',
   styling: 'Tailwind CSS v4',
@@ -1402,7 +1433,7 @@ export function createMcpServer(): McpServer {
           .enum(['package', 'copy'])
           .optional()
           .describe(
-            'The project\'s distribution mode: "package" returns volt-* selectors and Volt* classes, "copy" returns ui-* and Ui*. Omit to get the copy-mode names.'
+            'The project\'s distribution mode: "package" returns volt-* selectors and Volt* classes, "copy" returns ui-* and Ui*. A project whose package.json depends on @voltui/components is "package". Omit to get the copy-mode names.'
           ),
       },
     },
@@ -1427,6 +1458,7 @@ export function createMcpServer(): McpServer {
               {
                 ...forMode(comp, mode),
                 mode: mode ?? 'copy',
+                describesVersion: LIBRARY_VERSION,
                 responsibility: responsibilityOf(name),
               },
               null,
