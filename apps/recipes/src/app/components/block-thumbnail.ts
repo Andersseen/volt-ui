@@ -44,6 +44,19 @@ import { SwapStory } from '../blocks/swap-story/swap-story';
 import { GalleryTabs } from '../blocks/gallery-tabs/gallery-tabs';
 import { ContactMap } from '../blocks/contact-map/contact-map';
 import { FooterCurtain } from '../blocks/footer-curtain/footer-curtain';
+import { NavbarDocs } from '../blocks/navbar-docs/navbar-docs';
+import { HeroWaitlist } from '../blocks/hero-waitlist/hero-waitlist';
+import { BgDotRipple } from '../blocks/bg-dot-ripple/bg-dot-ripple';
+import { FeatureGlowGrid } from '../blocks/feature-glow-grid/feature-glow-grid';
+import { ServiceSteps } from '../blocks/service-steps/service-steps';
+import { LogoCloud } from '../blocks/logo-cloud/logo-cloud';
+import { StatsBand } from '../blocks/stats-band/stats-band';
+import { PricingCompare } from '../blocks/pricing-compare/pricing-compare';
+import { ContactFaq } from '../blocks/contact-faq/contact-faq';
+import { CtaNewsletter } from '../blocks/cta-newsletter/cta-newsletter';
+import { FooterColumns } from '../blocks/footer-columns/footer-columns';
+import { AuthSignup } from '../blocks/auth-signup/auth-signup';
+import { AppOrders } from '../blocks/app-orders/app-orders';
 
 /**
  * A real block, rendered at desktop width and scaled down to thumbnail size.
@@ -62,6 +75,19 @@ import { FooterCurtain } from '../blocks/footer-curtain/footer-curtain';
   selector: 'app-block-thumbnail',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    NavbarDocs,
+    HeroWaitlist,
+    BgDotRipple,
+    FeatureGlowGrid,
+    ServiceSteps,
+    LogoCloud,
+    StatsBand,
+    PricingCompare,
+    ContactFaq,
+    CtaNewsletter,
+    FooterColumns,
+    AuthSignup,
+    AppOrders,
     FooterCurtain,
     ContactMap,
     GalleryTabs,
@@ -209,6 +235,45 @@ import { FooterCurtain } from '../blocks/footer-curtain/footer-curtain';
         }
         @case ('footer-curtain') {
           <app-footer-curtain />
+        }
+        @case ('navbar-docs') {
+          <app-navbar-docs />
+        }
+        @case ('hero-waitlist') {
+          <app-hero-waitlist />
+        }
+        @case ('dot-ripple') {
+          <app-bg-dot-ripple />
+        }
+        @case ('glow-grid') {
+          <app-feature-glow-grid />
+        }
+        @case ('service-steps') {
+          <app-service-steps />
+        }
+        @case ('logo-cloud') {
+          <app-logo-cloud />
+        }
+        @case ('stats-band') {
+          <app-stats-band />
+        }
+        @case ('pricing-compare') {
+          <app-pricing-compare />
+        }
+        @case ('contact-faq') {
+          <app-contact-faq />
+        }
+        @case ('cta-newsletter') {
+          <app-cta-newsletter />
+        }
+        @case ('footer-columns') {
+          <app-footer-columns />
+        }
+        @case ('signup') {
+          <app-auth-signup />
+        }
+        @case ('orders') {
+          <app-app-orders />
         }
       }
     </div>

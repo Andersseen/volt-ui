@@ -1136,25 +1136,25 @@
         "tagline": "Branded shell, figures that count up, and a chart that draws itself.",
         "motion": "The figures count to their value the first time the row is scrolled into view, once and never again, and the chart strokes itself on as it arrives. Both start finished under reduced motion."
       },
-      "featureShowcase": {
-        "label": "Feature Showcase",
-        "motion": "The chart bars grow in once. Everything else is still, and the bars appear at full height under reduced motion.",
-        "tagline": "One large capability and three supporting ones, each drawn the way its content wants to be shown."
-      },
       "heroProduct": {
         "label": "Hero Product",
-        "motion": "The copy and the board rise in on load, and a status dot pulses. Both stop under reduced motion; the board is interactive either way.",
-        "tagline": "A centred hero whose preview is a working product: filter, tick tasks and watch the progress move."
+        "tagline": "A centred hero whose preview is a working product: filter, tick tasks and watch the progress move.",
+        "motion": "The copy and the board rise in on load, and a status dot pulses. Both stop under reduced motion; the board is interactive either way."
+      },
+      "featureShowcase": {
+        "label": "Feature Showcase",
+        "tagline": "One large capability and three supporting ones, each drawn the way its content wants to be shown.",
+        "motion": "The chart bars grow in once. Everything else is still, and the bars appear at full height under reduced motion."
       },
       "scrollStory": {
         "label": "Scroll Story",
-        "motion": "Each card sticks and the next slides over it. Native scrolling is untouched, so nothing traps the page; below the md breakpoint or with reduced motion the cards simply flow.",
-        "tagline": "Steps that stack as you scroll, in plain CSS — an ordinary list on small screens and with reduced motion."
+        "tagline": "Steps that stack as you scroll, in plain CSS — an ordinary list on small screens and with reduced motion.",
+        "motion": "Each card sticks and the next slides over it. Native scrolling is untouched, so nothing traps the page; below the md breakpoint or with reduced motion the cards simply flow."
       },
       "sourcePreview": {
         "label": "Source to Preview",
-        "motion": "Picking a notice rewrites the source and swaps the card with a short fade, announced politely. The fade is skipped under reduced motion.",
-        "tagline": "A config on the left, the component it produces on the right — both read from one value, so they cannot disagree."
+        "tagline": "A config on the left, the component it produces on the right — both read from one value, so they cannot disagree.",
+        "motion": "Picking a notice rewrites the source and swaps the card with a short fade, announced politely. The fade is skipped under reduced motion."
       },
       "heroInstall": {
         "label": "Hero Install",
@@ -1250,6 +1250,71 @@
         "label": "Curtain Footer",
         "tagline": "The page lifts away like a curtain to reveal the footer waiting behind it.",
         "motion": "The footer is sticky behind the page, so scrolling uncovers it. A grid of dots glows faintly in a few places; it stops drawing off screen and holds still with reduced motion."
+      },
+      "navbarDocs": {
+        "label": "Docs Navbar",
+        "tagline": "Brand, version, search and section tabs over a breadcrumb trail, with a reading-progress line.",
+        "motion": "A hairline under the header fills as you read, driven by a CSS scroll timeline — no scroll listener. Browsers without one, and reduced motion, show no line at all."
+      },
+      "heroWaitlist": {
+        "label": "Waitlist Hero",
+        "tagline": "An opening whose one job is an email address: validated on submit, confirmed out loud.",
+        "motion": "The avatar stack fans out on hover and the confirmation rises into place, taking focus and announced through a status region. Both stay still with reduced motion."
+      },
+      "dotRipple": {
+        "label": "Dot Ripple",
+        "tagline": "A dotted surface with rings of light travelling out from the middle, like a drop in water.",
+        "motion": "Two rings grow by animating a mask size — pure CSS, no registered properties and no JavaScript, so it renders on the server. Under reduced motion the rings are not drawn."
+      },
+      "glowGrid": {
+        "label": "Glow Grid",
+        "tagline": "Six feature cards whose borders catch one light that follows the pointer across all of them.",
+        "motion": "Each card's border glows around the pointer, and its neighbours catch the edge of the same light. Updates are batched into one frame and fade on leave; it never moves on its own."
+      },
+      "serviceSteps": {
+        "label": "Process Steps",
+        "tagline": "How an engagement runs, as numbered steps joined by a line — a column on phones, a row on desktop.",
+        "motion": "The line fills as the list scrolls through view, on a CSS view timeline. Without one, or with reduced motion, it is already full."
+      },
+      "logoCloud": {
+        "label": "Logo Cloud",
+        "tagline": "Customer logos that settle into place as the section arrives.",
+        "motion": "Each logo fades up out of a slight blur, staggered by its position, on a CSS view timeline. Without one, or with reduced motion, they are simply there."
+      },
+      "statsBand": {
+        "label": "Stats Band",
+        "tagline": "Figures that count up once, the first time they are scrolled into view.",
+        "motion": "The server renders the final numbers; the count runs once in the browser if the band starts off screen. Screen readers only ever hear the final value, and reduced motion skips the count."
+      },
+      "pricingCompare": {
+        "label": "Plan Comparison",
+        "tagline": "Every plan against every feature in a real table, with the plan you care about highlighted.",
+        "motion": "Picking a plan tints its column and marks its heading. On a narrow screen the table scrolls sideways inside its own focusable region instead of squeezing."
+      },
+      "contactFaq": {
+        "label": "FAQ",
+        "tagline": "Searchable questions in an accessible accordion, with a person to ask when the answer is missing.",
+        "motion": "Answers open with the accordion's own animation. The list filters as you type, the count is announced politely, and no match turns into an empty state with one action."
+      },
+      "ctaNewsletter": {
+        "label": "Newsletter CTA",
+        "tagline": "A closing sign-up band with a visible label, a hint and an error wired by the form field.",
+        "motion": "An envelope drifts slowly behind the copy. After a valid submit the confirmation rises in, takes focus and is announced. Both are still with reduced motion."
+      },
+      "footerColumns": {
+        "label": "Column Footer",
+        "tagline": "Brand, four columns of links and the legal row — an accordion on phones, columns on desktop.",
+        "motion": "Below a container breakpoint the columns become an accordion, chosen by a container query so the server render matches every width. The status dot pulses, and holds still with reduced motion."
+      },
+      "signup": {
+        "label": "Sign-up Card",
+        "tagline": "Name, email, a password with a strength meter and the terms, with errors that say what to fix.",
+        "motion": "The strength meter fills and changes colour as you type, with the word beside it so colour is never the only signal. Errors appear after the first submit and clear as you fix them."
+      },
+      "orders": {
+        "label": "Orders Table",
+        "tagline": "An admin orders screen: search, a status filter, the table and a running total that always agree.",
+        "motion": "Rows filter instantly as you type or pick a status; the count and total are announced politely. With nothing left, an empty state offers to clear the filters."
       }
     },
     "upcoming": {
@@ -1559,8 +1624,8 @@
       "settingsForm": "Settings form",
       "asyncSearch": "Async search",
       "dataTable": "Data table",
-      "componentExplorer": "Component explorer",
       "livePlayground": "Live playground",
+      "componentExplorer": "Component explorer",
       "sectionNav": "Section navigation"
     },
     "doqs": {

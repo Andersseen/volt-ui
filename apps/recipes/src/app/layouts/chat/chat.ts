@@ -6,7 +6,14 @@ import {
   viewChild,
 } from '@angular/core';
 import { LmnSendIcon } from 'lumen-icons';
-import { VoltAvatar, VoltAvatarFallback, VoltBadge, VoltButton, VoltInput } from 'volt';
+import {
+  VoltAvatar,
+  VoltAvatarFallback,
+  VoltBadge,
+  VoltButton,
+  VoltInput,
+  VoltNativeButton,
+} from 'volt';
 
 interface Conversation {
   readonly name: string;
@@ -43,7 +50,15 @@ interface Message {
 @Component({
   selector: 'app-chat-layout',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [VoltAvatar, VoltAvatarFallback, VoltBadge, VoltButton, VoltInput, LmnSendIcon],
+  imports: [
+    VoltAvatar,
+    VoltAvatarFallback,
+    VoltBadge,
+    VoltButton,
+    VoltInput,
+    VoltNativeButton,
+    LmnSendIcon,
+  ],
   template: `
     <div class="flex h-[640px] overflow-hidden bg-background">
       <!-- Conversation list: its own scroller, hidden on narrow screens where the thread
@@ -57,9 +72,13 @@ interface Message {
           @for (conversation of conversations; track conversation.name) {
             <li>
               <button
+                voltButton
+                variant="ghost"
                 type="button"
-                class="flex w-full items-start gap-3 border-b border-border/60 p-3 text-left transition-colors hover:bg-muted/60"
-                [class]="conversation.active ? 'bg-muted' : ''"
+                [class]="
+                  'h-auto w-full items-start justify-start gap-3 rounded-none border-0 border-b border-border/60 p-3 text-left font-normal' +
+                  (conversation.active ? ' bg-muted' : '')
+                "
                 [attr.aria-current]="conversation.active ? 'true' : null"
               >
                 <volt-avatar class="h-9 w-9 shrink-0">

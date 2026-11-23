@@ -69,7 +69,7 @@ Volt UI is stable (the current version is the one in `packages/volt/package.json
 | theme           | stable | n/a                       | n/a                                             | document-level theme state; `voltTheme` scopes one container                             | yes  | unit                |
 | toast           | stable | n/a                       | close control covered                           | `VoltToastService` + pause and keyboard dismissal covered                                | yes  | unit + e2e          |
 | toggle          | stable | full CVA contract         | via ng-primitives                               | focus-visible styles                                                                     | yes  | unit                |
-| toggle-group    | stable | full CVA contract         | via ng-primitives                               | roving focus via primitive                                                               | yes  | unit                |
+| toggle-group    | stable | full CVA contract         | via ng-primitives                               | roving focus via primitive; single mode tabs in on the selected item                     | yes  | unit                |
 | toolbar         | stable | n/a                       | arrow-key focus movement covered                | roving focus via primitive                                                               | yes  | unit                |
 | tooltip         | stable | n/a                       | hover/focus/Escape/blur covered                 | aria-describedby and position covered                                                    | yes  | unit + e2e          |
 

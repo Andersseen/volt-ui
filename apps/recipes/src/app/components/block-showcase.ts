@@ -3,6 +3,7 @@ import { categoryFor, type BlockMetadata } from '../lib/blocks-metadata';
 import { externalPackages } from '../lib/snippets/consumer-source';
 import { RelatedComponents } from './related-components';
 import { CodePanel } from '@shared/components/code-panel';
+import { VoltAlert, VoltAlertDescription, VoltCard } from 'volt';
 import { injectAppI18n } from '@shared/i18n/i18n';
 
 export interface BlockFile {
@@ -25,7 +26,7 @@ export interface BlockFile {
 @Component({
   selector: 'app-block-showcase',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CodePanel, RelatedComponents],
+  imports: [CodePanel, RelatedComponents, VoltAlert, VoltAlertDescription, VoltCard],
   template: `
     <div class="space-y-8">
       <div>
@@ -43,14 +44,14 @@ export interface BlockFile {
       </div>
 
       <div class="grid gap-4 sm:grid-cols-2">
-        <div class="rounded-lg border border-border bg-muted/20 p-4">
+        <volt-card class="p-4 shadow-none">
           <h2 class="text-sm font-medium">{{ t('gallery.whatMoves') }}</h2>
           <p class="mt-1.5 text-sm text-muted-foreground">{{ t(block().motionKey) }}</p>
-        </div>
-        <div class="rounded-lg border border-border bg-muted/20 p-4">
+        </volt-card>
+        <volt-card class="p-4 shadow-none">
           <h2 class="text-sm font-medium">{{ t('gallery.builtFrom') }}</h2>
           <app-related-components [atoms]="block().atoms" />
-        </div>
+        </volt-card>
       </div>
 
       <app-code-panel
@@ -65,12 +66,12 @@ export interface BlockFile {
         <app-code-panel [title]="file.name" [code]="file.code" />
       }
 
-      <div class="rounded-lg border border-border bg-muted/30 p-4">
+      <volt-alert>
         <!-- The CSS media query is a literal, so it is passed in rather than translated. -->
-        <p class="text-sm text-muted-foreground">
+        <volt-alert-description>
           {{ t('gallery.blockThemeNote', { reducedMotion: 'prefers-reduced-motion' }) }}
-        </p>
-      </div>
+        </volt-alert-description>
+      </volt-alert>
     </div>
   `,
 })

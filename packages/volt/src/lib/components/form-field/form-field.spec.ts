@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/angular';
@@ -271,6 +271,45 @@ describe('VoltFormField', () => {
 
       const ids = [...document.querySelectorAll('[id]')].map(element => element.id);
       expect(new Set(ids).size).toBe(ids.length);
+    });
+
+    it('describes a signal-driven control by its error, without Angular Forms', async () => {
+      @Component({
+        selector: 'app-form-field-signal-error',
+        imports: [VoltFormField, VoltLabel, VoltHint, VoltError, VoltInput],
+        template: `
+          <volt-form-field>
+            <volt-label>Email</volt-label>
+            <volt-input [state]="invalid() ? 'error' : 'default'" />
+            <volt-hint>Use your work email.</volt-hint>
+            @if (invalid()) {
+              <volt-error>Email is required.</volt-error>
+            }
+          </volt-form-field>
+        `,
+      })
+      class SignalErrorHost {
+        readonly invalid = signal(false);
+      }
+
+      const { fixture } = await render(SignalErrorHost);
+      const email = screen.getByRole('textbox', { name: 'Email' });
+      expect(email).toHaveAccessibleDescription('Use your work email.');
+
+      fixture.componentInstance.invalid.set(true);
+      await fixture.whenStable();
+
+      expect(email).toHaveAttribute('aria-invalid', 'true');
+      expect(describedBy(email)).toContain(screen.getByText('Email is required.').id);
+      expect(email).toHaveAccessibleDescription('Use your work email. Email is required.');
+
+      fixture.componentInstance.invalid.set(false);
+      await fixture.whenStable();
+
+      for (const id of describedBy(email)) {
+        expect(document.getElementById(id)).not.toBeNull();
+      }
+      expect(email).toHaveAccessibleDescription('Use your work email.');
     });
 
     it('clears the invalid state and the error on form reset', async () => {

@@ -276,11 +276,53 @@ test.describe('Catalog browser', () => {
 
     await expect(page).toHaveURL(/\/blocks\?category=backgrounds$/);
     await expect(page.locator('app-catalog-browser p[aria-live]').first()).toHaveText(
-      /Showing 3 of \d+/
+      /Showing 4 of \d+/
     );
     await expect(
       page.locator('app-catalog-sidebar').getByRole('link', { name: /^Backgrounds/ })
     ).toHaveAttribute('aria-current', 'page');
+  });
+
+  test('paints the selected chip fill inside the same rounded outline', async ({ page }) => {
+    await page.goto('/blocks');
+    await page.waitForLoadState('networkidle');
+
+    // The fill (data-selected) lands on the inner button, so the outline must be on it too —
+    // an outline on the host drew a pill around a smaller, square-ish fill.
+    const selected = page.getByRole('radio', { name: /^All/ });
+    await expect(selected).toHaveAttribute('data-selected', '');
+    const box = await selected.evaluate(button => {
+      const style = getComputedStyle(button);
+      const own = button.getBoundingClientRect();
+      const host = button.parentElement!.getBoundingClientRect();
+      return {
+        border: parseFloat(style.borderTopWidth),
+        radius: parseFloat(style.borderTopLeftRadius),
+        widthGap: Math.abs(own.width - host.width),
+        heightGap: Math.abs(own.height - host.height),
+        height: own.height,
+      };
+    });
+
+    expect(box.border).toBeGreaterThan(0);
+    expect(box.radius).toBeGreaterThanOrEqual(box.height / 2 - 0.5);
+    expect(box.widthGap).toBeLessThan(0.5);
+    expect(box.heightGap).toBeLessThan(0.5);
+  });
+
+  test('rings the whole card when its stretched link has keyboard focus', async ({ page }) => {
+    await page.goto('/blocks?category=hero');
+    await page.waitForLoadState('networkidle');
+
+    const card = page.locator('app-catalog-card').first();
+    await card.getByRole('link').focus();
+    await page.keyboard.press('Shift+Tab');
+    await page.keyboard.press('Tab');
+
+    // The ring is a box-shadow on the card; it transitions in, so poll rather than read once.
+    await expect
+      .poll(() => card.locator('volt-card').evaluate(el => getComputedStyle(el).boxShadow))
+      .toMatch(/0px 0px 0px 4px/);
   });
 
   test('searches by the Volt atom a block is built from', async ({ page }) => {

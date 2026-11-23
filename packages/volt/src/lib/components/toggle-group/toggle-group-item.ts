@@ -3,8 +3,15 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   input,
+  untracked,
+  viewChild,
 } from '@angular/core';
+import {
+  injectRovingFocusGroupState,
+  NgpRovingFocusItemStateToken,
+} from 'ng-primitives/roving-focus';
 import {
   injectToggleGroupState,
   NgpToggleGroupItem,
@@ -63,7 +70,24 @@ export class VoltToggleGroupItem {
     cn(toggleGroupItemVariants({ variant: this.variant(), size: this.size() }), this.buttonClass())
   );
 
+  private readonly rovingGroup = injectRovingFocusGroupState({ optional: true });
+  private readonly rovingItem = viewChild.required(NgpToggleGroupItem, {
+    read: NgpRovingFocusItemStateToken,
+  });
+
   constructor() {
     forwardAttributesFromHost('aria-label');
+
+    // A single group is a radiogroup, and Tab enters a radiogroup on its checked radio. ng-primitives
+    // seeds the tab stop on the first item whatever is selected, so the selected item claims it. This
+    // only moves the tab stop, never focus, and only when the selection changes: arrowing through the
+    // items without selecting still moves the tab stop with focus.
+    effect(() => {
+      const group = this.toggleGroupState();
+      if (!group || group.type() !== 'single' || !group.isSelected(this.value())) return;
+      const item = this.rovingItem()();
+      const roving = this.rovingGroup();
+      if (item && roving) untracked(() => roving.setTabStop(item.id()));
+    });
   }
 }

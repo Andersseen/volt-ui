@@ -5,6 +5,7 @@ import {
   VoltHint,
   VoltInput,
   VoltLabel,
+  VoltNativeButton,
   VoltSelect,
   VoltSelectContent,
   VoltSelectItem,
@@ -56,6 +57,7 @@ interface Preference {
     VoltSwitch,
     VoltSeparator,
     VoltButton,
+    VoltNativeButton,
   ],
   template: `
     <div class="h-[640px] overflow-auto bg-background">
@@ -71,12 +73,13 @@ interface Preference {
         <nav class="flex gap-1 overflow-x-auto md:flex-col" aria-label="Settings sections">
           @for (section of sections; track section.id) {
             <button
+              voltButton
+              variant="ghost"
               type="button"
-              class="shrink-0 rounded-md px-3 py-2 text-left text-sm transition-colors"
               [class]="
                 section.id === active()
-                  ? 'bg-muted font-medium text-foreground'
-                  : 'text-muted-foreground hover:text-foreground'
+                  ? 'shrink-0 justify-start bg-muted text-foreground'
+                  : 'shrink-0 justify-start font-normal text-muted-foreground'
               "
               [attr.aria-current]="section.id === active() ? 'page' : null"
               (click)="active.set(section.id)"

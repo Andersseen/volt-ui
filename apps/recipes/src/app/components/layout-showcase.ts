@@ -4,6 +4,7 @@ import type { LayoutMetadata } from '../lib/layouts-metadata';
 import { externalPackages } from '../lib/snippets/consumer-source';
 import { RelatedComponents } from './related-components';
 import { CodePanel } from '@shared/components/code-panel';
+import { VoltAlert, VoltAlertDescription, VoltCard } from 'volt';
 import { injectAppI18n } from '@shared/i18n/i18n';
 
 /**
@@ -17,7 +18,7 @@ import { injectAppI18n } from '@shared/i18n/i18n';
 @Component({
   selector: 'app-layout-showcase',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, CodePanel, RelatedComponents],
+  imports: [RouterLink, CodePanel, RelatedComponents, VoltAlert, VoltAlertDescription, VoltCard],
   template: `
     <div class="space-y-8">
       <div>
@@ -30,14 +31,14 @@ import { injectAppI18n } from '@shared/i18n/i18n';
       </div>
 
       <div class="grid gap-4 sm:grid-cols-2">
-        <div class="rounded-lg border border-border bg-muted/20 p-4">
+        <volt-card class="p-4 shadow-none">
           <h2 class="text-sm font-medium">{{ t('gallery.arrangement') }}</h2>
           <p class="mt-1.5 text-sm text-muted-foreground">{{ t(layout().structureKey) }}</p>
-        </div>
-        <div class="rounded-lg border border-border bg-muted/20 p-4">
+        </volt-card>
+        <volt-card class="p-4 shadow-none">
           <h2 class="text-sm font-medium">{{ t('gallery.assembledFrom') }}</h2>
           <app-related-components [atoms]="layout().atoms" />
-        </div>
+        </volt-card>
       </div>
 
       <app-code-panel
@@ -47,15 +48,15 @@ import { injectAppI18n } from '@shared/i18n/i18n';
         [description]="t('gallery.layoutSourceNote')"
       />
 
-      <div class="rounded-lg border border-border bg-muted/30 p-4">
-        <p class="text-sm text-muted-foreground">
+      <volt-alert>
+        <volt-alert-description>
           {{ t('gallery.layoutUnbrandedNote') }}
           <a [routerLink]="path('/blocks')" class="text-primary underline-offset-4 hover:underline">
             {{ t('gallery.blocksGalleryLink') }}
           </a>
           {{ t('gallery.isTheOtherTab') }}
-        </p>
-      </div>
+        </volt-alert-description>
+      </volt-alert>
     </div>
   `,
 })
