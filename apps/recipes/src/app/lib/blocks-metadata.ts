@@ -338,6 +338,21 @@ export const BLOCKS: readonly BlockMetadata[] = [
     atoms: [{ name: 'VoltBadge', path: '/docs/components/badge' }],
   },
   {
+    slug: 'gallery-tabs',
+    path: '/blocks/gallery-tabs',
+    labelKey: 'blocks.items.galleryTabs.label',
+    category: 'features',
+    taglineKey: 'blocks.items.galleryTabs.tagline',
+    motionKey: 'blocks.items.galleryTabs.motion',
+    atoms: [
+      { name: 'VoltTabs', path: '/docs/components/tabs' },
+      { name: 'VoltToggleGroup', path: '/docs/components/toggle-group' },
+      { name: 'VoltDialog', path: '/docs/components/dialog' },
+      { name: 'VoltButton', path: '/docs/components/button' },
+      { name: 'VoltTooltip', path: '/docs/components/tooltip' },
+    ],
+  },
+  {
     slug: 'source-preview',
     path: '/blocks/source-preview',
     labelKey: 'blocks.items.sourcePreview.label',
