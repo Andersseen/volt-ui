@@ -71,6 +71,8 @@ test.describe('Photo blocks', () => {
   });
 
   test('Swap Story never lets the travelling photo cover a chapter', async ({ page }) => {
+    // Dozens of scroll positions, each waiting for the spring to settle: well past the 30s default.
+    test.setTimeout(120_000);
     await page.goto('/blocks/swap-story');
     await page.waitForLoadState('networkidle');
 
