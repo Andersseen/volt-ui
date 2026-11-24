@@ -289,6 +289,21 @@ export function describeRadioGroupContract(label: string, spec: RadioGroupSpec):
         expect(radios('Apple')[0]).not.toHaveAttribute('data-disabled');
       });
 
+      it('stays untouched while focus moves between its radios; touched once focus leaves', async () => {
+        const { fixture } = await render(Reactive);
+        const control = fixture.componentInstance.control;
+        const user = userEvent.setup();
+        await user.click(radios('Apple')[0]);
+        await user.keyboard('{ArrowDown}');
+        expect(radios('Pear')[0]).toHaveFocus();
+        await user.keyboard('{ArrowDown}');
+        expect(radios('Apple')[0]).toHaveFocus();
+        expect(control.value).toBe('apple');
+        expect(control.touched).toBe(false);
+        await user.tab();
+        expect(control.touched).toBe(true);
+      });
+
       it('marks the group invalid once the control is', async () => {
         const { fixture } = await render(Reactive);
         const control = fixture.componentInstance.control;
@@ -516,6 +531,35 @@ export function describeToggleGroupContract(label: string, spec: ToggleGroupSpec
       expect(screen.getByRole('button', { name: 'after' })).toHaveFocus();
     });
 
+    it('single mode: Tab enters on the pressed item, which follows a programmatic selection', async () => {
+      const value = signal(['underline']);
+      const { fixture } = await render(`${tools('[(value)]="value"')}<button>after</button>`, {
+        imports,
+        componentProperties: { value },
+      });
+      expect(single('Underline')).toHaveAttribute('tabindex', '0');
+      expect(single('Bold')).toHaveAttribute('tabindex', '-1');
+      const user = userEvent.setup();
+      await user.tab();
+      expect(single('Underline')).toHaveFocus();
+
+      (document.activeElement as HTMLElement).blur();
+      value.set(['bold']);
+      await fixture.whenStable();
+      expect(single('Bold')).toHaveAttribute('tabindex', '0');
+      expect(single('Underline')).toHaveAttribute('tabindex', '-1');
+      expect(document.body).toHaveFocus();
+
+      // Arrowing without selecting moves the tab stop with focus; it does not snap back.
+      await user.tab();
+      expect(single('Bold')).toHaveFocus();
+      await user.keyboard('{ArrowRight}');
+      await user.tab();
+      await user.tab({ shift: true });
+      expect(single('Italic')).toHaveFocus();
+      expect(value()).toEqual(['bold']);
+    });
+
     it('wraps at the ends and honours vertical orientation', async () => {
       await render(
         `${tools('type="multiple"')}
@@ -606,6 +650,20 @@ export function describeToggleGroupContract(label: string, spec: ToggleGroupSpec
         control.enable();
         await fixture.whenStable();
         expect(multi('Bold')).not.toHaveAttribute('data-disabled');
+      });
+
+      it('stays untouched while focus moves between its items; touched once focus leaves', async () => {
+        const { fixture } = await render(Reactive);
+        const control = fixture.componentInstance.control;
+        const user = userEvent.setup();
+        await user.click(multi('Bold'));
+        await user.keyboard('{ArrowRight}');
+        expect(multi('Italic')).toHaveFocus();
+        await user.keyboard('{ArrowLeft}');
+        expect(multi('Bold')).toHaveFocus();
+        expect(control.touched).toBe(false);
+        await user.tab();
+        expect(control.touched).toBe(true);
       });
 
       it('treats a null written value as empty', async () => {

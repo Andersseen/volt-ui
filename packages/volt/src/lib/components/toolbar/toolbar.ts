@@ -1,13 +1,24 @@
-import { ChangeDetectionStrategy, Component, input, computed } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, computed, inject } from '@angular/core';
 import { NgpToolbar, provideToolbarState } from 'ng-primitives/toolbar';
-import { provideRovingFocusGroupState } from 'ng-primitives/roving-focus';
 import type { NgpOrientation } from 'ng-primitives/common';
+import {
+  ownRovingFocusGroup,
+  provideOwnRovingFocusGroup,
+  VOLT_ROVING_SCOPE,
+  type VoltRovingScope,
+} from '../../roving-focus';
 import { cn } from '../../utils';
 
 @Component({
   selector: 'volt-toolbar',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [provideRovingFocusGroupState(), provideToolbarState()],
+  providers: [
+    provideToolbarState(),
+    // The toolbar owns its roving group (a toolbar in a tab panel stays out of the tab list), and
+    // a toggle group or radio group placed in it joins that group: one tab stop for the toolbar.
+    provideOwnRovingFocusGroup(),
+    { provide: VOLT_ROVING_SCOPE, useValue: 'shared' satisfies VoltRovingScope },
+  ],
   hostDirectives: [
     {
       directive: NgpToolbar,
@@ -31,4 +42,8 @@ export class VoltToolbar {
   );
 
   readonly orientation = input<NgpOrientation>('horizontal');
+
+  constructor() {
+    ownRovingFocusGroup({ orientation: inject(NgpToolbar).orientation });
+  }
 }

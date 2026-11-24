@@ -143,6 +143,7 @@ const SHARED_LIB_FILES = [
   'aria-invalid.ts',
   'volt-ids.ts',
   'mirror-value.ts',
+  'roving-focus.ts',
   'quartz-ids.ts',
   'quartz-attributes.ts',
 ];

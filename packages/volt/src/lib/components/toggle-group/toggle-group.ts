@@ -3,8 +3,10 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  ElementRef,
   effect,
   forwardRef,
+  inject,
   input,
   model,
   signal,
@@ -17,6 +19,7 @@ import {
 } from 'ng-primitives/toggle-group';
 import { injectFormControlState } from '../../form-control-state';
 import { mirrorValue } from '../../mirror-value';
+import { ownRovingFocusGroup, provideOwnRovingFocusGroup } from '../../roving-focus';
 import { cn } from '../../utils';
 
 @Component({
@@ -24,6 +27,9 @@ import { cn } from '../../utils';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     provideToggleGroupState(),
+    // The group owns its arrow keys: inside a tab panel it must not join the tabset's roving
+    // group. Inside a toolbar it still joins the toolbar's single tab stop.
+    provideOwnRovingFocusGroup({ joinToolbar: true }),
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => VoltToggleGroup),
@@ -36,7 +42,7 @@ import { cn } from '../../utils';
     // the primitive always writes `group`. Multiple mode keeps `group` (toggle buttons).
     '[attr.role]': 'type() === "multiple" ? "group" : "radiogroup"',
     '[attr.aria-invalid]': 'formControlState.invalid() ? "true" : null',
-    '(focusout)': 'onTouched()',
+    '(focusout)': 'onFocusOut($event)',
   },
   hostDirectives: [
     {
@@ -52,6 +58,7 @@ import { cn } from '../../utils';
   template: `<ng-content />`,
 })
 export class VoltToggleGroup implements ControlValueAccessor {
+  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   readonly class = input<string>('');
 
   protected readonly classes = computed(() =>
@@ -77,7 +84,21 @@ export class VoltToggleGroup implements ControlValueAccessor {
   private onChange: (value: string[]) => void = () => {};
   protected onTouched: () => void = () => {};
 
+  /** Touched means focus left the whole group, not that it moved between the group's items. */
+  protected onFocusOut(event: FocusEvent): void {
+    if (!this.host.nativeElement.contains(event.relatedTarget as Node | null)) this.onTouched();
+  }
+
   constructor() {
+    ownRovingFocusGroup(
+      {
+        orientation: this.state().orientation,
+        disabled: this.state().disabled,
+        wrap: inject(NgpToggleGroup).wrap,
+      },
+      { joinToolbar: true }
+    );
+
     effect(() => {
       this.state().setDisabled(this.isDisabled());
     });

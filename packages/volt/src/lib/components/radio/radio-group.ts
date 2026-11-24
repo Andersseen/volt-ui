@@ -3,8 +3,10 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  ElementRef,
   effect,
   forwardRef,
+  inject,
   input,
   model,
   signal,
@@ -14,6 +16,7 @@ import { injectRadioGroupState, NgpRadioGroup, provideRadioGroupState } from 'ng
 import type { NgpOrientation } from 'ng-primitives/common';
 import { injectFormControlState } from '../../form-control-state';
 import { mirrorValue } from '../../mirror-value';
+import { ownRovingFocusGroup, provideOwnRovingFocusGroup } from '../../roving-focus';
 import { cn } from '../../utils';
 
 @Component({
@@ -21,6 +24,9 @@ import { cn } from '../../utils';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     provideRadioGroupState(),
+    // The group owns its arrow keys: inside a tab panel it must not join the tabset's roving
+    // group. Inside a toolbar it still joins the toolbar's single tab stop.
+    provideOwnRovingFocusGroup({ joinToolbar: true }),
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => VoltRadioGroup),
@@ -33,7 +39,7 @@ import { cn } from '../../utils';
     '[attr.aria-invalid]': 'formControlState.invalid() ? "true" : null',
     '[class.flex-col]': 'orientation() === "vertical"',
     '[class.flex-row]': 'orientation() === "horizontal"',
-    '(focusout)': 'onTouched()',
+    '(focusout)': 'onFocusOut($event)',
   },
   hostDirectives: [
     {
@@ -49,6 +55,7 @@ import { cn } from '../../utils';
   template: ` <ng-content /> `,
 })
 export class VoltRadioGroup implements ControlValueAccessor {
+  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   readonly class = input<string>('');
 
   protected readonly classes = computed(() => cn('flex gap-stack', this.class()));
@@ -69,7 +76,22 @@ export class VoltRadioGroup implements ControlValueAccessor {
   private onChange: (value: string | null) => void = () => {};
   protected onTouched: () => void = () => {};
 
+  /** Touched means focus left the whole group, not that it moved between the group's items. */
+  protected onFocusOut(event: FocusEvent): void {
+    if (!this.host.nativeElement.contains(event.relatedTarget as Node | null)) this.onTouched();
+  }
+
   constructor() {
+    // `wrap` stays on, as the primitive sets it: arrow keys cycle through a radio group.
+    ownRovingFocusGroup(
+      {
+        orientation: this.state().orientation,
+        disabled: this.state().disabled,
+        wrap: signal(true),
+      },
+      { joinToolbar: true }
+    );
+
     effect(() => {
       this.state().setDisabled(this.isDisabled());
     });

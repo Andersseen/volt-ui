@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  ElementRef,
   effect,
   forwardRef,
   inject,
@@ -40,7 +41,7 @@ import { VoltQuartzIds } from '../../quartz-ids';
     '[attr.aria-invalid]': 'formControlState.invalid() ? "true" : null',
     '[class.flex-col]': 'orientation() === "vertical"',
     '[class.flex-row]': 'orientation() === "horizontal"',
-    '(focusout)': 'onTouched()',
+    '(focusout)': 'onFocusOut($event)',
   },
   hostDirectives: [
     {
@@ -51,6 +52,7 @@ import { VoltQuartzIds } from '../../quartz-ids';
   template: ` <ng-content /> `,
 })
 export class VoltRadioGroup implements ControlValueAccessor {
+  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   readonly class = input<string>('');
 
   protected readonly classes = computed(() => cn('flex gap-stack', this.class()));
@@ -72,6 +74,11 @@ export class VoltRadioGroup implements ControlValueAccessor {
 
   private onChange: (value: string | null) => void = () => {};
   protected onTouched: () => void = () => {};
+
+  /** Touched means focus left the whole group, not that it moved between the group's items. */
+  protected onFocusOut(event: FocusEvent): void {
+    if (!this.host.nativeElement.contains(event.relatedTarget as Node | null)) this.onTouched();
+  }
 
   constructor() {
     effect(() => {
