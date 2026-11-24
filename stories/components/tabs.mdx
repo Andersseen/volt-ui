@@ -75,8 +75,9 @@ export class MyComponent {}
 ## Accessibility
 
 - Tab list semantics and arrow-key navigation come from ng-primitives; `activateOnFocus` selects on arrow focus.
+- A toggle group, radio group or tabset placed in a panel keeps its own arrow keys and tab stop; the tab list keeps its own.
 
-<table><thead><tr><th>Aspect</th><th>Behaviour</th></tr></thead><tbody><tr><td>Keyboard</td><td>{"via ng-primitives"}</td></tr><tr><td>Focus and overlays</td><td>{"tab focus behavior via primitive"}</td></tr><tr><td>Forms</td><td>{"n/a"}</td></tr></tbody></table>
+<table><thead><tr><th>Aspect</th><th>Behaviour</th></tr></thead><tbody><tr><td>Keyboard</td><td>{"via ng-primitives"}</td></tr><tr><td>Focus and overlays</td><td>{"own roving group; a tabset nested in a panel stays independent"}</td></tr><tr><td>Forms</td><td>{"n/a"}</td></tr></tbody></table>
 
 The Accessibility panel under each story runs axe-core against that story. It is a development aid, not a conformance claim.
 

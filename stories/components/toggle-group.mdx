@@ -68,8 +68,9 @@ export class MyComponent {
 
 - Roving focus comes from the ng-primitives toggle group. Icon-only items need `aria-label`.
 - `type="single"` is a `radiogroup` of `radio` items (`aria-checked`); `type="multiple"` is a `group` of toggle buttons (`aria-pressed`). Name the group with `aria-label` or `aria-labelledby`.
+- The group owns its arrow keys and its tab stop, also inside a tab panel; inside a `volt-toolbar` it joins the toolbar's single tab stop.
 
-<table><thead><tr><th>Aspect</th><th>Behaviour</th></tr></thead><tbody><tr><td>Keyboard</td><td>{"via ng-primitives"}</td></tr><tr><td>Focus and overlays</td><td>{"roving focus via primitive; single mode tabs in on the selected item"}</td></tr><tr><td>Forms</td><td>{"full CVA contract"}</td></tr></tbody></table>
+<table><thead><tr><th>Aspect</th><th>Behaviour</th></tr></thead><tbody><tr><td>Keyboard</td><td>{"via ng-primitives"}</td></tr><tr><td>Focus and overlays</td><td>{"own roving group (also in a tab panel); single mode tabs in on the selected item"}</td></tr><tr><td>Forms</td><td>{"full CVA contract"}</td></tr></tbody></table>
 
 The Accessibility panel under each story runs axe-core against that story. It is a development aid, not a conformance claim.
 
