@@ -53,6 +53,17 @@ What a binding means for a mirrored component:
 - **Date picker follows an externally-set date.** A form write in another month used to select a day
   that was off screen; the displayed month now follows a _programmatic_ date. A pick by the user
   never moves it.
-- **Known gap — toggle-group tab stop.** The group's one tab stop is its first item, not the pressed
-  one (the APG radio pattern puts it on the checked item). Left as is: it needs the roving-focus
-  group's initial item, an upstream seam. Recorded in the plan's open questions.
+- **Toggle-group tab stop.** A single group's one tab stop is its pressed item (the APG radio
+  pattern), on both engines: the item moves the roving tab stop — never focus — when the selection
+  changes, so arrowing without selecting still carries the tab stop with focus.
+- **Roving focus is owned per composite.** ng-primitives roving-focus groups inherit the nearest
+  group around them by default, so a toggle group or radio group in a tab panel (and a tabset in
+  another tabset's panel) used to join the outer tab list: no tab stop of its own, and its arrow keys
+  moved the outer tabs. Tabs, ToggleGroup, RadioGroup and Toolbar each create their own group
+  (`roving-focus.ts`, `inherit: false`, the documented primitive option); a toggle group or radio
+  group whose nearest Volt composite is a Toolbar still joins the toolbar's single tab stop. A tab
+  panel's state is not inherited either, so a nested tabset cannot hide the panel it sits in.
+  Contract: `testing/composition-contract.ts`, run on both engines.
+- **Touched means focus left the group.** RadioGroup and ToggleGroup used to mark the control touched
+  on any `focusout`, including an arrow key moving focus from one item to the next; they now wait
+  until focus leaves the group, as DatePicker and Select already did.

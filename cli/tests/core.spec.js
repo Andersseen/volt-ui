@@ -427,6 +427,17 @@ describe('CLI Core', () => {
       const content = readFileSync(join(testDir, 'radio', 'radio-group.ts'), 'utf-8');
       expect(content).toContain("from '../mirror-value'");
     });
+
+    it('should copy roving-focus.ts flat for composites that own their arrow keys', async () => {
+      for (const name of ['tabs', 'toggle-group', 'radio', 'toolbar']) {
+        const dir = join(testDir, name);
+        const result = await core.copyComponent(name, dir, manifest);
+        expect(result.sharedFiles).toContain('roving-focus.ts');
+        expect(existsSync(join(dir, 'roving-focus.ts'))).toBe(true);
+      }
+      const content = readFileSync(join(testDir, 'tabs', 'tabs', 'tabs.ts'), 'utf-8');
+      expect(content).toContain("from '../roving-focus'");
+    });
   });
 
   describe('CLI integration', () => {

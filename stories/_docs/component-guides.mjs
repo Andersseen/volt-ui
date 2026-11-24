@@ -130,7 +130,7 @@ export const COMPONENT_GUIDES = {
     summary: 'A group of mutually exclusive options.',
     when: ['Choosing exactly one option out of a short, visible list (about seven or fewer).'],
     a11y: [
-      'Built on the ng-primitives radio group: one tab stop for the group, arrow keys move and select.',
+      'Built on the ng-primitives radio group: one tab stop for the group, arrow keys move and select. It keeps them inside a tab panel too.',
       'Label the group (for example with a `fieldset`/legend or `aria-label`) as well as each item.',
     ],
   },
@@ -221,6 +221,7 @@ export const COMPONENT_GUIDES = {
     a11y: [
       'Roving focus comes from the ng-primitives toggle group. Icon-only items need `aria-label`.',
       '`type="single"` is a `radiogroup` of `radio` items (`aria-checked`); `type="multiple"` is a `group` of toggle buttons (`aria-pressed`). Name the group with `aria-label` or `aria-labelledby`.',
+      "The group owns its arrow keys and its tab stop, also inside a tab panel; inside a `volt-toolbar` it joins the toolbar's single tab stop.",
     ],
   },
   toolbar: {
@@ -231,6 +232,7 @@ export const COMPONENT_GUIDES = {
     when: ['Editor or table actions with many small controls.'],
     a11y: [
       'One tab stop, arrow keys move between items (roving focus via the primitive). Label the toolbar.',
+      'A toggle group or radio group placed in the toolbar joins that tab stop; a toolbar in a tab panel keeps its own.',
     ],
   },
   pagination: {
@@ -282,6 +284,7 @@ export const COMPONENT_GUIDES = {
     when: ['Splitting a page into sibling views that share a context.'],
     a11y: [
       'Tab list semantics and arrow-key navigation come from ng-primitives; `activateOnFocus` selects on arrow focus.',
+      'A toggle group, radio group or tabset placed in a panel keeps its own arrow keys and tab stop; the tab list keeps its own.',
     ],
   },
   breadcrumbs: {

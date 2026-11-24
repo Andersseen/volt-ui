@@ -1,15 +1,19 @@
 import {
   type AfterViewChecked,
+  type AfterViewInit,
   booleanAttribute,
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   ElementRef,
   inject,
   input,
+  signal,
+  untracked,
   viewChild,
 } from '@angular/core';
-import { ToggleItemDirective } from '@quartz-headless/primitives';
+import { ToggleGroupDirective, ToggleItemDirective } from '@quartz-headless/primitives';
 import {
   toggleGroupItemVariants,
   type ToggleGroupItemVariants,
@@ -42,7 +46,7 @@ import { VoltToggleGroup } from './toggle-group';
     </button>
   `,
 })
-export class VoltToggleGroupItem implements AfterViewChecked {
+export class VoltToggleGroupItem implements AfterViewInit, AfterViewChecked {
   readonly class = input<string>('');
 
   protected readonly hostClasses = computed(() => cn('inline-flex', this.class()));
@@ -50,6 +54,10 @@ export class VoltToggleGroupItem implements AfterViewChecked {
   private readonly group = inject(VoltToggleGroup);
   private readonly writeAttributes = injectAttributeWriter();
   private readonly control = viewChild.required<ElementRef<HTMLElement>>('control');
+  private readonly quartzGroup = inject(ToggleGroupDirective);
+  private readonly quartzItem = viewChild.required(ToggleItemDirective);
+  /** Quartz registers the item with its group in `ngOnInit`; the tab stop can move after that. */
+  private readonly registered = signal(false);
 
   readonly value = input.required<string>();
   /** Accessible name — required for an icon-only item. Lands on the native button. */
@@ -73,6 +81,20 @@ export class VoltToggleGroupItem implements AfterViewChecked {
 
   constructor() {
     forwardAttributesFromHost('aria-label');
+
+    // Same contract as the ng-primitives backend: a single group is a radiogroup, and Tab enters a
+    // radiogroup on its checked radio. Quartz seeds the tab stop on the first item until one is
+    // focused, so the pressed item claims it. `setActive` without `focus` moves the tab stop only,
+    // and only when the selection changes: arrowing without selecting still moves it with focus.
+    effect(() => {
+      if (!this.registered() || this.group.type() !== 'single' || !this.pressed()) return;
+      const item = this.quartzItem();
+      untracked(() => this.quartzGroup.setActive(item));
+    });
+  }
+
+  ngAfterViewInit(): void {
+    this.registered.set(true);
   }
 
   /*

@@ -5,7 +5,9 @@ import { cn } from '../../utils';
 @Component({
   selector: 'volt-tabs-content',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [provideTabPanelState()],
+  // `inherit: false`: the panels of a tabset nested in this panel must not share (and overwrite)
+  // this panel's state, which hid the outer panel as soon as the inner tabset rendered.
+  providers: [provideTabPanelState({ inherit: false })],
   host: {
     '[class]': 'classes()',
     '[attr.data-state]': "tabPanelState().active() ? 'active' : 'inactive'",

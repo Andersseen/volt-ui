@@ -32,7 +32,7 @@ test.describe('Photo blocks', () => {
     await preview(page).getByRole('radio').first().focus();
     await page.keyboard.press('ArrowRight');
 
-    // A toggle group inside the tabs would otherwise join the tabs' roving focus.
+    // The thumbnails are a toggle group inside a tab panel: it owns its arrow keys and tab stop.
     await expect(preview(page).getByRole('tab', { name: 'Landscapes' })).toHaveAttribute(
       'aria-selected',
       'true'
@@ -41,6 +41,16 @@ test.describe('Photo blocks', () => {
       'aria-label',
       'A desert road running toward red mountains'
     );
+    await expect(preview(page).getByRole('tab', { name: 'Landscapes' })).toHaveAttribute(
+      'tabindex',
+      '0'
+    );
+
+    // And the tab list keeps its own.
+    await preview(page).getByRole('tab', { name: 'Landscapes' }).focus();
+    await page.keyboard.press('ArrowRight');
+    await expect(page.locator(':focus')).toHaveAttribute('role', 'tab');
+    await expect(page.locator(':focus')).not.toHaveAccessibleName('Landscapes');
   });
 
   test('Gallery Tabs opens the featured photo and gives focus back on Escape', async ({ page }) => {

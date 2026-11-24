@@ -79,13 +79,15 @@ npx @voltui/cli list --base=quartz        # what the base supports
 
 ## What is guaranteed to match
 
-Verified by one contract run against both engines (`packages/volt/testing/headless-contract.ts`, `group-contract.ts`, `disclosure-contract.ts`), a differential
+Verified by one contract run against both engines (`packages/volt/testing/headless-contract.ts`, `group-contract.ts`, `disclosure-contract.ts`, `composition-contract.ts`), a differential
 spec (`backend-parity.spec.ts`), and a packed-tarball browser suite in Chromium, Firefox and WebKit
 (`scripts/check-quartz-consumer.mjs`):
 
 - native `<button>`, role, accessible name, `aria-checked` (`mixed` included) / `aria-pressed`, `aria-required`, `aria-invalid`;
 - **Radio**: `radiogroup` of `radio` buttons, `aria-labelledby` pointing at the projected label, a supplied `id` on the button (so `<label for>` names it), roving `tabindex`, arrows move **and select**, Space selects, `orientation`, `compareWith`, `[(value)]`, disabled item and group;
-- **ToggleGroup**: single mode = `role="radio"` + `aria-checked`, multiple mode = `aria-pressed`; the value is always a `string[]`; arrows move focus only, Space/Enter press; `allowDeselection`; disabled item and group;
+- **ToggleGroup**: single mode = `role="radio"` + `aria-checked`, multiple mode = `aria-pressed`; the value is always a `string[]`; arrows move focus only, Space/Enter press; `allowDeselection`; disabled item and group; a single group's tab stop is its pressed item, and follows a programmatic selection without taking focus;
+- **Nested composites**: a ToggleGroup or RadioGroup in a tab panel, and a Tabs in another tab panel, keep their own tab stop and arrow keys; the outer tab list keeps its own, and the outer panel stays shown (`composition-contract.ts`, and the packed consumers' nested section with SSR);
+- **Touched**: RadioGroup and ToggleGroup mark the control touched when focus leaves the group, not when it moves between their items;
 - **Tabs**: `tablist` / `tab` / `tabpanel` with `aria-selected`, `aria-controls` ⇄ `aria-labelledby` (no dangling reference, unique ids), roving `tabindex`, `data-state="active|inactive"` on trigger and panel, arrows/Home/End, vertical `orientation`, `[(value)]`, `activateOnFocus`;
 - **Accordion**: native-button triggers with `aria-expanded` / `aria-controls`, a labelled `region` per panel, `single` / `multiple`, `collapsible`, `[(value)]` (`string | string[] | null`), group `disabled`, every trigger in the Tab order, `data-open` / `data-closed` styling hooks;
 - **Listbox**: `listbox` / `option` with `aria-selected`, `aria-multiselectable`, `aria-activedescendant` (never dangling), `role="group"` sections named by their header only while one exists, `mode` `single` / `multiple`, a `T[]` value in both modes, `compareWith`, disabled option and listbox, Home/End/arrows/typeahead, `data-selected` / `data-active` / `data-disabled`;

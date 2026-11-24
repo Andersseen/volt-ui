@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Interaction reliability: nested composites
+
+Fixes, no new API. Selectors, inputs, outputs and value shapes are unchanged.
+
+- **A toggle group, radio group or tabset inside a tab panel owns its own arrow keys.** ng-primitives
+  roving-focus groups inherit the nearest group around them, so these joined the outer tab list: they had
+  no tab stop (Tab skipped them), and ArrowRight on a thumbnail moved to the next tab. Tabs, Toggle Group,
+  Radio Group and Toolbar now each own their group (the primitive's documented `inherit: false`). A toggle
+  group or radio group placed in a Toolbar still joins the toolbar's single tab stop, as before.
+- **A tabset inside a tab panel no longer hides that panel.** The inner panels shared the outer panel's
+  state, which turned it `data-state="inactive"` (and so `display: none`).
+- **Radio Group and Toggle Group mark the form control touched when focus leaves the group**, not when an
+  arrow key moves focus between their items. Both backends.
+- **Quartz Toggle Group: Tab enters a single group on its pressed item**, which follows a programmatic
+  selection without taking focus — the behaviour the ng-primitives backend got in the previous change.
+- **Recipes: Gallery Tabs** declares its thumbnails inside the tab panel again; the template-outlet
+  workaround is gone. Copy-and-own users need this library change for the block's arrow keys.
+
 ### Components
 
 Feedback from migrating a production AnalogJS 2.9 / Angular 21 SSR site from 1.3.3. Additive and backward
