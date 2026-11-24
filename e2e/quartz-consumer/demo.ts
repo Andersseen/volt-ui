@@ -328,6 +328,35 @@ import {
         <output id="td-value">{{ tdCheck() }}|{{ tdRadio() }}|{{ tdSelect() }}</output>
       </section>
 
+      <section aria-label="Nested composites" class="flex flex-col gap-3">
+        <volt-tabs value="g-photos">
+          <volt-tabs-list aria-label="Gallery">
+            <volt-tabs-trigger value="g-photos">Gallery photos</volt-tabs-trigger>
+            <volt-tabs-trigger value="g-videos">Gallery videos</volt-tabs-trigger>
+          </volt-tabs-list>
+          <volt-tabs-content value="g-photos" class="flex flex-col gap-3">
+            <volt-toggle-group aria-label="Shot" [value]="['shot-3']">
+              <volt-toggle-group-item value="shot-1">Shot one</volt-toggle-group-item>
+              <volt-toggle-group-item value="shot-2">Shot two</volt-toggle-group-item>
+              <volt-toggle-group-item value="shot-3">Shot three</volt-toggle-group-item>
+            </volt-toggle-group>
+            <volt-radio-group aria-label="Tier" orientation="horizontal" value="tier-pro">
+              <volt-radio-item value="tier-free">Tier free</volt-radio-item>
+              <volt-radio-item value="tier-pro">Tier pro</volt-radio-item>
+            </volt-radio-group>
+            <volt-tabs value="in-1">
+              <volt-tabs-list aria-label="Inner gallery">
+                <volt-tabs-trigger value="in-1">Inner one</volt-tabs-trigger>
+                <volt-tabs-trigger value="in-2">Inner two</volt-tabs-trigger>
+              </volt-tabs-list>
+              <volt-tabs-content value="in-1">Inner one panel</volt-tabs-content>
+              <volt-tabs-content value="in-2">Inner two panel</volt-tabs-content>
+            </volt-tabs>
+          </volt-tabs-content>
+          <volt-tabs-content value="g-videos">Gallery videos panel</volt-tabs-content>
+        </volt-tabs>
+      </section>
+
       <output id="value">{{ form.getRawValue() | json }}</output>
       <output id="touched">{{ form.touched }}</output>
       <output id="dirty">{{ form.dirty }}</output>

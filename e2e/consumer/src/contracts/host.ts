@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CatalogFixture } from './catalog';
+import { NestedCompositesFixture } from './composition';
+import { OverlayFormsFixture } from './overlay-forms';
 import { DateRangeFixture, FeedbackStableFixture, NavVariantsFixture } from './polish';
 import {
   ComboboxFixtures,
@@ -37,7 +39,9 @@ import {
     FileUploadFixture,
     InputOtpFixture,
     ListboxFixture,
+    NestedCompositesFixture,
     OverlayFixtures,
+    OverlayFormsFixture,
     RadioFixture,
     ResizableFixture,
     SelectFixture,
@@ -59,6 +63,12 @@ import {
         }
         @case ('toggle-toolbar') {
           <app-toggle-toolbar />
+        }
+        @case ('nested-composites') {
+          <app-nested-composites />
+        }
+        @case ('overlay-forms') {
+          <app-overlay-forms />
         }
         @case ('tabs-accordion') {
           <app-tabs-accordion />

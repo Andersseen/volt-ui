@@ -539,6 +539,64 @@ for (const [name, url] of BACKENDS) {
       }
     });
 
+    test('nested composites: server tab stops, then each group owns its arrows', async ({
+      page,
+      browser,
+    }) => {
+      // The prerendered DOM, before any script runs, already has one tab stop per composite.
+      const ssr = await browser.newContext({ javaScriptEnabled: false });
+      const raw = await ssr.newPage();
+      await raw.goto(url!);
+      const tabindex = (role: 'tab' | 'radio', name: string) =>
+        raw.getByRole(role, { name, exact: true }).getAttribute('tabindex');
+      expect(await tabindex('tab', 'Gallery photos')).toBe('0');
+      expect(await tabindex('radio', 'Shot three')).toBe('0');
+      expect(await tabindex('radio', 'Shot one')).toBe('-1');
+      expect(await tabindex('radio', 'Tier pro')).toBe('0');
+      expect(await tabindex('tab', 'Inner one')).toBe('0');
+      await expect(raw.getByText('Inner one panel')).toBeVisible();
+      await ssr.close();
+
+      const problems = await open(page, url!);
+      const tab = (n: string) => page.getByRole('tab', { name: n, exact: true });
+      const radio = (n: string) => page.getByRole('radio', { name: n, exact: true });
+      const shot3 = radio('Shot three');
+      await expect(shot3).toHaveAttribute('tabindex', '0');
+      await expect(tab('Gallery photos')).toHaveAttribute('tabindex', '0');
+
+      await shot3.focus();
+      await expect(shot3).toHaveAttribute('tabindex', '0');
+      for (const [key, n] of [
+        ['ArrowRight', 'Shot one'],
+        ['ArrowRight', 'Shot two'],
+        ['ArrowLeft', 'Shot one'],
+      ] as const) {
+        await page.keyboard.press(key);
+        await expect(radio(n), `${key} → ${n}`).toBeFocused();
+      }
+      await expect(tab('Gallery photos')).toHaveAttribute('aria-selected', 'true');
+      await expect(shot3).toHaveAttribute('aria-checked', 'true');
+
+      await radio('Tier pro').focus();
+      await expect(radio('Tier pro')).toHaveAttribute('tabindex', '0');
+      await page.keyboard.press('ArrowRight');
+      await expect(radio('Tier free')).toBeFocused();
+      await expect(radio('Tier free')).toHaveAttribute('aria-checked', 'true');
+      await expect(tab('Gallery photos')).toHaveAttribute('aria-selected', 'true');
+
+      await tab('Inner one').focus();
+      await expect(tab('Inner one')).toHaveAttribute('tabindex', '0');
+      await page.keyboard.press('ArrowRight');
+      await expect(tab('Inner two')).toBeFocused();
+      await expect(page.getByText('Inner two panel')).toBeVisible();
+      await expect(tab('Gallery photos')).toHaveAttribute('aria-selected', 'true');
+
+      await tab('Gallery photos').focus();
+      await page.keyboard.press('ArrowRight');
+      await expect(tab('Gallery videos')).toBeFocused();
+      expect(problems).toEqual([]);
+    });
+
     test('disabled controls ignore input', async ({ page }) => {
       await open(page, url!);
       for (const [role, label, attr] of [
