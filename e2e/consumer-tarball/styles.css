@@ -1,0 +1,15 @@
+/* A consumer stylesheet: Tailwind v4 from the app's own devDependencies, the theme from the
+   package's real `exports` ("./themes.css", "./themes/*"). themes.css carries the source scan of
+   the package's compiled components; a CLI copy is scanned by the line below, with the app. */
+@import 'tailwindcss' source(none);
+@source './**/*.{html,ts}';
+
+@import '@voltui/components/themes.css';
+@import '@voltui/components/themes/colors/ember.css';
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: ui-sans-serif, system-ui, sans-serif;
+}

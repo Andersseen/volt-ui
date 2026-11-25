@@ -27,9 +27,15 @@ const log = process.env.FAKE_PM_LOG;
 fs.appendFileSync(log, JSON.stringify({ pm: path.basename(process.argv[1]), cwd: process.cwd(), args: process.argv.slice(2) }) + '\\n');
 if (process.env.FAKE_PM_FAIL) { console.error('fake failure'); process.exit(1); }
 if (process.env.FAKE_PM_NOOP) process.exit(0);
-for (const arg of process.argv.slice(2)) {
+const argv = process.argv.slice(2);
+const ws = argv.indexOf('--workspace');
+const pkgFile = path.join(process.cwd(), ws === -1 ? '' : argv[ws + 1], 'package.json');
+const pkg = JSON.parse(fs.readFileSync(pkgFile, 'utf8'));
+for (const arg of argv) {
   const m = arg.match(/^(@?[^@]+)@(.+)$/);
   if (!m) continue;
+  pkg.dependencies = { ...pkg.dependencies, [m[1]]: m[2] };
+  fs.writeFileSync(pkgFile, JSON.stringify(pkg, null, 2));
   const version = m[2].split('||')[0].trim().replace(/^[~^>=<]+/, '').split(' ')[0];
   const dir = path.join(process.cwd(), 'node_modules', m[1]);
   fs.mkdirSync(dir, { recursive: true });
@@ -347,11 +353,22 @@ describe('--install policy', () => {
   it('keeps compatible installed versions and does not reinstall them', () => {
     installed(app, 'clsx', '2.1.1');
     installed(app, 'tailwind-merge', '3.4.0');
+    const pkg = JSON.parse(readFileSync(join(app, 'package.json'), 'utf-8'));
+    pkg.dependencies = { ...pkg.dependencies, clsx: '^2.1.0', 'tailwind-merge': '^3.0.0' };
+    write(join(app, 'package.json'), pkg);
     const result = volt(app, ['add', 'card', '--install']);
     expect(result.status, result.out).toBe(0);
     expect(result.out).toContain('keep     clsx 2.1.1');
     expect(calls()).toEqual([]);
     expect(result.out).toContain('already installed in range');
+  });
+
+  it('declares a package that is only installed transitively, without upgrading it', () => {
+    installed(app, 'clsx', '2.1.1'); // hoisted from some other dependency, not in package.json
+    const result = volt(app, ['add', 'card', '--install']);
+    expect(result.status, result.out).toBe(0);
+    expect(result.out).toContain("declare  clsx ^2.0.0 (2.1.1 is only installed as another package's dependency)");
+    expect(calls()[0].args).toContain('clsx@^2.0.0');
   });
 
   it('adds a missing Angular package at the app version, never a newer Angular', () => {

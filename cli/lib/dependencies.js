@@ -104,9 +104,14 @@ function assessDependencies(project, required) {
   const dir = project.packageDir;
   const pkgJson = project.packageJson;
   const core = dir ? installedVersion(dir, '@angular/core') : null;
+  // In a workspace, a dependency the root declares is the package's too (hoisted on purpose).
+  const rootJson =
+    project.workspace && project.workspace.root !== dir
+      ? readPackageJson(project.workspace.root)
+      : null;
   const assess = (dep, isAngular) => {
     const installed = dir ? installedVersion(dir, dep.name) : null;
-    const declared = declaredRange(pkgJson, dep.name);
+    const declared = declaredRange(pkgJson, dep.name) || declaredRange(rootJson, dep.name);
     const base = {
       ...dep,
       angular: isAngular,
@@ -115,6 +120,9 @@ function assessDependencies(project, required) {
     };
     if (installed) {
       if (!dep.range || semver.satisfies(installed.version, dep.range)) {
+        // Present only as someone else's dependency (hoisted): the copy imports it, so the
+        // project declares it — at the version already there, nothing is upgraded.
+        if (!declared && !isAngular) return { ...base, status: 'add', transitive: true };
         return { ...base, status: 'ok' };
       }
       return {
@@ -257,7 +265,9 @@ function describeEntry(entry) {
     case 'ok':
       return `keep     ${entry.name} ${entry.installed} (satisfies${range})`;
     case 'add':
-      return `add      ${entry.name}${range}${entry.tested ? ` (tested with ${entry.tested})` : ''}`;
+      return entry.transitive
+        ? `declare  ${entry.name}${range} (${entry.installed} is only installed as another package's dependency)`
+        : `add      ${entry.name}${range}${entry.tested ? ` (tested with ${entry.tested})` : ''}`;
     case 'install':
       return `install  ${entry.name} (declared ${entry.declared.range}, not installed yet)`;
     case 'unknown':

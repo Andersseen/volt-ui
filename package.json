@@ -36,7 +36,7 @@
     "check:quartz-consumer": "node scripts/check-quartz-consumer.mjs",
     "test:e2e:ui": "playwright test --ui",
     "test:all": "pnpm lint && pnpm typecheck && pnpm check:generated && pnpm check:ai-docs && pnpm test:coverage && pnpm build:lib && pnpm test:e2e:ci && pnpm test:e2e:consumer && pnpm test:e2e:consumer-cli",
-    "release:check": "pnpm stats:full && pnpm check:generated && pnpm lint && pnpm typecheck && pnpm check:ai-docs && pnpm test:coverage && pnpm pack:lib && pnpm pack:cli && pnpm pack:agent",
+    "release:check": "pnpm stats:full && pnpm check:generated && pnpm lint && pnpm typecheck && pnpm check:ai-docs && pnpm test:coverage && pnpm build:lib && pnpm check:examples && pnpm pack:lib && pnpm pack:cli && pnpm pack:agent",
     "release:bump": "node scripts/bump-version.mjs",
     "lint": "eslint . --ext .ts,.html",
     "lint:fix": "eslint . --ext .ts,.html --fix",
@@ -93,7 +93,8 @@
     "generate:behavior-matrix": "node scripts/generate-behavior-matrix.mjs",
     "build:all": "turbo run build",
     "typecheck:all": "turbo run typecheck",
-    "check:examples": "node scripts/check-examples.mjs"
+    "check:examples": "node scripts/check-examples.mjs",
+    "check:consumer": "node scripts/check-consumer.mjs"
   },
   "lint-staged": {
     "*.{ts,html}": [

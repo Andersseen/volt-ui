@@ -89,6 +89,11 @@ jobs:
       - name: Generate the CLI manifest
         run: pnpm manifest
 
+      # Every component usage example and MCP fragment, in package mode (dist/volt) and in CLI-copy
+      # mode (through the CLI and the docs' package -> copy transform), under strict templates.
+      - name: Compile every copyable example in both distribution modes
+        run: pnpm check:examples
+
       - name: Check CLI package
         run: pnpm pack:cli
 
@@ -191,6 +196,52 @@ jobs:
       # Forms/keyboard/hydration/paint contract in all three browsers. See scripts/check-quartz-consumer.mjs.
       - name: Install, build and exercise the Quartz backend
         run: node scripts/check-quartz-consumer.mjs ${{ matrix.angular }}
+
+  consumer:
+    name: Packed tarballs in an isolated consumer · Angular ${{ matrix.angular }}
+    # Pinned for WebKit (see `contracts`).
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        # A pull request runs the exact declared minimum in Chromium; pushes to main and the weekly
+        # run also check the newest supported major, in all three browsers.
+        angular: ${{ fromJSON(github.event_name == 'pull_request' && '["21.2.0"]' || '["21.2.0", "22"]') }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup
+      - name: Install Playwright Chromium
+        uses: ./.github/actions/setup-playwright
+      - name: Install Playwright Firefox
+        if: github.event_name != 'pull_request'
+        uses: ./.github/actions/setup-playwright
+        with:
+          browser: firefox
+      - name: Install Playwright WebKit
+        if: github.event_name != 'pull_request'
+        uses: ./.github/actions/setup-playwright
+        with:
+          browser: webkit
+
+      # npm-packs @voltui/components, @voltui/cli and @voltui/agent, installs them into an Angular CLI
+      # project outside the repository and runs the installed `volt` binary (init, add, --path,
+      # multi-add, --install, --base), builds the package and CLI-copy apps with SSR and hydration,
+      # compiles every example, proves a missing dependency fails the build, measures the bundle
+      # against specs/v2/bundle-baseline.json and runs the browser checks. See scripts/check-consumer.mjs.
+      - name: Install, copy, build and exercise the packed tarballs
+        run: >-
+          node scripts/check-consumer.mjs --angular=${{ matrix.angular }}
+          ${{ github.event_name == 'pull_request' && '--project=chromium' || '--project=chromium --project=firefox --project=webkit' }}
+
+      - name: Upload the consumer report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: consumer-report-${{ matrix.angular }}
+          path: dist/consumer-report.json
+          if-no-files-found: ignore
 
   build:
     name: Build docs app
@@ -394,6 +445,7 @@ jobs:
         contracts,
         compat,
         quartz,
+        consumer,
         build,
         build-recipes,
         e2e,

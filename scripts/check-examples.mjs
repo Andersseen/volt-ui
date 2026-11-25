@@ -104,8 +104,15 @@ if (problems.length) {
 }
 
 // ---- sources ----------------------------------------------------------------------------------
+// Every Volt directive, plus the ng-primitives structural render directives Volt re-exports
+// (`*ngpDatePickerRowRender`, `*ngpDatePickerCellRender`), which a date picker template needs.
 const directives = [
-  ...new Set(Object.values(COMPONENT_API).flatMap(api => api.directives.map(d => d.className))),
+  ...new Set(
+    Object.values(COMPONENT_API).flatMap(api => [
+      ...api.directives.map(d => d.className),
+      ...api.imports.filter(name => /^Ngp\w*Render$/.test(name)),
+    ])
+  ),
 ].sort();
 
 const escapeTemplate = text =>
@@ -238,6 +245,9 @@ const angularCompilerOptions = {
   strictInjectionParameters: true,
   strictInputAccessModifiers: true,
   strictTemplates: true,
+  // Extended diagnostics are errors too (a structural directive used without its import renders
+  // nothing); only "unused standalone imports" is off, because the host imports every directive.
+  extendedDiagnostics: { defaultCategory: 'error', checks: { unusedStandaloneImports: 'suppress' } },
 };
 
 let failed = false;
