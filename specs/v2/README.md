@@ -1,7 +1,7 @@
 # Volt UI después de v1: utilidad sin convertirse en plataforma
 
 **Fecha:** 2026-09-07 · **Base revisada:** `35e6816`, paquetes `1.0.1`.
-**Estado:** propuesta de diseño; implementación no iniciada.
+**Estado:** planes 01–03 implementados (01 A/B en #249; 01 C, 02 y 03 en `feat/consumer-distribution-dx`). 04–06 pendientes.
 
 La siguiente etapa debería hacer que Volt sea fácil de instalar, componer, adaptar y
 mantener en una aplicación real. El catálogo ya es suficientemente amplio para demostrar
@@ -68,5 +68,4 @@ una afirmación de que el roadmap público ya haya cambiado. El plan 02 incluye 
 la comunicación correspondiente al adoptar esta ruta. No reabrir fases históricas ni
 reimplementar contratos que ya funcionan.
 
-La petición actual autoriza estos documentos; la implementación se inicia con una tarea
-posterior del usuario. Ninguna casilla de implementación está completada.
+Registro de cada plan en su sección «Registro de ejecución».

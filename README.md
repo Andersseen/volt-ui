@@ -341,7 +341,7 @@ Full status table: **[COMPONENT_STATUS.md](./COMPONENT_STATUS.md)**.
 
 ### Compatibility policy
 
-The `1.x` line supports Angular `^21.2 || ^22` and Node 20 or newer. A range is only widened after
+The `1.x` line supports Angular `^21.2 || ^22`, on the Node versions that Angular major supports (Angular 21: `^20.19 || ^22.12 || >=24`; Angular 22: `^22.22.3 || ^24.15 || >=26`). The CLI has no further requirement (it is tested on Node 22). Tested combinations are listed in [specs/v2/plans/03-consumer-contract.md](./specs/v2/plans/03-consumer-contract.md). A range is only widened after
 the **packed** package has been installed into an isolated Angular project of that major, compiled
 with its own `ng build` and exercised in a browser (`pnpm check:angular-compat <major>`); a green
 build in this repository is never taken as proof. `@angular/cdk` and `@angular/router` are peers —

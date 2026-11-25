@@ -1,6 +1,6 @@
 # SDD — Volt UI: integración y mantenimiento de código propio
 
-**Estado:** propuesto, sin implementación. **Base:** `1.0.1` / `35e6816`.
+**Estado:** adoptado; planes 01–03 implementados (ver sus registros). **Base:** `1.0.1` / `35e6816`.
 **Motivación:** [auditoría](AUDIT.md). **Ejecución:** [seis planes](README.md).
 
 ## 1. Objetivo y usuarios
