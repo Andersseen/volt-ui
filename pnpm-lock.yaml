@@ -75,8 +75,8 @@ importers:
         specifier: ^0.1.0
         version: 0.1.0(@angular/common@22.2.4(@angular/core@22.2.4(@angular/compiler@22.2.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.4(@angular/compiler@22.2.4)(rxjs@7.8.2))
       ng-primitives:
-        specifier: 0.131.4
-        version: 0.131.4(466de8acfcbb973074e486df0c5abe64)
+        specifier: 0.132.0
+        version: 0.132.0(466de8acfcbb973074e486df0c5abe64)
       prismjs:
         specifier: ^1.30.0
         version: 1.30.0
@@ -289,8 +289,8 @@ importers:
         specifier: ^2.0.0
         version: 2.1.1
       ng-primitives:
-        specifier: ^0.131.4
-        version: 0.131.4(466de8acfcbb973074e486df0c5abe64)
+        specifier: ^0.132.0
+        version: 0.132.0(466de8acfcbb973074e486df0c5abe64)
       tailwind-merge:
         specifier: ^3.0.0
         version: 3.7.0
@@ -5209,8 +5209,8 @@ packages:
       tailwindcss:
         optional: true
 
-  ng-primitives@0.131.4:
-    resolution: {integrity: sha512-e7syT7rX3CzwKW63QnI5+EeoLbQ7JcvjH5QQ8FLv7XVxS09VzYzfjjVpl8/Eu7bVCctvXNOD0XR9EvqVb+fnVA==}
+  ng-primitives@0.132.0:
+    resolution: {integrity: sha512-ruPg4hqToBuu4bTgXOcuEsoAA2+ZrYPZIpgljPgD8geZaTrJVseBY6tPiWRPsCM1EoAgU7fJ4Dj+3KQXkvLv9w==}
     peerDependencies:
       '@angular/cdk': ^21.0.0 || ^22.0.0
       '@angular/common': ^21.0.0 || ^22.0.0
@@ -11203,7 +11203,7 @@ snapshots:
       - supports-color
       - vue-tsc
 
-  ng-primitives@0.131.4(466de8acfcbb973074e486df0c5abe64):
+  ng-primitives@0.132.0(466de8acfcbb973074e486df0c5abe64):
     dependencies:
       '@angular/cdk': 22.2.6(@angular/common@22.2.4(@angular/core@22.2.4(@angular/compiler@22.2.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.4(@angular/compiler@22.2.4)(rxjs@7.8.2))(@angular/forms@22.2.4(@angular/common@22.2.4(@angular/core@22.2.4(@angular/compiler@22.2.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.4(@angular/compiler@22.2.4)(rxjs@7.8.2))(@angular/platform-browser@22.2.4(@angular/animations@22.2.4(@angular/core@22.2.4(@angular/compiler@22.2.4)(rxjs@7.8.2)))(@angular/common@22.2.4(@angular/core@22.2.4(@angular/compiler@22.2.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.4(@angular/compiler@22.2.4)(rxjs@7.8.2)))(rxjs@7.8.2))(@angular/platform-browser@22.2.4(@angular/animations@22.2.4(@angular/core@22.2.4(@angular/compiler@22.2.4)(rxjs@7.8.2)))(@angular/common@22.2.4(@angular/core@22.2.4(@angular/compiler@22.2.4)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.4(@angular/compiler@22.2.4)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/common': 22.2.4(@angular/core@22.2.4(@angular/compiler@22.2.4)(rxjs@7.8.2))(rxjs@7.8.2)
