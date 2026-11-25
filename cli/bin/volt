@@ -2,8 +2,8 @@
 
 const {
   loadManifest,
-  copyComponent,
   initProject,
+  installDependencies,
   listComponents,
   groupComponents,
   detectTailwindSetup,
@@ -11,13 +11,15 @@ const {
   resolveBase,
   writeConfig,
   readConfig,
-  assertSupportedForBase,
   componentsForBase,
+  classNameFor,
   targetUsesNgPrimitives,
   validateBase,
   DEFAULT_BASE,
   CONFIG_FILE,
 } = require('../lib/core');
+const { planAdd, formatConflicts, filesWithAction } = require('../lib/add-plan');
+const { applyPlan } = require('../lib/apply-plan');
 
 function parseArgs(rawArgs) {
   const args = [];
@@ -46,10 +48,7 @@ function parseAddArgs(args, manifest) {
       targetDir = candidate;
       break;
     } else {
-      const available = Object.keys(manifest.components)
-        .sort()
-        .slice(0, 12)
-        .join(', ');
+      const available = Object.keys(manifest.components).sort().slice(0, 12).join(', ');
       console.error(`❌ Component "${candidate}" not found.`);
       console.error(`Run "volt list" to see all components. Available examples: ${available}`);
       process.exit(1);
@@ -82,6 +81,133 @@ function selectBase(flags, targetDir) {
   return selection;
 }
 
+const ACTION_LABELS = {
+  create: 'create  ',
+  reuse: 'reuse   ',
+  replace: 'replace ',
+  conflict: 'conflict',
+};
+const ACTION_NOTES = {
+  create: '',
+  reuse: ' (identical, left untouched)',
+  replace: ' (differs; replaced because of --force)',
+  conflict: ' (differs from the Volt UI source)',
+};
+
+function printPlan(plan) {
+  console.log(`Requested: ${plan.requested.join(', ')}`);
+  console.log(`Dependencies: ${plan.dependencies.join(', ') || '(none)'}`);
+  console.log(`Shared files: ${plan.sharedFiles.join(', ') || '(none)'}`);
+  console.log('Files:');
+  for (const file of plan.files) {
+    console.log(`  ${ACTION_LABELS[file.action]} ${file.targetPath}${ACTION_NOTES[file.action]}`);
+  }
+  const { barrel } = plan;
+  if (barrel.action === 'unchanged') {
+    console.log(`Barrel: ${barrel.path} already exports every component (unchanged)`);
+  } else {
+    console.log(`Barrel: ${barrel.action} ${barrel.path}, adding:`);
+    barrel.added.forEach(name => console.log(`  export * from './${name}';`));
+  }
+}
+
+function addCommand(plan, extra = '') {
+  return `volt add ${plan.requested.join(' ')} ${plan.targetDir}${extra}${
+    plan.base !== DEFAULT_BASE ? ` --base=${plan.base}` : ''
+  }`;
+}
+
+/**
+ * The whole `volt add` operation: one plan for every requested component, validated before the
+ * first write, written with rollback, then (optionally) one package install.
+ */
+function runAdd({ componentNames, targetDir, manifest, base, requested, recorded, flags }) {
+  const dryRun = !!flags['dry-run'];
+  let plan;
+  try {
+    plan = planAdd({ componentNames, targetDir, manifest, base, force: !!flags.force });
+  } catch (err) {
+    console.error(`❌ ${err.message}`);
+    process.exit(1);
+  }
+
+  const counts = action => filesWithAction(plan, action).length;
+
+  if (dryRun) {
+    console.log(
+      `\n🔎 Dry run: ${plan.requested.length} component(s) would be added to ${targetDir}. Nothing was written.\n`
+    );
+    printPlan(plan);
+    if (plan.conflicts.length > 0) {
+      console.error(`\n❌ ${formatConflicts(plan, { dryRun: true })}`);
+      process.exit(1);
+    }
+    if (flags.install) {
+      console.log(`\n🔎 Runtime dependencies would be installed: ${plan.installCommand}`);
+    }
+    return;
+  }
+
+  if (plan.conflicts.length > 0) {
+    console.error(`❌ ${formatConflicts(plan)}`);
+    process.exit(1);
+  }
+
+  try {
+    applyPlan(plan);
+  } catch (err) {
+    console.error(`❌ ${err.message}`);
+    process.exit(1);
+  }
+
+  // An explicit --base is remembered, so later `volt add` calls keep the same engine.
+  if (requested && !recorded) writeConfig(requested);
+
+  console.log(`\n✅ Added ${plan.requested.length} component(s) successfully to ${targetDir}`);
+  plan.requested.forEach(name => console.log(`  - ${name}`));
+  if (plan.dependencies.length > 0) {
+    console.log(`\n📦 Required dependencies:`);
+    plan.dependencies.forEach(dep => console.log(`  - ${dep}`));
+  }
+  if (plan.sharedFiles.length > 0) {
+    console.log(`\n🧩 Shared helpers: ${plan.sharedFiles.join(', ')}`);
+  }
+  console.log(
+    `\nFiles: ${counts('create')} created, ${counts('reuse')} reused (identical), ${counts('replace')} replaced`
+  );
+  console.log(
+    plan.barrel.added.length > 0
+      ? `Barrel ${plan.barrel.path}: added ${plan.barrel.added.join(', ')}`
+      : `Barrel ${plan.barrel.path}: unchanged`
+  );
+
+  console.log(`\nImport in your component:`);
+  for (const name of plan.requested) {
+    console.log(`  import { ${classNameFor(name)} } from './ui/${name}';`);
+  }
+  if (base !== DEFAULT_BASE) {
+    console.log(`\n🧪 Headless base: ${base} (experimental).`);
+  }
+
+  if (flags.install) {
+    try {
+      installDependencies(process.cwd(), { dependencies: plan.runtimeDependencies });
+    } catch {
+      console.error(
+        `\n❌ The component files above were written, but installing runtime dependencies failed.\n` +
+          `   The copied files stay in place. Install the packages manually:\n` +
+          `     ${plan.installCommand}`
+      );
+      process.exit(1);
+    }
+    console.log(`\n✅ Runtime dependencies installed.`);
+  } else {
+    console.log(`\n⚠️  Ensure runtime dependencies are installed:`);
+    console.log(`  ${plan.installCommand}`);
+    console.log(`\n  Or run: ${addCommand(plan, ' --install')}`);
+  }
+}
+
 async function main() {
   const { args, flags } = parseArgs(process.argv.slice(2));
   const command = args[0];
@@ -89,84 +215,32 @@ async function main() {
   if (command === 'add') {
     if (args.length < 2) {
       console.error('❌ Please specify at least one component name.');
-      console.log('Usage: volt add <component-name>... [target-dir] [--install] [--dry-run] [--force]');
+      console.log(
+        'Usage: volt add <component-name>... [target-dir] [--install] [--dry-run] [--force]'
+      );
       process.exit(1);
     }
 
     const manifest = await loadManifest();
     const { componentNames, targetDir } = parseAddArgs(args, manifest);
     const { base, requested, recorded } = selectBase(flags, targetDir);
-
+    runAdd({ componentNames, targetDir, manifest, base, requested, recorded, flags });
+  } else if (command === 'init') {
+    const targetDir = args[1] || './src/app/ui';
+    const { base, requested, recorded } = selectBase(flags, targetDir);
+    let init;
     try {
-      // Checked for the whole request up front, so a mixed list writes nothing.
-      assertSupportedForBase(componentNames, manifest, base);
+      init = initProject(targetDir);
     } catch (err) {
       console.error(`❌ ${err.message}`);
       process.exit(1);
     }
-
-    const results = [];
-    for (const componentName of componentNames) {
-      const result = await copyComponent(componentName, targetDir, manifest, {
-        install: false, // install once at the end
-        dryRun: !!flags['dry-run'],
-        force: !!flags.force,
-        base,
-      });
-      results.push(result);
-    }
-
-    // An explicit --base is remembered, so later `volt add` calls keep the same engine.
-    if (requested && !recorded && !flags['dry-run']) writeConfig(requested);
-
-    if (flags.install) {
-      const { installDependencies } = require('../lib/core');
-      const dependencies = [...new Set(results.flatMap(r => r.runtimeDependencies))];
-      installDependencies(process.cwd(), { dryRun: !!flags['dry-run'], dependencies });
-    }
-
-    if (flags['dry-run']) {
-      console.log(`\n🔎 Dry run: ${results.length} component(s) would be added to ${targetDir}`);
-      for (const result of results) {
-        console.log(`  - ${result.componentName}`);
-        result.files.forEach(file => console.log(`    ${file}`));
-      }
-    } else {
-      console.log(`\n✅ Added ${results.length} component(s) successfully to ${targetDir}`);
-    }
-    for (const result of results) {
-      if (!flags['dry-run']) console.log(`  - ${result.componentName}`);
-    }
-
-    const allDependencies = [...new Set(results.flatMap(r => r.dependencies))];
-    if (allDependencies.length > 0) {
-      console.log(`\n📦 Required dependencies also copied:`);
-      allDependencies.forEach(dep => console.log(`  - ${dep}`));
-    }
-
-    console.log(`\nImport in your component:`);
-    for (const result of results) {
-      console.log(`  import { ${result.className} } from './ui/${result.componentName}';`);
-    }
-    if (base !== DEFAULT_BASE) {
-      console.log(`\n🧪 Headless base: ${base} (experimental).`);
-    }
-
-    if (flags.install) {
-      console.log(flags['dry-run'] ? `\n🔎 Runtime dependencies would be installed.` : `\n✅ Runtime dependencies installed.`);
-    } else {
-      const firstResult = results[0];
-      console.log(`\n⚠️  Ensure runtime dependencies are installed:`);
-      console.log(`  ${firstResult.installCommand}`);
-      console.log(
-        `\n  Or run: volt add ${componentNames.join(' ')} ${targetDir} --install${base !== DEFAULT_BASE ? ` --base=${base}` : ''}`
-      );
-    }
-  } else if (command === 'init') {
-    const targetDir = args[1] || './src/app/ui';
-    const { base, requested, recorded } = selectBase(flags, targetDir);
-    initProject(targetDir);
     console.log('✅ Initialized volt/ui in', targetDir);
+    console.log(
+      init.createdIndex
+        ? `   Created ${init.indexPath}`
+        : `   Kept the existing ${init.indexPath} unchanged`
+    );
     // Only an explicit --base writes volt.json: a project that never asks keeps the old behaviour.
     if (requested && !recorded) {
       writeConfig(requested);
@@ -226,7 +300,7 @@ async function main() {
     );
     console.log('  volt add <component>... [target-dir] --dry-run  Preview files without writing');
     console.log(
-      '  volt add <component>... [target-dir] --force    Overwrite existing component files'
+      '  volt add <component>... [target-dir] --force    Replace files that differ from the Volt UI source'
     );
     console.log(
       '  volt add <component>... --install     Add component(s) and install runtime deps'

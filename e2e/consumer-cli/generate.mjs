@@ -12,7 +12,7 @@
  * testing the fixture. Usage: node e2e/consumer-cli/generate.mjs
  */
 import { execFileSync } from 'node:child_process';
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -29,8 +29,12 @@ const componentNames = manifest.map(component => component.name).sort();
 
 console.log(`Regenerating consumer-cli fixture with ${componentNames.length} component(s)...`);
 
+// `volt init` keeps an existing barrel, so a stale one from an earlier run (exporting a component
+// that no longer exists) would survive. The directory is generated output: start from scratch.
+rmSync(TARGET_DIR, { recursive: true, force: true });
 execFileSync('node', [CLI_BIN, 'init', TARGET_DIR], { cwd: REPO_ROOT, stdio: 'inherit' });
-execFileSync('node', [CLI_BIN, 'add', ...componentNames, TARGET_DIR, '--force'], {
+// The whole catalog in one operation, without --force: shared dependencies are planned once.
+execFileSync('node', [CLI_BIN, 'add', ...componentNames, TARGET_DIR], {
   cwd: REPO_ROOT,
   stdio: 'inherit',
 });

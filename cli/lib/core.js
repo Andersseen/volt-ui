@@ -288,36 +288,6 @@ function detectSharedFileDependencies(componentNames, manifest, base = DEFAULT_B
   return Array.from(shared);
 }
 
-// Shared files are reused across multiple `add` calls (e.g. `add button` then
-// `add badge` both need utils.ts), so they're idempotent: skip silently if already
-// present rather than requiring --force like a normal component file would.
-function copySharedFileIfNeeded(sharedFile, targetDir, options = {}) {
-  const { componentsRoot } = resolveRegistryPaths();
-  const sourcePath = path.join(componentsRoot, sharedFile);
-  const targetPath = path.join(targetDir, sharedFile);
-
-  if (options.dryRun) {
-    return targetPath;
-  }
-
-  if (fs.existsSync(targetPath) && !options.force) {
-    return targetPath;
-  }
-
-  if (!fs.existsSync(sourcePath)) {
-    throw new Error(`Source file not found: ${sourcePath}`);
-  }
-
-  if (!fs.existsSync(targetDir)) {
-    fs.mkdirSync(targetDir, { recursive: true });
-  }
-
-  // Shared files go through the same transform as components: one that declares a directive
-  // (aria-invalid.ts) must be renamed to match the `ui*` identifiers its callers are rewritten to.
-  fs.writeFileSync(targetPath, transformContent(fs.readFileSync(sourcePath, 'utf-8')));
-  return targetPath;
-}
-
 // ---------------------------------------------------------------------------
 // Component copy logic
 // ---------------------------------------------------------------------------
@@ -379,59 +349,6 @@ function groupComponents(components) {
   }, {});
 }
 
-function getComponentFiles(componentName, targetDir, manifest, base = DEFAULT_BASE) {
-  const { componentsRoot } = resolveRegistryPaths();
-  const component = findComponentInManifest(componentName, manifest);
-  if (!component) {
-    throw new Error(`Component "${componentName}" not found in manifest.`);
-  }
-
-  const componentDir = path.join(targetDir, componentName);
-  return filesFor(component, base).map(file => {
-    const sourcePath = path.join(componentsRoot, file);
-    const fileName = path.basename(file);
-    const targetPath = path.join(componentDir, fileName);
-
-    if (!fs.existsSync(sourcePath)) {
-      throw new Error(`Source file not found: ${sourcePath}`);
-    }
-
-    return { sourcePath, targetPath, componentDir };
-  });
-}
-
-function assertCanWriteFiles(files, options = {}) {
-  if (options.force) return;
-
-  const existing = files.filter(file => fs.existsSync(file.targetPath));
-  if (existing.length === 0) return;
-
-  const formatted = existing.map(file => `  - ${file.targetPath}`).join('\n');
-  throw new Error(
-    `Refusing to overwrite existing file(s):\n${formatted}\n\nPass --force to overwrite, or choose a different target-dir.`
-  );
-}
-
-function copySingleComponent(componentName, targetDir, manifest, options = {}) {
-  const files = getComponentFiles(componentName, targetDir, manifest, options.base);
-
-  if (options.dryRun) {
-    return files.map(file => file.targetPath);
-  }
-
-  for (const { sourcePath, targetPath, componentDir } of files) {
-    if (!fs.existsSync(componentDir)) {
-      fs.mkdirSync(componentDir, { recursive: true });
-    }
-
-    const content = fs.readFileSync(sourcePath, 'utf-8');
-    const transformed = transformContent(content);
-    fs.writeFileSync(targetPath, transformed);
-  }
-
-  return files.map(file => file.targetPath);
-}
-
 /**
  * Packages a set of copied files needs at runtime. The default base keeps the historical fixed list;
  * another base installs only what its copied source imports, plus the backend's own packages.
@@ -471,117 +388,105 @@ function installDependencies(targetDir, options = {}) {
   }
 }
 
-function updateIndexFile(targetDir, addedComponents, options = {}) {
-  const indexPath = path.join(targetDir, 'index.ts');
-  let content = '';
-
-  if (fs.existsSync(indexPath)) {
-    content = fs.readFileSync(indexPath, 'utf-8');
-  }
-
-  const exports = addedComponents
-    .map(name => `export * from './${name}';`)
-    .filter(line => !content.includes(line));
-
-  if (exports.length === 0) return;
-
-  const updated = content.replace(/export \{\};\n?/, '').trimEnd();
-  const newContent = updated ? `${updated}\n${exports.join('\n')}\n` : `${exports.join('\n')}\n`;
-  if (options.dryRun) return;
-
-  if (!fs.existsSync(targetDir)) {
-    fs.mkdirSync(targetDir, { recursive: true });
-  }
-
-  fs.writeFileSync(indexPath, newContent);
+function classNameFor(componentName) {
+  return `Ui${capitalize(componentName.replace(/-/g, ' ')).replace(/\s/g, '')}`;
 }
 
+/**
+ * Copies one component (and what it depends on) through the same plan `volt add` uses. Kept for
+ * programmatic callers; the CLI plans every requested component together instead.
+ */
 function copyComponent(componentName, targetDir, manifest, options = {}) {
-  const component = findComponentInManifest(componentName, manifest);
+  // Required lazily: add-plan.js builds on this module.
+  const { planAdd, assertNoConflicts } = require('./add-plan');
+  const { applyPlan } = require('./apply-plan');
   const base = options.base || DEFAULT_BASE;
 
-  if (!component) {
-    throw new Error(
-      `Component "${componentName}" not found. Run "volt list" to see available components.`
-    );
-  }
-
-  const dependencies = Array.from(
-    collectDependencies(componentName, manifest, new Set(), base)
-  ).filter(name => name !== componentName);
-  const componentNames = [componentName, ...dependencies];
-  assertSupportedForBase(componentNames, manifest, base);
-  const plannedFiles = componentNames.flatMap(name =>
-    getComponentFiles(name, targetDir, manifest, base)
-  );
-
-  assertCanWriteFiles(plannedFiles, options);
-
-  const sharedFiles = detectSharedFileDependencies(componentNames, manifest, base);
-
+  const plan = planAdd({
+    componentNames: [componentName],
+    targetDir,
+    manifest,
+    base,
+    force: !!options.force,
+  });
   if (!options.dryRun) {
-    copySingleComponent(componentName, targetDir, manifest, { ...options, base });
-    for (const dep of dependencies) {
-      copySingleComponent(dep, targetDir, manifest, { ...options, base });
-    }
-    for (const sharedFile of sharedFiles) {
-      copySharedFileIfNeeded(sharedFile, targetDir, options);
-    }
+    assertNoConflicts(plan);
+    applyPlan(plan);
   }
-
-  updateIndexFile(targetDir, componentNames, options);
-
-  const packageManager = detectPackageManager(process.cwd());
-  const { componentsRoot } = resolveRegistryPaths();
-  const copiedSources = [
-    ...plannedFiles.map(f => f.sourcePath),
-    ...sharedFiles.map(f => path.join(componentsRoot, f)),
-  ]
-    .filter(file => fs.existsSync(file))
-    .map(file => fs.readFileSync(file, 'utf-8'));
-  const runtimeDependencies = runtimeDependenciesFor(base, manifest, copiedSources);
-  const installCmd = `${installCommand(packageManager)} ${runtimeDependencies.join(' ')}`;
 
   let installResult = null;
   if (options.install) {
     installResult = installDependencies(process.cwd(), {
       dryRun: options.dryRun,
-      dependencies: runtimeDependencies,
+      dependencies: plan.runtimeDependencies,
     });
   }
 
   return {
     componentName,
-    className: `Ui${capitalize(componentName.replace(/-/g, ' ')).replace(/\s/g, '')}`,
+    className: classNameFor(componentName),
     targetDir,
-    dependencies,
-    files: [
-      ...plannedFiles.map(file => file.targetPath),
-      ...sharedFiles.map(sharedFile => path.join(targetDir, sharedFile)),
-    ],
-    sharedFiles,
+    dependencies: plan.dependencies,
+    files: plan.files.map(file => file.targetPath),
+    sharedFiles: plan.sharedFiles,
     base,
-    runtimeDependencies,
+    runtimeDependencies: plan.runtimeDependencies,
     dryRun: !!options.dryRun,
     force: !!options.force,
-    installCommand: installCmd,
+    installCommand: plan.installCommand,
     installResult,
+    plan,
   };
 }
 
+function describeFsError(err, target) {
+  if (err && (err.code === 'EACCES' || err.code === 'EPERM' || err.code === 'EROFS')) {
+    return `Cannot write ${target}: permission denied. Check the directory's permissions, or choose another target-dir.`;
+  }
+  return `Cannot write ${target}: ${err.message}`;
+}
+
+/**
+ * Prepares a target directory. Idempotent: a missing directory is created, a missing `index.ts`
+ * gets the initial barrel, and an existing `index.ts` is never read for rewriting or replaced —
+ * whatever the consumer keeps there (comments, imports, custom exports) stays byte for byte.
+ */
 function initProject(targetDir) {
-  if (!fs.existsSync(targetDir)) {
-    fs.mkdirSync(targetDir, { recursive: true });
+  const { INITIAL_BARREL } = require('./barrel');
+  const indexPath = path.join(targetDir, 'index.ts');
+
+  let createdDirectory = false;
+  if (fs.existsSync(targetDir)) {
+    if (!fs.statSync(targetDir).isDirectory()) {
+      throw new Error(`${targetDir} exists and is not a directory. Choose a different target-dir.`);
+    }
+  } else {
+    try {
+      fs.mkdirSync(targetDir, { recursive: true });
+    } catch (err) {
+      throw new Error(describeFsError(err, targetDir));
+    }
+    createdDirectory = true;
   }
 
-  const indexPath = path.join(targetDir, 'index.ts');
-  const indexContent = `// UI Components
-// Generated by volt CLI
+  if (fs.existsSync(indexPath)) {
+    if (!fs.statSync(indexPath).isFile()) {
+      throw new Error(
+        `${indexPath} exists and is not a file. Move it away or choose another target-dir.`
+      );
+    }
+    return { targetDir, indexPath, createdDirectory, createdIndex: false };
+  }
 
-export {};
-`;
-  fs.writeFileSync(indexPath, indexContent);
-  return targetDir;
+  try {
+    // `wx`: never replace a barrel that appeared since the check above.
+    fs.writeFileSync(indexPath, INITIAL_BARREL, { flag: 'wx' });
+  } catch (err) {
+    if (err.code === 'EEXIST')
+      return { targetDir, indexPath, createdDirectory, createdIndex: false };
+    throw new Error(describeFsError(err, indexPath));
+  }
+  return { targetDir, indexPath, createdDirectory, createdIndex: true };
 }
 
 // ---------------------------------------------------------------------------
@@ -646,6 +551,10 @@ function formatTailwindGuidance(tailwind) {
 module.exports = {
   BASES,
   DEFAULT_BASE,
+  resolveRegistryPaths,
+  collectDependencies,
+  filesFor,
+  classNameFor,
   CONFIG_FILE,
   validateBase,
   readConfig,
