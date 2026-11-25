@@ -23,7 +23,7 @@ import { injectAppI18n } from '@shared/i18n/i18n';
         </p>
       </div>
       <div class="w-full h-px bg-border"></div>
-      <app-code-panel [title]="t('ui.codePanel.usage')" [code]="usage" [tabbed]="true">
+      <app-code-panel distribution [title]="t('ui.codePanel.usage')" [code]="usage" [tabbed]="true">
         <div class="p-8 border border-border rounded-lg bg-card/30 flex justify-center">
           <div class="w-full max-w-md space-y-3">
             <volt-textarea [(value)]="message" [rows]="4" />

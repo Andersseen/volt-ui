@@ -632,7 +632,10 @@
       "directiveSource": "Código de la directiva",
       "usage": "Uso",
       "copyNote": "Copia este código en tu proyecto.",
-      "copyNoteDep": "Copia este código en tu proyecto. El componente usa {$dep}."
+      "copyNoteDep": "Copia este código en tu proyecto. El componente usa {$dep}.",
+      "modeLabel": "Cómo usas Volt UI",
+      "modePackage": "Paquete npm",
+      "modeCopy": "Copia con la CLI"
     },
     "api": {
       "input": "Entrada",

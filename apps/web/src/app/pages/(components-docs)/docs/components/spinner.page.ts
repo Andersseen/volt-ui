@@ -24,7 +24,7 @@ import { injectAppI18n } from '@shared/i18n/i18n';
         </p>
       </div>
 
-      <app-code-panel [title]="t('ui.codePanel.usage')" [code]="usage" [tabbed]="true">
+      <app-code-panel distribution [title]="t('ui.codePanel.usage')" [code]="usage" [tabbed]="true">
         <div
           class="flex flex-col items-center gap-8 p-6 md:p-10 border border-border/50 rounded-xl bg-background/50"
         >

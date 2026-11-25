@@ -21,7 +21,7 @@ import { injectAppI18n } from '@shared/i18n/i18n';
         <p class="text-base text-muted-foreground mt-2">{{ t('components.toast.description') }}</p>
       </div>
       <div class="w-full h-px bg-border"></div>
-      <app-code-panel [title]="t('ui.codePanel.usage')" [code]="usage" [tabbed]="true">
+      <app-code-panel distribution [title]="t('ui.codePanel.usage')" [code]="usage" [tabbed]="true">
         <div
           class="p-8 border border-border rounded-lg bg-card/30 flex flex-wrap items-center justify-center gap-3"
         >

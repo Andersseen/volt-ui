@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
+import { By } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
 import { render, screen } from '@testing-library/angular';
-import { describe, expect, it } from 'vitest';
+import userEvent from '@testing-library/user-event';
+import { describe, expect, it, vi } from 'vitest';
+import { CodeEditor } from '@shared/components/code-editor';
+import { HERO_SPOTLIGHT_BLOCK } from '../lib/snippets/blocks';
 import en from '@shared/i18n/__fixtures__/en.json';
 import { BlockShowcase } from './block-showcase';
 import { blockBySlug } from '../lib/blocks-metadata';
@@ -79,5 +83,26 @@ describe('BlockShowcase with sibling files', () => {
     expect(screen.getByRole('heading', { name: 'contact-map.data.ts' })).toBeInTheDocument();
     // Source, install command, and the data file: each copyable on its own.
     expect(screen.getAllByRole('button', { name: /copy/i })).toHaveLength(3);
+  });
+
+  it('copies exactly the complete block it shows, in the package a consumer installs', async () => {
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText } });
+    @Component({
+      imports: [BlockShowcase],
+      template: `<app-block-showcase [block]="block" [code]="code" />`,
+    })
+    class RealBlock {
+      readonly block = blockBySlug('hero');
+      readonly code = HERO_SPOTLIGHT_BLOCK;
+    }
+    const { fixture, container } = await render(RealBlock, { providers: [provideRouter([])] });
+    const shown = fixture.debugElement.query(By.directive(CodeEditor)).componentInstance.code();
+
+    await userEvent.click(container.querySelector('app-copy-button button') as HTMLElement);
+
+    expect(writeText).toHaveBeenCalledWith(shown);
+    expect(shown).toContain("from '@voltui/components'");
+    expect(shown).not.toMatch(/from\s+['"]volt['"]/);
   });
 });

@@ -4,7 +4,12 @@
     <p class="text-lg text-muted-foreground mt-2">{{ t('components.switch.description') }}</p>
   </div>
 
-  <app-code-panel [title]="t('ui.codePanel.usage')" [code]="switchUsage" [tabbed]="true">
+  <app-code-panel
+    distribution
+    [title]="t('ui.codePanel.usage')"
+    [code]="switchUsage"
+    [tabbed]="true"
+  >
     <div
       class="border rounded-xl border-border/50 p-6 md:p-10 flex flex-col items-center justify-center bg-background/50 relative overflow-hidden min-h-[300px]"
     >

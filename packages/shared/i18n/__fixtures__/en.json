@@ -632,7 +632,10 @@
       "directiveSource": "Directive Source",
       "usage": "Usage",
       "copyNote": "Copy this code to your project.",
-      "copyNoteDep": "Copy this code to your project. The component uses {$dep}."
+      "copyNoteDep": "Copy this code to your project. The component uses {$dep}.",
+      "modeLabel": "How you use Volt UI",
+      "modePackage": "npm package",
+      "modeCopy": "CLI copy"
     },
     "api": {
       "input": "Input",

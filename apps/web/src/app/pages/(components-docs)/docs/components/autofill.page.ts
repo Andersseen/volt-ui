@@ -18,7 +18,12 @@ import { injectAppI18n } from '@shared/i18n/i18n';
         <p class="mt-2 text-muted-foreground">{{ t('components.autofill.description') }}</p>
       </div>
 
-      <app-code-panel [title]="t('ui.codePanel.usage')" [code]="usageCode" [tabbed]="true">
+      <app-code-panel
+        distribution
+        [title]="t('ui.codePanel.usage')"
+        [code]="usageCode"
+        [tabbed]="true"
+      >
         <div class="max-w-md space-y-2">
           <input
             voltAutofill
