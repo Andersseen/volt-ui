@@ -514,16 +514,21 @@ describe('CLI Core', () => {
       expect(indexContent).toContain("export * from './badge';");
     });
 
-    it('should fail when adding over an existing component unless --force is passed', () => {
+    it('should fail when adding over an edited component unless --force is passed', () => {
       execSync(`node ${cliPath} init ${testDir}`, { cwd: repoRoot, stdio: 'pipe' });
       execSync(`node ${cliPath} add button ${testDir}`, { cwd: repoRoot, stdio: 'pipe' });
+      // Re-adding an untouched copy reuses it (see integrity.spec.js); an edited one is protected.
+      writeFileSync(join(testDir, 'button', 'button.ts'), '// edited\n');
 
       expect(() =>
         execSync(`node ${cliPath} add button ${testDir}`, { cwd: repoRoot, stdio: 'pipe' })
       ).toThrow();
+      expect(readFileSync(join(testDir, 'button', 'button.ts'), 'utf-8')).toBe('// edited\n');
 
       execSync(`node ${cliPath} add button ${testDir} --force`, { cwd: repoRoot, stdio: 'pipe' });
-      expect(existsSync(join(testDir, 'button', 'button.ts'))).toBe(true);
+      expect(readFileSync(join(testDir, 'button', 'button.ts'), 'utf-8')).toContain(
+        'class UiButton'
+      );
     });
 
     it('should print a dry-run plan without creating files', () => {
