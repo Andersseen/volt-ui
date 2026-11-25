@@ -7,6 +7,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### CLI integrity (`@voltui/cli`)
+
+Fixes, no new commands or flags. Command names, the positional `target-dir`, `--force`, `--dry-run`,
+`--install`, `--base` and `volt.json` behave as before, except where noted.
+
+- **`volt init` no longer replaces an existing `index.ts`.** It always rewrote the barrel, so re-running
+  init in a project deleted its exports, imports and comments. A missing directory or barrel is still
+  created; an existing barrel is kept byte for byte, and repeated init changes nothing. A target that
+  is not writable gets a readable message instead of a stack trace.
+- **`volt add` plans the whole request as one operation.** `add tooltip sidebar` copied Tooltip first and
+  then refused Sidebar because its dependency (Tooltip) now existed, leaving half an install. Components,
+  their transitive dependencies, shared helpers and the barrel change are now resolved and deduplicated
+  once, in either order.
+- **Identical files are reused; edited files are protected.** A file identical to the Volt UI source is
+  left untouched instead of being a conflict, so re-adding an untouched component no longer needs
+  `--force`. A component file _or a shared helper_ (`utils.ts`, `form-control-state.ts`, …) that differs
+  is a conflict naming the path; previously an edited shared helper was skipped silently and left stale.
+  `--force` still replaces them explicitly.
+- **Nothing is written unless the whole request is valid.** A conflict in a later component, an unknown
+  name, a missing source or an unsupported base now stops the command before the first write. If a write
+  fails, the files this command replaced are restored and the ones it created are removed.
+- **The barrel only grows.** Missing exports are appended; an export already present in any quote style
+  is not duplicated, and comments, imports and custom code stay as they were.
+- **`--dry-run` prints the real plan**: requested components, dependencies, shared files, each file's
+  create/reuse/replace/conflict, and the barrel exports to add. It reports conflicts (exit status 1)
+  instead of listing files the real run would refuse, and still writes nothing.
+- **A failed `--install` says what was done.** The copied files stay in place and the CLI prints the
+  install command to run by hand.
+
 ### Interaction reliability: nested composites
 
 Fixes, no new API. Selectors, inputs, outputs and value shapes are unchanged.

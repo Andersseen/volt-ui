@@ -151,7 +151,7 @@ export class ExampleComponent {}
 - Copies from `packages/volt/src/lib` into `src/app/ui` by default.
 - Transforms `Volt*` → `Ui*` and `volt-*` → `ui-*`.
 - Detects and copies local component dependencies automatically.
-- Refuses to overwrite existing files unless `--force` is passed.
+- Reuses files identical to the Volt UI source and refuses to overwrite edited ones unless `--force` is passed; the whole request is validated before the first write.
 - `--dry-run` previews files before writing.
 - `[target-dir]` sets an alternate destination.
 - `--install` installs the required runtime dependencies.

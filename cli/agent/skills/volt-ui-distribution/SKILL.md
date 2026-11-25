@@ -60,8 +60,8 @@ npx @voltui/cli add dialog ./src/app/shared/ui --dry-run
 ```
 
 The CLI copies source from the library, applies the `volt-` → `ui-` transform, and you own the
-result: edit it freely, but a later `add` of the same component can overwrite your edits — review the
-diff. Install the runtime dependencies once (`ng-primitives class-variance-authority clsx
+result: edit it freely. A later `add` reuses untouched files and refuses to overwrite edited ones
+unless you pass `--force` — review the diff first. Install the runtime dependencies once (`ng-primitives class-variance-authority clsx
 tailwind-merge`). Blocks, Layouts and Recipes from the docs site are copied the same way and import
 the atoms from the project's mode.
 
