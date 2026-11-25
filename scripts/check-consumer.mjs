@@ -563,3 +563,6 @@ finished = true;
 console.log(
   `\n✔ Angular ${report.angular.installed}: packed tarballs install, the installed CLI copies, both modes build strictly with SSR and hydration, examples compile, isolation holds, browsers pass.\n  Report: dist/consumer-report.json`
 );
+// The static servers are child processes that keep Node's event loop alive: exit explicitly (the
+// exit handler stops them and removes the temp project), or the run never ends.
+process.exit(0);
