@@ -14,6 +14,15 @@ const fs = require('fs');
 const path = require('path');
 const core = require('./core');
 const { addBarrelExports, INITIAL_BARREL } = require('./barrel');
+const { resolveProject } = require('./project');
+const {
+  requiredDependencies,
+  assessDependencies,
+  manualInstall,
+  installInvocation,
+  displayInvocation,
+  specOf,
+} = require('./dependencies');
 
 class PlanError extends Error {
   constructor(message, code) {
@@ -67,7 +76,14 @@ function inspectTarget(targetPath, expected, force) {
  * throw here — they are part of the plan, so `--dry-run` can report them; `assertNoConflicts`
  * turns them into an error before a real write.
  */
-function planAdd({ componentNames, targetDir, manifest, base = core.DEFAULT_BASE, force = false }) {
+function planAdd({
+  componentNames,
+  targetDir,
+  manifest,
+  base = core.DEFAULT_BASE,
+  force = false,
+  project: projectOption = null,
+}) {
   const requested = unique(componentNames);
   if (requested.length === 0) {
     throw new PlanError('Please specify at least one component name.', 'NO_COMPONENTS');
@@ -194,12 +210,21 @@ function planAdd({ componentNames, targetDir, manifest, base = core.DEFAULT_BASE
     action: before === null ? 'create' : added.length > 0 ? 'update' : 'unchanged',
   };
 
-  const runtimeDependencies = core.runtimeDependenciesFor(
-    base,
+  // What the copied files import, compared with the consumer package the destination belongs to.
+  const project = projectOption || resolveProject({ cwd: process.cwd(), destination: targetDir });
+  const required = requiredDependencies({
+    sources: [...byTarget.values()].map(entry => fs.readFileSync(entry.sourcePath, 'utf-8')),
     manifest,
-    [...byTarget.values()].map(entry => fs.readFileSync(entry.sourcePath, 'utf-8'))
-  );
-  const packageManager = core.detectPackageManager(process.cwd());
+    base,
+    defaultBase: core.DEFAULT_BASE,
+  });
+  const assessment = assessDependencies(project, required);
+  const runtimeDependencies = required.packages.map(specOf);
+  const missingInstall = manualInstall(project, assessment);
+  const everything =
+    project.packageDir && project.manager.name
+      ? installInvocation(project, runtimeDependencies)
+      : null;
 
   return {
     targetDir,
@@ -213,7 +238,14 @@ function planAdd({ componentNames, targetDir, manifest, base = core.DEFAULT_BASE
     barrel,
     conflicts: files.filter(file => file.action === 'conflict'),
     runtimeDependencies,
-    installCommand: `${core.installCommand(packageManager)} ${runtimeDependencies.join(' ')}`,
+    project,
+    required,
+    assessment,
+    // The command for what is actually missing (null when nothing is), and the full one.
+    installInvocation: missingInstall,
+    installCommand: everything
+      ? displayInvocation(missingInstall || everything, project.cwd)
+      : `npm install ${runtimeDependencies.join(' ')}`,
   };
 }
 

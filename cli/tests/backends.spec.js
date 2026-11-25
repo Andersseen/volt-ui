@@ -50,7 +50,11 @@ describe('headless bases', () => {
   let project;
   beforeEach(() => {
     project = mkdtempSync(join(tmpdir(), 'volt-base-'));
-    writeFileSync(join(project, 'package.json'), '{"name":"app"}');
+    // An Angular application (declared, not installed: --install --dry-run must not need node_modules).
+    writeFileSync(
+      join(project, 'package.json'),
+      JSON.stringify({ name: 'app', dependencies: { '@angular/core': '^22.0.0' } })
+    );
   });
   afterEach(() => rmSync(project, { recursive: true, force: true }));
 

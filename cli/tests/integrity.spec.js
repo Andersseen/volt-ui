@@ -73,7 +73,10 @@ describe('CLI integrity', () => {
 
   beforeEach(() => {
     project = mkdtempSync(join(tmpdir(), 'volt-integrity-'));
-    writeFileSync(join(project, 'package.json'), '{"name":"consumer"}');
+    writeFileSync(
+      join(project, 'package.json'),
+      JSON.stringify({ name: 'consumer', dependencies: { '@angular/core': '^22.0.0' } })
+    );
     ui = join(project, 'src/app/ui');
   });
 

@@ -41,6 +41,7 @@ const CONFIG_FILE = 'volt.json';
 // Bare module specifiers a copied file may import, mapped to the package to install. Which of them
 // a backend needs is read from the files actually copied, so a Quartz-only project is never told to
 // install ng-primitives.
+// Kept for programmatic callers; the CLI derives packages from the copied files' imports.
 const KNOWN_PACKAGES = [
   'ng-primitives',
   'class-variance-authority',
@@ -131,22 +132,7 @@ function targetUsesNgPrimitives(targetDir) {
   return false;
 }
 
-// Files living directly in packages/volt/src/lib (not under components/ or layouts/)
-// that some components import via a relative path, e.g. `from '../../utils'`. The
-// manifest's dependency detector only resolves components/layouts imports, so these are
-// tracked and copied separately, flat into the target dir (sibling to each component's
-// own subfolder), since that's what the rewritten `../utils` import path expects.
-const SHARED_LIB_FILES = [
-  'utils.ts',
-  'form-control-state.ts',
-  'host-forwarding.ts',
-  'aria-invalid.ts',
-  'volt-ids.ts',
-  'mirror-value.ts',
-  'roving-focus.ts',
-  'quartz-ids.ts',
-  'quartz-attributes.ts',
-];
+const { SHARED_LIB_FILES } = require('./shared-files');
 
 // ---------------------------------------------------------------------------
 // Package manager detection
@@ -350,25 +336,19 @@ function groupComponents(components) {
 }
 
 /**
- * Packages a set of copied files needs at runtime. The default base keeps the historical fixed list;
- * another base installs only what its copied source imports, plus the backend's own packages.
+ * Packages (`name@range`) a set of copied files needs at runtime, derived from their imports with the
+ * ranges the manifest records from packages/volt/package.json. Called without sources for the
+ * default base, it returns the historical fixed list (kept for programmatic callers).
  */
 function runtimeDependenciesFor(base, manifest, copiedSources = []) {
-  if (base === DEFAULT_BASE) return RUNTIME_DEPENDENCIES;
-  const ranges = Object.fromEntries(
-    ((manifest.backends && manifest.backends[base] && manifest.backends[base].packages) || []).map(
-      spec => [spec.slice(0, spec.lastIndexOf('@')), spec]
-    )
-  );
-  const used = new Set();
-  for (const source of copiedSources) {
-    for (const pkg of KNOWN_PACKAGES) {
-      if (new RegExp(`from\\s+['"]${pkg}(/[^'"]*)?['"]`).test(source)) used.add(pkg);
-    }
-  }
-  // Quartz's primitives need its core at the same range, whether or not the source names it.
-  for (const pkg of Object.keys(ranges)) used.add(pkg);
-  return KNOWN_PACKAGES.filter(pkg => used.has(pkg)).map(pkg => ranges[pkg] || pkg);
+  if (base === DEFAULT_BASE && copiedSources.length === 0) return RUNTIME_DEPENDENCIES;
+  const { requiredDependencies, specOf } = require('./dependencies');
+  return requiredDependencies({
+    sources: copiedSources,
+    manifest,
+    base,
+    defaultBase: DEFAULT_BASE,
+  }).packages.map(specOf);
 }
 
 function installDependencies(targetDir, options = {}) {

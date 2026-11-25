@@ -109,8 +109,10 @@ describe('CLI Core', () => {
       expect(manifest.components.button.files).toContain('components/button/index.ts');
       expect(manifest.components.button.files).toContain('components/button/variants.ts');
       expect(manifest.components.button.stability).toBe('stable');
-      expect(manifest.components.button.group).toBe('Forms');
-      expect(manifest.components.button.description).toBe('Interactive buttons');
+      // Label, group and description come from the Storybook guide, not a table in the generator.
+      expect(manifest.components.button.group).toBe('Forms & Inputs');
+      expect(manifest.components.button.label).toBe('Button');
+      expect(manifest.components.button.description).toBe('Triggers an action or navigates.');
     });
 
     it('should contain tabs component', () => {
@@ -142,7 +144,7 @@ describe('CLI Core', () => {
       expect(components).toContainEqual(
         expect.objectContaining({
           name: 'button',
-          group: 'Forms',
+          group: 'Forms & Inputs',
           stability: 'stable',
         })
       );
@@ -161,7 +163,7 @@ describe('CLI Core', () => {
       const manifest = core.getLocalManifest();
       const groups = core.groupComponents(core.listComponents(manifest));
 
-      expect(groups.Forms.map(component => component.name)).toContain('button');
+      expect(groups['Forms & Inputs'].map(component => component.name)).toContain('button');
       expect(groups.Overlays.map(component => component.name)).toContain('dialog');
     });
   });
@@ -553,7 +555,7 @@ describe('CLI Core', () => {
       expect(output).toContain('Available stable components');
       expect(output).toContain('Forms');
       expect(output).toContain('button');
-      expect(output).toContain('Interactive buttons');
+      expect(output).toContain('Triggers an action or navigates.');
       // Dialog is a 1.0 component; spinner (1.1) was promoted, so both are listed.
       expect(output).toContain('dialog');
       expect(output).toContain('spinner');
