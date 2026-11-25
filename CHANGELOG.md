@@ -34,6 +34,9 @@ Additive. The v1 positional `target-dir`, every command and the default destinat
 
 ### Components (`@voltui/components`, patch)
 
+- `ng-primitives` dependency moves to `^0.132.0` (was `^0.131.4`; 0.x carets are minor-locked, and
+  0.132 is the version now built and tested). Since 0.132 every toast placement gets its live region
+  in the page up front, so the first toast is announced; Volt's toast contract is unchanged.
 - Number inputs that use `numberAttribute` accept attribute strings in strict templates
   (`input<number, unknown>`): `<volt-textarea rows="4">`, `max="10"` on Slider, Range Slider, Meter
   and Progress, `length` on Input OTP and `pageCount` on Pagination failed to compile in consumer apps.
