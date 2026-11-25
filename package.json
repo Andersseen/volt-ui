@@ -135,7 +135,7 @@
     "ng-primitives": "0.131.4",
     "prismjs": "^1.30.0",
     "rxjs": "~7.8.0",
-    "tailwind-merge": "^3.7.0",
+    "tailwind-merge": "^3.7.1",
     "tailwindcss": "^4.3.5",
     "tslib": "^2.9.1",
     "zod": "^4.6.7"
