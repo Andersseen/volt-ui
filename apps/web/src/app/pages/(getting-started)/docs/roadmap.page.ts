@@ -77,9 +77,19 @@ interface RoadmapItem {
 
       <!-- Why this order -->
       <div class="space-y-4">
-        <h2 class="text-xl font-semibold tracking-tight">{{ t('guide.roadmapPage.whyTitle') }}</h2>
-        <p class="text-muted-foreground">{{ t('guide.roadmapPage.whyBody') }}</p>
-        <p class="text-muted-foreground">{{ t('guide.roadmapPage.whyOrder') }}</p>
+        <h2 class="text-xl font-semibold tracking-tight">
+          {{ t('guide.roadmapPage.v2.whyTitle') }}
+        </h2>
+        <p class="text-muted-foreground">{{ t('guide.roadmapPage.v2.whyBody') }}</p>
+        <p class="text-muted-foreground">{{ t('guide.roadmapPage.v2.whyOrder') }}</p>
+      </div>
+
+      <!-- Earlier items, deferred: said here rather than quietly dropped -->
+      <div class="space-y-2">
+        <h2 class="text-xl font-semibold tracking-tight">
+          {{ t('guide.roadmapPage.v2.deferredTitle') }}
+        </h2>
+        <p class="text-muted-foreground">{{ t('guide.roadmapPage.v2.deferredBody') }}</p>
       </div>
 
       <!-- What is not changing -->
@@ -101,7 +111,7 @@ interface RoadmapItem {
           <div class="p-4 rounded-lg border border-border bg-muted/30">
             <h3 class="font-medium">{{ t('guide.roadmapPage.themingTitle') }}</h3>
             <p class="text-sm text-muted-foreground mt-1">
-              {{ t('guide.roadmapPage.themingBody') }}
+              {{ t('guide.roadmapPage.v2.themingBody') }}
             </p>
           </div>
         </div>
@@ -119,42 +129,43 @@ export default class RoadmapPage {
   protected readonly t = this.translations.t;
   protected readonly path = this.translations.path;
 
+  // The post-1.0 sequence of specs/v2 (plans 01–05). The headless layer and the Tailwind-free
+  // distribution of the 1.0 roadmap are deferred (specs/v2/SDD.md D01, D02) and said so below.
   readonly items: RoadmapItem[] = [
     {
       order: 1,
-      titleKey: 'guide.roadmapPage.items.headless.title',
+      titleKey: 'guide.roadmapPage.v2.items.trust.title',
       scope: 'Library',
-      status: 'Planned',
-      summaryKey: 'guide.roadmapPage.items.headless.summary',
+      status: 'Next',
+      summaryKey: 'guide.roadmapPage.v2.items.trust.summary',
       detailKeys: [
-        'guide.roadmapPage.items.headless.details.d1',
-        'guide.roadmapPage.items.headless.details.d2',
-        'guide.roadmapPage.items.headless.details.d3',
-        'guide.roadmapPage.items.headless.details.d4',
+        'guide.roadmapPage.v2.items.trust.details.d1',
+        'guide.roadmapPage.v2.items.trust.details.d2',
+        'guide.roadmapPage.v2.items.trust.details.d3',
       ],
     },
     {
       order: 2,
-      titleKey: 'guide.roadmapPage.items.distributions.title',
+      titleKey: 'guide.roadmapPage.v2.items.composition.title',
       scope: 'Library',
       status: 'Planned',
-      summaryKey: 'guide.roadmapPage.items.distributions.summary',
+      summaryKey: 'guide.roadmapPage.v2.items.composition.summary',
       detailKeys: [
-        'guide.roadmapPage.items.distributions.details.d1',
-        'guide.roadmapPage.items.distributions.details.d2',
-        'guide.roadmapPage.items.distributions.details.d3',
+        'guide.roadmapPage.v2.items.composition.details.d1',
+        'guide.roadmapPage.v2.items.composition.details.d2',
+        'guide.roadmapPage.v2.items.composition.details.d3',
       ],
     },
     {
       order: 3,
-      titleKey: 'guide.roadmapPage.items.layouts.title',
+      titleKey: 'guide.roadmapPage.v2.items.updates.title',
       scope: 'Library',
-      status: 'Exploring',
-      summaryKey: 'guide.roadmapPage.items.layouts.summary',
+      status: 'Planned',
+      summaryKey: 'guide.roadmapPage.v2.items.updates.summary',
       detailKeys: [
-        'guide.roadmapPage.items.layouts.details.d1',
-        'guide.roadmapPage.items.layouts.details.d2',
-        'guide.roadmapPage.items.layouts.details.d3',
+        'guide.roadmapPage.v2.items.updates.details.d1',
+        'guide.roadmapPage.v2.items.updates.details.d2',
+        'guide.roadmapPage.v2.items.updates.details.d3',
       ],
     },
   ];

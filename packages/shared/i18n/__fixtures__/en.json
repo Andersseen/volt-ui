@@ -443,7 +443,44 @@
       "apiBody": "Selectors, inputs, and outputs frozen at 1.0 keep working. A breaking change requires a major version and migration notes.",
       "themingTitle": "Theming",
       "themingBody": "The 5 color × 5 style presets and the token system stay as they are. A Tailwind-free build adds an option; it removes nothing.",
-      "feedback": "Have an opinion on the order, or need something that isn't here? Open an issue or a discussion on [GitHub](https://github.com/Andersseen/volt-ui). Shipped work is recorded in [CHANGELOG.md](https://github.com/Andersseen/volt-ui/blob/main/CHANGELOG.md), and the longer-term technical framing lives in [specs/SPEC.md](https://github.com/Andersseen/volt-ui/blob/main/specs/SPEC.md)."
+      "feedback": "Have an opinion on the order, or need something that isn't here? Open an issue or a discussion on [GitHub](https://github.com/Andersseen/volt-ui). Shipped work is recorded in [CHANGELOG.md](https://github.com/Andersseen/volt-ui/blob/main/CHANGELOG.md), and the longer-term technical framing lives in [specs/SPEC.md](https://github.com/Andersseen/volt-ui/blob/main/specs/SPEC.md).",
+      "v2": {
+        "items": {
+          "trust": {
+            "title": "Installation and documentation you can trust",
+            "summary": "Everything a consumer copies or installs is checked against the real packages: the CLI, the examples on this site and the facts served to AI tools.",
+            "details": {
+              "d1": "The CLI takes an explicit destination, finds the right project in a workspace and installs only the packages the copied files import.",
+              "d2": "Every usage example compiles as the npm package and as CLI-copied source, and you can copy either one.",
+              "d3": "The packed packages are installed into a fresh Angular project outside the repository, built with SSR and exercised in browsers."
+            }
+          },
+          "composition": {
+            "title": "Components that compose cleanly",
+            "summary": "Forms, links and overlays behave the same whether a control stands alone or sits inside a form field, a drawer or a dialog.",
+            "details": {
+              "d1": "Each family states where its class, id, accessible name, state and focus live, and tests observe the real interactive element.",
+              "d2": "Improvements arrive as additive APIs in 1.x; anything that would break your code waits for a major with migration notes.",
+              "d3": "Real tasks — settings, asynchronous search, a data table — are documented as recipes built from the existing components."
+            }
+          },
+          "updates": {
+            "title": "See what changed upstream without losing your edits",
+            "summary": "A read-only comparison between your copied components and the version of the CLI you run, so a fix can be carried over by hand.",
+            "details": {
+              "d1": "It never changes a file and never merges automatically.",
+              "d2": "It distinguishes components whose origin is known from ones it cannot place.",
+              "d3": "Copied source keeps working if you delete the record it uses."
+            }
+          }
+        },
+        "whyTitle": "Why reliability comes before new components",
+        "whyBody": "The catalog is already broad enough to build real applications. What decides whether Volt UI helps is the distance between a demo that works and code you can install, copy, compile and maintain in your own project — so that distance is closed first.",
+        "whyOrder": "Each item depends on the one above it: composition fixes need a trustworthy way to ship and verify them, and comparing versions only helps once copies install and compile reliably.",
+        "deferredTitle": "Deferred, not planned",
+        "deferredBody": "A first-party headless layer and a distribution without Tailwind CSS were earlier roadmap items. Both are deferred: ng-primitives stays the default engine (an experimental Quartz Headless backend is available), and Tailwind CSS v4 stays the only styling target until concrete demand justifies a second one.",
+        "themingBody": "The 5 color × 5 style presets and the token system stay as they are."
+      }
     },
     "mcpPage": {
       "title": "AI Integration",

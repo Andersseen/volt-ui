@@ -152,20 +152,25 @@ export class ExampleComponent {}
 - Transforms `Volt*` → `Ui*` and `volt-*` → `ui-*`.
 - Detects and copies local component dependencies automatically.
 - Reuses files identical to the Volt UI source and refuses to overwrite edited ones unless `--force` is passed; the whole request is validated before the first write.
-- `--dry-run` previews files before writing.
-- `[target-dir]` sets an alternate destination.
-- `--install` installs the required runtime dependencies.
+- `--dry-run` previews files and the dependency check before writing.
+- `--path=<dir>` sets the destination (the v1 positional `[target-dir]` still works). Without it,
+  components go to `src/app/ui` of the nearest `package.json`, even when run from a subfolder.
+- `--install` installs only the packages the copied files import, with the ranges Volt UI was tested
+  with, once, in the right package of a pnpm/npm/Yarn/Bun workspace. Compatible versions you have
+  are kept; Angular is never upgraded; an incompatible version stops the command before it writes.
 
 ```bash
-npx @voltui/cli add button card ./src/app/shared/ui --dry-run
-npx @voltui/cli add button card ./src/app/shared/ui --force --install
+npx @voltui/cli add button card --path=./src/app/shared/ui --dry-run
+npx @voltui/cli add button card --path=./src/app/shared/ui --install
 ```
 
-Copied components need these runtime dependencies in the target app:
+Without `--install`, `volt add` prints the exact command for what is missing, e.g. for Card alone:
 
 ```bash
-npm install ng-primitives class-variance-authority clsx tailwind-merge
+npm install clsx@^2.0.0 tailwind-merge@^3.0.0
 ```
+
+Full reference: [CLI.md](./CLI.md).
 
 </details>
 
