@@ -22,7 +22,12 @@ const fs = require('fs');
 const path = require('path');
 const { pathToFileURL } = require('url');
 
-const ROOT = path.resolve(__dirname, '..');
+// VOLT_REPO_ROOT: tests run this generator against a modified copy of the sources. Installed
+// package versions are still read from this checkout's node_modules.
+const ROOT = process.env.VOLT_REPO_ROOT
+  ? path.resolve(process.env.VOLT_REPO_ROOT)
+  : path.resolve(__dirname, '..');
+const CHECKOUT = path.resolve(__dirname, '..');
 const LIB_DIR = path.join(ROOT, 'packages/volt/src/lib');
 const COMPONENTS_DIR = path.join(LIB_DIR, 'components');
 const LAYOUTS_DIR = path.join(LIB_DIR, 'layouts');
@@ -68,8 +73,8 @@ function sharedFilesImportedBy(source) {
 
 function installedVersion(pkg) {
   for (const candidate of [
-    path.join(ROOT, 'node_modules', pkg, 'package.json'),
-    path.join(ROOT, 'packages/volt/node_modules', pkg, 'package.json'),
+    path.join(CHECKOUT, 'node_modules', pkg, 'package.json'),
+    path.join(CHECKOUT, 'packages/volt/node_modules', pkg, 'package.json'),
   ]) {
     if (fs.existsSync(candidate)) return JSON.parse(fs.readFileSync(candidate, 'utf-8')).version;
   }
@@ -108,7 +113,7 @@ function packagesFor(files, declared, where) {
 
 async function loadCatalogByKey() {
   const { loadCatalog } = await import(
-    pathToFileURL(path.join(ROOT, 'scripts/lib/component-catalog.mjs')).href
+    pathToFileURL(path.join(CHECKOUT, 'scripts/lib/component-catalog.mjs')).href
   );
   return new Map((await loadCatalog()).map(entry => [entry.key, entry]));
 }

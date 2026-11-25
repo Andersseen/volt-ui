@@ -63,7 +63,7 @@
     "manifest": "node cli/generate-manifest.js",
     "stats": "node scripts/generate-site-stats.mjs",
     "stats:full": "node scripts/generate-site-stats.mjs --with-tests",
-    "check:ai-docs": "node cli/generate-manifest.js && node cli/check-ai-docs-sync.js",
+    "check:ai-docs": "node cli/check-ai-docs-sync.js",
     "generate:api-reference": "node scripts/generate-api-reference.mjs",
     "generate:mcp-content": "node scripts/generate-mcp-content.mjs",
     "check:generated": "node scripts/check-generated.mjs",
@@ -92,7 +92,8 @@
     "check:angular-compat": "node scripts/check-angular-compat.mjs",
     "generate:behavior-matrix": "node scripts/generate-behavior-matrix.mjs",
     "build:all": "turbo run build",
-    "typecheck:all": "turbo run typecheck"
+    "typecheck:all": "turbo run typecheck",
+    "check:examples": "node scripts/check-examples.mjs"
   },
   "lint-staged": {
     "*.{ts,html}": [

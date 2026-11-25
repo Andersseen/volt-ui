@@ -2,7 +2,8 @@ import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../..');
+// VOLT_REPO_ROOT: tests run the generators against a modified copy of the sources.
+const ROOT = process.env.VOLT_REPO_ROOT ?? join(dirname(fileURLToPath(import.meta.url)), '../..');
 
 /** Public but not a renderable widget: `theme` is a pair of functions, documented under Foundations. */
 export const FOUNDATION_ONLY = new Set(['theme']);

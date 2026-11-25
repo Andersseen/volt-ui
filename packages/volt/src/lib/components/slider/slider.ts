@@ -90,10 +90,10 @@ export class VoltSlider implements ControlValueAccessor {
   protected readonly formControlState = injectFormControlState();
 
   readonly id = input<string>();
-  readonly value = input<number, number>(0, { transform: numberAttribute });
-  readonly min = input<number, number>(0, { transform: numberAttribute });
-  readonly max = input<number, number>(100, { transform: numberAttribute });
-  readonly step = input<number, number>(1, { transform: numberAttribute });
+  readonly value = input<number, unknown>(0, { transform: numberAttribute });
+  readonly min = input<number, unknown>(0, { transform: numberAttribute });
+  readonly max = input<number, unknown>(100, { transform: numberAttribute });
+  readonly step = input<number, unknown>(1, { transform: numberAttribute });
   readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly orientation = input<NgpOrientation>('horizontal');
   readonly ariaLabel = input<string>();

@@ -26,996 +26,108 @@ import {
   LIBRARY_VERSION,
   RESPONSIBILITIES,
 } from './mcp/responsibilities.generated';
+import { COMPONENT_API, type McpComponentApi } from './mcp/api.generated';
+import { EDITORIAL, type McpCodeExample } from './mcp/editorial';
+import * as USAGE from '../../app/lib/snippets/usage';
+import { createDistribution } from '../../../../../packages/shared/lib/distribution';
+import { VOLT_NAMES } from '../../../../../packages/shared/lib/volt-names.generated';
 
 // ---------------------------------------------------------------------------
 // Component metadata (inlined — CF Workers have no filesystem access)
+//
+// Nothing technical is written here. Each fact comes from the place that owns it:
+//   selectors, exports, inputs, outputs, variants, npm packages   mcp/api.generated.ts (library source)
+//   what a component is for, category, status                     mcp/responsibilities.generated.ts
+//   description and template/code examples                        mcp/editorial.ts (compiled by
+//                                                                 scripts/check-examples.mjs)
+//   the complete usage example                                    app/lib/snippets/usage.ts (compiled
+//                                                                 in package and CLI-copy mode)
+// Everything is held in the package's names and renamed for CLI-copy projects by the same
+// transform the docs site uses (packages/shared/lib/distribution.ts).
 // ---------------------------------------------------------------------------
 
 interface InputDef {
   name: string;
   type: string;
   default?: unknown;
+  required?: boolean;
   options?: string[];
 }
 
 interface ComponentMeta {
   name: string;
   description: string;
+  /** npm packages a CLI copy imports (kept as `dependencies` for existing clients). */
   dependencies: string[];
+  packages: string[];
+  componentDependencies: string[];
+  backends: string[];
+  /** Classes and functions to import. */
+  imports: string[];
+  selectors: string[];
+  /** Kept for existing clients: the selectors besides the component's own. */
+  subComponents: string[];
+  /** The main directive's inputs, with variant options where a variant group matches. */
+  inputs: InputDef[];
+  directives: McpComponentApi['directives'];
+  variantGroups: McpComponentApi['variants'];
+  /** Options of the `variant` / `size` groups, kept for existing clients. */
   variants?: string[];
   sizes?: string[];
-  inputs?: InputDef[];
-  subComponents?: string[];
-  examples?: string[];
+  formControl: boolean;
+  examples: string[];
+  code?: McpCodeExample[];
 }
 
-const components: Record<string, ComponentMeta> = {
-  button: {
-    name: 'Button',
-    description:
-      'Button styles for native elements (`button[uiButton]`, `a[uiButton]`) and the `<ui-button>` wrapper. Use `a[uiButton]` for links — never nest a button in a link.',
-    dependencies: ['ng-primitives/button'],
-    variants: ['solid', 'outline', 'ghost', 'link', 'destructive'],
-    sizes: ['sm', 'md', 'lg', 'icon'],
-    subComponents: ['button[uiButton]', 'a[uiButton]'],
-    inputs: [
-      {
-        name: 'variant',
-        type: 'string',
-        default: 'solid',
-        options: ['solid', 'outline', 'ghost', 'link', 'destructive'],
-      },
-      { name: 'size', type: 'string', default: 'md', options: ['sm', 'md', 'lg', 'icon'] },
-      { name: 'disabled', type: 'boolean', default: false },
-      { name: 'class', type: 'string', default: '' },
-      { name: 'aria-label', type: 'string' },
-      { name: 'aria-expanded', type: 'boolean | string' },
-      { name: 'aria-controls', type: 'string' },
-    ],
-    examples: [
-      '<button uiButton type="submit">Save</button>',
-      '<a uiButton variant="outline" routerLink="/docs">Documentation</a>',
-      '<button uiButton size="icon" aria-label="Switch theme"><svg aria-hidden="true">…</svg></button>',
-      '<ui-button variant="destructive" [disabled]="isLoading()">Delete</ui-button>',
-    ],
-  },
-  badge: {
-    name: 'Badge',
-    description: 'Badge component for labels and counts',
-    dependencies: [],
-    variants: ['solid', 'secondary', 'outline', 'destructive', 'success', 'warning', 'info'],
-    inputs: [
-      { name: 'variant', type: 'string', default: 'solid' },
-      { name: 'class', type: 'string', default: '' },
-    ],
-    examples: [
-      '<ui-badge>New</ui-badge>',
-      '<ui-badge variant="success">Connected</ui-badge>',
-      '<ui-badge variant="warning">Needs attention</ui-badge>',
-    ],
-  },
-  card: {
-    name: 'Card',
-    description: 'Card container with header, content, and footer',
-    dependencies: [],
-    subComponents: ['card-header', 'card-title', 'card-description', 'card-content', 'card-footer'],
-    inputs: [{ name: 'class', type: 'string', default: '' }],
-    examples: [
-      '<ui-card-content class="p-3 md:p-4">Every part merges class with cn()</ui-card-content>',
-      `<ui-card>
-  <ui-card-header>
-    <ui-card-title>Title</ui-card-title>
-    <ui-card-description>Description</ui-card-description>
-  </ui-card-header>
-  <ui-card-content>Content</ui-card-content>
-  <ui-card-footer>Footer</ui-card-footer>
-</ui-card>`,
-    ],
-  },
-  input: {
-    name: 'Input',
-    description: 'Text input field',
-    dependencies: [],
-    inputs: [
-      { name: 'type', type: 'string', default: 'text' },
-      { name: 'placeholder', type: 'string' },
-      { name: 'disabled', type: 'boolean', default: false },
-      { name: 'size', type: 'string', default: 'md', options: ['sm', 'md', 'lg'] },
-      {
-        name: 'state',
-        type: 'string',
-        default: 'default',
-        options: ['default', 'error', 'success'],
-      },
-      { name: 'class', type: 'string', default: '' },
-      { name: 'aria-label', type: 'string' },
-    ],
-    examples: [
-      '<ui-input placeholder="Enter email" aria-label="Email" />',
-      '<ui-input size="sm" class="w-24 font-mono" aria-label="Quantity" />',
-      '<ui-input type="password" [disabled]="isDisabled()" />',
-    ],
-  },
-  search: {
-    name: 'Search',
-    description: 'Search field wrapper with a clear action',
-    dependencies: ['ng-primitives/search', 'ng-primitives/input'],
-    subComponents: ['search-clear'],
-    examples: [
-      `<ui-search>
-  <ui-input type="search" placeholder="Search..." />
-  <ui-search-clear>Clear</ui-search-clear>
-</ui-search>`,
-    ],
-  },
-  autofill: {
-    name: 'Autofill',
-    description: 'Directive for detecting browser autofill state on form controls',
-    dependencies: ['ng-primitives/autofill'],
-    examples: [
-      `<input uiAutofill autocomplete="email" (autofillChange)="autofilled.set($event)" />`,
-    ],
-  },
-  textarea: {
-    name: 'Textarea',
-    description: 'Multi-line text input',
-    dependencies: [],
-    inputs: [
-      { name: 'rows', type: 'number', default: 3 },
-      { name: 'placeholder', type: 'string' },
-      { name: 'disabled', type: 'boolean', default: false },
-      {
-        name: 'variant',
-        type: 'string',
-        default: 'default',
-        options: ['default', 'filled', 'ghost'],
-      },
-      { name: 'size', type: 'string', default: 'md', options: ['sm', 'md', 'lg'] },
-      {
-        name: 'state',
-        type: 'string',
-        default: 'default',
-        options: ['default', 'error', 'success'],
-      },
-      { name: 'class', type: 'string', default: '' },
-    ],
-    examples: ['<ui-textarea placeholder="Enter message" [rows]="5" class="font-mono" />'],
-  },
-  checkbox: {
-    name: 'Checkbox',
-    description: 'Checkbox input with indeterminate state',
-    dependencies: ['ng-primitives/checkbox'],
-    inputs: [
-      { name: 'checked', type: 'boolean', default: false },
-      { name: 'disabled', type: 'boolean', default: false },
-      { name: 'indeterminate', type: 'boolean', default: false },
-    ],
-    examples: [
-      '<ui-checkbox [(checked)]="isChecked">Accept terms</ui-checkbox>',
-      '<ui-checkbox [indeterminate]="isIndeterminate">Select all</ui-checkbox>',
-    ],
-  },
-  radio: {
-    name: 'Radio',
-    description: 'Radio group and radio items',
-    dependencies: ['ng-primitives/radio'],
-    subComponents: ['radio-group', 'radio-item'],
-    inputs: [
-      { name: 'value', type: 'string' },
-      { name: 'disabled', type: 'boolean', default: false },
-    ],
-    examples: [
-      `<ui-radio-group [(value)]="selectedValue">
-  <ui-radio-item value="option1">Option 1</ui-radio-item>
-  <ui-radio-item value="option2">Option 2</ui-radio-item>
-</ui-radio-group>`,
-    ],
-  },
-  switch: {
-    name: 'Switch',
-    description: 'Toggle switch component',
-    dependencies: ['ng-primitives/switch'],
-    inputs: [
-      { name: 'checked', type: 'boolean', default: false },
-      { name: 'disabled', type: 'boolean', default: false },
-    ],
-    examples: ['<ui-switch [(checked)]="isEnabled">Enable notifications</ui-switch>'],
-  },
-  toggle: {
-    name: 'Toggle',
-    description: 'Toggle button (pressed state)',
-    dependencies: ['ng-primitives/button'],
-    inputs: [
-      { name: 'pressed', type: 'boolean', default: false },
-      { name: 'disabled', type: 'boolean', default: false },
-    ],
-    examples: ['<ui-toggle [(pressed)]="isBold">Bold</ui-toggle>'],
-  },
-  select: {
-    name: 'Select',
-    description:
-      'Dropdown select with options. For a real <select> use the `select[uiNativeSelect]` attribute directive (NOT a <ui-native-select> element) — the browser already has the right primitive.',
-    dependencies: ['ng-primitives/select'],
-    subComponents: [
-      'select-content',
-      'select-item',
-      'select-label',
-      'select-separator',
-      'native-select',
-    ],
-    inputs: [
-      { name: 'value', type: 'string' },
-      { name: 'placeholder', type: 'string' },
-      { name: 'disabled', type: 'boolean', default: false },
-    ],
-    examples: [
-      `<ui-select placeholder="Select option">
-  <ui-select-label>Choose one</ui-select-label>
-  <ui-select-content>
-    <ui-select-item value="1">Option 1</ui-select-item>
-    <ui-select-item value="2">Option 2</ui-select-item>
-  </ui-select-content>
-</ui-select>`,
-      `<select uiNativeSelect aria-label="Status" [formControl]="status">
-  <option value="all">All</option>
-  <option value="open">Open</option>
-</select>`,
-    ],
-  },
-  tabs: {
-    name: 'Tabs',
-    description: 'Tabbed interface',
-    dependencies: ['ng-primitives/tab'],
-    subComponents: ['tabs-list', 'tabs-trigger', 'tabs-content'],
-    inputs: [{ name: 'value', type: 'string' }],
-    examples: [
-      `<ui-tabs [(value)]="activeTab">
-  <ui-tabs-list>
-    <ui-tabs-trigger value="tab1">Tab 1</ui-tabs-trigger>
-    <ui-tabs-trigger value="tab2">Tab 2</ui-tabs-trigger>
-  </ui-tabs-list>
-  <ui-tabs-content value="tab1">Content 1</ui-tabs-content>
-  <ui-tabs-content value="tab2">Content 2</ui-tabs-content>
-</ui-tabs>`,
-    ],
-  },
-  accordion: {
-    name: 'Accordion',
-    description:
-      'Collapsible accordion panels. Arrow keys (Up/Down, Left/Right when horizontal), Home and End move focus between headers.',
-    dependencies: ['ng-primitives/accordion'],
-    subComponents: ['accordion-item', 'accordion-trigger', 'accordion-content'],
-    inputs: [
-      { name: 'type', type: 'string', default: 'single', options: ['single', 'multiple'] },
-      { name: 'collapsible', type: 'boolean', default: false },
-    ],
-    examples: [
-      `<ui-accordion type="single" [collapsible]="true">
-  <ui-accordion-item value="item1">
-    <ui-accordion-trigger>Question</ui-accordion-trigger>
-    <ui-accordion-content>Answer</ui-accordion-content>
-  </ui-accordion-item>
-</ui-accordion>`,
-    ],
-  },
-  avatar: {
-    name: 'Avatar',
-    description: 'User avatar with image and fallback',
-    dependencies: ['ng-primitives/avatar'],
-    subComponents: ['avatar-image', 'avatar-fallback'],
-    inputs: [
-      { name: 'src', type: 'string' },
-      { name: 'alt', type: 'string' },
-      { name: 'delayMs', type: 'number', default: 0 },
-    ],
-    examples: [
-      `<ui-avatar>
-  <img uiAvatarImage [src]="user.avatar" [alt]="user.name" />
-  <ui-avatar-fallback>{{ user.initials }}</ui-avatar-fallback>
-</ui-avatar>`,
-    ],
-  },
-  separator: {
-    name: 'Separator',
-    description: 'Visual divider line',
-    dependencies: ['ng-primitives/separator'],
-    inputs: [
-      {
-        name: 'orientation',
-        type: 'string',
-        default: 'horizontal',
-        options: ['horizontal', 'vertical'],
-      },
-    ],
-    examples: ['<ui-separator />', '<ui-separator orientation="vertical" />'],
-  },
-  tooltip: {
-    name: 'Tooltip',
-    description:
-      'Floating tooltip on hover and keyboard focus, also on components that render their own button (ui-toggle, ui-switch). `context` reaches the template as a signal: read it as `label()`, not `label`.',
-    dependencies: ['ng-primitives/tooltip'],
-    subComponents: ['tooltip-content'],
-    inputs: [
-      { name: 'placement', type: 'string', default: 'top' },
-      { name: 'delay', type: 'number', default: 300 },
-      { name: 'closeDelay', type: 'number', default: 100 },
-      { name: 'context', type: 'unknown' },
-      { name: 'disabled', type: 'boolean', default: false },
-    ],
-    examples: [
-      `<button uiTooltip [uiTooltip]="tooltipTpl">Hover me</button>
-<ng-template #tooltipTpl>
-  <ui-tooltip-content>More info</ui-tooltip-content>
-</ng-template>`,
-      `<button uiButton [uiTooltip]="tip" [context]="item.name">Edit</button>
-<ng-template #tip let-name>
-  <ui-tooltip-content>Edit {{ name() }}</ui-tooltip-content>
-</ng-template>`,
-    ],
-  },
-  'navigation-menu': {
-    name: 'Navigation Menu',
-    description: 'Navigation menu with dropdowns',
-    dependencies: ['ng-primitives/navigation-menu'],
-    subComponents: [
-      'navigation-menu-list',
-      'navigation-menu-item',
-      'navigation-menu-trigger',
-      'navigation-menu-content',
-      'navigation-menu-link',
-    ],
-    inputs: [
-      {
-        name: 'variant',
-        type: 'string',
-        default: 'subtle',
-        options: ['subtle', 'pill', 'underline', 'outline'],
-      },
-      { name: 'layout', type: 'string', default: 'inline', options: ['inline', 'contained'] },
-    ],
-    examples: [
-      `<a uiNavigationMenuLink [active]="section() === 'about'" current="location" href="#about">About</a>`,
-      `<ui-navigation-menu>
-  <ui-navigation-menu-list>
-    <ui-navigation-menu-item>
-      <ui-navigation-menu-trigger>Item</ui-navigation-menu-trigger>
-      <ui-navigation-menu-content>...</ui-navigation-menu-content>
-    </ui-navigation-menu-item>
-  </ui-navigation-menu-list>
-</ui-navigation-menu>`,
-    ],
-  },
-  'form-field': {
-    name: 'Form Field',
-    description: 'Form field wrapper with label, hint, and error',
-    dependencies: ['ng-primitives/form-field'],
-    subComponents: ['label', 'hint', 'error'],
-    examples: [
-      `<ui-form-field>
-  <ui-label>Email</ui-label>
-  <ui-input type="email" />
-  <ui-hint>We'll never share your email</ui-hint>
-  <ui-error>Invalid email</ui-error>
-</ui-form-field>`,
-      '<ui-label htmlFor="team">Team</ui-label> <ui-input id="team" />',
-    ],
-  },
-  dialog: {
-    name: 'Dialog',
-    description: 'Modal dialog with overlay, title, description and content',
-    dependencies: ['ng-primitives/dialog'],
-    subComponents: [
-      'dialog-overlay',
-      'dialog-content',
-      'dialog-title',
-      'dialog-description',
-      'ng-template[uiDialogRoot] (controlled, [(open)])',
-      'UiDialogService (open(template, { role, data }).closed)',
-    ],
-    inputs: [
-      { name: 'modal', type: 'boolean', default: true },
-      { name: 'closeOnEscape', type: 'boolean', default: true },
-      { name: 'dismissible', type: 'boolean', default: true },
-      { name: 'initialFocus', type: 'string', default: '' },
-    ],
-    examples: [
-      `<ng-template uiDialogRoot role="alertdialog" [(open)]="deleting" [dismissible]="!pending()" initialFocus="[data-cancel]" let-close="close">…</ng-template>`,
-      `<ng-template uiDialogRoot [(open)]="editing" (closed)="onClosed($event)" let-close="close">
-  <div uiDialogOverlay></div>
-  <div uiDialogContent>
-    <h2 uiDialogTitle>Edit profile</h2>
-    <button uiButton (click)="close('saved')">Save</button>
-  </div>
-</ng-template>`,
-      `const confirmed = await inject(UiDialogService).open<boolean>(confirmTpl, { role: 'alertdialog' }).closed;`,
-      `<button [uiDialog]="dialogTpl">Open Dialog</button>
-<ng-template #dialogTpl let-close="close">
-  <div uiDialogOverlay></div>
-  <div uiDialogContent>
-    <h2 uiDialogTitle>Confirm</h2>
-    <p uiDialogDescription>Are you sure?</p>
-    <ui-button (click)="close()">Confirm</ui-button>
-  </div>
-</ng-template>`,
-    ],
-  },
-  popover: {
-    name: 'Popover',
-    description: 'Floating popover anchored to a trigger element',
-    dependencies: ['ng-primitives/popover'],
-    subComponents: ['popover-trigger', 'popover-content'],
-    inputs: [
-      { name: 'placement', type: 'string', default: 'bottom' },
-      { name: 'offset', type: 'number', default: 8 },
-      { name: 'disabled', type: 'boolean', default: false },
-    ],
-    examples: [
-      `<button uiPopover [uiPopover]="popoverTpl">Open</button>
-<ng-template #popoverTpl>
-  <ui-popover-content>Popover content</ui-popover-content>
-</ng-template>`,
-    ],
-  },
-  'dropdown-menu': {
-    name: 'Dropdown Menu',
-    description: 'Dropdown menu with items, labels and separators',
-    dependencies: ['ng-primitives/menu'],
-    subComponents: [
-      'dropdown-menu-trigger',
-      'dropdown-menu-item',
-      'dropdown-menu-label',
-      'dropdown-menu-separator',
-    ],
-    inputs: [{ name: 'disabled', type: 'boolean', default: false }],
-    examples: [
-      `<button [uiDropdownMenu]="menuTpl">Menu</button>
-<ng-template #menuTpl>
-  <ui-dropdown-menu>
-    <ui-dropdown-menu-label>Account</ui-dropdown-menu-label>
-    <ui-dropdown-menu-item>Profile</ui-dropdown-menu-item>
-    <ui-dropdown-menu-separator />
-    <ui-dropdown-menu-item>Logout</ui-dropdown-menu-item>
-  </ui-dropdown-menu>
-</ng-template>`,
-    ],
-  },
-  slider: {
-    name: 'Slider',
-    description: 'Range slider input with track and thumb',
-    dependencies: ['ng-primitives/slider'],
-    subComponents: ['slider-track', 'slider-range', 'slider-thumb'],
-    inputs: [
-      { name: 'value', type: 'number', default: 0 },
-      { name: 'min', type: 'number', default: 0 },
-      { name: 'max', type: 'number', default: 100 },
-      { name: 'step', type: 'number', default: 1 },
-      { name: 'disabled', type: 'boolean', default: false },
-    ],
-    examples: ['<ui-slider [min]="0" [max]="100" [(value)]="volume" />'],
-  },
-  'range-slider': {
-    name: 'Range Slider',
-    description: 'Dual-thumb range slider for selecting a [low, high] value pair',
-    dependencies: ['ng-primitives/slider'],
-    subComponents: ['range-slider-track', 'range-slider-range', 'range-slider-thumb'],
-    inputs: [
-      { name: 'low', type: 'number', default: 0 },
-      { name: 'high', type: 'number', default: 100 },
-      { name: 'min', type: 'number', default: 0 },
-      { name: 'max', type: 'number', default: 100 },
-      { name: 'step', type: 'number', default: 1 },
-      { name: 'disabled', type: 'boolean', default: false },
-    ],
-    examples: ['<ui-range-slider [min]="0" [max]="500" [(low)]="min" [(high)]="max" />'],
-  },
-  progress: {
-    name: 'Progress',
-    description: 'Progress bar with track and indicator',
-    dependencies: ['ng-primitives/progress'],
-    subComponents: ['progress-label', 'progress-value', 'progress-track', 'progress-indicator'],
-    inputs: [
-      { name: 'value', type: 'number', default: 0 },
-      { name: 'min', type: 'number', default: 0 },
-      { name: 'max', type: 'number', default: 100 },
-      { name: 'valueLabel', type: '(value: number, max: number) => string' },
-    ],
-    examples: [
-      `<ui-progress [value]="60" [max]="100">
-  <ui-progress-label>Loading</ui-progress-label>
-  <ui-progress-value>60%</ui-progress-value>
-</ui-progress>`,
-    ],
-  },
-  breadcrumbs: {
-    name: 'Breadcrumbs',
-    description:
-      'Navigation breadcrumbs with items, links, ellipsis and separators. <ui-breadcrumb-link href> is for plain URLs; put `a[uiBreadcrumbLink]` on your own anchor when RouterLink (or any anchor directive) must own navigation.',
-    dependencies: ['ng-primitives/breadcrumbs'],
-    subComponents: [
-      'breadcrumbs-list',
-      'breadcrumbs-item',
-      'breadcrumbs-link',
-      'native-breadcrumbs-link',
-      'breadcrumbs-page',
-      'breadcrumbs-separator',
-      'breadcrumbs-ellipsis',
-    ],
-    examples: [
-      `<ui-breadcrumbs>
-  <ui-breadcrumb-item><ui-breadcrumb-link href="/">Home</ui-breadcrumb-link></ui-breadcrumb-item>
-  <ui-breadcrumb-separator />
-  <ui-breadcrumb-item><ui-breadcrumb-page>Current</ui-breadcrumb-page></ui-breadcrumb-item>
-</ui-breadcrumbs>`,
-      `<!-- Angular Router: the anchor is yours, so routerLink / queryParams / fragment / routerLinkActive just work -->
-<ui-breadcrumb-item>
-  <a uiBreadcrumbLink routerLink="/admin" [queryParams]="{ tab: 'users' }" routerLinkActive ariaCurrentWhenActive="page">Admin</a>
-</ui-breadcrumb-item>`,
-    ],
-  },
-  sidebar: {
-    name: 'Sidebar Layout',
-    description: 'Application sidebar layout with header, content, groups, items and footer',
-    dependencies: [],
-    subComponents: [
-      'sidebar-header',
-      'sidebar-content',
-      'sidebar-group',
-      'sidebar-item',
-      'sidebar-footer',
-    ],
-    inputs: [{ name: 'collapsed', type: 'boolean', default: false }],
-    examples: [
-      `<ui-sidebar>
-  <ui-sidebar-header>Logo</ui-sidebar-header>
-  <ui-sidebar-content>
-    <ui-sidebar-group label="Main">
-      <ui-sidebar-item>Dashboard</ui-sidebar-item>
-    </ui-sidebar-group>
-  </ui-sidebar-content>
-  <ui-sidebar-footer>User</ui-sidebar-footer>
-</ui-sidebar>`,
-    ],
-  },
-  'toggle-group': {
-    name: 'Toggle Group',
-    description: 'Group of toggle buttons with single or multiple selection',
-    dependencies: ['ng-primitives/toggle-group'],
-    subComponents: ['toggle-group-item'],
-    inputs: [
-      { name: 'value', type: 'string[]', default: [] },
-      { name: 'type', type: 'string', default: 'single', options: ['single', 'multiple'] },
-      {
-        name: 'orientation',
-        type: 'string',
-        default: 'horizontal',
-        options: ['horizontal', 'vertical'],
-      },
-      { name: 'disabled', type: 'boolean', default: false },
-    ],
-    examples: [
-      `<ui-toggle-group type="single" [(value)]="selected">
-  <ui-toggle-group-item value="bold">Bold</ui-toggle-group-item>
-  <ui-toggle-group-item value="italic">Italic</ui-toggle-group-item>
-</ui-toggle-group>`,
-      `<ui-toggle-group-item value="p1" aria-label="Photo 1" buttonClass="h-auto p-0 overflow-hidden">
-  <img src="p1.jpg" alt="" />
-</ui-toggle-group-item>`,
-    ],
-  },
-  meter: {
-    name: 'Meter',
-    description: 'Meter component for displaying a value within a known range',
-    dependencies: ['ng-primitives/meter'],
-    subComponents: ['meter-label', 'meter-value', 'meter-track', 'meter-indicator'],
-    inputs: [
-      { name: 'value', type: 'number', default: 0 },
-      { name: 'min', type: 'number', default: 0 },
-      { name: 'max', type: 'number', default: 100 },
-    ],
-    examples: [
-      `<ui-meter [value]="75" [max]="100">
-  <ui-meter-label>Storage</ui-meter-label>
-  <ui-meter-value>75%</ui-meter-value>
-  <ui-meter-track><ui-meter-indicator /></ui-meter-track>
-</ui-meter>`,
-    ],
-  },
-  pagination: {
-    name: 'Pagination',
-    description: 'Pagination controls with first, previous, next, last and page buttons',
-    dependencies: ['ng-primitives/pagination'],
-    subComponents: [
-      'pagination-first',
-      'pagination-previous',
-      'pagination-next',
-      'pagination-last',
-      'pagination-button',
-    ],
-    inputs: [
-      { name: 'page', type: 'number', default: 1 },
-      { name: 'pageCount', type: 'number', default: 0 },
-      { name: 'disabled', type: 'boolean', default: false },
-    ],
-    examples: [
-      `<ui-pagination [pageCount]="10" [(page)]="currentPage">
-  <ui-pagination-first />
-  <ui-pagination-previous />
-  <ui-pagination-button *ngFor="let p of pages" [page]="p" />
-  <ui-pagination-next />
-  <ui-pagination-last />
-</ui-pagination>`,
-    ],
-  },
-  toast: {
-    name: 'Toast',
-    description:
-      'Toast notifications. Show them with UiToastService (show/success/error/warning/info/dismissAll); provideVoltToast() sets defaults.',
-    dependencies: ['ng-primitives/toast'],
-    subComponents: ['toast-title', 'toast-description', 'toast-close', 'UiToastService'],
-    inputs: [
-      {
-        name: 'variant',
-        type: 'string',
-        default: 'default',
-        options: ['default', 'success', 'error', 'warning', 'info'],
-      },
-    ],
-    examples: [
-      `private readonly toast = inject(UiToastService);
-save() { this.toast.success('Changes saved', { description: 'Your workspace has been updated.' }); }`,
-      `this.toast.error('Could not save');`,
-    ],
-  },
-  'input-otp': {
-    name: 'Input OTP',
-    description: 'One-time code / PIN input with slots',
-    dependencies: ['ng-primitives/input-otp'],
-    subComponents: ['input-otp-slot'],
-    inputs: [
-      { name: 'value', type: 'string', default: '' },
-      { name: 'length', type: 'number', default: 6 },
-      { name: 'pattern', type: 'string', default: '[0-9]' },
-      { name: 'inputMode', type: 'string', default: 'numeric' },
-      { name: 'disabled', type: 'boolean', default: false },
-      { name: 'placeholder', type: 'string', default: '○' },
-    ],
-    examples: ['<ui-input-otp [(value)]="otp" [length]="6" />'],
-  },
-  'file-upload': {
-    name: 'File Upload',
-    description: 'File upload trigger and dropzone',
-    dependencies: ['ng-primitives/file-upload'],
-    subComponents: ['file-dropzone'],
-    inputs: [
-      { name: 'fileTypes', type: 'string | string[]' },
-      { name: 'multiple', type: 'boolean', default: false },
-      { name: 'directory', type: 'boolean', default: false },
-      { name: 'dragDrop', type: 'boolean', default: false },
-      { name: 'disabled', type: 'boolean', default: false },
-    ],
-    examples: [
-      '<button uiButton uiFileUpload multiple (selected)="onFiles($event)">Upload</button>',
-      '<ui-file-dropzone (selected)="onDrop($event)">Drop files here</ui-file-dropzone>',
-    ],
-  },
-  combobox: {
-    name: 'Combobox',
-    description:
-      'Autocomplete / searchable select with dropdown and options. Default `filterMode="local"` narrows `items` by label as the user types. For server/API search use `filterMode="manual"` + `(queryChange)`: items are rendered exactly as supplied and the application owns the request (never combine server results with the local filter).',
-    dependencies: ['ng-primitives/combobox'],
-    subComponents: ['combobox-input', 'combobox-button', 'combobox-dropdown', 'combobox-option'],
-    inputs: [
-      { name: 'value', type: 'any' },
-      { name: 'items', type: 'any[]', default: [] },
-      {
-        name: 'filterMode',
-        type: 'string',
-        default: 'local',
-        options: ['local', 'manual'],
-      },
-      { name: 'loading', type: 'boolean', default: false },
-      { name: 'loadingText', type: 'string', default: 'Loading…' },
-      { name: 'emptyText', type: 'string', default: 'No results found.' },
-      { name: 'resultsText', type: '(count: number) => string' },
-      { name: 'itemLabel', type: '(item) => string' },
-      { name: 'compareWith', type: '(a, b) => boolean', default: 'Object.is' },
-      { name: 'multiple', type: 'boolean', default: false },
-      { name: 'disabled', type: 'boolean', default: false },
-      { name: 'placeholder', type: 'string', default: 'Select...' },
-      {
-        name: 'dropdownPlacement',
-        type: 'string',
-        default: 'bottom',
-        options: ['top', 'bottom', 'left', 'right'],
-      },
-    ],
-    examples: [
-      `<ui-combobox [(value)]="selected" [items]="items">
-  <ng-template let-item>{{ item.label }}</ng-template>
-</ui-combobox>`,
-      `<!-- Server-side search: (queryChange) is the typed text only; fetch, debounce and latest-wins are yours -->
-<ui-combobox
-  label="Owner"
-  filterMode="manual"
-  [items]="results()"
-  [loading]="loading()"
-  [emptyText]="'No matches for ' + query()"
-  [itemLabel]="label"
-  [compareWith]="sameId"
-  [(value)]="owner"
-  (queryChange)="search($event)"
-/>`,
-    ],
-  },
-  'date-picker': {
-    name: 'Date Picker',
-    description: 'Calendar date picker and date range picker primitives',
-    dependencies: ['ng-primitives/date-picker', 'ng-primitives/date-time'],
-    subComponents: [
-      'date-range-picker',
-      'date-picker-label',
-      'date-picker-grid',
-      'date-picker-cell',
-      'date-picker-date-button',
-      'date-picker-next-month',
-      'date-picker-previous-month',
-    ],
-    inputs: [
-      { name: 'date', type: 'Date | undefined' },
-      { name: 'focusedDate', type: 'Date', default: 'new Date()' },
-      { name: 'min', type: 'Date | undefined' },
-      { name: 'max', type: 'Date | undefined' },
-      { name: 'disabled', type: 'boolean', default: false },
-      {
-        name: 'firstDayOfWeek',
-        type: 'number',
-        default: 7,
-        options: ['1', '2', '3', '4', '5', '6', '7'],
-      },
-    ],
-    examples: [
-      `<ui-date-picker [(date)]="selectedDate" [(focusedDate)]="focusedDate">
-  <div class="flex items-center justify-between">
-    <ui-date-picker-previous-month aria-label="Previous month">Prev</ui-date-picker-previous-month>
-    <ui-date-picker-label>{{ monthLabel() }}</ui-date-picker-label>
-    <ui-date-picker-next-month aria-label="Next month">Next</ui-date-picker-next-month>
-  </div>
-  <ui-date-picker-grid>
-    <div *ngpDatePickerRowRender class="grid grid-cols-7 gap-1">
-      <ui-date-picker-cell *ngpDatePickerCellRender="let day">
-        <ui-date-picker-date-button>{{ day.getDate() }}</ui-date-picker-date-button>
-      </ui-date-picker-cell>
-    </div>
-  </ui-date-picker-grid>
-</ui-date-picker>`,
-      `<ui-date-range-picker [(startDate)]="start" [(endDate)]="end">...</ui-date-range-picker>`,
-    ],
-  },
-  listbox: {
-    name: 'Listbox',
-    description: 'Accessible single or multiple selection listbox',
-    dependencies: ['ng-primitives/listbox'],
-    subComponents: ['listbox-option', 'listbox-section', 'listbox-header'],
-    inputs: [
-      { name: 'mode', type: 'string', default: 'single', options: ['single', 'multiple'] },
-      { name: 'value', type: 'unknown[]', default: [] },
-      { name: 'disabled', type: 'boolean', default: false },
-    ],
-    examples: [
-      `<ui-listbox [(value)]="selected">
-  <ui-listbox-option value="angular">Angular</ui-listbox-option>
-  <ui-listbox-option value="react">React</ui-listbox-option>
-</ui-listbox>`,
-    ],
-  },
-  toolbar: {
-    name: 'Toolbar',
-    description: 'Accessible toolbar container for grouped controls with roving focus',
-    dependencies: ['ng-primitives/toolbar', 'ng-primitives/roving-focus'],
-    inputs: [
-      {
-        name: 'orientation',
-        type: 'string',
-        default: 'horizontal',
-        options: ['horizontal', 'vertical'],
-      },
-    ],
-    examples: [
-      `<ui-toolbar>
-  <button uiToolbarButton>Bold</button>
-  <button uiToolbarButton>Italic</button>
-  <button uiToolbarButton>Save</button>
-</ui-toolbar>`,
-    ],
-  },
-  drawer: {
-    name: 'Drawer',
-    description: 'Slide-in panel built on top of the dialog primitive',
-    dependencies: ['ng-primitives/dialog'],
-    subComponents: [
-      'drawer-overlay',
-      'drawer-content',
-      'drawer-title',
-      'drawer-description',
-      'drawer-close',
-    ],
-    inputs: [
-      {
-        name: 'side',
-        type: 'string',
-        default: 'right',
-        options: ['left', 'right', 'top', 'bottom'],
-      },
-    ],
-    examples: [
-      `<button [uiDrawer]="drawerTpl">Open Drawer</button>
-<ng-template #drawerTpl let-close="close">
-  <div uiDrawerOverlay></div>
-  <div uiDrawerContent side="right">
-    <h2 uiDrawerTitle>Menu</h2>
-    <nav uiDrawerDescription>...</nav>
-    <ui-drawer-close><lmn-x [size]="16" /></ui-drawer-close>
-  </div>
-</ng-template>`,
-    ],
-  },
-  skeleton: {
-    name: 'Skeleton',
-    description: 'Loading placeholder with shape variants',
-    dependencies: [],
-    inputs: [
-      {
-        name: 'variant',
-        type: 'string',
-        default: 'text',
-        options: ['text', 'circle', 'rectangle'],
-      },
-      { name: 'width', type: 'string' },
-      { name: 'height', type: 'string' },
-    ],
-    examples: [
-      `<ui-skeleton variant="circle" width="40px" height="40px" />`,
-      `<ui-skeleton variant="text" width="120px" height="16px" />`,
-    ],
-  },
-  table: {
-    name: 'Table',
-    description: 'Semantic data table with sub-components for header, body, rows and cells',
-    dependencies: [],
-    subComponents: [
-      'table-header',
-      'table-body',
-      'table-footer',
-      'table-row',
-      'table-head',
-      'table-cell',
-      'table-caption',
-    ],
-    examples: [
-      `<ui-table>
-  <ui-table-caption>Invoices</ui-table-caption>
-  <ui-table-header>
-    <ui-table-row>
-      <ui-table-head>Invoice</ui-table-head>
-      <ui-table-head>Status</ui-table-head>
-    </ui-table-row>
-  </ui-table-header>
-  <ui-table-body>
-    <ui-table-row>
-      <ui-table-cell>INV001</ui-table-cell>
-      <ui-table-cell>Paid</ui-table-cell>
-    </ui-table-row>
-  </ui-table-body>
-</ui-table>`,
-    ],
-  },
-  resizable: {
-    name: 'Resizable',
-    description: 'Resizable panel group with drag handles',
-    dependencies: [],
-    subComponents: ['resizable-panel', 'resizable-handle'],
-    inputs: [
-      {
-        name: 'orientation',
-        type: 'string',
-        default: 'horizontal',
-        options: ['horizontal', 'vertical'],
-      },
-    ],
-    examples: [
-      `<ui-resizable orientation="horizontal">
-  <ui-resizable-panel>Left</ui-resizable-panel>
-  <ui-resizable-handle />
-  <ui-resizable-panel>Right</ui-resizable-panel>
-</ui-resizable>`,
-    ],
-  },
-  theme: {
-    name: 'Theme',
-    description: 'Document-level theme provider and toggle utilities',
-    dependencies: [],
-    inputs: [
-      {
-        name: 'color',
-        type: 'string',
-        default: 'volt',
-        options: ['volt', 'ember', 'sage', 'dusk', 'glacier'],
-      },
-      {
-        name: 'style',
-        type: 'string',
-        default: 'sharp',
-        options: ['sharp', 'soft', 'brutal', 'ghost', 'retro'],
-      },
-      { name: 'dark', type: 'boolean', default: false },
-    ],
-    examples: [
-      `provideVoltTheme({ color: 'volt', style: 'sharp', dark: false })`,
-      `applyVoltTheme({ color: 'ember', style: 'soft', dark: true })`,
-      `persistVoltTheme({ dark: true }) // stores the choice and applies it`,
-      `// No flash of the wrong theme with SSR: inline the script's output at the top of <head>
-// (index.html or your server template), and store choices with persistVoltTheme.
-const script = voltThemeInitScript({ defaults: { color: 'volt' } });`,
-    ],
-  },
-  alert: {
-    name: 'Alert',
-    description:
-      'Inline feedback panel with optional icon and action. No live-region role by default; set role="status" or role="alert" when it appears after an action.',
-    dependencies: [],
-    variants: ['default', 'info', 'success', 'warning', 'destructive'],
-    subComponents: ['alert-title', 'alert-description'],
-    inputs: [
-      {
-        name: 'variant',
-        type: 'string',
-        default: 'default',
-        options: ['default', 'info', 'success', 'warning', 'destructive'],
-      },
-      { name: 'role', type: "'alert' | 'status' | null", default: null },
-      { name: 'class', type: 'string', default: '' },
-    ],
-    examples: [
-      `<ui-alert variant="warning">
-  <svg slot="icon" aria-hidden="true">…</svg>
-  <ui-alert-title>Connection needs attention</ui-alert-title>
-  <ui-alert-description>Reconnect your Cloudflare account.</ui-alert-description>
-  <button slot="action" uiButton variant="outline" size="sm">Reconnect</button>
-</ui-alert>`,
-    ],
-  },
-  'empty-state': {
-    name: 'Empty State',
-    description:
-      'Centred panel for an empty collection or a search with no results: optional icon, title, description and actions. Plain content (no live-region role) and not an error state — pair with Alert for failures.',
-    dependencies: [],
-    inputs: [{ name: 'class', type: 'string', default: '' }],
-    examples: [
-      `<ui-empty-state>
-  <svg slot="icon" aria-hidden="true">…</svg>
-  <ui-empty-state-title>No projects yet</ui-empty-state-title>
-  <ui-empty-state-description>Create your first project to get started.</ui-empty-state-description>
-  <div slot="actions"><button uiButton>Create project</button></div>
-</ui-empty-state>`,
-    ],
-  },
-  spinner: {
-    name: 'Spinner',
-    description:
-      'Indeterminate loading indicator in the current text colour. Decorative by default; with a label it becomes role="status".',
-    dependencies: [],
-    sizes: ['sm', 'md', 'lg'],
-    inputs: [
-      { name: 'size', type: 'string', default: 'md', options: ['sm', 'md', 'lg'] },
-      { name: 'label', type: 'string', default: '' },
-      { name: 'class', type: 'string', default: '' },
-    ],
-    examples: [
-      '<button uiButton disabled><ui-spinner size="sm" /> Saving…</button>',
-      '<ui-spinner size="lg" label="Loading projects" />',
-    ],
-  },
-};
+const distribution = createDistribution(VOLT_NAMES);
+
+const USAGE_SOURCES: Record<string, string> = Object.fromEntries(
+  Object.entries(USAGE).flatMap(([name, source]) =>
+    typeof source === 'string' && name.endsWith('_USAGE') && /@Component\(/.test(source)
+      ? [[name.slice(0, -'_USAGE'.length).toLowerCase().replace(/_/g, '-'), source]]
+      : []
+  )
+);
+
+function pascal(key: string): string {
+  return key.replace(/(^|-)([a-z])/g, (_m, _d, c: string) => c.toUpperCase());
+}
+
+function buildComponent(key: string, api: McpComponentApi): ComponentMeta {
+  const editorial = EDITORIAL[key] ?? { description: '', examples: [] };
+  const groups = api.variants.flatMap(v => v.groups);
+  const optionsOf = (name: string) => groups.find(g => g.name === name)?.options;
+  const main =
+    api.directives.find(d => d.className === `Volt${pascal(key)}`) ??
+    api.directives.find(d => d.inputs.length > 0) ??
+    api.directives[0];
+  return {
+    name: RESPONSIBILITIES[key]?.title ?? pascal(key),
+    description: editorial.description,
+    dependencies: api.packages,
+    packages: api.packages,
+    componentDependencies: api.componentDependencies,
+    backends: api.backends,
+    imports: api.imports,
+    selectors: api.selectors,
+    subComponents: api.selectors.filter(sel => sel !== main?.selector),
+    inputs: (main?.inputs ?? []).map(input => {
+      const options = optionsOf(input.name);
+      return { ...input, ...(options ? { options } : {}) };
+    }),
+    directives: api.directives,
+    variantGroups: api.variants,
+    ...(optionsOf('variant') ? { variants: optionsOf('variant') } : {}),
+    ...(optionsOf('size') ? { sizes: optionsOf('size') } : {}),
+    formControl: api.formControl,
+    examples: editorial.examples,
+    ...(editorial.code ? { code: editorial.code } : {}),
+  };
+}
+
+const components: Record<string, ComponentMeta> = Object.fromEntries(
+  Object.entries(COMPONENT_API).map(([key, api]) => [key, buildComponent(key, api)])
+);
 
 const componentKeys = Object.keys(components);
 
@@ -1024,20 +136,8 @@ const componentKeys = Object.keys(components);
 // ---------------------------------------------------------------------------
 
 const overlayComponents = new Set(['dialog', 'drawer', 'popover', 'tooltip', 'dropdown-menu']);
-const cvaComponents = new Set([
-  'button',
-  'badge',
-  'checkbox',
-  'input',
-  'radio',
-  'select',
-  'switch',
-  'textarea',
-  'toggle',
-  'slider',
-  'range-slider',
-  'toggle-group',
-]);
+// Components that implement ControlValueAccessor, read from the source (api.generated.ts).
+const cvaComponents = new Set(componentKeys.filter(key => components[key].formControl));
 
 function buildSystemContext(): string {
   const componentList = Object.entries(components)
@@ -1062,7 +162,7 @@ function buildSystemContext(): string {
     '```bash',
     'npx @voltui/cli init                    # creates src/app/ui',
     'npx @voltui/cli add button card input',
-    'npx @voltui/cli add dialog ./src/app/shared/ui --dry-run',
+    'npx @voltui/cli add dialog --path=./src/app/shared/ui --dry-run',
     '```',
     '',
     'After copying, import from the local UI folder:',
@@ -1093,11 +193,7 @@ function buildSystemContext(): string {
     '});',
     '```',
     '',
-    'Runtime dependencies required by copied components:',
-    '',
-    '```bash',
-    'npm install ng-primitives class-variance-authority clsx tailwind-merge',
-    '```',
+    'Copied components need only the npm packages their files import (`get_component` lists them as `packages`). `volt add` prints the exact command with the ranges Volt UI was tested with, and `--install` runs it once in the right package, keeping compatible versions already installed and never upgrading Angular.',
     '',
     '## Naming conventions',
     '',
@@ -1214,28 +310,21 @@ function getComponent(key: string): ComponentMeta | undefined {
   return components[key];
 }
 
-function getComponentClassName(comp: ComponentMeta): string {
-  return `Ui${comp.name.replace(/\s/g, '')}`;
-}
-
 /** How the consumer uses Volt: the package (`Volt*`, `volt-*`) or CLI-copied source (`Ui*`, `ui-*`). */
 export type DistributionMode = 'package' | 'copy';
 
 /**
- * The metadata above is written in copy-mode names (what `@voltui/cli add` produces). For a project
- * in package mode the same facts are true under the package's names, so rename rather than keep a
- * second copy: `ui-card` → `volt-card`, `uiButton` → `voltButton`, `UiCard` → `VoltCard`.
+ * The metadata is held in the package's names. A CLI-copy project (the default when no mode is
+ * given, as before) gets the names `@voltui/cli add` writes: `volt-card` → `ui-card`, `voltButton`
+ * → `uiButton`, `VoltCard` → `UiCard`, and `@voltui/components` imports become `./ui/<component>`.
+ * Only names the library declares are renamed, so prose, CSS custom properties and preset names
+ * stay as they are.
  */
 export function forMode<T>(value: T, mode: DistributionMode | undefined): T {
-  if (mode !== 'package') return value;
-  const rename = (text: string) =>
-    text
-      .replace(/\bui-(?=[a-z])/g, 'volt-')
-      .replace(/(?<![A-Za-z])ui(?=[A-Z])/g, 'volt')
-      .replace(/\bUi(?=[A-Z])/g, 'Volt');
+  if (mode === 'package') return value;
   const walk = (v: unknown): unknown =>
     typeof v === 'string'
-      ? rename(v)
+      ? distribution.toCopyMode(v)
       : Array.isArray(v)
         ? v.map(walk)
         : v && typeof v === 'object'
@@ -1249,21 +338,40 @@ function responsibilityOf(key: string) {
   return RESPONSIBILITIES[key];
 }
 
+/** The classes a template needs (directives and components), not services or helpers. */
+function templateClasses(comp: ComponentMeta): string[] {
+  return comp.directives.map(d => d.className);
+}
+
 function getUsageExample(key: string, mode?: DistributionMode) {
   const comp = getComponent(key);
   if (!comp) return undefined;
-  const base = getComponentClassName(comp);
-  const pkgClass = base.replace(/^Ui/, 'Volt');
+  const classes = templateClasses(comp);
+  const names = classes.length ? classes : comp.imports;
   const imports = {
-    npm: `import { ${pkgClass} } from '@voltui/components';`,
-    cli: `import { ${base} } from './ui/${key}';`,
+    npm: `import { ${names.join(', ')} } from '@voltui/components';`,
+    cli: `import { ${names.map(n => n.replace(/^Volt(?=[A-Z])/, 'Ui').replace(/^volt(?=[A-Z])/, 'ui')).join(', ')} } from './ui/${key}';`,
   };
+  const source = USAGE_SOURCES[key];
   return {
     component: key,
     mode: mode ?? 'both',
     imports:
       mode === 'package' ? { npm: imports.npm } : mode === 'copy' ? { cli: imports.cli } : imports,
-    examples: forMode(comp.examples ?? [], mode),
+    // Template fragments, compiled inside a documented host (scripts/check-examples.mjs).
+    examples: forMode(comp.examples, mode === 'package' ? 'package' : 'copy'),
+    ...(comp.code ? { code: forMode(comp.code, mode === 'package' ? 'package' : 'copy') } : {}),
+    // The complete standalone component shown on voltui.dev, compiled in both modes.
+    ...(source
+      ? mode === 'package'
+        ? { source }
+        : mode === 'copy'
+          ? { source: distribution.toCopyMode(source), cli: distribution.cliAddCommand(source) }
+          : {
+              source: { package: source, copy: distribution.toCopyMode(source) },
+              cli: distribution.cliAddCommand(source),
+            }
+      : {}),
   };
 }
 
@@ -1561,7 +669,8 @@ export function createMcpServer(): McpServer {
         };
       }
 
-      const suffix = targetDir ? ` ${targetDir}` : '';
+      // --path names the destination explicitly: never mistaken for a component name.
+      const suffix = targetDir ? ` --path=${targetDir}` : '';
       const command =
         action === 'init'
           ? `npx @voltui/cli init${suffix}`

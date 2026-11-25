@@ -43,7 +43,7 @@ export class VoltPagination {
    * input, which would pin the component to the first value it was given (see mirror-value.ts).
    */
   readonly page = model<number>(1);
-  readonly pageCount = input<number, number>(0, { transform: numberAttribute });
+  readonly pageCount = input<number, unknown>(0, { transform: numberAttribute });
   readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
 
   private readonly state = injectPaginationState();

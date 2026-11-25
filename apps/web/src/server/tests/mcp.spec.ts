@@ -249,8 +249,17 @@ describe('distribution mode', () => {
     const example = JSON.parse(
       textOf(await c.callTool({ name: 'get_usage_example', arguments: { component: 'button' } }))
     );
-    expect(example.imports.npm).toBe("import { VoltButton } from '@voltui/components';");
-    expect(example.imports.cli).toBe("import { UiButton } from './ui/button';");
+    // Every class a template of the component may need, not only the one named after it.
+    expect(example.imports.npm).toBe(
+      "import { VoltButton, VoltNativeButton } from '@voltui/components';"
+    );
+    expect(example.imports.cli).toBe("import { UiButton, UiNativeButton } from './ui/button';");
+    // The complete example shown on voltui.dev, in both modes, with the CLI command for the copy.
+    expect(example.source.package).toContain("from '@voltui/components'");
+    expect(example.source.copy).toContain("from './ui/button'");
+    expect(example.source.copy).toContain('<button uiButton');
+    expect(example.source.copy).not.toContain('@voltui/components');
+    expect(example.cli).toBe('npx @voltui/cli add button spinner');
   });
 
   it('a mode returns only that mode’s import', async () => {
@@ -267,9 +276,79 @@ describe('distribution mode', () => {
   });
 
   it('forMode renames attribute directives and leaves the rest of the text alone', () => {
-    expect(forMode('<button uiButton>UI kit, Ui</button>', 'package')).toBe(
-      '<button voltButton>UI kit, Ui</button>'
+    // Metadata is held in package names; copy mode (the default) renames only declared names.
+    expect(forMode('<button voltButton>Volt UI kit, volt</button>', 'copy')).toBe(
+      '<button uiButton>Volt UI kit, volt</button>'
     );
-    expect(forMode('<ui-card>', undefined)).toBe('<ui-card>');
+    expect(forMode('<volt-card class="[--volt-radius:0]">', undefined)).toBe(
+      '<ui-card class="[--volt-radius:0]">'
+    );
+    expect(forMode('<volt-card>', 'package')).toBe('<volt-card>');
+  });
+});
+
+describe('technical facts come from the source', () => {
+  const component = async (name: string, mode?: 'package' | 'copy') =>
+    JSON.parse(textOf(await c.callTool({ name: 'get_component', arguments: { name, mode } })));
+
+  it('serves extracted inputs, including host-directive and model ones', async () => {
+    const avatar = await component('avatar', 'package');
+    const fallback = avatar.directives.find(
+      (d: { className: string }) => d.className === 'VoltAvatarFallback'
+    );
+    // The hand-written table used to claim `delayMs`; the source binds `delay`.
+    expect(fallback.inputs.map((i: { name: string }) => i.name)).toContain('delay');
+    expect(JSON.stringify(avatar)).not.toContain('delayMs');
+    const sidebar = await component('sidebar', 'package');
+    expect(JSON.stringify(sidebar.directives)).not.toMatch(/"name":"collapsed"/);
+    const toggleGroup = await component('toggle-group', 'package');
+    const outputs = toggleGroup.directives.flatMap((d: { outputs: { name: string }[] }) =>
+      d.outputs.map(o => o.name)
+    );
+    expect(outputs).toContain('valueChange');
+  });
+
+  it('serves variants and npm packages read from the source', async () => {
+    const button = await component('button', 'package');
+    expect([...button.variants].sort()).toEqual([
+      'destructive',
+      'ghost',
+      'link',
+      'outline',
+      'solid',
+    ]);
+    expect(button.sizes).toContain('icon');
+    expect(button.packages).toEqual([
+      'class-variance-authority',
+      'clsx',
+      'ng-primitives',
+      'tailwind-merge',
+    ]);
+    const card = await component('card', 'package');
+    expect(card.packages).not.toContain('ng-primitives');
+    expect(card.imports).toEqual(
+      expect.arrayContaining(['VoltCard', 'VoltCardHeader', 'VoltCardFooter'])
+    );
+  });
+
+  it('every served component has an example and a description', async () => {
+    const listed = JSON.parse(textOf(await c.callTool({ name: 'list_components', arguments: {} })));
+    for (const { name } of listed) {
+      const comp = await component(name);
+      expect(comp.description, name).toBeTruthy();
+      expect(comp.examples.length + (comp.code?.length ?? 0), name).toBeGreaterThan(0);
+    }
+  });
+
+  it('generate_cli_command names the destination with --path', async () => {
+    const result = JSON.parse(
+      textOf(
+        await c.callTool({
+          name: 'generate_cli_command',
+          arguments: { action: 'add', component: 'card', targetDir: './src/app/shared/ui' },
+        })
+      )
+    );
+    expect(result.command).toBe('npx @voltui/cli add card --path=./src/app/shared/ui');
   });
 });

@@ -2,7 +2,8 @@ import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../..');
+// VOLT_REPO_ROOT: tests run the generators against a modified copy of the sources.
+const ROOT = process.env.VOLT_REPO_ROOT ?? join(dirname(fileURLToPath(import.meta.url)), '../..');
 const LIB = join(ROOT, 'packages/volt/src/lib');
 
 function walk(dir, out = []) {
@@ -69,14 +70,16 @@ export function publicExports() {
     )) {
       names.add(m[1]);
     }
-    for (const m of src.matchAll(/export\s*\{([^}]*)\}\s*from\s*'([^']+)'/g)) {
-      for (const n of m[1].split(','))
-        names.add(
-          n
-            .trim()
-            .split(/\s+as\s+/)
-            .pop()
-        );
+    for (const m of src.matchAll(/export\s*(?:type\s*)?\{([^}]*)\}\s*from\s*'([^']+)'/g)) {
+      for (const n of m[1].split(',')) {
+        // `type Foo` inside the braces is still the export `Foo`.
+        const name = n
+          .trim()
+          .replace(/^type\s+/, '')
+          .split(/\s+as\s+/)
+          .pop();
+        if (name) names.add(name);
+      }
     }
     for (const m of src.matchAll(/export\s*\*\s*from\s*'(\.[^']+)'/g)) {
       const base = file.endsWith('index.ts') ? dirname(file) : dirname(file);

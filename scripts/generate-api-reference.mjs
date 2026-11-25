@@ -11,14 +11,21 @@
  * Usage: node scripts/generate-api-reference.mjs
  * Writes: apps/web/src/app/lib/api-reference.generated.ts
  */
-import { readFileSync, writeFileSync } from 'node:fs';
+import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { format, resolveConfig } from 'prettier';
-import { dirname, join } from 'node:path';
+import { createRequire } from 'node:module';
+import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { listComponentDirs, processComponentDir, toUpperSnake } from './lib/api-extract.mjs';
+import {
+  assertNoErrors,
+  listComponentDirs,
+  processComponentDir,
+  toUpperSnake,
+} from './lib/api-extract.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = join(__dirname, '..');
+// VOLT_REPO_ROOT: tests run this generator against a modified copy of the sources.
+const ROOT = process.env.VOLT_REPO_ROOT ?? join(__dirname, '..');
 const COMP_ROOT = join(ROOT, 'packages/volt/src/lib/components');
 const LAYOUT_ROOT = join(ROOT, 'packages/volt/src/lib/layouts');
 const OUT_FILE = join(ROOT, 'apps/web/src/app/lib/api-reference.generated.ts');
@@ -76,8 +83,19 @@ const componentNames = [
 ].filter(({ name }) => !EXEMPT.has(name));
 
 const entries = [];
-for (const { name, root } of componentNames) {
-  const { directives, variants } = processComponentDir(join(root, name));
+const results = componentNames.map(({ name, root }) => ({
+  name,
+  ...processComponentDir(join(root, name)),
+}));
+// An input, output or host-directive binding the extractor cannot read fails the run instead of
+// silently disappearing from the reference.
+try {
+  assertNoErrors(results);
+} catch (error) {
+  console.error(`[api-reference] ${error.message}`);
+  process.exit(1);
+}
+for (const { name, directives, variants } of results) {
   if (directives.length === 0) continue;
   const constName = `${toUpperSnake(name)}_API`;
   entries.push(`export const ${constName}: ComponentApi = {
@@ -126,24 +144,194 @@ export interface ComponentApi {
 
 `;
 
-// The committed file is prettier-formatted (lint-staged), so format here too or `--check` would
-// report a diff that is only whitespace.
-const config = (await resolveConfig(OUT_FILE)) ?? {};
-const output = await format(header + entries.join('\n\n') + '\n', {
-  ...config,
-  filepath: OUT_FILE,
-});
+// ---------------------------------------------------------------------------------------------
+// Two more outputs from the same extraction, so nothing downstream re-derives an API by hand:
+//
+//   apps/web/src/server/routes/mcp/api.generated.ts   the MCP server's technical facts per component
+//   packages/shared/lib/volt-names.generated.ts        which export/selector belongs to which
+//                                                      component — what the package → CLI-copy
+//                                                      transform of examples renames, and nothing else
+// ---------------------------------------------------------------------------------------------
+const MCP_FILE = join(ROOT, 'apps/web/src/server/routes/mcp/api.generated.ts');
+const NAMES_FILE = join(ROOT, 'packages/shared/lib/volt-names.generated.ts');
 
-// `--check`: write nothing, fail if the committed reference no longer matches the source.
+const require = createRequire(import.meta.url);
+const { buildManifest } = require('../cli/generate-manifest.js');
+const manifest = await buildManifest();
+
+const all = [
+  ...listComponentDirs(COMP_ROOT).map(name => ({ name, root: COMP_ROOT })),
+  ...listComponentDirs(LAYOUT_ROOT).map(name => ({ name, root: LAYOUT_ROOT })),
+].map(({ name, root }) => ({
+  name,
+  // A component that is a form control (ControlValueAccessor) — what the MCP prompt wires with
+  // formControlName instead of keeping a hand-written list.
+  formControl: readdirSync(join(root, name)).some(
+    file =>
+      file.endsWith('.ts') &&
+      !file.endsWith('.spec.ts') &&
+      /NG_VALUE_ACCESSOR|ControlValueAccessor/.test(readFileSync(join(root, name, file), 'utf8'))
+  ),
+  ...processComponentDir(join(root, name)),
+}));
+assertNoErrors(all);
+
+const strip = entry => Object.fromEntries(Object.entries(entry).filter(([, v]) => v !== undefined));
+const mcpApi = {};
+const exportOwner = {};
+const elements = new Set();
+const attributes = new Set();
+const exportAs = new Set();
+for (const result of all) {
+  const meta = manifest.components[result.name];
+  if (!meta) throw new Error(`api-reference: "${result.name}" is not in the CLI manifest`);
+  const published = result.declared.filter(d => d.exported);
+  const importable = Object.entries(result.exportKinds)
+    .filter(([, kind]) => kind !== 'type')
+    .map(([name]) => name);
+  for (const name of Object.keys(result.exportKinds)) {
+    const volt = /^[Vv]olt[A-Z]/.test(name);
+    if (volt && exportOwner[name] && exportOwner[name] !== result.name) {
+      throw new Error(
+        `api-reference: ${name} is exported by both ${exportOwner[name]} and ${result.name}`
+      );
+    }
+    // A re-export (NgpDatePickerCellRender) may come from several folders; the first one serves.
+    if (volt || !exportOwner[name]) exportOwner[name] = result.name;
+  }
+  for (const d of published) {
+    for (const part of (d.selector ?? '').split(',').map(x => x.trim())) {
+      const el = part.match(/^(volt-[a-z0-9-]+)/)?.[1];
+      if (el) elements.add(el);
+      for (const [, attr] of part.matchAll(/\[(volt[A-Z]\w*)/g)) attributes.add(attr);
+    }
+    if (d.exportAs) d.exportAs.split(',').forEach(x => exportAs.add(x.trim()));
+  }
+  mcpApi[result.name] = {
+    imports: importable,
+    selectors: published.map(d => d.selector).filter(Boolean),
+    directives: published.map(d =>
+      strip({
+        className: d.className,
+        selector: d.selector ?? undefined,
+        exportAs: d.exportAs,
+        inputs: d.inputs.map(i =>
+          strip({
+            name: i.name,
+            type: i.type,
+            default: i.default,
+            required: i.required || undefined,
+            model: i.model,
+          })
+        ),
+        outputs: d.outputs.map(o => strip({ name: o.name, type: o.type })),
+      })
+    ),
+    variants: result.variantSets.map(set => ({
+      name: set.name,
+      groups: Object.entries(set.variants).map(([group, options]) =>
+        strip({ name: group, options, default: set.defaults[group] })
+      ),
+    })),
+    packages: meta.packages,
+    componentDependencies: meta.dependencies,
+    backends: ['ng-primitives', ...Object.keys(meta.backends ?? {})],
+    formControl: result.formControl,
+  };
+}
+
+const MCP_HEADER = `// Generated by scripts/generate-api-reference.mjs from the library source — do not hand-edit.
+// The MCP server's technical facts: what each component exports, its selectors, every input and
+// output (host-directive and model ones included), its CVA variants and the npm packages it needs.
+// Names are the package's (Volt*, volt-*); the server renames them for CLI-copy projects.
+
+export interface McpApiInput {
+  name: string;
+  type: string;
+  default?: string;
+  required?: boolean;
+  model?: boolean;
+}
+
+export interface McpApiDirective {
+  className: string;
+  selector?: string;
+  exportAs?: string;
+  inputs: McpApiInput[];
+  outputs: { name: string; type: string }[];
+}
+
+export interface McpComponentApi {
+  /** Values (classes, functions, constants) the component's entry exports. */
+  imports: string[];
+  selectors: string[];
+  directives: McpApiDirective[];
+  variants: { name: string | null; groups: { name: string; options: string[]; default?: string }[] }[];
+  /** npm packages a CLI copy of it imports (its component dependencies included). */
+  packages: string[];
+  componentDependencies: string[];
+  backends: string[];
+  /** Implements ControlValueAccessor: works with formControl / formControlName / ngModel. */
+  formControl: boolean;
+}
+
+export const COMPONENT_API: Record<string, McpComponentApi> = `;
+
+const NAMES_HEADER = `// Generated by scripts/generate-api-reference.mjs from the library source — do not hand-edit.
+// Which component owns each public name. The package → CLI-copy transform of examples
+// (packages/shared/lib/distribution.ts) renames exactly these names and nothing else, and turns
+// an import from '@voltui/components' into one import per copied component folder.
+`;
+
+const sorted = values => [...values].sort();
+const namesSource =
+  NAMES_HEADER +
+  `
+import type { VoltNames } from './distribution';
+
+export const VOLT_NAMES: VoltNames = ${JSON.stringify({
+    /* Export → component folder (`VoltButton` → `button`). */
+    exportOwners: Object.fromEntries(
+      Object.entries(exportOwner).sort(([a], [b]) => a.localeCompare(b))
+    ),
+    elements: sorted(elements),
+    attributes: sorted(attributes),
+    exportAs: sorted(exportAs),
+  })};
+`;
+
+// The committed files are prettier-formatted (lint-staged), so format here too or `--check` would
+// report a diff that is only whitespace.
+async function formatted(file, source) {
+  const config = (await resolveConfig(file)) ?? {};
+  return format(source, { ...config, filepath: file });
+}
+
+const outputs = [
+  [OUT_FILE, await formatted(OUT_FILE, header + entries.join('\n\n') + '\n')],
+  [MCP_FILE, await formatted(MCP_FILE, `${MCP_HEADER}${JSON.stringify(mcpApi, null, 2)};\n`)],
+  [NAMES_FILE, await formatted(NAMES_FILE, namesSource)],
+];
+
+// `--check`: write nothing, fail if a committed output no longer matches the source.
 if (process.argv.includes('--check')) {
-  if (readFileSync(OUT_FILE, 'utf8') !== output) {
+  const stale = outputs.filter(([file, content]) => {
+    try {
+      return readFileSync(file, 'utf8') !== content;
+    } catch {
+      return true;
+    }
+  });
+  if (stale.length > 0) {
     console.error(
-      `[api-reference] ${OUT_FILE} is stale.\nRun \`pnpm generate:api-reference\` and commit the result.`
+      `[api-reference] stale: ${stale.map(([file]) => relative(ROOT, file)).join(', ')}\nRun \`pnpm generate:api-reference\` and commit the result.`
     );
     process.exit(1);
   }
-  console.log('[api-reference] up to date');
+  console.log('[api-reference] up to date (docs reference, MCP facts, copy-mode names)');
 } else {
-  writeFileSync(OUT_FILE, output);
-  console.log(`Wrote ${entries.length} component API entries to ${OUT_FILE}`);
+  for (const [file, content] of outputs) writeFileSync(file, content);
+  console.log(
+    `Wrote ${entries.length} component API entries, the MCP facts and the copy-mode names`
+  );
 }

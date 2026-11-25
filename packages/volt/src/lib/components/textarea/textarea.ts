@@ -66,7 +66,7 @@ export class VoltTextarea implements ControlValueAccessor {
   readonly size = input<TextareaVariants['size']>('md');
   readonly state = input<TextareaVariants['state']>('default');
   readonly resize = input<'none' | 'vertical' | 'horizontal' | 'both'>('vertical');
-  readonly rows = input<number, number>(3, { transform: numberAttribute });
+  readonly rows = input<number, unknown>(3, { transform: numberAttribute });
   readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly readonly = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly required = input<boolean, unknown>(false, { transform: booleanAttribute });
