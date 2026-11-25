@@ -154,7 +154,7 @@
     "@angular/compiler-cli": "^22.3.0",
     "@eslint/js": "^10.0.1",
     "@etyma/tooling": "1.0.0",
-    "@ng-primitives/mcp": "^0.131.2",
+    "@ng-primitives/mcp": "^0.132.0",
     "@playwright/test": "^1.65.1",
     "@quartz-headless/core": "0.16.0",
     "@quartz-headless/primitives": "0.16.0",

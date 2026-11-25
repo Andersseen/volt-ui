@@ -130,8 +130,8 @@ importers:
         specifier: 1.0.0
         version: 1.0.0(@angular/compiler@22.3.0)
       '@ng-primitives/mcp':
-        specifier: ^0.131.2
-        version: 0.131.4
+        specifier: ^0.132.0
+        version: 0.132.0
       '@playwright/test':
         specifier: ^1.65.1
         version: 1.65.1
@@ -1915,8 +1915,8 @@ packages:
       '@emnapi/core': ^1.7.1 || 2.0.0-beta.2 || 2.0.0-beta.3
       '@emnapi/runtime': ^1.7.1 || 2.0.0-beta.2 || 2.0.0-beta.3
 
-  '@ng-primitives/mcp@0.131.4':
-    resolution: {integrity: sha512-SPYYrdV//Rghuu6mpdSLOjL+x9nQun8pNoEoGx0V3EIY3FDqf2aclhy62aBibtNjWB5INPoNOTbIwBSNqzAvpA==}
+  '@ng-primitives/mcp@0.132.0':
+    resolution: {integrity: sha512-VA0B8KGeT9VHBWUYXJIzoPVbHUhpGXLub4p1xZJ2bbE0KT2FiEM62aAqw4tfbo+Auxl+az2TjFhBCuXjqdYAnw==}
     hasBin: true
 
   '@nodelib/fs.scandir@2.1.5':
@@ -8431,7 +8431,7 @@ snapshots:
       '@tybys/wasm-util': 0.10.5
     optional: true
 
-  '@ng-primitives/mcp@0.131.4':
+  '@ng-primitives/mcp@0.132.0':
     dependencies:
       '@modelcontextprotocol/sdk': 1.32.2(zod@4.6.7)
       tslib: 2.9.1
