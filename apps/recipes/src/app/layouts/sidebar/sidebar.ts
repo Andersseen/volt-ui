@@ -177,6 +177,7 @@ import {
         </div>
 
         <div class="p-6">
+          <h1 class="mb-4 text-2xl font-semibold tracking-tight">Dashboard</h1>
           <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             <volt-card class="p-6 h-32 flex items-center justify-center">
               <span class="text-muted-foreground">Widget 1</span>
