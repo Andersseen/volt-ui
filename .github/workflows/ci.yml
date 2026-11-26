@@ -25,6 +25,28 @@ jobs:
   # keeps the old check name so branch protection and `deploy` need no change. The slow server-render
   # and e2e suites are sharded: wall time is the slowest shard, not the sum.
 
+  # Which jobs a pull request needs (scripts/ci-scope.mjs): a change to only one app does not wait
+  # for the other app's builds and e2e; the library, shared code, CLI, dependencies and workflows
+  # run everything. Pushes to main, the weekly run and manual runs always run everything.
+  changes:
+    name: Changed scope
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      core: ${{ steps.scope.outputs.core }}
+      web: ${{ steps.scope.outputs.web }}
+      recipes: ${{ steps.scope.outputs.recipes }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - id: scope
+        env:
+          EVENT: ${{ github.event_name }}
+          BASE: ${{ github.event.pull_request.base.sha }}
+        run: node scripts/ci-scope.mjs
+
   static:
     name: Lint · typecheck · generated files · docs
     runs-on: ubuntu-latest
@@ -72,6 +94,8 @@ jobs:
 
   packages:
     name: Library, CLI and agent packages · consumer e2e
+    needs: changes
+    if: needs.changes.outputs.core == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -88,6 +112,11 @@ jobs:
       # The CLI package bundles the manifest; unit tests used to generate it as a side effect.
       - name: Generate the CLI manifest
         run: pnpm manifest
+
+      # Every component usage example and MCP fragment, in package mode (dist/volt) and in CLI-copy
+      # mode (through the CLI and the docs' package -> copy transform), under strict templates.
+      - name: Compile every copyable example in both distribution modes
+        run: pnpm check:examples
 
       - name: Check CLI package
         run: pnpm pack:cli
@@ -109,6 +138,8 @@ jobs:
 
   contracts:
     name: Component contracts (${{ matrix.browser }})
+    needs: changes
+    if: needs.changes.outputs.core == 'true'
     # Pinned: Playwright's WebKit does not launch on ubuntu-26.04, which ubuntu-latest started rolling
     # out to on 2026-11-07 (every launch fails with "Target page, context or browser has been closed").
     runs-on: ${{ matrix.browser == 'webkit' && 'ubuntu-24.04' || 'ubuntu-latest' }}
@@ -137,6 +168,8 @@ jobs:
 
   compat:
     name: Packed package on Angular ${{ matrix.angular }}
+    needs: changes
+    if: needs.changes.outputs.core == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -160,6 +193,8 @@ jobs:
 
   quartz:
     name: Quartz backend on Angular ${{ matrix.angular }}
+    needs: changes
+    if: needs.changes.outputs.core == 'true'
     # Pinned: Playwright's WebKit does not launch on ubuntu-26.04, which ubuntu-latest started rolling
     # out to on 2026-11-07 (every launch fails with "Target page, context or browser has been closed").
     runs-on: ubuntu-24.04
@@ -192,8 +227,60 @@ jobs:
       - name: Install, build and exercise the Quartz backend
         run: node scripts/check-quartz-consumer.mjs ${{ matrix.angular }}
 
+  consumer:
+    name: Packed tarballs in an isolated consumer · Angular ${{ matrix.angular }}
+    needs: changes
+    if: needs.changes.outputs.core == 'true'
+    # Pinned for WebKit (see `contracts`).
+    runs-on: ubuntu-24.04
+    # The whole harness takes ~10-15 minutes; anything longer is a hang, not slowness.
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        # A pull request runs the exact declared minimum in Chromium; pushes to main and the weekly
+        # run also check the newest supported major, in all three browsers.
+        angular: ${{ fromJSON(github.event_name == 'pull_request' && '["21.2.0"]' || '["21.2.0", "22"]') }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup
+      - name: Install Playwright Chromium
+        uses: ./.github/actions/setup-playwright
+      - name: Install Playwright Firefox
+        if: github.event_name != 'pull_request'
+        uses: ./.github/actions/setup-playwright
+        with:
+          browser: firefox
+      - name: Install Playwright WebKit
+        if: github.event_name != 'pull_request'
+        uses: ./.github/actions/setup-playwright
+        with:
+          browser: webkit
+
+      # npm-packs @voltui/components, @voltui/cli and @voltui/agent, installs them into an Angular CLI
+      # project outside the repository and runs the installed `volt` binary (init, add, --path,
+      # multi-add, --install, --base), builds the package and CLI-copy apps with SSR and hydration,
+      # compiles every example, proves a missing dependency fails the build, measures the bundle
+      # against specs/v2/bundle-baseline.json and runs the browser checks. See scripts/check-consumer.mjs.
+      - name: Install, copy, build and exercise the packed tarballs
+        run: >-
+          node scripts/check-consumer.mjs --angular=${{ matrix.angular }}
+          ${{ github.event_name == 'pull_request' && '--project=chromium' || '--project=chromium --project=firefox --project=webkit' }}
+
+      - name: Upload the consumer report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: consumer-report-${{ matrix.angular }}
+          path: dist/consumer-report.json
+          if-no-files-found: ignore
+
   build:
     name: Build docs app
+    needs: changes
+    if: needs.changes.outputs.web == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -216,6 +303,8 @@ jobs:
   # (and the other way round); both feed `verify`.
   build-recipes:
     name: Build Recipes app
+    needs: changes
+    if: needs.changes.outputs.recipes == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -353,6 +442,8 @@ jobs:
 
   storybook:
     name: Storybook · typecheck · coverage · build · smoke
+    needs: changes
+    if: needs.changes.outputs.core == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -388,12 +479,14 @@ jobs:
     name: Verify · lint · typecheck · test · build · e2e
     needs:
       [
+        changes,
         static,
         unit,
         packages,
         contracts,
         compat,
         quartz,
+        consumer,
         build,
         build-recipes,
         e2e,
@@ -410,7 +503,8 @@ jobs:
           RESULTS: ${{ join(needs.*.result, ' ') }}
         run: |
           echo "job results: $RESULTS"
-          for r in $RESULTS; do [ "$r" = "success" ] || exit 1; done
+          # A job skipped because the pull request does not touch its scope counts as passed.
+          for r in $RESULTS; do [ "$r" = "success" ] || [ "$r" = "skipped" ] || exit 1; done
 
   # Volt UI Recipes is its own Cloudflare Pages project (`volt-ui-recipes`, https://recipes.voltui.dev).
   # GitHub Actions owns its production deployments: do not also connect the project to Git in the

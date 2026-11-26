@@ -10,7 +10,12 @@
 
   <div class="w-full h-px bg-border"></div>
 
-  <app-code-panel [title]="t('ui.codePanel.usage')" [code]="breadcrumbsUsage" [tabbed]="true">
+  <app-code-panel
+    distribution
+    [title]="t('ui.codePanel.usage')"
+    [code]="breadcrumbsUsage"
+    [tabbed]="true"
+  >
     <div
       class="p-8 border border-border rounded-lg bg-card/30 flex items-center justify-center min-h-[300px]"
     >

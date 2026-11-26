@@ -1,16 +1,15 @@
 #!/usr/bin/env node
 
+const path = require('path');
 const {
   loadManifest,
   initProject,
-  installDependencies,
   listComponents,
   groupComponents,
   detectTailwindSetup,
   formatTailwindGuidance,
   resolveBase,
   writeConfig,
-  readConfig,
   componentsForBase,
   classNameFor,
   targetUsesNgPrimitives,
@@ -20,63 +19,127 @@ const {
 } = require('../lib/core');
 const { planAdd, formatConflicts, filesWithAction } = require('../lib/add-plan');
 const { applyPlan } = require('../lib/apply-plan');
+const { ArgsError, parseArgs, closest, COMMANDS } = require('../lib/args');
+const { resolveProject, ProjectError, describeProject } = require('../lib/project');
+const {
+  installBlockers,
+  describeEntry,
+  displayInvocation,
+  runInstall,
+} = require('../lib/dependencies');
 
-function parseArgs(rawArgs) {
-  const args = [];
-  const flags = {};
-  for (const arg of rawArgs) {
-    if (arg.startsWith('--')) {
-      const [key, value] = arg.split('=');
-      const normalizedKey = key.slice(2);
-      flags[normalizedKey] = value !== undefined ? value : true;
-    } else {
-      args.push(arg);
-    }
-  }
-  return { args, flags };
+function fail(message) {
+  console.error(`❌ ${message}`);
+  process.exit(1);
 }
 
-function parseAddArgs(args, manifest) {
-  const candidates = args.slice(1);
-  let targetDir = './src/app/ui';
-  const componentNames = [];
+/** A path as the user would type it from the cwd: `./src/app/ui`, `../ui`, or absolute elsewhere. */
+function display(dir, cwd = process.cwd()) {
+  const rel = path.relative(cwd, dir);
+  if (!rel) return '.';
+  if (path.isAbsolute(rel)) return dir;
+  return rel.startsWith('..') ? rel : `./${rel.split(path.sep).join('/')}`;
+}
 
-  for (const candidate of candidates) {
-    if (manifest.components[candidate]) {
-      componentNames.push(candidate);
-    } else if (componentNames.length > 0) {
-      targetDir = candidate;
-      break;
-    } else {
-      const available = Object.keys(manifest.components).sort().slice(0, 12).join(', ');
-      console.error(`❌ Component "${candidate}" not found.`);
-      console.error(`Run "volt list" to see all components. Available examples: ${available}`);
-      process.exit(1);
+function looksLikePath(arg) {
+  return /[\\/]/.test(arg) || arg.startsWith('.') || arg.startsWith('~');
+}
+
+function unknownComponentMessage(names, manifest) {
+  const known = Object.keys(manifest.components);
+  const lines = names.map(name => {
+    const suggestion = closest(name, known);
+    return `Component "${name}" not found.${suggestion ? ` Did you mean "${suggestion}"?` : ''}`;
+  });
+  lines.push(
+    `Run "volt list" to see all components. Available examples: ${known.sort().slice(0, 12).join(', ')}`
+  );
+  return lines.join('\n   ');
+}
+
+/**
+ * `volt add <component>... [target-dir]` (v1) and `volt add <component>... --path=<dir>`.
+ *
+ * With --path every positional is a component, so an unknown name is an error before anything is
+ * written. Without it, the v1 contract holds: leading component names, then at most one trailing
+ * argument that is not a component, read as the target directory — explained when it does not look
+ * like a path, since `volt add button dialg` would otherwise copy into ./dialg silently.
+ */
+function interpretAdd(positionals, flags, manifest) {
+  if (positionals.length === 0) {
+    fail(`Please specify at least one component name.\nUsage: ${COMMANDS.add.usage}`);
+  }
+  const isComponent = name => !!manifest.components[name];
+  const notes = [];
+  if (flags.path) {
+    const unknown = positionals.filter(name => !isComponent(name));
+    if (unknown.length > 0) {
+      fail(
+        `${unknownComponentMessage(unknown, manifest)}\n   With --path every other argument must be a component. Nothing was written.`
+      );
     }
+    return { componentNames: positionals, destination: flags.path, notes };
   }
 
-  return { componentNames, targetDir };
+  const componentNames = [];
+  let destination = null;
+  positionals.forEach((arg, index) => {
+    if (destination !== null) return;
+    if (isComponent(arg)) {
+      componentNames.push(arg);
+      return;
+    }
+    if (componentNames.length === 0) fail(unknownComponentMessage([arg], manifest));
+    const rest = positionals.slice(index + 1);
+    if (rest.length > 0) {
+      fail(
+        `Unexpected argument${rest.length > 1 ? 's' : ''} ${rest.map(r => `"${r}"`).join(', ')} after the target directory "${arg}".\n` +
+          '   Only the last argument can be a target directory. List every component first, or name the destination with --path:\n' +
+          `     volt add ${[...componentNames, ...rest].join(' ')} --path=${arg}`
+      );
+    }
+    destination = arg;
+  });
+
+  if (destination !== null && !looksLikePath(destination)) {
+    const suggestion = closest(destination, Object.keys(manifest.components));
+    notes.push(
+      `"${destination}" is not a component, so it is used as the target directory (v1 syntax).\n` +
+        `   To say so explicitly, write: volt add ${componentNames.join(' ')} --path=${destination}` +
+        (suggestion
+          ? `\n   If you meant the component "${suggestion}", run: volt add ${componentNames.join(' ')} ${suggestion}`
+          : '')
+    );
+  }
+  return { componentNames, destination, notes };
+}
+
+function resolveOrFail(destination) {
+  try {
+    return resolveProject({ cwd: process.cwd(), destination });
+  } catch (err) {
+    if (err instanceof ProjectError) fail(err.message);
+    throw err;
+  }
 }
 
 /**
  * Resolves the backend for this invocation and refuses to mix engines in a directory that already
  * holds the other one. Exits with a message instead of throwing a stack trace.
  */
-function selectBase(flags, targetDir) {
+function selectBase(flags, targetDir, project) {
   let selection;
   try {
-    selection = resolveBase(flags.base);
+    selection = resolveBase(flags.base, project.configRoot);
   } catch (err) {
-    console.error(`❌ ${err.message}`);
-    process.exit(1);
+    fail(err.message);
   }
   if (selection.base !== DEFAULT_BASE && !selection.recorded && targetUsesNgPrimitives(targetDir)) {
-    console.error(
-      `❌ ${targetDir} already contains components copied with the ng-primitives base.\n` +
+    fail(
+      `${targetDir} already contains components copied with the ng-primitives base.\n` +
         `   Copying a Quartz component next to them would mix engines without a record of it.\n` +
         `   Use another target-dir, or keep using ng-primitives for this directory.`
     );
-    process.exit(1);
   }
   return selection;
 }
@@ -111,8 +174,27 @@ function printPlan(plan) {
   }
 }
 
-function addCommand(plan, extra = '') {
-  return `volt add ${plan.requested.join(' ')} ${plan.targetDir}${extra}${
+function printProject(project) {
+  console.log(`Project: ${describeProject(project)}`);
+  if (project.packageDir) {
+    console.log(
+      `Package manager: ${project.manager.name || 'ambiguous'} (${project.manager.source})`
+    );
+  }
+}
+
+function printDependencies(plan) {
+  const { entries } = plan.assessment;
+  if (entries.length === 0) {
+    console.log('Runtime dependencies: none');
+    return;
+  }
+  console.log('Runtime dependencies:');
+  entries.forEach(entry => console.log(`  ${describeEntry(entry)}`));
+}
+
+function addCommand(plan, displayDir, extra = '') {
+  return `volt add ${plan.requested.join(' ')} --path=${displayDir}${extra}${
     plan.base !== DEFAULT_BASE ? ` --base=${plan.base}` : ''
   }`;
 }
@@ -121,49 +203,61 @@ function addCommand(plan, extra = '') {
  * The whole `volt add` operation: one plan for every requested component, validated before the
  * first write, written with rollback, then (optionally) one package install.
  */
-function runAdd({ componentNames, targetDir, manifest, base, requested, recorded, flags }) {
+function runAdd({ componentNames, targetDir, displayDir, manifest, project, selection, flags }) {
+  const { base, requested, recorded } = selection;
   const dryRun = !!flags['dry-run'];
   let plan;
   try {
-    plan = planAdd({ componentNames, targetDir, manifest, base, force: !!flags.force });
+    plan = planAdd({ componentNames, targetDir, manifest, base, force: !!flags.force, project });
   } catch (err) {
-    console.error(`❌ ${err.message}`);
-    process.exit(1);
+    fail(err.message);
   }
 
   const counts = action => filesWithAction(plan, action).length;
+  const blockers = flags.install ? installBlockers(project, plan.assessment) : [];
+  const installProblem = () =>
+    `--install cannot run safely:\n${blockers.map(b => `   - ${b}`).join('\n')}\n` +
+    `   Nothing was written. Fix the above, or run without --install and install the packages yourself.`;
 
   if (dryRun) {
     console.log(
-      `\n🔎 Dry run: ${plan.requested.length} component(s) would be added to ${targetDir}. Nothing was written.\n`
+      `\n🔎 Dry run: ${plan.requested.length} component(s) would be added to ${displayDir}. Nothing was written.\n`
     );
+    printProject(project);
     printPlan(plan);
+    printDependencies(plan);
     if (plan.conflicts.length > 0) {
       console.error(`\n❌ ${formatConflicts(plan, { dryRun: true })}`);
       process.exit(1);
     }
     if (flags.install) {
-      console.log(`\n🔎 Runtime dependencies would be installed: ${plan.installCommand}`);
+      if (blockers.length > 0)
+        fail(
+          `\n${installProblem().replace('Nothing was written', 'The real command would write nothing')}`
+        );
+      console.log(
+        plan.installInvocation
+          ? `\n🔎 Runtime dependencies would be installed: ${plan.installCommand}`
+          : '\n🔎 Runtime dependencies would be installed: nothing — every package is already installed in range.'
+      );
     }
     return;
   }
 
-  if (plan.conflicts.length > 0) {
-    console.error(`❌ ${formatConflicts(plan)}`);
-    process.exit(1);
-  }
+  if (plan.conflicts.length > 0) fail(formatConflicts(plan));
+  // An install that cannot work is refused before the first write, not after the copy.
+  if (blockers.length > 0) fail(installProblem());
 
   try {
     applyPlan(plan);
   } catch (err) {
-    console.error(`❌ ${err.message}`);
-    process.exit(1);
+    fail(err.message);
   }
 
   // An explicit --base is remembered, so later `volt add` calls keep the same engine.
-  if (requested && !recorded) writeConfig(requested);
+  if (requested && !recorded) writeConfig(requested, project.configRoot);
 
-  console.log(`\n✅ Added ${plan.requested.length} component(s) successfully to ${targetDir}`);
+  console.log(`\n✅ Added ${plan.requested.length} component(s) successfully to ${displayDir}`);
   plan.requested.forEach(name => console.log(`  - ${name}`));
   if (plan.dependencies.length > 0) {
     console.log(`\n📦 Required dependencies:`);
@@ -189,51 +283,123 @@ function runAdd({ componentNames, targetDir, manifest, base, requested, recorded
     console.log(`\n🧪 Headless base: ${base} (experimental).`);
   }
 
+  console.log('');
+  printDependencies(plan);
+  const { assessment } = plan;
   if (flags.install) {
     try {
-      installDependencies(process.cwd(), { dependencies: plan.runtimeDependencies });
-    } catch {
-      console.error(
-        `\n❌ The component files above were written, but installing runtime dependencies failed.\n` +
-          `   The copied files stay in place. Install the packages manually:\n` +
-          `     ${plan.installCommand}`
+      const result = runInstall(project, plan.required, assessment);
+      console.log(
+        result.executed
+          ? `\n✅ Runtime dependencies installed and verified in ${project.packageDir}.`
+          : '\n✅ Runtime dependencies were already installed in range; nothing to install.'
       );
-      process.exit(1);
+    } catch (err) {
+      const manual = err.invocation ? displayInvocation(err.invocation) : plan.installCommand;
+      fail(
+        `The component files above were written, but installing runtime dependencies failed:\n` +
+          `   ${err.message}\n` +
+          `   The copied files stay in place. Install the packages manually:\n` +
+          `     ${manual}`
+      );
     }
-    console.log(`\n✅ Runtime dependencies installed.`);
-  } else {
-    console.log(`\n⚠️  Ensure runtime dependencies are installed:`);
+    return;
+  }
+  if (assessment.incompatible.length > 0 || assessment.missingAngular.length > 0) {
+    console.log(
+      `\n⚠️  Some installed dependencies do not match what Volt UI needs (nothing was changed):`
+    );
+    [...assessment.incompatible, ...assessment.missingAngular].forEach(e =>
+      console.log(`  - ${e.reason}`)
+    );
+  }
+  if (plan.installInvocation) {
+    console.log(`\n⚠️  Install the missing runtime dependencies:`);
     console.log(`  ${plan.installCommand}`);
-    console.log(`\n  Or run: ${addCommand(plan, ' --install')}`);
+    console.log(`\n  Or run: ${addCommand(plan, displayDir, ' --install')}`);
   }
 }
 
+function printHelp() {
+  console.log(`Volt UI CLI
+
+Usage:
+  volt init [--path=<dir>]                   Prepare a folder for copied components (default: src/app/ui)
+  volt init [--path=<dir>] --base=quartz     Also record the headless base (ng-primitives | quartz)
+  volt add <component>... [--path=<dir>]     Copy one or more components (and what they need)
+  volt add <component>... --dry-run          Show the full plan without writing anything
+  volt add <component>... --force            Replace files that differ from the Volt UI source
+  volt add <component>... --install          Also install the runtime packages they import
+  volt add <component>... --base=quartz      Copy the experimental Quartz Headless version
+  volt list                                  List all available components
+  volt list --status=stable                  List components by stability
+  volt list --base=quartz                    List components that have a Quartz implementation
+  volt list --json                           Print component metadata as JSON
+
+Destination:
+  Without --path, components go to src/app/ui of the nearest package.json above the current
+  directory. --path is resolved against the current directory. The v1 positional form
+  "volt add button ./src/app/shared/ui" still works: a trailing argument that is not a component
+  is the target directory. Prefer --path, which is never mistaken for a component name.
+
+Options take a value as --path=<dir> or --path <dir>. Unknown options are errors.
+
+Examples:
+  npx @voltui/cli init
+  npx @voltui/cli add button
+  npx @voltui/cli add button card input --path=./src/app/shared/ui
+  npx @voltui/cli add dialog --dry-run
+  npx @voltui/cli add card --install
+  npx @voltui/cli add checkbox switch toggle --base=quartz`);
+}
+
 async function main() {
-  const { args, flags } = parseArgs(process.argv.slice(2));
-  const command = args[0];
+  let parsed;
+  try {
+    parsed = parseArgs(process.argv.slice(2));
+  } catch (err) {
+    if (err instanceof ArgsError) fail(err.message);
+    throw err;
+  }
+  const { command, positionals, flags } = parsed;
+
+  if (command === 'help') {
+    if (positionals[0] && COMMANDS[positionals[0]]) {
+      console.log(`Usage: ${COMMANDS[positionals[0]].usage}\n`);
+    }
+    printHelp();
+    return;
+  }
 
   if (command === 'add') {
-    if (args.length < 2) {
-      console.error('❌ Please specify at least one component name.');
-      console.log(
-        'Usage: volt add <component-name>... [target-dir] [--install] [--dry-run] [--force]'
-      );
-      process.exit(1);
-    }
-
     const manifest = await loadManifest();
-    const { componentNames, targetDir } = parseAddArgs(args, manifest);
-    const { base, requested, recorded } = selectBase(flags, targetDir);
-    runAdd({ componentNames, targetDir, manifest, base, requested, recorded, flags });
+    const { componentNames, destination, notes } = interpretAdd(positionals, flags, manifest);
+    const project = resolveOrFail(destination);
+    const targetDir = destination || display(project.targetDir);
+    const displayDir = targetDir;
+    notes.forEach(note => console.log(`ℹ️  ${note}`));
+    const selection = selectBase(flags, targetDir, project);
+    runAdd({ componentNames, targetDir, displayDir, manifest, project, selection, flags });
   } else if (command === 'init') {
-    const targetDir = args[1] || './src/app/ui';
-    const { base, requested, recorded } = selectBase(flags, targetDir);
+    if (positionals.length > 1) {
+      fail(
+        `Unexpected argument(s): ${positionals.slice(1).join(' ')}. "volt init" takes one target directory.\nUsage: ${COMMANDS.init.usage}`
+      );
+    }
+    if (positionals.length === 1 && flags.path && positionals[0] !== flags.path) {
+      fail(
+        `Both a target directory ("${positionals[0]}") and --path ("${flags.path}") were given. Use only --path.`
+      );
+    }
+    const destination = flags.path || positionals[0] || null;
+    const project = resolveOrFail(destination);
+    const targetDir = destination || display(project.targetDir);
+    const { base, requested, recorded } = selectBase(flags, targetDir, project);
     let init;
     try {
       init = initProject(targetDir);
     } catch (err) {
-      console.error(`❌ ${err.message}`);
-      process.exit(1);
+      fail(err.message);
     }
     console.log('✅ Initialized volt/ui in', targetDir);
     console.log(
@@ -243,33 +409,38 @@ async function main() {
     );
     // Only an explicit --base writes volt.json: a project that never asks keeps the old behaviour.
     if (requested && !recorded) {
-      writeConfig(requested);
-      console.log(`✅ Recorded base "${requested}" in ${CONFIG_FILE}`);
+      writeConfig(requested, project.configRoot);
+      console.log(
+        `✅ Recorded base "${requested}" in ${path.join(display(project.configRoot), CONFIG_FILE)}`
+      );
     }
     if (base !== DEFAULT_BASE) {
       const supported = componentsForBase(await loadManifest(), base);
       console.log(`🧪 The "${base}" base is experimental and supports: ${supported.join(', ')}.`);
     }
 
-    const tailwind = detectTailwindSetup(process.cwd());
+    const tailwind = detectTailwindSetup(project.packageDir || process.cwd());
     if (!tailwind.configured) {
       console.log(`\n${formatTailwindGuidance(tailwind)}`);
     }
   } else if (command === 'list') {
+    if (positionals.length > 0) {
+      fail(
+        `"volt list" takes no arguments (got: ${positionals.join(' ')}).\nUsage: ${COMMANDS.list.usage}`
+      );
+    }
     const manifest = await loadManifest();
-    const status = typeof flags.status === 'string' ? flags.status : null;
+    const status = flags.status || null;
     const validStatuses = ['stable', 'beta', 'experimental'];
     if (status && !validStatuses.includes(status)) {
-      console.error(`❌ Unknown status "${status}". Use one of: ${validStatuses.join(', ')}`);
-      process.exit(1);
+      fail(`Unknown status "${status}". Use one of: ${validStatuses.join(', ')}`);
     }
 
     let base;
     try {
       base = flags.base === undefined ? undefined : validateBase(flags.base);
     } catch (err) {
-      console.error(`❌ ${err.message}`);
-      process.exit(1);
+      fail(err.message);
     }
     const components = listComponents(manifest, { status, base });
     if (flags.json) {
@@ -283,44 +454,13 @@ async function main() {
       console.log(`\n${group}`);
       for (const item of items) {
         const statusLabel = item.stability.padEnd(12);
-        const description = item.description ? ` - ${item.description}` : '';
+        // Descriptions are written with the package's names; a copy uses the Ui prefix.
+        const description = item.description
+          ? ` - ${item.description.replace(/\bVolt(?=[A-Z])/g, 'Ui')}`
+          : '';
         console.log(`  - ${item.name.padEnd(16)} ${statusLabel}${description}`);
       }
     }
-  } else {
-    console.log('Volt UI CLI');
-    console.log('');
-    console.log('Usage:');
-    console.log('  volt init [target-dir]                Initialize volt/ui in your project');
-    console.log(
-      '  volt init [target-dir] --base=quartz  Also record the headless base (ng-primitives | quartz)'
-    );
-    console.log(
-      '  volt add <component>... [target-dir]  Add one or more components to your project'
-    );
-    console.log('  volt add <component>... [target-dir] --dry-run  Preview files without writing');
-    console.log(
-      '  volt add <component>... [target-dir] --force    Replace files that differ from the Volt UI source'
-    );
-    console.log(
-      '  volt add <component>... --install     Add component(s) and install runtime deps'
-    );
-    console.log('  volt list                             List all available components');
-    console.log('  volt list --status=stable             List components by stability');
-    console.log('  volt list --json                      Print component metadata as JSON');
-    console.log(
-      '  volt list --base=quartz               List components that have a Quartz implementation'
-    );
-    console.log(
-      '  volt add <component>... --base=quartz Copy the experimental Quartz Headless version'
-    );
-    console.log('');
-    console.log('Examples:');
-    console.log('  npx @voltui/cli init');
-    console.log('  npx @voltui/cli add button');
-    console.log('  npx @voltui/cli add button card input');
-    console.log('  npx @voltui/cli add card --install');
-    console.log('  npx @voltui/cli add checkbox switch toggle --base=quartz');
   }
 }
 

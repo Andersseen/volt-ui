@@ -19,7 +19,8 @@
  *   angular     no hard-coded Angular major: the supported range is the library's peer dependency
  *   removed     elements and APIs that do not exist (and are easy to hallucinate) are not mentioned
  *
- * Ground truth for the component list is apps/web/public/manifest.json (`pnpm manifest`).
+ * Ground truth for the component list is the CLI manifest, built in memory from the source by
+ * cli/generate-manifest.js — this check writes nothing.
  */
 'use strict';
 
@@ -54,38 +55,47 @@ async function main() {
     pathToFileURL(path.join(ROOT, 'scripts/lib/component-catalog.mjs')).href
   );
 
-  const manifestPath = path.join(ROOT, 'apps/web/public/manifest.json');
-  if (!fs.existsSync(manifestPath)) {
-    console.error('Missing apps/web/public/manifest.json — run "pnpm manifest" first.');
-    process.exit(1);
-  }
-  const manifest = new Set(
-    Object.keys(JSON.parse(fs.readFileSync(manifestPath, 'utf-8')).components)
-  );
+  // The manifest is built in memory: this check never writes (or silently repairs) a file.
+  const { buildManifest } = require('./generate-manifest.js');
+  const manifest = new Set(Object.keys((await buildManifest()).components));
 
   // --- inventory ---------------------------------------------------------------------------
-  const mcpSrc = read('apps/web/src/server/routes/mcp.ts');
-  const block = mcpSrc.slice(
-    mcpSrc.indexOf('const components: Record<string, ComponentMeta> = {'),
-    mcpSrc.indexOf('\nconst componentKeys')
+  // The MCP server serves exactly what api.generated.ts holds (generated from the source), and
+  // editorial.ts must describe each of those and nothing else.
+  const { COMPONENT_API } = await import(
+    pathToFileURL(path.join(ROOT, 'apps/web/src/server/routes/mcp/api.generated.ts')).href
   );
-  const mcpKeys = new Set(
-    [...block.matchAll(/^ {2}(?:'([a-z0-9-]+)'|([a-z][a-zA-Z0-9-]*)):\s*\{/gm)].map(
-      m => m[1] ?? m[2]
-    )
+  const { EDITORIAL } = await import(
+    pathToFileURL(path.join(ROOT, 'apps/web/src/server/routes/mcp/editorial.ts')).href
   );
+  const mcpKeys = new Set(Object.keys(COMPONENT_API));
+  const editorialKeys = new Set(Object.keys(EDITORIAL));
+  for (const key of mcpKeys) {
+    if (!editorialKeys.has(key))
+      fail('apps/web/src/server/routes/mcp/editorial.ts', `no description or example for "${key}"`);
+  }
+  for (const key of editorialKeys) {
+    if (!mcpKeys.has(key))
+      fail(
+        'apps/web/src/server/routes/mcp/editorial.ts',
+        `describes "${key}", which is not a component`
+      );
+  }
   const catalog = await loadCatalog();
   const described = new Set(catalog.map(c => c.key));
   for (const key of manifest) {
     if (!mcpKeys.has(key))
-      fail('apps/web/src/server/routes/mcp.ts', `serves no component "${key}"`);
+      fail(
+        'apps/web/src/server/routes/mcp/api.generated.ts',
+        `serves no component "${key}" (pnpm generate:api-reference)`
+      );
     if (!described.has(key))
       fail('component metadata', `"${key}" has no responsibility (Storybook guide)`);
   }
   for (const key of mcpKeys) {
     if (!manifest.has(key))
       fail(
-        'apps/web/src/server/routes/mcp.ts',
+        'apps/web/src/server/routes/mcp/api.generated.ts',
         `serves "${key}", which the manifest does not know`
       );
   }
@@ -130,6 +140,7 @@ async function main() {
     ...skills.map(s => s.file),
     'VOLT_UI_PROMPT.md',
     'apps/web/src/server/routes/mcp.ts',
+    'apps/web/src/server/routes/mcp/editorial.ts',
     'cli/agent/content.js',
     'cli/agent/README.md',
   ];

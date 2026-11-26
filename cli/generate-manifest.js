@@ -1,283 +1,62 @@
 #!/usr/bin/env node
+/**
+ * Builds the CLI registry manifest (`apps/web/public/manifest.json`, gitignored, packed into
+ * `@voltui/cli` as `registry/manifest.json`).
+ *
+ * Every fact in it is read from the place that already owns it — nothing is restated here:
+ *
+ *   files, inter-component dependencies   the library source tree (packages/volt/src/lib)
+ *   label, group, description              the Storybook guides via scripts/lib/component-catalog.mjs
+ *   stability                              COMPONENT_STATUS.md (through the same catalog)
+ *   npm packages a copy imports            the copied files' own import statements
+ *   ranges for those packages              packages/volt/package.json (dependencies + peers)
+ *   tested versions                        what this workspace has installed (the lockfile)
+ *
+ *   node cli/generate-manifest.js           write the manifest           (pnpm manifest)
+ *   node cli/generate-manifest.js --check   write nothing; fail when the manifest cannot be built
+ *                                           (a component without status or guide, an import the
+ *                                           package does not declare) or when an existing manifest
+ *                                           on disk is stale
+ */
 const fs = require('fs');
 const path = require('path');
+const { pathToFileURL } = require('url');
 
-const COMPONENTS_DIR = path.resolve(__dirname, '../packages/volt/src/lib/components');
-const LAYOUTS_DIR = path.resolve(__dirname, '../packages/volt/src/lib/layouts');
-const OUTPUT = path.resolve(__dirname, '../apps/web/public/manifest.json');
-const STATUS_FILE = path.resolve(__dirname, '../COMPONENT_STATUS.md');
-const LIB_DIR = path.resolve(__dirname, '../packages/volt/src/lib');
+// VOLT_REPO_ROOT: tests run this generator against a modified copy of the sources. Installed
+// package versions are still read from this checkout's node_modules.
+const ROOT = process.env.VOLT_REPO_ROOT
+  ? path.resolve(process.env.VOLT_REPO_ROOT)
+  : path.resolve(__dirname, '..');
+const CHECKOUT = path.resolve(__dirname, '..');
+const LIB_DIR = path.join(ROOT, 'packages/volt/src/lib');
+const COMPONENTS_DIR = path.join(LIB_DIR, 'components');
+const LAYOUTS_DIR = path.join(LIB_DIR, 'layouts');
 const QUARTZ_DIR = path.join(LIB_DIR, 'quartz');
-const LIB_PACKAGE = path.resolve(__dirname, '../packages/volt/package.json');
+const LIB_PACKAGE = path.join(ROOT, 'packages/volt/package.json');
+const OUTPUT = path.join(ROOT, 'apps/web/public/manifest.json');
 
-/**
- * Stability is read from COMPONENT_STATUS.md, the one place it is written by hand. It used to be
- * repeated here, where 24 stable components were still labelled `beta` long after 1.0 — `volt list
- * --status=stable` and the MCP server read this manifest. A component with no row fails the run, so
- * adding one without recording its status (ripple effect 6) is caught by `pnpm manifest`.
- */
-function readStabilityTable() {
-  const table = {};
-  for (const line of fs.readFileSync(STATUS_FILE, 'utf-8').split('\n')) {
-    const row = line.match(/^\|\s*([a-z][a-z-]*)\s*\|\s*(stable|beta|experimental)\s*\|/);
-    if (row) table[row[1]] = row[2];
-  }
-  return table;
-}
+const { bareImports, packageName, isFrameworkPackage: isFramework } = require('./lib/imports');
 
-const STABILITY = readStabilityTable();
+// Lib-root helpers a component may import with a relative path (`../../utils`). Kept in sync with
+// cli/lib/core.js, which copies them flat next to each component.
+const { SHARED_LIB_FILES } = require('./lib/shared-files');
 
-const COMPONENT_METADATA = {
-  accordion: {
-    group: 'Display',
-    label: 'Accordion',
-    description: 'Collapsible panels',
-  },
-  alert: {
-    group: 'Feedback',
-    label: 'Alert',
-    description: 'Inline feedback panels',
-  },
-  'empty-state': {
-    group: 'Feedback',
-    label: 'Empty State',
-    description: 'Empty collection and no-results panels',
-  },
-  autofill: {
-    group: 'Forms',
-    label: 'Autofill',
-    description: 'Browser autofill detection',
-  },
-  avatar: {
-    group: 'Display',
-    label: 'Avatar',
-    description: 'User images',
-  },
-  badge: {
-    group: 'Display',
-    label: 'Badge',
-    description: 'Status indicators',
-  },
-  breadcrumbs: {
-    group: 'Navigation',
-    label: 'Breadcrumbs',
-    description: 'Path trail',
-  },
-  button: {
-    group: 'Forms',
-    label: 'Button',
-    description: 'Interactive buttons',
-  },
-  card: {
-    group: 'Display',
-    label: 'Card',
-    description: 'Content containers',
-  },
-  checkbox: {
-    group: 'Forms',
-    label: 'Checkbox',
-    description: 'Boolean selection',
-  },
-  combobox: {
-    group: 'Forms',
-    label: 'Combobox',
-    description: 'Searchable select',
-  },
-  'date-picker': {
-    group: 'Controls',
-    label: 'Date Picker',
-    description: 'Calendar input',
-  },
-  dialog: {
-    group: 'Overlays',
-    label: 'Dialog',
-    description: 'Modal dialogs',
-  },
-  drawer: {
-    group: 'Overlays',
-    label: 'Drawer',
-    description: 'Slide-in panels',
-  },
-  'dropdown-menu': {
-    group: 'Overlays',
-    label: 'Dropdown Menu',
-    description: 'Action menus',
-  },
-  'file-upload': {
-    group: 'Forms',
-    label: 'File Upload',
-    description: 'Upload controls',
-  },
-  'form-field': {
-    group: 'Forms',
-    label: 'Form Field',
-    description: 'Labels, hints, and errors',
-  },
-  input: {
-    group: 'Forms',
-    label: 'Input',
-    description: 'Text input fields',
-  },
-  'input-otp': {
-    group: 'Forms',
-    label: 'Input OTP',
-    description: 'PIN code input',
-  },
-  listbox: {
-    group: 'Controls',
-    label: 'Listbox',
-    description: 'Selection list',
-  },
-  meter: {
-    group: 'Display',
-    label: 'Meter',
-    description: 'Known-range values',
-  },
-  'navigation-menu': {
-    group: 'Navigation',
-    label: 'Navigation Menu',
-    description: 'Navbar with dropdowns',
-  },
-  pagination: {
-    group: 'Controls',
-    label: 'Pagination',
-    description: 'Page navigation',
-  },
-  popover: {
-    group: 'Overlays',
-    label: 'Popover',
-    description: 'Floating panels',
-  },
-  progress: {
-    group: 'Display',
-    label: 'Progress',
-    description: 'Task completion',
-  },
-  radio: {
-    group: 'Forms',
-    label: 'Radio',
-    description: 'Single-select options',
-  },
-  'range-slider': {
-    group: 'Forms',
-    label: 'Range Slider',
-    description: 'Dual-thumb range selection',
-  },
-  resizable: {
-    group: 'Layout',
-    label: 'Resizable',
-    description: 'Resizable panels',
-  },
-  search: {
-    group: 'Forms',
-    label: 'Search',
-    description: 'Search with clear action',
-  },
-  select: {
-    group: 'Forms',
-    label: 'Select',
-    description: 'Dropdown selection',
-  },
-  separator: {
-    group: 'Display',
-    label: 'Separator',
-    description: 'Visual dividers',
-  },
-  sidebar: {
-    group: 'Layout',
-    label: 'Sidebar',
-    description: 'Application sidebar layout',
-  },
-  skeleton: {
-    group: 'Display',
-    label: 'Skeleton',
-    description: 'Loading placeholders',
-  },
-  spinner: {
-    group: 'Feedback',
-    label: 'Spinner',
-    description: 'Loading indicator',
-  },
-  slider: {
-    group: 'Forms',
-    label: 'Slider',
-    description: 'Range input',
-  },
-  switch: {
-    group: 'Forms',
-    label: 'Switch',
-    description: 'On/off controls',
-  },
-  table: {
-    group: 'Display',
-    label: 'Table',
-    description: 'Data tables',
-  },
-  tabs: {
-    group: 'Navigation',
-    label: 'Tabs',
-    description: 'Tabbed interface',
-  },
-  textarea: {
-    group: 'Forms',
-    label: 'Textarea',
-    description: 'Multi-line input',
-  },
-  theme: {
-    group: 'Theming',
-    label: 'Theme',
-    description: 'Theme provider, density and scoped theming',
-  },
-  toast: {
-    group: 'Overlays',
-    label: 'Toast',
-    description: 'Notifications',
-  },
-  toggle: {
-    group: 'Controls',
-    label: 'Toggle',
-    description: 'Pressed state button',
-  },
-  'toggle-group': {
-    group: 'Controls',
-    label: 'Toggle Group',
-    description: 'Grouped toggle controls',
-  },
-  toolbar: {
-    group: 'Controls',
-    label: 'Toolbar',
-    description: 'Grouped actions',
-  },
-  tooltip: {
-    group: 'Overlays',
-    label: 'Tooltip',
-    description: 'Hover information',
-  },
-};
-
-function titleFromName(name) {
-  return name
-    .split('-')
-    .map(segment => segment.charAt(0).toUpperCase() + segment.slice(1))
-    .join(' ');
+function sourceFiles(dir) {
+  return fs
+    .readdirSync(dir)
+    .filter(f => f.endsWith('.ts') && !f.endsWith('.spec.ts') && !f.endsWith('.test.ts'))
+    .sort();
 }
 
 /**
  * Map a relative import path to a component/layout name if it points to another
  * Volt component. Handles both 'volt' alias imports and relative imports.
  */
-function resolveInternalImport(importPath, currentCategory, currentName) {
-  // 'volt' alias: e.g. 'volt/button' -> button
+function resolveInternalImport(importPath, currentName) {
   if (importPath === 'volt' || importPath.startsWith('volt/')) {
     const segments = importPath.split('/').filter(Boolean);
-    // 'volt' or 'volt/button' -> take the first segment after 'volt'
     return segments.length > 1 ? segments[1] : null;
   }
-
-  // Relative imports between component/layout folders:
-  // ../../components/tooltip  -> tooltip
-  // ../../lib/components/tooltip -> tooltip
-  // ../button (when inside same category) -> button
   const normalized = importPath.replace(/\\/g, '/');
   const match = normalized.match(/(?:components|layouts)\/([^/]+)(?:\/|$)/);
   const sibling = normalized.match(/^\.\.\/([^/.]+)(?:\/|$)/);
@@ -285,145 +64,276 @@ function resolveInternalImport(importPath, currentCategory, currentName) {
   return target && target !== currentName ? target : null;
 }
 
-function stabilityOf(name) {
-  const stability = STABILITY[name];
-  if (!stability) {
-    throw new Error(
-      `COMPONENT_STATUS.md has no row for "${name}". Add one (stable | beta | experimental) — see specs/GUARDRAILS.md ripple effect 6.`
-    );
+function sharedFilesImportedBy(source) {
+  return SHARED_LIB_FILES.filter(file => {
+    const base = file.replace(/\.ts$/, '');
+    return new RegExp(`from\\s+['"](?:\\.\\./)+${base}['"]`).test(source);
+  });
+}
+
+function installedVersion(pkg) {
+  for (const candidate of [
+    path.join(CHECKOUT, 'node_modules', pkg, 'package.json'),
+    path.join(CHECKOUT, 'packages/volt/node_modules', pkg, 'package.json'),
+  ]) {
+    if (fs.existsSync(candidate)) return JSON.parse(fs.readFileSync(candidate, 'utf-8')).version;
   }
-  return stability;
+  return null;
 }
 
-function scanComponents(dir, category) {
-  const entries = fs.readdirSync(dir, { withFileTypes: true });
-  const components = {};
-
-  for (const entry of entries) {
-    if (!entry.isDirectory()) continue;
-    const componentDir = path.join(dir, entry.name);
-    const files = fs
-      .readdirSync(componentDir)
-      .filter(f => f.endsWith('.ts') && !f.endsWith('.spec.ts') && !f.endsWith('.test.ts'))
-      .map(f => path.posix.join(category, entry.name, f));
-
-    if (files.length === 0) continue;
-
-    components[entry.name] = {
-      category,
-      group:
-        COMPONENT_METADATA[entry.name]?.group || (category === 'layouts' ? 'Layout' : 'Components'),
-      label: COMPONENT_METADATA[entry.name]?.label || titleFromName(entry.name),
-      description: COMPONENT_METADATA[entry.name]?.description || '',
-      stability: stabilityOf(entry.name),
-      files,
-      dependencies: [],
-    };
-  }
-
-  return components;
-}
-
-function extractDependencies(componentDir, currentCategory, currentName, allComponents) {
-  const dependencies = new Set();
-  const files = fs.readdirSync(componentDir);
-
-  for (const file of files) {
-    if (!file.endsWith('.ts') || file.endsWith('.spec.ts') || file.endsWith('.test.ts')) continue;
-    const content = fs.readFileSync(path.join(componentDir, file), 'utf-8');
-
-    // Match ES module import sources
-    const importRegex = /from\s+['"]([^'"]+)['"]/g;
-    let match;
-    while ((match = importRegex.exec(content)) !== null) {
-      const target = resolveInternalImport(match[1], currentCategory, currentName);
-      if (target && allComponents.has(target)) {
-        dependencies.add(target);
-      }
-    }
-  }
-
-  return Array.from(dependencies).sort();
-}
-
-const components = {
-  ...scanComponents(COMPONENTS_DIR, 'components'),
-  ...scanComponents(LAYOUTS_DIR, 'layouts'),
-};
-
-const allComponentNames = new Set(Object.keys(components));
-
-// Second pass: populate dependencies now that every component is known.
-for (const [name, meta] of Object.entries(components)) {
-  const componentDir = path.join(meta.category === 'layouts' ? LAYOUTS_DIR : COMPONENTS_DIR, name);
-  meta.dependencies = extractDependencies(componentDir, meta.category, name, allComponentNames);
-}
+class ManifestError extends Error {}
 
 /**
- * Alternative headless backends. `components.<name>.files` stays the default (ng-primitives)
- * source, unchanged; a component that also has a Quartz implementation gets
- * `backends.quartz = { files, dependencies }` with paths relative to `packages/volt/src/lib`.
- * A Quartz folder may import a pure helper that lives with the default component (Toggle's
- * `variants.ts`); that file is listed too, so a copy is self-contained and styling is not forked.
+ * The npm packages a set of library files needs, from their imports (and the shared helpers they
+ * pull in). Every non-framework package must be declared by the library's package.json, or a
+ * consumer following the CLI would be told nothing about it.
  */
-function scanQuartzBackends() {
-  if (!fs.existsSync(QUARTZ_DIR)) return {};
-  const backends = {};
-  for (const entry of fs.readdirSync(QUARTZ_DIR, { withFileTypes: true })) {
-    if (!entry.isDirectory()) continue;
-    const name = entry.name;
-    if (!components[name]) {
-      throw new Error(
-        `lib/quartz/${name} has no ng-primitives counterpart in lib/components/${name}.`
-      );
+function packagesFor(files, declared, where) {
+  const pkgs = new Set();
+  const seen = new Set();
+  const visit = rel => {
+    if (seen.has(rel)) return;
+    seen.add(rel);
+    const source = fs.readFileSync(path.join(LIB_DIR, rel), 'utf-8');
+    for (const pkg of bareImports(source)) {
+      if (isFramework(pkg)) continue;
+      if (!declared[pkg]) {
+        throw new ManifestError(
+          `${rel} (${where}) imports "${pkg}", which packages/volt/package.json does not declare. ` +
+            'Declare it (dependencies or an optional peer) so the CLI can tell consumers to install it.'
+        );
+      }
+      pkgs.add(pkg);
     }
-    const dir = path.join(QUARTZ_DIR, name);
-    const own = fs
-      .readdirSync(dir)
-      .filter(f => f.endsWith('.ts') && !f.endsWith('.spec.ts') && !f.endsWith('.test.ts'))
-      .sort();
-    const files = own.map(f => path.posix.join('quartz', name, f));
-    const dependencies = new Set();
-    for (const file of own) {
-      const content = fs.readFileSync(path.join(dir, file), 'utf-8');
+    for (const shared of sharedFilesImportedBy(source)) visit(shared);
+  };
+  files.forEach(visit);
+  return [...pkgs].sort();
+}
+
+async function loadCatalogByKey() {
+  const { loadCatalog } = await import(
+    pathToFileURL(path.join(CHECKOUT, 'scripts/lib/component-catalog.mjs')).href
+  );
+  return new Map((await loadCatalog()).map(entry => [entry.key, entry]));
+}
+
+/** First sentence of the guide summary: what `volt list` prints next to a name. */
+function shortDescription(summary) {
+  return (summary.match(/^.*?[.!?](?=\s|$)/)?.[0] ?? summary).trim();
+}
+
+async function buildManifest() {
+  const libPackage = JSON.parse(fs.readFileSync(LIB_PACKAGE, 'utf-8'));
+  const catalog = await loadCatalogByKey();
+  const declared = { ...libPackage.peerDependencies, ...libPackage.dependencies };
+  const optional = libPackage.peerDependenciesMeta || {};
+
+  const scan = (dir, category) => {
+    const out = {};
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      if (!entry.isDirectory()) continue;
+      const own = sourceFiles(path.join(dir, entry.name));
+      if (own.length === 0) continue;
+      const meta = catalog.get(entry.name);
+      if (!meta) {
+        throw new ManifestError(
+          `"${entry.name}" has no guide in stories/_docs/component-guides.mjs or no row in ` +
+            'COMPONENT_STATUS.md — see specs/GUARDRAILS.md ripple effects 6 and 7.'
+        );
+      }
+      out[entry.name] = {
+        category,
+        group: meta.category,
+        label: meta.title,
+        description: shortDescription(meta.summary),
+        stability: meta.status,
+        files: own.map(f => path.posix.join(category, entry.name, f)),
+        dependencies: [],
+        packages: [],
+      };
+    }
+    return out;
+  };
+
+  const components = {
+    ...scan(COMPONENTS_DIR, 'components'),
+    ...scan(LAYOUTS_DIR, 'layouts'),
+  };
+  const names = new Set(Object.keys(components));
+
+  for (const [name, meta] of Object.entries(components)) {
+    const deps = new Set();
+    for (const file of meta.files) {
+      const content = fs.readFileSync(path.join(LIB_DIR, file), 'utf-8');
       for (const [, importPath] of content.matchAll(/from\s+['"]([^'"]+)['"]/g)) {
-        const sameComponentFile = importPath.match(/^(?:\.\.\/)+components\/([^/]+)\/([^/]+)$/);
-        if (sameComponentFile && sameComponentFile[1] === name) {
-          const shared = path.posix.join('components', name, `${sameComponentFile[2]}.ts`);
-          if (!files.includes(shared)) files.push(shared);
-          continue;
-        }
-        const target = resolveInternalImport(importPath, 'components', name);
-        if (target && allComponentNames.has(target)) dependencies.add(target);
+        const target = resolveInternalImport(importPath, name);
+        if (target && names.has(target)) deps.add(target);
       }
     }
-    backends[name] = { files, dependencies: [...dependencies].sort() };
+    meta.dependencies = [...deps].sort();
+    meta.packages = packagesFor(meta.files, declared, name);
   }
-  return backends;
-}
 
-const quartzBackends = scanQuartzBackends();
-for (const [name, backend] of Object.entries(quartzBackends)) {
-  components[name].backends = { quartz: backend };
-}
-const libPackage = JSON.parse(fs.readFileSync(LIB_PACKAGE, 'utf-8'));
+  /*
+   * Alternative headless backends. `components.<name>.files` stays the default (ng-primitives)
+   * source; a component with a Quartz implementation gets `backends.quartz = { files, dependencies,
+   * packages }`. A Quartz folder may import a pure helper that lives with the default component
+   * (Toggle's `variants.ts`); that file is listed too, so a copy is self-contained.
+   */
+  const quartz = {};
+  if (fs.existsSync(QUARTZ_DIR)) {
+    for (const entry of fs.readdirSync(QUARTZ_DIR, { withFileTypes: true })) {
+      if (!entry.isDirectory()) continue;
+      const name = entry.name;
+      if (!components[name]) {
+        throw new ManifestError(
+          `lib/quartz/${name} has no ng-primitives counterpart in lib/components/${name}.`
+        );
+      }
+      const dir = path.join(QUARTZ_DIR, name);
+      const own = sourceFiles(dir);
+      const files = own.map(f => path.posix.join('quartz', name, f));
+      const dependencies = new Set();
+      for (const file of own) {
+        const content = fs.readFileSync(path.join(dir, file), 'utf-8');
+        for (const [, importPath] of content.matchAll(/from\s+['"]([^'"]+)['"]/g)) {
+          const sameComponentFile = importPath.match(/^(?:\.\.\/)+components\/([^/]+)\/([^/]+)$/);
+          if (sameComponentFile && sameComponentFile[1] === name) {
+            const shared = path.posix.join('components', name, `${sameComponentFile[2]}.ts`);
+            if (!files.includes(shared)) files.push(shared);
+            continue;
+          }
+          const target = resolveInternalImport(importPath, name);
+          if (target && names.has(target)) dependencies.add(target);
+        }
+      }
+      quartz[name] = {
+        files,
+        dependencies: [...dependencies].sort(),
+        packages: packagesFor(files, declared, `${name}, quartz`),
+      };
+      components[name].backends = { quartz: quartz[name] };
+    }
+  }
 
-const manifest = {
-  version: require('../package.json').version,
-  // Published ranges of each backend's runtime packages, read from the library's own peer ranges.
-  backends: {
-    'ng-primitives': { default: true, packages: [] },
-    quartz: {
-      entryPoint: '@voltui/components/quartz',
-      packages: ['@quartz-headless/core', '@quartz-headless/primitives'].map(
-        pkg => `${pkg}@${libPackage.peerDependencies[pkg]}`
+  // A copy brings its component dependencies along (sidebar → tooltip), so what it needs installed
+  // is the union over that closure: the field answers "what must I install for this component".
+  const closure = (name, backend, seen = new Set()) => {
+    if (seen.has(name)) return seen;
+    seen.add(name);
+    const meta = components[name];
+    const deps = backend ? (meta.backends?.[backend]?.dependencies ?? []) : meta.dependencies;
+    deps.forEach(dep => closure(dep, backend, seen));
+    return seen;
+  };
+  const union = (name, backend) =>
+    [
+      ...new Set(
+        [...closure(name, backend)].flatMap(dep =>
+          backend ? components[dep].backends[backend].packages : components[dep].packages
+        )
       ),
-      components: Object.keys(quartzBackends).sort(),
-    },
-  },
-  components,
-};
+    ].sort();
+  const transitive = Object.fromEntries(
+    Object.keys(components).map(name => [
+      name,
+      {
+        packages: union(name),
+        quartz: components[name].backends ? union(name, 'quartz') : null,
+      },
+    ])
+  );
+  for (const [name, { packages, quartz: q }] of Object.entries(transitive)) {
+    components[name].packages = packages;
+    if (q) components[name].backends.quartz.packages = q;
+  }
 
-fs.mkdirSync(path.dirname(OUTPUT), { recursive: true });
-fs.writeFileSync(OUTPUT, JSON.stringify(manifest, null, 2));
-console.log(`Manifest written to ${OUTPUT}`);
+  // Every package a copy can import, with the range the library declares and the version this
+  // revision was built and tested with. One table, read from package.json, never typed twice.
+  const used = new Set();
+  for (const meta of Object.values(components)) {
+    meta.packages.forEach(p => used.add(p));
+    Object.values(meta.backends || {}).forEach(b => b.packages.forEach(p => used.add(p)));
+  }
+  const packages = {};
+  for (const pkg of [...used].sort()) {
+    const tested = installedVersion(pkg);
+    if (!tested) {
+      throw new ManifestError(`"${pkg}" is not installed in this workspace; run pnpm install.`);
+    }
+    packages[pkg] = {
+      range: declared[pkg],
+      tested,
+      ...(libPackage.peerDependencies?.[pkg] ? { peer: true } : {}),
+      ...(optional[pkg]?.optional ? { optional: true } : {}),
+    };
+  }
+  const angular = Object.fromEntries(
+    Object.entries(libPackage.peerDependencies || {}).filter(([pkg]) => pkg.startsWith('@angular/'))
+  );
+
+  return {
+    version: libPackage.version,
+    runtime: {
+      // The Angular packages a copy needs are the consumer application's own; the CLI checks the
+      // installed versions against these ranges and never installs or upgrades Angular.
+      angular,
+      packages,
+    },
+    // Published ranges of each backend's runtime packages, read from the library's own peer ranges.
+    backends: {
+      'ng-primitives': { default: true, packages: [] },
+      quartz: {
+        entryPoint: '@voltui/components/quartz',
+        packages: ['@quartz-headless/core', '@quartz-headless/primitives'].map(
+          pkg => `${pkg}@${libPackage.peerDependencies[pkg]}`
+        ),
+        components: Object.keys(quartz).sort(),
+      },
+    },
+    components,
+  };
+}
+
+const serialize = manifest => JSON.stringify(manifest, null, 2);
+
+async function main() {
+  const check = process.argv.includes('--check');
+  let manifest;
+  try {
+    manifest = await buildManifest();
+  } catch (err) {
+    if (!(err instanceof ManifestError)) throw err;
+    console.error(`[manifest] ${err.message}`);
+    process.exit(1);
+  }
+  const output = serialize(manifest);
+  if (!check) {
+    fs.mkdirSync(path.dirname(OUTPUT), { recursive: true });
+    fs.writeFileSync(OUTPUT, output);
+    console.log(`Manifest written to ${OUTPUT}`);
+    return;
+  }
+  const rel = path.relative(ROOT, OUTPUT);
+  if (!fs.existsSync(OUTPUT)) {
+    console.log(
+      `[manifest] builds (${Object.keys(manifest.components).length} components); ${rel} is not generated yet`
+    );
+    return;
+  }
+  if (fs.readFileSync(OUTPUT, 'utf-8') !== output) {
+    console.error(`[manifest] ${rel} is stale.\nRun \`pnpm manifest\` to regenerate it.`);
+    process.exit(1);
+  }
+  console.log('[manifest] up to date');
+}
+
+module.exports = { buildManifest, serialize, bareImports, packageName, ManifestError, OUTPUT };
+
+if (require.main === module) {
+  main().catch(err => {
+    console.error(err);
+    process.exit(1);
+  });
+}

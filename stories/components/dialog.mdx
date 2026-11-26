@@ -180,7 +180,7 @@ The Accessibility panel under each story runs axe-core against that story. It is
 
 Selector: <code>{"[voltDialogContent]"}</code>
 
-<table><thead><tr><th>Input</th><th>Type</th><th>Default</th></tr></thead><tbody><tr><td><code>{"class"}</code></td><td><code>{"string"}</code></td><td><code>{"''"}</code></td></tr><tr><td><code>{"role"}</code></td><td><code>{"unknown"}</code></td><td>—</td></tr><tr><td><code>{"modal"}</code></td><td><code>{"unknown"}</code></td><td>—</td></tr></tbody></table>
+<table><thead><tr><th>Input</th><th>Type</th><th>Default</th></tr></thead><tbody><tr><td><code>{"class"}</code></td><td><code>{"string"}</code></td><td><code>{"''"}</code></td></tr><tr><td><code>{"role"}</code></td><td><code>{"NgpDialogRole | undefined"}</code></td><td>—</td></tr><tr><td><code>{"modal"}</code></td><td><code>{"boolean"}</code></td><td>—</td></tr></tbody></table>
 
 ### VoltDialogDescription
 
@@ -192,7 +192,7 @@ Selector: <code>{"[voltDialogDescription]"}</code>
 
 Selector: <code>{"[voltDialogOverlay]"}</code>
 
-<table><thead><tr><th>Input</th><th>Type</th><th>Default</th></tr></thead><tbody><tr><td><code>{"class"}</code></td><td><code>{"string"}</code></td><td><code>{"''"}</code></td></tr><tr><td><code>{"closeOnClick"}</code></td><td><code>{"unknown"}</code></td><td>—</td></tr></tbody></table>
+<table><thead><tr><th>Input</th><th>Type</th><th>Default</th></tr></thead><tbody><tr><td><code>{"class"}</code></td><td><code>{"string"}</code></td><td><code>{"''"}</code></td></tr><tr><td><code>{"closeOnClick"}</code></td><td><code>{"boolean | undefined"}</code></td><td>—</td></tr></tbody></table>
 
 ### VoltDialogRoot
 
@@ -212,7 +212,7 @@ Selector: <code>{"[voltDialogTitle]"}</code>
 
 Selector: <code>{"[voltDialog]"}</code>
 
-<table><thead><tr><th>Input</th><th>Type</th><th>Default</th></tr></thead><tbody><tr><td><code>{"voltDialog"}</code></td><td><code>{"unknown"}</code></td><td>—</td></tr><tr><td><code>{"closeOnEscape"}</code></td><td><code>{"unknown"}</code></td><td>—</td></tr></tbody></table>
+<table><thead><tr><th>Input</th><th>Type</th><th>Default</th></tr></thead><tbody><tr><td><code>{"voltDialog"}</code></td><td><code>{"TemplateRef<NgpDialogContext<unknown, unknown>>"}</code></td><td>—</td></tr><tr><td><code>{"closeOnEscape"}</code></td><td><code>{"NgpDismissGuard<KeyboardEvent>"}</code></td><td>—</td></tr></tbody></table>
 
 <table><thead><tr><th>Output</th><th>Emits</th></tr></thead><tbody><tr><td><code>{"closed"}</code></td><td><code>{"unknown"}</code></td></tr></tbody></table>
 

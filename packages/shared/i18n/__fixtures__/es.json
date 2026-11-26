@@ -443,7 +443,44 @@
       "apiBody": "Los selectores, entradas y salidas congelados en 1.0 siguen funcionando. Un cambio que rompa exige una versión mayor y notas de migración.",
       "themingTitle": "Temas",
       "themingBody": "Los 5 colores × 5 estilos y el sistema de tokens se quedan como están. Una compilación sin Tailwind añade una opción; no quita nada.",
-      "feedback": "¿Tienes una opinión sobre el orden o necesitas algo que no está aquí? Abre una issue o una discusión en [GitHub](https://github.com/Andersseen/volt-ui). El trabajo publicado queda registrado en [CHANGELOG.md](https://github.com/Andersseen/volt-ui/blob/main/CHANGELOG.md), y el encuadre técnico a más largo plazo vive en [specs/SPEC.md](https://github.com/Andersseen/volt-ui/blob/main/specs/SPEC.md)."
+      "feedback": "¿Tienes una opinión sobre el orden o necesitas algo que no está aquí? Abre una issue o una discusión en [GitHub](https://github.com/Andersseen/volt-ui). El trabajo publicado queda registrado en [CHANGELOG.md](https://github.com/Andersseen/volt-ui/blob/main/CHANGELOG.md), y el encuadre técnico a más largo plazo vive en [specs/SPEC.md](https://github.com/Andersseen/volt-ui/blob/main/specs/SPEC.md).",
+      "v2": {
+        "items": {
+          "trust": {
+            "title": "Instalación y documentación en las que confiar",
+            "summary": "Todo lo que un consumidor copia o instala se comprueba contra los paquetes reales: la CLI, los ejemplos de este sitio y los datos que reciben las herramientas de IA.",
+            "details": {
+              "d1": "La CLI acepta un destino explícito, encuentra el proyecto correcto en un workspace e instala solo los paquetes que importan los archivos copiados.",
+              "d2": "Cada ejemplo de uso compila como paquete npm y como código copiado con la CLI, y puedes copiar cualquiera de los dos.",
+              "d3": "Los paquetes empaquetados se instalan en un proyecto Angular nuevo fuera del repositorio, se compilan con SSR y se prueban en navegadores."
+            }
+          },
+          "composition": {
+            "title": "Componentes que se combinan sin fricción",
+            "summary": "Formularios, enlaces y overlays se comportan igual tanto si un control está solo como dentro de un form field, un drawer o un diálogo.",
+            "details": {
+              "d1": "Cada familia indica dónde viven su clase, id, nombre accesible, estado y foco, y las pruebas observan el elemento interactivo real.",
+              "d2": "Las mejoras llegan como APIs aditivas en 1.x; lo que rompería tu código espera a una versión mayor con notas de migración.",
+              "d3": "Las tareas reales —ajustes, búsqueda asíncrona, una tabla de datos— se documentan como recetas hechas con los componentes existentes."
+            }
+          },
+          "updates": {
+            "title": "Ver qué cambió en Volt UI sin perder tus cambios",
+            "summary": "Una comparación de solo lectura entre tus componentes copiados y la versión de la CLI que ejecutas, para trasladar una corrección a mano.",
+            "details": {
+              "d1": "Nunca cambia un archivo ni fusiona nada automáticamente.",
+              "d2": "Distingue los componentes de origen conocido de los que no puede ubicar.",
+              "d3": "El código copiado sigue funcionando si borras el registro que utiliza."
+            }
+          }
+        },
+        "whyTitle": "Por qué la fiabilidad va antes que nuevos componentes",
+        "whyBody": "El catálogo ya es lo bastante amplio para construir aplicaciones reales. Lo que decide si Volt UI ayuda es la distancia entre una demo que funciona y un código que puedes instalar, copiar, compilar y mantener en tu propio proyecto; por eso esa distancia se cierra primero.",
+        "whyOrder": "Cada punto depende del anterior: las mejoras de composición necesitan una forma fiable de distribuirse y comprobarse, y comparar versiones solo ayuda cuando las copias se instalan y compilan de forma fiable.",
+        "deferredTitle": "Aplazado, no planificado",
+        "deferredBody": "Una capa headless propia y una distribución sin Tailwind CSS eran puntos anteriores de esta hoja de ruta. Ambos se aplazan: ng-primitives sigue siendo el motor por defecto (hay un backend experimental con Quartz Headless) y Tailwind CSS v4 sigue siendo el único destino de estilos hasta que una demanda concreta justifique otro.",
+        "themingBody": "Los presets de 5 colores × 5 estilos y el sistema de tokens se mantienen como están."
+      }
     },
     "mcpPage": {
       "title": "Integración con IA",
@@ -632,7 +669,10 @@
       "directiveSource": "Código de la directiva",
       "usage": "Uso",
       "copyNote": "Copia este código en tu proyecto.",
-      "copyNoteDep": "Copia este código en tu proyecto. El componente usa {$dep}."
+      "copyNoteDep": "Copia este código en tu proyecto. El componente usa {$dep}.",
+      "modeLabel": "Cómo usas Volt UI",
+      "modePackage": "Paquete npm",
+      "modeCopy": "Copia con la CLI"
     },
     "api": {
       "input": "Entrada",

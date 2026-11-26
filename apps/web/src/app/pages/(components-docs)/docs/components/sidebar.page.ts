@@ -230,6 +230,7 @@ export class SidebarDemo {
 
       <div class="mt-16 space-y-6">
         <app-code-panel
+          distribution
           [title]="t('ui.codePanel.usage')"
           [code]="sidebarUsage"
           [description]="t('layouts.sidebarDocs.minimalShape')"

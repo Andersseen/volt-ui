@@ -34,8 +34,25 @@ function cleanRegistry() {
   fs.rmSync(REGISTRY_ROOT, { recursive: true, force: true });
 }
 
+/** The registry must ship the manifest of this source tree: refuse a stale one (pnpm manifest). */
+async function assertManifestCurrent() {
+  const { buildManifest, serialize } = require('./generate-manifest.js');
+  const expected = serialize(await buildManifest());
+  const manifestPath = path.join(REPO_ROOT, 'apps/web/public/manifest.json');
+  if (fs.existsSync(manifestPath) && fs.readFileSync(manifestPath, 'utf-8') !== expected) {
+    throw new Error(
+      'apps/web/public/manifest.json is stale for this source tree. Run "pnpm manifest" before packing the CLI.'
+    );
+  }
+}
+
 if (process.argv.includes('--clean')) {
   cleanRegistry();
 } else {
-  copyRegistry();
+  assertManifestCurrent()
+    .then(copyRegistry)
+    .catch(error => {
+      console.error(error.message);
+      process.exit(1);
+    });
 }

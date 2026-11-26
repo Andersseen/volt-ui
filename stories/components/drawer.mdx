@@ -73,7 +73,7 @@ import {
         <div class="flex items-center justify-between p-4 border-b border-border">
           <h2 voltDrawerTitle>Menu</h2>
           <volt-drawer-close>
-            <lmn-x [size]="16" />
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12" /></svg>
           </volt-drawer-close>
         </div>
         <nav class="p-4" voltDrawerDescription>
@@ -109,7 +109,7 @@ Selector: <code>{"volt-drawer-close"}</code>
 
 Selector: <code>{"[voltDrawerContent]"}</code>
 
-<table><thead><tr><th>Input</th><th>Type</th><th>Default</th></tr></thead><tbody><tr><td><code>{"side"}</code></td><td><code>{"DrawerSide"}</code></td><td><code>{"'right'"}</code></td></tr><tr><td><code>{"class"}</code></td><td><code>{"string"}</code></td><td><code>{"''"}</code></td></tr><tr><td><code>{"role"}</code></td><td><code>{"unknown"}</code></td><td>—</td></tr><tr><td><code>{"modal"}</code></td><td><code>{"unknown"}</code></td><td>—</td></tr></tbody></table>
+<table><thead><tr><th>Input</th><th>Type</th><th>Default</th></tr></thead><tbody><tr><td><code>{"side"}</code></td><td><code>{"DrawerSide"}</code></td><td><code>{"'right'"}</code></td></tr><tr><td><code>{"class"}</code></td><td><code>{"string"}</code></td><td><code>{"''"}</code></td></tr><tr><td><code>{"role"}</code></td><td><code>{"NgpDialogRole | undefined"}</code></td><td>—</td></tr><tr><td><code>{"modal"}</code></td><td><code>{"boolean"}</code></td><td>—</td></tr></tbody></table>
 
 ### VoltDrawerDescription
 
@@ -121,7 +121,7 @@ Selector: <code>{"[voltDrawerDescription]"}</code>
 
 Selector: <code>{"[voltDrawerOverlay]"}</code>
 
-<table><thead><tr><th>Input</th><th>Type</th><th>Default</th></tr></thead><tbody><tr><td><code>{"class"}</code></td><td><code>{"string"}</code></td><td><code>{"''"}</code></td></tr><tr><td><code>{"closeOnClick"}</code></td><td><code>{"unknown"}</code></td><td>—</td></tr></tbody></table>
+<table><thead><tr><th>Input</th><th>Type</th><th>Default</th></tr></thead><tbody><tr><td><code>{"class"}</code></td><td><code>{"string"}</code></td><td><code>{"''"}</code></td></tr><tr><td><code>{"closeOnClick"}</code></td><td><code>{"boolean | undefined"}</code></td><td>—</td></tr></tbody></table>
 
 ### VoltDrawerTitle
 
@@ -133,7 +133,7 @@ Selector: <code>{"[voltDrawerTitle]"}</code>
 
 Selector: <code>{"[voltDrawer]"}</code>
 
-<table><thead><tr><th>Input</th><th>Type</th><th>Default</th></tr></thead><tbody><tr><td><code>{"closeOnEscape"}</code> {"(transform: booleanAttribute)"}</td><td><code>{"boolean"}</code></td><td><code>{"true"}</code></td></tr><tr><td><code>{"voltDrawer"}</code></td><td><code>{"unknown"}</code></td><td>—</td></tr></tbody></table>
+<table><thead><tr><th>Input</th><th>Type</th><th>Default</th></tr></thead><tbody><tr><td><code>{"closeOnEscape"}</code> {"(transform: booleanAttribute)"}</td><td><code>{"boolean"}</code></td><td><code>{"true"}</code></td></tr><tr><td><code>{"voltDrawer"}</code></td><td><code>{"TemplateRef<NgpDialogContext<unknown, unknown>>"}</code></td><td>—</td></tr></tbody></table>
 
 <table><thead><tr><th>Output</th><th>Emits</th></tr></thead><tbody><tr><td><code>{"closed"}</code></td><td><code>{"unknown"}</code></td></tr></tbody></table>
 

@@ -1,6 +1,6 @@
 # Plan 01 — CLI que conserva el código del consumidor
 
-**Estado:** fases A y B implementadas en `fix/cli-integrity` (entrada `228debd`); fase C pendiente. **Prioridad:** P0/P1. **Depende de:** nada.
+**Estado:** fases A y B en #249 (mergeada, `72cb016`); fase C implementada en `feat/consumer-distribution-dx`. **Prioridad:** P0/P1. **Depende de:** nada.
 **Hallazgos:** F01–F04. **Entrega:** correcciones compatibles primero; opciones nuevas en minor.
 
 ## Contexto y archivos
@@ -46,23 +46,23 @@ dry-run y force. Probar por CLI real además de funciones internas.
 
 ## Fase C — Destino y versiones predecibles
 
-- [ ] Añadir `--path=<directorio>` y `--path <directorio>` sin retirar destinos v1
+- [x] Añadir `--path=<directorio>` y `--path <directorio>` sin retirar destinos v1
       posicionales. Con path explícito, un componente desconocido falla antes de escribir.
-- [ ] Mantener `add button custom-ui` como destino válido de v1. Informar que se ha
+- [x] Mantener `add button custom-ui` como destino válido de v1. Informar que se ha
       interpretado como ruta y recomendar `--path` para evitar ambigüedad. No inferir
       permisos para retirar esa sintaxis en un patch.
-- [ ] Definir error por flags desconocidos, opciones sin valor y argumentos sobrantes;
+- [x] Definir error por flags desconocidos, opciones sin valor y argumentos sobrantes;
       revisar compatibilidad antes de cambiar salidas usadas por scripts.
-- [ ] Resolver raíz del proyecto y gestor desde el directorio seleccionado, ascendiendo
+- [x] Resolver raíz del proyecto y gestor desde el directorio seleccionado, ascendiendo
       a su package.json/lockfile. Probar ejecución desde subcarpeta y workspaces; en caso
       ambiguo requerir ruta explícita, no instalar en otro paquete por accidente.
-- [ ] Incluir versiones/rangos runtime probados en el registro empaquetado, empezando
+- [x] Incluir versiones/rangos runtime probados en el registro empaquetado, empezando
       por la versión exacta de ng-primitives usada para validar la copia. No hardcodear
       una segunda tabla desconectada del origen de versiones.
-- [ ] Instalar una sola vez con `--install`. Conservar versiones existentes compatibles;
+- [x] Instalar una sola vez con `--install`. Conservar versiones existentes compatibles;
       ante incompatibilidad, explicarla sin actualizar Angular ni reescribir dependencias
       ajenas automáticamente. Derivar la política final del plan 03.
-- [ ] Actualizar ayuda, CLI.md y ejemplos relevantes en los tres idiomas.
+- [x] Actualizar ayuda, CLI.md y ejemplos relevantes en los tres idiomas.
 
 ## Verificación y límites
 
@@ -135,3 +135,33 @@ publicación. Nuevas flags son capacidades propuestas, no comandos disponibles h
   - `writeConfig` (`volt.json`) se escribe tras copiar con éxito y queda fuera del rollback.
 - **Preguntas abiertas:** comportamiento exacto en varios package.json/lockfiles (fase C).
 - **Próximo paso:** fase C.
+
+### 2026-11-25 — Fase C (`feat/consumer-distribution-dx`)
+
+- **SHA de entrada:** `72cb0160` (merge de #249; main = origin/main).
+- **Implementado:**
+  - `cli/lib/args.js`: parser por comando. Flags desconocidas (con sugerencia), flags de valor sin
+    valor o vacías, valor en flag booleana, repetición contradictoria, posicionales sobrantes y comando
+    desconocido → error y salida 1. `--path=<dir>` y `--path <dir>`.
+  - `volt add`: con `--path` todos los posicionales son componentes (desconocido → error antes de
+    escribir). Sin `--path` se mantiene el destino posicional v1; un nombre sin aspecto de ruta se
+    explica y se recomienda `--path`; argumentos tras el destino son error (antes se ignoraban).
+  - `cli/lib/project.js`: paquete = `package.json` más cercano al destino; workspace pnpm/npm/Yarn/Bun
+    que lo incluye; gestor por campo `packageManager` o lockfile; lockfiles de dos gestores = ambiguo.
+    Destino por defecto: `src/app/ui` del paquete (también desde subcarpetas); raíz de workspace sin
+    destino → error con las apps candidatas. `volt.json` junto al `package.json` del destino.
+  - Manifiesto: `runtime.packages` (rango de `packages/volt/package.json` + versión probada del lockfile),
+    `runtime.angular` (peers) y `packages` por componente (cierre transitivo). Sin tabla manual.
+  - `cli/lib/dependencies.js` + `cli/lib/semver.js` (sin dependencias nuevas): estados keep/add/declare/
+    install/problem; `--install` bloquea antes de escribir ante incompatibilidad, Angular ausente, gestor
+    ambiguo, sin `package.json` o el propio repo Volt; instala una vez y verifica después.
+- **Decisiones:** comando desconocido pasa de ayuda+0 a error+1 (documentado en CHANGELOG). Un paquete
+  presente solo transitivamente se declara (no se confía en el hoisting).
+- **Tests:** `cli/tests/args.spec.js` (parser y semver, 32), `cli/tests/destination.spec.js` (binario real,
+  gestor falso en PATH: destinos, subcarpeta, fuera del cwd, workspaces pnpm/npm, 5 lockfiles, ambigüedad,
+  repo Volt, política de instalación, 34). Total CLI: 178 en verde. Instalación real del tarball:
+  `scripts/check-consumer.mjs` (plan 03).
+- **Documentación:** `CLI.md`, `README.md`, skill `volt-ui-distribution` (+ copias generadas y contenido
+  del instalador), roadmap en/es/uk.
+- **Limitaciones:** no se valida que `@angular/cdk` añadido exista en la misma minor que core si Angular
+  publica minors desacompasadas; Yarn Berry vs 1 se distingue por `.yarnrc.yml`.

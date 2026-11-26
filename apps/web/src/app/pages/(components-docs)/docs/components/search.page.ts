@@ -16,7 +16,12 @@ import { injectAppI18n } from '@shared/i18n/i18n';
         <p class="mt-2 text-muted-foreground">{{ t('components.search.description') }}</p>
       </div>
 
-      <app-code-panel [title]="t('ui.codePanel.usage')" [code]="usageCode" [tabbed]="true">
+      <app-code-panel
+        distribution
+        [title]="t('ui.codePanel.usage')"
+        [code]="usageCode"
+        [tabbed]="true"
+      >
         <volt-search class="flex max-w-md items-center gap-2">
           <volt-input type="search" placeholder="Search components..." class="flex-1" />
           <volt-search-clear>Clear</volt-search-clear>

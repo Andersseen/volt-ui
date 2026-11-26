@@ -57,8 +57,8 @@ export class VoltProgress {
   readonly value = input<number | null, number | null>(null, {
     transform: numberAttribute as never,
   });
-  readonly min = input<number, number>(0, { transform: numberAttribute });
-  readonly max = input<number, number>(100, { transform: numberAttribute });
+  readonly min = input<number, unknown>(0, { transform: numberAttribute });
+  readonly max = input<number, unknown>(100, { transform: numberAttribute });
   readonly valueLabel = input<(value: number, max: number, min: number) => string>(
     (value, max, min) => `${max === min ? 0 : Math.round(((value - min) / (max - min)) * 100)}%`
   );

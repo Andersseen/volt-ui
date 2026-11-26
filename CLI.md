@@ -28,7 +28,8 @@ node cli/bin/volt add button
 ### init
 
 ```bash
-volt init [target-dir]
+volt init [--path=<dir>] [--base=ng-primitives|quartz]
+volt init [target-dir]            # v1 form, still supported
 ```
 
 Creates the target UI directory and an `index.ts` barrel.
@@ -46,13 +47,14 @@ Default target:
 Example:
 
 ```bash
-volt init ./src/app/shared/ui
+volt init --path=./src/app/shared/ui
 ```
 
 ### add
 
 ```bash
-volt add <component-name>... [target-dir] [--install] [--dry-run] [--force]
+volt add <component>... [--path=<dir>] [--base=<base>] [--install] [--dry-run] [--force]
+volt add <component>... [target-dir]    # v1 form, still supported
 ```
 
 Examples:
@@ -60,26 +62,84 @@ Examples:
 ```bash
 volt add button
 volt add button card input
-volt add card ./src/app/shared/ui
-volt add dialog ./src/app/shared/ui --dry-run
+volt add card --path=./src/app/shared/ui
+volt add card --path ./src/app/shared/ui
+volt add dialog --path=./src/app/shared/ui --dry-run
 volt add button --install
 volt add button --force
 ```
 
 Flags:
 
-| Flag         | Description                                                                                                               |
-| ------------ | ------------------------------------------------------------------------------------------------------------------------- |
-| `target-dir` | Optional destination directory. Defaults to `./src/app/ui`.                                                               |
-| `--install`  | Installs runtime dependencies in the current working directory.                                                           |
-| `--dry-run`  | Prints the operation plan (see below) without creating directories, writing files or `volt.json`, or installing packages. |
-| `--force`    | Allows replacing planned component and shared files that differ from the Volt UI source. Never touches other files.       |
+| Flag            | Description                                                                                                                        |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `--path=<dir>`  | Destination directory, resolved against the current directory. Also `--path <dir>`. Every other argument is then a component name. |
+| `target-dir`    | The v1 positional destination: a trailing argument that is not a component. Kept for compatibility; prefer `--path`.               |
+| `--base=<base>` | `ng-primitives` (default) or `quartz` (experimental). Recorded in `volt.json`.                                                     |
+| `--install`     | Installs the npm packages the copied files import, once, in the resolved project (see below).                                      |
+| `--dry-run`     | Prints the project, the plan and the dependency check without creating directories, writing files or `volt.json`, or installing.   |
+| `--force`       | Allows replacing planned component and shared files that differ from the Volt UI source. Never touches other files.                |
 
-Runtime dependencies installed by `--install`:
+#### Choosing the destination
 
-```bash
-ng-primitives class-variance-authority clsx tailwind-merge
-```
+Without a destination, components go to `src/app/ui` of the **nearest `package.json` above the
+current directory** — running the CLI from `src/app` no longer creates `src/app/src/app/ui`. A
+destination you give (`--path` or positional) is resolved against the current directory.
+
+The v1 positional form keeps working: `volt add button custom-ui` copies into `./custom-ui`. Because
+a bare name could also be a mistyped component, the CLI then says how it read the argument and
+suggests `--path=custom-ui` (and the component it may have meant, for `volt add button dialg`).
+Arguments after the target directory are an error instead of being ignored. With `--path`, every
+positional argument must be a component, so a typo fails before anything is written.
+
+#### Arguments are validated
+
+Each command accepts only its own flags. An unknown flag (`--forse`, with a suggestion), a value
+flag without a value (`--path`, `--path=`), a value on a boolean flag (`--force=yes`), the same
+value flag repeated with different values, extra arguments (`volt list x`, `volt init a b`) and an
+unknown command all stop with an error and exit status 1. `volt`, `volt help`, `--help` and `-h`
+print the usage.
+
+#### Project, workspace and package manager
+
+The project is resolved from the destination, not assumed to be the current directory:
+
+| What            | How it is found                                                                                                                                                                     |
+| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Package         | The nearest directory with a `package.json` at or above the destination. `volt.json` lives there; `--install` adds there.                                                           |
+| Workspace       | A pnpm (`pnpm-workspace.yaml`), npm, Yarn or Bun (`workspaces` in `package.json`) root that lists that package.                                                                     |
+| Package manager | The `packageManager` field (package, then workspace root), else the lockfile: `pnpm-lock.yaml`, `yarn.lock`, `package-lock.json` / `npm-shrinkwrap.json`, `bun.lock` / `bun.lockb`. |
+
+Run from a workspace root with no destination, the CLI does not guess which application you mean:
+it lists the workspace's applications and asks for `--path` (e.g.
+`--path=apps/admin/src/app/ui`). Lockfiles of two different managers in one directory with no
+`packageManager` field are ambiguous too: `--install` refuses (copying without it is fine). The CLI
+never installs into the Volt UI repository itself.
+
+#### Runtime dependencies
+
+A copy needs only the npm packages its files import — Card needs `clsx` and `tailwind-merge`,
+Button also `class-variance-authority` and `ng-primitives`, a Quartz copy never `ng-primitives`.
+The ranges come from `@voltui/components`' own `package.json` and travel in the CLI's registry
+together with the versions this release was tested with; the CLI holds no list of its own. After
+`volt add`, the CLI prints each package's state:
+
+| State     | Meaning                                                                                       |
+| --------- | --------------------------------------------------------------------------------------------- |
+| `keep`    | Declared and installed inside the range: left exactly as it is.                               |
+| `add`     | Missing: added with the library's range (`clsx@^2.0.0`).                                      |
+| `declare` | Installed only as another package's dependency: declared, at the range, without upgrading it. |
+| `install` | Declared with a compatible range but not installed yet: a plain `install` fetches it.         |
+| `problem` | Installed or declared outside the range, or Angular missing: reported, never changed.         |
+
+`--install` follows that table: it runs **one** command in the resolved package (`pnpm add …`,
+`yarn add …`, `bun add …`; for npm workspaces `npm install … --workspace <pkg>` from the root), only
+for `add`/`declare`/`install` entries, then checks that every package now resolves inside its
+range. It never upgrades Angular — a missing `@angular/cdk` or `@angular/router` is added at the
+installed core's version — and never rewrites unrelated dependencies. Anything that would make the
+install unsafe (an incompatible version, no Angular, an ambiguous manager, no `package.json`) stops
+the command **before the first file is written**. Without `--install`, the CLI prints the exact
+command to run.
 
 #### One operation, validated before anything is written
 
@@ -116,22 +176,25 @@ again, and nothing already in the file is rewritten.
 `create` / `reuse` / `replace` / `conflict`, and the exports the barrel would gain — and exits with
 status 1 when the real command would stop on a conflict.
 
-With `--install`, packages are installed once, after every file has been written. If the install
-fails, the copied files stay in place and the CLI prints the command to run by hand.
+With `--install`, packages are installed once, after every file has been written. If the package
+manager fails — or reports success while a package still does not resolve inside its range — the
+copied files stay in place, the CLI exits with status 1 and prints the command to run by hand.
 
 ### list
 
 ```bash
-volt list
+volt list [--status=stable|beta|experimental] [--base=quartz] [--json]
 ```
 
-Prints component names from `public/manifest.json`.
+Prints the components in the CLI's registry, grouped as in the documentation, with their status
+(from `COMPONENT_STATUS.md`) and what each is for.
 
 ## How Copying Works
 
 When you run `volt add button`:
 
-1. Source files are read from `packages/volt/src/lib/components/button/`.
+1. Source files are read from the registry packed into `@voltui/cli` (in this repository:
+   `packages/volt/src/lib/components/button/`).
 2. Selectors are transformed from `volt-*` to `ui-*`.
 3. Class and identifier names are transformed from `Volt*` / `volt*` to `Ui*` / `ui*`.
 4. Local component dependencies from the manifest are copied too.
@@ -139,6 +202,17 @@ When you run `volt add button`:
 6. Identical files are reused; edited files are protected unless you pass `--force`.
 
 The CLI reports unknown components clearly. Run `volt list` if a component name fails.
+
+## Styles
+
+Copied components are styled with Tailwind CSS v4 utilities and Volt's semantic tokens. Import the
+tokens from the package (`npm install @voltui/components` for its CSS, even if you import no
+TypeScript from it) and let Tailwind scan your copy:
+
+```css
+@import 'tailwindcss';
+@import '@voltui/components/themes.css';
+```
 
 ## Usage In Your App
 

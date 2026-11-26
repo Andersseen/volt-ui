@@ -83,7 +83,7 @@ import {
     <volt-navigation-menu aria-label="Main" variant="subtle" layout="inline">
       <volt-navigation-menu-list>
         <volt-navigation-menu-item>
-          <!-- The panel goes in as a template reference. `content` is a required input:
+          <!-- The panel goes in as a template reference. "content" is a required input:
                the trigger hands the template to an overlay that renders it elsewhere,
                so projecting the content instead throws NG0950. -->
           <volt-navigation-menu-trigger [content]="gettingStarted">
@@ -101,7 +101,7 @@ import {
           </ng-template>
         </volt-navigation-menu-item>
         <volt-navigation-menu-item>
-          <!-- `active` marks the current destination (aria-current="page"). Derive it from
+          <!-- "active" marks the current destination (aria-current="page"). Derive it from
                the router as here, or pass a plain boolean when you do not use the router. -->
           <a
             voltNavigationMenuLink
@@ -180,7 +180,7 @@ Selector: <code>{"volt-navigation-menu"}</code>
 
 Class-variance-authority options; the default is marked.
 
-<table><thead><tr><th>Variant</th><th>Options</th><th>Default</th></tr></thead><tbody><tr><td><code>{"layout"}</code></td><td><code>{"inline"}</code> <code>{"contained"}</code></td><td><code>{"inline"}</code></td></tr><tr><td><code>{"variant"}</code></td><td><code>{"subtle"}</code> <code>{"pill"}</code> <code>{"underline"}</code> <code>{"outline"}</code></td><td><code>{"subtle"}</code></td></tr><tr><td><code>{"defaultVariants"}</code></td><td><code>{"layout"}</code> <code>{"variant"}</code></td><td>—</td></tr><tr><td><code>{"variants"}</code></td><td><code>{"subtle"}</code> <code>{"pill"}</code> <code>{"underline"}</code> <code>{"outline"}</code></td><td>—</td></tr></tbody></table>
+<table><thead><tr><th>Variant</th><th>Options</th><th>Default</th></tr></thead><tbody><tr><td><code>{"layout"}</code></td><td><code>{"inline"}</code> <code>{"contained"}</code></td><td><code>{"inline"}</code></td></tr><tr><td><code>{"variant"}</code></td><td><code>{"subtle"}</code> <code>{"pill"}</code> <code>{"underline"}</code> <code>{"outline"}</code></td><td><code>{"subtle"}</code></td></tr></tbody></table>
 
 ## Playground
 

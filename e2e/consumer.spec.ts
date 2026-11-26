@@ -172,7 +172,11 @@ test.describe('npm consumer fixture', () => {
     await expectBox(page.getByTestId('toast'), 'toast');
     // Announced by the container's live region, not by a second `status` on the toast itself.
     await expect(page.getByTestId('toast')).not.toHaveAttribute('role');
-    await expect(page.locator('[data-ngp-toast-container]')).toHaveAttribute('role', 'status');
+    // ng-primitives >= 0.132 puts a live region for every placement in the page up front (so the
+    // first toast is announced): the one that holds this toast is the one to check.
+    await expect(
+      page.locator('[data-ngp-toast-container]').filter({ has: page.getByTestId('toast') })
+    ).toHaveAttribute('role', 'status');
     await page.getByTestId('toast').hover();
     await page.waitForTimeout(600);
     await expect(page.getByTestId('toast')).toBeVisible();

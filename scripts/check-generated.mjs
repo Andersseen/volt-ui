@@ -5,7 +5,11 @@
  * and would otherwise paper over a forgotten commit.
  *
  *   site-stats.ts          library version, component/layout/preset counts   (pnpm stats)
- *   api-reference.generated.ts   every component's inputs, outputs, variants  (pnpm generate:api-reference)
+ *   apps/web/public/manifest.json   the CLI registry (gitignored): must build from the source, and
+ *                          a copy on disk must not be stale                   (pnpm manifest)
+ *   api-reference.generated.ts, mcp/api.generated.ts, shared/lib/volt-names.generated.ts
+ *                          every component's API, the MCP facts, the copy-mode names
+ *                                                                              (pnpm generate:api-reference)
  *   mcp/content.generated.ts   installer content served by /api/mcp/setup     (pnpm generate:mcp-content)
  *   mcp/responsibilities.generated.ts, the skill catalog, .agents/skills/volt-ui*  (pnpm generate:agent-skills)
  *   public/{robots.txt,sitemap.xml,llms.txt}  crawler files                    (pnpm generate:seo-files)
@@ -20,6 +24,7 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const CHECKS = [
+  ['cli/generate-manifest.js', 'pnpm manifest'],
   ['scripts/generate-site-stats.mjs', 'pnpm stats'],
   ['scripts/generate-api-reference.mjs', 'pnpm generate:api-reference'],
   ['scripts/generate-mcp-content.mjs', 'pnpm generate:mcp-content'],

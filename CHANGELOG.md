@@ -7,6 +7,63 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Consumer distribution (`@voltui/cli`, minor)
+
+Additive. The v1 positional `target-dir`, every command and the default destination keep working.
+
+- **`--path=<dir>` / `--path <dir>`** names the destination explicitly; every other argument is then a
+  component, so `volt add button buton --path=./ui` fails before writing. The positional form still
+  works and, when the trailing argument is a bare name, the CLI says it read it as a directory and
+  suggests `--path` (or the component it may have meant).
+- **Arguments are validated per command.** Unknown flags (with a suggestion), value flags without a
+  value, values on boolean flags, conflicting repeats, extra positionals and unknown commands are
+  errors with exit status 1. _Behaviour change:_ they used to be ignored (`volt add button --yes`
+  succeeded; `volt add button ./ui card` silently dropped `card`; `volt foo` printed help with status 0).
+- **The project is resolved from the destination.** The nearest `package.json`, its pnpm/npm/Yarn/Bun
+  workspace root and the package manager (`packageManager` field, else the lockfile). Without a
+  destination the default is `src/app/ui` of the nearest `package.json`, also from a subfolder; a
+  workspace root asks which application. `volt.json` lives beside that `package.json`.
+- **Versioned, per-component dependencies.** The packed registry records each package's range (from
+  `@voltui/components`' `package.json`) and the version tested with it; `volt add` asks only for what
+  the copied files import (Card: `clsx` and `tailwind-merge`; a Quartz copy never `ng-primitives`),
+  including `@floating-ui/dom`, which Select needs and was never mentioned.
+- **`--install` policy.** One command in the resolved package (npm workspaces: `--workspace` from the
+  root); compatible versions are kept, a package present only transitively is declared, Angular is
+  never upgraded, an incompatible version, a missing Angular, an ambiguous manager or the Volt UI
+  repository stops the command before the first write, and the result is verified after the install.
+
+### Components (`@voltui/components`, patch)
+
+- `ng-primitives` dependency moves to `^0.132.0` (was `^0.131.4`; 0.x carets are minor-locked, and
+  0.132 is the version now built and tested). Since 0.132 every toast placement gets its live region
+  in the page up front, so the first toast is announced; Volt's toast contract is unchanged.
+- Number inputs that use `numberAttribute` accept attribute strings in strict templates
+  (`input<number, unknown>`): `<volt-textarea rows="4">`, `max="10"` on Slider, Range Slider, Meter
+  and Progress, `length` on Input OTP and `pageCount` on Pagination failed to compile in consumer apps.
+
+### Documentation and AI context
+
+- One authority per technical fact. The API extractor is rebuilt on the TypeScript compiler API
+  (aliases, `input.required`, `model()` and its output, host-directive I/O with resolved types,
+  inheritance, every `cva()`, barrel exports); unsupported source is an error, not a missing row. It
+  corrected three wrong rows (Navigation Menu variants, Listbox default, Pagination `page`).
+- The MCP server serves inputs, outputs, selectors, variants and npm packages generated from the
+  source; the hand-written table (which listed an Avatar `delayMs` and a Sidebar `collapsed` input that
+  do not exist) is gone. `get_usage_example` also returns the complete example in both modes.
+- Every component usage example can be shown and copied as the npm package or as CLI-copied source;
+  what is shown is what is copied. All examples compile in both modes (`pnpm check:examples`); fixed
+  undeclared icon elements, a button nested in a button, an invalid Navigation Menu snippet and MCP
+  fragments missing required inputs.
+- `pnpm check:ai-docs` no longer regenerates the manifest; `pnpm check:generated` validates it.
+- The roadmap (en/es/uk) states the post-1.0 sequence; the headless layer and Tailwind-free
+  distribution are deferred.
+
+### Consumer verification
+
+- `pnpm check:consumer` installs the packed tarballs into an isolated Angular project and exercises the
+  installed CLI, both distribution modes with SSR and hydration, every example, dependency isolation,
+  the bundle baseline (`specs/v2/bundle-baseline.json`) and the browser behaviour. Runs in CI.
+
 ### CLI integrity (`@voltui/cli`)
 
 Fixes, no new commands or flags. Command names, the positional `target-dir`, `--force`, `--dry-run`,

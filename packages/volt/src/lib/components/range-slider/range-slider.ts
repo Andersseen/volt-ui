@@ -95,11 +95,11 @@ export class VoltRangeSlider implements ControlValueAccessor {
   private readonly state = injectRangeSliderState();
   protected readonly formControlState = injectFormControlState();
 
-  readonly low = input<number, number>(0, { transform: numberAttribute });
-  readonly high = input<number, number>(100, { transform: numberAttribute });
-  readonly min = input<number, number>(0, { transform: numberAttribute });
-  readonly max = input<number, number>(100, { transform: numberAttribute });
-  readonly step = input<number, number>(1, { transform: numberAttribute });
+  readonly low = input<number, unknown>(0, { transform: numberAttribute });
+  readonly high = input<number, unknown>(100, { transform: numberAttribute });
+  readonly min = input<number, unknown>(0, { transform: numberAttribute });
+  readonly max = input<number, unknown>(100, { transform: numberAttribute });
+  readonly step = input<number, unknown>(1, { transform: numberAttribute });
   readonly disabled = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly orientation = input<NgpOrientation>('horizontal');
   readonly ariaLabelLow = input<string>();

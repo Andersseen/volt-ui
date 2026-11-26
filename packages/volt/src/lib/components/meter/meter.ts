@@ -33,8 +33,8 @@ export class VoltMeter {
 
   protected readonly classes = computed(() => cn('block w-full', this.class()));
 
-  readonly value = input<number, number>(0, { transform: numberAttribute });
-  readonly min = input<number, number>(0, { transform: numberAttribute });
-  readonly max = input<number, number>(100, { transform: numberAttribute });
+  readonly value = input<number, unknown>(0, { transform: numberAttribute });
+  readonly min = input<number, unknown>(0, { transform: numberAttribute });
+  readonly max = input<number, unknown>(100, { transform: numberAttribute });
   readonly valueLabel = input<(value: number, max: number) => string>();
 }

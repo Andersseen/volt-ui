@@ -1,6 +1,6 @@
 # Plan 06 — Tres recetas que resuelven tareas completas
 
-**Estado:** no iniciado. **Prioridad:** P2. **Depende de:** 02–04; no depende de 05.
+**Estado:** sin ejecutar como plan. Los patterns `settings-form`, `async-search` y `data-table` ya existen en `apps/recipes/src/app/patterns/` y compilan en un workspace consumidor (`check-copied-source.mjs`); el resto de criterios de aceptación no se ha verificado (revisado 2026-11-25). **Prioridad:** P2. **Depende de:** 02–04; no depende de 05.
 **Entrega:** tres composiciones copiables, sin ampliar el catálogo primitivo.
 
 ## Contexto y decisión

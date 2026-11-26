@@ -4,7 +4,12 @@
     <p class="text-lg text-muted-foreground mt-2">{{ t('components.dialog.description') }}</p>
   </div>
 
-  <app-code-panel [title]="t('ui.codePanel.usage')" [code]="dialogUsage" [tabbed]="true">
+  <app-code-panel
+    distribution
+    [title]="t('ui.codePanel.usage')"
+    [code]="dialogUsage"
+    [tabbed]="true"
+  >
     <div class="flex flex-wrap gap-3 items-center justify-center p-8">
       <!-- Trigger -->
       <button voltButton [voltDialog]="editProfileTpl" data-testid="dialog-trigger-demo">

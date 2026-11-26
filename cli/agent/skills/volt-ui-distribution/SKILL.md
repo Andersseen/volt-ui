@@ -53,17 +53,25 @@ Components are styled on top of Tailwind's preflight reset. Importing only `tail
 ## Copy mode
 
 ```bash
-npx @voltui/cli init                # scaffold the ui folder
-npx @voltui/cli list                # what exists, with status
-npx @voltui/cli add button card     # copies source; dependencies between components are detected
-npx @voltui/cli add dialog ./src/app/shared/ui --dry-run
+npx @voltui/cli init                          # scaffold src/app/ui of the nearest package.json
+npx @voltui/cli list                          # what exists, with status
+npx @voltui/cli add button card               # copies source; component dependencies come along
+npx @voltui/cli add dialog --path=./src/app/shared/ui --dry-run
+npx @voltui/cli add card --install            # also installs what the copied files import
 ```
+
+Name a destination with `--path=<dir>` (the old positional `target-dir` still works but can be
+mistaken for a component name). Without one, the CLI uses `src/app/ui` of the nearest
+`package.json`, also from a subfolder; in a workspace root it asks which app (`--path`). Unknown
+flags and extra arguments are errors — read the message, do not retry blindly.
 
 The CLI copies source from the library, applies the `volt-` → `ui-` transform, and you own the
 result: edit it freely. A later `add` reuses untouched files and refuses to overwrite edited ones
-unless you pass `--force` — review the diff first. Install the runtime dependencies once (`ng-primitives class-variance-authority clsx
-tailwind-merge`). Blocks, Layouts and Recipes from the docs site are copied the same way and import
-the atoms from the project's mode.
+unless you pass `--force` — review the diff first. Dependencies are per component: `volt add` prints
+exactly which packages the copied files need (with ranges); `--install` installs those once in the
+right package, keeps compatible versions and never upgrades Angular. Do not install a fixed list.
+Blocks, Layouts and Recipes from the docs site are copied the same way and import the atoms from the
+project's mode; component examples on voltui.dev and from `get_usage_example` come in both modes.
 
 ## Agent setup
 
@@ -86,7 +94,7 @@ only read a rules file it writes a short routing block.
 <!-- volt:digest:start -->
 
 - Detect the mode first: `@voltui/components` (package: `Volt*`, `volt-*`) or a copied `ui/` folder (copy: `Ui*`, `ui-*`). Never mix them; `'volt'` is not importable in a consumer.
-- Copy mode: `npx @voltui/cli add <name>`; package mode: `npm install @voltui/components`.
+- Copy mode: `npx @voltui/cli add <name> [--path=<dir>] [--install]` (installs only what the copy imports); package mode: `npm install @voltui/components`.
 - CSS: the full `@import 'tailwindcss'` (with preflight, which Volt is styled on), then `@import '@voltui/components/themes.css'`.
 - Pass the project's mode (`package` | `copy`) to the MCP tools to get matching selectors and imports.
 

@@ -11,8 +11,9 @@
  *      AOT, strict templates, zoneless, prerendered (SSR) and hydrated;
  *   4. isolation: the default bundle must not contain Quartz and the Quartz bundle must not contain
  *      ng-primitives; the incremental bundle size of each is reported;
- *   5. the same two engines through the CLI copy-and-own path (`volt add … [--base=quartz]`, one
- *      project root each), compiled with the same strictness and held to the same isolation rule;
+ *   5. the same two engines through the CLI copy-and-own path — the `volt` binary installed from the
+ *      packed @voltui/cli tarball (`volt add … --path=… [--base=quartz]`, one project root each) —
+ *      compiled with the same strictness and held to the same isolation rule;
  *   6. serve all four and run `e2e/quartz-consumer/browser.spec.ts` (Forms, keyboard, focus-visible,
  *      hydration, computed paint parity) in Chromium, Firefox and WebKit.
  *
@@ -42,6 +43,7 @@ import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { gzipSync } from 'node:zlib';
+import { packAll } from './lib/pack.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const args = process.argv.slice(2);
@@ -79,18 +81,16 @@ const fail = message => {
   process.exit(1);
 };
 
-// 1. the tarball (and the CLI manifest the copy variants read; it is generated, not committed)
-run('generate the CLI manifest', 'node', [join(ROOT, 'cli/generate-manifest.js')], { cwd: ROOT });
-if (!noBuild || !existsSync(join(ROOT, 'dist/volt/package.json'))) {
-  run('build the library', 'pnpm', ['build:lib'], { cwd: ROOT });
-}
+// 1. the tarballs: the library and the CLI whose installed binary makes the copy variants
 const work = mkdtempSync(join(tmpdir(), `volt-quartz-${major}-`));
-run('pack the library', 'npm', ['pack', '--pack-destination', work], {
-  cwd: join(ROOT, 'dist/volt'),
-  stdio: ['ignore', 'ignore', 'inherit'],
-});
-const lib = JSON.parse(readFileSync(join(ROOT, 'dist/volt/package.json'), 'utf8'));
-const tarball = join(work, `voltui-components-${lib.version}.tgz`);
+let tarballs;
+try {
+  tarballs = packAll({ root: ROOT, dest: work, build: !noBuild || !existsSync(join(ROOT, 'dist/volt/package.json')) });
+} catch (error) {
+  fail(error.message);
+}
+const tarball = tarballs.components.file;
+const lib = { version: tarballs.components.version };
 
 // 2. the consumer project
 const app = join(work, 'app');
@@ -126,6 +126,7 @@ writeFileSync(
       type: 'module',
       dependencies,
       devDependencies: {
+        '@voltui/cli': `file:${tarballs.cli.file}`,
         '@angular/build': ng,
         '@angular/cli': ng,
         '@angular/compiler-cli': ng,
@@ -190,13 +191,14 @@ for (const [name, backend] of Object.entries(BACKENDS)) {
   }
   writeFileSync(join(src, 'backend.ts'), backend);
   if (copy) {
-    // A project root of its own per copy, so each has its own volt.json — as a consumer would.
-    const root = join(app, `cli-${name}`);
-    mkdirSync(root, { recursive: true });
+    // A package of its own per copy, so each has its own volt.json — as a consumer would. The CLI
+    // records the base beside the package.json that contains the destination.
+    const root = src;
     writeFileSync(join(root, 'package.json'), '{"name":"copy","private":true}');
     const base = name.startsWith('quartz') ? ['--base=quartz'] : [];
-    const cli = join(ROOT, 'cli/bin/volt');
-    run(`volt init (${name})`, 'node', [cli, 'init', join(src, 'ui'), ...base], { cwd: root });
+    // The binary installed from the packed @voltui/cli tarball, not the repository's source.
+    const cli = join(app, 'node_modules/@voltui/cli/bin/volt');
+    run(`volt init (${name})`, 'node', [cli, 'init', `--path=${join(src, 'ui')}`, ...base], { cwd: root });
     run(
       `volt add checkbox radio switch toggle toggle-group tabs accordion listbox select (${name})`,
       'node',
@@ -212,7 +214,7 @@ for (const [name, backend] of Object.entries(BACKENDS)) {
         'accordion',
         'listbox',
         'select',
-        join(src, 'ui'),
+        `--path=${join(src, 'ui')}`,
         ...base,
       ],
       { cwd: root }

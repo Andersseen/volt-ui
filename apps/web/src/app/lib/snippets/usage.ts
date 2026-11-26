@@ -466,7 +466,7 @@ import {
     <volt-navigation-menu aria-label="Main" variant="subtle" layout="inline">
       <volt-navigation-menu-list>
         <volt-navigation-menu-item>
-          <!-- The panel goes in as a template reference. \`content\` is a required input:
+          <!-- The panel goes in as a template reference. "content" is a required input:
                the trigger hands the template to an overlay that renders it elsewhere,
                so projecting the content instead throws NG0950. -->
           <volt-navigation-menu-trigger [content]="gettingStarted">
@@ -484,7 +484,7 @@ import {
           </ng-template>
         </volt-navigation-menu-item>
         <volt-navigation-menu-item>
-          <!-- \`active\` marks the current destination (aria-current="page"). Derive it from
+          <!-- "active" marks the current destination (aria-current="page"). Derive it from
                the router as here, or pass a plain boolean when you do not use the router. -->
           <a
             voltNavigationMenuLink
@@ -503,14 +503,14 @@ import {
 export class MyComponent {}`;
 
 export const POPOVER_USAGE = `import { Component } from '@angular/core';
-import { VoltPopoverTrigger, VoltPopoverContent } from '@voltui/components';
-import { VoltButton } from '@voltui/components';
+import { VoltNativeButton, VoltPopoverContent, VoltPopoverTrigger } from '@voltui/components';
 
 @Component({
-  imports: [VoltButton, VoltPopoverTrigger, VoltPopoverContent],
+  imports: [VoltNativeButton, VoltPopoverTrigger, VoltPopoverContent],
   template: \`
-    <button voltPopover [voltPopover]="popoverTpl">
-      <volt-button variant="outline">Open Popover</volt-button>
+    <!-- The trigger is the native button itself: never a button inside a button -->
+    <button voltButton variant="outline" type="button" [voltPopover]="popoverTpl">
+      Open Popover
     </button>
 
     <ng-template #popoverTpl>
@@ -687,7 +687,7 @@ import { VoltToggle } from '@voltui/components';
   imports: [ReactiveFormsModule, VoltToggle],
   template: \`
     <volt-toggle [formControl]="bold" aria-label="Toggle bold">
-      <lmn-bold [size]="16" />
+      <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 12h9a4 4 0 0 1 0 8H6V4h8a4 4 0 0 1 0 8" /></svg>
     </volt-toggle>
   \`,
 })
@@ -1139,7 +1139,7 @@ import {
         <div class="flex items-center justify-between p-4 border-b border-border">
           <h2 voltDrawerTitle>Menu</h2>
           <volt-drawer-close>
-            <lmn-x [size]="16" />
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12" /></svg>
           </volt-drawer-close>
         </div>
         <nav class="p-4" voltDrawerDescription>
@@ -1235,10 +1235,10 @@ import {
         <volt-sidebar-group label="Main">
           <volt-sidebar-item routerLink="/" label="Home" [exact]="true">
             <!-- slot="icon" stays rendered in both collapsed and expanded modes -->
-            <lucide-icon name="house" slot="icon" class="h-4 w-4" />
+            <svg slot="icon" aria-hidden="true" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10.5 12 3l9 7.5V21H3z" /></svg>
           </volt-sidebar-item>
           <volt-sidebar-item routerLink="/inbox" label="Inbox">
-            <lucide-icon name="mail" slot="icon" class="h-4 w-4" />
+            <svg slot="icon" aria-hidden="true" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m3 7 9 6 9-6" /></svg>
             <!-- slot="trailing" only renders while expanded -->
             <span slot="trailing" class="ml-auto text-xs">3</span>
           </volt-sidebar-item>

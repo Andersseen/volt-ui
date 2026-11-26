@@ -152,20 +152,25 @@ export class ExampleComponent {}
 - Transforms `Volt*` → `Ui*` and `volt-*` → `ui-*`.
 - Detects and copies local component dependencies automatically.
 - Reuses files identical to the Volt UI source and refuses to overwrite edited ones unless `--force` is passed; the whole request is validated before the first write.
-- `--dry-run` previews files before writing.
-- `[target-dir]` sets an alternate destination.
-- `--install` installs the required runtime dependencies.
+- `--dry-run` previews files and the dependency check before writing.
+- `--path=<dir>` sets the destination (the v1 positional `[target-dir]` still works). Without it,
+  components go to `src/app/ui` of the nearest `package.json`, even when run from a subfolder.
+- `--install` installs only the packages the copied files import, with the ranges Volt UI was tested
+  with, once, in the right package of a pnpm/npm/Yarn/Bun workspace. Compatible versions you have
+  are kept; Angular is never upgraded; an incompatible version stops the command before it writes.
 
 ```bash
-npx @voltui/cli add button card ./src/app/shared/ui --dry-run
-npx @voltui/cli add button card ./src/app/shared/ui --force --install
+npx @voltui/cli add button card --path=./src/app/shared/ui --dry-run
+npx @voltui/cli add button card --path=./src/app/shared/ui --install
 ```
 
-Copied components need these runtime dependencies in the target app:
+Without `--install`, `volt add` prints the exact command for what is missing, e.g. for Card alone:
 
 ```bash
-npm install ng-primitives class-variance-authority clsx tailwind-merge
+npm install clsx@^2.0.0 tailwind-merge@^3.0.0
 ```
+
+Full reference: [CLI.md](./CLI.md).
 
 </details>
 
@@ -336,7 +341,7 @@ Full status table: **[COMPONENT_STATUS.md](./COMPONENT_STATUS.md)**.
 
 ### Compatibility policy
 
-The `1.x` line supports Angular `^21.2 || ^22` and Node 20 or newer. A range is only widened after
+The `1.x` line supports Angular `^21.2 || ^22`, on the Node versions that Angular major supports (Angular 21: `^20.19 || ^22.12 || >=24`; Angular 22: `^22.22.3 || ^24.15 || >=26`). The CLI has no further requirement (it is tested on Node 22). Tested combinations are listed in [specs/v2/plans/03-consumer-contract.md](./specs/v2/plans/03-consumer-contract.md). A range is only widened after
 the **packed** package has been installed into an isolated Angular project of that major, compiled
 with its own `ng build` and exercised in a browser (`pnpm check:angular-compat <major>`); a green
 build in this repository is never taken as proof. `@angular/cdk` and `@angular/router` are peers —

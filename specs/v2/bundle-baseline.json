@@ -1,0 +1,56 @@
+{
+  "21.2": {
+    "measured": "2026-11-25",
+    "angular": "21.2.0",
+    "components": "1.4.1",
+    "sizes": {
+      "minimal": {
+        "js": {
+          "raw": 174818,
+          "gzip": 55778
+        },
+        "css": {
+          "raw": 61697,
+          "gzip": 10620
+        }
+      },
+      "composition": {
+        "js": {
+          "raw": 430616,
+          "gzip": 129284
+        },
+        "css": {
+          "raw": 61897,
+          "gzip": 10657
+        }
+      }
+    }
+  },
+  "22.3": {
+    "measured": "2026-11-25",
+    "angular": "22.3.0",
+    "components": "1.4.1",
+    "sizes": {
+      "minimal": {
+        "js": {
+          "raw": 175733,
+          "gzip": 56068
+        },
+        "css": {
+          "raw": 61697,
+          "gzip": 10620
+        }
+      },
+      "composition": {
+        "js": {
+          "raw": 472796,
+          "gzip": 143549
+        },
+        "css": {
+          "raw": 61897,
+          "gzip": 10657
+        }
+      }
+    }
+  }
+}

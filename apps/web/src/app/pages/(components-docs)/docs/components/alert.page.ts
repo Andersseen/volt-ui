@@ -26,7 +26,7 @@ import { injectAppI18n } from '@shared/i18n/i18n';
     <div class="space-y-6">
       <h1 class="text-3xl font-bold tracking-tight text-foreground">Alert</h1>
 
-      <app-code-panel [title]="t('ui.codePanel.usage')" [code]="usage" [tabbed]="true">
+      <app-code-panel distribution [title]="t('ui.codePanel.usage')" [code]="usage" [tabbed]="true">
         <div class="grid gap-4 p-6 md:p-10 border border-border/50 rounded-xl bg-background/50">
           <volt-alert variant="warning">
             <svg

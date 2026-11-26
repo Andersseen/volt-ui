@@ -114,7 +114,7 @@ export const AUTOFILL_API: ComponentApi = {
       className: 'VoltAutofill',
       selector: '[voltAutofill]',
       inputs: [],
-      outputs: [{ name: 'autofillChange', type: 'unknown' }],
+      outputs: [{ name: 'autofillChange', type: 'boolean' }],
     },
   ],
   variants: undefined,
@@ -373,7 +373,7 @@ export const COMBOBOX_API: ComponentApi = {
       selector: 'input[voltComboboxInput]',
       inputs: [
         { name: 'class', type: 'string', default: "''" },
-        { name: 'id', type: 'unknown' },
+        { name: 'id', type: 'string' },
       ],
       outputs: [],
     },
@@ -402,7 +402,7 @@ export const COMBOBOX_API: ComponentApi = {
         { name: 'compareWith', type: '(a: unknown, b: unknown) => boolean', default: 'Object.is' },
         { name: 'dropdownPlacement', type: 'NgpComboboxPlacement', default: "'bottom'" },
         { name: 'container', type: 'string | HTMLElement | null', default: "'body'" },
-        { name: 'flip', type: 'NgpFlipInput', default: 'true' },
+        { name: 'flip', type: 'NgpFlipInput', default: 'true', transform: 'inline' },
         {
           name: 'scrollToOption',
           type: '((index: number) => void) | undefined',
@@ -417,14 +417,13 @@ export const COMBOBOX_API: ComponentApi = {
         {
           name: 'resultsText',
           type: '(count: number) => string',
-          default:
-            "count =>\n    count === 1 ? '1 result available.' : `${count} results available.`",
+          default: "count => count === 1 ? '1 result available.' : `${count} results available.`",
         },
         { name: 'placeholder', type: 'string', default: "'Select...'" },
         {
           name: 'itemLabel',
           type: '(item: unknown) => string',
-          default: "item =>\n    typeof item === 'string' ? item : String(item)",
+          default: "item => typeof item === 'string' ? item : String(item)",
         },
         {
           name: 'trackByFn',
@@ -535,8 +534,8 @@ export const DIALOG_API: ComponentApi = {
       selector: '[voltDialogContent]',
       inputs: [
         { name: 'class', type: 'string', default: "''" },
-        { name: 'role', type: 'unknown' },
-        { name: 'modal', type: 'unknown' },
+        { name: 'role', type: 'NgpDialogRole | undefined' },
+        { name: 'modal', type: 'boolean' },
       ],
       outputs: [],
     },
@@ -551,7 +550,7 @@ export const DIALOG_API: ComponentApi = {
       selector: '[voltDialogOverlay]',
       inputs: [
         { name: 'class', type: 'string', default: "''" },
-        { name: 'closeOnClick', type: 'unknown' },
+        { name: 'closeOnClick', type: 'boolean | undefined' },
       ],
       outputs: [],
     },
@@ -581,8 +580,8 @@ export const DIALOG_API: ComponentApi = {
       className: 'VoltDialog',
       selector: '[voltDialog]',
       inputs: [
-        { name: 'voltDialog', type: 'unknown' },
-        { name: 'closeOnEscape', type: 'unknown' },
+        { name: 'voltDialog', type: 'TemplateRef<NgpDialogContext<unknown, unknown>>' },
+        { name: 'closeOnEscape', type: 'NgpDismissGuard<KeyboardEvent>' },
       ],
       outputs: [{ name: 'closed', type: 'unknown' }],
     },
@@ -607,8 +606,8 @@ export const DRAWER_API: ComponentApi = {
       inputs: [
         { name: 'side', type: 'DrawerSide', default: "'right'" },
         { name: 'class', type: 'string', default: "''" },
-        { name: 'role', type: 'unknown' },
-        { name: 'modal', type: 'unknown' },
+        { name: 'role', type: 'NgpDialogRole | undefined' },
+        { name: 'modal', type: 'boolean' },
       ],
       outputs: [],
     },
@@ -623,7 +622,7 @@ export const DRAWER_API: ComponentApi = {
       selector: '[voltDrawerOverlay]',
       inputs: [
         { name: 'class', type: 'string', default: "''" },
-        { name: 'closeOnClick', type: 'unknown' },
+        { name: 'closeOnClick', type: 'boolean | undefined' },
       ],
       outputs: [],
     },
@@ -638,7 +637,7 @@ export const DRAWER_API: ComponentApi = {
       selector: '[voltDrawer]',
       inputs: [
         { name: 'closeOnEscape', type: 'boolean', default: 'true', transform: 'booleanAttribute' },
-        { name: 'voltDrawer', type: 'unknown' },
+        { name: 'voltDrawer', type: 'TemplateRef<NgpDialogContext<unknown, unknown>>' },
       ],
       outputs: [{ name: 'closed', type: 'unknown' }],
     },
@@ -927,7 +926,7 @@ export const LISTBOX_API: ComponentApi = {
       outputs: [{ name: 'valueChange', type: 'T[]' }],
     },
   ],
-  variants: [{ name: 'inset', options: ['true', 'false'], default: undefined }],
+  variants: [{ name: 'inset', options: ['true', 'false'], default: 'false' }],
 };
 
 export const METER_API: ComponentApi = {
@@ -943,7 +942,7 @@ export const METER_API: ComponentApi = {
       selector: 'volt-meter-label',
       inputs: [
         { name: 'class', type: 'string', default: "''" },
-        { name: 'id', type: 'unknown' },
+        { name: 'id', type: 'string' },
       ],
       outputs: [],
     },
@@ -1057,8 +1056,6 @@ export const NAVIGATION_MENU_API: ComponentApi = {
   variants: [
     { name: 'layout', options: ['inline', 'contained'], default: 'inline' },
     { name: 'variant', options: ['subtle', 'pill', 'underline', 'outline'], default: 'subtle' },
-    { name: 'defaultVariants', options: ['layout', 'variant'], default: undefined },
-    { name: 'variants', options: ['subtle', 'pill', 'underline', 'outline'], default: undefined },
   ],
 };
 
@@ -1069,7 +1066,7 @@ export const PAGINATION_API: ComponentApi = {
       selector: 'volt-pagination-button',
       inputs: [
         { name: 'class', type: 'string', default: "''" },
-        { name: 'page', type: 'number', default: '{ transform: numberAttribute }', required: true },
+        { name: 'page', type: 'number', required: true, transform: 'numberAttribute' },
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
         { name: 'variant', type: "PaginationButtonVariants['variant']", default: "'default'" },
       ],
@@ -1190,7 +1187,7 @@ export const PROGRESS_API: ComponentApi = {
       selector: 'volt-progress-label',
       inputs: [
         { name: 'class', type: 'string', default: "''" },
-        { name: 'id', type: 'unknown' },
+        { name: 'id', type: 'string' },
       ],
       outputs: [],
     },
@@ -1291,7 +1288,7 @@ export const RESIZABLE_API: ComponentApi = {
       inputs: [
         { name: 'class', type: 'string', default: "''" },
         { name: 'orientation', type: "'horizontal' | 'vertical'", default: "'horizontal'" },
-        { name: 'maxSize', type: 'number | undefined', default: 'undefined', transform: 'value' },
+        { name: 'maxSize', type: 'number | undefined', default: 'undefined', transform: 'inline' },
       ],
       outputs: [{ name: 'resizingChange', type: 'boolean' }],
     },
@@ -1343,7 +1340,7 @@ export const SELECT_API: ComponentApi = {
       inputs: [
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
         { name: 'class', type: 'string', default: "''" },
-        { name: 'id', type: 'unknown' },
+        { name: 'id', type: 'string' },
       ],
       outputs: [],
     },
@@ -1390,7 +1387,7 @@ export const SELECT_API: ComponentApi = {
         { name: 'compareWith', type: '(a: unknown, b: unknown) => boolean', default: 'Object.is' },
         { name: 'dropdownPlacement', type: 'Placement', default: "'bottom-start'" },
         { name: 'container', type: 'string | HTMLElement | null', default: "'body'" },
-        { name: 'flip', type: 'NgpFlipInput', default: 'true' },
+        { name: 'flip', type: 'NgpFlipInput', default: 'true', transform: 'inline' },
         {
           name: 'scrollToOption',
           type: '((index: number) => void) | undefined',
@@ -1749,7 +1746,7 @@ export const TOOLBAR_API: ComponentApi = {
       selector: '[voltToolbarButton]',
       inputs: [
         { name: 'class', type: 'string', default: "''" },
-        { name: 'disabled', type: 'unknown' },
+        { name: 'disabled', type: 'boolean | "soft"' },
       ],
       outputs: [],
     },

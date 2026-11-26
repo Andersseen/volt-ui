@@ -20,7 +20,8 @@ import { format, resolveConfig } from 'prettier';
 import { loadCatalog } from './lib/component-catalog.mjs';
 import { librarySelectors } from './lib/selectors.mjs';
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
+// VOLT_REPO_ROOT: tests run this generator against a modified copy of the sources.
+const ROOT = process.env.VOLT_REPO_ROOT ?? join(dirname(fileURLToPath(import.meta.url)), '..');
 const SKILLS = join(ROOT, 'cli/agent/skills');
 const SELECTION = join(SKILLS, 'volt-ui-component-selection/SKILL.md');
 const RESPONSIBILITIES = join(ROOT, 'apps/web/src/server/routes/mcp/responsibilities.generated.ts');

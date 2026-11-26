@@ -59,7 +59,7 @@ export class VoltInputOtp implements ControlValueAccessor {
 
   readonly value = model<string>('');
   readonly complete = output<string>();
-  readonly length = input<number, number>(6, { transform: numberAttribute });
+  readonly length = input<number, unknown>(6, { transform: numberAttribute });
   readonly pattern = input<string>('[0-9]');
   readonly inputMode = input<'numeric' | 'text' | 'decimal' | 'tel' | 'search' | 'email' | 'url'>(
     'numeric'

@@ -49,14 +49,14 @@ The same code as the [voltui.dev guide](https://voltui.dev/docs/components/popov
 
 ````ts
 import { Component } from '@angular/core';
-import { VoltPopoverTrigger, VoltPopoverContent } from '@voltui/components';
-import { VoltButton } from '@voltui/components';
+import { VoltNativeButton, VoltPopoverContent, VoltPopoverTrigger } from '@voltui/components';
 
 @Component({
-  imports: [VoltButton, VoltPopoverTrigger, VoltPopoverContent],
+  imports: [VoltNativeButton, VoltPopoverTrigger, VoltPopoverContent],
   template: `
-    <button voltPopover [voltPopover]="popoverTpl">
-      <volt-button variant="outline">Open Popover</volt-button>
+    <!-- The trigger is the native button itself: never a button inside a button -->
+    <button voltButton variant="outline" type="button" [voltPopover]="popoverTpl">
+      Open Popover
     </button>
 
     <ng-template #popoverTpl>
