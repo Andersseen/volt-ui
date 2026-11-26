@@ -38,6 +38,7 @@ describe('Volt UI MCP Server', () => {
       'get_usage_example',
       'get_theme_info',
       'get_project_info',
+      'find_compositions',
       'generate_cli_command',
     ]);
   });

@@ -69,4 +69,62 @@ describe('package → CLI-copy transform', () => {
     expect(sourceFor(source, 'package')).toBe(source);
     expect(sourceFor(source, 'copy')).toBe("import { UiBadge } from './ui/badge';\n");
   });
+
+  describe('characterization for Recipes compositions', () => {
+    it('keeps local aliases and inline type modifiers', () => {
+      expect(
+        toCopyMode(
+          "import { VoltButton as Btn, type ButtonVariants } from '@voltui/components';",
+          '../ui'
+        )
+      ).toBe("import { UiButton as Btn, type ButtonVariants } from '../ui/button';\n");
+    });
+
+    it('reads multiline imports with comments between the names', () => {
+      const source = [
+        'import {',
+        '  VoltCard,',
+        '  // a comment, with a comma',
+        '  /* another, too */ VoltBadge,',
+        "} from '@voltui/components';",
+      ].join('\n');
+      expect(toCopyMode(source, '../ui')).toBe(
+        "import { UiCard } from '../ui/card';\nimport { UiBadge } from '../ui/badge';\n"
+      );
+    });
+
+    it('rewrites a re-export like an import', () => {
+      expect(toCopyMode("export { VoltCard } from '@voltui/components';", '../ui')).toBe(
+        "export { UiCard } from '../ui/card';\n"
+      );
+    });
+
+    it('refuses the import forms a copy cannot express instead of leaving a package import', () => {
+      for (const source of [
+        "import * as V from '@voltui/components';",
+        "import '@voltui/components';",
+        "const m = await import('@voltui/components');",
+        "import { x } from '@voltui/components/quartz';",
+      ]) {
+        expect(() => toCopyMode(source), source).toThrow(/only named imports and re-exports/);
+      }
+    });
+
+    it('leaves sibling imports, other packages and prose about the package alone', () => {
+      const source = [
+        "import { DOTS } from './contact-map.data';",
+        "import { LmnMailIcon } from 'lumen-icons';",
+        "const install = 'npm install @voltui/components';",
+      ].join('\n');
+      expect(toCopyMode(source, '../ui')).toBe(source);
+    });
+
+    it('renames library names inside template strings and generated code, as the CLI does', () => {
+      const source =
+        'const template = `<volt-alert variant="destructive"><button voltButton>Ok</button></volt-alert>`;';
+      expect(toCopyMode(source)).toBe(
+        'const template = `<ui-alert variant="destructive"><button uiButton>Ok</button></ui-alert>`;'
+      );
+    });
+  });
 });

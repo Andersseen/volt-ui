@@ -1,6 +1,6 @@
 {
   "name": "@voltui/agent",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Set up Volt UI for AI coding agents: the MCP server, single-responsibility skills and rules for Claude Code, Codex, OpenCode, Cursor, Windsurf, Gemini CLI and GitHub Copilot",
   "homepage": "https://voltui.dev/docs/ai-mcp",
   "repository": {

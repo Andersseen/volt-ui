@@ -29,6 +29,8 @@ Change the inputs and interact with the preview: the events panel shows what the
 - Without an `id`, a generated one is numbered per application, so server rendering and hydration agree.
 - The experimental Quartz entry point (`@voltui/components/quartz`) passes the same contract tests.
 
+::demo[availability-quartz]
+
 ## API Reference
 
 ::demo[api-checkbox]

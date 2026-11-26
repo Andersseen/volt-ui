@@ -8,8 +8,9 @@ Volt UI itself — the components, theming and API reference — is documented a
 
 - [Adding a recipe](https://recipes.voltui.dev/docs/adding-a-recipe): The steps for contributing a block, a layout or a recipe to Volt UI Recipes.
 - [Blocks, layouts and recipes](https://recipes.voltui.dev/docs/blocks-layouts-recipes): How a block, a layout and a recipe differ, and when to reach for each.
-- [Copying a recipe](https://recipes.voltui.dev/docs/copying-a-recipe): Install the packages a block, layout or recipe needs, copy its source and check it compiles in your project.
+- [Copying a recipe](https://recipes.voltui.dev/docs/copying-a-recipe): Install what a block, layout or pattern needs, copy its source as the npm package or as CLI-copied components, and check it compiles in your project.
 - [Introduction](https://recipes.voltui.dev/docs/introduction): What Volt UI Recipes is, what it publishes and how it relates to the Volt UI component library.
+- [Workflow patterns](https://recipes.voltui.dev/docs/workflow-patterns): What the settings form, async search and data table patterns solve, which state is yours, where your services plug in and how loading, errors and recovery work.
 
 ## Blocks
 

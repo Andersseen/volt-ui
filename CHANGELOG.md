@@ -7,6 +7,95 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+Consumer adoption and release fidelity (`specs/v2/plans/07-consumer-adoption.md`). Per package:
+`@voltui/components` and `@voltui/cli` have **no source change** in this initiative (their pending 1.4.1 and
+1.4.0 are unchanged); `@voltui/agent` **patch** (0.6.0 → 0.6.1: skill content and installer text). Everything
+else is the websites, the MCP server (deployed, not versioned) or repository tooling.
+
+### Release integrity (repository only, no package)
+
+- **Missing GitHub Releases are tagged from publication evidence.** A version on npm without a Release was
+  tagged at the commit that first introduced its number, which is not the published artifact when more work
+  merged while publishing was blocked. The release script now uses npm's recorded `gitHead`, the provenance
+  commit and any existing tag, requires them to agree and to be in history, and reports `release-unresolved`
+  instead of guessing. A version published by the run is tagged at the run's commit, and refused if npm
+  recorded another.
+- **Independent packages are released independently.** A Trusted Publisher rejected for one package (nothing
+  published) no longer holds back the others; `@voltui/agent` declares `dependsOn: @voltui/cli` and waits for it.
+- **`pnpm release:readiness`** (read-only, `--json`): per package the source and npm versions, the action the
+  Release workflow would take, the `[Unreleased]` classification, published files changed since npm's recorded
+  commit, and what blocks a release. CI and the Release job print it.
+- **`release:bump` keeps changelog entries with the version that ships them**: when the source already holds an
+  unpublished version, `[Unreleased]` is folded into that version's section. Sections for versions that never
+  reached npm (0.8.4, 1.4.0, 1.4.1) are marked `(not published to npm)`.
+- **OIDC diagnostics.** An exchange answered 404 lists the owner-side checks from npm's documentation (exact
+  workflow file, `npm publish` allowed — new configurations allow only stage publish —, the two-day expiry).
+  `RELEASING.md` has the recovery procedure for the three packages.
+
+### Recipes: package and CLI-copy mode (deployed, no package)
+
+- Every block, layout and pattern can be shown, copied and installed as the npm package or as CLI-copied
+  source (`Ui*`, `ui-*`, `../ui/<component>` imports, `npx @voltui/cli add …`), with its supporting files and
+  install commands following the same switch, shared across pages. What is shown is what is copied.
+- A generated manifest of the 63 compositions (`pnpm generate:compositions`) is derived from the pages and
+  fails when a page's preview and copyable source differ, a file imports something a consumer lacks, or the
+  catalog names a component the source does not import.
+- The Sidebar layout showed the library's own implementation (not compilable in a consumer project) and was
+  skipped by the copied-source check; it is now a consumer shell on the public API.
+- The copy transform rewrites re-exports, tolerates comments in import lists and refuses namespace, default,
+  side-effect, dynamic and deep imports instead of leaving a package import in a copy.
+- **Settings form pattern** (found by the onboarding exercise, reproduced in Chromium and Firefox): an error
+  message that appeared when a field lost focus moved Save under the pointer and the click was lost; focus
+  after an invalid submit stayed on Save because it ran before zoneless change detection. Messages now appear
+  from the first Save on; focus moves to the first invalid field.
+- Guides (en/es/uk): Copying a recipe covers both modes; a new Workflow patterns guide explains the settings
+  form, async search and data table — what they solve, the state the application owns, where the service plugs
+  in, loading, errors and recovery.
+
+### Version-aware documentation (deployed, no package)
+
+- `packages/shared/lib/release-capabilities.ts` lists what the docs describe that npm may not serve yet (CLI
+  `--path`, `--track`, `diff`, multi-component add; Quartz entry point, theme scope and density, new type
+  exports, `aria-describedby` forwarding, numeric attribute strings), each with the version that ships it and a
+  probe. `pnpm stats` records source and npm `latest` of all three packages.
+- Short notices on the Introduction, Input and Checkbox pages (en/es/uk) name the version a feature needs and
+  npm's latest; they disappear once npm has it.
+- Introduction: the Tailwind setup now registers the PostCSS plugin and imports Tailwind before the theme
+  (following it literally produced no utilities), and the theme example compiles on the published package
+  (`density` is described beside it, with its version).
+- The Textarea usage example binds `[rows]="4"`, which every published version accepts.
+
+### MCP server (deployed, no package)
+
+- `get_project_info` reports the versions it describes, npm's latest and every release capability; with the
+  installed `componentsVersion` / `cliVersion` / `agentVersion` it says what that project lacks.
+  `get_component` and `get_usage_example` add the component's availability. Additive.
+- `generate_cli_command` validates component names (with suggestions), accepts several components, quotes paths
+  for a POSIX shell, refuses control characters, option-like and `..` paths, and returns `argv`. With
+  `cliVersion` it explains what that version cannot run and uses the positional destination where `--path` is
+  missing; without it the command is unchanged and `availability` says what npm lacks.
+- **`find_compositions`** (new): Recipes blocks, layouts and patterns by intent, kind or component, with install
+  commands per mode, placement, source location and the application-owned state of each workflow.
+
+### AI context (`@voltui/agent`, patch)
+
+- Skills (distribution, adoption, component selection, forms, styling, router) send agents to
+  `find_compositions` before hand-building a section, shell or workflow, and separate the documented source from
+  what npm serves (`get_project_info`; never recommend an unpublished version). `VOLT_UI_PROMPT.md` and the
+  installer's next steps follow.
+
+### Consumer verification (repository only, no package)
+
+- **`pnpm check:published`** answers "does what the sites advertise work with the packages a consumer can
+  install today?": it installs npm's latest of the three packages in an isolated project (exit 2 when npm cannot
+  be read; never a local fallback), probes every capability claim both ways, requires every documented export to
+  be published or listed as unreleased, runs every copy-mode command the sites show with the published CLI, and
+  compiles all usage examples and compositions in both modes. CI job `published`.
+- `check:copied-source` compiles every composition in both modes, the CLI copy made by the CLI tarball.
+- `check:consumer` compiles all compositions in both modes in the isolated project (first proving they fail
+  without the packages the pages list), and builds four of them as an onboarding app in both modes — prerendered,
+  hydrated, one copied component customised and found by `volt diff` — with browser checks.
+
 ### Keeping customised copies (`@voltui/cli`, minor)
 
 Additive and opt-in. A project that never passes `--track` sees no new file and no new requirement.
@@ -75,7 +164,7 @@ Additive. The v1 positional `target-dir`, every command and the default destinat
   (`input<number, unknown>`): `<volt-textarea rows="4">`, `max="10"` on Slider, Range Slider, Meter
   and Progress, `length` on Input OTP and `pageCount` on Pagination failed to compile in consumer apps.
 
-### Documentation and AI context
+### Documentation and AI context (`@voltui/agent`, patch; the site and MCP server are deployed)
 
 - One authority per technical fact. The API extractor is rebuilt on the TypeScript compiler API
   (aliases, `input.required`, `model()` and its output, host-directive I/O with resolved types,
@@ -92,13 +181,13 @@ Additive. The v1 positional `target-dir`, every command and the default destinat
 - The roadmap (en/es/uk) states the post-1.0 sequence; the headless layer and Tailwind-free
   distribution are deferred.
 
-### Consumer verification
+### Consumer verification (repository only, no package)
 
 - `pnpm check:consumer` installs the packed tarballs into an isolated Angular project and exercises the
   installed CLI, both distribution modes with SSR and hydration, every example, dependency isolation,
   the bundle baseline (`specs/v2/bundle-baseline.json`) and the browser behaviour. Runs in CI.
 
-### CLI integrity (`@voltui/cli`)
+### CLI integrity (`@voltui/cli`, patch)
 
 Fixes, no new commands or flags. Command names, the positional `target-dir`, `--force`, `--dry-run`,
 `--install`, `--base` and `volt.json` behave as before, except where noted.
@@ -127,7 +216,7 @@ Fixes, no new commands or flags. Command names, the positional `target-dir`, `--
 - **A failed `--install` says what was done.** The copied files stay in place and the CLI prints the
   install command to run by hand.
 
-### Interaction reliability: nested composites
+### Interaction reliability: nested composites (`@voltui/components`, patch)
 
 Fixes, no new API. Selectors, inputs, outputs and value shapes are unchanged.
 
@@ -145,7 +234,7 @@ Fixes, no new API. Selectors, inputs, outputs and value shapes are unchanged.
 - **Recipes: Gallery Tabs** declares its thumbnails inside the tab panel again; the template-outlet
   workaround is gone. Copy-and-own users need this library change for the block's arrow keys.
 
-### Components
+### Components (`@voltui/components`, minor)
 
 Feedback from migrating a production AnalogJS 2.9 / Angular 21 SSR site from 1.3.3. Additive and backward
 compatible. Three of its reports are already fixed in the unreleased 1.4.x source (accordion panels that
@@ -177,7 +266,7 @@ reach consumers with the next publish.
 Not in this change: a `string | null` value for single toggle groups (a breaking type change; noted for the
 next major) and a decorative, segmented progress indicator (a new atom, to be designed separately).
 
-### Release tooling
+### Release tooling (repository only, no package)
 
 - **Trusted Publishing preflight.** Every release from 1.4.0 on failed with a bare `npm error 404 … PUT`:
   npm 11 swallows a rejected OIDC exchange and publishes without a credential. The release script now does
@@ -188,13 +277,13 @@ next major) and a decorative, segmented progress indicator (a new atom, to be de
   computes the next version from npm, updates every file that carries it, and refuses to skip a version that
   was never published.
 
-### Docs site
+### Docs site (deployed, no package)
 
 - Doqs pages (Introduction, Themes, Customization, Form Field, Input, Checkbox, Select) render in the site's
   documentation shell again: the full sidebar, outline and pager instead of a sidebar listing only the
   Markdown pages. The Agent Skills page lists the skills again (it read "0 skills").
 
-## [1.4.1] - 2026-11-16
+## [1.4.1] - 2026-11-16 (not published to npm)
 
 Patch release of `@voltui/components`. Backward compatible: no selector, input or output is removed or
 renamed. It also carries the forms contract hardening and the Doqs documentation work listed below, which
@@ -437,7 +526,7 @@ otherwise they need 1.4.1.
   programmatic-write, validation, `ngModel`, axe, focus-visibility, closed-panel layout and theme × appearance paint
   parity suites for the dual-backend consumers (`e2e/quartz-consumer/`).
 
-## [1.4.0] - 2026-11-02
+## [1.4.0] - 2026-11-02 (not published to npm)
 
 > Never published to npm: the release job was refused by npm (see 1.4.1 and "Release tooling" above). Its
 > changes ship in 1.4.1.
@@ -1120,7 +1209,7 @@ the replacements before then. Full detail in `MIGRATION.md`.
 
 - Bumped the root package, `@voltui/components`, and `@voltui/cli` to `0.9.0`.
 
-## [0.8.4] - 2026-08-05
+## [0.8.4] - 2026-08-05 (not published to npm)
 
 ### Added
 

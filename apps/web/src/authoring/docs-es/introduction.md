@@ -7,6 +7,8 @@ order: 1
 
 Los componentes se construyen sobre [ng-primitives](https://ng-primitives.dev). Un segundo punto de entrada experimental, `@voltui/components/quartz`, ejecuta nueve de ellos (Accordion, Checkbox, Listbox, Radio, Select, Switch, Tabs, Toggle y Toggle Group) sobre Quartz Headless con los mismos selectores e inputs. Se publica con `@voltui/components` a partir de la 1.4.1.
 
+::demo[availability-quartz]
+
 ## Herramientas de IA para consumidores
 
 Volt UI incluye tres formas complementarias de dar a los asistentes de IA contexto completo sobre sus componentes, selectores y convenciones.
@@ -28,6 +30,7 @@ npm install @voltui/components
 ```
 
 ```css
+@import 'tailwindcss';
 @import '@voltui/components/themes.css';
 ```
 
@@ -46,6 +49,8 @@ Usa `--dry-run` para previsualizar los archivos y `--force` para sobrescribir co
 Para ver qué cambia una versión nueva en un componente que personalizaste, ejecuta `volt diff <componente>`
 con esa versión: solo lee, y las copias añadidas con `--track` indican además si cada archivo lo
 cambiaste tú o Volt.
+
+::demo[availability-cli]
 
 ### Opción 3: copiar y pegar
 
@@ -86,6 +91,17 @@ Los componentes de Volt incluyen el CSS de disposición crítico, así que quien
 npm install -D tailwindcss @tailwindcss/postcss
 ```
 
+Después crea `.postcssrc.json` con el plugin de PostCSS e importa Tailwind **antes** del tema en tu hoja de estilos global (`src/styles.css`). Sin ambos, Tailwind no genera nada: los componentes pierden sus utilidades de espaciado y maquetación, y también cualquier composición que copies.
+
+```json
+{ "plugins": { "@tailwindcss/postcss": {} } }
+```
+
+```css
+@import 'tailwindcss';
+@import '@voltui/components/themes.css';
+```
+
 ## Sistema de temas
 
 Volt UI ofrece tokens semánticos de Tailwind mediante custom properties de CSS. Configura el tema en la configuración de tu app.
@@ -98,12 +114,15 @@ bootstrapApplication(AppComponent, {
     provideVoltTheme({
       color: 'volt', // volt | ember | sage | dusk | glacier
       style: 'sharp', // sharp | soft | brutal | ghost | retro
-      density: 'comfortable', // compact | comfortable | spacious
       dark: false,
     }),
   ],
 });
 ```
+
+Añade `density: 'compact' | 'comfortable' | 'spacious'` para fijar la escala de espaciado (desde `@voltui/components` 1.4.1).
+
+::demo[availability-theme-density]
 
 ## Estructura del proyecto
 

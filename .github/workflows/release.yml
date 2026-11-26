@@ -120,6 +120,14 @@ jobs:
       - name: Validate all publishable packages
         run: pnpm pack:lib && pnpm pack:cli && pnpm pack:agent
 
+      # Read-only: what each package would do and what blocks it, in the job summary.
+      - name: Release readiness
+        run: |
+          set +e
+          node scripts/release-readiness.mjs | tee readiness.txt
+          { echo '## Release readiness'; echo '```'; cat readiness.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          exit 0
+
       # No token in this step on purpose: npm authenticates with the job's OIDC identity.
       - name: Publish new versions & create releases
         id: release

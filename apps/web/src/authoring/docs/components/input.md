@@ -28,6 +28,8 @@ Change the inputs and interact with the preview: the events panel shows what the
 - It is marked touched when it loses focus. `aria-invalid="true"` appears when the control is invalid **and** touched, or when you set `state="error"`; `state` alone only changes the color.
 - `required`, `readonly`, `disabled`, `type`, `name`, `placeholder` and `autocomplete` are written to the native input. A control disabled through Forms is disabled too.
 
+::demo[availability-input-describedby]
+
 ## API Reference
 
 ::demo[api-input]

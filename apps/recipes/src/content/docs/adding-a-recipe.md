@@ -7,7 +7,7 @@ order: 1
 
 A new entry is three small pieces; the catalog derives routes, cards, the sitemap and the redirects from them.
 
-1. **Source.** `apps/recipes/src/app/{blocks,layouts,recipes}/<name>/<name>.ts`. Import Volt from `'volt'` and nothing from the application.
+1. **Source.** `apps/recipes/src/app/{blocks,layouts,patterns}/<name>/<name>.ts`. Import Volt from `'volt'` and nothing from the application.
 2. **Metadata.** An entry in the matching `lib/*-metadata.ts` file: slug, path and the Volt components it uses.
 3. **Page.** `pages/(gallery)/<kind>/<slug>.page.ts` with the matching showcase component.
 

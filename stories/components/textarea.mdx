@@ -51,7 +51,7 @@ import { VoltTextarea } from '@voltui/components';
 @Component({
   imports: [ReactiveFormsModule, VoltTextarea],
   template: `
-    <volt-textarea [formControl]="message" rows="4" aria-label="Message" />
+    <volt-textarea [formControl]="message" [rows]="4" aria-label="Message" />
 
     <!-- variant, size, state and class all style the native <textarea> -->
     <volt-textarea variant="filled" size="sm" state="success" class="font-mono" aria-label="Notes" />

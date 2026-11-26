@@ -7,6 +7,8 @@ order: 1
 
 The components are built on [ng-primitives](https://ng-primitives.dev). An experimental second entry point, `@voltui/components/quartz`, runs nine of them (Accordion, Checkbox, Listbox, Radio, Select, Switch, Tabs, Toggle and Toggle Group) on Quartz Headless with the same selectors and inputs. It ships with `@voltui/components` from 1.4.1 on.
 
+::demo[availability-quartz]
+
 ## AI Tools for Consumers
 
 Volt UI ships with three complementary ways to give AI assistants full context about its components, selectors, and conventions.
@@ -28,6 +30,7 @@ npm install @voltui/components
 ```
 
 ```css
+@import 'tailwindcss';
 @import '@voltui/components/themes.css';
 ```
 
@@ -45,6 +48,8 @@ npx @voltui/cli add button card input
 Use `--dry-run` to preview files and `--force` to overwrite edited components. To see what a newer
 release changes in a component you customised, run that release's `volt diff <component>`: it is
 read-only, and copies added with `--track` also say whether you or Volt changed each file.
+
+::demo[availability-cli]
 
 ### Option 3: Copy & Paste
 
@@ -85,6 +90,17 @@ Volt components ship critical layout CSS, so npm consumers do not need an `@sour
 npm install -D tailwindcss @tailwindcss/postcss
 ```
 
+Then create `.postcssrc.json` with the PostCSS plugin, and import Tailwind **before** the theme in your global stylesheet (`src/styles.css`). Without both, Tailwind generates nothing: the components lose their spacing and layout utilities, and so does any composition you copy.
+
+```json
+{ "plugins": { "@tailwindcss/postcss": {} } }
+```
+
+```css
+@import 'tailwindcss';
+@import '@voltui/components/themes.css';
+```
+
 ## Theme System
 
 Volt UI provides semantic Tailwind tokens via CSS custom properties. Configure the theme in your app config.
@@ -97,12 +113,15 @@ bootstrapApplication(AppComponent, {
     provideVoltTheme({
       color: 'volt', // volt | ember | sage | dusk | glacier
       style: 'sharp', // sharp | soft | brutal | ghost | retro
-      density: 'comfortable', // compact | comfortable | spacious
       dark: false,
     }),
   ],
 });
 ```
+
+Add `density: 'compact' | 'comfortable' | 'spacious'` to set the spacing scale (from `@voltui/components` 1.4.1).
+
+::demo[availability-theme-density]
 
 ## Project Structure
 

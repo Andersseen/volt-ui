@@ -14,6 +14,8 @@ import { provideMovement } from 'angular-movement';
 import { appI18n } from '@shared/i18n/i18n';
 import { doqPaths } from '../doq.paths';
 import { AsyncSearchRecipe } from './patterns/async-search/async-search';
+import { DataTableRecipe } from './patterns/data-table/data-table';
+import { SettingsFormRecipe } from './patterns/settings-form/settings-form';
 import { provideRecipesDoqI18n, withEtymaLocale } from './lib/doq-i18n';
 import { MOTION } from '@shared/lib/motion';
 import { SITE_IDENTITY } from '@shared/seo/seo.service';
@@ -29,8 +31,12 @@ import { SITE_IDENTITY_VALUE, SITE_ORIGIN } from './lib/site';
 export const doqConfig = defineDoqConfig({
   ...doqPaths,
   landmark: 'host',
-  // A live recipe inside a guide: `::demo[async-search]`.
-  demos: { 'async-search': AsyncSearchRecipe },
+  // Live patterns inside the guides (`::demo[async-search]`, Workflow patterns).
+  demos: {
+    'async-search': AsyncSearchRecipe,
+    'settings-form': SettingsFormRecipe,
+    'data-table': DataTableRecipe,
+  },
 });
 
 export const appConfig: ApplicationConfig = {

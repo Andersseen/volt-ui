@@ -103,6 +103,8 @@ export class CheckboxExample {
 - Без `id` отримує згенерований, пронумерований у межах застосунку, тож серверний рендеринг і гідратація збігаються.
 - Експериментальна точка входу Quartz (`@voltui/components/quartz`) проходить ті самі контрактні тести.
 
+::demo[availability-quartz]
+
 ## Довідник API
 
 ::demo[api-checkbox]

@@ -136,6 +136,43 @@ jobs:
       - name: Run CLI consumer fixture e2e tests
         run: pnpm test:e2e:consumer-cli
 
+  # What the sites advertise versus what `npm install` gives today. Reads the npm registry: the
+  # readiness report is informational (it says what a release would do; "not ready" does not fail CI),
+  # check:published fails when a claim about the published packages is false, and exits 2 (failing
+  # the job, never falling back to local artifacts) when npm cannot be read.
+  published:
+    name: Published packages vs what the sites advertise
+    needs: changes
+    if: needs.changes.outputs.core == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0 # the readiness report diffs against the commit npm recorded for each version
+      - uses: ./.github/actions/setup
+
+      - name: Release readiness (read-only)
+        run: |
+          set +e
+          node scripts/release-readiness.mjs | tee readiness.txt
+          status=${PIPESTATUS[0]}
+          { echo '## Release readiness'; echo '```'; cat readiness.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          [ "$status" -le 1 ]
+
+      - name: Published compatibility (npm latest, isolated project)
+        run: node scripts/check-published.mjs
+
+      - name: Upload the published report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: published-report
+          path: dist/published-report.json
+          if-no-files-found: ignore
+
   contracts:
     name: Component contracts (${{ matrix.browser }})
     needs: changes
@@ -483,6 +520,7 @@ jobs:
         static,
         unit,
         packages,
+        published,
         contracts,
         compat,
         quartz,

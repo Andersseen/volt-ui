@@ -73,6 +73,8 @@ Cambia los inputs e interactúa con la vista previa: el panel de eventos muestra
 - Se marca como tocado al perder el foco. `aria-invalid="true"` aparece cuando el control es inválido **y** está tocado, o cuando pones `state="error"`; `state` por sí solo solo cambia el color.
 - `required`, `readonly`, `disabled`, `type`, `name`, `placeholder` y `autocomplete` se escriben en el input nativo. Un control deshabilitado desde Forms también queda deshabilitado.
 
+::demo[availability-input-describedby]
+
 ## Referencia de la API
 
 ::demo[api-input]

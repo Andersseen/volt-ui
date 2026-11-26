@@ -7,7 +7,8 @@
  * | Recipe | behaviour over time   |
  *
  * `labelKey` is the recipe's name in the reader's language. The sentence-length copy around it
- * (what it teaches, when to use it) is not written yet; see docs/recipes-app.md "Deferred".
+ * (what it teaches, when to use it) is in the Workflow patterns guide for the three workflow patterns;
+ * card copy is still deferred (docs/recipes-app.md "Deferred").
  */
 import type { PlainTranslationKey } from '@shared/i18n/i18n';
 

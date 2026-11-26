@@ -31,7 +31,8 @@ dark })` sets them at bootstrap; `applyVoltTheme` changes them at runtime.
 - A custom palette sets the palette tokens (`--primary`, `--surface`, …) and a custom style the
   `--volt-*` shape tokens, not the Tailwind utilities.
 - `[voltTheme]="{ color, style, dark, density }"` themes one container and the overlays declared in it;
-  `density` also goes on `provideVoltTheme`. Do not hand-write `--primary` on an element.
+  `density` also goes on `provideVoltTheme`. Do not hand-write `--primary` on an element. It needs
+  `@voltui/components` 1.4.1 or later: check `get_project_info` before using it in a project on npm.
 
 ## The `class` contract
 

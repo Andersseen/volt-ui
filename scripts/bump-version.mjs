@@ -18,7 +18,7 @@ import { execFileSync } from 'node:child_process';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { PACKAGES } from './release.mjs';
 import { fetchPackument } from './lib/release-core.mjs';
-import { BUMP_TYPES, planBump, releaseChangelog } from './lib/version-bump.mjs';
+import { BUMP_TYPES, foldUnreleased, planBump, releaseChangelog } from './lib/version-bump.mjs';
 
 const args = process.argv.slice(2);
 const type = args.find(arg => !arg.startsWith('--'));
@@ -53,6 +53,15 @@ for (const pkg of PACKAGES.filter(p => selected.includes(p.tagPrefix))) {
 
   if (plan.action === 'keep') {
     console.log(`= ${pkg.name} stays at ${local}: ${plan.reason}`);
+    if (pkg.tagPrefix === 'components') {
+      // The pending version ships everything in [Unreleased] too: fold it in, never drop it.
+      const date = new Date().toISOString().slice(0, 10);
+      writeFileSync(
+        'CHANGELOG.md',
+        foldUnreleased(readFileSync('CHANGELOG.md', 'utf8'), local, date)
+      );
+      console.log(`  CHANGELOG.md: [Unreleased] folded into [${local}] - ${date}`);
+    }
     continue;
   }
 

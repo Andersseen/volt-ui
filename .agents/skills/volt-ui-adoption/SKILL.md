@@ -22,7 +22,11 @@ behaviour, a theme that does not reach them. Reuse first.
    `get_usage_example` returns working markup.
 3. **Reuse the atom if one exists.** Keep what is specific to the app — layout, copy, domain logic,
    data fetching — in the app, around the atom.
-4. **Use native HTML where it is genuinely the right element**, and say why (below).
+4. **For a whole section, shell or workflow, start from a composition.** `find_compositions`
+   ("pricing section", "dashboard shell", "settings form", "paged table") returns Recipes blocks,
+   layouts and patterns built from these atoms, with install commands and the state the app owns.
+   Copy one and adapt it rather than composing the same thing from scratch.
+5. **Use native HTML where it is genuinely the right element**, and say why (below).
 
 ## Responsibility → atom
 
@@ -65,6 +69,7 @@ could close it. Use the closest atom, note the limitation, and suggest an upstre
 <!-- volt:digest:start -->
 
 - Before writing UI, check whether Volt already owns the responsibility (MCP `find_components`); reuse the atom and keep layout, copy and domain logic in the app.
+- For a page section, app shell or workflow, `find_compositions` first and copy the Recipes composition.
 - Never rebuild Button, Card, Input, Badge, Alert, Tabs or an overlay with raw Tailwind, and never import `ng-primitives` in an app that consumes Volt.
 - Native HTML is right only where Volt has no equivalent or the native element is the point (route-backed tab strips are real anchors). If Volt cannot do something, say so instead of working around it silently.
 

@@ -24,10 +24,16 @@ You are working in an Angular application that consumes **Volt UI** components.
 ```bash
 npx @voltui/cli init                    # creates src/app/ui
 npx @voltui/cli add button card input
-npx @voltui/cli add dialog --path=./src/app/shared/ui --dry-run
-npx @voltui/cli add button --track      # also record hashes in src/app/ui/.volt-ui.json
-npx @voltui/cli@<version> diff button   # read-only: your copy → that CLI's source
+npx @voltui/cli add dialog --path=./src/app/shared/ui --dry-run   # CLI 1.4.0+
+npx @voltui/cli add button --track      # CLI 1.4.0+: record hashes in src/app/ui/.volt-ui.json
+npx @voltui/cli@<version> diff button   # CLI 1.4.0+: read-only, your copy → that CLI's source
 ```
+
+**Source vs published.** This file, voltui.dev and the MCP server describe the source; npm can be
+behind it. The MCP tool `get_project_info` lists what npm serves and which capabilities are not
+published yet (`--path`, `--track`, `volt diff`, `[voltTheme]`, …). With an older CLI give the
+destination as the last positional argument instead of `--path`. Never pin or recommend a version
+npm does not have.
 
 `volt diff` compares a (possibly customised) copy with the source shipped in the CLI version that
 runs, not npm's latest; it works offline and never changes a file (exit 0 same, 1 different,
@@ -489,8 +495,9 @@ Available MCP tools:
 - `get_component` — inputs, outputs, sub-components, examples
 - `get_usage_example` — import paths and snippets
 - `get_theme_info` — colors, styles, provider API
-- `get_project_info` — architecture and naming conventions
-- `generate_cli_command` — produce `npx @voltui/cli ...` commands (`init`, `add`, `diff`, `list`)
+- `get_project_info` — architecture, naming conventions, and which versions it describes vs what npm serves (pass the installed versions to learn what the project lacks)
+- `find_compositions` — Recipes blocks, layouts and workflow patterns, with install commands per mode and the logic the app owns
+- `generate_cli_command` — produce `npx @voltui/cli ...` commands (`init`, `add`, `diff`, `list`), quoted, with `argv`; pass `cliVersion` for a command that version can run
 
 Available MCP resources:
 
@@ -517,8 +524,11 @@ When unsure, call the MCP `get_component` tool or read the `component://<name>` 
 
 ## Blocks, Layouts and Recipes are copied, not imported
 
-They live on Volt UI Recipes (https://recipes.voltui.dev: `/blocks`, `/layouts`, `/recipes`), not in
-`@voltui/components`. Copy the source into the app and import Volt from `@voltui/components`. Never
+They live on Volt UI Recipes (https://recipes.voltui.dev: `/blocks`, `/layouts`, `/patterns`), not in
+`@voltui/components`. Find one with the MCP tool `find_compositions` before building a section, shell
+or workflow by hand. Each page shows the source in package mode (imports from `@voltui/components`)
+or CLI-copy mode (files in `src/app/<folder>/`, components from `../ui/<component>` after
+`npx @voltui/cli add …`), with the install commands for that mode. Never
 write `import { … } from '@voltui/components'` for an `AppDashboard`, `SettingsLayout` or
 `SettingsFormRecipe`. Recipes (settings form, async search, data table) show behaviour — validation,
 pending, failure, retry — using ordinary Angular signals around the atoms.

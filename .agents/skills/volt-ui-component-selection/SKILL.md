@@ -59,6 +59,12 @@ server (`find_components`, then `get_component`).
 - **Table vs an application data table.** Volt's `Table` is styled markup. Sorting, filtering,
   paging and selection logic belongs to the application (see the data-table recipe).
 
+## Sections and workflows
+
+A hero, pricing table, app shell or data table is a **composition** of these atoms, not one of them.
+Ask `find_compositions` for a Recipes block, layout or pattern before assembling it; there is no
+`VoltDataTable` or `VoltSettingsForm`, and you should not invent one.
+
 ## Do not use when
 
 - **Combobox**: the app only needs a native fixed list (`NativeSelect`).

@@ -8,6 +8,8 @@ order: 1
 
 Компоненти побудовано на [ng-primitives](https://ng-primitives.dev). Експериментальна друга точка входу, `@voltui/components/quartz`, запускає дев’ять із них (Accordion, Checkbox, Listbox, Radio, Select, Switch, Tabs, Toggle і Toggle Group) на Quartz Headless з тими самими селекторами та вхідними параметрами. Вона постачається з `@voltui/components` починаючи з 1.4.1.
 
+::demo[availability-quartz]
+
 ## Інструменти ШІ для користувачів
 
 Volt UI пропонує три взаємодоповнювальні способи дати ШІ-асистентам повний контекст про свої компоненти, селектори та домовленості.
@@ -29,6 +31,7 @@ npm install @voltui/components
 ```
 
 ```css
+@import 'tailwindcss';
 @import '@voltui/components/themes.css';
 ```
 
@@ -47,6 +50,8 @@ npx @voltui/cli add button card input
 Щоб побачити, що нова версія змінює в компоненті, який ви налаштували, запустіть `volt diff <компонент>`
 цієї версії: команда лише читає файли, а для копій, доданих з `--track`, ще й показує, хто змінив
 кожен файл — ви чи Volt.
+
+::demo[availability-cli]
 
 ### Варіант 3: копіювати та вставити
 
@@ -87,6 +92,17 @@ npm install ng-primitives class-variance-authority clsx tailwind-merge
 npm install -D tailwindcss @tailwindcss/postcss
 ```
 
+Потім створіть `.postcssrc.json` із плагіном PostCSS та імпортуйте Tailwind **перед** темою у глобальній таблиці стилів (`src/styles.css`). Без обох кроків Tailwind нічого не генерує: компоненти втрачають утиліти відступів і розмітки, як і будь-яка скопійована композиція.
+
+```json
+{ "plugins": { "@tailwindcss/postcss": {} } }
+```
+
+```css
+@import 'tailwindcss';
+@import '@voltui/components/themes.css';
+```
+
 ## Система тем
 
 Volt UI надає семантичні токени Tailwind через CSS custom properties. Налаштуйте тему у конфігурації застосунку.
@@ -99,12 +115,15 @@ bootstrapApplication(AppComponent, {
     provideVoltTheme({
       color: 'volt', // volt | ember | sage | dusk | glacier
       style: 'sharp', // sharp | soft | brutal | ghost | retro
-      density: 'comfortable', // compact | comfortable | spacious
       dark: false,
     }),
   ],
 });
 ```
+
+Додайте `density: 'compact' | 'comfortable' | 'spacious'`, щоб задати шкалу відступів (з `@voltui/components` 1.4.1).
+
+::demo[availability-theme-density]
 
 ## Структура проєкту
 

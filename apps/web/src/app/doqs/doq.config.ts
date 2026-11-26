@@ -6,6 +6,12 @@ import { InputExample } from './examples/input-example';
 import { NativeSelectExample } from './examples/native-select-example';
 import { SelectExample } from './examples/select-example';
 import { CheckboxApi, FormFieldApi, InputApi, SelectApi } from './host/api-references';
+import {
+  CliAvailability,
+  InputDescribedByAvailability,
+  QuartzAvailability,
+  ThemeDensityAvailability,
+} from './host/availability';
 import { ComponentCatalog } from './host/component-catalog';
 import { ThemePresets } from './host/theme-presets';
 import { CheckboxPlayground } from './playgrounds/checkbox-playground';
@@ -54,6 +60,10 @@ export const doqConfig = defineDoqConfig({
     'api-select': SelectApi,
     'component-catalog': ComponentCatalog,
     'theme-presets': ThemePresets,
+    'availability-cli': CliAvailability,
+    'availability-quartz': QuartzAvailability,
+    'availability-input-describedby': InputDescribedByAvailability,
+    'availability-theme-density': ThemeDensityAvailability,
   },
   playgrounds: {
     input: {

@@ -618,6 +618,9 @@ async function run(argv, env = {}) {
       out.log('  npx @voltui/cli add button  add a component');
       out.log('  npx @voltui/cli list        list every component');
       out.log('  npx @voltui/cli diff button compare an edited copy with the CLI source (read-only)');
+      out.log(
+        '  MCP find_compositions       copy a block, layout or workflow from recipes.voltui.dev'
+      );
     }
     return 0;
   } catch (err) {

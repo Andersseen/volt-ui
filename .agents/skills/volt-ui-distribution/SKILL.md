@@ -62,8 +62,8 @@ npx @voltui/cli add button --track            # also records hashes in src/app/u
 npx @voltui/cli@<version> diff button         # read-only: local copy → that CLI's source
 ```
 
-Name a destination with `--path=<dir>` (the old positional `target-dir` still works but can be
-mistaken for a component name). Without one, the CLI uses `src/app/ui` of the nearest
+Name a destination with `--path=<dir>` (the positional `target-dir` still works but can be mistaken
+for a component name; it is the only form a CLI older than 1.4.0 understands — see below). Without one, the CLI uses `src/app/ui` of the nearest
 `package.json`, also from a subfolder; in a workspace root it asks which app (`--path`). Unknown
 flags and extra arguments are errors — read the message, do not retry blindly.
 
@@ -72,8 +72,25 @@ result: edit it freely. A later `add` reuses untouched files and refuses to over
 unless you pass `--force` — review `volt diff` first. Dependencies are per component: `volt add` prints
 exactly which packages the copied files need (with ranges); `--install` installs those once in the
 right package, keeps compatible versions and never upgrades Angular. Do not install a fixed list.
-Blocks, Layouts and Recipes from the docs site are copied the same way and import the atoms from the
-project's mode; component examples on voltui.dev and from `get_usage_example` come in both modes.
+Component examples on voltui.dev and from `get_usage_example` come in both modes.
+
+## Compositions (blocks, layouts, patterns)
+
+Before hand-building a page section, an app shell or a workflow (settings form, server search, data
+table), call the MCP tool `find_compositions`: it returns copyable Recipes compositions
+(recipes.voltui.dev) with the components they use, install commands per mode and what stays with the
+app. They are source to copy, not package exports. In copy mode put the files in
+`src/app/<folder>/`; they import `../ui/<component>`, where `volt add` writes. Replace the `fake*`
+function a pattern names with your service; keep its state in your component.
+
+## Source vs published
+
+voltui.dev and the MCP server describe the **source**; npm can be behind it. `get_project_info`
+lists what npm serves (`versions.publishedOnNpm`) and every capability that is not published yet.
+Pass the project's versions (`componentsVersion`, `cliVersion`) to it and to `get_component` /
+`generate_cli_command` to learn what that project can use. With an older CLI, use the positional
+destination instead of `--path`, and skip `--track` / `volt diff`. Never pin an unpublished version
+(`npx @voltui/cli@<next>`) or tell a user to install one.
 
 ## Updating a customised copy
 
@@ -105,6 +122,8 @@ only read a rules file it writes a short routing block.
 <!-- volt:digest:start -->
 
 - Detect the mode first: `@voltui/components` (package: `Volt*`, `volt-*`) or a copied `ui/` folder (copy: `Ui*`, `ui-*`). Never mix them; `'volt'` is not importable in a consumer.
+- Docs and MCP describe the source; check `get_project_info` (`publishedOnNpm`, unreleased capabilities) and pass the installed versions. Never recommend an unpublished version.
+- Page sections, app shells and workflows: `find_compositions` first; copy the composition instead of rebuilding it.
 - Copy mode: `npx @voltui/cli add <name> [--path=<dir>] [--install] [--track]` (installs only what the copy imports); package mode: `npm install @voltui/components`.
 - Before updating an edited copy: `npx @voltui/cli@<version> diff <name>` (read-only, local → that CLI's source); apply hunks by hand, never `--force` over edits.
 - CSS: the full `@import 'tailwindcss'` (with preflight, which Volt is styled on), then `@import '@voltui/components/themes.css'`.

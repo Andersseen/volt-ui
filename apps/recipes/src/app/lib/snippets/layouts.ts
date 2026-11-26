@@ -10,6 +10,7 @@ import kanbanSource from '../../layouts/kanban/kanban.ts?raw';
 import loginSource from '../../layouts/login/login.ts?raw';
 import profileSource from '../../layouts/profile/profile.ts?raw';
 import settingsSource from '../../layouts/settings/settings.ts?raw';
+import sidebarSource from '../../layouts/sidebar/sidebar.ts?raw';
 import signUpSource from '../../layouts/sign-up/sign-up.ts?raw';
 import topNavSource from '../../layouts/top-nav/top-nav.ts?raw';
 
@@ -22,3 +23,4 @@ export const KANBAN_LAYOUT = toConsumerSource(kanbanSource);
 export const CHAT_LAYOUT = toConsumerSource(chatSource);
 export const LOGIN_LAYOUT = toConsumerSource(loginSource);
 export const SIGN_UP_LAYOUT = toConsumerSource(signUpSource);
+export const SIDEBAR_LAYOUT = toConsumerSource(sidebarSource);

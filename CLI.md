@@ -17,6 +17,12 @@ npx @voltui/cli init
 npx @voltui/cli add button
 ```
 
+> **Which version you run.** This file documents the source. `--path`, `--track`, `volt diff` and a
+> multi-component `add` whose components share a dependency need `@voltui/cli` 1.4.0; check `npm view @voltui/cli
+version` (or `pnpm release:readiness`) before relying on them. With an older CLI, give the destination as the last
+> positional argument. The facts are kept in `packages/shared/lib/release-capabilities.ts` and checked against the
+> published package by `pnpm check:published`.
+
 During local development in this repo:
 
 ```bash

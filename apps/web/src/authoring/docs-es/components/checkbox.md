@@ -29,6 +29,8 @@ Cambia los inputs e interactúa con la vista previa: el panel de eventos muestra
 - Sin `id`, recibe uno generado y numerado por aplicación, de modo que el renderizado en servidor y la hidratación coinciden.
 - El punto de entrada experimental de Quartz (`@voltui/components/quartz`) pasa las mismas pruebas de contrato.
 
+::demo[availability-quartz]
+
 ## Referencia de la API
 
 ::demo[api-checkbox]

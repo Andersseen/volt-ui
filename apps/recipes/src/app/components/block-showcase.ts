@@ -1,16 +1,11 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { categoryFor, type BlockMetadata } from '../lib/blocks-metadata';
-import { externalPackages } from '../lib/snippets/consumer-source';
 import { RelatedComponents } from './related-components';
-import { CodePanel } from '@shared/components/code-panel';
+import { CompositionSource, type CompositionFile } from './composition-source';
 import { VoltAlert, VoltAlertDescription, VoltCard } from 'volt';
 import { injectAppI18n } from '@shared/i18n/i18n';
 
-export interface BlockFile {
-  /** The file name the block imports it by, e.g. `contact-map.data.ts`. */
-  readonly name: string;
-  readonly code: string;
-}
+export type BlockFile = CompositionFile;
 
 /**
  * The frame every block page shares: heading, live section, what moves, and the source.
@@ -26,7 +21,7 @@ export interface BlockFile {
 @Component({
   selector: 'app-block-showcase',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CodePanel, RelatedComponents, VoltAlert, VoltAlertDescription, VoltCard],
+  imports: [CompositionSource, RelatedComponents, VoltAlert, VoltAlertDescription, VoltCard],
   template: `
     <div class="space-y-8">
       <div>
@@ -54,17 +49,13 @@ export interface BlockFile {
         </volt-card>
       </div>
 
-      <app-code-panel
+      <app-composition-source
+        [entryId]="'blocks/' + block().slug"
         [title]="t('gallery.blockSource')"
         [code]="code()"
-        [cliCommand]="installCommand()"
+        [files]="files()"
         [description]="t('gallery.blockSourceNote')"
       />
-
-      <!-- Files the block imports beside itself (generated data), copied along with it. -->
-      @for (file of files(); track file.name) {
-        <app-code-panel [title]="file.name" [code]="file.code" />
-      }
 
       <volt-alert>
         <!-- The CSS media query is a literal, so it is passed in rather than translated. -->
@@ -84,18 +75,6 @@ export class BlockShowcase {
   readonly code = input.required<string>();
   /** Sibling files the block imports (`./<name>`), shown under it so the copy is complete. */
   readonly files = input<readonly BlockFile[]>([]);
-
-  /**
-   * The packages the copied file imports, read off the source itself so a new dependency
-   * cannot be left out of the instructions.
-   */
-  protected readonly installCommand = computed(() =>
-    [
-      'pnpm add',
-      '@voltui/components',
-      ...externalPackages(this.code()).filter(p => p !== '@voltui/components'),
-    ].join(' ')
-  );
 
   /** Names the category above the title, so a block page says where it sits in the set. */
   protected readonly category = computed(() => categoryFor(this.block()));

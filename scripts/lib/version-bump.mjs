@@ -50,3 +50,23 @@ export function releaseChangelog(text, version, date) {
   }
   return text.replace(/^## \[Unreleased\][ \t]*$/m, `## [Unreleased]\n\n## [${version}] - ${date}`);
 }
+
+/**
+ * A version that never reached npm keeps its number (planBump 'keep'), so what accumulated in
+ * `## [Unreleased]` since then belongs to it: this moves that text to the top of the pending
+ * version's section, dates it `date` and drops a `(not published to npm)` mark. Without a section
+ * for the version, the Unreleased section is released under it (`releaseChangelog`). Nothing is
+ * dropped: an empty Unreleased leaves the text unchanged.
+ */
+export function foldUnreleased(text, version, date) {
+  const heading = new RegExp(`^## \\[${version.replace(/\./g, '\\.')}\\].*$`, 'm');
+  if (!heading.test(text)) return releaseChangelog(text, version, date);
+  const start = text.search(/^## \[Unreleased\][ \t]*$/m);
+  if (start < 0) throw new Error('CHANGELOG.md has no "## [Unreleased]" section');
+  const afterHeading = text.indexOf('\n', start) + 1;
+  const next = text.slice(afterHeading).search(/^## \[/m);
+  const end = next < 0 ? text.length : afterHeading + next;
+  const body = text.slice(afterHeading, end).trim();
+  const without = `${text.slice(0, afterHeading)}\n${text.slice(end)}`;
+  return without.replace(heading, `## [${version}] - ${date}${body ? `\n\n${body}\n` : ''}`);
+}

@@ -1,6 +1,6 @@
 # Plan 04 — Componentes fáciles de componer y personalizar
 
-**Estado:** no iniciado. **Prioridad:** P1. **Depende de:** plan 03.
+**Estado:** ejecutado en `feat/consumer-lifecycle-reliability` (PR #261, merge `494b0fc`), salvo la revisión manual de la fase C (teclado completo, lector de pantalla, zoom 200 %) y las fechas localizadas, que siguen pendientes. Reconciliado el 2026-11-26 en el plan 07 contra los tests de la rama. **Prioridad:** P1. **Depende de:** plan 03.
 **Hallazgos:** F11, F15. **Entrega:** contratos documentados, regresiones y mejoras acotadas.
 
 ## Contexto y archivos
@@ -16,11 +16,11 @@ todos los efectos: la fase A produce evidencia antes de proponer APIs.
 
 ## Fase A — Caracterización desde tareas de usuario
 
-- [ ] Crear una matriz por familia: elemento interactivo, destino de class/id/ARIA,
+- [x] Crear una matriz por familia: elemento interactivo, destino de class/id/ARIA,
       valores/control de estado, mecanismo de foco y comportamiento de formularios.
-- [ ] Priorizar button, input, textarea y form-field; probar el resto al componerlos con
+- [x] Priorizar button, input, textarea y form-field; probar el resto al componerlos con
       select/dialog. No auditar todo el catálogo con la misma batería irrelevante.
-- [ ] Registrar estos casos con su DOM/nombre accesible real:
+- [x] Registrar estos casos con su DOM/nombre accesible real (`packages/volt/src/lib/composition-contracts.spec.ts`; select en diálogo/drawer en `e2e/contracts/overlay-forms.spec.ts`):
 
 | Caso                                | Resultado esperado                                                                            |
 | ----------------------------------- | --------------------------------------------------------------------------------------------- |
@@ -33,25 +33,25 @@ todos los efectos: la fase A produce evidencia antes de proponer APIs.
 | `updateOn: 'blur'`                  | El contrato de touched/change permite el comportamiento documentado de Angular                |
 | Select en dialog/drawer             | Teclado usable; Escape y foco vuelven al nivel correcto sin cerrar toda la composición        |
 
-- [ ] Para cada fallo, escribir reproducción antes del arreglo. Para comportamientos que
+- [x] Para cada fallo, escribir reproducción antes del arreglo. Para comportamientos que
       ya pasan, conservar la implementación y registrar cobertura. Separar limitación de
       ergonomía de incumplimiento de accesibilidad.
 
 ## Fase B — La menor mejora compatible
 
-- [ ] Elegir un mecanismo acotado para nombre accesible y atributos nativos necesarios
+- [x] Elegir un mecanismo acotado para nombre accesible y atributos nativos necesarios
       en button. Contrastar input explícito, composición sobre elemento nativo y patrones
       ya presentes; documentar alternativa elegida antes de ampliar exports.
-- [ ] Definir destino de clases para input/textarea y consistencia con button. No mover
+- [x] Definir destino de clases para input/textarea y consistencia con button. No mover
       silenciosamente la clase actual del host al elemento interno: puede romper layouts
       existentes. Si se necesita un input aditivo para el control interno, probarlo y
       documentarlo; no añadir diez slots/clases sin uso real.
-- [ ] Corregir únicamente fallos Forms/labels/overlays reproducidos. Mantener API de
+- [x] Corregir únicamente fallos Forms/labels/overlays reproducidos. Mantener API de
       model y CVA existentes; una interacción no debe duplicar outputs ni activar dos
       fuentes de verdad distintas al usar el modo de binding documentado.
 - [ ] Documentar la frontera entre APIs alternativas: qué modo se recomienda y qué
       combinaciones no se deben usar a la vez. No «arreglar» imponiendo un estado global.
-- [ ] No retirar selectores, renombrar inputs, cambiar tipos de valor ni añadir un segundo
+- [x] No retirar selectores, renombrar inputs, cambiar tipos de valor ni añadir un segundo
       conjunto completo de componentes. Si un caso exige ruptura, registrarlo con ejemplo
       antes/después como candidato de major y continuar con los casos compatibles.
 
@@ -94,8 +94,27 @@ general a directivas. Las recetas del plan 06 usarán los contratos que aquí se
 
 ## Registro de ejecución
 
-- Matriz y reproducciones: pendiente.
-- Cambios compatibles elegidos: pendiente.
-- Candidatos de major: ninguno aprobado.
-- Navegadores y revisión manual realizados: pendiente.
-- Próximo paso: fase A.
+### 2026-11-26 — Reconciliación (plan 07, sobre `494b0fc`)
+
+El documento seguía «no iniciado» aunque #261 entregó el trabajo. Evidencia comprobada en el código:
+
+- **Fase A, matriz:** `packages/volt/src/lib/composition-contracts.spec.ts` (`904a728`) cubre los ocho casos
+  de la tabla: botón solo icono (nombre en el botón enfocable), submit único y `disabled`, acción que navega
+  como enlace real, `aria-disabled` enfocable, escritura/reset/null/disabled sin marcar dirty, una
+  pulsación = un cambio, touched al salir, `updateOn: 'blur'`, label/hint/error con ids únicos y sin
+  referencias huérfanas, destinos de class/id/aria-label en `volt-input`, select nativo con Forms.
+  Select y combobox dentro de diálogo, drawer y popover, en navegador real:
+  `e2e/contracts/overlay-forms.spec.ts`; overlays anidados y formulario en diálogo:
+  `e2e/contracts/nested-overlays.spec.ts` (`c209367`).
+- **Fase B:** el único fallo reproducido fue `aria-describedby` de consumidor en Input/Textarea, que se
+  quedaba en el host sin rol; se corrigió con un input aditivo (`904a728`). La clase sigue en el host
+  (sin mover clases silenciosamente). Ningún candidato de major.
+- **Fase C, con evidencia automática:** estados en los 5 estilos × paletas × claro/oscuro
+  (`e2e/contracts/theme-matrix.spec.ts`), contraste de estados seleccionados
+  (`e2e/contracts/visual-state.spec.ts`), reduced motion en Progress, alcance de tema y overlays
+  (`e2e/contracts/theme-scope.spec.ts`). Las casillas de la fase C **no se marcan**: no hay prueba de
+  texto largo + ancho estrecho + zoom 200 % sobre la composición formulario + select + diálogo, ni
+  revisión manual de teclado con lector de pantalla, ni caracterización de fechas localizadas/primer día
+  de semana registrada aquí.
+- **Pendiente:** fase C completa (revisión manual y lector de pantalla), limitaciones upstream
+  documentadas con versión.
