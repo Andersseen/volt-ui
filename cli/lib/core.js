@@ -191,6 +191,23 @@ async function loadManifest() {
 // Content transformer
 // ---------------------------------------------------------------------------
 
+// Identifies the rules below. Bump it whenever `transformContent` produces different output for the
+// same input: `.volt-ui.json` records it next to each baseline hash, so `volt diff` can say that a
+// difference may come from the transform rather than from the component source.
+// cli/tests/provenance.spec.js pins the output of a sample so a change without a bump fails.
+const TRANSFORM_VERSION = 1;
+
+/** The version of the running @voltui/cli and of the registry (component source) it ships. */
+function cliVersions(manifest) {
+  let cli = null;
+  try {
+    cli = JSON.parse(fs.readFileSync(path.join(PACKAGE_ROOT, 'package.json'), 'utf-8')).version;
+  } catch {
+    cli = null;
+  }
+  return { cli, registry: (manifest && manifest.version) || null };
+}
+
 function transformContent(content) {
   // Replace selector volt- with ui-
   content = content.replace(/selector:\s*['"]([^'"]*)['"]/g, (_match, selector) => {
@@ -529,6 +546,8 @@ function formatTailwindGuidance(tailwind) {
 }
 
 module.exports = {
+  TRANSFORM_VERSION,
+  cliVersions,
   BASES,
   DEFAULT_BASE,
   resolveRegistryPaths,

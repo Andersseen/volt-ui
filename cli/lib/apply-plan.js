@@ -98,6 +98,14 @@ function applyPlan(plan, io = fs) {
     } else if (barrel.action === 'update') {
       replaceFile(barrel.path, barrel.after, journal, io);
     }
+    // Provenance goes last, once every copied byte is on disk, inside the same rollback.
+    const { provenance } = plan;
+    if (provenance && provenance.action === 'create') {
+      ensureDirectory(path.dirname(provenance.path), journal, io);
+      writeNewFile(provenance.path, provenance.after, journal, io);
+    } else if (provenance && provenance.action === 'update') {
+      replaceFile(provenance.path, provenance.after, journal, io);
+    }
   } catch (err) {
     const restoreFailures = rollback(journal, io);
     const lines = [`Could not write the component files: ${err.message}`];
