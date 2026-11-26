@@ -16,6 +16,11 @@
  *             transform against the copied source, both prerendered on the server and hydrated;
  *             every example of scripts/check-examples.mjs and the full catalog in both modes, with
  *             the consumer's own ngc
+ *   4b. recipes  every Recipes composition in package and CLI-copy mode: first WITHOUT the npm
+ *             packages the pages list (must fail on them), then with exactly those installed; then
+ *             four compositions as a disposable app (settings form, app shell, data table, marketing
+ *             block with its data file) in both modes, prerendered and hydrated, with one copied
+ *             component customised and `volt diff` reporting exactly that file
  *   5. isolation  a second project with only the CLI: `volt add card` without --install must FAIL to
  *             build (clsx is missing — proof nothing resolves from the workspace); `--install` adds
  *             exactly what card imports and the build passes
@@ -23,7 +28,8 @@
  *   7. bundle production JS/CSS of a one-button app and of the fixture, raw and gzip, against
  *             specs/v2/bundle-baseline.json (regression > 10 % and > 2 KiB gzip fails)
  *   8. browser  Playwright on both builds: tokens and Tailwind paint, theme switch, form field
- *             wiring, dialog keyboard/focus/ARIA, hydration without warnings, unique ids
+ *             wiring, dialog keyboard/focus/ARIA, hydration without warnings, unique ids; and on the
+ *             onboarding apps: validation, save and failure, sort/filter, theme paint, the customisation
  *
  *   node scripts/check-consumer.mjs                    Angular 21.2.0 (the declared minimum), Chromium
  *   node scripts/check-consumer.mjs --angular=22       latest 22.x
@@ -517,6 +523,105 @@ for (const mode of ['package', 'copy']) {
 }
 report.examples = json(join(app, 'examples/inventory.json'));
 
+// ---- 4b. Recipes compositions ----------------------------------------------------------------------
+step('Recipes compositions in package and CLI-copy mode, with only the dependencies the pages list');
+const { COMPOSITIONS } = await load('packages/shared/lib/compositions.generated.ts');
+const { toConsumerSource } = await load('apps/recipes/src/app/lib/snippets/consumer-source.ts');
+const rootDeps = json(join(ROOT, 'package.json')).dependencies;
+const compositionPackages = [...new Set(COMPOSITIONS.flatMap(c => c.packages))].sort();
+const compositionComponents = [...new Set(COMPOSITIONS.flatMap(c => c.components))].sort();
+const writeComposition = (c, dir, mode) => {
+  for (const file of c.files) {
+    const source = toConsumerSource(
+      readFileSync(join(ROOT, 'apps/recipes/src/app', c.kind, c.folder, file), 'utf8')
+    );
+    write(join(dir, c.folder, file), distribution.sourceFor(source, mode, '../ui'));
+  }
+};
+for (const mode of ['package', 'copy']) {
+  for (const c of COMPOSITIONS) writeComposition(c, join(app, 'compositions', mode), mode);
+  write(join(app, `compositions/${mode}/tsconfig.json`), {
+    compilerOptions: { ...compilerOptions, noEmit: true, module: 'preserve' },
+    angularCompilerOptions,
+    include: ['**/*.ts'],
+  });
+}
+voltIn(app, ['add', ...compositionComponents, '--path=compositions/copy/ui']);
+const ngcBin = join(app, 'node_modules/.bin/ngc');
+// Negative proof first: nothing the pages do not list resolves from the workspace.
+r = exec(ngcBin, ['-p', join(app, 'compositions/package/tsconfig.json')], { cwd: app, expectStatus: null, quiet: true });
+assert(
+  r.status !== 0 && compositionPackages.every(pkg => r.out.includes(pkg)),
+  `before installing ${compositionPackages.join(', ')} (what the pages list) the compositions do not compile`
+);
+// Then exactly what the pages tell a consumer to install.
+exec(
+  'npx',
+  ['--yes', 'npm@11', 'install', '--no-audit', '--no-fund', ...compositionPackages.map(pkg => (rootDeps[pkg] ? `${pkg}@${rootDeps[pkg]}` : pkg))],
+  { cwd: app }
+);
+for (const mode of ['package', 'copy']) {
+  exec(ngcBin, ['-p', join(app, `compositions/${mode}/tsconfig.json`)], { cwd: app });
+  assert(true, `${mode}: all ${COMPOSITIONS.length} blocks, layouts and patterns compile (strict templates)`);
+}
+report.compositions = { count: COMPOSITIONS.length, packages: compositionPackages, components: compositionComponents.length };
+
+step('onboarding: four compositions as an app, both modes, prerendered and hydrated, one copy customised');
+const ONBOARDING = join(ROOT, 'e2e/consumer-onboarding');
+const onboardingIds = ['recipes/settings-form', 'recipes/data-table', 'layouts/admin-dashboard', 'blocks/contact-map'];
+const onboarding = onboardingIds.map(id => {
+  const found = COMPOSITIONS.find(c => c.id === id);
+  if (!found) fail(`onboarding composition ${id} is not in the manifest`);
+  return found;
+});
+for (const [name, mode] of [['onb-pkg', 'package'], ['onb-copy', 'copy']]) {
+  const src = join(app, `src-${name}`);
+  for (const file of ['app.ts', 'main.ts', 'main.server.ts']) {
+    const text = readFileSync(join(ONBOARDING, file), 'utf8');
+    write(join(src, file), mode === 'copy' ? distribution.toCopyMode(text) : text);
+  }
+  for (const file of ['index.html', 'styles.css']) write(join(src, file), readFileSync(join(FIXTURE, file), 'utf8'));
+  for (const c of onboarding) writeComposition(c, src, mode);
+}
+const onboardingComponents = [
+  ...new Set([
+    ...onboarding.flatMap(c => c.components),
+    ...['main.ts', 'main.server.ts'].flatMap(f => distribution.componentsUsed(readFileSync(join(ONBOARDING, f), 'utf8'))),
+  ]),
+];
+voltIn(app, ['add', ...onboardingComponents, '--path=src-onb-copy/ui', '--track']);
+// A consumer customises a copied component: the build must keep it, and volt diff must see it.
+const variantsFile = join(app, 'src-onb-copy/ui/button/variants.ts');
+const variants = readFileSync(variantsFile, 'utf8');
+const customised = variants.replace("bg-primary text-primary-foreground", 'onboarding-custom bg-primary text-primary-foreground');
+assert(customised !== variants, 'customised the copied Button (ui/button/variants.ts)');
+writeFileSync(variantsFile, customised);
+r = exec(volt, ['diff', 'button', '--path=src-onb-copy/ui', '--json'], { cwd: app, expectStatus: 1, quiet: true });
+const onbDiff = JSON.parse(r.out.slice(r.out.indexOf('{')));
+assert(
+  onbDiff.files.find(f => f.path === 'button/variants.ts')?.status === 'local-changed' &&
+    onbDiff.files.filter(f => f.path !== 'button/variants.ts').every(f => f.status === 'unchanged'),
+  'volt diff reports exactly the customised file as local-changed'
+);
+write(join(app, 'angular.json'), {
+  $schema: './node_modules/@angular/cli/lib/config/schema.json',
+  version: 1,
+  cli: { analytics: false },
+  projects: {
+    pkg: project('pkg', true),
+    copy: project('copy', true),
+    min: project('min', false),
+    'onb-pkg': project('onb-pkg', true),
+    'onb-copy': project('onb-copy', true),
+  },
+});
+for (const name of ['onb-pkg', 'onb-copy']) {
+  exec(ng, ['build', name], { cwd: app });
+  const html = readFileSync(join(app, `dist/${name}/browser/index.html`), 'utf8');
+  assert(html.includes('ngh=') && html.includes('Save changes') && html.includes('Recent orders'), `${name}: server-rendered with hydration annotations`);
+}
+report.onboarding = { compositions: onboardingIds, components: onboardingComponents, customised: 'button/variants.ts' };
+
 // ---- 5. isolation ------------------------------------------------------------------------------
 step('isolation: a project with only the CLI');
 const iso = join(work, 'isolated');
@@ -667,6 +772,38 @@ const playwright = spawnSync(
   { cwd: ROOT, stdio: 'inherit', env: { ...process.env, E2E_CONSUMER_APPS: JSON.stringify(urls) } }
 );
 if (playwright.status !== 0) fail('the browser checks failed against the consumer builds');
+
+const onboardingUrls = [];
+['onb-pkg', 'onb-copy'].forEach((name, i) => {
+  const port = PORT + 2 + i;
+  servers.push(
+    spawn('node', [join(ROOT, 'scripts/serve-static.mjs'), join(app, `dist/${name}/browser`), String(port)], {
+      stdio: 'ignore',
+    })
+  );
+  onboardingUrls.push({
+    name: name === 'onb-pkg' ? 'onboarding, package' : 'onboarding, CLI copy (customised)',
+    url: `http://127.0.0.1:${port}/`,
+    customised: name === 'onb-copy',
+  });
+});
+for (const { url } of onboardingUrls) {
+  for (const deadline = Date.now() + 15_000; ; ) {
+    try {
+      if ((await fetch(url)).ok) break;
+    } catch {
+      /* not listening yet */
+    }
+    if (Date.now() > deadline) fail(`${url} did not start`);
+    await new Promise(resolve => setTimeout(resolve, 100));
+  }
+}
+const onboardingRun = spawnSync(
+  'pnpm',
+  ['exec', 'playwright', 'test', '-c', 'playwright.consumer-onboarding.config.ts', ...(projects.length ? projects : ['--project=chromium'])],
+  { cwd: ROOT, stdio: 'inherit', env: { ...process.env, E2E_ONBOARDING_APPS: JSON.stringify(onboardingUrls) } }
+);
+if (onboardingRun.status !== 0) fail('the onboarding browser checks failed');
 
 write(join(ROOT, 'dist/consumer-report.json'), report);
 finished = true;

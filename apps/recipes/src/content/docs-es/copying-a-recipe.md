@@ -1,28 +1,37 @@
 ---
 title: Copiar una receta
-description: Instala los paquetes que necesita un bloque, layout o receta, copia su código y comprueba que compila en tu proyecto.
+description: Instala lo que necesita un bloque, layout o patrón, copia su código como paquete npm o con los componentes copiados por el CLI, y comprueba que compila en tu proyecto.
 group: Primeros pasos
 order: 2
 ---
 
-Cada página termina con el panel de **código** y un comando de instalación. El código ya está reescrito para un proyecto normal: importa Volt desde `@voltui/components`, nunca desde un alias privado.
+Cada página termina con el panel de **código**. Encima del código, elige cómo usa Volt UI tu proyecto; el código, el botón de copiar y los comandos de instalación siguen esa elección.
 
-## 1. Instala los paquetes
+| Modo            | Importa Volt desde                | Nombres           | Instalación                                        |
+| --------------- | --------------------------------- | ----------------- | -------------------------------------------------- |
+| **Paquete npm** | `@voltui/components`              | `Volt*`, `volt-*` | `pnpm add @voltui/components` + paquetes indicados |
+| **Copia (CLI)** | `../ui/<componente>` (tus copias) | `Ui*`, `ui-*`     | `npx @voltui/cli add …` + paquetes indicados       |
 
-```bash
-pnpm add @voltui/components
-```
+La elección se mantiene al pasar de una página a otra. Las dos versiones de cada entrada se compilan en CI, en un proyecto limpio, con los paquetes que instala un consumidor.
 
-El comando bajo el código lista cualquier otro paquete que importe esa entrada. Se lee del propio código, así que no puede quedarse desactualizado.
+## 1. Instala lo que necesita
 
-## 2. Copia el archivo
+Ejecuta los comandos que aparecen bajo el código. Se leen del propio código, así que no pueden quedarse desactualizados:
 
-Usa el botón **Copiar** y guarda el componente donde tu proyecto guarda las funcionalidades, por ejemplo `src/app/blocks/pricing-tiers/pricing-tiers.ts`. Un bloque o layout es un único componente standalone.
+- **Paquete npm**: `@voltui/components` y cualquier otro paquete que importe la entrada (la mayoría usa `lumen-icons` para los iconos).
+- **Copia (CLI)**: `npx @voltui/cli add` con todos los componentes de Volt que importa la entrada. El CLI copia también sus dependencias y lista los paquetes npm que necesitan (añade `--install` para instalarlos). Después, los demás paquetes que importe la entrada.
+
+## 2. Copia los archivos
+
+Usa el botón **Copiar**. Conserva el nombre del archivo y copia en la misma carpeta cualquier archivo de apoyo que aparezca debajo (por ejemplo `contact-map.data.ts`).
+
+- **Paquete npm**: guárdalo donde tu proyecto guarda las funcionalidades, por ejemplo `src/app/pricing-tiers/pricing-tiers.ts`.
+- **Copia (CLI)**: guárdalo en `src/app/<carpeta>/`. Sus imports apuntan a `../ui/<componente>`, es decir, `src/app/ui/`, donde escribe `volt add` por defecto. Si tus componentes están en otro sitio, cambia esas rutas.
 
 ## 3. Úsalo
 
 ```ts
-import { PricingTiers } from './blocks/pricing-tiers/pricing-tiers';
+import { PricingTiers } from './pricing-tiers/pricing-tiers';
 
 @Component({
   imports: [PricingTiers],
@@ -31,9 +40,9 @@ import { PricingTiers } from './blocks/pricing-tiers/pricing-tiers';
 export class PricingPage {}
 ```
 
-## 4. Aplica tu tema
+## 4. Dale tu tema
 
-Las entradas usan solo tokens de tema (`bg-primary`, `rounded-md`), así que se aplican tu tema de Volt y el modo oscuro. Nada lleva marca.
+Las entradas solo usan tokens del tema (`bg-primary`, `rounded-md`), así que se aplican tu tema de Volt y el modo oscuro. Nada lleva marca.
 
 > [!NOTE]
-> Si prefieres ser dueño también de los componentes de Volt, `npx @voltui/cli add <componente>` los copia a tu proyecto en lugar de instalar el paquete.
+> Los patrones incluyen una función `fake*` (`fakeSave`, `fakeSearch`, `fakeFetch`) que ocupa el lugar de tu servicio. Sustitúyela; consulta [Patrones de flujo](/es/docs/workflow-patterns).
