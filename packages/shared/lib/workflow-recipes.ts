@@ -1,7 +1,8 @@
 /**
  * The three workflow recipes (settings form, async search, data table) and the Volt components each
- * is built from. One list, read by both apps: Recipes renders "related components" from it, and
- * voltui.dev links a component's page to the recipes that use it. Edit it here, never in a copy.
+ * is built from, for voltui.dev to link a component's page to the recipes that use it. It mirrors
+ * their entries in apps/recipes/src/app/lib/recipes-metadata.ts (which Node scripts load without a
+ * bundler, so it cannot import this file); workflow-recipes.spec.ts fails if the two differ.
  */
 import type { PlainTranslationKey } from '@shared/i18n/i18n';
 

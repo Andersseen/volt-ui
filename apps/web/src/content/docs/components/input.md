@@ -185,7 +185,6 @@ export class VoltInput implements ControlValueAccessor {
    * Ids of elements that describe the control, applied to the native element. Inside a
    * `volt-form-field` they are added to the hint and error descriptions, not replacing them.
    */
-  // eslint-disable-next-line @angular-eslint/no-input-rename -- the attribute name consumers write
   readonly ariaDescribedby = input<string | null | undefined>(undefined, {
     alias: 'aria-describedby',
   });
