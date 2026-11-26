@@ -47,12 +47,29 @@ gallery layout adds `CatalogSidebar` from `lg` up, built on `volt-sidebar-item`.
 
 ## Adding a block, layout or recipe
 
-1. Source: `apps/recipes/src/app/{blocks,layouts,patterns}/<name>/<name>.ts`, importing Volt from `'volt'` (rewritten to `@voltui/components` for the copy) and nothing from the app.
+1. Source: `apps/recipes/src/app/{blocks,layouts,patterns}/<name>/<name>.ts`, importing Volt from `'volt'` (rewritten to `@voltui/components` for package mode, and to `Ui*` / `../ui/<component>` for CLI-copy mode) and nothing from the app. A supporting file it imports (`./<name>.data`) sits beside it and is shown under it.
 2. Metadata: an entry in `lib/{blocks,layouts,recipes}-metadata.ts` (slug, path, atoms). `lib/catalog.ts` picks it up; routes, cards, sitemap, SEO and redirects derive from the catalog.
 3. Source for display: export in `lib/snippets/{blocks,layouts,recipes}.ts` via `?raw` + `toConsumerSource`.
 4. Page: `pages/(gallery)/<kind>/<slug>.page.ts` using `app-block-showcase` / `app-layout-showcase` / `app-recipe-showcase`.
 5. Copy: Glossa keys through the `glossa` MCP (`blocks.items.*`, `layouts.items.*`). Recipe names are `recipes.items.*`.
-6. `pnpm generate:seo-files`, `pnpm check:copied-source` (compiles the copy in a consumer workspace), `pnpm test:e2e:recipes`.
+6. `pnpm generate:compositions` (the manifest: fails if the page, its preview and its copyable source disagree, or the source imports something a consumer lacks), `pnpm generate:seo-files`, `pnpm check:copied-source` (both modes, CLI copy from the CLI tarball), `pnpm test:e2e:recipes`.
+
+## Distribution modes
+
+Every block, layout and pattern page shows its source as the npm package or as a CLI copy, through the transform the
+docs site uses (`packages/shared/lib/distribution.ts`); `components/composition-source.ts` renders it. What is shown is
+what is copied, the supporting files follow the same switch, and the install commands change with it: package mode
+`pnpm add @voltui/components <packages>`; copy mode `npx @voltui/cli add <components>` then `pnpm add <packages>`, with
+the files in `src/app/<folder>/` importing `../ui/<component>`. The choice is one in-memory store
+(`packages/shared/services/distribution-mode.ts`), shared across pages; the server always renders package mode.
+
+`packages/shared/lib/compositions.generated.ts` (`pnpm generate:compositions`, checked by `pnpm check:generated`) lists
+every composition with its folder, files, Volt components and npm packages, derived from the page. The MCP server's
+`find_compositions` reads it; `check:copied-source`, `check:consumer` (isolated, from the tarballs, plus four
+compositions built as an onboarding app) and `check:published` (against npm `latest`) compile it in both modes.
+
+The Sidebar layout used to show the library's own `sidebar.ts`: it is now a consumer shell
+(`layouts/sidebar/sidebar.ts`) on the public `volt-sidebar` API, like the other layouts.
 
 ## Deploying (manual steps — not done by the PR)
 
@@ -70,7 +87,8 @@ Environment variables: none required (Glossa catalogs are public). Optional anal
 
 ## Deferred / blocked
 
-- Per-recipe sentence copy (what each recipe teaches, when to use it): not written yet.
+- Per-recipe sentence copy on the listing cards: still not written. The three workflow patterns are explained in the
+  `Workflow patterns` guide (`/docs/workflow-patterns`, en/es/uk).
 - A dedicated Glossa project for Recipes. Not needed today: the shared header, footer, switchers and SEO use the same `nav.*`/`seo.*` keys in both apps, and one project means one generated contract. Everything Recipes-only lives under `recipes.*`, so it can move out in one step if Recipes grows its own copy.
 - Recipes-specific OG image (reuses the docs card).
 

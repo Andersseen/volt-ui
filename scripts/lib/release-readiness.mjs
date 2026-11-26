@@ -56,7 +56,8 @@ export function classifyUnreleased(changelog) {
       ),
     ];
     if (!mentions.length) {
-      unclassified.push(heading);
+      // "(repository only, no package)", "(deployed, no package)": explicitly nothing to release.
+      if (!/\bno package\b/i.test(heading)) unclassified.push(heading);
       continue;
     }
     for (const [, name, level] of mentions) {
