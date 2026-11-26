@@ -208,12 +208,15 @@ export function releaseReadiness({ packages, manifests, registries, changes, cha
   );
   for (const pkg of packages) {
     const row = rows.find(r => r.name === pkg.name);
+    if (row.action !== 'publish' && row.action !== 'bump-required') continue;
     for (const dep of pkg.dependsOn ?? []) {
       const depRow = rows.find(r => r.name === dep);
-      if (depRow && ['publish', 'bump-required', 'unknown', 'refused'].includes(depRow.action)) {
-        if (row.action === 'publish' || row.action === 'bump-required') {
-          row.blocking.push(`${dep} ${depRow.sourceVersion} must reach npm first (dependsOn)`);
-        }
+      if (!depRow) continue;
+      if (depRow.action === 'publish') {
+        // Published earlier in the same run (packages go in order); only a failure there holds it.
+        row.warnings.push(`goes out after ${dep} ${depRow.sourceVersion} (dependsOn), in the same run`);
+      } else if (['bump-required', 'unknown', 'refused'].includes(depRow.action)) {
+        row.blocking.push(`${dep} ${depRow.sourceVersion} must reach npm first (dependsOn)`);
       }
     }
   }

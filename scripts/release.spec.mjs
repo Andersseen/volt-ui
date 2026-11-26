@@ -984,7 +984,8 @@ describe('release readiness report', () => {
     expect(cli).toMatchObject({ action: 'publish', changedFiles: 1 });
     expect(agent).toMatchObject({ sourceVersionPublished: true, action: 'bump-required' });
     expect(agent.blocking.join('\n')).toMatch(/release:bump patch --package=agent/);
-    expect(agent.blocking.join('\n')).toMatch(/@voltui\/cli 1\.4\.0 must reach npm first/);
+    // The CLI goes out earlier in the same run: a sequencing note, not a blocker.
+    expect(agent.warnings.join('\n')).toMatch(/after @voltui\/cli 1\.4\.0 \(dependsOn\)/);
     expect(report.ready).toBe(false);
   });
 
