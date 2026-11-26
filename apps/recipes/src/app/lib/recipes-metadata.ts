@@ -10,6 +10,8 @@
  * (what it teaches, when to use it) is not written yet; see docs/recipes-app.md "Deferred".
  */
 import type { PlainTranslationKey } from '@shared/i18n/i18n';
+// Relative, not @shared: vite.config.ts loads this catalog (legacy redirects) before aliases exist.
+import { WORKFLOW_RECIPES } from '../../../../../packages/shared/lib/workflow-recipes';
 
 export interface RecipeAtom {
   readonly name: string;
@@ -31,43 +33,13 @@ const atom = (name: string, slug: string): RecipeAtom => ({
 });
 
 export const RECIPES: readonly RecipeMetadata[] = [
-  {
-    slug: 'settings-form',
-    labelKey: 'recipes.items.settingsForm',
-    path: '/patterns/settings-form',
-    atoms: [
-      atom('VoltFormField', 'form-field'),
-      atom('VoltInput', 'input'),
-      atom('VoltNativeSelect', 'select'),
-      atom('VoltSwitch', 'switch'),
-      atom('VoltAlert', 'alert'),
-      atom('VoltButton', 'button'),
-    ],
-  },
-  {
-    slug: 'async-search',
-    labelKey: 'recipes.items.asyncSearch',
-    path: '/patterns/async-search',
-    atoms: [
-      atom('VoltCombobox', 'combobox'),
-      atom('VoltFormField', 'form-field'),
-      atom('VoltAlert', 'alert'),
-      atom('VoltButton', 'button'),
-    ],
-  },
-  {
-    slug: 'data-table',
-    labelKey: 'recipes.items.dataTable',
-    path: '/patterns/data-table',
-    atoms: [
-      atom('VoltTable', 'table'),
-      atom('VoltPagination', 'pagination'),
-      atom('VoltInput', 'input'),
-      atom('VoltBadge', 'badge'),
-      atom('VoltSkeleton', 'skeleton'),
-      atom('VoltAlert', 'alert'),
-    ],
-  },
+  // The three workflow recipes live in packages/shared so voltui.dev can link back to them.
+  ...WORKFLOW_RECIPES.map(recipe => ({
+    slug: recipe.slug,
+    labelKey: recipe.labelKey,
+    path: recipe.path,
+    atoms: recipe.atoms.map(entry => atom(entry.name, entry.slug)),
+  })),
   {
     slug: 'live-playground',
     labelKey: 'recipes.items.livePlayground',

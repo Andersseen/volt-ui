@@ -160,4 +160,42 @@ describe('Async search recipe (remote VoltCombobox)', () => {
     fixture.destroy();
     expect(() => pending['a'].resolve([ADA])).not.toThrow();
   });
+
+  it('moves focus back to the search box when Retry (inside the removed alert) is pressed', async () => {
+    const { pending, user, box } = await setup();
+    await user.type(box, 'boom');
+    await waitFor(() => expect(pending['boom']).toBeDefined());
+    pending['boom'].reject(new Error('down'));
+
+    await user.click(await screen.findByRole('button', { name: 'Retry' }));
+    await waitFor(() => expect(screen.queryByRole('alert')).toBeNull());
+    expect(box).toHaveFocus();
+  });
+
+  it('keeps the selection highlighted when a new search returns a new object with the same id', async () => {
+    const { pending, user, box } = await setup();
+    await user.type(box, 'a');
+    await waitFor(() => expect(pending['a']).toBeDefined());
+    pending['a'].resolve([ADA, ALAN]);
+    await user.click(await screen.findByRole('option', { name: /Ada Lovelace/ }));
+
+    await user.clear(box);
+    await user.type(box, 'ad');
+    await waitFor(() => expect(pending['ad']).toBeDefined());
+    pending['ad'].resolve([{ ...ADA }]);
+    const option = await screen.findByRole('option', { name: /Ada Lovelace/ });
+    expect(option).toHaveAttribute('aria-selected', 'true');
+    expect(screen.getByTestId('selection')).toHaveTextContent('Selected: Ada Lovelace');
+  });
+
+  it('starts no request once destroyed, even with a debounce pending', async () => {
+    const { search, pending } = manual();
+    const { fixture } = await render(AsyncSearchRecipe, { inputs: { search, debounceMs: 30 } });
+    const user = userEvent.setup();
+    await user.type(screen.getByRole('combobox', { name: 'Owner' }), 'a');
+    fixture.destroy();
+    await new Promise(resolve => setTimeout(resolve, 60));
+    expect(search).not.toHaveBeenCalled();
+    expect(pending['a']).toBeUndefined();
+  });
 });

@@ -703,7 +703,8 @@
       "next": "Next",
       "pager": "Previous and next pages",
       "breadcrumb": "Breadcrumb",
-      "closeNav": "Close navigation"
+      "closeNav": "Close navigation",
+      "recipes": "Recipes that use this component"
     }
   },
   "components": {

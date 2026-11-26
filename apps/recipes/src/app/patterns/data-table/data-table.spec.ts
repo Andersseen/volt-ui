@@ -162,4 +162,53 @@ describe('Data table recipe', () => {
     expect(region).toHaveAttribute('tabindex', '0');
     expect(region).toHaveClass('overflow-x-auto');
   });
+
+  it('clamps to the last page when the result shrinks under the current page', async () => {
+    const user = userEvent.setup();
+    const rows = [...ROWS];
+    const ok = api(rows);
+    let fail = false;
+    const fetch = vi.fn<FetchInvoices>(q => (fail ? Promise.reject(new Error('503')) : ok(q)));
+    await render(DataTableRecipe, { inputs: { fetch } });
+    await screen.findByRole('table');
+
+    // Page 2 fails to load; meanwhile Delta is deleted elsewhere, so page 2 stops existing.
+    fail = true;
+    await user.click(screen.getByRole('button', { name: /next/i }));
+    const alert = await screen.findByRole('alert');
+    rows.pop();
+    fail = false;
+    await user.click(within(alert).getByRole('button', { name: 'Retry' }));
+
+    await waitFor(() => expect(customers()).toEqual(['Acme', 'Borealis', 'Cinder']));
+    expect(fetch.mock.calls.at(-1)![0].page).toBe(1);
+    expect(screen.queryByRole('button', { name: '2' })).toBeNull();
+  });
+
+  it('Clear filter empties the box and returns focus to it', async () => {
+    const user = userEvent.setup();
+    await render(DataTableRecipe, { inputs: { fetch: api() } });
+    await screen.findByRole('table');
+    const box = screen.getByRole('textbox', { name: 'Filter invoices by customer' });
+
+    await user.type(box, 'zzz');
+    await user.click(await screen.findByRole('button', { name: 'Clear filter' }));
+    await waitFor(() => expect(customers()).toContain('Acme'));
+    expect(box).toHaveValue('');
+    expect(box).toHaveFocus();
+  });
+
+  it('Retry returns focus to the filter instead of dropping it with the alert', async () => {
+    const user = userEvent.setup();
+    const ok = api();
+    let fail = true;
+    const fetch = vi.fn<FetchInvoices>(q => (fail ? Promise.reject(new Error('503')) : ok(q)));
+    await render(DataTableRecipe, { inputs: { fetch } });
+
+    const alert = await screen.findByRole('alert');
+    fail = false;
+    await user.click(within(alert).getByRole('button', { name: 'Retry' }));
+    await screen.findByRole('table');
+    expect(screen.getByRole('textbox', { name: 'Filter invoices by customer' })).toHaveFocus();
+  });
 });

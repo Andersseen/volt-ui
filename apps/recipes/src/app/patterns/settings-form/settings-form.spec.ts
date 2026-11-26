@@ -26,7 +26,7 @@ describe('Settings form recipe', () => {
     const { saveButton, fixture } = await setup();
 
     expect(saveButton()).toHaveAttribute('aria-disabled', 'true');
-    expect(screen.getByRole('button', { name: 'Cancel' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Cancel' })).toHaveAttribute('aria-disabled', 'true');
     expect(fixture.nativeElement).toHaveAttribute('data-state', 'clean');
   });
 
@@ -116,5 +116,37 @@ describe('Settings form recipe', () => {
     const { container } = await setup();
 
     expect(container.querySelector('[aria-live="polite"]')).toBeInTheDocument();
+  });
+
+  it('keeps what the user typed while the save was pending', async () => {
+    const { user, name, email, calls, fixture } = await setup();
+    await user.type(name, ' Jr');
+    await user.click(screen.getByRole('button', { name: 'Save changes' }));
+
+    // The fields stay editable during the request; this edit is newer than what was sent.
+    await user.clear(email);
+    await user.type(email, 'marta@new.example');
+    calls[0].resolve();
+    await screen.findByText('Settings saved');
+
+    expect(name).toHaveValue('Marta Ibáñez Jr');
+    expect(email).toHaveValue('marta@new.example');
+    // Saved baseline = what the server accepted, so the newer edit is still unsaved.
+    expect(fixture.nativeElement).toHaveAttribute('data-state', 'dirty');
+    await user.click(screen.getByRole('button', { name: 'Cancel' }));
+    expect(email).toHaveValue('marta@example.com');
+  });
+
+  it('keeps focus on Cancel after cancelling (no disabled button swallowing focus)', async () => {
+    const { user, name } = await setup();
+    await user.type(name, ' Jr');
+    const cancel = screen.getByRole('button', { name: 'Cancel' });
+    cancel.focus();
+    await user.keyboard('{Enter}');
+
+    expect(name).toHaveValue('Marta Ibáñez');
+    expect(cancel).toHaveFocus();
+    expect(cancel).not.toBeDisabled();
+    expect(cancel).toHaveAttribute('aria-disabled', 'true');
   });
 });

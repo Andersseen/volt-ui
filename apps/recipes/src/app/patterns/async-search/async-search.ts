@@ -3,6 +3,7 @@ import {
   Component,
   computed,
   DestroyRef,
+  ElementRef,
   inject,
   input,
   signal,
@@ -162,6 +163,8 @@ export class AsyncSearchRecipe {
   protected readonly resultsText = (count: number) =>
     `${count} ${count === 1 ? 'person' : 'people'} found`;
 
+  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
+
   /** Latest-wins ticket. Only the response that holds it may write state. */
   private ticket = 0;
   private timer: ReturnType<typeof setTimeout> | undefined;
@@ -190,6 +193,9 @@ export class AsyncSearchRecipe {
   }
 
   protected retry(): void {
+    // Retry lives in the alert that this run removes; put focus back in the search box first so
+    // a keyboard user is not dropped to <body>.
+    this.host.nativeElement.querySelector<HTMLElement>('[role="combobox"]')?.focus();
     void this.run(this.query());
   }
 

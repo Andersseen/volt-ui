@@ -3,10 +3,12 @@ import {
   Component,
   computed,
   DestroyRef,
+  ElementRef,
   inject,
   input,
   OnInit,
   signal,
+  viewChild,
 } from '@angular/core';
 import {
   VoltAlert,
@@ -56,6 +58,8 @@ import {
  *     scroll it and no critical column is clipped on a phone.
  *   - A filter change resets to page 1; a shrinking result clamps the page, so you can never
  *     land on page 4 of 2.
+ *   - "Retry" and "Clear filter" sit in content that disappears when they work; both move focus
+ *     to the filter box first, so the keyboard user keeps their place.
  *
  * Replace `fakeFetch` with your service call; keep the request shape (query, sort, page).
  */
@@ -151,6 +155,7 @@ export const fakeFetch: FetchInvoices = ({ filter, sort, direction, page, pageSi
     <div class="space-y-4">
       <div class="flex flex-wrap items-center gap-3">
         <volt-input
+          #filterBox
           class="w-64"
           aria-label="Filter invoices by customer"
           placeholder="Filter by customer"
@@ -175,7 +180,7 @@ export const fakeFetch: FetchInvoices = ({ filter, sort, direction, page, pageSi
             variant="outline"
             size="sm"
             type="button"
-            (click)="load()"
+            (click)="retry()"
           >
             Retry
           </button>
@@ -279,7 +284,7 @@ export const fakeFetch: FetchInvoices = ({ filter, sort, direction, page, pageSi
               >Try a different customer name.</volt-empty-state-description
             >
             <div slot="actions">
-              <button voltButton variant="outline" type="button" (click)="setFilter('')">
+              <button voltButton variant="outline" type="button" (click)="clearFilter()">
                 Clear filter
               </button>
             </div>
@@ -312,6 +317,8 @@ export class DataTableRecipe implements OnInit {
     Array.from({ length: this.pageCount() }, (_, i) => i + 1)
   );
 
+  private readonly filterBox = viewChild.required('filterBox', { read: ElementRef });
+
   /** Latest-wins ticket, so a slow response cannot overwrite a newer one. */
   private ticket = 0;
 
@@ -328,6 +335,20 @@ export class DataTableRecipe implements OnInit {
     this.filter.set(value);
     this.page.set(1);
     void this.load();
+  }
+
+  protected clearFilter(): void {
+    this.focusFilter();
+    this.setFilter('');
+  }
+
+  protected retry(): void {
+    this.focusFilter();
+    void this.load();
+  }
+
+  private focusFilter(): void {
+    (this.filterBox().nativeElement as HTMLElement).querySelector('input')?.focus();
   }
 
   protected sortBy(key: SortKey): void {

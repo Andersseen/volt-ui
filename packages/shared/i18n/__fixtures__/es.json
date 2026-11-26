@@ -703,7 +703,8 @@
       "next": "Siguiente",
       "pager": "Páginas anterior y siguiente",
       "breadcrumb": "Ruta de navegación",
-      "closeNav": "Cerrar navegación"
+      "closeNav": "Cerrar navegación",
+      "recipes": "Recetas que usan este componente"
     }
   },
   "catalog": {
