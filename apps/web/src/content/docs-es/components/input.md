@@ -67,6 +67,7 @@ Cambia los inputs e interactúa con la vista previa: el panel de eventos muestra
 ## Formularios y accesibilidad
 
 - `<volt-input>` es un envoltorio de ancho completo alrededor de un único `<input>` nativo. `id`, `class` y `aria-label` pertenecen al elemento nativo y se eliminan del host, así que `<label for>` y `<volt-label htmlFor>` llegan al control y ningún id se duplica.
+- `aria-describedby` también se aplica al input nativo. Dentro de `<volt-form-field>` sus ids se añaden a la pista y al error, sin sustituirlos; fuera de un campo son la descripción del input (se escribe en el navegador, así que una página renderizada en el servidor la obtiene al hidratarse).
 - Sin `id`, el input recibe uno generado, numerado por aplicación para que la página renderizada en el servidor y la hidratada coincidan.
 - Enlázalo con `[(value)]`, `formControl` / `formControlName` o `ngModel`. Escribir notifica el valor; un valor que escribe tu código (`setValue`, `reset`, un cambio del modelo) no vuelve como cambio.
 - Se marca como tocado al perder el foco. `aria-invalid="true"` aparece cuando el control es inválido **y** está tocado, o cuando pones `state="error"`; `state` por sí solo solo cambia el color.
@@ -106,12 +107,19 @@ import {
   input,
   model,
   signal,
+  viewChild,
+  ElementRef,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NgpInput } from 'ng-primitives/input';
 import { VoltAriaInvalid } from '../../aria-invalid';
 import { injectFormControlState } from '../../form-control-state';
-import { forwardAttributesFromHost, forwardClassFromHost } from '../../host-forwarding';
+import { injectFormFieldState } from 'ng-primitives/form-field';
+import {
+  forwardAttributesFromHost,
+  forwardClassFromHost,
+  forwardDescribedBy,
+} from '../../host-forwarding';
 import { injectVoltId } from '../../volt-ids';
 import { inputVariants, type InputVariants } from './variants';
 import { cn } from '../../utils';
@@ -140,6 +148,7 @@ const HOST_CLASSES = 'block w-full';
   },
   template: `
     <input
+      #control
       ngpInput
       [id]="controlId()"
       [type]="type()"
@@ -172,6 +181,14 @@ export class VoltInput implements ControlValueAccessor {
   /** Same as `ariaLabel`, for the attribute spelling consumers write naturally. */
   // eslint-disable-next-line @angular-eslint/no-input-rename -- `ariaLabel` (1.0) already owns the camelCase name
   readonly ariaLabelAttribute = input<string | undefined>(undefined, { alias: 'aria-label' });
+  /**
+   * Ids of elements that describe the control, applied to the native element. Inside a
+   * `volt-form-field` they are added to the hint and error descriptions, not replacing them.
+   */
+  readonly ariaDescribedby = input<string | null | undefined>(undefined, {
+    alias: 'aria-describedby',
+  });
+  private readonly control = viewChild.required<ElementRef<HTMLElement>>('control');
   readonly value = model('');
   readonly size = input<InputVariants['size']>('md');
   /** Visual state. `error` also sets `aria-invalid`; an invalid touched form control implies it. */
@@ -200,6 +217,12 @@ export class VoltInput implements ControlValueAccessor {
   constructor() {
     forwardClassFromHost(HOST_CLASSES);
     forwardAttributesFromHost('id', 'aria-label');
+    const formField = injectFormFieldState({ optional: true });
+    forwardDescribedBy(
+      this.ariaDescribedby,
+      () => this.control().nativeElement,
+      () => formField()
+    );
   }
 
   /** Not a `computed`: Forms' touched/invalid flags are not signals. */

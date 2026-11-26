@@ -1,6 +1,8 @@
 # Auditoría de producto e ingeniería post-v1
 
 **Fecha:** 2026-09-07. **Base:** `35e6816`, versión local `1.0.1`.
+**Revisión 2026-11-26:** los hallazgos se conservan tal como se observaron en esa base. Su estado
+actual está en «Resolución» al final; no describe el código de 2026-09-07.
 **Método:** lectura de código, historial, planes y CI; pruebas locales y reproducciones
 en directorios temporales. No se modificó código de producto.
 
@@ -102,3 +104,23 @@ Para contrastar requisitos externos se consultaron fuentes primarias el 2026-09-
 
 La prioridad propuesta es una valoración de ingeniería a partir de este repositorio.
 No se ha realizado investigación de mercado ni se infiere adopción a partir de commits.
+
+## Resolución (revisada 2026-11-26, base `4526886` + `feat/consumer-lifecycle-reliability`)
+
+| ID  | Estado                                                                                                                                                                  |
+| --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| F01 | Resuelto (#249): `init` conserva el barrel byte a byte.                                                                                                                 |
+| F02 | Resuelto (#249): un plan único para todo el `add`, dependencias compartidas reutilizadas, rollback.                                                                     |
+| F03 | Resuelto de forma compatible (#260): `--path`; el destino posicional v1 se explica cuando no parece una ruta.                                                           |
+| F04 | Resuelto (#260): rangos y versión probada en el registro; `--install` con política explícita.                                                                           |
+| F05 | Resuelto (#260): estado desde `COMPONENT_STATUS.md` hacia manifiesto, MCP y skills.                                                                                     |
+| F06 | Resuelto (#260): selectores/clases verificados por `pnpm check:ai-docs` contra la fuente.                                                                               |
+| F07 | Resuelto (#260): ejemplos compilados en modo paquete y copia (`pnpm check:examples`).                                                                                   |
+| F08 | Resuelto (antes de #249, `d2705ef`): bloques, layouts y recetas se compilan desde su fuente copiable (`pnpm check:copied-source`, job `packages` de CI).                |
+| F09 | Resuelto (#260): `pnpm check:consumer` con tarballs reales fuera del monorepo.                                                                                          |
+| F10 | Resuelto (#260): contraste, completitud de docs y regeneración de API en CI.                                                                                            |
+| F11 | Resuelto: Button ya reenviaba ARIA y ofrece `voltButton` nativo; Input/Textarea aplican ahora `aria-describedby` al control nativo (plan 04). `class` ya tenía destino. |
+| F12 | Resuelto (#260): instrucciones y roadmap; rutas obsoletas `projects/volt/` y `src/` corregidas en AGENTS/GUARDRAILS en esta iniciativa.                                 |
+| F13 | Resuelto: el `engines` raíz exige Node `>=22.22.0`, dentro del rango de Angular 21.2/22; el CLI no declara `engines` (plan 03, no se restringe en un patch).            |
+| F14 | Resuelto (plan 05): `volt add --track` y `volt diff` de solo lectura.                                                                                                   |
+| F15 | Parcial: Firefox/WebKit en `check:consumer` y contratos; SSR/hidratación en consumidor. Sin revisión con lector de pantalla en esta iniciativa.                         |

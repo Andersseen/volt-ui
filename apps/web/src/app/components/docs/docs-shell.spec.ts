@@ -50,6 +50,27 @@ describe('docs page shell', () => {
     expect(pager.querySelector('a[href="/docs/customization"]')).toHaveTextContent('Customization');
   });
 
+  it('links a component page to the workflow recipes built with it', async () => {
+    await shellAt('/docs/components/combobox');
+
+    const recipes = screen.getByRole('navigation', { name: 'Recipes that use this component' });
+    expect(recipes.querySelector('a')).toHaveAttribute(
+      'href',
+      'https://recipes.voltui.dev/patterns/async-search'
+    );
+    expect(recipes).toHaveTextContent('Async search');
+  });
+
+  it.each(['/docs/themes', '/docs/components/tooltip'])(
+    'shows no recipe links on %s, which no recipe uses',
+    async url => {
+      await shellAt(url);
+      expect(
+        screen.queryByRole('navigation', { name: 'Recipes that use this component' })
+      ).toBeNull();
+    }
+  );
+
   it('has no previous link on the first page', async () => {
     await shellAt('/docs/introduction');
 

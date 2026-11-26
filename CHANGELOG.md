@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Keeping customised copies (`@voltui/cli`, minor)
+
+Additive and opt-in. A project that never passes `--track` sees no new file and no new requirement.
+
+- **`volt add --track`** records what was copied in `<dir>/.volt-ui.json` (schema 1): per file the
+  SHA-256 of the copied bytes, its owning components (a shared helper once, with every owner) and the
+  CLI, registry and copy-transform versions that produced it. No source text, absolute paths or other
+  project data. Once a valid record exists, later adds keep it up to date; `--dry-run` never writes it;
+  it is written last inside the existing rollback; a corrupt or unsupported record stops `add` before
+  any write. Deleting it breaks nothing.
+- **`volt diff <component>... [--path=<dir>] [--json]`** compares a copy, and the shared helpers it
+  imports, with the source shipped in the CLI that runs (not npm's latest), offline and without Git.
+  Strictly read-only: no file, mode or mtime changes, including on errors; symbolic links that leave
+  the target are refused. With a record it reports `unchanged`, `reference-changed`, `local-changed`,
+  `matches-reference`, `both-changed`, `missing` or `reference-removed` per file; without one,
+  `unknown-origin`. Unified local → reference diff; `--json` prints a versioned report (stdout is only
+  JSON). Exit status 0 (no differences), 1 (differences), 2 (invalid input or untrusted record).
+
+### AI context, MCP and docs site (`@voltui/agent`: patch; the site and MCP server are deployed, not versioned)
+
+- The distribution skill, the installer's next steps, `VOLT_UI_PROMPT.md` and the hosted setup content
+  describe `--track` and `volt diff`.
+- MCP: the GET discovery response now lists `find_components` (it was registered but not advertised);
+  advertised and registered tools, resources and prompts come from one inventory and are tested
+  against each other. `generate_cli_command` accepts `diff` (with `json`) and `add` with `track`.
+- voltui.dev component pages link to the Recipes workflows built with them (settings form, async
+  search, data table); the AI/MCP guide lists `find_components`.
+
 ### Consumer distribution (`@voltui/cli`, minor)
 
 Additive. The v1 positional `target-dir`, every command and the default destination keep working.
@@ -32,7 +60,13 @@ Additive. The v1 positional `target-dir`, every command and the default destinat
   never upgraded, an incompatible version, a missing Angular, an ambiguous manager or the Volt UI
   repository stops the command before the first write, and the result is verified after the install.
 
-### Components (`@voltui/components`, patch)
+### Components (`@voltui/components`, minor)
+
+- **`aria-describedby` on Input and Textarea reaches the native control** (additive input). It used to
+  stay on the `volt-input` / `volt-textarea` host, which has no role, so the control had no
+  description outside a form field. Inside `volt-form-field` the ids are added to the hint and error
+  descriptions; outside one Volt writes them after render (a server-rendered page gains the attribute
+  on hydration). The static attribute is no longer left on the host.
 
 - `ng-primitives` dependency moves to `^0.132.0` (was `^0.131.4`; 0.x carets are minor-locked, and
   0.132 is the version now built and tested). Since 0.132 every toast placement gets its live region

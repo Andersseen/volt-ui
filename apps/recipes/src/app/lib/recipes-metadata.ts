@@ -31,6 +31,9 @@ const atom = (name: string, slug: string): RecipeAtom => ({
 });
 
 export const RECIPES: readonly RecipeMetadata[] = [
+  // These three are mirrored in packages/shared/lib/workflow-recipes.ts, which voltui.dev reads to
+  // link component pages to them. No import: scripts load this file with Node's type stripping.
+  // workflow-recipes.spec.ts fails if the two drift apart.
   {
     slug: 'settings-form',
     labelKey: 'recipes.items.settingsForm',

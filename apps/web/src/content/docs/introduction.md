@@ -43,7 +43,9 @@ npx @voltui/cli init
 npx @voltui/cli add button card input
 ```
 
-Use `--dry-run` to preview files and `--force` to overwrite edited components.
+Use `--dry-run` to preview files and `--force` to overwrite edited components. To see what a newer
+release changes in a component you customised, run that release's `volt diff <component>`: it is
+read-only, and copies added with `--track` also say whether you or Volt changed each file.
 
 ### Option 3: Copy & Paste
 

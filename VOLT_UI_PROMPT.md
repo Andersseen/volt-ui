@@ -24,8 +24,16 @@ You are working in an Angular application that consumes **Volt UI** components.
 ```bash
 npx @voltui/cli init                    # creates src/app/ui
 npx @voltui/cli add button card input
-npx @voltui/cli add dialog ./src/app/shared/ui --dry-run
+npx @voltui/cli add dialog --path=./src/app/shared/ui --dry-run
+npx @voltui/cli add button --track      # also record hashes in src/app/ui/.volt-ui.json
+npx @voltui/cli@<version> diff button   # read-only: your copy → that CLI's source
 ```
+
+`volt diff` compares a (possibly customised) copy with the source shipped in the CLI version that
+runs, not npm's latest; it works offline and never changes a file (exit 0 same, 1 different,
+2 error; `--json` for machines). With a `--track` record it tells `local-changed` from
+`reference-changed`; without one, differences are `unknown-origin`. Apply the hunks you want by
+hand — `--force` replaces your edits.
 
 After copying, import from the local UI folder:
 
@@ -477,11 +485,12 @@ Volt UI exposes a **spec-compliant MCP server** over Streamable HTTP at `https:/
 Available MCP tools:
 
 - `list_components` — list all components
+- `find_components` — components that fit a need, with when to use them and what they are not for
 - `get_component` — inputs, outputs, sub-components, examples
 - `get_usage_example` — import paths and snippets
 - `get_theme_info` — colors, styles, provider API
 - `get_project_info` — architecture and naming conventions
-- `generate_cli_command` — produce `npx @voltui/cli ...` commands
+- `generate_cli_command` — produce `npx @voltui/cli ...` commands (`init`, `add`, `diff`, `list`)
 
 Available MCP resources:
 

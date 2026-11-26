@@ -204,6 +204,7 @@ export default class AiMcpPage {
 
   readonly tools = [
     { name: 'list_components', descriptionKey: 'guide.aiMcpPage.tools.listComponents' },
+    { name: 'find_components', descriptionKey: 'guide.aiMcpPage.tools.findComponents' },
     { name: 'get_component', descriptionKey: 'guide.aiMcpPage.tools.getComponent' },
     { name: 'get_usage_example', descriptionKey: 'guide.aiMcpPage.tools.getUsageExample' },
     { name: 'get_theme_info', descriptionKey: 'guide.aiMcpPage.tools.getThemeInfo' },

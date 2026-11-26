@@ -1,15 +1,18 @@
 # Volt UI después de v1: utilidad sin convertirse en plataforma
 
 **Fecha:** 2026-09-07 · **Base revisada:** `35e6816`, paquetes `1.0.1`.
-**Estado:** planes 01–03 implementados (01 A/B en #249; 01 C, 02 y 03 en `feat/consumer-distribution-dx`). 04–06 pendientes.
+**Estado (2026-11-26):** los seis planes están ejecutados. 01 A/B en #249; 01 C, 02 y 03 en #260
+(`feat/consumer-distribution-dx`, merge `4526886`); 04, 05 y 06 en `feat/consumer-lifecycle-reliability`
+(una sola iniciativa minor, PR «Consumer lifecycle reliability»). Pendiente de publicar: los paquetes
+no se versionan ni publican en estos PR (ver «Publicación»).
 
 La siguiente etapa debería hacer que Volt sea fácil de instalar, componer, adaptar y
 mantener en una aplicación real. El catálogo ya es suficientemente amplio para demostrar
 ese valor. La prioridad es cerrar la distancia entre «funciona en la demo» y «puedo
 usarlo y mantener mis cambios en mi proyecto».
 
-Estos documentos responden a la petición de crítica y planificación, sin implementar
-código. **“v2” nombra el horizonte de producto, no obliga a publicar un major.** Los
+Estos documentos nacieron como crítica y planificación, sin implementar código; los registros
+de ejecución de cada plan dicen qué se hizo después y con qué evidencia. **“v2” nombra el horizonte de producto, no obliga a publicar un major.** Los
 arreglos compatibles deben llegar en patches de v1; las capacidades aditivas, en minors.
 
 ## Documentos y orden de lectura
@@ -27,14 +30,14 @@ arreglos compatibles deben llegar en patches de v1; las capacidades aditivas, en
 
 ## Hoja de ruta
 
-| Orden | Entrega y resultado visible                                       | Prioridad | Tamaño relativo | Dependencia          |
-| ----- | ----------------------------------------------------------------- | --------- | --------------- | -------------------- |
-| 1     | `init` repetible y `add` coherente para varios componentes        | P0        | S–M             | Ninguna              |
-| 2     | Ejemplos utilizables y una sola declaración de cada API/estado    | P1        | M               | 1 para validar copia |
-| 3     | Un consumidor limpio instala, compila y funciona                  | P1        | M               | 1–2                  |
-| 4     | Controles que se integran bien en formularios, enlaces y overlays | P1        | M, por familia  | 3                    |
-| 5     | El consumidor puede revisar qué cambió sin perder su código       | P2        | M               | 1–3                  |
-| 6     | Ajustes, búsqueda asíncrona y tabla con estados completos         | P2        | M, por receta   | 2–4                  |
+| Orden | Entrega y resultado visible                                       | Prioridad | Tamaño relativo | Dependencia          | Estado                                         |
+| ----- | ----------------------------------------------------------------- | --------- | --------------- | -------------------- | ---------------------------------------------- |
+| 1     | `init` repetible y `add` coherente para varios componentes        | P0        | S–M             | Ninguna              | Hecho: #249 (A/B), #260 (C)                    |
+| 2     | Ejemplos utilizables y una sola declaración de cada API/estado    | P1        | M               | 1 para validar copia | Hecho: #260                                    |
+| 3     | Un consumidor limpio instala, compila y funciona                  | P1        | M               | 1–2                  | Hecho: #260 (`pnpm check:consumer`)            |
+| 4     | Controles que se integran bien en formularios, enlaces y overlays | P1        | M, por familia  | 3                    | Hecho: `feat/consumer-lifecycle-reliability`   |
+| 5     | El consumidor puede revisar qué cambió sin perder su código       | P2        | M               | 1–3                  | Hecho: `volt add --track`, `volt diff` (ídem)  |
+| 6     | Ajustes, búsqueda asíncrona y tabla con estados completos         | P2        | M, por receta   | 2–4                  | Hecho: recetas verificadas y corregidas (ídem) |
 
 S significa una modificación localizada; M requiere varios cambios revisables. No son
 estimaciones de días. Ejecutar una fase por PR cuando sea posible. No hace falta esperar
@@ -56,8 +59,16 @@ ahí y evaluar uso real antes de empezar 4–6.
 > archivos, comandos, resultados, limitaciones y siguiente paso. No marques un criterio
 > como cumplido por haber escrito el test: debe haber pasado.
 
-Los comandos de verificación se ejecutan con el prefijo `rtk` según las instrucciones
-del repositorio. Los comandos etiquetados como **propuestos** aún no existen.
+Los comandos de verificación se ejecutan con el prefijo `rtk` cuando RTK está instalado (es opcional
+por máquina; ver `CLAUDE.md`). Todos los comandos citados en los planes existen ya.
+
+## Publicación
+
+Ningún PR de esta iniciativa sube versiones ni publica. Clasificación de lo pendiente en `CHANGELOG.md`
+`[Unreleased]`: `@voltui/cli` minor (`--path`, dependencias versionadas, `--track`, `diff`),
+`@voltui/components` minor (`aria-describedby` en Input/Textarea, más arreglos patch),
+`@voltui/agent` patch (contenido de skills e instalador). La preparación de la release es una
+operación aparte (`pnpm release:bump` + `/release-check`).
 
 ## Relación con los planes anteriores
 

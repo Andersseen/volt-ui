@@ -20,6 +20,9 @@ import { DocsBreadcrumbs } from './docs/docs-breadcrumbs';
 import { DocsMobileNav } from './docs/docs-mobile-nav';
 import { DocsNavList, type DocsSidebarGroup, type DocsSidebarLink } from './docs/docs-nav-list';
 import { DocsPager, type PagerLink } from './docs/docs-pager';
+import { DocsRecipeLinks } from './docs/docs-recipe-links';
+import { workflowRecipesFor } from '@shared/lib/workflow-recipes';
+import { recipesUrl } from '../lib/recipes-site';
 import { DocsToc } from './docs/docs-toc';
 
 export type { DocsSidebarGroup, DocsSidebarLink } from './docs/docs-nav-list';
@@ -47,7 +50,7 @@ function outlineLevels(headings: readonly HTMLElement[]): readonly HTMLElement[]
 @Component({
   selector: 'app-docs-page-shell',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [DocsBreadcrumbs, DocsMobileNav, DocsNavList, DocsPager, DocsToc],
+  imports: [DocsBreadcrumbs, DocsMobileNav, DocsNavList, DocsPager, DocsRecipeLinks, DocsToc],
   template: `
     <div class="mx-auto max-w-[90rem] px-4 sm:px-6 lg:px-8">
       <div
@@ -84,6 +87,7 @@ function outlineLevels(headings: readonly HTMLElement[]): readonly HTMLElement[]
             <article #content class="docs-content [&_:is(h2,h3)]:scroll-mt-24">
               <ng-content />
             </article>
+            <app-docs-recipe-links class="mt-12" [links]="recipeLinks()" />
             <app-docs-pager
               class="mt-16 border-t border-border/60 pt-8"
               [previous]="previous()"
@@ -131,6 +135,16 @@ export class DocsPageShell {
   protected readonly pageLabel = computed(() => {
     const link = this.links()[this.index()];
     return link ? this.label(link) : undefined;
+  });
+  /** On a component page, the workflow recipes built with that component. */
+  protected readonly recipeLinks = computed(() => {
+    const slug = /\/docs\/components\/([a-z0-9-]+)\/?(?:[?#]|$)/.exec(this.url())?.[1];
+    if (!slug) return [];
+    const locale = this.translations.locale();
+    return workflowRecipesFor(slug).map(recipe => ({
+      href: recipesUrl(locale, recipe.path),
+      label: this.t(recipe.labelKey),
+    }));
   });
   protected readonly previous = computed(() => this.pagerLink(this.index() - 1));
   protected readonly next = computed(() => this.pagerLink(this.index() + 1));

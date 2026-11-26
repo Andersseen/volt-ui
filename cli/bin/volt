@@ -21,6 +21,8 @@ const { planAdd, formatConflicts, filesWithAction } = require('../lib/add-plan')
 const { applyPlan } = require('../lib/apply-plan');
 const { ArgsError, parseArgs, closest, COMMANDS } = require('../lib/args');
 const { resolveProject, ProjectError, describeProject } = require('../lib/project');
+const { DiffError, diffComponents, formatReport } = require('../lib/diff');
+const { ProvenanceError } = require('../lib/provenance');
 const {
   installBlockers,
   describeEntry,
@@ -172,6 +174,12 @@ function printPlan(plan) {
     console.log(`Barrel: ${barrel.action} ${barrel.path}, adding:`);
     barrel.added.forEach(name => console.log(`  export * from './${name}';`));
   }
+  const { provenance } = plan;
+  if (provenance && provenance.action !== 'none') {
+    console.log(
+      `Provenance: ${provenance.action} ${provenance.path} (${provenance.entries.length} file(s) recorded)`
+    );
+  }
 }
 
 function printProject(project) {
@@ -208,7 +216,15 @@ function runAdd({ componentNames, targetDir, displayDir, manifest, project, sele
   const dryRun = !!flags['dry-run'];
   let plan;
   try {
-    plan = planAdd({ componentNames, targetDir, manifest, base, force: !!flags.force, project });
+    plan = planAdd({
+      componentNames,
+      targetDir,
+      manifest,
+      base,
+      force: !!flags.force,
+      track: !!flags.track,
+      project,
+    });
   } catch (err) {
     fail(err.message);
   }
@@ -274,6 +290,11 @@ function runAdd({ componentNames, targetDir, displayDir, manifest, project, sele
       ? `Barrel ${plan.barrel.path}: added ${plan.barrel.added.join(', ')}`
       : `Barrel ${plan.barrel.path}: unchanged`
   );
+  if (plan.provenance.action !== 'none') {
+    console.log(
+      `Provenance ${plan.provenance.path}: ${plan.provenance.action === 'unchanged' ? 'unchanged' : `${plan.provenance.action}d`} — compare later with: volt diff ${plan.requested.join(' ')} --path=${displayDir}`
+    );
+  }
 
   console.log(`\nImport in your component:`);
   for (const name of plan.requested) {
@@ -331,6 +352,9 @@ Usage:
   volt add <component>... --force            Replace files that differ from the Volt UI source
   volt add <component>... --install          Also install the runtime packages they import
   volt add <component>... --base=quartz      Copy the experimental Quartz Headless version
+  volt add <component>... --track            Also record what was copied in <dir>/.volt-ui.json
+  volt diff <component>... [--path=<dir>]    Compare your copy with this CLI's source (read-only)
+  volt diff <component>... --json            The same comparison as JSON (exit 0 same, 1 differs, 2 error)
   volt list                                  List all available components
   volt list --status=stable                  List components by stability
   volt list --base=quartz                    List components that have a Quartz implementation
@@ -342,6 +366,11 @@ Destination:
   "volt add button ./src/app/shared/ui" still works: a trailing argument that is not a component
   is the target directory. Prefer --path, which is never mistaken for a component name.
 
+Comparing a customised copy:
+  "volt diff" compares the files you copied with the source shipped in the @voltui/cli you run
+  (not the latest version on npm), offline, without Git, and never changes a file. Copies made with
+  --track also say whether you or the reference changed each file. Move fixes across by hand.
+
 Options take a value as --path=<dir> or --path <dir>. Unknown options are errors.
 
 Examples:
@@ -350,15 +379,97 @@ Examples:
   npx @voltui/cli add button card input --path=./src/app/shared/ui
   npx @voltui/cli add dialog --dry-run
   npx @voltui/cli add card --install
+  npx @voltui/cli add button --track
+  npx @voltui/cli@1.5.0 diff button --path=./src/app/ui
   npx @voltui/cli add checkbox switch toggle --base=quartz`);
+}
+
+/**
+ * `volt diff` exits 0 (no differences), 1 (differences) or 2 (invalid input or operational error).
+ * With --json, stdout carries only JSON — the report, or `{ schemaVersion, error }` — and every
+ * diagnostic goes to stderr.
+ */
+class DiffExit extends Error {}
+
+function diffFail(message, { json = false, code = 'ERROR' } = {}) {
+  if (json) {
+    console.log(JSON.stringify({ schemaVersion: 1, error: { code, message } }, null, 2));
+  }
+  console.error(`❌ ${message}`);
+  // exitCode, not exit(): a large JSON report written to a pipe must be flushed before Node exits.
+  process.exitCode = 2;
+  throw new DiffExit();
+}
+
+async function runDiff(positionals, flags) {
+  const json = !!flags.json;
+  try {
+    const manifest = await loadManifest();
+    if (positionals.length === 0) {
+      diffFail(`Name at least one component.\nUsage: ${COMMANDS.diff.usage}`, {
+        json,
+        code: 'NO_COMPONENTS',
+      });
+    }
+    const unknown = positionals.filter(name => !manifest.components[name]);
+    if (unknown.length > 0) {
+      diffFail(unknownComponentMessage(unknown, manifest), { json, code: 'UNKNOWN_COMPONENT' });
+    }
+    // Same destination rules as `volt add`, but read-only: nothing is created when it is missing.
+    let project;
+    try {
+      project = resolveProject({ cwd: process.cwd(), destination: flags.path || null });
+    } catch (err) {
+      if (err instanceof ProjectError) diffFail(err.message, { json, code: err.code || 'PROJECT' });
+      throw err;
+    }
+    const targetDir = flags.path || display(project.targetDir);
+    let base;
+    try {
+      ({ base } = resolveBase(flags.base, project.configRoot));
+    } catch (err) {
+      diffFail(err.message, { json, code: 'BASE' });
+    }
+    const report = diffComponents({
+      componentNames: positionals,
+      targetDir: path.resolve(process.cwd(), targetDir),
+      displayDir: targetDir,
+      manifest,
+      base,
+    });
+    if (json) console.log(JSON.stringify(report, null, 2));
+    else console.log(formatReport(report));
+    process.exitCode = report.differences ? 1 : 0;
+  } catch (err) {
+    if (err instanceof DiffExit) return;
+    try {
+      if (err instanceof DiffError || err instanceof ProvenanceError) {
+        diffFail(err.message, { json, code: err.code });
+      }
+      diffFail(`Unexpected error: ${err.message}`, { json, code: 'UNEXPECTED' });
+    } catch (exit) {
+      if (!(exit instanceof DiffExit)) throw exit;
+    }
+  }
 }
 
 async function main() {
   let parsed;
+  const argv = process.argv.slice(2);
   try {
-    parsed = parseArgs(process.argv.slice(2));
+    parsed = parseArgs(argv);
   } catch (err) {
-    if (err instanceof ArgsError) fail(err.message);
+    if (err instanceof ArgsError) {
+      // The diff contract reserves exit 1 for "differences found".
+      if (argv.find(arg => !arg.startsWith('-')) === 'diff') {
+        try {
+          diffFail(err.message, { json: argv.includes('--json'), code: 'INVALID_ARGUMENTS' });
+        } catch {
+          return;
+        }
+      }
+      fail(err.message);
+    }
     throw err;
   }
   const { command, positionals, flags } = parsed;
@@ -368,6 +479,11 @@ async function main() {
       console.log(`Usage: ${COMMANDS[positionals[0]].usage}\n`);
     }
     printHelp();
+    return;
+  }
+
+  if (command === 'diff') {
+    await runDiff(positionals, flags);
     return;
   }
 

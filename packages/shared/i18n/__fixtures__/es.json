@@ -618,6 +618,7 @@
       "setupConfigsBody": "`GET {$url}?agent=claude` — los archivos exactos que escribir para cada agente",
       "tools": {
         "listComponents": "Lista todos los componentes disponibles de Volt UI.",
+        "findComponents": "Encuentra los componentes adecuados para una necesidad, con cuándo usarlos y para qué no sirven.",
         "getComponent": "Obtiene información detallada de un componente concreto.",
         "getUsageExample": "Obtiene las rutas de importación y los fragmentos de uso.",
         "getThemeInfo": "Obtiene los colores, los estilos y la API del proveedor de tema.",
@@ -702,7 +703,8 @@
       "next": "Siguiente",
       "pager": "Páginas anterior y siguiente",
       "breadcrumb": "Ruta de navegación",
-      "closeNav": "Cerrar navegación"
+      "closeNav": "Cerrar navegación",
+      "recipes": "Recetas que usan este componente"
     }
   },
   "catalog": {

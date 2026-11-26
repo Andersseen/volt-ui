@@ -37,7 +37,12 @@ import {
  *      <body>, and a keyboard user would lose their place on every save.
  *   4. Success becomes the new baseline and is announced politely. Failure keeps what the user
  *      typed, says what happened, and a second press of Save retries.
- *   5. Cancel restores the last *saved* values, not whatever the page first loaded with.
+ *   5. Cancel restores the last *saved* values, not whatever the page first loaded with. It also
+ *      uses `aria-disabled`, for the same reason as Save: cancelling makes the form clean, and a
+ *      button that disabled itself under the user's focus would drop it.
+ *   6. Policy while a save is pending: the fields stay editable. When the save succeeds, the
+ *      server's answer becomes the baseline, but anything typed after pressing Save is kept and
+ *      shows as unsaved — a slow request never erases newer input.
  *
  * Connect it to your API by replacing `fakeSave` (or passing your own function to `[save]`);
  * nothing else here is specific to the fake. There is no form framework: a FormGroup, three
@@ -71,6 +76,10 @@ const INITIAL: Settings = {
   language: 'en',
   weeklyDigest: true,
 };
+
+function sameSettings(a: Settings, b: Settings): boolean {
+  return (Object.keys(a) as (keyof Settings)[]).every(key => a[key] === b[key]);
+}
 
 type Result = { kind: 'saved' } | { kind: 'failed'; message: string } | null;
 
@@ -161,7 +170,7 @@ type Result = { kind: 'saved' } | { kind: 'failed'; message: string } | null;
           voltButton
           variant="outline"
           type="button"
-          [disabled]="!dirty() || saving()"
+          [attr.aria-disabled]="!dirty() || saving() ? 'true' : null"
           (click)="cancel()"
         >
           Cancel
@@ -237,10 +246,12 @@ export class SettingsFormRecipe implements OnInit {
 
     this.saving.set(true);
     this.result.set(null);
+    const sent = this.form.getRawValue();
     try {
-      const saved = await this.save()(this.form.getRawValue());
+      const saved = await this.save()(sent);
       this.saved.set(saved);
-      this.form.reset(saved);
+      // Only adopt the server's values if nothing was typed while the request was in flight.
+      if (sameSettings(this.form.getRawValue(), sent)) this.form.reset(saved);
       this.result.set({ kind: 'saved' });
     } catch (error) {
       // Keep the form exactly as the user left it.
@@ -251,6 +262,7 @@ export class SettingsFormRecipe implements OnInit {
   }
 
   protected cancel(): void {
+    if (!this.dirty() || this.saving()) return; // aria-disabled does not stop the click
     this.form.reset(this.saved());
     this.result.set(null);
   }

@@ -2,7 +2,14 @@ import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js';
 import { WebStandardStreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js';
-import { createMcpServer, findComponents, forMode, withStreamableAccept } from '../routes/mcp';
+import {
+  SERVER_INVENTORY,
+  createMcpServer,
+  discoveryResponse,
+  findComponents,
+  forMode,
+  withStreamableAccept,
+} from '../routes/mcp';
 import { RESPONSIBILITIES } from '../routes/mcp/responsibilities.generated';
 
 describe('Volt UI MCP Server', () => {
@@ -350,5 +357,107 @@ describe('technical facts come from the source', () => {
       )
     );
     expect(result.command).toBe('npx @voltui/cli add card --path=./src/app/shared/ui');
+  });
+});
+
+describe('advertised inventory', () => {
+  let client: Client;
+
+  beforeAll(async () => {
+    const server = createMcpServer();
+    const [serverTransport, clientTransport] = InMemoryTransport.createLinkedPair();
+    await server.connect(serverTransport);
+    client = new Client({ name: 'inventory-client', version: '1.0.0' }, { capabilities: {} });
+    await client.connect(clientTransport);
+  });
+
+  afterAll(async () => {
+    await client.close();
+  });
+
+  it('the GET discovery response is the shared inventory', async () => {
+    const body = await discoveryResponse().json();
+    expect(body.tools).toEqual(SERVER_INVENTORY.tools);
+    expect(body.resources).toEqual(SERVER_INVENTORY.resources);
+    expect(body.prompts).toEqual(SERVER_INVENTORY.prompts);
+  });
+
+  it('advertises exactly the tools the server registers (find_components included)', async () => {
+    const registered = (await client.listTools()).tools.map(t => t.name).sort();
+    expect(SERVER_INVENTORY.tools.map(t => t.name).sort()).toEqual(registered);
+    expect(registered).toContain('find_components');
+  });
+
+  it('advertises exactly the resources and prompts the server registers', async () => {
+    const templates = (await client.listResourceTemplates()).resourceTemplates.map(
+      r => r.uriTemplate
+    );
+    const fixed = (await client.listResources()).resources
+      .map(r => r.uri)
+      .filter(uri => !uri.startsWith('component://'));
+    expect(SERVER_INVENTORY.resources.map(r => r.uri).sort()).toEqual(
+      [...templates, ...fixed].sort()
+    );
+    const prompts = (await client.listPrompts()).prompts.map(p => p.name).sort();
+    expect(SERVER_INVENTORY.prompts.map(p => p.name).sort()).toEqual(prompts);
+  });
+});
+
+describe('generate_cli_command diff', () => {
+  let client: Client;
+  const call = async (args: Record<string, unknown>) => {
+    const result = await client.callTool({ name: 'generate_cli_command', arguments: args });
+    const text = (result.content as { type: string; text: string }[])[0].text;
+    return { isError: !!result.isError, body: JSON.parse(text) };
+  };
+
+  beforeAll(async () => {
+    const server = createMcpServer();
+    const [serverTransport, clientTransport] = InMemoryTransport.createLinkedPair();
+    await server.connect(serverTransport);
+    client = new Client({ name: 'diff-client', version: '1.0.0' }, { capabilities: {} });
+    await client.connect(clientTransport);
+  });
+
+  afterAll(async () => {
+    await client.close();
+  });
+
+  it('generates a read-only diff command with --path and --json', async () => {
+    const { body } = await call({
+      action: 'diff',
+      component: 'button',
+      targetDir: 'src/app/ui',
+      json: true,
+    });
+    expect(body.command).toBe('npx @voltui/cli diff button --path=src/app/ui --json');
+    expect(body.note).toMatch(/not the latest on npm/);
+    expect(body.note).toMatch(/Read-only/);
+  });
+
+  it('generates add --track', async () => {
+    const { body } = await call({ action: 'add', component: 'button', track: true });
+    expect(body.command).toBe('npx @voltui/cli add button --track');
+  });
+
+  it('requires a component for diff and rejects flags of another action', async () => {
+    expect((await call({ action: 'diff' })).isError).toBe(true);
+    expect((await call({ action: 'diff', component: 'button', track: true })).isError).toBe(true);
+    expect((await call({ action: 'add', component: 'button', json: true })).isError).toBe(true);
+  });
+
+  it('the generated commands parse with the real CLI parser', async () => {
+    const { parseArgs } = await import('../../../../../cli/lib/args.js');
+    for (const args of [
+      { action: 'diff', component: 'dialog', targetDir: './src/ui', json: true },
+      { action: 'add', component: 'dialog', targetDir: './src/ui', track: true },
+      { action: 'init', targetDir: './src/ui' },
+      { action: 'list' },
+    ]) {
+      const { body } = await call(args);
+      const argv = body.command.replace('npx @voltui/cli ', '').split(' ');
+      expect(() => parseArgs(argv)).not.toThrow();
+      expect(parseArgs(argv).command).toBe(args.action);
+    }
   });
 });

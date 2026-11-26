@@ -15,6 +15,7 @@ const path = require('path');
 const core = require('./core');
 const { addBarrelExports, INITIAL_BARREL } = require('./barrel');
 const { resolveProject } = require('./project');
+const provenance = require('./provenance');
 const {
   requiredDependencies,
   assessDependencies,
@@ -82,6 +83,7 @@ function planAdd({
   manifest,
   base = core.DEFAULT_BASE,
   force = false,
+  track = false,
   project: projectOption = null,
 }) {
   const requested = unique(componentNames);
@@ -128,6 +130,7 @@ function planAdd({
       byTarget.set(key, entry);
       return;
     }
+    previous.owners = unique([...previous.owners, ...entry.owners]);
     // Two components shipping the same file (Quartz Toggle and Toggle Group share variants.ts)
     // collapse into one write. Two different files claiming one path would lose one of them.
     if (previous.sourcePath !== entry.sourcePath && previous.content !== entry.content) {
@@ -149,7 +152,13 @@ function planAdd({
         missing.push(sourcePath);
         continue;
       }
-      componentEntries.push({ kind: 'component', component: name, sourcePath, targetPath });
+      componentEntries.push({
+        kind: 'component',
+        component: name,
+        owners: [name],
+        sourcePath,
+        targetPath,
+      });
     }
   }
   if (missing.length > 0) {
@@ -163,8 +172,16 @@ function planAdd({
   const sharedFiles = core
     .detectSharedFileDependencies(components, manifest, base)
     .sort((a, b) => core.SHARED_LIB_FILES.indexOf(a) - core.SHARED_LIB_FILES.indexOf(b));
+  // Every component that imports a shared helper owns it; provenance records them all.
+  const sharedOwners = new Map(sharedFiles.map(file => [file, []]));
+  for (const name of components) {
+    for (const file of core.detectSharedFileDependencies([name], manifest, base)) {
+      if (sharedOwners.has(file)) sharedOwners.get(file).push(name);
+    }
+  }
   const sharedEntries = sharedFiles.map(file => ({
     kind: 'shared',
+    owners: sharedOwners.get(file),
     sourcePath: path.join(componentsRoot, file),
     targetPath: path.join(targetDir, file),
   }));
@@ -210,6 +227,8 @@ function planAdd({
     action: before === null ? 'create' : added.length > 0 ? 'update' : 'unchanged',
   };
 
+  const tracking = planProvenance({ targetDir, files, base, manifest, track });
+
   // What the copied files import, compared with the consumer package the destination belongs to.
   const project = projectOption || resolveProject({ cwd: process.cwd(), destination: targetDir });
   const required = requiredDependencies({
@@ -236,6 +255,7 @@ function planAdd({
     sharedFiles,
     files,
     barrel,
+    provenance: tracking,
     conflicts: files.filter(file => file.action === 'conflict'),
     runtimeDependencies,
     project,
@@ -246,6 +266,51 @@ function planAdd({
     installCommand: everything
       ? displayInvocation(missingInstall || everything, project.cwd)
       : `npm install ${runtimeDependencies.join(' ')}`,
+  };
+}
+
+/**
+ * What happens to `.volt-ui.json`. Only `--track` creates it; an existing valid record is always
+ * kept coherent. A record that cannot be trusted stops the whole add before anything is written.
+ * Baselines are the reference bytes of files this add copies or found identical: a conflicting
+ * (locally edited) file never becomes a baseline, because a conflict aborts the operation.
+ */
+function planProvenance({ targetDir, files, base, manifest, track }) {
+  let current;
+  try {
+    current = provenance.readProvenance(targetDir);
+  } catch (err) {
+    throw new PlanError(err.message, 'PROVENANCE');
+  }
+  const filePath = path.join(targetDir, provenance.PROVENANCE_FILE);
+  if (!current.exists && !track) {
+    return { action: 'none', path: filePath, before: null, after: null, entries: [] };
+  }
+  const versions = core.cliVersions(manifest);
+  const entries = files
+    .filter(file => file.action !== 'conflict')
+    .map(file => ({
+      relPath: path.relative(targetDir, file.targetPath).split(path.sep).join('/'),
+      owners: file.owners,
+      sha256: provenance.hashContent(file.content),
+    }));
+  let record;
+  try {
+    record = provenance.mergeRecord(current.exists ? current.record : null, entries, {
+      base,
+      source: { cli: versions.cli, registry: versions.registry, transform: core.TRANSFORM_VERSION },
+    });
+  } catch (err) {
+    throw new PlanError(err.message, 'PROVENANCE');
+  }
+  const after = provenance.serializeRecord(record);
+  const before = current.exists ? current.text : null;
+  return {
+    action: before === null ? 'create' : before === after ? 'unchanged' : 'update',
+    path: filePath,
+    before,
+    after,
+    entries,
   };
 }
 

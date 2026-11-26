@@ -9,7 +9,9 @@
  *             with npm; no workspace node_modules, alias, symlink, NODE_PATH or Analog plugin
  *   3. cli    the INSTALLED `volt` binary: help, errors, dry-run, init (repeated over an edited
  *             barrel), add from a nested directory, repeated add, multi-add in both orders, --path,
- *             --base=quartz, the whole catalog with --install
+ *             --base=quartz, the whole catalog with --install; `add --track` and `volt diff` against
+ *             the installed reference and a second "newer" copy of the installed CLI, offline,
+ *             proving the target tree (bytes, modes, mtimes) is identical after every diff
  *   4. build  the fixture app (e2e/consumer-tarball) in package mode and through the package → copy
  *             transform against the copied source, both prerendered on the server and hydrated;
  *             every example of scripts/check-examples.mjs and the full catalog in both modes, with
@@ -48,6 +50,7 @@ import { tmpdir } from 'node:os';
 import { dirname, join, relative } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { gzipSync } from 'node:zlib';
+import { createHash } from 'node:crypto';
 import { packAll } from './lib/pack.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -266,6 +269,113 @@ r = voltIn(app, ['list', '--base=quartz', '--json']);
 assert(JSON.parse(r.out).length === manifest.backends.quartz.components.length, 'list --base=quartz lists the Quartz components');
 r = voltIn(app, ['add', 'checkbox', '--base=quartz', '--path=src/quartz', '--dry-run']);
 assert(/@quartz-headless\/primitives/.test(r.out) && !/ng-primitives \^/.test(r.out), 'a Quartz copy needs Quartz, not ng-primitives');
+
+step('provenance and volt diff with the installed binary (read-only, offline)');
+{
+  const tracked = join(app, 'src/tracked');
+  // A fingerprint of every entry under a directory: bytes, mode, size and mtime, symlinks not followed.
+  const fingerprint = dir => {
+    const out = {};
+    const walk = d => {
+      for (const entry of readdirSync(d, { withFileTypes: true })) {
+        const full = join(d, entry.name);
+        const st = statSync(full);
+        if (entry.isDirectory()) {
+          out[`${relative(dir, full)}/`] = st.mode;
+          walk(full);
+        } else {
+          out[relative(dir, full)] = `${createHash('sha256').update(readFileSync(full)).digest('hex')}:${st.mode}:${st.mtimeMs}`;
+        }
+      }
+    };
+    walk(dir);
+    return JSON.stringify(out);
+  };
+  const noNetwork = join(work, 'no-network.cjs');
+  write(
+    noNetwork,
+    `const block = name => () => { throw new Error('network used: ' + name); };
+for (const m of ['net', 'tls', 'http', 'https', 'dns']) {
+  const mod = require(m);
+  for (const k of ['connect', 'createConnection', 'request', 'get', 'lookup', 'resolve']) if (typeof mod[k] === 'function') mod[k] = block(m + '.' + k);
+}
+globalThis.fetch = block('fetch');
+`
+  );
+  const diffRun = (bin, cmdArgs) => {
+    const result = spawnSync(bin, ['diff', ...cmdArgs], {
+      cwd: app,
+      env: { ...env, NODE_OPTIONS: `--require ${noNetwork}` },
+      encoding: 'utf8',
+    });
+    return { status: result.status, stdout: result.stdout, stderr: result.stderr };
+  };
+
+  r = voltIn(app, ['add', 'button', 'card', '--track', '--path=src/tracked', '--dry-run']);
+  assert(!existsSync(tracked), 'add --track --dry-run writes nothing, no record');
+  voltIn(app, ['add', 'button', 'card', '--track', '--path=src/tracked']);
+  const record = json(join(tracked, '.volt-ui.json'));
+  assert(
+    record.schemaVersion === 1 && record.files['utils.ts'].owners.join() === 'button,card' &&
+      !readFileSync(join(tracked, '.volt-ui.json'), 'utf8').includes(work),
+    '.volt-ui.json: schema 1, shared helper owned by both components, no absolute paths'
+  );
+
+  let before = fingerprint(tracked);
+  let d = diffRun(volt, ['button', '--path=src/tracked', '--json']);
+  let report = JSON.parse(d.stdout);
+  assert(
+    d.status === 0 && report.provenance.status === 'tracked' && report.files.every(f => f.status === 'unchanged'),
+    'volt diff on an untouched tracked copy: exit 0, every file unchanged (offline)'
+  );
+  appendFileSync(join(tracked, 'button/variants.ts'), '\n// local tweak\n');
+  before = fingerprint(tracked);
+  d = diffRun(volt, ['button', '--path=src/tracked', '--json']);
+  report = JSON.parse(d.stdout);
+  assert(
+    d.status === 1 && report.files.find(f => f.path === 'button/variants.ts').status === 'local-changed',
+    'a local edit: exit 1, local-changed'
+  );
+  assert(fingerprint(tracked) === before, 'the target tree is identical after volt diff');
+
+  // "Another CLI version": a copy of the installed package whose reference changed.
+  const nextCli = join(work, 'cli-next');
+  cpSync(join(app, 'node_modules/@voltui/cli'), nextCli, { recursive: true, dereference: true });
+  const nextPkg = json(join(nextCli, 'package.json'));
+  write(join(nextCli, 'package.json'), { ...nextPkg, version: '99.0.0' });
+  const buttonSrc = join(nextCli, 'registry/src/lib/components/button/button.ts');
+  writeFileSync(buttonSrc, `// upstream fix\n${readFileSync(buttonSrc, 'utf8')}`);
+  const nextVolt = join(nextCli, 'bin/volt');
+  d = diffRun(nextVolt, ['button', '--path=src/tracked', '--json']);
+  report = JSON.parse(d.stdout);
+  const statusOf = p => report.files.find(f => f.path === p).status;
+  assert(
+    d.status === 1 && report.reference.cli === '99.0.0' &&
+      statusOf('button/button.ts') === 'reference-changed' && statusOf('button/variants.ts') === 'local-changed',
+    'a newer CLI: reference-changed and local-changed told apart by the record'
+  );
+  d = diffRun(nextVolt, ['button', '--path=src/tracked']);
+  assert(/^\+\/\/ upstream fix$/m.test(d.stdout) && /Nothing was changed/.test(d.stdout), 'text mode prints the unified local → reference diff');
+  assert(fingerprint(tracked) === before, 'still identical after the newer CLI compared it');
+
+  // Untracked v1 copies are still comparable.
+  voltIn(app, ['add', 'button', '--path=src/untracked']);
+  assert(!existsSync(join(app, 'src/untracked/.volt-ui.json')), 'add without --track writes no record');
+  d = diffRun(nextVolt, ['button', '--path=src/untracked', '--json']);
+  report = JSON.parse(d.stdout);
+  assert(
+    d.status === 1 && report.provenance.status === 'untracked' && statusOf('button/button.ts') === 'unknown-origin',
+    'an untracked copy compares with unknown origin'
+  );
+
+  writeFileSync(join(tracked, '.volt-ui.json'), '{ corrupt');
+  before = fingerprint(tracked);
+  d = diffRun(volt, ['button', '--path=src/tracked', '--json']);
+  assert(d.status === 2 && JSON.parse(d.stdout).error && fingerprint(tracked) === before, 'a corrupt record: exit 2, JSON error, nothing changed');
+  r = voltIn(app, ['add', 'badge', '--path=src/tracked'], 1);
+  assert(/\.volt-ui\.json/.test(r.out) && fingerprint(tracked) === before, 'add refuses a corrupt record before writing');
+  rmSync(nextCli, { recursive: true, force: true });
+}
 
 step('the whole catalog, with --install');
 r = voltIn(app, ['add', ...allComponents, '--install']);

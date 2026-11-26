@@ -17,6 +17,7 @@ const FLAG_SPECS = {
   base: { value: true, hint: '--base=ng-primitives|quartz' },
   status: { value: true, hint: '--status=stable|beta|experimental' },
   install: { value: false },
+  track: { value: false },
   'dry-run': { value: false },
   force: { value: false },
   json: { value: false },
@@ -29,9 +30,13 @@ const COMMANDS = {
     usage: 'volt init [target-dir | --path=<dir>] [--base=<base>]',
   },
   add: {
-    flags: ['path', 'base', 'install', 'dry-run', 'force', 'help'],
+    flags: ['path', 'base', 'install', 'dry-run', 'force', 'track', 'help'],
     usage:
-      'volt add <component>... [target-dir | --path=<dir>] [--base=<base>] [--install] [--dry-run] [--force]',
+      'volt add <component>... [target-dir | --path=<dir>] [--base=<base>] [--install] [--dry-run] [--force] [--track]',
+  },
+  diff: {
+    flags: ['path', 'base', 'json', 'help'],
+    usage: 'volt diff <component>... [--path=<dir>] [--base=<base>] [--json]',
   },
   list: {
     flags: ['status', 'base', 'json', 'help'],
@@ -130,7 +135,7 @@ function parseArgs(argv) {
     const suggestion = closest(command, Object.keys(COMMANDS));
     throw new ArgsError(
       `Unknown command "${command}".${suggestion ? ` Did you mean "volt ${suggestion}"?` : ''}\n` +
-        'Commands: init, add, list. Run "volt help" for usage.'
+        'Commands: init, add, diff, list. Run "volt help" for usage.'
     );
   }
 

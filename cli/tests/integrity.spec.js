@@ -450,6 +450,41 @@ describe('CLI integrity', () => {
       expect(existsSync(join(project, 'src'))).toBe(false);
     });
 
+    it('a failure writing the provenance record rolls back the files and the barrel', () => {
+      const before = snapshot(project);
+      const plan = planAdd({ componentNames: ['button'], targetDir: ui, manifest, track: true });
+      expect(plan.provenance.action).toBe('create');
+      const failing = {
+        ...fs,
+        openSync(target, ...rest) {
+          if (resolve(String(target)) === resolve(plan.provenance.path)) {
+            throw Object.assign(new Error('ENOSPC: no space left'), { code: 'ENOSPC' });
+          }
+          return fs.openSync(target, ...rest);
+        },
+      };
+      expect(() => applyPlan(plan, failing)).toThrow(/rolled back/);
+      expect(snapshot(project)).toEqual(before);
+    });
+
+    it('a failure updating an existing record restores its previous bytes', () => {
+      expect(volt(project, 'add', 'button', '--track').status).toBe(0);
+      const before = snapshot(project);
+      const plan = planAdd({ componentNames: ['card'], targetDir: ui, manifest });
+      expect(plan.provenance.action).toBe('update');
+      const failing = {
+        ...fs,
+        writeFileSync(target, ...rest) {
+          if (typeof target === 'string' && resolve(target) === resolve(plan.provenance.path)) {
+            throw Object.assign(new Error('EIO: disk failed'), { code: 'EIO' });
+          }
+          return fs.writeFileSync(target, ...rest);
+        },
+      };
+      expect(() => applyPlan(plan, failing)).toThrow(/EIO/);
+      expect(snapshot(project)).toEqual(before);
+    });
+
     it.skipIf(isRoot)(
       'the real binary rolls back after a write failure and keeps pre-existing directories',
       () => {

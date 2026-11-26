@@ -3,8 +3,8 @@ name: volt-ui-distribution
 description: >
   Install, use and update Volt UI correctly in either distribution mode: the @voltui/components
   package (Volt* classes, volt-* selectors) or copy-and-own via @voltui/cli (Ui* classes, ui-*
-  selectors under ./ui). Use to detect the project's mode, add components, fix wrong imports or
-  prefixes, or set up the agent.
+  selectors under ./ui). Use to detect the project's mode, add components, compare a customised copy
+  with a newer CLI (volt diff), fix wrong imports or prefixes, or set up the agent.
 ---
 
 # Package vs copy-and-own
@@ -58,6 +58,8 @@ npx @voltui/cli list                          # what exists, with status
 npx @voltui/cli add button card               # copies source; component dependencies come along
 npx @voltui/cli add dialog --path=./src/app/shared/ui --dry-run
 npx @voltui/cli add card --install            # also installs what the copied files import
+npx @voltui/cli add button --track            # also records hashes in src/app/ui/.volt-ui.json
+npx @voltui/cli@<version> diff button         # read-only: local copy → that CLI's source
 ```
 
 Name a destination with `--path=<dir>` (the old positional `target-dir` still works but can be
@@ -67,11 +69,20 @@ flags and extra arguments are errors — read the message, do not retry blindly.
 
 The CLI copies source from the library, applies the `volt-` → `ui-` transform, and you own the
 result: edit it freely. A later `add` reuses untouched files and refuses to overwrite edited ones
-unless you pass `--force` — review the diff first. Dependencies are per component: `volt add` prints
+unless you pass `--force` — review `volt diff` first. Dependencies are per component: `volt add` prints
 exactly which packages the copied files need (with ranges); `--install` installs those once in the
 right package, keeps compatible versions and never upgrades Angular. Do not install a fixed list.
 Blocks, Layouts and Recipes from the docs site are copied the same way and import the atoms from the
 project's mode; component examples on voltui.dev and from `get_usage_example` come in both modes.
+
+## Updating a customised copy
+
+`volt diff <name> [--path=<dir>] [--json]` compares the copy (and its shared helpers) with the source
+inside the CLI version that runs — not npm's latest — offline, and never changes a file. Exit 0 same,
+1 different, 2 error. With a `--track` record it says per file whether the copy (`local-changed`),
+the reference (`reference-changed`) or both changed; without one, `unknown-origin`. Move the hunks
+you want by hand and run the tests; never `--force` over edits you want to keep, and never edit or
+create `.volt-ui.json` by hand.
 
 ## Agent setup
 
@@ -94,7 +105,8 @@ only read a rules file it writes a short routing block.
 <!-- volt:digest:start -->
 
 - Detect the mode first: `@voltui/components` (package: `Volt*`, `volt-*`) or a copied `ui/` folder (copy: `Ui*`, `ui-*`). Never mix them; `'volt'` is not importable in a consumer.
-- Copy mode: `npx @voltui/cli add <name> [--path=<dir>] [--install]` (installs only what the copy imports); package mode: `npm install @voltui/components`.
+- Copy mode: `npx @voltui/cli add <name> [--path=<dir>] [--install] [--track]` (installs only what the copy imports); package mode: `npm install @voltui/components`.
+- Before updating an edited copy: `npx @voltui/cli@<version> diff <name>` (read-only, local → that CLI's source); apply hunks by hand, never `--force` over edits.
 - CSS: the full `@import 'tailwindcss'` (with preflight, which Volt is styled on), then `@import '@voltui/components/themes.css'`.
 - Pass the project's mode (`package` | `copy`) to the MCP tools to get matching selectors and imports.
 

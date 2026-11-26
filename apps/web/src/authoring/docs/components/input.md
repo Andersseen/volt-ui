@@ -22,6 +22,7 @@ Change the inputs and interact with the preview: the events panel shows what the
 ## Forms and accessibility
 
 - `<volt-input>` is a full-width wrapper around one native `<input>`. `id`, `class` and `aria-label` belong to the native element and are removed from the host, so `<label for>` and `<volt-label htmlFor>` reach the control and no id is duplicated.
+- `aria-describedby` is applied to the native input too. Inside `<volt-form-field>` its ids are added to the hint and error, not in place of them; outside a field they are the input's description (written in the browser, so a server-rendered page gains it on hydration).
 - Without an `id`, the input gets a generated one, numbered per application so the server-rendered page and the hydrated page agree.
 - Bind it with `[(value)]`, `formControl` / `formControlName` or `ngModel`. Typing reports the value; a value written by your code (`setValue`, `reset`, a model change) does not echo back as a change.
 - It is marked touched when it loses focus. `aria-invalid="true"` appears when the control is invalid **and** touched, or when you set `state="error"`; `state` alone only changes the color.

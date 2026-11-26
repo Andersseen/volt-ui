@@ -22,6 +22,7 @@ Cambia los inputs e interactúa con la vista previa: el panel de eventos muestra
 ## Formularios y accesibilidad
 
 - `<volt-input>` es un envoltorio de ancho completo alrededor de un único `<input>` nativo. `id`, `class` y `aria-label` pertenecen al elemento nativo y se eliminan del host, así que `<label for>` y `<volt-label htmlFor>` llegan al control y ningún id se duplica.
+- `aria-describedby` también se aplica al input nativo. Dentro de `<volt-form-field>` sus ids se añaden a la pista y al error, sin sustituirlos; fuera de un campo son la descripción del input (se escribe en el navegador, así que una página renderizada en el servidor la obtiene al hidratarse).
 - Sin `id`, el input recibe uno generado, numerado por aplicación para que la página renderizada en el servidor y la hidratada coincidan.
 - Enlázalo con `[(value)]`, `formControl` / `formControlName` o `ngModel`. Escribir notifica el valor; un valor que escribe tu código (`setValue`, `reset`, un cambio del modelo) no vuelve como cambio.
 - Se marca como tocado al perder el foco. `aria-invalid="true"` aparece cuando el control es inválido **y** está tocado, o cuando pones `state="error"`; `state` por sí solo solo cambia el color.

@@ -1,4 +1,13 @@
-import { ElementRef, HostAttributeToken, inject, Renderer2 } from '@angular/core';
+import {
+  afterRenderEffect,
+  computed,
+  effect,
+  ElementRef,
+  HostAttributeToken,
+  inject,
+  Renderer2,
+  untracked,
+} from '@angular/core';
 
 /*
  * For wrapper components that render one native element (`<input>`, `<label>`, `<button>`…)
@@ -41,4 +50,55 @@ export function forwardAttributesFromHost(...names: string[]): void {
   for (const name of names) {
     renderer.removeAttribute(host, name);
   }
+}
+
+/** The part of a form field's state that lists the ids describing its control. */
+export interface DescriptionRegistry {
+  addDescription(id: string): void;
+  removeDescription(id: string): void;
+}
+
+/**
+ * Applies a consumer's `aria-describedby` to the native control of a wrapper (`<volt-input
+ * aria-describedby="help">`), merged with what the headless engine already writes there.
+ *
+ * The engine is the only writer of `aria-describedby` on a control inside a form field (hint and
+ * error ids), so inside one the consumer's ids join the field's descriptions and the engine writes
+ * the combined list. Outside a form field nothing else describes the control, and Volt writes the
+ * ids itself after render. The static host copy is removed, as with the other forwarded
+ * attributes. Call from a constructor.
+ *
+ * Limitation: outside a form field the attribute is written in the browser, after render, so a
+ * server-rendered page gains it on hydration.
+ */
+export function forwardDescribedBy(
+  ids: () => string | null | undefined,
+  control: () => Element | undefined,
+  registry: () => DescriptionRegistry | null | undefined
+): void {
+  forwardAttributesFromHost('aria-describedby');
+  const renderer = inject(Renderer2);
+  const tokens = computed(() => (ids() ?? '').split(/\s+/).filter(Boolean));
+
+  effect(onCleanup => {
+    const field = registry();
+    const list = tokens();
+    if (!field) return;
+    untracked(() => list.forEach(id => field.addDescription(id)));
+    onCleanup(() => untracked(() => list.forEach(id => field.removeDescription(id))));
+  });
+
+  // ng-primitives writes the control's `aria-describedby` (null outside a form field) in an
+  // afterRenderEffect's default `mixedReadWrite` phase. `read` is the phase after it, so this write
+  // lands last; it only touches an attribute nothing else in that phase reads.
+  afterRenderEffect({
+    read: () => {
+      if (registry()) return;
+      const element = control();
+      if (!element) return;
+      const value = tokens().join(' ');
+      if (value) renderer.setAttribute(element, 'aria-describedby', value);
+      else renderer.removeAttribute(element, 'aria-describedby');
+    },
+  });
 }

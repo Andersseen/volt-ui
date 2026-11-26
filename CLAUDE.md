@@ -111,4 +111,4 @@ Do not add filters for `vitest`, `lint`, `tsc`, `prettier`, `playwright`, `pnpm`
 ## Deny-listed paths
 
 Generated output is not editable: `dist/`, `coverage/`, `playwright-report/`,
-`test-results/`, `public/manifest.json` (regenerate with `pnpm manifest`), `pnpm-lock.yaml`.
+`test-results/`, `apps/web/public/manifest.json` (regenerate with `pnpm manifest`), `pnpm-lock.yaml`.

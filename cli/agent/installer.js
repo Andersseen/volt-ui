@@ -617,6 +617,7 @@ async function run(argv, env = {}) {
       out.log('  npx @voltui/cli init        scaffold the ui/ folder');
       out.log('  npx @voltui/cli add button  add a component');
       out.log('  npx @voltui/cli list        list every component');
+      out.log('  npx @voltui/cli diff button compare an edited copy with the CLI source (read-only)');
     }
     return 0;
   } catch (err) {
