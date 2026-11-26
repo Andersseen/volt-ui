@@ -11,6 +11,7 @@ import { KanbanLayout } from './kanban/kanban';
 import { LoginLayout } from './login/login';
 import { ProfileLayout } from './profile/profile';
 import { SettingsLayout } from './settings/settings';
+import { SidebarLayout } from './sidebar/sidebar';
 import { SignUpLayout } from './sign-up/sign-up';
 import { TopNavLayout } from './top-nav/top-nav';
 
@@ -24,6 +25,7 @@ const LAYOUTS: readonly [string, Type<unknown>][] = [
   ['chat', ChatLayout],
   ['login', LoginLayout],
   ['sign up', SignUpLayout],
+  ['sidebar', SidebarLayout],
 ];
 
 const renderLayout = (component: Type<unknown>) =>

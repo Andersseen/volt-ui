@@ -1,9 +1,8 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import type { LayoutMetadata } from '../lib/layouts-metadata';
-import { externalPackages } from '../lib/snippets/consumer-source';
 import { RelatedComponents } from './related-components';
-import { CodePanel } from '@shared/components/code-panel';
+import { CompositionSource } from './composition-source';
 import { VoltAlert, VoltAlertDescription, VoltCard } from 'volt';
 import { injectAppI18n } from '@shared/i18n/i18n';
 
@@ -18,7 +17,14 @@ import { injectAppI18n } from '@shared/i18n/i18n';
 @Component({
   selector: 'app-layout-showcase',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, CodePanel, RelatedComponents, VoltAlert, VoltAlertDescription, VoltCard],
+  imports: [
+    RouterLink,
+    CompositionSource,
+    RelatedComponents,
+    VoltAlert,
+    VoltAlertDescription,
+    VoltCard,
+  ],
   template: `
     <div class="space-y-8">
       <div>
@@ -41,10 +47,10 @@ import { injectAppI18n } from '@shared/i18n/i18n';
         </volt-card>
       </div>
 
-      <app-code-panel
+      <app-composition-source
+        [entryId]="'layouts/' + layout().slug"
         [title]="t('gallery.layoutSource')"
         [code]="code()"
-        [cliCommand]="installCommand()"
         [description]="t('gallery.layoutSourceNote')"
       />
 
@@ -68,16 +74,4 @@ export class LayoutShowcase {
 
   readonly layout = input.required<LayoutMetadata>();
   readonly code = input.required<string>();
-
-  /**
-   * The packages the copied file imports, read off the source itself so a new dependency
-   * cannot be left out of the instructions.
-   */
-  protected readonly installCommand = computed(() =>
-    [
-      'pnpm add',
-      '@voltui/components',
-      ...externalPackages(this.code()).filter(p => p !== '@voltui/components'),
-    ].join(' ')
-  );
 }

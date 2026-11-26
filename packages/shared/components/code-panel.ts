@@ -4,6 +4,7 @@ import {
   Component,
   booleanAttribute,
   computed,
+  inject,
   input,
   signal,
 } from '@angular/core';
@@ -16,7 +17,8 @@ import {
   VoltToggleGroup,
   VoltToggleGroupItem,
 } from 'volt';
-import { createDistribution, type DistributionMode } from '../lib/distribution';
+import { createDistribution } from '../lib/distribution';
+import { DistributionModeStore } from '../services/distribution-mode';
 import { VOLT_NAMES } from '../lib/volt-names.generated';
 import { LmnCheckIcon, LmnCopyIcon } from 'lumen-icons';
 import { CodeEditor } from './code-editor';
@@ -50,7 +52,7 @@ import { injectAppI18n } from '../i18n/i18n';
         }
       </div>
       <!-- Package or CLI copy: the code shown and the code copied are the same text. -->
-      @if (distribution()) {
+      @if (distribution() && showModeToggle()) {
         <volt-toggle-group
           type="single"
           [allowDeselection]="false"
@@ -67,20 +69,20 @@ import { injectAppI18n } from '../i18n/i18n';
         </volt-toggle-group>
       }
 
-      <!-- CLI Command -->
-      @if (shownCliCommand()) {
+      <!-- Install commands for the selected mode, one row each, each copyable on its own. -->
+      @for (command of shownCliCommands(); track command; let i = $index) {
         <div class="flex items-center gap-2 p-3 rounded-lg bg-muted/50 border border-border">
           <span class="text-sm text-muted-foreground">{{ t('ui.codePanel.installCli') }}</span>
-          <code class="text-sm font-mono text-foreground">{{ shownCliCommand() }}</code>
+          <code class="text-sm font-mono text-foreground">{{ command }}</code>
           <button
             voltButton
             variant="ghost"
             size="sm"
             type="button"
-            (click)="copyCliCommand()"
+            (click)="copyCliCommand(i)"
             class="ml-auto h-7 gap-1 px-2 text-muted-foreground"
           >
-            @if (cliCopied()) {
+            @if (copiedIndex() === i) {
               <lmn-check [size]="14" class="text-success" />
               <span class="text-success">{{ t('ui.copy.copied') }}</span>
             } @else {
@@ -165,34 +167,60 @@ export class CodePanel {
    * transform scripts/check-examples.mjs compiles, with the `volt add` command for it.
    */
   readonly distribution = input<boolean, unknown>(false, { transform: booleanAttribute });
+  /**
+   * Copy mode: where the source imports the copied components from, relative to the file. A
+   * component example sits beside `ui/` (`./ui`); a Recipes composition in `src/app/<folder>/`
+   * imports `../ui`, the folder `volt add` writes by default.
+   */
+  readonly uiDir = input<string>('./ui');
+  /** npm packages the source needs besides Volt UI (`lumen-icons`), installed in either mode. */
+  readonly installPackages = input<readonly string[]>([]);
+  /** Off for a composition's supporting files: the main panel's toggle drives them. */
+  readonly showModeToggle = input<boolean, unknown>(true, { transform: booleanAttribute });
 
-  protected readonly mode = signal<DistributionMode>('package');
+  private readonly modeStore = inject(DistributionModeStore);
+  protected readonly mode = this.modeStore.mode;
   private readonly transform = createDistribution(VOLT_NAMES);
   /** What the editor shows and what the copy button writes to the clipboard: one value. */
   protected readonly shownCode = computed(() =>
-    this.distribution() ? this.transform.sourceFor(this.code(), this.mode()) : this.code()
+    this.distribution()
+      ? this.transform.sourceFor(this.code(), this.mode(), this.uiDir())
+      : this.code()
   );
-  protected readonly shownCliCommand = computed(() =>
-    this.distribution() && this.mode() === 'copy'
-      ? (this.transform.cliAddCommand(this.code()) ?? this.cliCommand())
-      : this.cliCommand()
-  );
+  /**
+   * Package mode: the caller's command (`pnpm add @voltui/components …`). Copy mode: `volt add` for
+   * every component the source imports (the CLI resolves their own dependencies and lists the npm
+   * packages they need), then any other package the source imports.
+   */
+  protected readonly shownCliCommands = computed(() => {
+    if (!this.distribution() || this.mode() === 'package') {
+      return this.cliCommand() ? [this.cliCommand()] : [];
+    }
+    const add = this.transform.cliAddCommand(this.code());
+    const extra = this.installPackages().length
+      ? `pnpm add ${this.installPackages().join(' ')}`
+      : null;
+    const commands = [add, extra].filter((c): c is string => !!c);
+    return commands.length ? commands : this.cliCommand() ? [this.cliCommand()] : [];
+  });
 
   protected readonly heading = computed(
     () => this.title() || this.t('ui.codePanel.componentSource')
   );
 
-  cliCopied = signal(false);
+  /** Index of the install command whose copy button just succeeded, or -1. */
+  readonly copiedIndex = signal(-1);
+  readonly cliCopied = computed(() => this.copiedIndex() !== -1);
   activeTab = signal<'preview' | 'code'>('preview');
 
-  async copyCliCommand() {
-    const command = this.shownCliCommand();
+  async copyCliCommand(index = 0) {
+    const command = this.shownCliCommands()[index];
     if (!command) return;
 
     try {
       await navigator.clipboard.writeText(command);
-      this.cliCopied.set(true);
-      setTimeout(() => this.cliCopied.set(false), 2000);
+      this.copiedIndex.set(index);
+      setTimeout(() => this.copiedIndex.set(-1), 2000);
     } catch (err) {
       console.error('Failed to copy:', err);
     }
@@ -200,7 +228,7 @@ export class CodePanel {
 
   onModeChange(value: string[]) {
     const [next] = value;
-    if (next === 'package' || next === 'copy') this.mode.set(next);
+    if (next === 'package' || next === 'copy') this.modeStore.set(next);
   }
 
   onTabChange(value: string | undefined) {

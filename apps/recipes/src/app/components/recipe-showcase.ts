@@ -1,10 +1,9 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { VoltCard } from 'volt';
 import { injectAppI18n } from '@shared/i18n/i18n';
-import { CodePanel } from '@shared/components/code-panel';
 import type { RecipeMetadata } from '../lib/recipes-metadata';
-import { externalPackages } from '../lib/snippets/consumer-source';
 import { RelatedComponents } from './related-components';
+import { CompositionSource } from './composition-source';
 
 /**
  * The frame every recipe page shares: name, live recipe, what it is built from, and the source.
@@ -15,7 +14,7 @@ import { RelatedComponents } from './related-components';
 @Component({
   selector: 'app-recipe-showcase',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CodePanel, RelatedComponents, VoltCard],
+  imports: [CompositionSource, RelatedComponents, VoltCard],
   template: `
     <div class="space-y-8">
       <div>
@@ -34,10 +33,10 @@ import { RelatedComponents } from './related-components';
         <app-related-components [atoms]="recipe().atoms" />
       </volt-card>
 
-      <app-code-panel
+      <app-composition-source
+        [entryId]="'recipes/' + recipe().slug"
         [title]="t('ui.codePanel.usage')"
         [code]="code()"
-        [cliCommand]="installCommand()"
       />
     </div>
   `,
@@ -49,13 +48,4 @@ export class RecipeShowcase {
 
   readonly recipe = input.required<RecipeMetadata>();
   readonly code = input.required<string>();
-
-  /** Read off the source itself, so a new dependency cannot be left out of the instructions. */
-  protected readonly installCommand = computed(() =>
-    [
-      'pnpm add',
-      '@voltui/components',
-      ...externalPackages(this.code()).filter(p => p !== '@voltui/components'),
-    ].join(' ')
-  );
 }
