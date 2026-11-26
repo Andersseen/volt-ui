@@ -31,6 +31,15 @@ import { EDITORIAL, type McpCodeExample } from './mcp/editorial';
 import * as USAGE from '../../app/lib/snippets/usage';
 import { createDistribution } from '../../../../../packages/shared/lib/distribution';
 import { VOLT_NAMES } from '../../../../../packages/shared/lib/volt-names.generated';
+import { RELEASE_CAPABILITIES } from '../../../../../packages/shared/lib/release-capabilities';
+import {
+  buildCliCommand,
+  capabilityReport,
+  isPlainVersion,
+  versionContext,
+  type ConsumerVersions,
+} from './mcp/consumer-context';
+import { findCompositions } from './mcp/compositions';
 
 // ---------------------------------------------------------------------------
 // Component metadata (inlined — CF Workers have no filesystem access)
@@ -292,6 +301,8 @@ const projectInfo = {
     sourceClassPrefix: 'Volt',
     cliClassPrefix: 'Ui',
   },
+  compositions:
+    'Blocks, layouts and workflow patterns to copy from https://recipes.voltui.dev: use find_compositions before building a page section, shell or workflow by hand.',
 };
 
 const themeInfo = {
@@ -309,6 +320,48 @@ const themeInfo = {
 function getComponent(key: string): ComponentMeta | undefined {
   return components[key];
 }
+
+/** The components a release capability concerns (declared, or the owners of the names it adds). */
+function capabilityComponents(capability: (typeof RELEASE_CAPABILITIES)[number]): string[] {
+  if (capability.components) return [...capability.components];
+  if (capability.probe.kind === 'package-exports') {
+    return [...new Set(capability.probe.names.map(name => VOLT_NAMES.exportOwners[name]))];
+  }
+  return [];
+}
+
+/**
+ * Version facts for one component: what this server describes, what npm serves, and the
+ * capabilities of this component that npm (or the consumer's installed version) does not have.
+ * Additive: older clients ignore it.
+ */
+function componentAvailability(key: string, componentsVersion?: string) {
+  const installed: ConsumerVersions = isPlainVersion(componentsVersion)
+    ? { components: componentsVersion }
+    : {};
+  const context = versionContext(installed);
+  const relevant = RELEASE_CAPABILITIES.filter(
+    c => c.package === '@voltui/components' && capabilityComponents(c).includes(key)
+  ).map(c => capabilityReport(c, installed));
+  return {
+    describesVersion: context.describes['@voltui/components'],
+    publishedOnNpm: context.publishedOnNpm['@voltui/components'],
+    ...(installed.components ? { installedVersion: installed.components } : {}),
+    notOnNpmYet: relevant.filter(r => r.published !== 'available'),
+    ...(installed.components
+      ? { notInInstalledVersion: relevant.filter(r => r.installed === 'unavailable') }
+      : {}),
+  };
+}
+
+const versionInput = {
+  componentsVersion: z
+    .string()
+    .optional()
+    .describe(
+      'The @voltui/components version installed in the project (package.json, e.g. "1.3.3"). Capabilities newer than it are reported as unavailable.'
+    ),
+};
 
 /** How the consumer uses Volt: the package (`Volt*`, `volt-*`) or CLI-copied source (`Ui*`, `ui-*`). */
 export type DistributionMode = 'package' | 'copy';
@@ -440,6 +493,11 @@ export const SERVER_INVENTORY = {
     { name: 'get_usage_example', description: 'Get Angular usage examples' },
     { name: 'get_theme_info', description: 'Get theme configuration info' },
     { name: 'get_project_info', description: 'Get project overview' },
+    {
+      name: 'find_compositions',
+      description:
+        'Find Recipes blocks, layouts and workflow patterns, with install commands and the logic the application owns',
+    },
     {
       name: 'generate_cli_command',
       description: 'Generate Volt UI CLI commands (init, add, diff, list)',
@@ -576,9 +634,10 @@ export function createMcpServer(): McpServer {
           .describe(
             'The project\'s distribution mode: "package" returns volt-* selectors and Volt* classes, "copy" returns ui-* and Ui*. A project whose package.json depends on @voltui/components is "package". Omit to get the copy-mode names.'
           ),
+        ...versionInput,
       },
     },
-    async ({ name, mode }) => {
+    async ({ name, mode, componentsVersion }) => {
       const comp = getComponent(name);
       if (!comp) {
         return {
@@ -601,6 +660,7 @@ export function createMcpServer(): McpServer {
                 mode: mode ?? 'copy',
                 describesVersion: LIBRARY_VERSION,
                 responsibility: responsibilityOf(name),
+                availability: componentAvailability(name, componentsVersion),
               },
               null,
               2
@@ -626,10 +686,14 @@ export function createMcpServer(): McpServer {
           .enum(['package', 'copy'])
           .optional()
           .describe("The project's distribution mode; omit for both import styles."),
+        ...versionInput,
       },
     },
-    async ({ component, mode }) => {
-      const example = getUsageExample(component, mode);
+    async ({ component, mode, componentsVersion }) => {
+      const found = getUsageExample(component, mode);
+      const example = found
+        ? { ...found, availability: componentAvailability(component, componentsVersion) }
+        : undefined;
       if (!example) {
         return {
           content: [
@@ -661,11 +725,84 @@ export function createMcpServer(): McpServer {
     'get_project_info',
     {
       description:
-        'Get general information about the Volt UI project: framework, architecture, naming conventions.',
+        'Get general information about the Volt UI project: framework, architecture, naming conventions, and which versions it describes versus what npm serves. Pass the versions installed in the project to learn which documented capabilities it lacks.',
+      inputSchema: {
+        ...versionInput,
+        cliVersion: z
+          .string()
+          .optional()
+          .describe('The @voltui/cli version the project runs (e.g. "1.3.3").'),
+        agentVersion: z.string().optional().describe('The installed @voltui/agent version.'),
+      },
     },
-    async () => ({
-      content: [{ type: 'text', text: JSON.stringify(projectInfo, null, 2) }],
-    })
+    async ({ componentsVersion, cliVersion, agentVersion }) => {
+      const installed: ConsumerVersions = Object.fromEntries(
+        [
+          ['components', componentsVersion],
+          ['cli', cliVersion],
+          ['agent', agentVersion],
+        ].filter(([, v]) => isPlainVersion(v))
+      );
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify({ ...projectInfo, versions: versionContext(installed) }, null, 2),
+          },
+        ],
+      };
+    }
+  );
+
+  server.registerTool(
+    'find_compositions',
+    {
+      description:
+        'Find Volt UI Recipes compositions — blocks (page sections), layouts (page skeletons) and workflow patterns (forms, async search, data tables) — with their purpose, the Volt components they use, install commands for package and CLI-copy mode, where the source is, and which logic stays with the application. Use this before hand-building a page section, app shell or workflow.',
+      inputSchema: {
+        intent: z
+          .string()
+          .optional()
+          .describe('What you need, e.g. "pricing section", "settings form", "dashboard shell".'),
+        kind: z.enum(['blocks', 'layouts', 'patterns']).optional(),
+        component: z
+          .string()
+          .optional()
+          .describe('Only compositions that use this component key (e.g. "table").'),
+        limit: z.number().int().min(1).max(20).optional(),
+      },
+    },
+    async ({ intent, kind, component, limit }) => {
+      if (component && !componentKeys.includes(component)) {
+        return {
+          content: [
+            {
+              type: 'text',
+              text: JSON.stringify({ error: `Unknown component "${component}".` }, null, 2),
+            },
+          ],
+          isError: true,
+        };
+      }
+      const matches = findCompositions({ intent, kind, component, limit });
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(
+              matches.length
+                ? matches
+                : {
+                    matches: [],
+                    hint: 'No composition matched. Try another wording, a kind, or find_components for single components.',
+                  },
+              null,
+              2
+            ),
+          },
+        ],
+      };
+    }
   );
 
   server.registerTool(
@@ -682,8 +819,17 @@ export function createMcpServer(): McpServer {
         component: z
           .string()
           .optional()
-          .describe('Component name — required when action is "add" or "diff".'),
-        targetDir: z.string().optional().describe('Target directory (optional).'),
+          .describe(
+            'Component name — required when action is "add" or "diff" (several may be separated by spaces).'
+          ),
+        components: z
+          .array(z.string())
+          .optional()
+          .describe('Several component names for one "add" or "diff".'),
+        targetDir: z
+          .string()
+          .optional()
+          .describe('Target directory (optional), relative to the project, no ".." segments.'),
         track: z
           .boolean()
           .optional()
@@ -691,37 +837,39 @@ export function createMcpServer(): McpServer {
             '"add" only: also record what was copied in <targetDir>/.volt-ui.json, so a later "diff" can tell local edits from reference changes.'
           ),
         json: z.boolean().optional().describe('"diff" only: machine-readable JSON output.'),
+        cliVersion: z
+          .string()
+          .optional()
+          .describe(
+            'The @voltui/cli version the project runs. Omit to get the command for the version this server describes, with a note when npm does not serve it yet.'
+          ),
       },
     },
-    async ({ action, component, targetDir, track, json }) => {
-      const error = (message: string) => ({
-        content: [{ type: 'text' as const, text: JSON.stringify({ error: message }, null, 2) }],
-        isError: true,
-      });
-      if ((action === 'add' || action === 'diff') && !component) {
-        return error(`component is required for the "${action}" action`);
+    async ({ action, component, components: many, targetDir, track, json, cliVersion }) => {
+      const names = [
+        ...(component ? component.split(/[\s,]+/).filter(Boolean) : []),
+        ...(many ?? []),
+      ];
+      const result = buildCliCommand(
+        { action, components: names, targetDir, track, json, cliVersion },
+        componentKeys
+      );
+      if ('error' in result) {
+        return {
+          content: [{ type: 'text' as const, text: JSON.stringify(result, null, 2) }],
+          isError: true,
+        };
       }
-      if (track && action !== 'add') return error('track applies only to the "add" action');
-      if (json && action !== 'diff') return error('json applies only to the "diff" action');
-
-      // --path names the destination explicitly: never mistaken for a component name.
-      const suffix = targetDir ? ` --path=${targetDir}` : '';
-      const command =
-        action === 'init'
-          ? `npx @voltui/cli init${suffix}`
-          : action === 'add'
-            ? `npx @voltui/cli add ${component}${suffix}${track ? ' --track' : ''}`
-            : action === 'diff'
-              ? `npx @voltui/cli diff ${component}${suffix}${json ? ' --json' : ''}`
-              : 'npx @voltui/cli list';
-
-      const result: Record<string, string> = { command };
-      if (action === 'diff') {
-        result['note'] =
-          'Compares with the source inside the @voltui/cli version that runs (pin one with npx @voltui/cli@<version>), not the latest on npm. Read-only: exit 0 no differences, 1 differences, 2 error. Copies added with --track report who changed each file; others report unknown origin.';
-      }
+      // `note` is kept for existing clients; `notes` carries every note.
+      const body = {
+        command: result.command,
+        argv: result.argv,
+        requires: result.requires,
+        ...(result.notes.length ? { note: result.notes[0], notes: result.notes } : {}),
+        ...(result.availability ? { availability: result.availability } : {}),
+      };
       return {
-        content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+        content: [{ type: 'text', text: JSON.stringify(body, null, 2) }],
       };
     }
   );
@@ -799,7 +947,7 @@ export function createMcpServer(): McpServer {
         {
           uri: uri.toString(),
           mimeType: 'application/json',
-          text: JSON.stringify(projectInfo, null, 2),
+          text: JSON.stringify({ ...projectInfo, versions: versionContext() }, null, 2),
         },
       ],
     })
