@@ -150,4 +150,22 @@ Ver «Registro de ejecución». Comandos con el prefijo `rtk` cuando RTK está i
 ### 2026-11-26
 
 - Rama `feat/consumer-adoption-release-fidelity` desde `494b0fc`.
-- Resultados de verificación: se completan al cerrar.
+- **Local (macOS, Node 22.23, 2026-11-26):** `lint`, `typecheck`, `typecheck:recipes`, `check:generated`,
+  `check:ai-docs`, `check:docs-completeness`, `check:contrast`, `check:dogfood`, `docs:content:check`,
+  `test:coverage` (195 ficheros, 2322 tests, 4 omitidos), `build:lib`, `build`, `build:recipes`, `check:examples`,
+  `check:copied-source` (ambos modos), `pack:lib`, `pack:cli`, `pack:agent`, `release:check`, `check:storybook`,
+  `typecheck:storybook`, `build:storybook`, `test:storybook` (29), `test:e2e:consumer`, `test:e2e:consumer-cli`,
+  `test:e2e:ci` (docs), `test:e2e:recipes:ci`, `check:ssr`, `check:ssr:recipes`, `check:seo` (docs y Recipes),
+  `check:angular-compat 21` y `22`, `check:consumer` en Angular 21.2.0 y 22.3.0 (incluye composiciones y onboarding),
+  `check:published` contra npm (1.3.3 / 1.3.3 / 0.6.0): todo en verde.
+- **Fallos locales preexistentes, no regresiones:**
+  - `test:e2e:contracts`: 488 pasan; falla `polish.spec.ts` «empty state … actions in tab order» solo en WebKit local
+    (Safari en macOS no tabula a botones), ya conocido en main; en CI WebKit pasa.
+  - `check:quartz-consumer 21` y `22`: 373 pasan; falla «every backend paints and measures the same» por la rotación
+    del chevron del acordeón leída a mitad de transición (`180deg` frente a `none`, en ambos sentidos). **Reproducido
+    igual en el commit de entrada `494b0fc`**; esta rama no toca la librería; en CI pasa en 21.2.0 y 22.
+  - `format:check`: 15 ficheros ya fallaban en `494b0fc` (CI no ejecuta este comando); no se reformatean. Los ficheros
+    nuevos o modificados por esta rama que no estaban ya en esa lista están formateados.
+- **GitHub Actions, PR #262:** 37 checks en verde, 3 despliegues omitidos (PR), `Verify` en verde, incluido el job
+  nuevo `published`.
+- `ng new` no funciona en este equipo (detecta un workspace); ajeno al repositorio.
