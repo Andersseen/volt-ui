@@ -3,19 +3,44 @@ import {
   checkTrustedPublishing,
   compareSemver,
   fetchPackument,
+  fetchVersionEvidence,
   planPackage,
+  provenanceCommit,
+  resolveReleaseTarget,
   runRelease,
   RegistryError,
 } from './lib/release-core.mjs';
 import { evaluateTrigger } from './lib/release-guard.mjs';
-import { incrementVersion, planBump, releaseChangelog } from './lib/version-bump.mjs';
+import {
+  foldUnreleased,
+  incrementVersion,
+  planBump,
+  releaseChangelog,
+} from './lib/version-bump.mjs';
+import {
+  bumpLevel,
+  classifyUnreleased,
+  changelogVersions,
+  filesForPackage,
+  releaseReadiness,
+} from './lib/release-readiness.mjs';
 
 const PKG = { name: '@voltui/components', versionFile: 'v.json', tagPrefix: 'components' };
 const SHA = 'a'.repeat(40);
 
-/** Mocked npm registry: a map of package -> versions that "publish" mutates. */
-function fakeRegistry(state, { failReads = {} } = {}) {
+/**
+ * Mocked npm registry: a map of package -> versions that "publish" mutates. `evidence` maps
+ * `name@version` to what npm recorded when it was published (gitHead, provenance commit).
+ */
+function fakeRegistry(state, { failReads = {}, evidence = {} } = {}) {
   return {
+    fetchVersionEvidence: vi.fn(async (name, version) => ({
+      gitHead: null,
+      provenanceCommit: null,
+      hasProvenance: false,
+      integrity: `sha512-${name}@${version}`,
+      ...evidence[`${name}@${version}`],
+    })),
     fetchPackument: vi.fn(async name => {
       if (failReads[name]) throw failReads[name];
       const versions = state[name];
@@ -26,7 +51,14 @@ function fakeRegistry(state, { failReads = {} } = {}) {
   };
 }
 
-function fakeGithub(releases = new Set(), { failCreate = false, commit = 'b'.repeat(40) } = {}) {
+/**
+ * Mocked GitHub + git history. `tags` maps a tag to the commit it points at; `history` lists the
+ * commits reachable from the release commit.
+ */
+function fakeGithub(
+  releases = new Set(),
+  { failCreate = false, tags = {}, history = [SHA, 'b'.repeat(40), 'c'.repeat(40)] } = {}
+) {
   return {
     releases,
     releaseExists: vi.fn(async tag => releases.has(tag)),
@@ -34,7 +66,8 @@ function fakeGithub(releases = new Set(), { failCreate = false, commit = 'b'.rep
       if (failCreate) throw new Error('GitHub 500');
       releases.add(tag);
     }),
-    commitForVersion: vi.fn(async () => commit),
+    tagCommit: vi.fn(async tag => tags[tag] ?? null),
+    inHistory: vi.fn(commit => history.includes(commit)),
   };
 }
 
@@ -184,25 +217,78 @@ describe('runRelease', () => {
     expect(report.published).toHaveLength(0);
   });
 
-  it('reconciles a published version with a missing tag/release, at the commit that introduced it', async () => {
-    const oldCommit = 'c'.repeat(40);
-    const github = fakeGithub(new Set(), { commit: oldCommit });
-    const t = setup({ local: '1.3.3', github });
+  it('reconciles a published version with a missing release at the commit npm recorded (gitHead)', async () => {
+    const published = 'c'.repeat(40);
+    const github = fakeGithub();
+    const t = setup({
+      local: '1.3.3',
+      github,
+      evidence: { '@voltui/components@1.3.3': { gitHead: published } },
+    });
     const report = await t.run();
     expect(report.results[0].status).toBe('reconciled');
     expect(t.publisher.publish).not.toHaveBeenCalled();
     expect(github.createRelease).toHaveBeenCalledWith(
-      expect.objectContaining({ target: oldCommit })
+      expect.objectContaining({ target: published })
     );
+    expect(report.results[0].identity).toMatchObject({ gitHead: published });
     expect(report.published).toHaveLength(0);
   });
 
-  it('does not guess a tag target when the introducing commit cannot be found', async () => {
-    const github = fakeGithub(new Set(), { commit: null });
+  it('does not guess a tag target when npm records no source commit', async () => {
+    const github = fakeGithub();
     const report = await setup({ local: '1.3.3', github }).run();
-    expect(report.results[0].status).toBe('release-failed');
+    expect(report.results[0].status).toBe('release-unresolved');
+    expect(report.results[0].detail).toMatch(/not guessing/);
     expect(github.createRelease).not.toHaveBeenCalled();
     expect(report.ok).toBe(false);
+  });
+
+  it('uses an existing git tag when it agrees with npm, and refuses when they disagree', async () => {
+    const commit = 'b'.repeat(40);
+    const agree = fakeGithub(new Set(), { tags: { 'components-v1.3.3': commit } });
+    const ok = await setup({
+      local: '1.3.3',
+      github: agree,
+      evidence: { '@voltui/components@1.3.3': { gitHead: commit } },
+    }).run();
+    expect(ok.results[0].status).toBe('reconciled');
+    expect(agree.createRelease).toHaveBeenCalledWith(expect.objectContaining({ target: commit }));
+
+    const disagree = fakeGithub(new Set(), { tags: { 'components-v1.3.3': 'c'.repeat(40) } });
+    const bad = await setup({
+      local: '1.3.3',
+      github: disagree,
+      evidence: { '@voltui/components@1.3.3': { gitHead: commit } },
+    }).run();
+    expect(bad.results[0].status).toBe('release-unresolved');
+    expect(bad.results[0].detail).toMatch(/disagrees/);
+    expect(disagree.createRelease).not.toHaveBeenCalled();
+  });
+
+  it('refuses a recorded commit that is not in the repository history', async () => {
+    const github = fakeGithub(new Set(), { history: [SHA] });
+    const report = await setup({
+      local: '1.3.3',
+      github,
+      evidence: { '@voltui/components@1.3.3': { gitHead: 'd'.repeat(40) } },
+    }).run();
+    expect(report.results[0].status).toBe('release-unresolved');
+    expect(github.createRelease).not.toHaveBeenCalled();
+  });
+
+  it("a fresh publish is released at this run's sha, and refused if npm recorded another commit", async () => {
+    const ok = setup({ npm: {}, evidence: { '@voltui/components@1.4.0': { gitHead: SHA } } });
+    expect((await ok.run()).results[0].status).toBe('published');
+
+    const other = setup({
+      npm: {},
+      evidence: { '@voltui/components@1.4.0': { gitHead: 'e'.repeat(40) } },
+    });
+    const report = await other.run();
+    expect(report.results[0].status).toBe('published-release-failed');
+    expect(other.github.createRelease).not.toHaveBeenCalled();
+    expect(report.published).toHaveLength(1); // on npm: the site still follows
   });
 
   it('an unreachable registry is an error, never "unpublished": nothing is published', async () => {
@@ -308,25 +394,53 @@ describe('runRelease', () => {
     expect(state['@voltui/components']).toContain('1.4.0');
   });
 
-  it('GitHub release creation failure after a verified publish is reported, and the retry reconciles it', async () => {
-    const t = setup({ github: fakeGithub(new Set(), { failCreate: true }) });
+  it('published, GitHub failed, main moved on: the retry tags the publishing commit, not the new tip nor the commit that introduced the version', async () => {
+    const introduced = 'b'.repeat(40); // first commit carrying "1.4.0" in package.json
+    const publishedAt = SHA; // the commit the Release job built and published
+    const laterTip = 'f'.repeat(40); // main after more PRs merged while GitHub was failing
+    const history = [introduced, publishedAt, laterTip];
+
+    const t = setup({
+      github: fakeGithub(new Set(), { failCreate: true, history }),
+      evidence: { '@voltui/components@1.4.0': { gitHead: publishedAt } },
+    });
     const first = await t.run();
     expect(first.results[0].status).toBe('published-release-failed');
     expect(first.ok).toBe(false);
     expect(first.published).toHaveLength(1); // the site still needs a refresh: npm has it
 
+    const healed = fakeGithub(new Set(), { history });
+    const second = await runRelease({
+      packages: [PKG],
+      readManifest: () => ({ name: PKG.name, version: '1.4.0' }),
+      registry: t.registry,
+      publisher: t.publisher,
+      github: healed,
+      sha: laterTip,
+      sleep: async () => {},
+    });
+    expect(second.results[0].status).toBe('reconciled');
+    expect(healed.createRelease).toHaveBeenCalledWith(
+      expect.objectContaining({ tag: 'components-v1.4.0', target: publishedAt })
+    );
+    expect(t.publisher.publish).toHaveBeenCalledOnce();
+  });
+
+  it('the same retry without publication evidence stays unresolved instead of tagging the tip', async () => {
+    const t = setup({ github: fakeGithub(new Set(), { failCreate: true }) });
+    await t.run();
     const healed = fakeGithub();
     const second = await runRelease({
       packages: [PKG],
       readManifest: () => ({ name: PKG.name, version: '1.4.0' }),
-      registry: fakeRegistry(t.state),
+      registry: t.registry,
       publisher: t.publisher,
       github: healed,
-      sha: SHA,
+      sha: 'f'.repeat(40),
       sleep: async () => {},
     });
-    expect(second.results[0].status).toBe('reconciled');
-    expect(t.publisher.publish).toHaveBeenCalledOnce();
+    expect(second.results[0].status).toBe('release-unresolved');
+    expect(healed.createRelease).not.toHaveBeenCalled();
   });
 
   it('duplicate workflow execution: the second run publishes nothing and creates nothing', async () => {
@@ -348,10 +462,168 @@ describe('runRelease', () => {
   });
 
   it('dry run on a published version with no release only reports it', async () => {
-    const t = setup({ local: '1.3.3' });
+    const t = setup({
+      local: '1.3.3',
+      evidence: { '@voltui/components@1.3.3': { gitHead: 'c'.repeat(40) } },
+    });
     const report = await t.run({ dryRun: true });
     expect(report.results[0].status).toBe('would-reconcile');
     expect(t.github.createRelease).not.toHaveBeenCalled();
+  });
+});
+
+describe('independent packages', () => {
+  const packages = [
+    PKG,
+    { name: '@voltui/cli', versionFile: 'c.json', tagPrefix: 'cli' },
+    {
+      name: '@voltui/agent',
+      versionFile: 'a.json',
+      tagPrefix: 'agent',
+      dependsOn: ['@voltui/cli'],
+    },
+  ];
+  const versions = { 'v.json': '1.4.1', 'c.json': '1.4.0', 'a.json': '0.6.1' };
+  const run = ({ refuse = [], state, github = fakeGithub() }) => {
+    const publisher = {
+      preflight: vi.fn(async pkg => {
+        if (refuse.includes(pkg.name)) {
+          throw new Error(
+            'npm refused this job (HTTP 404: OIDC token exchange error - package not found)'
+          );
+        }
+      }),
+      publish: vi.fn(async (pkg, version) => state[pkg.name].push(version)),
+    };
+    return runRelease({
+      packages,
+      readManifest: file => ({
+        name: packages.find(p => p.versionFile === file).name,
+        version: versions[file],
+      }),
+      registry: fakeRegistry(state),
+      publisher,
+      github,
+      sha: SHA,
+      sleep: async () => {},
+    }).then(report => ({ report, publisher, github }));
+  };
+  const npm = () => ({
+    '@voltui/components': ['1.3.3'],
+    '@voltui/cli': ['1.3.3'],
+    '@voltui/agent': ['0.6.0'],
+  });
+
+  it('a Trusted Publisher rejected for one package does not hold back independent ones', async () => {
+    const state = npm();
+    const { report, publisher } = await run({ refuse: ['@voltui/components'], state });
+    expect(report.results.map(r => r.status)).toEqual(['publish-failed', 'published', 'published']);
+    expect(publisher.publish).toHaveBeenCalledTimes(2);
+    expect(state['@voltui/components']).not.toContain('1.4.1');
+    expect(report.ok).toBe(false);
+  });
+
+  it('a package whose dependency was not released waits for it', async () => {
+    const state = npm();
+    const { report } = await run({ refuse: ['@voltui/cli'], state });
+    expect(report.results.map(r => r.status)).toEqual([
+      'published',
+      'publish-failed',
+      'not-attempted',
+    ]);
+    expect(report.results[2].detail).toMatch(/depends on @voltui\/cli/);
+    expect(state['@voltui/agent']).toEqual(['0.6.0']);
+    expect(report.blocked).toEqual(['@voltui/cli', '@voltui/agent']);
+  });
+
+  it('repeated execution after the npm fix resumes exactly the missing packages', async () => {
+    const state = npm();
+    const github = fakeGithub();
+    await run({ refuse: ['@voltui/components'], state, github });
+    const { report, publisher } = await run({ state, github });
+    expect(report.results.map(r => r.status)).toEqual(['published', 'up-to-date', 'up-to-date']);
+    expect(publisher.publish).toHaveBeenCalledOnce();
+  });
+});
+
+describe('publication evidence', () => {
+  const statement = commit =>
+    Buffer.from(
+      JSON.stringify({
+        predicate: {
+          buildDefinition: {
+            resolvedDependencies: [
+              { uri: 'git+https://github.com/x/y', digest: { gitCommit: commit } },
+            ],
+          },
+        },
+      })
+    ).toString('base64');
+  const bundle = commit => ({
+    attestations: [
+      { predicateType: 'https://github.com/npm/attestation/tree/main/specs/publish/v0.1' },
+      {
+        predicateType: 'https://slsa.dev/provenance/v1',
+        bundle: { dsseEnvelope: { payload: statement(commit) } },
+      },
+    ],
+  });
+
+  it('reads the source commit from an SLSA provenance bundle', () => {
+    expect(provenanceCommit(bundle('A'.repeat(40)))).toBe('a'.repeat(40));
+    expect(provenanceCommit({ attestations: [] })).toBeNull();
+    expect(provenanceCommit(undefined)).toBeNull();
+  });
+
+  it('fetches gitHead, integrity and the provenance commit of one version', async () => {
+    const fetchImpl = vi.fn(async url => ({
+      ok: true,
+      status: 200,
+      json: async () =>
+        url.endsWith('/1.4.0')
+          ? {
+              name: '@voltui/cli',
+              version: '1.4.0',
+              gitHead: 'b'.repeat(40),
+              dist: { integrity: 'sha512-x', tarball: 't', attestations: { url: 'https://att' } },
+            }
+          : bundle('b'.repeat(40)),
+    }));
+    const evidence = await fetchVersionEvidence('@voltui/cli', '1.4.0', { fetchImpl });
+    expect(fetchImpl.mock.calls[0][0]).toBe('https://registry.npmjs.org/@voltui%2fcli/1.4.0');
+    expect(evidence).toMatchObject({
+      gitHead: 'b'.repeat(40),
+      provenanceCommit: 'b'.repeat(40),
+      hasProvenance: true,
+      integrity: 'sha512-x',
+    });
+  });
+
+  it('a registry failure is an error, not "no evidence"', async () => {
+    const fetchImpl = vi.fn(async () => ({ ok: false, status: 503 }));
+    await expect(fetchVersionEvidence('@voltui/cli', '1.4.0', { fetchImpl })).rejects.toThrow(
+      RegistryError
+    );
+  });
+
+  it('resolveReleaseTarget prefers agreement, and reports everything else as unresolved', () => {
+    const c = 'c'.repeat(40);
+    const inHistory = commit => commit === c;
+    expect(
+      resolveReleaseTarget({ publishedNow: false, sha: SHA, evidence: { gitHead: c }, inHistory })
+    ).toMatchObject({ target: c });
+    expect(
+      resolveReleaseTarget({
+        publishedNow: false,
+        sha: SHA,
+        evidence: { gitHead: c, provenanceCommit: 'd'.repeat(40) },
+        inHistory,
+      }).unresolved
+    ).toMatch(/disagrees/);
+    expect(resolveReleaseTarget({ publishedNow: false, sha: SHA, inHistory }).unresolved).toMatch(
+      /no source commit/
+    );
+    expect(resolveReleaseTarget({ publishedNow: true, sha: SHA })).toMatchObject({ target: SHA });
   });
 });
 
@@ -423,7 +695,7 @@ describe('Trusted Publishing preflight', () => {
     ).rejects.toThrow(/id-token: write/);
   });
 
-  it('a failed preflight publishes nothing and halts the run', async () => {
+  it('a failed preflight publishes nothing and creates no release', async () => {
     const { run, publisher, github } = setup();
     publisher.preflight = vi.fn(async () => {
       throw new Error('npm refused this job');
@@ -598,5 +870,159 @@ describe('release:bump', () => {
     );
     expect(() => releaseChangelog(text, '1.4.1', '2026-12-01')).toThrow(/already has 1\.4\.1/);
     expect(() => releaseChangelog('# Changelog\n', '1.4.2', 'x')).toThrow(/Unreleased/);
+  });
+});
+
+describe('release:bump keeps CHANGELOG entries with the version that ships them', () => {
+  const text = [
+    '# Changelog',
+    '',
+    '## [Unreleased]',
+    '',
+    '### CLI (`@voltui/cli`, minor)',
+    '',
+    '- volt diff',
+    '',
+    '## [1.4.1] - 2026-11-16 (not published to npm)',
+    '',
+    '- earlier fix',
+    '',
+    '## [1.3.3] - 2026-10-19',
+    '',
+    '- shipped',
+    '',
+  ].join('\n');
+
+  it('folds [Unreleased] into a pending version, dated, without the unpublished mark', () => {
+    const out = foldUnreleased(text, '1.4.1', '2026-12-01');
+    expect(out).toMatch(/## \[Unreleased\]\n\n## \[1\.4\.1\] - 2026-12-01\n\n### CLI/);
+    expect(out).toContain('- volt diff');
+    expect(out).toContain('- earlier fix');
+    expect(out).not.toContain('not published to npm');
+    expect(out.indexOf('- volt diff')).toBeLessThan(out.indexOf('- earlier fix'));
+    expect(out).toContain('## [1.3.3] - 2026-10-19');
+  });
+
+  it('releases [Unreleased] under a version that has no section yet', () => {
+    expect(foldUnreleased(text, '1.5.0', '2026-12-01')).toMatch(
+      /## \[Unreleased\]\n\n## \[1\.5\.0\] - 2026-12-01/
+    );
+  });
+});
+
+describe('release readiness report', () => {
+  const PACKAGES = [
+    { name: '@voltui/components', versionFile: 'v.json', tagPrefix: 'components' },
+    { name: '@voltui/cli', versionFile: 'c.json', tagPrefix: 'cli' },
+    {
+      name: '@voltui/agent',
+      versionFile: 'a.json',
+      tagPrefix: 'agent',
+      dependsOn: ['@voltui/cli'],
+    },
+  ];
+  const packument = (versions, latest = versions.at(-1)) => ({
+    packument: { exists: true, versions, distTags: { latest } },
+  });
+  const changelogText = [
+    '## [Unreleased]',
+    '',
+    '### Keeping copies (`@voltui/cli`, minor)',
+    '### AI context (`@voltui/agent`: patch; the site is deployed)',
+    '### Components (`@voltui/components`, minor)',
+    '### Consumer verification',
+    '',
+    '## [1.4.1] - 2026-11-16 (not published to npm)',
+    '## [1.3.3] - 2026-10-19',
+  ].join('\n');
+  const input = overrides => ({
+    packages: PACKAGES,
+    manifests: {
+      '@voltui/components': { name: '@voltui/components', version: '1.4.1' },
+      '@voltui/cli': { name: '@voltui/cli', version: '1.4.0' },
+      '@voltui/agent': { name: '@voltui/agent', version: '0.6.0' },
+    },
+    registries: {
+      '@voltui/components': packument(['1.3.3']),
+      '@voltui/cli': packument(['1.3.3']),
+      '@voltui/agent': packument(['0.5.0', '0.6.0']),
+    },
+    changes: {
+      '@voltui/components': ['packages/volt/src/lib/components/input/input.ts'],
+      '@voltui/cli': ['cli/lib/diff.js', 'cli/agent/skills/volt-ui/SKILL.md'],
+      '@voltui/agent': ['cli/agent/skills/volt-ui/SKILL.md', 'cli/agent/tests/x.spec.js'],
+    },
+    changelogText,
+    ...overrides,
+  });
+
+  it('classifies [Unreleased] per package and lists what it cannot classify', () => {
+    const c = classifyUnreleased(changelogText);
+    expect(c.packages['@voltui/cli'].level).toBe('minor');
+    expect(c.packages['@voltui/agent'].level).toBe('patch');
+    expect(c.unclassified).toEqual(['Consumer verification']);
+    expect(changelogVersions(changelogText)).toEqual(['1.3.3']);
+  });
+
+  it('counts only the files each package publishes', () => {
+    const changed = ['cli/lib/diff.js', 'cli/agent/setup-agent.js', 'cli/tests/a.spec.js'];
+    expect(filesForPackage('@voltui/cli', changed)).toEqual(['cli/lib/diff.js']);
+    expect(filesForPackage('@voltui/agent', changed)).toEqual(['cli/agent/setup-agent.js']);
+  });
+
+  it('reports pending versions, a required agent bump and its dependency on the CLI', () => {
+    const report = releaseReadiness(input());
+    const [components, cli, agent] = report.packages;
+    expect(components).toMatchObject({
+      sourceVersion: '1.4.1',
+      registryLatest: '1.3.3',
+      sourceVersionPublished: false,
+      action: 'publish',
+      changelog: 'minor',
+      blocking: [],
+    });
+    expect(cli).toMatchObject({ action: 'publish', changedFiles: 1 });
+    expect(agent).toMatchObject({ sourceVersionPublished: true, action: 'bump-required' });
+    expect(agent.blocking.join('\n')).toMatch(/release:bump patch --package=agent/);
+    expect(agent.blocking.join('\n')).toMatch(/@voltui\/cli 1\.4\.0 must reach npm first/);
+    expect(report.ready).toBe(false);
+  });
+
+  it('blocks a pending version smaller than the changelog says it must be', () => {
+    const report = releaseReadiness(
+      input({
+        manifests: {
+          ...input().manifests,
+          '@voltui/cli': { name: '@voltui/cli', version: '1.3.4' },
+        },
+      })
+    );
+    expect(report.packages[1].blocking.join()).toMatch(/minor, but 1\.3\.4 is only a patch/);
+    expect(bumpLevel('1.3.3', '1.4.1')).toBe('minor');
+  });
+
+  it('never treats an unreachable registry as "unpublished"', () => {
+    const report = releaseReadiness(
+      input({
+        registries: { ...input().registries, '@voltui/cli': { error: 'registry answered 503' } },
+      })
+    );
+    expect(report.packages[1]).toMatchObject({ action: 'unknown', sourceVersionPublished: null });
+    expect(report.packages[2].blocking.join()).toMatch(/must reach npm first/);
+  });
+
+  it('warns about a dated changelog section for a version npm does not have', () => {
+    const report = releaseReadiness(
+      input({ changelogText: changelogText.replace(' (not published to npm)', '') })
+    );
+    expect(report.packages[0].warnings).toContain(
+      'CHANGELOG has a [1.4.1] section, but npm does not have 1.4.1'
+    );
+  });
+
+  it('is deterministic: the same input gives the same report', () => {
+    expect(JSON.stringify(releaseReadiness(input()))).toBe(
+      JSON.stringify(releaseReadiness(input()))
+    );
   });
 });

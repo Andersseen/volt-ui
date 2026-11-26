@@ -23,9 +23,21 @@
 import { execFileSync, execSync } from 'node:child_process';
 import { appendFileSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { checkTrustedPublishing, fetchPackument, runRelease } from './lib/release-core.mjs';
+import {
+  checkTrustedPublishing,
+  fetchPackument,
+  fetchVersionEvidence,
+  runRelease,
+} from './lib/release-core.mjs';
 
-/** Packages published from this repo, in publish order. */
+/**
+ * Packages published from this repo, in publish order.
+ *
+ * `dependsOn`: what must reach npm first. The agent's skills and setup text describe CLI commands
+ * (`volt diff`, `--track`), so a new agent never goes out ahead of the CLI it documents. The CLI
+ * copies source and needs no published `@voltui/components`, so the two are independent: a Trusted
+ * Publisher rejected for one does not hold the other back.
+ */
 export const PACKAGES = [
   {
     name: '@voltui/components',
@@ -47,6 +59,7 @@ export const PACKAGES = [
     versionFile: 'cli/agent/package.json',
     publish: 'pnpm publish:agent',
     tagPrefix: 'agent',
+    dependsOn: ['@voltui/cli'],
   },
 ];
 
@@ -86,14 +99,25 @@ const realGithub = {
       { stdio: 'inherit' }
     );
   },
-  /** The first commit on this history whose version file carries `version`; null when unknown. */
-  async commitForVersion(pkg, version) {
-    const out = execFileSync(
-      'git',
-      ['log', '--format=%H', '--reverse', `-S"version": "${version}"`, '--', pkg.versionFile],
-      { encoding: 'utf8' }
-    ).trim();
-    return out.split('\n')[0] || null;
+  /** The commit an existing git tag points at, or null when there is no such tag. */
+  async tagCommit(tag) {
+    try {
+      return execFileSync('git', ['rev-list', '-n', '1', `refs/tags/${tag}`], {
+        encoding: 'utf8',
+        stdio: ['ignore', 'pipe', 'ignore'],
+      }).trim();
+    } catch {
+      return null;
+    }
+  },
+  /** Whether `commit` is part of the history being released (an ancestor of HEAD). */
+  inHistory(commit) {
+    try {
+      execFileSync('git', ['merge-base', '--is-ancestor', commit, 'HEAD'], { stdio: 'ignore' });
+      return true;
+    } catch {
+      return false;
+    }
   },
 };
 
@@ -104,6 +128,7 @@ const ICON = {
   'would-publish': '…',
   'would-reconcile': '…',
   'on-npm': '✓',
+  'release-unresolved': '?',
 };
 
 export async function main(argv = process.argv, env = process.env) {
@@ -115,7 +140,10 @@ export async function main(argv = process.argv, env = process.env) {
   const report = await runRelease({
     packages: PACKAGES,
     readManifest,
-    registry: { fetchPackument: name => fetchPackument(name) },
+    registry: {
+      fetchPackument: name => fetchPackument(name),
+      fetchVersionEvidence: (name, version) => fetchVersionEvidence(name, version),
+    },
     publisher: realPublisher,
     github: realGithub,
     sha,

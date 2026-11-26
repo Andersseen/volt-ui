@@ -194,7 +194,7 @@ next major) and a decorative, segmented progress indicator (a new atom, to be de
   documentation shell again: the full sidebar, outline and pager instead of a sidebar listing only the
   Markdown pages. The Agent Skills page lists the skills again (it read "0 skills").
 
-## [1.4.1] - 2026-11-16
+## [1.4.1] - 2026-11-16 (not published to npm)
 
 Patch release of `@voltui/components`. Backward compatible: no selector, input or output is removed or
 renamed. It also carries the forms contract hardening and the Doqs documentation work listed below, which
@@ -437,7 +437,7 @@ otherwise they need 1.4.1.
   programmatic-write, validation, `ngModel`, axe, focus-visibility, closed-panel layout and theme × appearance paint
   parity suites for the dual-backend consumers (`e2e/quartz-consumer/`).
 
-## [1.4.0] - 2026-11-02
+## [1.4.0] - 2026-11-02 (not published to npm)
 
 > Never published to npm: the release job was refused by npm (see 1.4.1 and "Release tooling" above). Its
 > changes ship in 1.4.1.
@@ -1120,7 +1120,7 @@ the replacements before then. Full detail in `MIGRATION.md`.
 
 - Bumped the root package, `@voltui/components`, and `@voltui/cli` to `0.9.0`.
 
-## [0.8.4] - 2026-08-05
+## [0.8.4] - 2026-08-05 (not published to npm)
 
 ### Added
 

@@ -125,6 +125,90 @@ export async function fetchPackument(
   throw lastError;
 }
 
+/** A 40-hex git commit id, or null. */
+const asCommit = value =>
+  typeof value === 'string' && /^[0-9a-f]{40}$/i.test(value) ? value.toLowerCase() : null;
+
+/**
+ * The source commit an SLSA provenance bundle (npm attestations) says it was built from, or null.
+ * Accepts the v1 predicate (`buildDefinition.resolvedDependencies[].digest.gitCommit`) and the v0.2
+ * one (`materials[].digest.sha1`).
+ */
+export function provenanceCommit(attestations) {
+  for (const entry of attestations?.attestations ?? []) {
+    if (!/slsa\.dev\/provenance/.test(entry?.predicateType ?? '')) continue;
+    try {
+      const payload = entry.bundle?.dsseEnvelope?.payload;
+      const statement = JSON.parse(Buffer.from(payload, 'base64').toString('utf8'));
+      const predicate = statement.predicate ?? {};
+      const deps = predicate.buildDefinition?.resolvedDependencies ?? predicate.materials ?? [];
+      for (const dep of deps) {
+        const commit = asCommit(dep?.digest?.gitCommit ?? dep?.digest?.sha1);
+        if (commit) return commit;
+      }
+    } catch {
+      // An unreadable bundle is no evidence; the caller decides what that means.
+    }
+  }
+  return null;
+}
+
+/**
+ * What the registry itself says about one published version: the commit npm recorded when it was
+ * published (`gitHead`), the tarball integrity, and, when the version carries provenance, the commit
+ * the signed attestation names. This is the publication evidence a missing GitHub Release is
+ * reconciled with; the commit that first *introduced* a version number in the source is not, because
+ * a version can stay pending while more work is merged on top of it.
+ *
+ * Throws RegistryError when the registry cannot answer; a version without `gitHead` or provenance
+ * returns nulls rather than a guess.
+ */
+export async function fetchVersionEvidence(
+  name,
+  version,
+  { fetchImpl = fetch, registry = 'https://registry.npmjs.org' } = {}
+) {
+  const base = registry.replace(/\/$/, '');
+  const encoded = name.replace('/', '%2f');
+  let response;
+  try {
+    response = await fetchImpl(`${base}/${encoded}/${encodeURIComponent(version)}`, {
+      headers: { accept: 'application/json' },
+      signal: AbortSignal.timeout(15_000),
+    });
+  } catch (error) {
+    throw new RegistryError(`registry unreachable for ${name}@${version}: ${error.message}`);
+  }
+  if (!response.ok) {
+    throw new RegistryError(`registry answered ${response.status} for ${name}@${version}`, {
+      status: response.status,
+    });
+  }
+  const doc = await response.json().catch(() => null);
+  if (doc?.name !== name || doc?.version !== version) {
+    throw new RegistryError(`registry document for ${name}@${version} is not the expected version`);
+  }
+  let provenance = null;
+  if (doc.dist?.attestations?.url) {
+    try {
+      const att = await fetchImpl(doc.dist.attestations.url, {
+        headers: { accept: 'application/json' },
+        signal: AbortSignal.timeout(15_000),
+      });
+      provenance = att.ok ? provenanceCommit(await att.json()) : null;
+    } catch {
+      provenance = null;
+    }
+  }
+  return {
+    gitHead: asCommit(doc.gitHead),
+    provenanceCommit: provenance,
+    hasProvenance: Boolean(doc.dist?.attestations?.url),
+    integrity: doc.dist?.integrity ?? null,
+    tarball: doc.dist?.tarball ?? null,
+  };
+}
+
 /** The claims npm matches against a Trusted Publisher, from a GitHub OIDC token (never the token). */
 export function oidcClaims(idToken) {
   try {
@@ -242,13 +326,74 @@ export function planPackage({ pkg, manifest, packument }) {
 export const tagFor = (pkg, version) => `${pkg.tagPrefix}-v${version}`;
 
 /**
+ * Which commit a GitHub tag/Release for a published version must point at, from evidence only.
+ *
+ *   publishedNow  this run published the version from `sha`: the release goes to `sha`, unless npm
+ *                 recorded a different source commit (then something else was published; refuse).
+ *   otherwise     the version was published earlier. Its tag goes where the publication evidence
+ *                 says — npm's `gitHead`, the provenance commit, an existing git tag — and only when
+ *                 every piece of evidence agrees and the commit is in this repository's history.
+ *
+ * Never the commit that first introduced the version number: a version can stay unpublished while
+ * more changes are merged, and the artifact npm holds was built from wherever it was published.
+ * Returns `{ target, evidence: [...] }` or `{ unresolved: reason }`.
+ */
+export function resolveReleaseTarget({
+  publishedNow,
+  sha,
+  evidence = {},
+  tagCommit = null,
+  inHistory,
+}) {
+  const named = [
+    ['npm gitHead', evidence.gitHead],
+    ['npm provenance', evidence.provenanceCommit],
+    ['existing git tag', tagCommit],
+  ].filter(([, commit]) => commit);
+  const commits = [...new Set(named.map(([, commit]) => commit))];
+  const describe = () =>
+    named.map(([source, commit]) => `${source} ${commit.slice(0, 8)}`).join(', ');
+
+  if (commits.length > 1) {
+    return { unresolved: `publication evidence disagrees (${describe()}); not choosing one` };
+  }
+  if (publishedNow) {
+    if (commits.length && commits[0] !== sha) {
+      return {
+        unresolved: `this run published from ${sha.slice(0, 8)} but ${describe()}; not tagging either`,
+      };
+    }
+    return { target: sha, evidence: named.map(([source]) => source).concat('this run') };
+  }
+  if (!commits.length) {
+    return {
+      unresolved:
+        'npm records no source commit for this version (no gitHead, no provenance, no tag); ' +
+        'not guessing a tag target — create the release by hand from the known publishing commit',
+    };
+  }
+  if (inHistory && !inHistory(commits[0])) {
+    return {
+      unresolved: `${describe()} is not in this repository's history; not tagging a commit that cannot be checked`,
+    };
+  }
+  return { target: commits[0], evidence: named.map(([source]) => source) };
+}
+
+/**
  * Runs the release. Never throws for expected failures: everything lands in the returned report.
  *
  * deps:
  *   packages, readManifest(file), registry.fetchPackument(name), publisher.publish(pkg),
  *   publisher.preflight?(pkg) (throws when publishing cannot succeed; nothing is published then),
- *   github.releaseExists(tag) / github.createRelease({tag,title,pkg,version}) /
- *   github.commitForVersion(pkg, version), sha, dryRun, log, sleep
+ *   registry.fetchVersionEvidence?(name, version) (npm gitHead / provenance / integrity),
+ *   github.releaseExists(tag) / github.createRelease({tag,title,pkg,version,target}) /
+ *   github.tagCommit?(tag) / github.inHistory?(commit), sha, dryRun, log, sleep
+ *
+ * Packages may declare `dependsOn: [name]`. A package refused before anything was attempted (an
+ * invalid manifest, a rejected Trusted Publisher) blocks only the packages that depend on it, so an
+ * independent package can still be released. A failure *during* a publish, or a registry error,
+ * halts everything after it: the state is not known well enough to continue.
  */
 export async function runRelease(deps) {
   const {
@@ -266,6 +411,8 @@ export async function runRelease(deps) {
 
   const results = [];
   let halted = null;
+  /** Packages that did not reach npm in this run, so nothing that depends on them may go first. */
+  const blocked = new Set();
 
   for (const pkg of packages) {
     const entry = { name: pkg.name, status: 'pending' };
@@ -273,6 +420,15 @@ export async function runRelease(deps) {
 
     if (halted) {
       Object.assign(entry, { status: 'not-attempted', detail: `halted after ${halted}` });
+      continue;
+    }
+    const waitingFor = (pkg.dependsOn ?? []).filter(dep => blocked.has(dep));
+    if (waitingFor.length) {
+      blocked.add(pkg.name);
+      Object.assign(entry, {
+        status: 'not-attempted',
+        detail: `depends on ${waitingFor.join(', ')}, which was not released in this run`,
+      });
       continue;
     }
 
@@ -292,7 +448,7 @@ export async function runRelease(deps) {
 
     if (plan.action === 'refuse') {
       Object.assign(entry, { status: 'refused', detail: plan.reason });
-      halted = pkg.name;
+      blocked.add(pkg.name);
       continue;
     }
 
@@ -309,7 +465,8 @@ export async function runRelease(deps) {
         });
         continue;
       }
-      // A rejected Trusted Publisher is reported as such, before anything is attempted.
+      // A rejected Trusted Publisher is reported as such, before anything is attempted. Nothing
+      // reached npm, so only the packages that depend on this one have to wait.
       if (publisher.preflight) {
         try {
           await publisher.preflight(pkg);
@@ -318,7 +475,7 @@ export async function runRelease(deps) {
             status: 'publish-failed',
             detail: `not published: ${error.message}`,
           });
-          halted = pkg.name;
+          blocked.add(pkg.name);
           continue;
         }
       }
@@ -383,29 +540,47 @@ export async function runRelease(deps) {
       continue;
     }
 
-    // Published version, missing release: attach it to the commit that introduced the version
-    // when it is not the one being released right now.
-    let target = sha;
-    if (!publishedNow) {
-      try {
-        target = await github.commitForVersion(pkg, version);
-      } catch (error) {
-        target = null;
-        entry.detail = error.message;
+    // Missing release. Its target comes from publication evidence (resolveReleaseTarget), never
+    // from the commit that first carried the version number.
+    let evidence = {};
+    let tagCommit = null;
+    try {
+      if (registry.fetchVersionEvidence) {
+        evidence = await registry.fetchVersionEvidence(pkg.name, version);
       }
-      if (!target) {
-        Object.assign(entry, {
-          status: 'release-failed',
-          detail: `${version} is on npm but no commit introducing it was found; not guessing a tag target`,
-        });
-        continue;
-      }
+      if (github.tagCommit) tagCommit = await github.tagCommit(tag);
+    } catch (error) {
+      Object.assign(entry, {
+        status: publishedNow ? 'published-release-failed' : 'release-unresolved',
+        detail: `could not read the publication evidence for ${version}: ${error.message}`,
+      });
+      continue;
     }
+    entry.identity = {
+      gitHead: evidence.gitHead ?? null,
+      provenance: evidence.hasProvenance ?? false,
+      integrity: evidence.integrity ?? null,
+    };
+    const resolved = resolveReleaseTarget({
+      publishedNow,
+      sha,
+      evidence,
+      tagCommit,
+      inHistory: github.inHistory,
+    });
+    if (resolved.unresolved) {
+      Object.assign(entry, {
+        status: publishedNow ? 'published-release-failed' : 'release-unresolved',
+        detail: resolved.unresolved,
+      });
+      continue;
+    }
+    const target = resolved.target;
 
     if (dryRun) {
       Object.assign(entry, {
         status: 'would-reconcile',
-        detail: `on npm without GitHub release ${tag}; would create it at ${target.slice(0, 8)}`,
+        detail: `on npm without GitHub release ${tag}; would create it at ${target.slice(0, 8)} (${resolved.evidence.join(' + ')})`,
       });
       continue;
     }
@@ -426,6 +601,7 @@ export async function runRelease(deps) {
     'refused',
     'publish-failed',
     'release-failed',
+    'release-unresolved',
     'published-release-failed',
     'not-attempted',
   ]);
@@ -437,5 +613,6 @@ export async function runRelease(deps) {
       r => r.status === 'published' || r.status === 'published-release-failed'
     ),
     halted,
+    blocked: [...blocked],
   };
 }
