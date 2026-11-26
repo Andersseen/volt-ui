@@ -11,6 +11,7 @@ import {
   VoltDrawerContent,
   VoltDrawerOverlay,
   VoltDrawerTitle,
+  VoltInput,
   VoltPopoverContent,
   VoltPopoverTrigger,
   VoltSelect,
@@ -143,5 +144,74 @@ export class OverlayFormsFixture {
     // `events` reports a value change before `valueChanges` fires: count, then repaint.
     this.fruit.valueChanges.subscribe(() => (this.fruitChanges++, render()));
     this.framework.valueChanges.subscribe(() => (this.frameworkChanges++, render()));
+  }
+}
+
+/**
+ * A form inside a dialog, a dialog opened from that dialog, and a dialog opened from a drawer.
+ * Escape closes only the topmost layer and focus goes back to the control that opened that layer;
+ * a form in a dialog submits once per Enter or click.
+ */
+@Component({
+  selector: 'app-nested-overlays',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    ReactiveFormsModule,
+    VoltButton,
+    VoltDialog,
+    VoltDialogContent,
+    VoltDialogOverlay,
+    VoltDialogTitle,
+    VoltDrawer,
+    VoltDrawerContent,
+    VoltDrawerOverlay,
+    VoltDrawerTitle,
+    VoltInput,
+  ],
+  template: `
+    <div class="flex flex-wrap gap-3">
+      <button voltButton [voltDialog]="formTpl">Open profile</button>
+      <button voltButton variant="outline" [voltDrawer]="drawerTpl">Open settings drawer</button>
+    </div>
+    <output id="submits">{{ submits() }}</output>
+
+    <ng-template #formTpl let-close="close">
+      <div voltDialogOverlay></div>
+      <div voltDialogContent>
+        <h2 voltDialogTitle>Profile</h2>
+        <form (submit)="submit($event)">
+          <volt-input aria-label="Display name" [formControl]="name" />
+          <button voltButton type="submit">Save profile</button>
+          <button voltButton variant="outline" type="button" [voltDialog]="confirmTpl">
+            Delete account
+          </button>
+        </form>
+      </div>
+    </ng-template>
+
+    <ng-template #confirmTpl let-close="close">
+      <div voltDialogOverlay></div>
+      <div voltDialogContent>
+        <h2 voltDialogTitle>Delete account?</h2>
+        <button voltButton variant="outline" (click)="close()">Keep account</button>
+      </div>
+    </ng-template>
+
+    <ng-template #drawerTpl>
+      <div voltDrawerOverlay></div>
+      <div voltDrawerContent side="right">
+        <h2 voltDrawerTitle>Settings drawer</h2>
+        <button voltButton variant="outline" [voltDialog]="confirmTpl">Reset settings</button>
+      </div>
+    </ng-template>
+  `,
+})
+export class NestedOverlaysFixture {
+  protected readonly name = new FormControl('Ada', { nonNullable: true });
+  protected readonly submits = signal(0);
+
+  protected submit(event: Event): void {
+    event.preventDefault();
+    this.submits.update(n => n + 1);
   }
 }
