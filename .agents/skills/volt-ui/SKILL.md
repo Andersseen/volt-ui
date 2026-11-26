@@ -19,8 +19,9 @@ app keeps its own layout, icons, state and domain components.
    raw Tailwind, and do not import `ng-primitives` to get around Volt.
 2. **The MCP server is the source of exact facts.** Selectors, inputs, outputs, variants, status and
    examples change between releases. Ask the `volt-ui` MCP server (`list_components`,
-   `find_components`, `get_component`, `get_usage_example`) instead of recalling them. Never invent an
-   input. If the server is not connected, read the component's source or run `npx @voltui/cli list`.
+   `find_components`, `get_component`, `get_usage_example`, `find_compositions`) instead of recalling
+   them. Never invent an input. It describes the source: `get_project_info` says what npm serves. If
+   the server is not connected, read the component's source or run `npx @voltui/cli list`.
 3. **Match the project's mode.** Package mode imports `Volt*` from `'@voltui/components'` and uses
    `volt-*` selectors. Copy mode has `Ui*` classes and `ui-*` selectors under `./ui`. Check which
    (`volt-ui-distribution`) before writing a single import.

@@ -67,11 +67,21 @@ show failure in an `Alert`, success in a `Toast`. Do not unmount the form on fai
 - Use `[value]` and a `[formControl]` on the same control.
 - Disable the submit button forever on an invalid form with no message saying why.
 
+## Start from the patterns
+
+Two Recipes patterns are complete, tested forms workflows (`find_compositions`, kind `patterns`):
+`settings-form` (validation, one in-flight save, recovery, unsaved-changes baseline) and
+`async-search` (server search in a combobox, latest response wins, selection by id). Copy one and
+replace its `fake*` function with your service; the form state, request policy and errors stay in
+your component — Volt components hold none of it.
+
 <!-- volt:digest:start -->
 
 - Wrap controls in FormField (label, hint, error); show errors after `touched && invalid`, as visible text.
 - Volt controls are ControlValueAccessors: use `[formControl]`/`ngModel` directly; a literal `value="a"` is an initial value, not a lock.
 - `disabled` leaves the tab order; `aria-disabled` on a `voltButton` keeps focus but you must guard the handler.
 - Server search: Combobox `filterMode="manual"`, `(queryChange)` is what was typed, debounce and let the latest response win, pass results as returned, set `[loading]`.
+
+- Server search or a settings form: copy the `async-search` / `settings-form` pattern (`find_compositions`); request policy and form state stay in your component.
 
 <!-- volt:digest:end -->
