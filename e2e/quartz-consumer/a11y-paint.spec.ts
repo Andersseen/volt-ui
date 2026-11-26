@@ -243,8 +243,11 @@ async function sample(browser: Browser, url: string, theme: (typeof THEMES)[numb
     .locator('body')
     .evaluate(el => `${getComputedStyle(el).backgroundColor}|${getComputedStyle(el).color}`);
   // After interaction: an open accordion panel and an open select popup.
-  await page.getByRole('button', { name: 'Faq one', exact: true }).click();
-  await page.getByRole('button', { name: 'Faq one', exact: true }).evaluate(el => el.blur());
+  const faqOne = page.getByRole('button', { name: 'Faq one', exact: true });
+  await faqOne.click();
+  // Sample the open state, not the frame before Angular writes `data-open` (the chevron's hook).
+  await expect(faqOne).toHaveAttribute('data-open', '');
+  await faqOne.evaluate(el => el.blur());
   out['Faq panel'] = await paint(page.getByText('Faq answer one'));
   await page.getByRole('combobox', { name: 'Meta framework' }).click();
   await expect

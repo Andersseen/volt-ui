@@ -678,8 +678,13 @@ test('every backend paints and measures the same', async ({ browser }) => {
         });
     }
     // Tab panel, accordion panel and chevron: shown and hidden states paint alike.
-    await page.getByRole('button', { name: 'Faq one', exact: true }).click();
-    await page.getByRole('button', { name: 'Faq one', exact: true }).evaluate(el => el.blur());
+    const faqOne = page.getByRole('button', { name: 'Faq one', exact: true });
+    await faqOne.click();
+    // The chevron paints from `data-open`, which Angular writes on the next change detection
+    // after the click: sample once the state is there, not in the frame before it.
+    await expect(faqOne).toHaveAttribute('data-open', '');
+    await expect(faqOne).toHaveAttribute('aria-expanded', 'true');
+    await faqOne.evaluate(el => el.blur());
     out['Tab panel'] = await paint(page.getByRole('tabpanel'));
     out['Faq panel'] = await paint(page.getByText('Faq answer one'));
     for (const name of ['Faq one', 'Faq two']) {
