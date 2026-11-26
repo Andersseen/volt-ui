@@ -618,6 +618,7 @@
       "setupConfigsBody": "`GET {$url}?agent=claude` — exact files to write per agent",
       "tools": {
         "listComponents": "List all available Volt UI components.",
+        "findComponents": "Find the components that fit a need, with when to use them and what they are not for.",
         "getComponent": "Get detailed info about a specific component.",
         "getUsageExample": "Get import paths and usage snippets.",
         "getThemeInfo": "Get colors, styles, and theme provider API.",

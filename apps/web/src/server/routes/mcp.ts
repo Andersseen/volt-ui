@@ -424,6 +424,39 @@ export function findComponents(intent: string, opts: { category?: string; limit?
 }
 
 // ---------------------------------------------------------------------------
+// Public inventory — what the GET discovery response advertises. mcp.spec.ts checks it against
+// what createMcpServer() really registers, so the two cannot drift apart again.
+// ---------------------------------------------------------------------------
+
+export const SERVER_INVENTORY = {
+  tools: [
+    { name: 'list_components', description: 'List all Volt UI components' },
+    {
+      name: 'find_components',
+      description:
+        'Find the components that fit a need, with when to use them and what they are not for',
+    },
+    { name: 'get_component', description: 'Get detailed component metadata' },
+    { name: 'get_usage_example', description: 'Get Angular usage examples' },
+    { name: 'get_theme_info', description: 'Get theme configuration info' },
+    { name: 'get_project_info', description: 'Get project overview' },
+    {
+      name: 'generate_cli_command',
+      description: 'Generate Volt UI CLI commands (init, add, diff, list)',
+    },
+  ],
+  resources: [
+    { uri: 'component://{name}', description: 'Component metadata' },
+    { uri: 'theme://info', description: 'Theme info' },
+    { uri: 'project://info', description: 'Project info' },
+  ],
+  prompts: [
+    { name: 'generate-volt-ui-component', description: 'Generate component usage' },
+    { name: 'volt-ui-troubleshooting', description: 'Troubleshoot Volt UI issues' },
+  ],
+} as const;
+
+// ---------------------------------------------------------------------------
 // MCP server factory
 // ---------------------------------------------------------------------------
 
@@ -638,36 +671,38 @@ export function createMcpServer(): McpServer {
   server.registerTool(
     'generate_cli_command',
     {
-      description: 'Generate the npx command to scaffold or add a Volt UI component to a project.',
+      description:
+        'Generate the npx command to set up Volt UI, copy components, compare a customised copy with the CLI reference (read-only diff) or list components.',
       inputSchema: {
         action: z
-          .enum(['init', 'add', 'list'])
+          .enum(['init', 'add', 'diff', 'list'])
           .describe(
-            '"init" to set up Volt UI, "add" to add a component, "list" to list components.'
+            '"init" to set up Volt UI, "add" to copy a component, "diff" to compare a copied (possibly customised) component with the source shipped in the CLI version that runs — read-only, never changes files — and "list" to list components.'
           ),
         component: z
           .string()
           .optional()
-          .describe('Component name — required when action is "add".'),
+          .describe('Component name — required when action is "add" or "diff".'),
         targetDir: z.string().optional().describe('Target directory (optional).'),
+        track: z
+          .boolean()
+          .optional()
+          .describe(
+            '"add" only: also record what was copied in <targetDir>/.volt-ui.json, so a later "diff" can tell local edits from reference changes.'
+          ),
+        json: z.boolean().optional().describe('"diff" only: machine-readable JSON output.'),
       },
     },
-    async ({ action, component, targetDir }) => {
-      if (action === 'add' && !component) {
-        return {
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify(
-                { error: 'component is required for the "add" action' },
-                null,
-                2
-              ),
-            },
-          ],
-          isError: true,
-        };
+    async ({ action, component, targetDir, track, json }) => {
+      const error = (message: string) => ({
+        content: [{ type: 'text' as const, text: JSON.stringify({ error: message }, null, 2) }],
+        isError: true,
+      });
+      if ((action === 'add' || action === 'diff') && !component) {
+        return error(`component is required for the "${action}" action`);
       }
+      if (track && action !== 'add') return error('track applies only to the "add" action');
+      if (json && action !== 'diff') return error('json applies only to the "diff" action');
 
       // --path names the destination explicitly: never mistaken for a component name.
       const suffix = targetDir ? ` --path=${targetDir}` : '';
@@ -675,11 +710,18 @@ export function createMcpServer(): McpServer {
         action === 'init'
           ? `npx @voltui/cli init${suffix}`
           : action === 'add'
-            ? `npx @voltui/cli add ${component}${suffix}`
-            : 'npx @voltui/cli list';
+            ? `npx @voltui/cli add ${component}${suffix}${track ? ' --track' : ''}`
+            : action === 'diff'
+              ? `npx @voltui/cli diff ${component}${suffix}${json ? ' --json' : ''}`
+              : 'npx @voltui/cli list';
 
+      const result: Record<string, string> = { command };
+      if (action === 'diff') {
+        result['note'] =
+          'Compares with the source inside the @voltui/cli version that runs (pin one with npx @voltui/cli@<version>), not the latest on npm. Read-only: exit 0 no differences, 1 differences, 2 error. Copies added with --track report who changed each file; others report unknown origin.';
+      }
       return {
-        content: [{ type: 'text', text: JSON.stringify({ command }, null, 2) }],
+        content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
       };
     }
   );
@@ -936,7 +978,7 @@ export async function withStreamableAccept(request: Request): Promise<Request> {
 // Human-readable discovery response
 // ---------------------------------------------------------------------------
 
-function discoveryResponse(): Response {
+export function discoveryResponse(): Response {
   const base = 'https://voltui.dev/api/mcp';
   return new Response(
     JSON.stringify(
@@ -961,23 +1003,7 @@ function discoveryResponse(): Response {
             configUrl: `${base}/setup?agent=${agent}`,
           })),
         },
-        tools: [
-          { name: 'list_components', description: 'List all Volt UI components' },
-          { name: 'get_component', description: 'Get detailed component metadata' },
-          { name: 'get_usage_example', description: 'Get Angular usage examples' },
-          { name: 'get_theme_info', description: 'Get theme configuration info' },
-          { name: 'get_project_info', description: 'Get project overview' },
-          { name: 'generate_cli_command', description: 'Generate Volt UI CLI commands' },
-        ],
-        resources: [
-          { uri: 'component://{name}', description: 'Component metadata' },
-          { uri: 'theme://info', description: 'Theme info' },
-          { uri: 'project://info', description: 'Project info' },
-        ],
-        prompts: [
-          { name: 'generate-volt-ui-component', description: 'Generate component usage' },
-          { name: 'volt-ui-troubleshooting', description: 'Troubleshoot Volt UI issues' },
-        ],
+        ...SERVER_INVENTORY,
       },
       null,
       2

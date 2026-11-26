@@ -153,6 +153,9 @@ export class ExampleComponent {}
 - Detects and copies local component dependencies automatically.
 - Reuses files identical to the Volt UI source and refuses to overwrite edited ones unless `--force` is passed; the whole request is validated before the first write.
 - `--dry-run` previews files and the dependency check before writing.
+- `--track` records hashes of what was copied in `<dir>/.volt-ui.json` (optional); `volt diff <component>`
+  then compares your customised copy with the source in the CLI version you run — read-only, offline —
+  and says whether you or the reference changed each file.
 - `--path=<dir>` sets the destination (the v1 positional `[target-dir]` still works). Without it,
   components go to `src/app/ui` of the nearest `package.json`, even when run from a subfolder.
 - `--install` installs only the packages the copied files import, with the ranges Volt UI was tested
@@ -162,6 +165,7 @@ export class ExampleComponent {}
 ```bash
 npx @voltui/cli add button card --path=./src/app/shared/ui --dry-run
 npx @voltui/cli add button card --path=./src/app/shared/ui --install
+npx @voltui/cli@<version> diff button --path=./src/app/shared/ui
 ```
 
 Without `--install`, `volt add` prints the exact command for what is missing, e.g. for Card alone:

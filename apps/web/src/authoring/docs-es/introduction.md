@@ -43,6 +43,9 @@ npx @voltui/cli add button card input
 ```
 
 Usa `--dry-run` para previsualizar los archivos y `--force` para sobrescribir componentes ya editados.
+Para ver qué cambia una versión nueva en un componente que personalizaste, ejecuta `volt diff <componente>`
+con esa versión: solo lee, y las copias añadidas con `--track` indican además si cada archivo lo
+cambiaste tú o Volt.
 
 ### Opción 3: copiar y pegar
 
