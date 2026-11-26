@@ -1,6 +1,6 @@
 # SDD — Volt UI: integración y mantenimiento de código propio
 
-**Estado:** adoptado; planes 01–03 implementados (ver sus registros). **Base:** `1.0.1` / `35e6816`.
+**Estado:** adoptado; planes 01–06 implementados (ver sus registros; 04–06 en `feat/consumer-lifecycle-reliability`). **Base:** `1.0.1` / `35e6816`; vigente en `4526886`.
 **Motivación:** [auditoría](AUDIT.md). **Ejecución:** [seis planes](README.md).
 
 ## 1. Objetivo y usuarios
@@ -57,8 +57,9 @@ Tarballs reales → consumidor temporal aislado → build Angular + pruebas de i
 - **Código:** selectors, exports, inputs, outputs y variantes se extraen de fuente Angular.
   La metadata no redefine esos contratos. Reutilizar el generador de API y endurecerlo
   donde haga falta; no parsear TypeScript con nuevas expresiones regulares ad hoc.
-- **Datos editoriales:** un archivo bajo `cli/registry-metadata.json` (ruta propuesta)
-  con id, categoría, estado, claves de traducción y limitaciones verificadas. No importar
+- **Datos editoriales:** propuesto en origen como `cli/registry-metadata.json`; implementado en el
+  plan 02 como `stories/_docs/component-guides.mjs` + `COMPONENT_STATUS.md`, de los que se generan
+  manifiesto, MCP y skills (ver `AGENTS.md`, «AI tools for consumers»). No importar
   módulos de `src/app` desde la librería. El CLI puede resolver textos ingleses durante
   el empaquetado sin depender del sitio en ejecución.
 - **Ejemplos:** fuente Angular compilada con todos sus imports. La web, los snippets y
@@ -127,7 +128,8 @@ No mezclar un cambio de API mayor con un arreglo visual pequeño.
 
 ### 3.5 Mantenimiento de copias
 
-El plan 05 propone `volt diff` y un registro local de procedencia. La operación compara
+El plan 05 implementa `volt diff` y un registro local de procedencia (`.volt-ui.json`, schema 1,
+documentado en `CLI.md`). La operación compara
 archivos contra la versión del registro incluida en la CLI ejecutada: no significa
 «última versión de npm». No necesita servidor, login ni conexión en el propio diff.
 
@@ -209,6 +211,7 @@ alterar versiones o publicar automáticamente al terminar una fase.
 | Recetas se convierten en producto         | Tres casos, datos locales, sin servicios compartidos de negocio          |
 | Confundir aspiración y bug                | Usar IDs de AUDIT; reproducir H antes de atribuir un fallo               |
 
-Pendiente al ejecutar: forma mínima de exponer personalización/nombre accesible en cada
-wrapper, baseline de bundles medido en consumidor y demanda de Angular posterior a 21.
-Esas preguntas no bloquean los planes 01–03 ni autorizan ampliar el alcance.
+Resuelto al ejecutar: nombre accesible y ARIA de Button (entrada de 1.x, ya presente) y
+`aria-describedby` de Input/Textarea (plan 04); baseline de bundles (`specs/v2/bundle-baseline.json`,
+plan 03); Angular 22 soportado y probado (`^21.2.0 || ^22.0.0`, `pnpm check:angular-compat`).
+Sigue abierto: feedback de consumidores reales y una revisión con lector de pantalla.

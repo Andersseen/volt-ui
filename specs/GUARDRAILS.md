@@ -12,26 +12,26 @@ If a rule seems to conflict with your task, STOP and record it in the plan's
 | 2   | **No `tailwind.config.js`.** Tailwind v4 is CSS-configured (`@theme inline`). Its absence is intentional.                                                                 |
 | 3   | **No NgModules.** Standalone components, `ChangeDetectionStrategy.OnPush`, signals API (`input()`, `output()`, `model()`, `computed()`).                                  |
 | 4   | Boolean inputs always: `input<boolean, unknown>(false, { transform: booleanAttribute })`. Numeric inputs use `numberAttribute`.                                           |
-| 5   | Never edit generated/output dirs: `dist/`, `coverage/`, `playwright-report/`, `test-results/`, `public/manifest.json` (regenerate with `pnpm manifest`).                  |
+| 5   | Never edit generated/output dirs: `dist/`, `coverage/`, `playwright-report/`, `test-results/`, `apps/web/public/manifest.json` (regenerate with `pnpm manifest`).         |
 | 6   | Library selectors are `volt-*`, classes `Volt*`. Never hand-write `ui-*` in the library — the CLI does that transform for consumers.                                      |
-| 7   | Library code (`projects/volt/`) must never import from the docs app (`src/`). Components must stay copyable standalone.                                                   |
+| 7   | Library code (`packages/volt/`) must never import from the apps (`apps/web/`, `apps/recipes/`). Components must stay copyable standalone.                                 |
 | 8   | No zone.js reliance in tests: the repo is zoneless. Don't use `fakeAsync`/`tick`; use `await` + `fixture.whenStable()` / testing-library `userEvent`.                     |
 | 9   | SSR safety: no `document`/`window`/`localStorage` access at component construction or in field initializers. Guard with `afterNextRender()` or `isPlatformBrowser()`.     |
 | 10  | No new npm dependencies without writing the justification in the active plan file first.                                                                                  |
 | 11  | Never publish to npm or deploy unless the plan's release phase explicitly says so.                                                                                        |
 | 12  | Stay inside the active plan's scope. Work belonging to another minor → add a note to THAT plan file; do not do it.                                                        |
 | 13  | **Coverage is a side effect, not a goal.** Never add a test only to raise a coverage number, never assert on internals; observe the public contract (`specs/TESTING.md`). |
-| 14  | The official site uses Volt for every responsibility Volt owns (`pnpm check:dogfood`); never import `ng-primitives` under `src/app`. See AGENTS.md "Volt-first".          |
+| 14  | The official site uses Volt for every responsibility Volt owns (`pnpm check:dogfood`); never import `ng-primitives` under `apps/web/src/app`. See AGENTS.md "Volt-first". |
 
 ## Required ripple effects (when you touch component files)
 
-Adding, renaming, or deleting any file in `projects/volt/src/lib/` requires ALL of:
+Adding, renaming, or deleting any file in `packages/volt/src/lib/` requires ALL of:
 
-1. `projects/volt/src/public-api.ts` — export updated.
-2. `src/app/lib/snippets/index.ts` — `?raw` import + `*_SNIPPET` export updated.
-3. `src/app/lib/snippets/usage.ts` — usage example updated.
+1. `packages/volt/src/public-api.ts` — export updated.
+2. `apps/web/src/app/lib/snippets/index.ts` — `?raw` import + `*_SNIPPET` export updated.
+3. `apps/web/src/app/lib/snippets/usage.ts` — usage example updated.
 4. Documentation page updated: the host page in `apps/web/src/app/pages/(components-docs)/docs/components/`, or — once migrated — its Doqs Markdown in `apps/web/src/authoring/docs*/components/` (then `pnpm docs:content`). See `docs/doqs-docs.md`.
-5. `pnpm manifest` — regenerates `public/manifest.json`.
+5. `pnpm manifest` — regenerates `apps/web/public/manifest.json`.
 6. `COMPONENT_STATUS.md` — if status/coverage changed.
 7. Storybook — `stories/components/<name>.stories.ts`, a `stories/_docs/component-guides.mjs` entry, then `pnpm generate:storybook-docs` (`pnpm check:storybook` fails otherwise).
 
@@ -70,13 +70,16 @@ Skipping any of these WILL break CI or the CLI. See `specs/patterns/docs-page.md
 ## Where things are (quick map)
 
 ```text
-projects/volt/src/lib/components/<name>/   component (+ index.ts, variants.ts?, <name>.spec.ts)
-projects/volt/src/lib/layouts/<name>/      layout components (sidebar)
-projects/volt/src/lib/utils.ts             cn() = twMerge(clsx(...))
-projects/volt/src/public-api.ts            public surface (frozen at v0.9)
-projects/volt/src/themes/                  --volt-* tokens, presets
-src/app/pages/(components-docs)/docs/components/<name>.page.ts   demo pages
-src/app/lib/snippets/{index,usage}.ts      copy-code snippets
+packages/volt/src/lib/components/<name>/   component (+ index.ts, variants.ts?, <name>.spec.ts)
+packages/volt/src/lib/layouts/<name>/      layout components (sidebar)
+packages/volt/src/lib/utils.ts             cn() = twMerge(clsx(...)); other shared helpers beside it
+packages/volt/src/public-api.ts            public surface (additive changes only in 1.x)
+packages/volt/src/themes/                  --volt-* tokens, presets
+apps/web/src/app/pages/(components-docs)/docs/components/<name>.page.ts   demo pages
+apps/web/src/authoring/docs*/              Doqs Markdown pages (en/es/uk; pnpm docs:content)
+apps/web/src/app/lib/snippets/{index,usage}.ts   copy-code snippets
+apps/recipes/src/app/{blocks,layouts,patterns}/  copyable Recipes source
+packages/shared/                           i18n, theme presets, shared components (@shared/*)
 cli/                                       @voltui/cli (own package, ignored by root eslint)
 e2e/                                       Playwright tests
 specs/                                     SPEC.md + plans + patterns (you are here)
