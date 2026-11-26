@@ -30,6 +30,7 @@ npm install @voltui/components
 ```
 
 ```css
+@import 'tailwindcss';
 @import '@voltui/components/themes.css';
 ```
 
@@ -89,6 +90,17 @@ Volt components ship critical layout CSS, so npm consumers do not need an `@sour
 npm install -D tailwindcss @tailwindcss/postcss
 ```
 
+Then create `.postcssrc.json` with the PostCSS plugin, and import Tailwind **before** the theme in your global stylesheet (`src/styles.css`). Without both, Tailwind generates nothing: the components lose their spacing and layout utilities, and so does any composition you copy.
+
+```json
+{ "plugins": { "@tailwindcss/postcss": {} } }
+```
+
+```css
+@import 'tailwindcss';
+@import '@voltui/components/themes.css';
+```
+
 ## Theme System
 
 Volt UI provides semantic Tailwind tokens via CSS custom properties. Configure the theme in your app config.
@@ -101,12 +113,15 @@ bootstrapApplication(AppComponent, {
     provideVoltTheme({
       color: 'volt', // volt | ember | sage | dusk | glacier
       style: 'sharp', // sharp | soft | brutal | ghost | retro
-      density: 'comfortable', // compact | comfortable | spacious
       dark: false,
     }),
   ],
 });
 ```
+
+Add `density: 'compact' | 'comfortable' | 'spacious'` to set the spacing scale (from `@voltui/components` 1.4.1).
+
+::demo[availability-theme-density]
 
 ## Project Structure
 

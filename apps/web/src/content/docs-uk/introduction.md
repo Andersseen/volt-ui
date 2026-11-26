@@ -31,6 +31,7 @@ npm install @voltui/components
 ```
 
 ```css
+@import 'tailwindcss';
 @import '@voltui/components/themes.css';
 ```
 
@@ -91,6 +92,17 @@ npm install ng-primitives class-variance-authority clsx tailwind-merge
 npm install -D tailwindcss @tailwindcss/postcss
 ```
 
+Потім створіть `.postcssrc.json` із плагіном PostCSS та імпортуйте Tailwind **перед** темою у глобальній таблиці стилів (`src/styles.css`). Без обох кроків Tailwind нічого не генерує: компоненти втрачають утиліти відступів і розмітки, як і будь-яка скопійована композиція.
+
+```json
+{ "plugins": { "@tailwindcss/postcss": {} } }
+```
+
+```css
+@import 'tailwindcss';
+@import '@voltui/components/themes.css';
+```
+
 ## Система тем
 
 Volt UI надає семантичні токени Tailwind через CSS custom properties. Налаштуйте тему у конфігурації застосунку.
@@ -103,12 +115,15 @@ bootstrapApplication(AppComponent, {
     provideVoltTheme({
       color: 'volt', // volt | ember | sage | dusk | glacier
       style: 'sharp', // sharp | soft | brutal | ghost | retro
-      density: 'comfortable', // compact | comfortable | spacious
       dark: false,
     }),
   ],
 });
 ```
+
+Додайте `density: 'compact' | 'comfortable' | 'spacious'`, щоб задати шкалу відступів (з `@voltui/components` 1.4.1).
+
+::demo[availability-theme-density]
 
 ## Структура проєкту
 

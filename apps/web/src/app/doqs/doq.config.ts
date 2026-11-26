@@ -10,6 +10,7 @@ import {
   CliAvailability,
   InputDescribedByAvailability,
   QuartzAvailability,
+  ThemeDensityAvailability,
 } from './host/availability';
 import { ComponentCatalog } from './host/component-catalog';
 import { ThemePresets } from './host/theme-presets';
@@ -62,6 +63,7 @@ export const doqConfig = defineDoqConfig({
     'availability-cli': CliAvailability,
     'availability-quartz': QuartzAvailability,
     'availability-input-describedby': InputDescribedByAvailability,
+    'availability-theme-density': ThemeDensityAvailability,
   },
   playgrounds: {
     input: {

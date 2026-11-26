@@ -33,3 +33,12 @@ export class QuartzAvailability {}
   template: `<app-availability-note [capabilities]="['components.input-describedby']" />`,
 })
 export class InputDescribedByAvailability {}
+
+/** `provideVoltTheme({ density })` (Introduction, Theme System). */
+@Component({
+  selector: 'app-theme-density-availability',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [AvailabilityNote],
+  template: `<app-availability-note [capabilities]="['components.theme-density']" />`,
+})
+export class ThemeDensityAvailability {}

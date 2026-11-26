@@ -69,7 +69,8 @@
     "isTheOtherTab": "es la otra pestaña.",
     "patterns": {
       "title": "Patrones"
-    }
+    },
+    "copyPlacement": "Copia con el CLI: guarda los archivos en `src/app/{$folder}/`. `volt add` copia los componentes en `src/app/ui/`, que es adonde apuntan los imports."
   },
   "language": {
     "switch": "Cambiar idioma",
@@ -705,6 +706,10 @@
       "breadcrumb": "Ruta de navegación",
       "closeNav": "Cerrar navegación",
       "recipes": "Recetas que usan este componente"
+    },
+    "availability": {
+      "unreleased": "Aún no está en npm: {$features} requiere `{$package}` {$since} o posterior. La última versión en npm cuando se generó esta página era la {$published}.",
+      "unknown": "{$features} requiere `{$package}` {$since} o posterior. Esta página no pudo confirmar qué versión ofrece npm: comprueba la versión que tienes instalada."
     }
   },
   "catalog": {

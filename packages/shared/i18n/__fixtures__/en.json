@@ -69,7 +69,8 @@
     "isTheOtherTab": "is the other tab.",
     "patterns": {
       "title": "Patterns"
-    }
+    },
+    "copyPlacement": "CLI copy: save the files in `src/app/{$folder}/`. `volt add` copies the components into `src/app/ui/`, which is where the imports point."
   },
   "language": {
     "switch": "Change language",
@@ -705,6 +706,10 @@
       "breadcrumb": "Breadcrumb",
       "closeNav": "Close navigation",
       "recipes": "Recipes that use this component"
+    },
+    "availability": {
+      "unreleased": "Not on npm yet: {$features} needs `{$package}` {$since} or later. The latest version on npm when this page was built was {$published}.",
+      "unknown": "{$features} needs `{$package}` {$since} or later. This page could not confirm which version npm serves, so check the version you have installed."
     }
   },
   "components": {

@@ -1,3 +1,4 @@
+import { Component } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { render, screen } from '@testing-library/angular';
 import userEvent from '@testing-library/user-event';
@@ -127,6 +128,60 @@ describe('CodePanel', () => {
       await userEvent.click(screen.getByText('npm package'));
       fixture.detectChanges();
       expect(await copy()).toBe(BUTTON_USAGE);
+    });
+
+    it('copy mode lists volt add for the components, then the other packages', async () => {
+      const writeText = vi.fn().mockResolvedValue(undefined);
+      Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText } });
+      const { fixture } = await render(CodePanel, {
+        componentInputs: {
+          code: "import { VoltCard } from '@voltui/components';\nimport { LmnMailIcon } from 'lumen-icons';",
+          cliCommand: 'pnpm add @voltui/components lumen-icons',
+          installPackages: ['lumen-icons'],
+          uiDir: '../ui',
+          distribution: true,
+        },
+        providers: [
+          { provide: EditorLoaderService, useValue: { loadEditor: () => Promise.resolve() } },
+        ],
+      });
+      expect(screen.getByText('pnpm add @voltui/components lumen-icons')).toBeInTheDocument();
+      await userEvent.click(screen.getByText('CLI copy'));
+      fixture.detectChanges();
+      expect(screen.getByText('npx @voltui/cli add card')).toBeInTheDocument();
+      expect(screen.getByText('pnpm add lumen-icons')).toBeInTheDocument();
+      // Each command copies on its own.
+      await fixture.componentInstance.copyCliCommand(1);
+      expect(writeText).toHaveBeenLastCalledWith('pnpm add lumen-icons');
+      fixture.detectChanges();
+      // The source imports the copy folder the caller named.
+      const code = fixture.debugElement.query(By.directive(CodeEditor)).componentInstance.code();
+      expect(code).toContain("from '../ui/card'");
+    });
+
+    it('one choice drives every panel, and a supporting panel shows no second switch', async () => {
+      @Component({
+        imports: [CodePanel],
+        template: `
+          <app-code-panel title="Main" [code]="main" distribution />
+          <app-code-panel title="data.ts" [code]="main" distribution [showModeToggle]="false" />
+        `,
+      })
+      class TwoPanels {
+        readonly main = BUTTON_USAGE;
+      }
+      const { fixture } = await render(TwoPanels, {
+        providers: [
+          { provide: EditorLoaderService, useValue: { loadEditor: () => Promise.resolve() } },
+        ],
+      });
+      expect(screen.getAllByText('CLI copy')).toHaveLength(1);
+      await userEvent.click(screen.getByText('CLI copy'));
+      fixture.detectChanges();
+      const editors = fixture.debugElement.queryAll(By.directive(CodeEditor));
+      for (const editor of editors) {
+        expect(editor.componentInstance.code()).toContain("from './ui/button'");
+      }
     });
 
     it('offers no switch when the panel does not ask for one', async () => {

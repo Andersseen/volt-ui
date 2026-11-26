@@ -112,6 +112,16 @@ export const RELEASE_CAPABILITIES: readonly ReleaseCapability[] = [
     },
   },
   {
+    id: 'components.theme-density',
+    label: 'density',
+    package: '@voltui/components',
+    since: '1.4.1',
+    components: ['theme'],
+    summary:
+      "`provideVoltTheme({ density: 'compact' | 'comfortable' | 'spacious' })`: the spacing scale. Earlier versions reject the option.",
+    probe: { kind: 'package-exports', names: ['VoltThemeDensity'] },
+  },
+  {
     id: 'components.exported-types',
     label: 'import type',
     package: '@voltui/components',
