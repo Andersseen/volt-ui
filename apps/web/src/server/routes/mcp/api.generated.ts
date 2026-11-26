@@ -1962,6 +1962,11 @@ export const COMPONENT_API: Record<string, McpComponentApi> = {
             default: 'undefined',
           },
           {
+            name: 'aria-describedby',
+            type: 'string | null | undefined',
+            default: 'undefined',
+          },
+          {
             name: 'value',
             type: 'string',
             default: "''",
@@ -3991,6 +3996,11 @@ export const COMPONENT_API: Record<string, McpComponentApi> = {
           {
             name: 'aria-label',
             type: 'string | undefined',
+            default: 'undefined',
+          },
+          {
+            name: 'aria-describedby',
+            type: 'string | null | undefined',
             default: 'undefined',
           },
           {

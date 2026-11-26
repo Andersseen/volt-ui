@@ -8,20 +8,27 @@ import {
   model,
   numberAttribute,
   signal,
+  viewChild,
+  ElementRef,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NgpTextarea } from 'ng-primitives/textarea';
 import { uniqueId } from 'ng-primitives/utils';
 import { VoltAriaInvalid } from '../../aria-invalid';
 import { injectFormControlState } from '../../form-control-state';
-import { forwardAttributesFromHost, forwardClassFromHost } from '../../host-forwarding';
+import { injectFormFieldState } from 'ng-primitives/form-field';
+import {
+  forwardAttributesFromHost,
+  forwardClassFromHost,
+  forwardDescribedBy,
+} from '../../host-forwarding';
 import { textareaVariants, type TextareaVariants } from './variants';
 import { cn } from '../../utils';
 
 /**
  * Multi-line text input bound with `[(value)]`, `formControl` or `ngModel`.
  *
- * `class`, `id` and `aria-label` belong to the native `<textarea>`: they are applied there and
+ * `class`, `id`, `aria-label` and `aria-describedby` belong to the native `<textarea>`: they are applied there and
  * removed from the host.
  */
 @Component({
@@ -37,6 +44,7 @@ import { cn } from '../../utils';
   ],
   template: `
     <textarea
+      #control
       ngpTextarea
       [id]="controlId()"
       [name]="name()"
@@ -72,6 +80,15 @@ export class VoltTextarea implements ControlValueAccessor {
   readonly required = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly value = model('');
   readonly ariaLabel = input<string | undefined>(undefined, { alias: 'aria-label' });
+  /**
+   * Ids of elements that describe the control, applied to the native element. Inside a
+   * `volt-form-field` they are added to the hint and error descriptions, not replacing them.
+   */
+
+  readonly ariaDescribedby = input<string | null | undefined>(undefined, {
+    alias: 'aria-describedby',
+  });
+  private readonly control = viewChild.required<ElementRef<HTMLElement>>('control');
   /** Classes for the native `<textarea>`, merged over the variants with `cn()`. */
   readonly class = input<string>('');
 
@@ -99,6 +116,12 @@ export class VoltTextarea implements ControlValueAccessor {
   constructor() {
     forwardClassFromHost();
     forwardAttributesFromHost('id', 'aria-label');
+    const formField = injectFormFieldState({ optional: true });
+    forwardDescribedBy(
+      this.ariaDescribedby,
+      () => this.control().nativeElement,
+      () => formField()
+    );
   }
 
   /** Not a `computed`: Forms' touched/invalid flags are not signals. */

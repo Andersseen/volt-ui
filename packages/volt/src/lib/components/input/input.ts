@@ -7,12 +7,19 @@ import {
   input,
   model,
   signal,
+  viewChild,
+  ElementRef,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NgpInput } from 'ng-primitives/input';
 import { VoltAriaInvalid } from '../../aria-invalid';
 import { injectFormControlState } from '../../form-control-state';
-import { forwardAttributesFromHost, forwardClassFromHost } from '../../host-forwarding';
+import { injectFormFieldState } from 'ng-primitives/form-field';
+import {
+  forwardAttributesFromHost,
+  forwardClassFromHost,
+  forwardDescribedBy,
+} from '../../host-forwarding';
 import { injectVoltId } from '../../volt-ids';
 import { inputVariants, type InputVariants } from './variants';
 import { cn } from '../../utils';
@@ -41,6 +48,7 @@ const HOST_CLASSES = 'block w-full';
   },
   template: `
     <input
+      #control
       ngpInput
       [id]="controlId()"
       [type]="type()"
@@ -73,6 +81,15 @@ export class VoltInput implements ControlValueAccessor {
   /** Same as `ariaLabel`, for the attribute spelling consumers write naturally. */
   // eslint-disable-next-line @angular-eslint/no-input-rename -- `ariaLabel` (1.0) already owns the camelCase name
   readonly ariaLabelAttribute = input<string | undefined>(undefined, { alias: 'aria-label' });
+  /**
+   * Ids of elements that describe the control, applied to the native element. Inside a
+   * `volt-form-field` they are added to the hint and error descriptions, not replacing them.
+   */
+
+  readonly ariaDescribedby = input<string | null | undefined>(undefined, {
+    alias: 'aria-describedby',
+  });
+  private readonly control = viewChild.required<ElementRef<HTMLElement>>('control');
   readonly value = model('');
   readonly size = input<InputVariants['size']>('md');
   /** Visual state. `error` also sets `aria-invalid`; an invalid touched form control implies it. */
@@ -101,6 +118,12 @@ export class VoltInput implements ControlValueAccessor {
   constructor() {
     forwardClassFromHost(HOST_CLASSES);
     forwardAttributesFromHost('id', 'aria-label');
+    const formField = injectFormFieldState({ optional: true });
+    forwardDescribedBy(
+      this.ariaDescribedby,
+      () => this.control().nativeElement,
+      () => formField()
+    );
   }
 
   /** Not a `computed`: Forms' touched/invalid flags are not signals. */
