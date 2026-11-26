@@ -1,9 +1,11 @@
 import {
+  afterNextRender,
   ChangeDetectionStrategy,
   Component,
   computed,
   ElementRef,
   inject,
+  Injector,
   input,
   OnInit,
   signal,
@@ -31,7 +33,11 @@ import {
  * What it teaches, in the order a user meets it:
  *   1. Dirty state is "differs from the last saved values", not Angular's `dirty` flag, so
  *      typing a value back to what it was makes the form clean again.
- *   2. An invalid submit shows every error and moves focus to the first invalid control.
+ *   2. An invalid submit shows every error and moves focus to the first invalid control. Messages
+ *      appear from the first Save on and then follow typing. Not on blur: a message that appears
+ *      when the field loses focus pushes Save down between press and release, and the click lands
+ *      beside the button. (Leaving a field still marks it touched, so the control's own
+ *      `aria-invalid` and error colour work as usual.)
  *   3. A valid submit starts exactly one request. While it is pending the Save button gets
  *      `aria-disabled` rather than `disabled`: a disabled button that has focus drops it to
  *      <body>, and a keyboard user would lose their place on every save.
@@ -195,6 +201,7 @@ type Result = { kind: 'saved' } | { kind: 'failed'; message: string } | null;
 })
 export class SettingsFormRecipe implements OnInit {
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
+  private readonly injector = inject(Injector);
 
   /** The one thing you swap for a real call. */
   readonly save = input<SaveSettings>(fakeSave);
@@ -228,15 +235,18 @@ export class SettingsFormRecipe implements OnInit {
     this.form.reset(this.initial());
   }
 
+  /** Set by the first Save, cleared by a successful save or Cancel. */
+  private readonly attempted = signal(false);
+
   protected showError(name: 'name' | 'email'): boolean {
-    const control = this.form.controls[name];
-    return control.invalid && control.touched;
+    return this.attempted() && this.form.controls[name].invalid;
   }
 
   protected async submit(): Promise<void> {
     // aria-disabled does not stop the native submit: this guard is the real "disabled".
     if (this.saving() || !this.dirty()) return;
 
+    this.attempted.set(true);
     this.form.markAllAsTouched();
     if (this.form.invalid) {
       this.result.set(null);
@@ -252,6 +262,7 @@ export class SettingsFormRecipe implements OnInit {
       this.saved.set(saved);
       // Only adopt the server's values if nothing was typed while the request was in flight.
       if (sameSettings(this.form.getRawValue(), sent)) this.form.reset(saved);
+      this.attempted.set(false);
       this.result.set({ kind: 'saved' });
     } catch (error) {
       // Keep the form exactly as the user left it.
@@ -264,13 +275,20 @@ export class SettingsFormRecipe implements OnInit {
   protected cancel(): void {
     if (!this.dirty() || this.saving()) return; // aria-disabled does not stop the click
     this.form.reset(this.saved());
+    this.attempted.set(false);
     this.result.set(null);
   }
 
-  /** Runs after the error messages render, so `aria-invalid` is already on the control. */
+  /**
+   * Moves focus to the first control that shows `aria-invalid`. Now, if the errors are already
+   * rendered (the field was blurred before Save), and again after the next render, which is when a
+   * control that just became invalid shows it. Not a microtask: without zone.js change detection
+   * runs after one, so focus used to stay on Save in real browsers.
+   */
   private focusFirstInvalid(): void {
-    queueMicrotask(() =>
-      this.host.nativeElement.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus()
-    );
+    const focus = () =>
+      this.host.nativeElement.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus();
+    focus();
+    afterNextRender(focus, { injector: this.injector });
   }
 }

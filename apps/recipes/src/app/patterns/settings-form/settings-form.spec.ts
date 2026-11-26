@@ -42,6 +42,20 @@ describe('Settings form recipe', () => {
     expect(state()).toBe('clean');
   });
 
+  it('does not show a message when a field is left, so Save stays under the pointer', async () => {
+    const { user, name, saveButton } = await setup();
+
+    await user.clear(name);
+    await user.tab();
+    expect(screen.queryByText('Enter your name.')).not.toBeInTheDocument();
+    // The control still reports itself invalid once touched (Volt's own contract).
+    expect(name).toHaveAttribute('aria-invalid', 'true');
+
+    await user.click(saveButton());
+    expect(await screen.findByText('Enter your name.')).toBeInTheDocument();
+    await waitFor(() => expect(name).toHaveFocus());
+  });
+
   it('shows every error and focuses the first invalid control on an invalid submit', async () => {
     const { user, name, email, save, saveButton } = await setup();
 
