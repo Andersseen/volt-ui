@@ -215,7 +215,9 @@ export function releaseReadiness({ packages, manifests, registries, changes, cha
       if (!depRow) continue;
       if (depRow.action === 'publish') {
         // Published earlier in the same run (packages go in order); only a failure there holds it.
-        row.warnings.push(`goes out after ${dep} ${depRow.sourceVersion} (dependsOn), in the same run`);
+        row.warnings.push(
+          `goes out after ${dep} ${depRow.sourceVersion} (dependsOn), in the same run`
+        );
       } else if (['bump-required', 'unknown', 'refused'].includes(depRow.action)) {
         row.blocking.push(`${dep} ${depRow.sourceVersion} must reach npm first (dependsOn)`);
       }

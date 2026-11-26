@@ -1491,4 +1491,25 @@
     <xhtml:link rel="alternate" hreflang="uk" href="https://recipes.voltui.dev/uk/docs/introduction"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://recipes.voltui.dev/docs/introduction"/>
   </url>
+  <url>
+    <loc>https://recipes.voltui.dev/docs/workflow-patterns</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://recipes.voltui.dev/docs/workflow-patterns"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://recipes.voltui.dev/es/docs/workflow-patterns"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://recipes.voltui.dev/uk/docs/workflow-patterns"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://recipes.voltui.dev/docs/workflow-patterns"/>
+  </url>
+  <url>
+    <loc>https://recipes.voltui.dev/es/docs/workflow-patterns</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://recipes.voltui.dev/docs/workflow-patterns"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://recipes.voltui.dev/es/docs/workflow-patterns"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://recipes.voltui.dev/uk/docs/workflow-patterns"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://recipes.voltui.dev/docs/workflow-patterns"/>
+  </url>
+  <url>
+    <loc>https://recipes.voltui.dev/uk/docs/workflow-patterns</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://recipes.voltui.dev/docs/workflow-patterns"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://recipes.voltui.dev/es/docs/workflow-patterns"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://recipes.voltui.dev/uk/docs/workflow-patterns"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://recipes.voltui.dev/docs/workflow-patterns"/>
+  </url>
 </urlset>

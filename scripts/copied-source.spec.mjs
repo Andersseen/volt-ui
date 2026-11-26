@@ -18,7 +18,9 @@ const libraryNames = new Set([
   ...VOLT_NAMES.attributes,
 ]);
 const read = (c, file) =>
-  toConsumerSource(readFileSync(join(ROOT, 'apps/recipes/src/app', c.kind, c.folder, file), 'utf8'));
+  toConsumerSource(
+    readFileSync(join(ROOT, 'apps/recipes/src/app', c.kind, c.folder, file), 'utf8')
+  );
 const check = (c, file, mode, overrides = {}) =>
   sourceProblems({
     file: `${c.id} ${file}`,
@@ -34,7 +36,9 @@ const byId = id => COMPOSITIONS.find(c => c.id === id);
 
 describe('copyable compositions', () => {
   it('covers blocks, layouts and patterns, including the sidebar layout', () => {
-    expect(new Set(COMPOSITIONS.map(c => c.kind))).toEqual(new Set(['blocks', 'layouts', 'patterns']));
+    expect(new Set(COMPOSITIONS.map(c => c.kind))).toEqual(
+      new Set(['blocks', 'layouts', 'patterns'])
+    );
     expect(byId('layouts/sidebar')?.components).toContain('sidebar');
   });
 
@@ -74,7 +78,9 @@ describe('the checks catch what would break a consumer', () => {
   });
 
   it('a transformation that leaves a package name behind', () => {
-    const broken = distribution.toCopyMode(read(table, 'data-table.ts'), '../ui').replace(/UiTable\b/, 'VoltTable');
+    const broken = distribution
+      .toCopyMode(read(table, 'data-table.ts'), '../ui')
+      .replace(/UiTable\b/, 'VoltTable');
     const problems = sourceProblems({
       file: 'data-table.ts',
       source: broken,
@@ -112,7 +118,12 @@ describe('the checks catch what would break a consumer', () => {
 
   it('prose that merely mentions a Volt-like name is not a leftover', () => {
     expect(
-      sourceProblems({ file: 'x.ts', mode: 'copy', source: '// there is no VoltDataTable', libraryNames })
+      sourceProblems({
+        file: 'x.ts',
+        mode: 'copy',
+        source: '// there is no VoltDataTable',
+        libraryNames,
+      })
     ).toEqual([]);
   });
 });

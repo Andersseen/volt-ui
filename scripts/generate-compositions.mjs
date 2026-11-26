@@ -90,7 +90,9 @@ for (const entry of catalog.CATALOG) {
   }
   const pageSource = read(page);
   const rendered = [
-    ...pageSource.matchAll(new RegExp(`from '\\.\\./\\.\\./\\.\\./${entry.kind}/([\\w-]+)/([\\w.-]+)'`, 'g')),
+    ...pageSource.matchAll(
+      new RegExp(`from '\\.\\./\\.\\./\\.\\./${entry.kind}/([\\w-]+)/([\\w.-]+)'`, 'g')
+    ),
   ];
   const folders = [...new Set(rendered.map(m => m[1]))];
   if (folders.length !== 1) {
@@ -136,17 +138,23 @@ for (const entry of catalog.CATALOG) {
     for (const spec of importSpecifiers(source)) {
       if (spec.startsWith('./')) {
         const sibling = `${spec.slice(2)}.ts`;
-        if (!files.includes(sibling)) problems.push(`${where}: ${name} imports ${spec}, which is not shipped beside it`);
-      } else if (spec.startsWith('.') || spec.startsWith('@shared') || spec === 'volt' || /apps\//.test(spec)) {
+        if (!files.includes(sibling))
+          problems.push(`${where}: ${name} imports ${spec}, which is not shipped beside it`);
+      } else if (
+        spec.startsWith('.') ||
+        spec.startsWith('@shared') ||
+        spec === 'volt' ||
+        /apps\//.test(spec)
+      ) {
         problems.push(`${where}: ${name} imports "${spec}", which a consumer does not have`);
       }
     }
   }
 
   const components = [...new Set(consumer.flatMap(f => distribution.componentsUsed(f.source)))];
-  const packages = [
-    ...new Set(consumer.flatMap(f => externalPackages(f.source))),
-  ].filter(p => p !== '@voltui/components' && !p.startsWith('@angular/') && p !== 'rxjs');
+  const packages = [...new Set(consumer.flatMap(f => externalPackages(f.source)))].filter(
+    p => p !== '@voltui/components' && !p.startsWith('@angular/') && p !== 'rxjs'
+  );
   // The catalog names building blocks by class (VoltButton links to the Button page); what a consumer
   // installs is the component folder, so the two are compared at that level.
   const declared = entry.atoms.map(atom => atom.name);
@@ -175,7 +183,9 @@ for (const entry of catalog.CATALOG) {
 }
 
 if (problems.length) {
-  console.error(`Recipes compositions are not consistent with their pages:\n  - ${problems.join('\n  - ')}`);
+  console.error(
+    `Recipes compositions are not consistent with their pages:\n  - ${problems.join('\n  - ')}`
+  );
   process.exit(1);
 }
 

@@ -32,11 +32,14 @@ export function sourceProblems({
     else if (spec.startsWith('@shared') || /(^|\/)apps\//.test(spec)) {
       problems.push(`${file}: imports "${spec}", which belongs to the Volt UI websites`);
     } else if (spec.startsWith(`${uiDir}/`)) {
-      if (mode !== 'copy') problems.push(`${file}: imports the copy folder "${spec}" in package mode`);
+      if (mode !== 'copy')
+        problems.push(`${file}: imports the copy folder "${spec}" in package mode`);
       else {
         const folder = spec.slice(uiDir.length + 1).split('/')[0];
         if (!copied.includes(folder)) {
-          problems.push(`${file}: imports "${spec}", but the install command does not copy "${folder}"`);
+          problems.push(
+            `${file}: imports "${spec}", but the install command does not copy "${folder}"`
+          );
         }
       }
     } else if (spec.startsWith('./')) {
@@ -54,7 +57,8 @@ export function sourceProblems({
     const leftover = [...source.matchAll(/\b(Volt[A-Z]\w*|volt-[a-z][a-z-]*)\b/g)]
       .map(m => m[1])
       .find(name => libraryNames.has(name));
-    if (leftover) problems.push(`${file}: CLI-copy source still uses the package name "${leftover}"`);
+    if (leftover)
+      problems.push(`${file}: CLI-copy source still uses the package name "${leftover}"`);
   }
   return problems;
 }

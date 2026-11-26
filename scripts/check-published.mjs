@@ -101,7 +101,9 @@ for (const name of PACKAGES) {
 
 // ---- 2. install ---------------------------------------------------------------------------------
 const env = Object.fromEntries(
-  Object.entries(process.env).filter(([key]) => !/^(npm_|pnpm_|NODE_PATH$|INIT_CWD$|PNPM_)/i.test(key))
+  Object.entries(process.env).filter(
+    ([key]) => !/^(npm_|pnpm_|NODE_PATH$|INIT_CWD$|PNPM_)/i.test(key)
+  )
 );
 env.npm_config_cache = join(ROOT, '.npm-cache');
 env.npm_config_fund = 'false';
@@ -114,13 +116,18 @@ process.on('exit', () => {
 });
 const write = (file, content) => {
   mkdirSync(dirname(file), { recursive: true });
-  writeFileSync(file, typeof content === 'string' ? content : `${JSON.stringify(content, null, 2)}\n`);
+  writeFileSync(
+    file,
+    typeof content === 'string' ? content : `${JSON.stringify(content, null, 2)}\n`
+  );
 };
 const run = (command, cmdArgs, cwd) =>
   spawnSync(command, cmdArgs, { cwd, env, encoding: 'utf8', maxBuffer: 256 * 1024 * 1024 });
 
 const compositionPackages = [...new Set(COMPOSITIONS.flatMap(c => c.packages))];
-const lumen = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8')).dependencies?.['lumen-icons'];
+const lumen = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8')).dependencies?.[
+  'lumen-icons'
+];
 console.log(`\n▶ install the published packages into ${work} (Angular ${ngRange})`);
 const app = join(work, 'app');
 write(join(app, 'package.json'), {
@@ -159,7 +166,9 @@ for (const name of PACKAGES) {
   const installed = existsSync(file) ? JSON.parse(readFileSync(file, 'utf8')) : null;
   const where = installed ? realpathSync(dirname(file)) : null;
   if (!installed || installed.version !== latest[name] || !where.startsWith(work)) {
-    problem(`${name} did not install ${latest[name]} from npm into the project (${installed?.version} at ${where})`);
+    problem(
+      `${name} did not install ${latest[name]} from npm into the project (${installed?.version} at ${where})`
+    );
   } else ok(`${name}@${installed.version} installed from npm`);
 }
 if (report.problems.length) process.exit(1);
@@ -184,7 +193,11 @@ const publishedTypes = (() => {
 const publishedExports = new Set();
 for (const m of publishedTypes.matchAll(/export\s*\{([^}]*)\}/g)) {
   for (const part of m[1].split(',')) {
-    const name = part.trim().replace(/^type\s+/, '').split(/\s+as\s+/).pop();
+    const name = part
+      .trim()
+      .replace(/^type\s+/, '')
+      .split(/\s+as\s+/)
+      .pop();
     if (name) publishedExports.add(name);
   }
 }
@@ -227,7 +240,13 @@ for (const capability of RELEASE_CAPABILITIES) {
   const expected = compareVersions(latest[capability.package], capability.since) >= 0;
   if (!expected) unreleased.add(capability.id);
   const found = probe(capability);
-  report.claims.push({ id: capability.id, package: capability.package, since: capability.since, expected, found });
+  report.claims.push({
+    id: capability.id,
+    package: capability.package,
+    since: capability.since,
+    expected,
+    found,
+  });
   const claim = `${capability.id}: ${expected ? 'available' : 'not published'} in ${capability.package}@${latest[capability.package]}`;
   if (expected === found) ok(claim);
   else
@@ -239,9 +258,9 @@ for (const capability of RELEASE_CAPABILITIES) {
 // Every public name the docs and the MCP describe is either published or covered by a capability
 // that says it is not, so no new export is advertised as installable by omission.
 const covered = new Set(
-  RELEASE_CAPABILITIES.filter(c => unreleased.has(c.id) && c.probe.kind === 'package-exports').flatMap(
-    c => c.probe.names
-  )
+  RELEASE_CAPABILITIES.filter(
+    c => unreleased.has(c.id) && c.probe.kind === 'package-exports'
+  ).flatMap(c => c.probe.names)
 );
 const uncovered = Object.keys(VOLT_NAMES.exportOwners).filter(
   name => !publishedExports.has(name) && !covered.has(name)
@@ -279,7 +298,10 @@ for (const [command, users] of commands) {
   const works = result.status === 0;
   report.commands[command] = works ? 'pass' : 'fail';
   const exception = commandExceptions.get(command);
-  if (works && exception) problem(`"${command}" now works with the published CLI — remove its PUBLISHED_COMMAND_EXCEPTIONS entry`);
+  if (works && exception)
+    problem(
+      `"${command}" now works with the published CLI — remove its PUBLISHED_COMMAND_EXCEPTIONS entry`
+    );
   else if (!works && !exception) {
     problem(
       `"${command}" (${users.join(', ')}) fails with the published CLI:\n${(result.stdout + result.stderr).trim().slice(0, 600)}`
@@ -287,14 +309,20 @@ for (const [command, users] of commands) {
   }
 }
 for (const e of PUBLISHED_COMMAND_EXCEPTIONS) {
-  if (!commands.has(e.command)) problem(`PUBLISHED_COMMAND_EXCEPTIONS lists "${e.command}", which no page shows`);
-  if (!unreleased.has(e.capability)) problem(`"${e.command}" is excused by ${e.capability}, which npm already serves`);
+  if (!commands.has(e.command))
+    problem(`PUBLISHED_COMMAND_EXCEPTIONS lists "${e.command}", which no page shows`);
+  if (!unreleased.has(e.capability))
+    problem(`"${e.command}" is excused by ${e.capability}, which npm already serves`);
 }
 const failingCommands = Object.values(report.commands).filter(v => v === 'fail').length;
-ok(`${commands.size - failingCommands} of ${commands.size} commands work; ${failingCommands} carry a version notice`);
+ok(
+  `${commands.size - failingCommands} of ${commands.size} commands work; ${failingCommands} carry a version notice`
+);
 
 // ---- 5. compile ---------------------------------------------------------------------------------
-console.log('\n▶ compile examples and compositions against the published packages (strict templates)');
+console.log(
+  '\n▶ compile examples and compositions against the published packages (strict templates)'
+);
 for (const mode of ['package', 'copy']) {
   for (const { name, source } of completeExamples) {
     write(join(app, 'examples', mode, `${name}.ts`), distribution.sourceFor(source, mode, './ui'));
@@ -303,7 +331,10 @@ for (const mode of ['package', 'copy']) {
     const dir = join(ROOT, 'apps/recipes/src/app', c.kind, c.folder);
     for (const file of c.files) {
       const source = toConsumerSource(readFileSync(join(dir, file), 'utf8'));
-      write(join(app, 'compositions', mode, c.folder, file), distribution.sourceFor(source, mode, '../ui'));
+      write(
+        join(app, 'compositions', mode, c.folder, file),
+        distribution.sourceFor(source, mode, '../ui')
+      );
     }
   }
 }
@@ -313,7 +344,8 @@ const listed = JSON.parse(run(volt, ['list', '--json'], app).stdout || '[]').map
 for (const target of ['examples/copy/ui', 'compositions/copy/ui']) {
   for (const component of listed) {
     const add = run(volt, ['add', component, target, '--force'], app);
-    if (add.status !== 0) problem(`published volt add ${component} into ${target} failed:\n${add.stdout}${add.stderr}`);
+    if (add.status !== 0)
+      problem(`published volt add ${component} into ${target} failed:\n${add.stdout}${add.stderr}`);
   }
 }
 
@@ -348,41 +380,64 @@ function compile(name, include) {
   return { status: out.status, files, text };
 }
 
-const compositionExceptions = new Map(PUBLISHED_COMPOSITION_EXCEPTIONS.map(e => [`${e.mode}:${e.id}`, e]));
+const compositionExceptions = new Map(
+  PUBLISHED_COMPOSITION_EXCEPTIONS.map(e => [`${e.mode}:${e.id}`, e])
+);
 for (const e of PUBLISHED_COMPOSITION_EXCEPTIONS) {
-  if (!unreleased.has(e.capability)) problem(`${e.id} (${e.mode}) is excused by ${e.capability}, which npm already serves`);
+  if (!unreleased.has(e.capability))
+    problem(`${e.id} (${e.mode}) is excused by ${e.capability}, which npm already serves`);
 }
 for (const mode of ['package', 'copy']) {
   const examples = compile(`examples-${mode}`, [`examples/${mode}/*.ts`]);
-  const failingExamples = examples.files.map(f => f.match(/examples\/\w+\/([^/]+)\.ts$/)?.[1]).filter(Boolean);
+  const failingExamples = examples.files
+    .map(f => f.match(/examples\/\w+\/([^/]+)\.ts$/)?.[1])
+    .filter(Boolean);
   report.compile[`examples-${mode}`] = failingExamples;
-  if (examples.status === 0) ok(`${mode}: all ${completeExamples.length} component usage examples compile`);
-  else problem(`${mode}: component usage examples fail against the published packages: ${failingExamples.join(', ') || examples.text.slice(0, 2000)}`);
+  if (examples.status === 0)
+    ok(`${mode}: all ${completeExamples.length} component usage examples compile`);
+  else
+    problem(
+      `${mode}: component usage examples fail against the published packages: ${failingExamples.join(', ') || examples.text.slice(0, 2000)}`
+    );
 
   const compositions = compile(`compositions-${mode}`, [`compositions/${mode}/*/*.ts`]);
   const failed = new Set(
-    compositions.files.map(f => f.match(new RegExp(`compositions/${mode}/([^/]+)/`))?.[1]).filter(Boolean)
+    compositions.files
+      .map(f => f.match(new RegExp(`compositions/${mode}/([^/]+)/`))?.[1])
+      .filter(Boolean)
   );
   report.compile[`compositions-${mode}`] = [...failed].sort();
   for (const c of COMPOSITIONS) {
     const exception = compositionExceptions.get(`${mode}:${c.id}`);
     const fails = failed.has(c.folder);
-    if (exception && !fails) problem(`${mode}: ${c.id} now compiles — remove its PUBLISHED_COMPOSITION_EXCEPTIONS entry`);
+    if (exception && !fails)
+      problem(`${mode}: ${c.id} now compiles — remove its PUBLISHED_COMPOSITION_EXCEPTIONS entry`);
     else if (!exception && fails) {
-      const lines = compositions.text.split('\n').filter(l => l.includes(`/${c.folder}/`)).slice(0, 3);
-      problem(`${mode}: ${c.id} does not compile against the published packages:\n    ${lines.join('\n    ')}`);
+      const lines = compositions.text
+        .split('\n')
+        .filter(l => l.includes(`/${c.folder}/`))
+        .slice(0, 3);
+      problem(
+        `${mode}: ${c.id} does not compile against the published packages:\n    ${lines.join('\n    ')}`
+      );
     }
   }
   if (compositions.status !== 0 && failed.size === 0) {
-    problem(`${mode}: compositions failed outside any composition folder:\n${compositions.text.slice(0, 2000)}`);
+    problem(
+      `${mode}: compositions failed outside any composition folder:\n${compositions.text.slice(0, 2000)}`
+    );
   }
-  ok(`${mode}: ${COMPOSITIONS.length - failed.size} of ${COMPOSITIONS.length} compositions compile`);
+  ok(
+    `${mode}: ${COMPOSITIONS.length - failed.size} of ${COMPOSITIONS.length} compositions compile`
+  );
 }
 
 mkdirSync(join(ROOT, 'dist'), { recursive: true });
 writeFileSync(join(ROOT, 'dist/published-report.json'), `${JSON.stringify(report, null, 2)}\n`);
 if (report.problems.length) {
-  console.error(`\n✖ ${report.problems.length} claim(s) do not hold for the published packages (dist/published-report.json)`);
+  console.error(
+    `\n✖ ${report.problems.length} claim(s) do not hold for the published packages (dist/published-report.json)`
+  );
   process.exit(1);
 }
 console.log(

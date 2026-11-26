@@ -170,6 +170,7 @@ reutilizar el catálogo actual cuando corresponda.
 | Coherencia              | Un cambio de estado/selector se refleja en las salidas o falla el gate; cero discrepancias conocidas F05–F08            |
 | Instalación real        | Tarballs de esta revisión pasan build Angular y smoke fuera del monorepo; sin resolución accidental desde el workspace  |
 | Composición             | Casos prioritarios del plan 04 pasan en DOM/navegador y las limitaciones restantes están enumeradas                     |
+| Fidelidad publicada     | Lo que la web y el MCP anuncian como disponible funciona con npm `latest`; lo no publicado se avisa (`check:published`) |
 | Actualización revisable | `diff` no cambia ningún archivo y distingue procedencia conocida/desconocida; cambios locales permanecen intactos       |
 | Utilidad                | Tres recetas compilables con éxito, carga, vacío/error y recuperación, según la tarea                                   |
 | Coste                   | Sin paquetes publicados nuevos, sin ampliación del catálogo primitivo y sin segundo runtime de estilos                  |
@@ -179,6 +180,12 @@ formulario desde cero y trasladar una corrección a una copia personalizada. Reg
 pasos, errores y minutos como baseline. Objetivo orientativo: primer ejemplo en menos
 de diez minutos excluyendo descargas. No presentar ese tiempo como conseguido ni añadir
 analítica para medirlo. Pedir feedback de consumidores reales cuando exista acceso a ellos.
+
+**Baseline registrado (plan 07, 2026-11-26, ejercicio interno, no con usuarios):** formulario con las instrucciones
+publicadas y npm 1.3.3 en ~15 min, con dos correcciones manuales (el ejemplo de tema usaba `density`, que 1.3.3 no
+acepta; la guía no registraba PostCSS ni importaba Tailwind); ambas corregidas en la guía. Traslado de una corrección
+(`rows="4"` de Textarea) a una copia personalizada hecha con el CLI 1.3.3, con `volt diff` del CLI 1.4.0: ~5 min, una
+línea trasladada a mano, personalización conservada. El objetivo de diez minutos no se alcanzó en el primer caso.
 
 ## 6. Entregas y semver
 
@@ -214,4 +221,5 @@ alterar versiones o publicar automáticamente al terminar una fase.
 Resuelto al ejecutar: nombre accesible y ARIA de Button (entrada de 1.x, ya presente) y
 `aria-describedby` de Input/Textarea (plan 04); baseline de bundles (`specs/v2/bundle-baseline.json`,
 plan 03); Angular 22 soportado y probado (`^21.2.0 || ^22.0.0`, `pnpm check:angular-compat`).
-Sigue abierto: feedback de consumidores reales y una revisión con lector de pantalla.
+Sigue abierto: feedback de consumidores reales y una revisión con lector de pantalla. Cerrado en el plan 07: el
+ejercicio manual (baseline arriba) y la comprobación de lo anunciado frente a lo publicado (`pnpm check:published`).

@@ -21,7 +21,15 @@
  * Usage: node scripts/check-copied-source.mjs [--mode=package|copy]
  */
 import { execFileSync, spawnSync } from 'node:child_process';
-import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import {
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readdirSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -91,7 +99,8 @@ function cliFromTarball() {
 let cli = null;
 for (const mode of MODES) {
   const base = join(OUT, mode);
-  const copiedFolders = mode === 'copy' ? [...new Set(COMPOSITIONS.flatMap(c => c.components))] : [];
+  const copiedFolders =
+    mode === 'copy' ? [...new Set(COMPOSITIONS.flatMap(c => c.components))] : [];
   for (const c of COMPOSITIONS) {
     const dir = join(APP, c.kind, c.folder);
     for (const file of c.files) {
@@ -117,7 +126,9 @@ for (const mode of MODES) {
   }
   if (mode === 'copy') {
     cli ??= cliFromTarball();
-    console.log(`Copying ${copiedFolders.length} components with the @voltui/cli ${cli.version} tarball…`);
+    console.log(
+      `Copying ${copiedFolders.length} components with the @voltui/cli ${cli.version} tarball…`
+    );
     execFileSync('node', [cli.bin, 'add', ...copiedFolders, `--path=${join(base, 'ui')}`], {
       cwd: ROOT,
       stdio: ['ignore', 'ignore', 'inherit'],
@@ -168,10 +179,15 @@ for (const mode of MODES) {
   );
   console.log(`▶ ${mode} mode: compiling ${COMPOSITIONS.length} blocks, layouts and patterns…`);
   try {
-    execFileSync(join(ROOT, 'node_modules/.bin/ngc'), ['-p', tsconfig], { cwd: ROOT, stdio: 'inherit' });
+    execFileSync(join(ROOT, 'node_modules/.bin/ngc'), ['-p', tsconfig], {
+      cwd: ROOT,
+      stdio: 'inherit',
+    });
     console.log(`✔ every ${mode}-mode composition compiles`);
   } catch {
-    console.error(`✖ ${mode}-mode copied source does not compile in a consumer workspace (${join(OUT, mode)})`);
+    console.error(
+      `✖ ${mode}-mode copied source does not compile in a consumer workspace (${join(OUT, mode)})`
+    );
     failed = true;
   }
 }

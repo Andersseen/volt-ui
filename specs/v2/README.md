@@ -3,8 +3,9 @@
 **Fecha:** 2026-09-07 · **Base revisada:** `35e6816`, paquetes `1.0.1`.
 **Estado (2026-11-26):** los seis planes están ejecutados. 01 A/B en #249; 01 C, 02 y 03 en #260
 (`feat/consumer-distribution-dx`, merge `4526886`); 04, 05 y 06 en `feat/consumer-lifecycle-reliability`
-(una sola iniciativa minor, PR «Consumer lifecycle reliability»). Pendiente de publicar: los paquetes
-no se versionan ni publican en estos PR (ver «Publicación»).
+(una sola iniciativa minor, PR #261, merge `494b0fc`). El plan 07 (adopción y fidelidad de releases) se ejecutó en
+`feat/consumer-adoption-release-fidelity` y reconcilió el estado del plan 04. Pendiente de publicar: ver
+«Publicación».
 
 La siguiente etapa debería hacer que Volt sea fácil de instalar, componer, adaptar y
 mantener en una aplicación real. El catálogo ya es suficientemente amplio para demostrar
@@ -27,6 +28,7 @@ arreglos compatibles deben llegar en patches de v1; las capacidades aditivas, en
 | [04-component-contracts.md](plans/04-component-contracts.md) | Mejorar composición, HTML nativo, accesibilidad y personalización   |
 | [05-safe-diff.md](plans/05-safe-diff.md)                     | Comparar versiones sin sobrescribir las modificaciones locales      |
 | [06-recipes.md](plans/06-recipes.md)                         | Resolver tres tareas reales con componentes existentes              |
+| [07-consumer-adoption.md](plans/07-consumer-adoption.md)     | Releases trazables, Recipes en ambos modos, docs y MCP por versión  |
 
 ## Hoja de ruta
 
@@ -38,6 +40,7 @@ arreglos compatibles deben llegar en patches de v1; las capacidades aditivas, en
 | 4     | Controles que se integran bien en formularios, enlaces y overlays | P1        | M, por familia  | 3                    | Hecho: `feat/consumer-lifecycle-reliability`   |
 | 5     | El consumidor puede revisar qué cambió sin perder su código       | P2        | M               | 1–3                  | Hecho: `volt add --track`, `volt diff` (ídem)  |
 | 6     | Ajustes, búsqueda asíncrona y tabla con estados completos         | P2        | M, por receta   | 2–4                  | Hecho: recetas verificadas y corregidas (ídem) |
+| 7     | Lo que la web anuncia funciona con lo que npm sirve hoy           | P1        | M               | 1–6                  | Hecho: plan 07 (publicación bloqueada en npm)  |
 
 S significa una modificación localizada; M requiere varios cambios revisables. No son
 estimaciones de días. Ejecutar una fase por PR cuando sea posible. No hace falta esperar
@@ -64,11 +67,10 @@ por máquina; ver `CLAUDE.md`). Todos los comandos citados en los planes existen
 
 ## Publicación
 
-Ningún PR de esta iniciativa sube versiones ni publica. Clasificación de lo pendiente en `CHANGELOG.md`
-`[Unreleased]`: `@voltui/cli` minor (`--path`, dependencias versionadas, `--track`, `diff`),
-`@voltui/components` minor (`aria-describedby` en Input/Textarea, más arreglos patch),
-`@voltui/agent` patch (contenido de skills e instalador). La preparación de la release es una
-operación aparte (`pnpm release:bump` + `/release-check`).
+Ningún PR de esta iniciativa publica. Estado real (`pnpm release:readiness`, 2026-11-26): `@voltui/components` 1.4.1 y
+`@voltui/cli` 1.4.0 pendientes (npm `latest` 1.3.3), `@voltui/agent` 0.6.1 pendiente (npm 0.6.0; sale después del
+CLI). La publicación está bloqueada por la configuración de Trusted Publishing en npm (acción del propietario,
+`RELEASING.md`). Clasificación por paquete en `CHANGELOG.md` `[Unreleased]`.
 
 ## Relación con los planes anteriores
 

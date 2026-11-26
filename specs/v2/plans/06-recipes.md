@@ -90,9 +90,10 @@ añadir ninguna API de datos a VoltTable.
       receta incorpora movimiento. Evitar animación decorativa como dependencia necesaria.
 - [x] Añadir enlaces desde las páginas de los componentes relevantes, sin duplicar la
       fuente ni explicaciones contradictorias entre web y MCP.
-- [ ] Registrar el ejercicio manual descrito en el SDD: integrar un formulario en un
+- [x] Registrar el ejercicio manual descrito en el SDD: integrar un formulario en un
       consumidor desechable y contar correcciones manuales. Si no hay participantes
       externos, describirlo como prueba propia, no como validación de usuarios.
+      Hecho en el plan 07 (2026-11-26): ejercicio interno, no investigación con usuarios.
 - [x] Revisar salida conjunta del SDD y decidir semver de cambios reales. Si todo es
       compatible, conservar v1.x: terminar las recetas no obliga a una versión 2.0.
 
@@ -149,6 +150,7 @@ form schema, table engine, servicios compartidos de negocio ni publicación.
   paquete construido (`pnpm check:copied-source`); tema oscuro, 375 px, contraste y desbordamiento por
   receta en `e2e/recipes/recipes-themes.spec.ts` (`pnpm test:e2e:recipes:ci`). Resultados de esta
   ejecución en el registro del PR. Ninguna receta usa animación necesaria.
-- **Ejercicio manual del SDD:** no realizado con participantes externos; las pruebas son propias.
+- **Ejercicio manual del SDD:** realizado como ejercicio interno en el plan 07 (registro allí); sin
+  participantes externos.
 - **Semver:** las recetas no se publican (fuente copiable de recipes.voltui.dev); sin cambios de API.
 - **Candidatos posteriores:** ninguno necesario para cerrar este plan.
