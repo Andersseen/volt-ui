@@ -273,10 +273,19 @@ export async function checkTrustedPublishing(
   const claims = Object.entries(oidcClaims(idToken))
     .map(([key, value]) => `${key}=${value}`)
     .join(', ');
+  // A 404 from the exchange means npm found no trusted publisher for this package that matches the
+  // job (or one that may not publish): the repository code cannot fix that, the package owner can.
+  const hint =
+    response.status === 404
+      ? ' npm found no usable Trusted Publisher for this package and job. Owner checks (RELEASING.md, "Trusted Publishing recovery"): ' +
+        `\`npm trust list ${name}\` shows the configuration; the workflow file must be "release.yml" in Andersseen/volt-ui with no environment; ` +
+        'it must allow `npm publish` (configurations created after 2026-09-03 allow only `npm stage publish` unless publish is ticked); ' +
+        'and a new configuration expires if its first publish does not happen within 2 days — delete it and create it again.'
+      : '';
   throw new Error(
     `npm refused this job as Trusted Publisher of ${name} (HTTP ${response.status}` +
       `${body?.message ? `: ${body.message}` : ''}). npm was shown: ${claims || 'no readable claims'}. ` +
-      `Check https://www.npmjs.com/package/${name}/access → Trusted Publisher (RELEASING.md, "One-time setup").`
+      `Check https://www.npmjs.com/package/${name}/access → Trusted Publisher (RELEASING.md, "One-time setup").${hint}`
   );
 }
 

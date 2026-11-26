@@ -684,6 +684,22 @@ describe('Trusted Publishing preflight', () => {
     expect(error.message).toContain('workflows/release.yml@refs/heads/main');
     expect(error.message).toContain('event_name=workflow_run');
     expect(error.message).not.toContain(idToken);
+    // The owner-side checks for a 404 (package not found / no matching publisher).
+    expect(error.message).toContain('npm trust list @voltui/components');
+    expect(error.message).toMatch(/npm stage publish/);
+    expect(error.message).toMatch(/within 2 days/);
+  });
+
+  it('gives no 404 checklist for another refusal', async () => {
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValueOnce(reply(200, { value: idToken }))
+      .mockResolvedValueOnce(reply(403, { message: 'Forbidden' }));
+    const error = await checkTrustedPublishing('@voltui/cli', { env: ACTIONS, fetchImpl }).catch(
+      e => e
+    );
+    expect(error.message).toContain('HTTP 403: Forbidden');
+    expect(error.message).not.toContain('npm trust list');
   });
 
   it('fails without an OIDC identity in the job', async () => {
