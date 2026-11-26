@@ -13,6 +13,10 @@
  *   mcp/content.generated.ts   installer content served by /api/mcp/setup     (pnpm generate:mcp-content)
  *   mcp/responsibilities.generated.ts, the skill catalog, .agents/skills/volt-ui*  (pnpm generate:agent-skills)
  *   public/{robots.txt,sitemap.xml,llms.txt}  crawler files                    (pnpm generate:seo-files)
+ *   shared/lib/compositions.generated.ts  every Recipes composition: files, components, packages
+ *                                                                              (pnpm generate:compositions)
+ *   shared/lib/release-availability.generated.ts  source and npm versions of the three packages
+ *                                                                              (pnpm stats)
  *   stories/components/*.mdx   Storybook component pages                      (pnpm generate:storybook-docs)
  *   specs/dogfood-inventory.md  where the site itself uses each atom           (pnpm generate:dogfood)
  *
@@ -31,6 +35,7 @@ const CHECKS = [
   ['scripts/generate-agent-skills.mjs', 'pnpm generate:agent-skills'],
   ['scripts/generate-storybook-docs.mjs', 'pnpm generate:storybook-docs'],
   ['scripts/generate-seo-files.mjs', 'pnpm generate:seo-files'],
+  ['scripts/generate-compositions.mjs', 'pnpm generate:compositions'],
   ['scripts/check-dogfood.mjs', 'pnpm generate:dogfood'],
 ];
 

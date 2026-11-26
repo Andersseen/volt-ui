@@ -60,11 +60,22 @@ interface ImportedName {
   typeOnly: boolean;
 }
 
+/** `import { … } from '@voltui/components'` and `export { … } from '@voltui/components'`. */
 const PACKAGE_IMPORT_RE =
-  /import\s+(type\s+)?\{([^}]*)\}\s*from\s*(['"])@voltui\/components\3;?[ \t]*\n?/g;
+  /(import|export)\s+(type\s+)?\{([^}]*)\}\s*from\s*(['"])@voltui\/components\4;?[ \t]*\n?/g;
+
+/**
+ * Any other reference to the package: a namespace, default or side-effect import, or a dynamic
+ * `import()`. The copy has no single module to point those at, so the transform refuses them
+ * rather than leaving a `@voltui/components` import in a project that does not install it.
+ */
+const OTHER_PACKAGE_REFERENCE_RE =
+  /(?:\bfrom\s*|\bimport\s*\(?\s*)(['"])@voltui\/components(?:\/[^'"]*)?\1/;
 
 function parseSpecifiers(list: string, typeOnly: boolean): ImportedName[] {
   return list
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .replace(/\/\/[^\n]*/g, '')
     .split(',')
     .map(part => part.trim())
     .filter(Boolean)
@@ -100,7 +111,7 @@ export function createDistribution(names: VoltNames): Distribution {
   function componentsUsed(source: string): string[] {
     const folders: string[] = [];
     for (const m of source.matchAll(PACKAGE_IMPORT_RE)) {
-      for (const { name } of parseSpecifiers(m[2], !!m[1])) {
+      for (const { name } of parseSpecifiers(m[3], !!m[2])) {
         const owner = ownerOf(name);
         if (!folders.includes(owner)) folders.push(owner);
       }
@@ -112,7 +123,7 @@ export function createDistribution(names: VoltNames): Distribution {
     // Imports first, on the original names: one statement per copied component folder.
     const out = source.replace(
       PACKAGE_IMPORT_RE,
-      (_match, typeKeyword: string | undefined, list: string) => {
+      (_match, keyword: 'import' | 'export', typeKeyword: string | undefined, list: string) => {
         const byFolder = new Map<string, ImportedName[]>();
         for (const spec of parseSpecifiers(list, !!typeKeyword)) {
           const owner = ownerOf(spec.name);
@@ -125,11 +136,18 @@ export function createDistribution(names: VoltNames): Distribution {
               s =>
                 `${s.typeOnly && !allTypes ? 'type ' : ''}${copyName(s.name)}${s.alias ? ` as ${s.alias}` : ''}`
             );
-            return `import ${allTypes ? 'type ' : ''}{ ${list.join(', ')} } from '${uiDir}/${folder}';\n`;
+            return `${keyword} ${allTypes ? 'type ' : ''}{ ${list.join(', ')} } from '${uiDir}/${folder}';\n`;
           })
           .join('');
       }
     );
+    const leftover = OTHER_PACKAGE_REFERENCE_RE.exec(out);
+    if (leftover) {
+      const line = out.slice(0, leftover.index).split('\n').length;
+      throw new Error(
+        `line ${line}: only named imports and re-exports of @voltui/components can be turned into CLI-copy imports (no namespace, default, side-effect or dynamic import, no deep path)`
+      );
+    }
     return out.replace(tokenRe, name => copyName(name));
   }
 
