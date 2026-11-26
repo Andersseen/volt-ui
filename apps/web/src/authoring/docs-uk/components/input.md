@@ -28,6 +28,8 @@ order: 11
 - Поле позначається торкнутим, коли втрачає фокус. `aria-invalid="true"` з’являється, коли елемент керування невалідний **і** торкнутий, або коли ви задаєте `state="error"`; сам `state` змінює лише колір.
 - `required`, `readonly`, `disabled`, `type`, `name`, `placeholder` і `autocomplete` записуються в нативне поле. Елемент керування, вимкнений через Forms, теж вимикається.
 
+::demo[availability-input-describedby]
+
 ## Довідник API
 
 ::demo[api-input]

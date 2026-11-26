@@ -32,6 +32,17 @@ import { resolvePublishedVersion } from './lib/published-version.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const OUTPUT = resolve(root, 'apps/web/src/app/lib/generated/site-stats.ts');
+/**
+ * Source and published versions of all three packages, for version-aware notices on both sites and
+ * the MCP server (packages/shared/lib/release-capabilities.ts). Same rules as publishedVersion:
+ * npm's `latest`, the last known value when npm cannot be read, never the source version.
+ */
+const RELEASES_OUTPUT = resolve(root, 'packages/shared/lib/release-availability.generated.ts');
+const RELEASE_PACKAGES = [
+  ['@voltui/components', 'packages/volt/package.json'],
+  ['@voltui/cli', 'cli/package.json'],
+  ['@voltui/agent', 'cli/agent/package.json'],
+];
 
 const countDirs = relativePath =>
   readdirSync(resolve(root, relativePath), { withFileTypes: true }).filter(entry =>
@@ -94,6 +105,50 @@ const publishedVersion = checking
       offline: process.argv.includes('--offline'),
       fixture: fixtureArg?.slice('--published-from='.length),
     });
+/** The last published version recorded for each package in the availability file. */
+function previousReleases() {
+  try {
+    const text = readFileSync(RELEASES_OUTPUT, 'utf8');
+    return Object.fromEntries(
+      RELEASE_PACKAGES.map(([name]) => [
+        name,
+        text.match(new RegExp(`'${name}': \\{ source: '[^']+', published: '([^']+)'`))?.[1] ?? null,
+      ])
+    );
+  } catch {
+    return {};
+  }
+}
+const lastReleases = previousReleases();
+const releases = [];
+for (const [name, file] of RELEASE_PACKAGES) {
+  const source = JSON.parse(readFileSync(resolve(root, file), 'utf8')).version;
+  const previous = name === '@voltui/components' ? publishedVersion : (lastReleases[name] ?? null);
+  const published =
+    checking || name === '@voltui/components'
+      ? previous
+      : await resolvePublishedVersion({
+          name,
+          previous,
+          offline: process.argv.includes('--offline'),
+        });
+  releases.push([name, source, published]);
+}
+const releasesContents = `// GENERATED FILE - do not edit by hand. Regenerate with: pnpm stats
+// \`source\` is the version in this repository (the next release); \`published\` is npm's \`latest\`, read
+// at generation time (the last known value when npm could not be read; never the source version).
+import type { PackageName, PackageRelease } from './release-capabilities';
+
+export const RELEASES: Readonly<Record<PackageName, PackageRelease>> = {
+${releases
+  .map(
+    ([name, source, published]) =>
+      `  '${name}': { source: '${source}', published: ${published ? `'${published}'` : 'null'} },`
+  )
+  .join('\n')}
+};
+`;
+
 const components = countDirs('packages/volt/src/lib/components');
 const layouts = countDirs('packages/volt/src/lib/layouts');
 const colorPresets = countCssPresets('packages/volt/src/themes/colors');
@@ -140,6 +195,19 @@ try {
 // only compares. The test count is carried over, so a release bump or a component added without
 // running `pnpm stats` is the only way to fail here.
 if (process.argv.includes('--check')) {
+  let previousReleasesFile = '';
+  try {
+    previousReleasesFile = readFileSync(RELEASES_OUTPUT, 'utf8');
+  } catch {
+    previousReleasesFile = '';
+  }
+  if (previousReleasesFile !== releasesContents) {
+    console.error(
+      `[site-stats] ${RELEASES_OUTPUT} is stale (${releases.map(([n, s]) => `${n} ${s}`).join(', ')}).\n` +
+        'Run `pnpm stats` and commit the result.'
+    );
+    process.exit(1);
+  }
   if (previous !== contents) {
     console.error(
       `[site-stats] ${OUTPUT} is stale (source ${version}, published ${publishedVersion}, ${components} components, ${layouts} layouts).\n` +
@@ -152,6 +220,19 @@ if (process.argv.includes('--check')) {
 }
 
 mkdirSync(dirname(OUTPUT), { recursive: true });
+
+let currentReleases = '';
+try {
+  currentReleases = readFileSync(RELEASES_OUTPUT, 'utf8');
+} catch {
+  currentReleases = '';
+}
+if (currentReleases !== releasesContents) {
+  writeFileSync(RELEASES_OUTPUT, releasesContents);
+  console.log(
+    `[site-stats] wrote release availability: ${releases.map(([n, s, p]) => `${n} ${s} (npm ${p ?? '?'})`).join(', ')}`
+  );
+}
 
 if (previous !== contents) {
   writeFileSync(OUTPUT, contents);

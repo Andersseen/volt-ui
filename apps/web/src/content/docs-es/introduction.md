@@ -8,6 +8,8 @@ order: 1
 
 Los componentes se construyen sobre [ng-primitives](https://ng-primitives.dev). Un segundo punto de entrada experimental, `@voltui/components/quartz`, ejecuta nueve de ellos (Accordion, Checkbox, Listbox, Radio, Select, Switch, Tabs, Toggle y Toggle Group) sobre Quartz Headless con los mismos selectores e inputs. Se publica con `@voltui/components` a partir de la 1.4.1.
 
+::demo[availability-quartz]
+
 ## Herramientas de IA para consumidores
 
 Volt UI incluye tres formas complementarias de dar a los asistentes de IA contexto completo sobre sus componentes, selectores y convenciones.
@@ -47,6 +49,8 @@ Usa `--dry-run` para previsualizar los archivos y `--force` para sobrescribir co
 Para ver qué cambia una versión nueva en un componente que personalizaste, ejecuta `volt diff <componente>`
 con esa versión: solo lee, y las copias añadidas con `--track` indican además si cada archivo lo
 cambiaste tú o Volt.
+
+::demo[availability-cli]
 
 ### Opción 3: copiar y pegar
 

@@ -95,7 +95,9 @@
     "build:all": "turbo run build",
     "typecheck:all": "turbo run typecheck",
     "check:examples": "node scripts/check-examples.mjs",
-    "check:consumer": "node scripts/check-consumer.mjs"
+    "check:consumer": "node scripts/check-consumer.mjs",
+    "check:published": "node scripts/check-published.mjs",
+    "generate:compositions": "node scripts/generate-compositions.mjs"
   },
   "lint-staged": {
     "*.{ts,html}": [
