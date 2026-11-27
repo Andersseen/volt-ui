@@ -29,7 +29,11 @@ Only then consider copying the component (copy mode) and editing it.
 dark })` sets them at bootstrap; `applyVoltTheme` changes them at runtime.
 - Import the theme CSS once: `@import '@voltui/components/themes.css';` after Tailwind.
 - A custom palette sets the palette tokens (`--primary`, `--surface`, …) and a custom style the
-  `--volt-*` shape tokens, not the Tailwind utilities.
+  `--volt-*` shape tokens, not the Tailwind utilities. Theme Studio (voltui.dev/create-theme) exports
+  one; import it **after** `themes.css`, then `const acme = voltCustomColor('acme')` and pass `acme`
+  wherever a colour goes (`provideVoltTheme`, `applyVoltTheme`, `[voltTheme]`, and `customColors` of
+  `voltThemeInitScript`). Copy mode: `uiCustomColor` from `./ui/theme`. Never cast a raw string to
+  the colour type. `get_theme_info` → `customThemes` has the steps and whether npm has it yet.
 - `[voltTheme]="{ color, style, dark, density }"` themes one container and the overlays declared in it;
   `density` also goes on `provideVoltTheme`. Do not hand-write `--primary` on an element. It needs
   `@voltui/components` 1.4.1 or later: check `get_project_info` before using it in a project on npm.
@@ -68,6 +72,7 @@ pairs. In a custom palette check the pairs you change.
 - Use semantic utilities (`bg-primary`, `text-foreground`, `border-border`), never hard-coded colours or `bg-[var(--x)]`.
 - Presets: colour `volt|ember|sage|dusk|glacier`, style `sharp|soft|brutal|ghost|retro`; dark mode is a class on `<html>`.
 - Theme one container with `[voltTheme]`; density is `compact|comfortable|spacious`, independent of the style.
+- A custom palette (e.g. from Theme Studio) is CSS imported after `themes.css`, declared with `voltCustomColor('name')` and passed as `color`.
 - Pressed/selected/checked states must be visibly distinct and contrast-checked; colour alone is not meaning.
 
 <!-- volt:digest:end -->

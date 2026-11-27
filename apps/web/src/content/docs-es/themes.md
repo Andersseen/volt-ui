@@ -17,6 +17,7 @@ Volt UI incluye cinco presets de color. Cada uno define su propia paleta para lo
 Añade el proveedor de tema a la configuración de tu aplicación:
 
 ```ts
+import { ApplicationConfig } from '@angular/core';
 import { provideVoltTheme } from '@voltui/components';
 
 export const appConfig: ApplicationConfig = {
@@ -68,6 +69,7 @@ Solo navegador por defecto (no hace nada si `document` es undefined). Pasa un ar
 
 ```ts
 // app.config.ts — set the theme at bootstrap
+import { ApplicationConfig } from '@angular/core';
 import { provideVoltTheme } from '@voltui/components';
 
 export const appConfig: ApplicationConfig = {
@@ -80,11 +82,12 @@ export const appConfig: ApplicationConfig = {
 El modo oscuro se basa en una clase: añadir `.dark` a `<html>` cambia todos los componentes a sus valores de token oscuros (mira `@custom-variant dark` en `core.css`). Volt **no** lee `prefers-color-scheme` automáticamente: `dark` es claro salvo que pases `dark: true` o llames tú a `applyVoltTheme`, de modo que la decisión siempre es explícita y no cambia sin avisar si cambia el tema del sistema del visitante.
 
 ```ts
-// Static: dark by default
-provideVoltTheme({ color: 'volt', dark: true });
+import { applyVoltTheme, provideVoltTheme } from '@voltui/components';
+
+// Static: dark by default (in your appConfig providers)
+export const themeProviders = [provideVoltTheme({ color: 'volt', dark: true })];
 
 // Dynamic: toggle from a button, a signal, etc.
-import { applyVoltTheme } from '@voltui/components';
 applyVoltTheme({ dark: true });
 
 // Opt in to following the OS preference yourself
@@ -160,10 +163,91 @@ Cada preset define el mismo conjunto de tokens semánticos como valores `oklch()
 
 ## Crear un preset de color propio
 
-Un preset de color no es más que un par de selectores indexados por `data-color`. Copia esta plantilla, sustituye `'mytheme'` y los valores, y luego importa el archivo después de `@voltui/components/themes.css` en tu hoja de estilos global.
+Un preset de color es un par de selectores asociados a `data-color`: uno para el modo claro y otro para el oscuro. [Theme Studio](/es/create-theme) lo escribe por ti: parte de cualquier paleta incluida, edita los tokens, revisa el inspector de contraste y copia o descarga el CSS. Su archivo de **Proyecto** (`.theme.json`) conserva el tema editable, para volver a abrirlo en el estudio más adelante.
+
+::demo[availability-custom-themes]
+
+### 1. Impórtalo después de los temas de Volt
+
+Guarda la hoja de estilos exportada (aquí `acme.css`) junto a tus estilos globales e impórtala **después** de `@voltui/components/themes.css`. El orden importa: los ajustes de forma de la paleta (radio, bordes, anillo de foco, sombras) y un preset de estilo usan selectores de la misma especificidad, así que gana el archivo posterior.
 
 ```css
-:root[data-color='mytheme'] {
+/* styles.css */
+@import 'tailwindcss';
+@import '@voltui/components/themes.css';
+@import './acme.css';
+```
+
+### 2. Declara el nombre y úsalo como una paleta incluida
+
+`voltCustomColor()` convierte el nombre en un `VoltCustomColor`, que aceptan todas las API de tema. Lanza un error si el nombre no es un identificador en minúsculas (`a-z`, dígitos y guiones simples, empezando por una letra, como máximo 48 caracteres) o si pertenece a una paleta incluida. No se registra nada de forma global ni se carga ninguna hoja de estilos: lo que pinta sigue siendo el CSS que importaste.
+
+```ts
+// theme.ts
+import { ApplicationConfig } from '@angular/core';
+import { provideVoltTheme, voltCustomColor } from '@voltui/components';
+
+export const acme = voltCustomColor('acme');
+
+export const appConfig: ApplicationConfig = {
+  providers: [provideVoltTheme({ color: acme, style: 'soft', density: 'compact' })],
+};
+```
+
+El mismo nombre funciona en una región con `voltTheme` —claro, oscuro y anidado en ambos sentidos con las paletas incluidas—, y los overlays que se abren dentro lo llevan consigo:
+
+```ts
+import { Component } from '@angular/core';
+import { VoltButton, VoltTheme, voltCustomColor } from '@voltui/components';
+
+const acme = voltCustomColor('acme');
+
+@Component({
+  selector: 'app-preview',
+  imports: [VoltButton, VoltTheme],
+  template: `
+    <section [voltTheme]="{ color: acme, dark: true }">
+      <volt-button>Dark acme island</volt-button>
+    </section>
+  `,
+})
+export class Preview {
+  protected readonly acme = acme;
+}
+```
+
+Para restaurar la paleta guardada de un visitante antes del primer pintado, enumera tus paletas en `voltThemeInitScript`. Un nombre guardado que no esté en ninguna de las dos listas —manipulado o de una versión antigua— se ignora y se aplican los valores por defecto.
+
+```ts
+import { voltCustomColor, voltThemeInitScript } from '@voltui/components';
+
+const acme = voltCustomColor('acme');
+export const themeScript = voltThemeInitScript({
+  defaults: { color: acme },
+  customColors: [acme],
+});
+```
+
+Con componentes copiados por la CLI, el mismo código importa desde tu carpeta de UI y la CLI renombra el prefijo `volt`: `uiCustomColor` desde `./ui/theme`. Los presets de estilo propios funcionan igual con `voltCustomStyle()` y `customStyles`.
+
+### Paleta, estilo y densidad son cosas distintas
+
+| Qué                                 | Dónde vive                                                 | Quién lo fija                                               |
+| ----------------------------------- | ---------------------------------------------------------- | ----------------------------------------------------------- |
+| **Paleta** (`data-color`)           | Tu CSS exportado: los tokens de color de ambos modos       | `color: acme`                                               |
+| **Ajustes de forma**                | El mismo CSS, solo los valores que cambiaste en el estudio | Se importan después de los presets de estilo, así que ganan |
+| **Preset de estilo** (`data-style`) | Los archivos de estilo de Volt: bordes, sombras, pesos     | `style: 'soft'`                                             |
+| **Densidad** (`data-density`)       | Los tokens de Volt                                         | `density: 'compact'`                                        |
+
+Un ámbito `voltTheme` anidado que no fija un estilo hereda los ajustes de forma del ámbito que lo rodea, como cualquier otro token heredado.
+
+### Escribirlo a mano
+
+Los selectores son los que usa cada paleta incluida. Mantén cada par de primer plano y fondo en 4.5:1 o más, y en 3:1 para `--ring` e `--input` frente a `--background`.
+
+```css
+:root[data-color='mytheme'],
+[data-volt-theme][data-color='mytheme'] {
   --primary: oklch(0.58 0.2 265);
   --primary-foreground: oklch(0.98 0 0);
   --secondary: oklch(0.96 0.01 265);
@@ -187,13 +271,14 @@ Un preset de color no es más que un par de selectores indexados por `data-color
   --info-foreground: oklch(0.98 0 0);
 }
 
-.dark[data-color='mytheme'] {
+.dark[data-color='mytheme'],
+.dark [data-volt-theme][data-color='mytheme']:not([data-mode='light']) {
   /* same tokens, tuned for a dark --background/--surface */
 }
 ```
 
 > [!TIP]
-> Mantén cada par de primer plano y fondo con un contraste de 4,5:1 o mejor (3:1 para `--ring` y `--input` frente a `--background`); mira `scripts/contrast-audit.mjs` en el repositorio para la comprobación exacta que este proyecto ejecuta sobre sus propios presets. La herramienta [Crear tema](/es/create-theme) genera un punto de partida a partir de un solo color de acento si prefieres no elegir once tokens a mano.
+> El inspector de contraste de Theme Studio comprueba cada par que pinta Volt, en ambos modos, frente al umbral de su función: los mismos pares y cálculos que `scripts/contrast-audit.mjs`, que este proyecto ejecuta sobre sus propios presets. Es una comprobación a nivel de tokens, no una certificación WCAG: las páginas renderizadas siguen necesitando comprobaciones en el navegador, una revisión manual y pruebas con lectores de pantalla.
 
 ## Crear un preset de estilo propio
 
@@ -223,4 +308,4 @@ Un preset de estilo no toca el color, solo la forma. Se indexa por `data-style` 
 }
 ```
 
-El registro es igual que el de un preset de color: ponlo en tu hoja de estilos global después de `@voltui/components/themes.css` y luego fija `data-style="mystyle"` con `provideVoltTheme` o `applyVoltTheme`.
+El registro es igual que el de un preset de color: ponlo en tu hoja de estilos global después de `@voltui/components/themes.css` decláralo con `const mystyle = voltCustomStyle('mystyle')` y pasa `style: mystyle` a `provideVoltTheme`, `applyVoltTheme` o `voltTheme`.

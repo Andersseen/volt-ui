@@ -11,7 +11,7 @@ order: 3
 After `volt add button`, you own `src/app/ui/button/button.ts` (or wherever your CLI config points it). Want a fourth button size? Add it directly — there is nothing else to regenerate or sync.
 
 ```ts
-// ui/button/variants.ts
+// Fragment: your copied ui/button/variants.ts, one size added.
 export const buttonVariants = cva('...', {
   variants: {
     size: {
@@ -32,7 +32,7 @@ The type `ButtonVariants['size']` is inferred from this object via `VariantProps
 Components with visual variants (button, badge, toast, ...) split styling into a sibling `variants.ts` using [class-variance-authority](https://cva.style/docs). The component itself only computes which variant is active — it never hardcodes conditional classes in the template:
 
 ```ts
-// button.ts
+// Fragment: inside your copied button.ts.
 protected readonly classes = computed(() =>
   cn(buttonVariants({ variant: this.variant(), size: this.size() }), this.class())
 );

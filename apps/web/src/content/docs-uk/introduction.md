@@ -108,9 +108,11 @@ npm install -D tailwindcss @tailwindcss/postcss
 Volt UI надає семантичні токени Tailwind через CSS custom properties. Налаштуйте тему у конфігурації застосунку.
 
 ```ts
+// app.config.ts — passed to bootstrapApplication(App, appConfig) in main.ts
+import { ApplicationConfig } from '@angular/core';
 import { provideVoltTheme } from '@voltui/components';
 
-bootstrapApplication(AppComponent, {
+export const appConfig: ApplicationConfig = {
   providers: [
     provideVoltTheme({
       color: 'volt', // volt | ember | sage | dusk | glacier
@@ -118,7 +120,7 @@ bootstrapApplication(AppComponent, {
       dark: false,
     }),
   ],
-});
+};
 ```
 
 Додайте `density: 'compact' | 'comfortable' | 'spacious'`, щоб задати шкалу відступів (з `@voltui/components` 1.4.1).
@@ -146,6 +148,7 @@ src/app/
 Після додавання компонента імпортуйте та використайте його у своїх компонентах Angular:
 
 ```ts
+// Fragment: copy mode, after `volt add button` (your copied ./ui/button).
 import { Component } from '@angular/core';
 import { UiButton } from './ui/button';
 
