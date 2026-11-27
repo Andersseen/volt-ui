@@ -1,6 +1,6 @@
 # Plan 04 — Componentes fáciles de componer y personalizar
 
-**Estado:** ejecutado en `feat/consumer-lifecycle-reliability` (PR #261, merge `494b0fc`), salvo la revisión manual de la fase C (teclado completo, lector de pantalla, zoom 200 %) y las fechas localizadas, que siguen pendientes. Reconciliado el 2026-11-26 en el plan 07 contra los tests de la rama. **Prioridad:** P1. **Depende de:** plan 03.
+**Estado:** ejecutado en `feat/consumer-lifecycle-reliability` (PR #261, merge `494b0fc`); la fase C automatizable se completó en el plan 08 (`feat/theme-authoring-accessible-design-systems`, 2026-11-27). Siguen pendientes la revisión manual con lector de pantalla y el zoom manual del navegador. Reconciliado el 2026-11-26 en el plan 07 contra los tests de la rama. **Prioridad:** P1. **Depende de:** plan 03.
 **Hallazgos:** F11, F15. **Entrega:** contratos documentados, regresiones y mejoras acotadas.
 
 ## Contexto y archivos
@@ -60,20 +60,28 @@ abstracta. Las pruebas v1 de consumidores personalizados continúan pasando.
 
 ## Fase C — Temas, tamaño y accesibilidad de la composición
 
-- [ ] Probar la composición formulario + select + dialog con texto largo, ancho estrecho,
+- [x] Probar la composición formulario + select + dialog con texto largo, ancho estrecho,
       zoom 200%, light/dark y estilos sharp/soft/brutal/ghost/retro. Distinguir problemas
       geométricos de contraste; reutilizar los 130 checks de color existentes.
-- [ ] Validar foco visible, reduced motion y contraste de estados efectivos. Los overlays
+      _(Plan 08: `e2e/contracts/adaptive.spec.ts`, 320 px y zoom CSS 200 % emulado, 3 motores; el
+      zoom manual del navegador queda en el último punto.)_
+- [x] Validar foco visible, reduced motion y contraste de estados efectivos. Los overlays
       portaled deben conservar el tema soportado; documentar el alcance document-level
       actual sin inventar soporte a temas anidados independientes.
-- [ ] Revisar etiquetas internas y fechas localizadas separadamente de la traducción del
+      _(Plan 08: foco visible también en colores forzados, tras corregir `outline-none`.)_
+- [x] Revisar etiquetas internas y fechas localizadas separadamente de la traducción del
       sitio. Caracterizar locale/primer día de semana existentes; RTL completo queda fuera
       salvo arreglo localizado demostrado, sin prometer soporte global por cambiar CSS.
+      _(Plan 08: `label` en Pagination, `toggleLabel` en Combobox; fechas por `LOCALE_ID`.)_
 - [ ] Registrar revisión manual de teclado y un recorrido de lector de pantalla en las
       composiciones prioritarias si el entorno lo permite. Si no, dejar esa evidencia
       pendiente; no sustituirla por una declaración de cumplimiento WCAG total.
-- [ ] Documentar limitaciones upstream con reproducción y versión. Preferir adaptación
+      _(Plan 08: teclado recorrido con eventos reales en tres motores —automatizado, no manual—;
+      ningún lector de pantalla disponible; zoom manual del navegador no realizado.)_
+- [x] Documentar limitaciones upstream con reproducción y versión. Preferir adaptación
       mínima o contribución upstream; no usar una limitación como autorización de headless.
+      _(Plan 08: ninguna limitación nueva de ng-primitives. De navegador: Firefox 159 (Playwright 1.65.1) no aplica
+      `min-height: fit-content` a estos ítems flex; WebKit no tabula a botones por defecto.)_
 
 Referencia para comportamiento por patrón:
 [WAI-ARIA APG](https://www.w3.org/WAI/ARIA/apg/patterns/). Sus patrones guían la revisión;
@@ -93,6 +101,14 @@ Sin nuevos presets, sistema de densidad global, motor de formularios ni migraci�
 general a directivas. Las recetas del plan 06 usarán los contratos que aquí se prueben.
 
 ## Registro de ejecución
+
+### 2026-11-27 — Fase C automatizable (plan 08)
+
+Ver `08-theme-authoring.md`, workstream E: composición con etiquetas largas en español y ucraniano
+(página, diálogo, drawer) a 320 px, zoom CSS 200 % emulado, 5 estilos × claro/oscuro, 3 densidades, foco
+visible normal y en colores forzados, reduced motion. Dos fallos reproducidos y corregidos: desbordamiento
+por `whitespace-nowrap` del botón y foco invisible en colores forzados. Localización: dos etiquetas
+internas fijas (Pagination, Combobox) ahora configurables.
 
 ### 2026-11-26 — Reconciliación (plan 07, sobre `494b0fc`)
 

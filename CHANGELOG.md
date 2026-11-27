@@ -7,6 +7,77 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+Theme authoring and accessible design systems (`specs/v2/plans/08-theme-authoring.md`). Per package, all
+folded into the versions already pending (npm still serves 1.3.3 / 1.3.3 / 0.6.0; nothing is bumped or
+skipped): `@voltui/components` **minor** content in pending 1.4.1 (additive theme API, two additive inputs,
+two accessibility fixes); `@voltui/cli` no CLI source change — its packed registry carries the component
+changes, pending 1.4.0; `@voltui/agent` **patch** content in pending 0.6.1 (styling skill). Theme Studio,
+the guides and the MCP server are deployed, not versioned.
+
+### Custom themes (`@voltui/components`, minor)
+
+- **`voltCustomColor(name)` / `voltCustomStyle(name)`** declare a palette or style your own stylesheet
+  defines (for example a Theme Studio export). They validate the name (lowercase identifier, at most 48
+  characters, not a shipped preset) and return a branded `VoltCustomColor` / `VoltCustomStyle`; nothing is
+  registered globally. `provideVoltTheme`, `applyVoltTheme`, `persistVoltTheme` and `[voltTheme]` accept
+  them (`VoltAnyThemeOptions`, `VoltThemeColorName`, `VoltThemeStyleName`); `VoltThemeOptions` without
+  type arguments is unchanged. `voltThemeInitScript({ customColors, customStyles })` restores a stored
+  custom palette before first paint; before, a stored or default custom palette was silently dropped.
+- **Malformed theme names are no longer written or stored.** `applyVoltTheme` ignores a `color`/`style`
+  that is not a safe identifier (with a development warning) instead of writing it to `<html>`, and
+  `persistVoltTheme` does not store it. Typed callers cannot pass one; this only changes untyped calls.
+
+### Accessibility and localization (`@voltui/components`, patch)
+
+- **Long labels reflow.** Button (and `button[voltButton]`, `a[voltButton]`) no longer uses
+  `whitespace-nowrap`: a label longer than its space wraps instead of widening its container off-screen
+  (reproduced at 320 CSS px and emulated 200 % zoom with Spanish and Ukrainian labels, in the page, a
+  dialog and a drawer). One line keeps exactly the control height; `h-*` from the consumer still replaces
+  it; two lines fit in every engine (`leading-tight`), more grow the box where `min-height: fit-content`
+  is supported (not Firefox).
+- **Focus is visible in forced-colours mode.** Every `outline-none` in the library is now
+  `outline-hidden` (Tailwind v4): identical normally, but the focus outline survives Windows High
+  Contrast, where the box-shadow ring is dropped. Before, tabs, inputs, combobox and buttons showed no
+  focus there.
+- **Translatable built-in names:** `label` on `volt-pagination-first|previous|next|last` and
+  `toggleLabel` on `volt-combobox` (English defaults unchanged). The date-picker example now derives
+  weekday headers, the month label and the first day from `LOCALE_ID`.
+
+### Theme Studio 2.0 (deployed, no package)
+
+- Every shipped palette is a starting point; palette, style preset, density and shape overrides are
+  separate, and only overrides are exported as CSS (an untouched draft exports what it always did).
+- Versioned theme project JSON (strict validation, deterministic, round-trip) for import/export, and a
+  local library in this browser only: draft recovery, save, open, duplicate, rename, delete; corrupt,
+  newer-schema, quota and no-storage cases handled without overwriting anything.
+- Undo/redo (a picker drag is one step), unsaved state, per-token, per-palette and whole-draft reset, hex
+  field beside the native picker; CSS, project JSON and TypeScript shown, copied and downloaded from one
+  draft.
+- Live contrast inspector: the pairs and maths of `check:contrast` (now `packages/shared/lib/contrast.ts`,
+  shared, output unchanged), both modes, role thresholds, navigation to the token, explicit undoable
+  hue-preserving suggestions, and a plain list of what it does not check.
+- The preview is painted by the exported stylesheet itself and shows three interactive applications
+  (dashboard, settings form with validation, data table with menu/dialog/select) with state, density, mode
+  and width controls. It agrees with an exported consumer on 36 computed properties in three engines.
+
+### Documentation, MCP and AI context (`@voltui/agent`, patch; the site and MCP server are deployed)
+
+- Theme System guide (en/es/uk): the custom-theme contract, import order, scopes, first paint, copy mode,
+  palette vs style vs density, with an availability note; `docs/theme-contract.md` and the Storybook
+  theming page follow.
+- `get_theme_info` adds `customThemes` (steps, usage, name rule, copy mode, availability), additively.
+  `volt-ui-styling` skill and `VOLT_UI_PROMPT.md` describe the same contract.
+
+### Consumer verification (repository only, no package)
+
+- `check:examples` compiles the TypeScript blocks of the installation, theme and customization guides in
+  both modes; excerpts are marked `// Fragment:`, the three locales must carry the same code, and the
+  inventory lists the capabilities each example needs.
+- `e2e/contracts/theme-custom.spec.ts` (and its CLI-copy twin) proves a Theme Studio export in light, dark
+  and nested scopes, with density, a style, overlays, the whole page and the init script;
+  `e2e/contracts/adaptive.spec.ts` covers reflow, emulated zoom, visible focus, forced colours and reduced
+  motion.
+
 Consumer adoption and release fidelity (`specs/v2/plans/07-consumer-adoption.md`). Per package:
 `@voltui/components` and `@voltui/cli` have **no source change** in this initiative (their pending 1.4.1 and
 1.4.0 are unchanged); `@voltui/agent` **patch** (0.6.0 → 0.6.1: skill content and installer text). Everything

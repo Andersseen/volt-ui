@@ -1,6 +1,6 @@
 # SDD — Volt UI: integración y mantenimiento de código propio
 
-**Estado:** adoptado; planes 01–06 implementados (ver sus registros; 04–06 en `feat/consumer-lifecycle-reliability`). **Base:** `1.0.1` / `35e6816`; vigente en `4526886`.
+**Estado:** adoptado; planes 01–08 implementados (ver sus registros; 04–06 en `feat/consumer-lifecycle-reliability`, 08 en `feat/theme-authoring-accessible-design-systems`). **Base:** `1.0.1` / `35e6816`; vigente en `4526886`.
 **Motivación:** [auditoría](AUDIT.md). **Ejecución:** [seis planes](README.md).
 
 ## 1. Objetivo y usuarios
@@ -32,6 +32,7 @@ Historias que definen el alcance:
 | D05. Comparación de archivos de solo lectura            | Actualizador automático con merge de tres vías                 | Da utilidad de mantenimiento sin tomar decisiones sobre código del consumidor                                                                                                            |
 | D06. Tres recetas en la documentación                   | Motor de formularios, data grid o aplicación de ejemplo enorme | Resuelve tareas completas con estado local; la aplicación conserva datos, rutas y reglas de negocio                                                                                      |
 | D07. Mejorar HTML nativo caso a caso                    | Reescribir todos los selectores como directivas                | La compatibilidad v1 y la evidencia de uso pesan más que uniformidad estética de APIs                                                                                                    |
+| D08. Temas propios por nombre declarado (plan 08)       | Registro global o `string` libre en todos los tipos            | Un nombre marcado validado no comparte estado entre peticiones SSR ni deja pasar erratas; el CSS importado sigue siendo la única fuente visual                                           |
 
 D01 y D02 cambian la recomendación del roadmap anterior, no borran su historia. Adoptar
 este SDD implica corregir el roadmap en los tres idiomas mediante el plan 02. No empezar
@@ -221,5 +222,6 @@ alterar versiones o publicar automáticamente al terminar una fase.
 Resuelto al ejecutar: nombre accesible y ARIA de Button (entrada de 1.x, ya presente) y
 `aria-describedby` de Input/Textarea (plan 04); baseline de bundles (`specs/v2/bundle-baseline.json`,
 plan 03); Angular 22 soportado y probado (`^21.2.0 || ^22.0.0`, `pnpm check:angular-compat`).
-Sigue abierto: feedback de consumidores reales y una revisión con lector de pantalla. Cerrado en el plan 07: el
+Sigue abierto: feedback de consumidores reales, una revisión con lector de pantalla y el zoom manual del
+navegador (el plan 08 cubrió reflujo a 320 px, zoom CSS emulado y colores forzados de forma automatizada). Cerrado en el plan 07: el
 ejercicio manual (baseline arriba) y la comprobación de lo anunciado frente a lo publicado (`pnpm check:published`).
