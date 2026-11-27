@@ -123,7 +123,34 @@ ningún número.
 
 ## Verificación
 
-_Completada abajo con los resultados reales._
+Local, macOS (Darwin 27.2), Node 22.23.1, Playwright 1.65.1 (Chromium 159, Firefox 159, WebKit 27.2), sobre
+`738f122` y siguientes; los comandos y entornos de `.github/workflows/ci.yml`.
+
+| Comando                                                                                                                                                               | Resultado                                                                                                                                                                       |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm lint`, `typecheck`, `typecheck:recipes`, `check:generated`, `check:ai-docs`, `check:docs-completeness`, `check:contrast`, `check:dogfood`, `docs:content:check` | OK                                                                                                                                                                              |
+| `pnpm format:check`                                                                                                                                                   | Falla en 15 ficheros, **todos ya fallaban en `main`** (comprobado fichero a fichero); ninguno nuevo. No forma parte del job `static`.                                           |
+| `pnpm test:coverage`                                                                                                                                                  | 203 ficheros, 2417 tests OK, 4 omitidos                                                                                                                                         |
+| `pnpm build:lib`, `build`, `build:recipes`, `check:examples` (53 completos + 74 parciales, ambos modos), `check:copied-source`                                        | OK                                                                                                                                                                              |
+| `pnpm pack:lib`, `pack:cli`, `pack:agent`, `release:check`, `release:readiness`                                                                                       | OK; readiness: «nothing blocks a release» (1.4.1 / 1.4.0 / 0.6.1 pendientes)                                                                                                    |
+| `pnpm test:e2e:contracts` (3 motores)                                                                                                                                 | 557 OK, 12 omitidos, 1 fallo: WebKit `polish.spec.ts` «empty state … actions in tab order», **fallo local conocido de macOS Safari, también en `main`**                         |
+| `test:e2e:consumer` / `test:e2e:consumer-cli`                                                                                                                         | 26 / 22 OK                                                                                                                                                                      |
+| Docs e2e (`--project=chromium`), `check:ssr`, `check:seo`, `ssr-docs`, `legacy-redirects`                                                                             | 92 OK / OK / OK / OK / OK                                                                                                                                                       |
+| Recipes: `check:ssr:recipes`, `check-seo --app recipes`, e2e                                                                                                          | OK / OK / 226 OK                                                                                                                                                                |
+| `check:storybook`, `typecheck:storybook`, `build:storybook`, `test:storybook`                                                                                         | OK / OK / OK / 29 OK                                                                                                                                                            |
+| `check:consumer --angular=21.2.0` / `22`                                                                                                                              | OK / OK                                                                                                                                                                         |
+| `check:angular-compat 21` / `22`                                                                                                                                      | 22 OK. 21: 1 fallo en la primera ejecución (`overlay-forms` dialog → combobox, «re» frente a «React», test no modificado), 163/163 en dos repeticiones: inestable, no regresión |
+| `check-quartz-consumer 21.2.0` / `22`                                                                                                                                 | OK / OK                                                                                                                                                                         |
+| `check:published`                                                                                                                                                     | OK tras nombrar `VoltCustomStyle`, `VoltThemeColorName`, `VoltThemeStyleName` en la capacidad (el primer intento lo detectó)                                                    |
+
+Dos defectos de la propia rama encontrados por estas comprobaciones y corregidos: el arnés de
+`check:angular-compat` no copiaba el nuevo fixture `adaptive.ts`, y la capacidad `components.custom-themes` no
+nombraba tres tipos nuevos.
+
+No reproducible localmente: la matriz completa de CI en Linux, la evidencia `contract-evidence.yml` y la
+publicación real (no se intenta). Docs e2e en Firefox: `the exported stylesheet themes a page…` falla por
+`clipboard-read`, permiso que Firefox no admite; el test no cambió en lo esencial y CI ejecuta esa suite solo
+en Chromium.
 
 ## Límites y pendientes
 

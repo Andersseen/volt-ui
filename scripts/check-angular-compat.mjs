@@ -132,6 +132,7 @@ for (const file of [
   'polish.ts',
   'composition.ts',
   'overlay-forms.ts',
+  'adaptive.ts',
   'host.ts',
 ])
   cpSync(join(fixtures, file), join(app, 'src', file));

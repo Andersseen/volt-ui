@@ -131,7 +131,15 @@ export const RELEASE_CAPABILITIES: readonly ReleaseCapability[] = [
       'Declared custom palettes and styles (`voltCustomColor()`, `voltCustomStyle()`) accepted by `provideVoltTheme`, `applyVoltTheme`, `persistVoltTheme`, `voltTheme` and `voltThemeInitScript({ customColors })`.',
     probe: {
       kind: 'package-exports',
-      names: ['voltCustomColor', 'voltCustomStyle', 'VoltCustomColor', 'VoltAnyThemeOptions'],
+      names: [
+        'voltCustomColor',
+        'voltCustomStyle',
+        'VoltCustomColor',
+        'VoltCustomStyle',
+        'VoltAnyThemeOptions',
+        'VoltThemeColorName',
+        'VoltThemeStyleName',
+      ],
     },
   },
   {
