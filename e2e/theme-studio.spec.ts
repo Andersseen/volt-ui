@@ -1,8 +1,35 @@
+import { readFileSync } from 'node:fs';
+import type { Locator, Page } from '@playwright/test';
 import { test, expect } from './fixtures';
+
+/** The project the consumer harness themes a real app with (e2e/contracts/theme-custom.spec.ts). */
+const PROJECT_TEXT = readFileSync(
+  new URL('./consumer/src/themes/acme.theme.json', import.meta.url),
+  'utf8'
+);
+const PROJECT = JSON.parse(PROJECT_TEXT);
+
+const hex = (locator: Locator, property: string) =>
+  locator.evaluate((el, name) => {
+    const context = document.createElement('canvas').getContext('2d')!;
+    context.fillStyle = getComputedStyle(el).getPropertyValue(name);
+    return context.fillStyle;
+  }, property);
+const css = (locator: Locator, property: string) =>
+  locator.evaluate((el, name) => getComputedStyle(el).getPropertyValue(name), property);
+
+/** Waits for hydration: a click before it lands on server-rendered markup with no listeners. */
+async function ready(page: Page) {
+  await expect(page.getByRole('toolbar', { name: 'Draft' })).toBeVisible();
+  await expect(page.getByTestId('draft-state')).toHaveText(/No unsaved changes|Unsaved changes/);
+  await page.waitForFunction(() => document.querySelector('style[data-theme-studio-preview]'));
+  await page.waitForLoadState('networkidle');
+}
 
 test.describe('Theme studio', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/create-theme');
+    await ready(page);
   });
 
   test('updates the generated theme while preserving the live preview', async ({ page }) => {
@@ -10,7 +37,7 @@ test.describe('Theme studio', () => {
     await page.getByRole('textbox', { name: 'Theme name' }).fill('Northern Lights');
 
     await expect(page.getByText(":root[data-color='northern-lights']")).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'northern-lights' })).toBeVisible();
+    await expect(page.getByText('northern-lights.css', { exact: true }).first()).toBeVisible();
 
     await page.getByRole('switch', { name: 'Dark preview' }).click();
     await expect(page.getByRole('switch', { name: 'Dark preview' })).toBeChecked();
@@ -27,6 +54,9 @@ test.describe('Theme studio', () => {
     expect(css).toContain("[data-volt-theme][data-color='custom-theme']");
 
     await page.goto('/docs/components/button');
+    // After hydration: the site's theme switcher writes <html> once it boots.
+    await page.waitForLoadState('networkidle');
+    await page.addStyleTag({ content: '*, *::before, *::after { transition: none !important; }' });
     await page.addStyleTag({ content: css });
     await page.evaluate(() => {
       const root = document.documentElement;
@@ -96,7 +126,7 @@ test.describe('Theme studio', () => {
     await page.getByRole('textbox', { name: /Paste the JSON export/ }).fill('{ "nope": true }');
     await page.getByRole('button', { name: 'Apply palette' }).click();
 
-    await expect(page.getByRole('alert')).toContainText('No palette found');
+    await expect(page.getByRole('alert').filter({ hasText: 'No palette found' })).toBeVisible();
   });
 
   test('keeps the preview panel pinned while the editor scrolls', async ({ page }) => {
@@ -121,5 +151,107 @@ test.describe('Theme studio', () => {
     );
     expect(hasHorizontalOverflow).toBe(false);
     await expect(page.getByRole('heading', { name: 'Live preview' })).toBeVisible();
+  });
+
+  test('a project opened in the studio paints the preview exactly as the exported app', async ({
+    page,
+  }) => {
+    await page.getByRole('textbox', { name: 'Or paste the project JSON' }).fill(PROJECT_TEXT);
+    await page.getByRole('button', { name: 'Open project' }).click();
+    await page.getByText('Settings form').click();
+    const preview = page.getByTestId('theme-preview');
+    const save = preview.getByRole('button', { name: 'Save changes' });
+    const input = preview.getByRole('textbox', { name: 'Workspace name' });
+
+    // The values theme-custom.spec.ts measures in the consumer app built from the same export.
+    for (const mode of ['light', 'dark'] as const) {
+      if (mode === 'dark') await page.getByRole('switch', { name: 'Dark preview' }).click();
+      await expect.poll(() => hex(save, 'background-color')).toBe(PROJECT[mode].primary);
+      expect(await hex(save, 'color')).toBe(PROJECT[mode].primaryForeground);
+      expect(await css(save, 'border-top-left-radius')).toBe(`${PROJECT.shape.radius}px`);
+      expect(await css(save, 'border-top-width')).toBe(`${PROJECT.shape.borderWidth}px`);
+      expect(await css(input, 'border-top-width')).toBe(`${PROJECT.shape.borderWidth}px`);
+    }
+    // Source order is what makes the export's overrides win over the style, as in an app.
+    expect(
+      await page.evaluate(() =>
+        document.head.lastElementChild?.hasAttribute('data-theme-studio-preview')
+      )
+    ).toBe(true);
+  });
+
+  test('preview overlays carry the draft and leave the site theme alone', async ({ page }) => {
+    const before = await page.evaluate(
+      () => document.documentElement.outerHTML.match(/<html[^>]*>/)?.[0]
+    );
+    await page.getByText('Data and overlays').click();
+    const preview = page.getByTestId('theme-preview');
+    await preview.getByRole('button', { name: 'Actions for INV-1042' }).click();
+    await page.getByRole('menuitem', { name: 'Edit' }).click();
+    const dialog = page.getByRole('dialog', { name: 'Edit INV-1042' });
+    await expect(dialog).toBeVisible();
+    await expect(dialog.locator('xpath=ancestor-or-self::*[@data-color][1]')).toHaveAttribute(
+      'data-color',
+      'studio-preview'
+    );
+
+    await dialog.getByRole('combobox', { name: 'Status' }).click();
+    await expect(page.getByRole('listbox')).toBeVisible();
+    await page.keyboard.press('Escape');
+    await expect(page.getByRole('listbox')).toBeHidden();
+    await expect(dialog).toBeVisible();
+    await page.keyboard.press('Escape');
+    await expect(dialog).toBeHidden();
+    await expect(preview.getByRole('button', { name: 'Actions for INV-1042' })).toBeFocused();
+    expect(
+      await page.evaluate(() => document.documentElement.outerHTML.match(/<html[^>]*>/)?.[0])
+    ).toBe(before);
+  });
+
+  test('the contrast inspector leads from a failure to its token and a reversible fix', async ({
+    page,
+  }) => {
+    await page.getByRole('tab', { name: 'Dark' }).click();
+    const dark = page.getByRole('tabpanel', { name: 'Dark' });
+    await dark
+      .getByRole('textbox', { name: 'Ring hex value' })
+      .fill(await dark.getByRole('textbox', { name: 'Background hex value' }).inputValue());
+    await page.getByRole('tab', { name: 'Light' }).click();
+
+    const item = page.locator('[data-result="dark:ring|background"]');
+    await expect(item).toContainText('Fail');
+    await expect(item).toContainText('1:1, needs 3:1');
+    await item.getByRole('button', { name: 'Edit token' }).click();
+    await expect(page.getByRole('tab', { name: 'Dark' })).toHaveAttribute('aria-selected', 'true');
+    await expect(dark.getByLabel('Ring', { exact: true })).toBeFocused();
+
+    await item.getByRole('button', { name: /^Change --ring from/ }).click();
+    await expect(item).toHaveCount(0);
+    await page.getByRole('button', { name: 'Undo' }).click();
+    await expect(page.locator('[data-result="dark:ring|background"]')).toContainText('Fail');
+  });
+
+  test('keeps a saved theme and the draft across a reload, in this browser only', async ({
+    page,
+  }) => {
+    await page.getByRole('textbox', { name: 'Theme name' }).fill('Reload Check');
+    await page.getByRole('button', { name: 'Save theme' }).click();
+    await expect(page.getByTestId('draft-state')).toHaveText(/No unsaved changes/);
+    await page
+      .getByRole('tabpanel', { name: 'Light' })
+      .getByRole('textbox', { name: 'Primary hex value' })
+      .fill('#7c3aed');
+    await expect(page.getByTestId('draft-state')).toHaveText(/Unsaved changes/);
+
+    await page.reload();
+    await ready(page);
+    await expect(page.getByRole('textbox', { name: 'Theme name' })).toHaveValue('reload-check');
+    await expect(
+      page
+        .getByRole('tabpanel', { name: 'Light' })
+        .getByRole('textbox', { name: 'Primary hex value' })
+    ).toHaveValue('#7c3aed');
+    await expect(page.getByTestId('draft-state')).toHaveText(/Unsaved changes/);
+    await expect(page.getByRole('list', { name: 'Saved themes' })).toContainText('reload-check');
   });
 });

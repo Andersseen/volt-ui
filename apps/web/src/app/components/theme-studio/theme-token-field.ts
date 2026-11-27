@@ -1,8 +1,8 @@
 import {
+  afterRenderEffect,
   ChangeDetectionStrategy,
   Component,
   computed,
-  effect,
   ElementRef,
   input,
   output,
@@ -121,7 +121,9 @@ export class ThemeTokenField {
   private readonly picker = viewChild.required<ElementRef<HTMLInputElement>>('picker');
 
   constructor() {
-    effect(() => {
+    // After rendering: the request usually switches the tab first, and a field in a panel that is
+    // still hidden cannot take focus.
+    afterRenderEffect(() => {
       if (this.focusRequest() === null) return;
       const element = this.picker().nativeElement;
       element.scrollIntoView?.({ block: 'center' });

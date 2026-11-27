@@ -52,3 +52,31 @@ test('copied components follow every style and mode', async ({ page }) => {
   await expect(page.locator('[data-scoped="popover"]')).toHaveAttribute('data-style', 'brutal');
   expect(errors).toEqual([]);
 });
+
+test('a Theme Studio palette declared with uiCustomColor paints the copied components', async ({
+  page,
+}) => {
+  const errors: string[] = [];
+  page.on('pageerror', error => errors.push(error.message));
+  // The same fixture as the package path (e2e/contracts/theme-custom.spec.ts), through the CLI
+  // transform: `voltCustomColor` becomes `uiCustomColor`, `voltTheme` becomes `uiTheme`.
+  await page.goto('/themes.html#custom');
+  await expect(page.locator('#custom-light')).toBeVisible();
+  await page.addStyleTag({ content: '*, *::before, *::after { transition: none !important; }' });
+
+  const solid = (scope: string) => page.locator(`#${scope} > ui-button button`);
+  const rgb = (locator: Locator) => css(locator, 'background-color');
+  expect(await css(solid('custom-light'), 'border-top-left-radius')).toBe('10px');
+  expect(await rgb(solid('custom-light'))).not.toBe(await rgb(solid('outside')));
+  expect(await rgb(solid('nested-custom-light'))).toBe(await rgb(solid('custom-light')));
+  expect(await rgb(solid('custom-dark'))).not.toBe(await rgb(solid('custom-light')));
+  await expect(page.locator('#custom-dark')).toHaveAttribute('data-color', 'acme');
+
+  await page.locator('#apply-root').click();
+  await expect(page.locator('html')).toHaveAttribute('data-color', 'acme');
+  expect(await rgb(solid('outside'))).toBe(await rgb(solid('custom-light')));
+
+  await page.getByRole('button', { name: 'Open custom dialog' }).click();
+  await expect(page.locator('[data-scoped="custom-dialog"]')).toHaveAttribute('data-color', 'acme');
+  expect(errors).toEqual([]);
+});

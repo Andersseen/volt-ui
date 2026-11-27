@@ -11,6 +11,8 @@
 @import '@voltui/components/themes/styles/brutal.css';
 @import '@voltui/components/themes/styles/ghost.css';
 @import '@voltui/components/themes/styles/retro.css';
+/* A palette exported by Theme Studio, after the package's themes (acme.theme.json). */
+@import './acme.css';
 
 body {
   margin: 0;

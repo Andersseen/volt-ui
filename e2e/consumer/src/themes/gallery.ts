@@ -61,6 +61,7 @@ import {
   VoltToggleGroup,
   VoltToggleGroupItem,
 } from '@voltui/components';
+import { ThemeCustomFixture } from './custom';
 import { ThemeScopeFixture } from './scope';
 
 /**
@@ -75,6 +76,7 @@ import { ThemeScopeFixture } from './scope';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ReactiveFormsModule,
+    ThemeCustomFixture,
     ThemeScopeFixture,
     VoltAccordion,
     VoltAccordionContent,
@@ -139,6 +141,8 @@ import { ThemeScopeFixture } from './scope';
   template: `
     @if (scope) {
       <app-theme-scope />
+    } @else if (custom) {
+      <app-theme-custom />
     } @else {
       <main class="grid grid-cols-3 items-start gap-6 p-6" style="width: 1240px">
         <section class="grid gap-4" aria-label="Actions">
@@ -299,6 +303,8 @@ import { ThemeScopeFixture } from './scope';
 export class ThemeGallery {
   /** `themes.html#scope` shows the scope and override fixture instead of the gallery. */
   protected readonly scope = location.hash === '#scope';
+  /** `themes.html#custom`: a palette exported by Theme Studio, declared with `voltCustomColor`. */
+  protected readonly custom = location.hash === '#custom';
   protected readonly progress = signal(64);
   protected readonly cities = ['Madrid', 'Kyiv', 'Lima'];
   protected readonly invalid = new FormControl('', {
