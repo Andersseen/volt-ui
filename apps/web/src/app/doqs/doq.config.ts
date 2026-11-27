@@ -8,6 +8,7 @@ import { SelectExample } from './examples/select-example';
 import { CheckboxApi, FormFieldApi, InputApi, SelectApi } from './host/api-references';
 import {
   CliAvailability,
+  CustomThemesAvailability,
   InputDescribedByAvailability,
   QuartzAvailability,
   ThemeDensityAvailability,
@@ -64,6 +65,7 @@ export const doqConfig = defineDoqConfig({
     'availability-quartz': QuartzAvailability,
     'availability-input-describedby': InputDescribedByAvailability,
     'availability-theme-density': ThemeDensityAvailability,
+    'availability-custom-themes': CustomThemesAvailability,
   },
   playgrounds: {
     input: {

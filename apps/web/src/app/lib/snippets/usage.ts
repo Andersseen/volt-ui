@@ -816,6 +816,14 @@ import {
       <volt-pagination-button [page]="3" />
       <volt-pagination-next />
     </volt-pagination>
+
+    <!-- The arrows show only an icon; label names them in your app's language. -->
+    <volt-pagination [(page)]="page" [pageCount]="5">
+      <volt-pagination-previous label="Página anterior" />
+      <volt-pagination-button [page]="1" />
+      <volt-pagination-button [page]="2" />
+      <volt-pagination-next label="Página siguiente" />
+    </volt-pagination>
   \`,
 })
 export class MyComponent {
@@ -887,7 +895,13 @@ import { VoltCombobox } from '@voltui/components';
 @Component({
   imports: [ReactiveFormsModule, VoltCombobox],
   template: \`
-    <volt-combobox [formControl]="framework" [items]="frameworks">
+    <!-- loadingText, emptyText, placeholder and toggleLabel are its built-in words: translate them. -->
+    <volt-combobox
+      label="Framework"
+      toggleLabel="Show frameworks"
+      [formControl]="framework"
+      [items]="frameworks"
+    >
       <ng-template let-item>{{ item }}</ng-template>
     </volt-combobox>
   \`,
@@ -950,7 +964,7 @@ export class RemoteExample {
   }
 }`;
 
-export const DATE_PICKER_USAGE = `import { Component, computed, signal } from '@angular/core';
+export const DATE_PICKER_USAGE = `import { Component, computed, inject, LOCALE_ID, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import {
   NgpDatePickerCellRender,
@@ -978,7 +992,7 @@ import {
     NgpDatePickerRowRender,
   ],
   template: \`
-    <volt-date-picker [formControl]="date" [(focusedDate)]="focusedDate">
+    <volt-date-picker [formControl]="date" [(focusedDate)]="focusedDate" [firstDayOfWeek]="firstDay">
       <div class="flex items-center justify-between">
         <volt-date-picker-previous-month aria-label="Previous month">
           ‹
@@ -1011,14 +1025,23 @@ import {
   \`,
 })
 export class MyComponent {
+  // Day names (and each day's accessible name) follow the app's LOCALE_ID: 'es', 'uk'…
+  private readonly locale = inject(LOCALE_ID);
+  // 1 = Monday … 7 = Sunday (the default). Most of Europe, Ukraine included, starts on Monday.
+  readonly firstDay = 1;
+
   date = new FormControl<Date | null>(new Date());
   focusedDate = signal(new Date());
-  weekDays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+  // 1 January 2024 was a Monday: day n of that week is weekday n.
+  weekDays = Array.from({ length: 7 }, (_, i) =>
+    new Intl.DateTimeFormat(this.locale, { weekday: 'short' }).format(
+      new Date(2024, 0, ((this.firstDay - 1 + i) % 7) + 1)
+    )
+  );
   label = computed(() =>
-    this.focusedDate().toLocaleString('en-US', {
-      month: 'long',
-      year: 'numeric',
-    })
+    new Intl.DateTimeFormat(this.locale, { month: 'long', year: 'numeric' }).format(
+      this.focusedDate()
+    )
   );
 }`;
 

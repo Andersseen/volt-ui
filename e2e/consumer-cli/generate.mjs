@@ -47,7 +47,7 @@ const { transformContent } = createRequire(import.meta.url)(join(REPO_ROOT, 'cli
 const FIXTURES = [
   { src: 'workflow', files: ['admin-workflow.ts', 'main.ts'] },
   { src: 'async', files: ['async-data.ts', 'main.ts'] },
-  { src: 'themes', files: ['gallery.ts', 'scope.ts', 'main.ts'] },
+  { src: 'themes', files: ['gallery.ts', 'scope.ts', 'custom.ts', 'main.ts'] },
 ];
 for (const { src, files } of FIXTURES) {
   const fixtureSrc = join(REPO_ROOT, 'e2e/consumer/src', src);
@@ -71,6 +71,12 @@ writeFileSync(
     "@source './**/*.{html,ts}';",
     "@source './**/*.{html,ts}';\n@source '../ui/**/*.ts';"
   )
+);
+
+// The palette exported by Theme Studio is plain CSS: the copy-and-own path imports the same file.
+writeFileSync(
+  join(__dirname, 'src/themes/acme.css'),
+  readFileSync(join(REPO_ROOT, 'e2e/consumer/src/themes/acme.css'), 'utf-8')
 );
 
 console.log('Done.');

@@ -15,11 +15,87 @@ export type VoltThemeStyle = (typeof STYLES)[number];
 
 export type VoltThemeDensity = (typeof DENSITIES)[number];
 
-export interface VoltThemeOptions {
-  color?: VoltThemeColor;
-  style?: VoltThemeStyle;
+declare const CUSTOM_COLOR: unique symbol;
+declare const CUSTOM_STYLE: unique symbol;
+
+/**
+ * The name of a palette your own stylesheet defines (`:root[data-color='acme']`, for example the
+ * CSS Theme Studio exports). Only `voltCustomColor()` creates one, so a typo or an unchecked string
+ * cannot reach the theme APIs where a palette name is expected.
+ */
+export type VoltCustomColor = string & { readonly [CUSTOM_COLOR]: true };
+
+/** The name of a style preset your own stylesheet defines (`:root[data-style='…']`). See `voltCustomStyle()`. */
+export type VoltCustomStyle = string & { readonly [CUSTOM_STYLE]: true };
+
+/** A palette the theme APIs accept: one of the five shipped ones, or a declared custom one. */
+export type VoltThemeColorName = VoltThemeColor | VoltCustomColor;
+
+/** A style the theme APIs accept: one of the five shipped ones, or a declared custom one. */
+export type VoltThemeStyleName = VoltThemeStyle | VoltCustomStyle;
+
+/**
+ * A theme: palette, style, mode and density. Without type arguments it holds only the shipped
+ * presets, as it always has; the theme functions and `voltTheme` accept
+ * `VoltThemeOptions<VoltThemeColorName, VoltThemeStyleName>`, which adds declared custom names.
+ */
+export interface VoltThemeOptions<
+  TColor extends string = VoltThemeColor,
+  TStyle extends string = VoltThemeStyle,
+> {
+  color?: TColor;
+  style?: TStyle;
   dark?: boolean;
   density?: VoltThemeDensity;
+}
+
+/** What every theme API accepts: shipped presets plus declared custom names. */
+export type VoltAnyThemeOptions = VoltThemeOptions<VoltThemeColorName, VoltThemeStyleName>;
+
+/**
+ * Lowercase letters, digits and single hyphens, starting with a letter: a name that is safe in an
+ * attribute selector, an HTML attribute and a storage record, at most 48 characters.
+ */
+const THEME_NAME = /^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$/;
+const THEME_NAME_MAX = 48;
+
+function isThemeName(value: unknown): value is string {
+  return typeof value === 'string' && value.length <= THEME_NAME_MAX && THEME_NAME.test(value);
+}
+
+function declareName(kind: 'color' | 'style', name: string, shipped: readonly string[]): string {
+  if (!isThemeName(name)) {
+    throw new Error(
+      `[volt] "${String(name)}" is not a valid custom ${kind} name: use lowercase letters, digits ` +
+        `and single hyphens, starting with a letter (at most ${THEME_NAME_MAX} characters).`
+    );
+  }
+  if (shipped.includes(name)) {
+    throw new Error(
+      `[volt] "${name}" is a shipped ${kind}; a custom ${kind} needs a name of its own.`
+    );
+  }
+  return name;
+}
+
+/**
+ * Declares a palette your stylesheet defines, so the theme APIs accept it:
+ *
+ * ```ts
+ * export const acme = voltCustomColor('acme'); // :root[data-color='acme'] { … } in your CSS
+ * provideVoltTheme({ color: acme });
+ * ```
+ *
+ * Throws for a name that is not a safe identifier or that collides with a shipped palette. It only
+ * validates and brands the name; nothing is registered globally and no stylesheet is loaded.
+ */
+export function voltCustomColor(name: string): VoltCustomColor {
+  return declareName('color', name, COLORS) as VoltCustomColor;
+}
+
+/** Declares a style preset your stylesheet defines (`:root[data-style='…']`). See `voltCustomColor`. */
+export function voltCustomStyle(name: string): VoltCustomStyle {
+  return declareName('style', name, STYLES) as VoltCustomStyle;
 }
 
 function getDocument(doc?: Document): Document | null {
@@ -30,20 +106,32 @@ function getDocument(doc?: Document): Document | null {
   return typeof document !== 'undefined' ? document : null;
 }
 
-export function applyVoltTheme(options: VoltThemeOptions = {}, doc?: Document): void {
+/** Malformed names are dropped (with a warning in development) instead of written to the DOM. */
+function safeName(kind: 'color' | 'style', value: string | undefined): string | undefined {
+  if (value === undefined || value === '') return undefined;
+  if (isThemeName(value)) return value;
+  if (typeof ngDevMode === 'undefined' || ngDevMode) {
+    console.warn(`[volt] Ignoring a malformed theme ${kind}: ${JSON.stringify(value)}`);
+  }
+  return undefined;
+}
+
+export function applyVoltTheme(options: VoltAnyThemeOptions = {}, doc?: Document): void {
   const activeDocument = getDocument(doc);
   if (!activeDocument) {
     return;
   }
 
   const root = activeDocument.documentElement;
+  const color = safeName('color', options.color);
+  const style = safeName('style', options.style);
 
-  if (options.color) {
-    root.setAttribute('data-color', options.color);
+  if (color) {
+    root.setAttribute('data-color', color);
   }
 
-  if (options.style) {
-    root.setAttribute('data-style', options.style);
+  if (style) {
+    root.setAttribute('data-style', style);
   }
 
   if (options.density) {
@@ -56,7 +144,7 @@ export function applyVoltTheme(options: VoltThemeOptions = {}, doc?: Document): 
   }
 }
 
-export function provideVoltTheme(options: VoltThemeOptions = {}): EnvironmentProviders {
+export function provideVoltTheme(options: VoltAnyThemeOptions = {}): EnvironmentProviders {
   return makeEnvironmentProviders([
     provideEnvironmentInitializer(() => {
       // Reads the platform-provided Document (the domino-backed document on
@@ -76,7 +164,15 @@ export interface VoltThemeInitScriptOptions {
   /** Where the visitor's theme is stored (`persistVoltTheme` writes it). Default `volt-theme`. */
   storageKey?: string;
   /** The theme before the visitor picked one. Its `dark`, if set, wins over the system setting. */
-  defaults?: VoltThemeOptions;
+  defaults?: VoltAnyThemeOptions;
+  /**
+   * Custom palettes a stored choice may name, besides the shipped five. A stored name that is in
+   * neither list is ignored, so the page falls back to `defaults`. A custom `defaults.color` must be
+   * listed here too.
+   */
+  customColors?: readonly VoltCustomColor[];
+  /** Custom styles a stored choice may name, besides the shipped five. See `customColors`. */
+  customStyles?: readonly VoltCustomStyle[];
   /** With no stored or default `dark`, follow `prefers-color-scheme`. Default `true`. */
   followSystem?: boolean;
 }
@@ -100,8 +196,11 @@ export function voltThemeInitScript(options: VoltThemeInitScriptOptions = {}): s
   const key = scriptLiteral(options.storageKey ?? VOLT_THEME_STORAGE_KEY);
   const defaults = scriptLiteral(options.defaults ?? {});
   const followSystem = options.followSystem ?? true;
+  // Re-validated: a cast or a JavaScript caller can bypass the branded type.
+  const colors = [...COLORS, ...(options.customColors ?? []).map(name => voltCustomColor(name))];
+  const styles = [...STYLES, ...(options.customStyles ?? []).map(name => voltCustomStyle(name))];
   return (
-    `(function(){var C=${scriptLiteral(COLORS)},S=${scriptLiteral(STYLES)},D=${scriptLiteral(DENSITIES)};` +
+    `(function(){var C=${scriptLiteral(colors)},S=${scriptLiteral(styles)},D=${scriptLiteral(DENSITIES)};` +
     `var t=${defaults},s={};` +
     `try{s=JSON.parse(localStorage.getItem(${key})||'{}')||{}}catch(e){}` +
     `var c=C.indexOf(s.color)>-1?s.color:t.color,y=S.indexOf(s.style)>-1?s.style:t.style,` +
@@ -124,7 +223,7 @@ export function voltThemeInitScript(options: VoltThemeInitScriptOptions = {}): s
  * mode, quota) are ignored, the theme is still applied.
  */
 export function persistVoltTheme(
-  options: VoltThemeOptions,
+  options: VoltAnyThemeOptions,
   storageKey: string = VOLT_THEME_STORAGE_KEY,
   doc?: Document
 ): void {
@@ -135,7 +234,10 @@ export function persistVoltTheme(
       const stored = JSON.parse(storage.getItem(storageKey) ?? '{}') ?? {};
       const next = { ...stored };
       for (const [name, value] of Object.entries(options)) {
-        if (value !== undefined) next[name] = value;
+        if (value === undefined) continue;
+        // A malformed name is not stored: the init script would only have to discard it.
+        if ((name === 'color' || name === 'style') && !isThemeName(value)) continue;
+        next[name] = value;
       }
       storage.setItem(storageKey, JSON.stringify(next));
     } catch {

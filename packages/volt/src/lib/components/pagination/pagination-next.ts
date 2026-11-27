@@ -19,7 +19,7 @@ import { cn } from '../../utils';
     <button
       ngpPaginationNext
       [ngpPaginationNextDisabled]="disabled()"
-      class="inline-flex h-control-dense w-control-dense items-center justify-center rounded-md border-(length:--volt-control-border-width) border-input bg-background text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-(length:--ring-width) focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 cursor-pointer"
+      class="inline-flex h-control-dense w-control-dense items-center justify-center rounded-md border-(length:--volt-control-border-width) border-input bg-background text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-hidden focus-visible:ring-(length:--ring-width) focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 cursor-pointer"
       type="button"
     >
       <svg
@@ -36,12 +36,15 @@ import { cn } from '../../utils';
       >
         <path d="m9 18 6-6-6-6" />
       </svg>
-      <span class="sr-only">Next page</span>
+      <span class="sr-only">{{ label() }}</span>
     </button>
   `,
 })
 export class VoltPaginationNext {
   readonly class = input<string>('');
+
+  /** The button's accessible name; it shows only an icon. Set it in your app's language. */
+  readonly label = input('Next page');
 
   protected readonly classes = computed(() => cn('inline-flex', this.class()));
 

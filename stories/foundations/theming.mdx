@@ -60,4 +60,13 @@ The **Colour preset**, **Style preset** and **Appearance** items in the toolbar 
 
 ## Custom palettes
 
-Build a contrast-checked palette in the [Theme Builder](https://voltui.dev/create-theme) and import it as another colour preset.
+Build a palette in [Theme Studio](https://voltui.dev/create-theme): start from any shipped palette, edit both modes, follow the contrast inspector, then export the CSS (and the `.theme.json` project to keep editing it). Import the CSS **after** `@voltui/components/themes.css`, so its shape overrides win over the style preset, and declare its name:
+
+```ts
+import { provideVoltTheme, voltCustomColor } from '@voltui/components';
+
+export const acme = voltCustomColor('acme');
+provideVoltTheme({ color: acme, style: 'soft', density: 'compact' });
+```
+
+The declared name works everywhere a shipped palette does — `applyVoltTheme`, `[voltTheme]` (light, dark, nested either way, with its overlays) and `voltThemeInitScript({ customColors: [acme] })` — and nothing is registered globally. `voltCustomStyle()` does the same for a style preset of your own. With CLI-copied components the names are `uiCustomColor` / `uiCustomStyle`. The contrast inspector is a token-level check; it does not replace rendered checks or a review with assistive technology.

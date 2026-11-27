@@ -10,7 +10,7 @@ order: 3
 Після `volt add button` файл `src/app/ui/button/button.ts` належить вам (або там, куди вказує конфігурація вашого CLI). Потрібен четвертий розмір кнопки? Додайте його напряму — більше нічого перегенеровувати чи синхронізувати не треба.
 
 ```ts
-// ui/button/variants.ts
+// Fragment: your copied ui/button/variants.ts, one size added.
 export const buttonVariants = cva('...', {
   variants: {
     size: {
@@ -31,7 +31,7 @@ export const buttonVariants = cva('...', {
 Компоненти з візуальними варіантами (button, badge, toast, ...) виносять стилі в сусідній `variants.ts` за допомогою [class-variance-authority](https://cva.style/docs). Сам компонент лише обчислює, який варіант активний, і ніколи не прописує умовні класи в шаблоні:
 
 ```ts
-// button.ts
+// Fragment: inside your copied button.ts.
 protected readonly classes = computed(() =>
   cn(buttonVariants({ variant: this.variant(), size: this.size() }), this.class())
 );

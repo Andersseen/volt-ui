@@ -42,3 +42,12 @@ export class InputDescribedByAvailability {}
   template: `<app-availability-note [capabilities]="['components.theme-density']" />`,
 })
 export class ThemeDensityAvailability {}
+
+/** `voltCustomColor()` and the custom-theme contract (Theme System). */
+@Component({
+  selector: 'app-custom-themes-availability',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [AvailabilityNote],
+  template: `<app-availability-note [capabilities]="['components.custom-themes']" />`,
+})
+export class CustomThemesAvailability {}

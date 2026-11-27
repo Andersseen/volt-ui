@@ -1,0 +1,64 @@
+:root[data-color='acme'],
+[data-volt-theme][data-color='acme'] {
+  --background: #fcf8f3;
+  --foreground: #271a12;
+  --surface: #fffdfa;
+  --surface-foreground: #271a12;
+  --muted: #f3ebe3;
+  --muted-foreground: #6e5c50;
+  --border: #e3d7cc;
+  --input: #9a887a;
+  --ring: #6d28d9;
+  --primary: #6d28d9;
+  --primary-foreground: #ffffff;
+  --secondary: #f6e3ce;
+  --secondary-foreground: #4b2915;
+  --success: #137738;
+  --success-foreground: #ffffff;
+  --warning: #eabf3a;
+  --warning-foreground: #351f00;
+  --error: #d00034;
+  --error-foreground: #ffffff;
+  --info: #036eae;
+  --info-foreground: #ffffff;
+  --destructive: #d00034;
+  --destructive-foreground: #ffffff;
+  --radius: 10px;
+  --volt-radius-pill: 9999px;
+  --border-width: 2px;
+  --volt-control-border-width: 2px;
+  --ring-width: 3px;
+  --ring-offset-width: 2px;
+  --volt-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.025);
+  --volt-shadow: 0 2px 8px 0 rgb(0 0 0 / 0.03333333333333333);
+  --volt-shadow-md: 0 8px 20px 0 rgb(0 0 0 / 0.038461538461538464);
+  --volt-shadow-lg: 0 18px 38px 0 rgb(0 0 0 / 0.045454545454545456);
+  --volt-shadow-xl: 0 28px 56px 0 rgb(0 0 0 / 0.05555555555555555);
+}
+
+.dark[data-color='acme'],
+.dark [data-volt-theme][data-color='acme']:not([data-mode='light']) {
+  --background: #17100c;
+  --foreground: #f3ede6;
+  --surface: #211914;
+  --surface-foreground: #f3ede6;
+  --muted: #312620;
+  --muted-foreground: #b9ab9e;
+  --border: #46372e;
+  --input: #837064;
+  --ring: #c4b5fd;
+  --primary: #c4b5fd;
+  --primary-foreground: #1e1b4b;
+  --secondary: #402b1c;
+  --secondary-foreground: #eee7dd;
+  --success: #62c37a;
+  --success-foreground: #041608;
+  --warning: #ebc751;
+  --warning-foreground: #2f1a00;
+  --error: #fa676e;
+  --error-foreground: #230708;
+  --info: #65b4e9;
+  --info-foreground: #001321;
+  --destructive: #fa676e;
+  --destructive-foreground: #230708;
+}

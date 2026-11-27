@@ -16,6 +16,7 @@ Volt UI постачається з п’ятьма кольоровими пр�
 Додайте провайдер теми до конфігурації свого застосунку:
 
 ```ts
+import { ApplicationConfig } from '@angular/core';
 import { provideVoltTheme } from '@voltui/components';
 
 export const appConfig: ApplicationConfig = {
@@ -67,6 +68,7 @@ export const appConfig: ApplicationConfig = {
 
 ```ts
 // app.config.ts — set the theme at bootstrap
+import { ApplicationConfig } from '@angular/core';
 import { provideVoltTheme } from '@voltui/components';
 
 export const appConfig: ApplicationConfig = {
@@ -79,11 +81,12 @@ export const appConfig: ApplicationConfig = {
 Темний режим працює через клас: додавання `.dark` до `<html>` перемикає кожен компонент на його темні значення токенів (див. `@custom-variant dark` у `core.css`). Volt **не** читає `prefers-color-scheme` автоматично: `dark` за замовчуванням світлий, доки ви не передасте `dark: true` або не викличете `applyVoltTheme` самі, тож вибір завжди явний і не зміниться мовчки, якщо відвідувач змінить тему своєї системи.
 
 ```ts
-// Static: dark by default
-provideVoltTheme({ color: 'volt', dark: true });
+import { applyVoltTheme, provideVoltTheme } from '@voltui/components';
+
+// Static: dark by default (in your appConfig providers)
+export const themeProviders = [provideVoltTheme({ color: 'volt', dark: true })];
 
 // Dynamic: toggle from a button, a signal, etc.
-import { applyVoltTheme } from '@voltui/components';
 applyVoltTheme({ dark: true });
 
 // Opt in to following the OS preference yourself
@@ -159,10 +162,91 @@ const script = voltThemeInitScript({ defaults: { color: 'volt', style: 'soft' } 
 
 ## Створити власний кольоровий пресет
 
-Кольоровий пресет — це просто пара селекторів за ключем `data-color`. Скопіюйте цей шаблон, замініть `'mytheme'` та значення, а тоді імпортуйте файл після `@voltui/components/themes.css` у своїй глобальній таблиці стилів.
+Кольоровий пресет — це пара селекторів, прив’язаних до `data-color`: один для світлого режиму, другий для темного. [Theme Studio](/uk/create-theme) напише його за вас: почніть із будь-якої вбудованої палітри, відредагуйте токени, перевірте інспектор контрасту, а потім скопіюйте або завантажте CSS. Файл **Проєкту** (`.theme.json`) зберігає редаговану тему, щоб пізніше знову відкрити її в студії.
+
+::demo[availability-custom-themes]
+
+### 1. Імпортуйте його після тем Volt
+
+Збережіть експортовану таблицю стилів (тут `acme.css`) поруч із глобальними стилями й імпортуйте її **після** `@voltui/components/themes.css`. Порядок важливий: перевизначення форми з палітри (радіус, рамки, кільце фокусу, тіні) і пресет стилю використовують селектори однакової специфічності, тож перемагає пізніший файл.
 
 ```css
-:root[data-color='mytheme'] {
+/* styles.css */
+@import 'tailwindcss';
+@import '@voltui/components/themes.css';
+@import './acme.css';
+```
+
+### 2. Оголосіть назву й використовуйте її як вбудовану палітру
+
+`voltCustomColor()` перетворює назву на `VoltCustomColor`, який приймають усі API тем. Функція кидає помилку, якщо назва не є ідентифікатором у нижньому регістрі (`a-z`, цифри й одинарні дефіси, на початку літера, щонайбільше 48 символів) або належить вбудованій палітрі. Нічого не реєструється глобально й жодна таблиця стилів не завантажується: малює й далі імпортований вами CSS.
+
+```ts
+// theme.ts
+import { ApplicationConfig } from '@angular/core';
+import { provideVoltTheme, voltCustomColor } from '@voltui/components';
+
+export const acme = voltCustomColor('acme');
+
+export const appConfig: ApplicationConfig = {
+  providers: [provideVoltTheme({ color: acme, style: 'soft', density: 'compact' })],
+};
+```
+
+Та сама назва працює для області з `voltTheme` — світлої, темної та вкладеної в обидва боки з вбудованими палітрами, — а оверлеї, відкриті всередині, переносять її з собою:
+
+```ts
+import { Component } from '@angular/core';
+import { VoltButton, VoltTheme, voltCustomColor } from '@voltui/components';
+
+const acme = voltCustomColor('acme');
+
+@Component({
+  selector: 'app-preview',
+  imports: [VoltButton, VoltTheme],
+  template: `
+    <section [voltTheme]="{ color: acme, dark: true }">
+      <volt-button>Dark acme island</volt-button>
+    </section>
+  `,
+})
+export class Preview {
+  protected readonly acme = acme;
+}
+```
+
+Щоб відновити збережену палітру відвідувача до першого відмальовування, перелічіть свої палітри у `voltThemeInitScript`. Збережена назва, якої немає в жодному зі списків — підроблена або зі старої версії, — ігнорується, і застосовуються типові значення.
+
+```ts
+import { voltCustomColor, voltThemeInitScript } from '@voltui/components';
+
+const acme = voltCustomColor('acme');
+export const themeScript = voltThemeInitScript({
+  defaults: { color: acme },
+  customColors: [acme],
+});
+```
+
+Для компонентів, скопійованих CLI, той самий код імпортує з вашої теки UI, а CLI перейменовує префікс `volt`: `uiCustomColor` з `./ui/theme`. Власні пресети стилю працюють так само з `voltCustomStyle()` і `customStyles`.
+
+### Палітра, стиль і щільність — окремі речі
+
+| Що                              | Де живе                                              | Хто задає                                          |
+| ------------------------------- | ---------------------------------------------------- | -------------------------------------------------- |
+| **Палітра** (`data-color`)      | Ваш експортований CSS: кольорові токени обох режимів | `color: acme`                                      |
+| **Перевизначення форми**        | Той самий CSS, лише значення, змінені в студії       | Імпортуються після пресетів стилю, тож перемагають |
+| **Пресет стилю** (`data-style`) | Файли стилів Volt: рамки, тіні, насиченість шрифту   | `style: 'soft'`                                    |
+| **Щільність** (`data-density`)  | Токени Volt                                          | `density: 'compact'`                               |
+
+Вкладена область `voltTheme`, яка не задає стилю, успадковує перевизначення форми від зовнішньої області, як і будь-який інший успадкований токен.
+
+### Написати вручну
+
+Селектори ті самі, що в кожної вбудованої палітри. Тримайте кожну пару тексту й тла на рівні 4.5:1 або вище, а для `--ring` та `--input` відносно `--background` — 3:1.
+
+```css
+:root[data-color='mytheme'],
+[data-volt-theme][data-color='mytheme'] {
   --primary: oklch(0.58 0.2 265);
   --primary-foreground: oklch(0.98 0 0);
   --secondary: oklch(0.96 0.01 265);
@@ -186,13 +270,14 @@ const script = voltThemeInitScript({ defaults: { color: 'volt', style: 'soft' } 
   --info-foreground: oklch(0.98 0 0);
 }
 
-.dark[data-color='mytheme'] {
+.dark[data-color='mytheme'],
+.dark [data-volt-theme][data-color='mytheme']:not([data-mode='light']) {
   /* same tokens, tuned for a dark --background/--surface */
 }
 ```
 
 > [!TIP]
-> Тримайте кожну пару «текст — фон» із контрастом 4,5:1 або кращим (3:1 для `--ring` та `--input` щодо `--background`) — точну перевірку, яку цей проєкт запускає на власних пресетах, дивіться у `scripts/contrast-audit.mjs`. Інструмент [Створити тему](/uk/create-theme) згенерує відправну точку з одного акцентного кольору, якщо не хочете добирати одинадцять токенів вручну.
+> Інспектор контрасту Theme Studio перевіряє кожну пару, яку малює Volt, в обох режимах, проти порогу її ролі — ті самі пари й обчислення, що й `scripts/contrast-audit.mjs`, який цей проєкт запускає для власних пресетів. Це перевірка на рівні токенів, а не сертифікація WCAG: відрендерені сторінки все одно потребують перевірок у браузері, ручного огляду й тестування зі зчитувачами екрана.
 
 ## Створити власний пресет стилю
 
@@ -222,4 +307,4 @@ const script = voltThemeInitScript({ defaults: { color: 'volt', style: 'soft' } 
 }
 ```
 
-Реєстрація така сама, як у кольорового пресета: покладіть його у глобальну таблицю стилів після `@voltui/components/themes.css`, а тоді задайте `data-style="mystyle"` через `provideVoltTheme` або `applyVoltTheme`.
+Реєстрація така сама, як у кольорового пресета: покладіть його у глобальну таблицю стилів після `@voltui/components/themes.css`, оголосіть його через `const mystyle = voltCustomStyle('mystyle')` і передайте `style: mystyle` у `provideVoltTheme`, `applyVoltTheme` або `voltTheme`.

@@ -929,6 +929,11 @@ export const COMPONENT_API: Record<string, McpComponentApi> = {
             default: "'Loading…'",
           },
           {
+            name: 'toggleLabel',
+            type: 'string',
+            default: "'Toggle dropdown'",
+          },
+          {
             name: 'emptyText',
             type: 'string',
             default: "'No results found.'",
@@ -2661,6 +2666,11 @@ export const COMPONENT_API: Record<string, McpComponentApi> = {
             default: "''",
           },
           {
+            name: 'label',
+            type: 'string',
+            default: "'First page'",
+          },
+          {
             name: 'disabled',
             type: 'boolean',
             default: 'false',
@@ -2676,6 +2686,11 @@ export const COMPONENT_API: Record<string, McpComponentApi> = {
             name: 'class',
             type: 'string',
             default: "''",
+          },
+          {
+            name: 'label',
+            type: 'string',
+            default: "'Last page'",
           },
           {
             name: 'disabled',
@@ -2695,6 +2710,11 @@ export const COMPONENT_API: Record<string, McpComponentApi> = {
             default: "''",
           },
           {
+            name: 'label',
+            type: 'string',
+            default: "'Next page'",
+          },
+          {
             name: 'disabled',
             type: 'boolean',
             default: 'false',
@@ -2710,6 +2730,11 @@ export const COMPONENT_API: Record<string, McpComponentApi> = {
             name: 'class',
             type: 'string',
             default: "''",
+          },
+          {
+            name: 'label',
+            type: 'string',
+            default: "'Previous page'",
           },
           {
             name: 'disabled',
@@ -4050,6 +4075,8 @@ export const COMPONENT_API: Record<string, McpComponentApi> = {
       'persistVoltTheme',
       'provideVoltTheme',
       'VOLT_THEME_STORAGE_KEY',
+      'voltCustomColor',
+      'voltCustomStyle',
       'VoltTheme',
       'VoltThemeInherit',
       'voltThemeInitScript',
@@ -4062,7 +4089,7 @@ export const COMPONENT_API: Record<string, McpComponentApi> = {
         inputs: [
           {
             name: 'voltTheme',
-            type: 'VoltThemeOptions',
+            type: 'VoltAnyThemeOptions',
             default: '{}',
           },
         ],

@@ -53,7 +53,7 @@ Or copy the source into your project and own it: `npx @voltui/cli add date-picke
 The same code as the [voltui.dev guide](https://voltui.dev/docs/components/date-picker), as you would write it in an application:
 
 ````ts
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, inject, LOCALE_ID, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import {
   NgpDatePickerCellRender,
@@ -81,7 +81,7 @@ import {
     NgpDatePickerRowRender,
   ],
   template: `
-    <volt-date-picker [formControl]="date" [(focusedDate)]="focusedDate">
+    <volt-date-picker [formControl]="date" [(focusedDate)]="focusedDate" [firstDayOfWeek]="firstDay">
       <div class="flex items-center justify-between">
         <volt-date-picker-previous-month aria-label="Previous month">
           ‹
@@ -114,14 +114,23 @@ import {
   `,
 })
 export class MyComponent {
+  // Day names (and each day's accessible name) follow the app's LOCALE_ID: 'es', 'uk'…
+  private readonly locale = inject(LOCALE_ID);
+  // 1 = Monday … 7 = Sunday (the default). Most of Europe, Ukraine included, starts on Monday.
+  readonly firstDay = 1;
+
   date = new FormControl<Date | null>(new Date());
   focusedDate = signal(new Date());
-  weekDays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+  // 1 January 2024 was a Monday: day n of that week is weekday n.
+  weekDays = Array.from({ length: 7 }, (_, i) =>
+    new Intl.DateTimeFormat(this.locale, { weekday: 'short' }).format(
+      new Date(2024, 0, ((this.firstDay - 1 + i) % 7) + 1)
+    )
+  );
   label = computed(() =>
-    this.focusedDate().toLocaleString('en-US', {
-      month: 'long',
-      year: 'numeric',
-    })
+    new Intl.DateTimeFormat(this.locale, { month: 'long', year: 'numeric' }).format(
+      this.focusedDate()
+    )
   );
 }
 ````

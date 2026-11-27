@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { AdaptiveFixture } from './adaptive';
 import { CatalogFixture } from './catalog';
 import { NestedCompositesFixture } from './composition';
 import { NestedOverlaysFixture, OverlayFormsFixture } from './overlay-forms';
@@ -30,6 +31,7 @@ import {
   selector: 'app-contracts',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    AdaptiveFixture,
     CatalogFixture,
     DateRangeFixture,
     FeedbackStableFixture,
@@ -121,6 +123,9 @@ import {
         }
         @case ('feedback-stable') {
           <app-feedback-stable />
+        }
+        @case ('adaptive') {
+          <app-adaptive />
         }
       }
     </main>

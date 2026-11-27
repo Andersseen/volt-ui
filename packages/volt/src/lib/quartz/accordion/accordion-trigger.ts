@@ -33,7 +33,7 @@ import { VoltAccordion } from './accordion';
       [attr.data-open]="item.open() ? '' : null"
       [attr.data-closed]="item.open() ? null : ''"
       [attr.data-disabled]="item.itemDisabled() ? '' : null"
-      class="group flex w-full flex-1 items-center justify-between py-inset-md font-medium text-left transition-all hover:underline focus-visible:outline-none focus-visible:ring-(length:--ring-width) focus-visible:ring-ring focus-visible:ring-offset-(length:--ring-offset-width)"
+      class="group flex w-full flex-1 items-center justify-between py-inset-md font-medium text-left transition-all hover:underline focus-visible:outline-hidden focus-visible:ring-(length:--ring-width) focus-visible:ring-ring focus-visible:ring-offset-(length:--ring-offset-width)"
     >
       <ng-content />
       <svg

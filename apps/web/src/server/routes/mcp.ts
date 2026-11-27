@@ -31,7 +31,10 @@ import { EDITORIAL, type McpCodeExample } from './mcp/editorial';
 import * as USAGE from '../../app/lib/snippets/usage';
 import { createDistribution } from '../../../../../packages/shared/lib/distribution';
 import { VOLT_NAMES } from '../../../../../packages/shared/lib/volt-names.generated';
-import { RELEASE_CAPABILITIES } from '../../../../../packages/shared/lib/release-capabilities';
+import {
+  capabilityById,
+  RELEASE_CAPABILITIES,
+} from '../../../../../packages/shared/lib/release-capabilities';
 import {
   buildCliCommand,
   capabilityReport,
@@ -314,6 +317,34 @@ const themeInfo = {
   usage: {
     provider: `provideVoltTheme({ color: 'ember', style: 'soft', dark: false })`,
     dynamic: `applyVoltTheme({ color: 'dusk', style: 'brutal', dark: true })`,
+  },
+  densities: ['compact', 'comfortable', 'spacious'],
+  /** Additive (plan 08): a palette of the app's own, e.g. exported by Theme Studio. */
+  customThemes: {
+    summary:
+      'A custom palette is CSS the app imports after @voltui/components/themes.css, selected by name. Declare the name with voltCustomColor() and every theme API accepts it; there is no registry and nothing is fetched.',
+    studio: 'https://voltui.dev/create-theme',
+    steps: [
+      "Export the palette's CSS from Theme Studio (or write the two selectors by hand) and save it as e.g. src/acme.css.",
+      "Import it after Volt's themes: @import 'tailwindcss'; @import '@voltui/components/themes.css'; @import './acme.css';",
+      "Declare the name: export const acme = voltCustomColor('acme'); — it throws for a malformed name or a shipped palette's name.",
+      'Use it like a shipped palette: provideVoltTheme({ color: acme, style: \'soft\' }), applyVoltTheme({ color: acme }), [voltTheme]="{ color: acme, dark: true }".',
+      'For a stored visitor choice before first paint: voltThemeInitScript({ defaults: { color: acme }, customColors: [acme] }). Undeclared stored names fall back to the defaults.',
+    ],
+    usage: `import { provideVoltTheme, voltCustomColor } from '@voltui/components';
+
+export const acme = voltCustomColor('acme');
+export const providers = [provideVoltTheme({ color: acme, style: 'soft', density: 'compact' })];`,
+    nameRule:
+      'Lowercase letters, digits and single hyphens, starting with a letter, at most 48 characters; not volt, ember, sage, dusk or glacier.',
+    paletteVsStyle:
+      'The exported CSS is a palette (data-color) plus only the shape values changed in the studio. Style (data-style) and density (data-density) stay configuration. Shape overrides win over the style because the file is imported after it; nested scopes without their own style inherit them.',
+    customStyles: 'voltCustomStyle() and customStyles do the same for a style preset of your own.',
+    copyMode:
+      'CLI-copied components: uiCustomColor / uiCustomStyle from your copied ./ui/theme (the CLI renames the volt prefix); provideVoltTheme and applyVoltTheme keep their names.',
+    scopes:
+      'Light and dark scopes, nested either way with the shipped palettes, and overlays opened inside a scope (voltThemeInherit). Toasts belong to the page.',
+    availability: capabilityReport(capabilityById('components.custom-themes'), {}),
   },
 };
 

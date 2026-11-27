@@ -5,6 +5,8 @@ import {
   applyVoltTheme,
   persistVoltTheme,
   provideVoltTheme,
+  voltCustomColor,
+  voltCustomStyle,
   voltThemeInitScript,
   VOLT_THEME_STORAGE_KEY,
 } from './theme';
@@ -175,5 +177,88 @@ describe('voltThemeInitScript', () => {
     const script = voltThemeInitScript({ storageKey: '</script><script>alert(1)</script>' });
     expect(script).not.toContain('</script>');
     expect(() => run(script)).not.toThrow();
+  });
+});
+
+describe('custom themes', () => {
+  const root = document.documentElement;
+  const run = (script: string) => new Function(script)();
+  const acme = voltCustomColor('acme');
+  const pebble = voltCustomStyle('pebble');
+
+  beforeEach(() => {
+    localStorage.clear();
+    root.removeAttribute('data-color');
+    root.removeAttribute('data-style');
+    root.classList.remove('dark');
+  });
+
+  it('declares only safe names that do not collide with a shipped preset', () => {
+    expect(voltCustomColor('northern-lights-2')).toBe('northern-lights-2');
+    for (const bad of [
+      '',
+      'Acme',
+      '1acme',
+      'acme-',
+      'a--b',
+      "a'] , body{",
+      'a b',
+      'x'.repeat(49),
+    ]) {
+      expect(() => voltCustomColor(bad), bad).toThrow(/not a valid custom color/);
+    }
+    expect(() => voltCustomColor('ember')).toThrow(/shipped color/);
+    expect(() => voltCustomStyle('brutal')).toThrow(/shipped style/);
+  });
+
+  it('applies a declared palette and style like a shipped one', () => {
+    const doc = createTestDocument();
+    applyVoltTheme({ color: acme, style: pebble, dark: true }, doc);
+    expect(doc.documentElement.getAttribute('data-color')).toBe('acme');
+    expect(doc.documentElement.getAttribute('data-style')).toBe('pebble');
+    expect(doc.documentElement.classList.contains('dark')).toBe(true);
+  });
+
+  it('drops a malformed name that bypassed the type instead of writing it', () => {
+    const doc = createTestDocument();
+    doc.documentElement.setAttribute('data-color', 'sage');
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    applyVoltTheme({ color: "a'] , body{" as never }, doc);
+    expect(doc.documentElement.getAttribute('data-color')).toBe('sage');
+    expect(warn).toHaveBeenCalledOnce();
+    warn.mockRestore();
+  });
+
+  it('never stores a malformed name', () => {
+    persistVoltTheme({ color: '"><script>' as never, style: pebble });
+    expect(JSON.parse(localStorage.getItem(VOLT_THEME_STORAGE_KEY)!)).toEqual({ style: 'pebble' });
+  });
+
+  it('restores a stored custom palette before first paint when the script allows it', () => {
+    persistVoltTheme({ color: acme, style: pebble, dark: true });
+    root.removeAttribute('data-color');
+    root.removeAttribute('data-style');
+
+    run(voltThemeInitScript({ customColors: [acme], customStyles: [pebble] }));
+
+    expect(root).toHaveAttribute('data-color', 'acme');
+    expect(root).toHaveAttribute('data-style', 'pebble');
+    expect(root).toHaveClass('dark');
+  });
+
+  it('accepts a custom default palette that is declared', () => {
+    run(voltThemeInitScript({ defaults: { color: acme }, customColors: [acme] }));
+    expect(root).toHaveAttribute('data-color', 'acme');
+  });
+
+  it('falls back to the defaults for a stored name nobody declared', () => {
+    localStorage.setItem(VOLT_THEME_STORAGE_KEY, JSON.stringify({ color: 'stranger' }));
+    run(voltThemeInitScript({ defaults: { color: 'sage' }, customColors: [acme] }));
+    expect(root).toHaveAttribute('data-color', 'sage');
+  });
+
+  it('refuses to build a script around an undeclared or malformed custom name', () => {
+    expect(() => voltThemeInitScript({ customColors: ['</script>' as never] })).toThrow();
+    expect(() => voltThemeInitScript({ customColors: ['volt' as never] })).toThrow();
   });
 });

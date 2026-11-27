@@ -7,10 +7,10 @@ import {
   input,
   type Signal,
 } from '@angular/core';
-import type { VoltThemeOptions } from './theme';
+import type { VoltAnyThemeOptions } from './theme';
 
 /** What a scope contributes, already merged with the scopes around it. */
-const VOLT_THEME_SCOPE = new InjectionToken<{ resolved: Signal<VoltThemeOptions> }>(
+const VOLT_THEME_SCOPE = new InjectionToken<{ resolved: Signal<VoltAnyThemeOptions> }>(
   'VOLT_THEME_SCOPE'
 );
 
@@ -33,6 +33,9 @@ const THEME_HOST = {
  * <section [voltTheme]="{ color: 'ember', style: 'soft', dark: true }">…</section>
  * ```
  *
+ * A palette or style your own stylesheet defines works the same once declared with `voltCustomColor`
+ * or `voltCustomStyle`: `[voltTheme]="{ color: acme }"`.
+ *
  * Anything omitted is inherited from the surrounding scope or the page. Set `color` and `style`
  * together for a self-contained island: the offset shadows of Brutal and Retro are drawn in the
  * palette of the element that sets the style. Overlays declared inside the scope carry it with them
@@ -47,13 +50,13 @@ const THEME_HOST = {
 export class VoltTheme {
   private readonly parent = inject(VOLT_THEME_SCOPE, { optional: true, skipSelf: true });
 
-  readonly voltTheme = input<VoltThemeOptions, VoltThemeOptions | ''>(
+  readonly voltTheme = input<VoltAnyThemeOptions, VoltAnyThemeOptions | ''>(
     {},
     { transform: value => value || {} }
   );
 
   /** Everything in force here, for overlays that render outside this element. */
-  readonly resolved = computed<VoltThemeOptions>(() => {
+  readonly resolved = computed<VoltAnyThemeOptions>(() => {
     const inherited = this.parent?.resolved() ?? {};
     const own = this.voltTheme();
     return {
@@ -68,7 +71,7 @@ export class VoltTheme {
    * What this element itself writes. A scope that forces a mode needs a palette to apply it to, and
    * a nested scope repeats the mode so an outer `.dark` selector cannot reach past it.
    */
-  protected readonly theme = computed<VoltThemeOptions>(() => {
+  protected readonly theme = computed<VoltAnyThemeOptions>(() => {
     const { color, dark } = this.resolved();
     const own = this.voltTheme();
     return {

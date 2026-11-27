@@ -45,7 +45,7 @@ export const navigationMenuVariants = cva('relative flex items-center justify-ce
  * height, shape, hover, focus ring and disabled look. `data-[active]` only ever matches a link.
  */
 export const navigationMenuItemVariants = cva(
-  'relative inline-flex h-control-dense shrink-0 cursor-pointer select-none items-center justify-center gap-1 whitespace-nowrap px-inset-md text-sm font-medium transition-colors motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-(length:--ring-width) focus-visible:ring-ring data-[disabled]:pointer-events-none data-[disabled]:cursor-default data-[disabled]:opacity-50 data-[open]:bg-accent/50',
+  'relative inline-flex h-control-dense shrink-0 cursor-pointer select-none items-center justify-center gap-1 whitespace-nowrap px-inset-md text-sm font-medium transition-colors motion-reduce:transition-none focus-visible:outline-hidden focus-visible:ring-(length:--ring-width) focus-visible:ring-ring data-[disabled]:pointer-events-none data-[disabled]:cursor-default data-[disabled]:opacity-50 data-[open]:bg-accent/50',
   {
     variants: {
       variant: {

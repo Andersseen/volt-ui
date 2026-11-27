@@ -171,7 +171,7 @@ import { injectVoltId } from '../../volt-ids';
       (ngpCheckboxCheckedChange)="onCheckedChange($event)"
       (ngpCheckboxIndeterminateChange)="onIndeterminateChange($event)"
       (blur)="onTouched()"
-      class="peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center rounded-sm border-(length:--volt-control-border-width) border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-(length:--ring-width) focus-visible:ring-ring focus-visible:ring-offset-(length:--ring-offset-width) disabled:cursor-not-allowed disabled:opacity-50 data-[checked]:bg-primary data-[checked]:text-primary-foreground data-[indeterminate]:bg-primary data-[indeterminate]:text-primary-foreground"
+      class="peer flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center rounded-sm border-(length:--volt-control-border-width) border-primary ring-offset-background focus-visible:outline-hidden focus-visible:ring-(length:--ring-width) focus-visible:ring-ring focus-visible:ring-offset-(length:--ring-offset-width) disabled:cursor-not-allowed disabled:opacity-50 data-[checked]:bg-primary data-[checked]:text-primary-foreground data-[indeterminate]:bg-primary data-[indeterminate]:text-primary-foreground"
     >
       @if (indeterminate()) {
         <svg

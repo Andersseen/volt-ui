@@ -413,6 +413,7 @@ export const COMBOBOX_API: ComponentApi = {
         { name: 'filterMode', type: 'VoltComboboxFilterMode', default: "'local'" },
         { name: 'loading', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
         { name: 'loadingText', type: 'string', default: "'Loading…'" },
+        { name: 'toggleLabel', type: 'string', default: "'Toggle dropdown'" },
         { name: 'emptyText', type: 'string', default: "'No results found.'" },
         {
           name: 'resultsText',
@@ -1078,6 +1079,7 @@ export const PAGINATION_API: ComponentApi = {
       selector: 'volt-pagination-first',
       inputs: [
         { name: 'class', type: 'string', default: "''" },
+        { name: 'label', type: 'string', default: "'First page'" },
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
       ],
       outputs: [],
@@ -1087,6 +1089,7 @@ export const PAGINATION_API: ComponentApi = {
       selector: 'volt-pagination-last',
       inputs: [
         { name: 'class', type: 'string', default: "''" },
+        { name: 'label', type: 'string', default: "'Last page'" },
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
       ],
       outputs: [],
@@ -1096,6 +1099,7 @@ export const PAGINATION_API: ComponentApi = {
       selector: 'volt-pagination-next',
       inputs: [
         { name: 'class', type: 'string', default: "''" },
+        { name: 'label', type: 'string', default: "'Next page'" },
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
       ],
       outputs: [],
@@ -1105,6 +1109,7 @@ export const PAGINATION_API: ComponentApi = {
       selector: 'volt-pagination-previous',
       inputs: [
         { name: 'class', type: 'string', default: "''" },
+        { name: 'label', type: 'string', default: "'Previous page'" },
         { name: 'disabled', type: 'boolean', default: 'false', transform: 'booleanAttribute' },
       ],
       outputs: [],

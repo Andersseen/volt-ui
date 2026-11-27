@@ -99,7 +99,13 @@ Selectors include `[data-volt-theme]`, so a custom palette needs both:
 .dark [data-volt-theme][data-color='mine']:not([data-mode='light']) { … }
 ```
 
-The Theme Studio exports exactly this.
+The Theme Studio exports exactly this, plus the shape values the designer changed (radius, borders, ring,
+shadows, component spacing) in the light rule, so they apply in both modes. Import it after
+`themes.css`: those overrides and a style preset have equal specificity, and the later rule wins. Declare
+the name with `voltCustomColor('mine')` (or `voltCustomStyle` for a style) to pass it to `provideVoltTheme`,
+`applyVoltTheme`, `[voltTheme]` and `voltThemeInitScript({ customColors })`; nothing is registered
+globally. A nested scope that sets no `style` inherits the overrides of the scope around it. Proven in the
+browser in `e2e/contracts/theme-custom.spec.ts` (package) and `e2e/consumer-cli-themes.spec.ts` (CLI copy).
 
 | Rendered                                                                           | Theme                                                          |
 | ---------------------------------------------------------------------------------- | -------------------------------------------------------------- |
@@ -153,6 +159,8 @@ What is and is not synchronised:
 - **Scoped themes** — a `[voltTheme]` container sets its own `data-*` attributes and is never touched by
   the global preference, so a preview showing Glacier + Soft keeps showing it.
 - **Theme Studio drafts** — arbitrary custom values stay in that page; they are never serialised into the cookie.
+  The studio keeps its draft and saved themes in `localStorage` under `volt-theme-studio` (schema in
+  `apps/web/src/app/lib/theme-library.ts`), in this browser only.
 
 Server rendering: both applications are prerendered/edge-served, so the cookie is applied by the
 early script rather than per request; the server markup carries the default attributes and the script

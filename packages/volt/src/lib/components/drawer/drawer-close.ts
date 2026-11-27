@@ -25,7 +25,7 @@ export class VoltDrawerClose {
 
   protected readonly classes = computed(() =>
     cn(
-      'inline-flex h-control-sm w-control-sm items-center justify-center rounded-md text-muted-foreground transition-colors hover:text-foreground hover:bg-muted focus-visible:outline-none focus-visible:ring-(length:--ring-width) focus-visible:ring-ring cursor-pointer',
+      'inline-flex h-control-sm w-control-sm items-center justify-center rounded-md text-muted-foreground transition-colors hover:text-foreground hover:bg-muted focus-visible:outline-hidden focus-visible:ring-(length:--ring-width) focus-visible:ring-ring cursor-pointer',
       this.class()
     )
   );

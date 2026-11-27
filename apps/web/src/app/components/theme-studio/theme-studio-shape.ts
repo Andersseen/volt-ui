@@ -5,12 +5,17 @@ import {
   VoltCardDescription,
   VoltCardHeader,
   VoltCardTitle,
+  VoltNativeButton,
   VoltSlider,
 } from 'volt';
 import { ThemeStudioStore } from '../../services/theme-studio-store';
+import { SHAPE_CONTROLS, type ShapeControl } from '../../lib/theme-draft';
 import { injectAppI18n } from '@shared/i18n/i18n';
 
-/** The structural tokens both modes share: radius, borders, focus ring, shadow. */
+/**
+ * The structural tokens both modes share. Each one either follows the chosen style preset or is
+ * overridden here; only overrides are written to the exported stylesheet.
+ */
 @Component({
   selector: 'app-theme-studio-shape',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -20,6 +25,7 @@ import { injectAppI18n } from '@shared/i18n/i18n';
     VoltCardDescription,
     VoltCardHeader,
     VoltCardTitle,
+    VoltNativeButton,
     VoltSlider,
   ],
   template: `
@@ -33,20 +39,41 @@ import { injectAppI18n } from '@shared/i18n/i18n';
       <volt-card-content>
         <div class="grid gap-5 sm:grid-cols-2">
           @for (control of controls; track control.key) {
-            <div class="space-y-2">
-              <div class="flex items-center justify-between gap-3">
-                <span class="text-sm font-medium text-foreground">{{ control.label }}</span>
+            @let value = store.theme().shape[control.key];
+            <div class="space-y-2" [attr.data-shape]="control.key">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <span [id]="'shape-' + control.key" class="text-sm font-medium text-foreground">{{
+                  t(control.labelKey)
+                }}</span>
                 <code class="text-xs text-muted-foreground">
-                  {{ store.theme()[control.key] }}{{ control.unit }}
+                  @if (value === null) {
+                    {{ t('themeStudio.shape.fromStyle', { value: styleValue(control) }) }}
+                  } @else {
+                    {{ value }}{{ control.unit }}
+                  }
                 </code>
               </div>
               <volt-slider
-                [value]="store.theme()[control.key]"
+                [value]="value ?? styleNumber(control) ?? control.min"
                 [min]="control.min"
                 [max]="control.max"
                 [step]="1"
+                [ariaLabel]="t(control.labelKey)"
                 (valueChange)="store.setNumber(control.key, $event)"
               />
+              @if (value !== null) {
+                <button
+                  voltButton
+                  size="sm"
+                  variant="ghost"
+                  [attr.aria-label]="
+                    t('themeStudio.shape.useStyleFor', { token: t(control.labelKey) })
+                  "
+                  (click)="store.setShape(control.key, null)"
+                >
+                  {{ t('themeStudio.shape.useStyle') }}
+                </button>
+              }
             </div>
           }
         </div>
@@ -61,11 +88,28 @@ export class ThemeStudioShape {
 
   protected readonly store = inject(ThemeStudioStore);
 
-  /** Four sliders that differ only in label and range, so they are data, not markup. */
-  protected readonly controls = [
-    { key: 'radius', label: 'Radius', unit: 'px', min: 0, max: 24 },
-    { key: 'borderWidth', label: 'Border', unit: 'px', min: 0, max: 4 },
-    { key: 'ringWidth', label: 'Focus ring', unit: 'px', min: 1, max: 5 },
-    { key: 'shadowIntensity', label: 'Shadow', unit: '%', min: 0, max: 24 },
-  ] as const;
+  protected readonly controls = SHAPE_CONTROLS;
+
+  /** The style preset's value in the control's unit, or `null` when the style has no single one. */
+  protected styleNumber(control: ShapeControl): number | null {
+    const shape = this.store.styleShape();
+    switch (control.key) {
+      case 'radius':
+        return Math.min(shape.radius, control.max);
+      case 'borderWidth':
+        return shape.borderWidth;
+      case 'ringWidth':
+        return shape.ringWidth;
+      case 'spacing':
+        return shape.spacing;
+      default:
+        // Shadows are a whole recipe per style (offset ink, soft blur), not one intensity.
+        return null;
+    }
+  }
+
+  protected styleValue(control: ShapeControl): string {
+    const number = this.styleNumber(control);
+    return number === null ? this.store.theme().style : `${number}${control.unit}`;
+  }
 }

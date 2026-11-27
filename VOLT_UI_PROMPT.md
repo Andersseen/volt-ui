@@ -107,6 +107,22 @@ applyVoltTheme({ color: 'dusk', style: 'brutal', dark: true });
 
 Components use semantic Tailwind utilities; do not write `bg-[var(--primary)]`.
 
+A palette of your own (for example exported by Theme Studio, https://voltui.dev/create-theme) is a
+stylesheet imported **after** `@voltui/components/themes.css`, selected by a declared name:
+
+```ts
+import { provideVoltTheme, voltCustomColor, voltThemeInitScript } from '@voltui/components';
+
+export const acme = voltCustomColor('acme'); // throws for a malformed or shipped name
+provideVoltTheme({ color: acme, style: 'soft', density: 'compact' });
+// <section [voltTheme]="{ color: acme, dark: true }"> themes one region and its overlays.
+voltThemeInitScript({ defaults: { color: acme }, customColors: [acme] });
+```
+
+The style preset and density stay configuration; the exported CSS holds the palette and only the shape
+values changed in the studio. Copy mode: `uiCustomColor` from `./ui/theme`. Needs
+`@voltui/components` 1.4.1 or later.
+
 ---
 
 ## Component catalog

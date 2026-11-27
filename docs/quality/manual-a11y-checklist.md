@@ -1,6 +1,8 @@
 # Manual assistive-technology checklist
 
-**Status: NOT TESTED.** No screen-reader session has been run for the 1.4 verification. Automated
+**Status: NOT TESTED with assistive technology.** No screen-reader session has been run for the 1.4
+verification or for plan 08 (2026-11-27): no VoiceOver, NVDA or TalkBack session was available to the
+agent that implemented it, and simulated output is not evidence. Rows 1–18 stay open. Automated
 evidence (axe, ARIA assertions, keyboard and focus in three browser engines) is in
 [`headless-contract-verification.md`](headless-contract-verification.md); it does not replace this.
 
@@ -29,3 +31,23 @@ versions, backend, and PASS / FAIL with a sentence per failure.
 | 12  | Form field  | Leave "Workspace" empty and blur                                            | "invalid entry" + the error text is read as the description                                                                                                       |
 
 Anything that fails here is a defect against the Volt contract, whatever the axe result.
+
+## Plan 08 additions (Theme Studio and composition)
+
+| #   | Scenario                   | Steps                                                                                                               | Expected announcement / behaviour                                                                                                  |
+| --- | -------------------------- | ------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| 13  | Keyboard-only form         | voltui.dev/create-theme → Preview → Settings form: Tab through, leave the email empty, submit, accept terms, submit | Every field reachable; errors read as descriptions after submit; "Settings saved" announced politely once                          |
+| 14  | Select inside Dialog       | Preview → Data and overlays → row menu → Edit → Status select: open, arrows, Escape, Escape                         | First Escape closes only the listbox; second closes the dialog; focus returns to the row's actions button                          |
+| 15  | Nested overlay dismissal   | Same as 14, plus clicking the overlay with the listbox open                                                         | Only the innermost layer closes per Escape                                                                                         |
+| 16  | Theme Studio token editing | Colour tokens: Tab to a picker, then its hex field; type a value; Undo                                              | Picker named by the token, described by its role; hex field "Primary hex value"; "edited" read after a change; Undo restores       |
+| 17  | Contrast diagnostics       | Make a pair fail; read the result; Edit token; apply the suggestion                                                 | Result read as words ("Fail", ratio, threshold, role), not colour; Edit token moves focus to the field; applying is announced once |
+| 18  | Saved-theme dialogs        | Save, rename, delete (alertdialog), open a saved theme with unsaved changes                                         | Dialog role and title on open; Cancel focused first in destructive dialogs; focus returns; save/delete notices announced once      |
+
+### Automated evidence for these rows (not a substitute)
+
+Recorded in `specs/v2/plans/08-theme-authoring.md`: the keyboard paths of 14–17 were driven with real
+keyboard events in Chromium, Firefox and WebKit (Playwright: `e2e/theme-studio.spec.ts`,
+`e2e/contracts/theme-custom.spec.ts`, `e2e/contracts/adaptive.spec.ts`, plus a scripted pass over the
+studio). That proves focus order, Escape layering, focus return and live-region text in the DOM, not what
+a screen reader speaks. Manual browser zoom (as opposed to the emulated CSS zoom and the 320 px reflow
+the contracts measure) was not performed either.

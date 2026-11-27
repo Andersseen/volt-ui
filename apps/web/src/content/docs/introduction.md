@@ -107,9 +107,11 @@ Then create `.postcssrc.json` with the PostCSS plugin, and import Tailwind **bef
 Volt UI provides semantic Tailwind tokens via CSS custom properties. Configure the theme in your app config.
 
 ```ts
+// app.config.ts — passed to bootstrapApplication(App, appConfig) in main.ts
+import { ApplicationConfig } from '@angular/core';
 import { provideVoltTheme } from '@voltui/components';
 
-bootstrapApplication(AppComponent, {
+export const appConfig: ApplicationConfig = {
   providers: [
     provideVoltTheme({
       color: 'volt', // volt | ember | sage | dusk | glacier
@@ -117,7 +119,7 @@ bootstrapApplication(AppComponent, {
       dark: false,
     }),
   ],
-});
+};
 ```
 
 Add `density: 'compact' | 'comfortable' | 'spacious'` to set the spacing scale (from `@voltui/components` 1.4.1).
@@ -145,6 +147,7 @@ src/app/
 After adding a component, import and use it in your Angular components:
 
 ```ts
+// Fragment: copy mode, after `volt add button` (your copied ./ui/button).
 import { Component } from '@angular/core';
 import { UiButton } from './ui/button';
 

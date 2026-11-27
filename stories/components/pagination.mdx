@@ -69,6 +69,14 @@ import {
       <volt-pagination-button [page]="3" />
       <volt-pagination-next />
     </volt-pagination>
+
+    <!-- The arrows show only an icon; label names them in your app's language. -->
+    <volt-pagination [(page)]="page" [pageCount]="5">
+      <volt-pagination-previous label="Página anterior" />
+      <volt-pagination-button [page]="1" />
+      <volt-pagination-button [page]="2" />
+      <volt-pagination-next label="Página siguiente" />
+    </volt-pagination>
   `,
 })
 export class MyComponent {
@@ -96,25 +104,25 @@ Selector: <code>{"volt-pagination-button"}</code>
 
 Selector: <code>{"volt-pagination-first"}</code>
 
-<table><thead><tr><th>Input</th><th>Type</th><th>Default</th></tr></thead><tbody><tr><td><code>{"class"}</code></td><td><code>{"string"}</code></td><td><code>{"''"}</code></td></tr><tr><td><code>{"disabled"}</code> {"(transform: booleanAttribute)"}</td><td><code>{"boolean"}</code></td><td><code>{"false"}</code></td></tr></tbody></table>
+<table><thead><tr><th>Input</th><th>Type</th><th>Default</th></tr></thead><tbody><tr><td><code>{"class"}</code></td><td><code>{"string"}</code></td><td><code>{"''"}</code></td></tr><tr><td><code>{"label"}</code></td><td><code>{"string"}</code></td><td><code>{"'First page'"}</code></td></tr><tr><td><code>{"disabled"}</code> {"(transform: booleanAttribute)"}</td><td><code>{"boolean"}</code></td><td><code>{"false"}</code></td></tr></tbody></table>
 
 ### VoltPaginationLast
 
 Selector: <code>{"volt-pagination-last"}</code>
 
-<table><thead><tr><th>Input</th><th>Type</th><th>Default</th></tr></thead><tbody><tr><td><code>{"class"}</code></td><td><code>{"string"}</code></td><td><code>{"''"}</code></td></tr><tr><td><code>{"disabled"}</code> {"(transform: booleanAttribute)"}</td><td><code>{"boolean"}</code></td><td><code>{"false"}</code></td></tr></tbody></table>
+<table><thead><tr><th>Input</th><th>Type</th><th>Default</th></tr></thead><tbody><tr><td><code>{"class"}</code></td><td><code>{"string"}</code></td><td><code>{"''"}</code></td></tr><tr><td><code>{"label"}</code></td><td><code>{"string"}</code></td><td><code>{"'Last page'"}</code></td></tr><tr><td><code>{"disabled"}</code> {"(transform: booleanAttribute)"}</td><td><code>{"boolean"}</code></td><td><code>{"false"}</code></td></tr></tbody></table>
 
 ### VoltPaginationNext
 
 Selector: <code>{"volt-pagination-next"}</code>
 
-<table><thead><tr><th>Input</th><th>Type</th><th>Default</th></tr></thead><tbody><tr><td><code>{"class"}</code></td><td><code>{"string"}</code></td><td><code>{"''"}</code></td></tr><tr><td><code>{"disabled"}</code> {"(transform: booleanAttribute)"}</td><td><code>{"boolean"}</code></td><td><code>{"false"}</code></td></tr></tbody></table>
+<table><thead><tr><th>Input</th><th>Type</th><th>Default</th></tr></thead><tbody><tr><td><code>{"class"}</code></td><td><code>{"string"}</code></td><td><code>{"''"}</code></td></tr><tr><td><code>{"label"}</code></td><td><code>{"string"}</code></td><td><code>{"'Next page'"}</code></td></tr><tr><td><code>{"disabled"}</code> {"(transform: booleanAttribute)"}</td><td><code>{"boolean"}</code></td><td><code>{"false"}</code></td></tr></tbody></table>
 
 ### VoltPaginationPrevious
 
 Selector: <code>{"volt-pagination-previous"}</code>
 
-<table><thead><tr><th>Input</th><th>Type</th><th>Default</th></tr></thead><tbody><tr><td><code>{"class"}</code></td><td><code>{"string"}</code></td><td><code>{"''"}</code></td></tr><tr><td><code>{"disabled"}</code> {"(transform: booleanAttribute)"}</td><td><code>{"boolean"}</code></td><td><code>{"false"}</code></td></tr></tbody></table>
+<table><thead><tr><th>Input</th><th>Type</th><th>Default</th></tr></thead><tbody><tr><td><code>{"class"}</code></td><td><code>{"string"}</code></td><td><code>{"''"}</code></td></tr><tr><td><code>{"label"}</code></td><td><code>{"string"}</code></td><td><code>{"'Previous page'"}</code></td></tr><tr><td><code>{"disabled"}</code> {"(transform: booleanAttribute)"}</td><td><code>{"boolean"}</code></td><td><code>{"false"}</code></td></tr></tbody></table>
 
 ### VoltPagination
 

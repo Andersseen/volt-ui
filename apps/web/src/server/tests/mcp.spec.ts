@@ -52,6 +52,22 @@ describe('Volt UI MCP Server', () => {
     expect(text).toContain('solid');
   });
 
+  it('get_theme_info explains the custom-theme contract, additively', async () => {
+    const result = await client.callTool({ name: 'get_theme_info', arguments: {} });
+    const info = JSON.parse(
+      (result.content as { type: string; text: string }[]).find(c => c.type === 'text')!.text
+    );
+    // What older clients read is unchanged.
+    expect(info.colors).toEqual(['volt', 'ember', 'sage', 'dusk', 'glacier']);
+    expect(info.provider).toBe('provideVoltTheme');
+    // The contract a model needs to wire a Theme Studio export.
+    expect(info.customThemes.usage).toContain("voltCustomColor('acme')");
+    expect(info.customThemes.steps.join('\n')).toContain("@import '@voltui/components/themes.css'");
+    expect(info.customThemes.copyMode).toContain('uiCustomColor');
+    expect(info.customThemes.availability.id).toBe('components.custom-themes');
+    expect(info.customThemes.availability.since).toBe('1.4.1');
+  });
+
   it('should call get_usage_example', async () => {
     const result = await client.callTool({
       name: 'get_usage_example',

@@ -59,7 +59,8 @@ describe('Theme Studio', () => {
     await user.clear(name);
     await user.type(name, '  Northern Lights!  ');
 
-    expect(screen.getByRole('heading', { name: 'northern-lights' })).toBeInTheDocument();
+    expect(screen.getByText('Exported as the palette northern-lights.')).toBeInTheDocument();
+    expect(screen.getByText('northern-lights.css')).toBeInTheDocument();
     expect(store.generatedCss()).toContain(":root[data-color='northern-lights']");
   });
 
@@ -89,7 +90,7 @@ describe('Theme Studio', () => {
     store.generate();
 
     // Generating replaces colors only: the radius the user dialled in is their own work.
-    expect(store.theme().radius).toBe(18);
+    expect(store.theme().shape.radius).toBe(18);
     expect(store.generatedCss()).toContain('--radius: 18px;');
   });
 });

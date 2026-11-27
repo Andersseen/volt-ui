@@ -26,7 +26,7 @@ const baseURL = external ?? `http://127.0.0.1:${port}`;
 export default defineConfig({
   testDir: './e2e/contracts',
   // An external build serves `contracts.html` only. Theme CSS does not depend on the Angular version.
-  testIgnore: external ? /theme-(matrix|scope)\.spec\.ts/ : undefined,
+  testIgnore: external ? /theme-(matrix|scope|custom)\.spec\.ts/ : undefined,
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI && !evidenceEnabled ? 1 : 0,

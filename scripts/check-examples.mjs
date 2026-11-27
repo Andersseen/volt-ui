@@ -14,6 +14,12 @@
  *              plus CommonModule, FormsModule, ReactiveFormsModule and RouterLink, whose members are
  *              untyped (`[key: string]: any`), so only selectors, inputs, outputs and their literal
  *              values are checked — which is what a fragment claims.
+ *   guides     the ```ts blocks of the installation, theme and customization guides
+ *              (apps/web/src/authoring/docs{,-es,-uk}/ introduction, themes, customization). Each one compiles
+ *              as a module in both modes, like a complete example, unless its first line says
+ *              `// Fragment: …` — an excerpt the reader is told is not standalone. The Spanish and
+ *              Ukrainian pages must carry the same code. The inventory lists which release
+ *              capabilities each one needs, so an example npm cannot run yet is visible.
  *   blocks     Recipes blocks, layouts and patterns: complete, package mode only; compiled by
  *              scripts/check-copied-source.mjs (unchanged, not weakened).
  *
@@ -44,6 +50,7 @@ const { EDITORIAL } = await load('apps/web/src/server/routes/mcp/editorial.ts');
 const { COMPONENT_API } = await load('apps/web/src/server/routes/mcp/api.generated.ts');
 const { VOLT_NAMES } = await load('packages/shared/lib/volt-names.generated.ts');
 const { createDistribution } = await load('packages/shared/lib/distribution.ts');
+const { RELEASE_CAPABILITIES } = await load('packages/shared/lib/release-capabilities.ts');
 const distribution = createDistribution(VOLT_NAMES);
 
 const ALLOWED_PACKAGES = [/^@angular\//, /^@voltui\/components$/, /^rxjs(\/|$)/];
@@ -57,6 +64,38 @@ const complete = snippets
   .filter(([, source]) => /@Component\(/.test(source))
   .map(([name, source]) => ({ name, file: `${name.toLowerCase().replace(/_/g, '-')}.ts`, source }));
 const partialUsage = snippets.filter(([, source]) => !/@Component\(/.test(source));
+
+// Guide code blocks (see the header). Same code in every locale, fragments say so.
+const GUIDE_PAGES = ['introduction', 'themes', 'customization'];
+const GUIDE_LOCALES = ['docs', 'docs-es', 'docs-uk'];
+const FRAGMENT = /^\/\/ Fragment\b/;
+const tsBlocks = text =>
+  [...text.matchAll(/```(?:ts|typescript)[^\n]*\n([\s\S]*?)```/g)].map(match => match[1]);
+const guides = [];
+for (const page of GUIDE_PAGES) {
+  const read = locale =>
+    tsBlocks(readFileSync(join(ROOT, `apps/web/src/authoring/${locale}/${page}.md`), 'utf8'));
+  const english = read('docs');
+  for (const locale of GUIDE_LOCALES.slice(1)) {
+    if (JSON.stringify(read(locale)) !== JSON.stringify(english))
+      problems.push(`${locale}/${page}.md: its TypeScript examples differ from the English page`);
+  }
+  english.forEach((code, i) => guides.push({ page, index: i + 1, code, fragment: FRAGMENT.test(code) }));
+}
+/** Capabilities an example relies on that are declared by name (package-exports probes). */
+const capabilitiesIn = source =>
+  RELEASE_CAPABILITIES.filter(
+    capability =>
+      capability.probe.kind === 'package-exports' &&
+      capability.probe.names.some(name => new RegExp(`(?<![\\w$])${name}(?![\\w$])`).test(source))
+  ).map(capability => `${capability.id} (${capability.package} ${capability.since})`);
+for (const guide of guides.filter(g => !g.fragment)) {
+  complete.push({
+    name: `GUIDE ${guide.page} #${guide.index}`,
+    file: `guide-${guide.page}-${guide.index}.ts`,
+    source: guide.code,
+  });
+}
 
 for (const { name, source } of complete) {
   if (/from\s+['"]volt['"]/.test(source))
@@ -189,6 +228,12 @@ function emit(dir) {
       name: p.name,
       host: 'ExampleHost (every Volt directive, untyped members)',
     })),
+    guides: guides.map(g => ({
+      page: `${g.page}.md`,
+      example: g.index,
+      kind: g.fragment ? 'illustrative fragment (not compiled)' : 'complete (both modes)',
+      needs: capabilitiesIn(g.code),
+    })),
     blocks: 'scripts/check-copied-source.mjs (package mode)',
   };
   writeFileSync(join(dir, 'inventory.json'), JSON.stringify(inventory, null, 2));
@@ -199,7 +244,7 @@ if (emitDir) {
   rmSync(emitDir, { recursive: true, force: true });
   emit(emitDir);
   console.log(
-    `Wrote ${complete.length} complete and ${partial.length} partial examples (${MODES.join(' + ')}) to ${emitDir}`
+    `Wrote ${complete.length} complete (${guides.filter(g => !g.fragment).length} from the guides) and ${partial.length} partial examples (${MODES.join(' + ')}) to ${emitDir}`
   );
   process.exit(0);
 }

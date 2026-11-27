@@ -122,6 +122,41 @@ export const RELEASE_CAPABILITIES: readonly ReleaseCapability[] = [
     probe: { kind: 'package-exports', names: ['VoltThemeDensity'] },
   },
   {
+    id: 'components.custom-themes',
+    label: 'voltCustomColor',
+    package: '@voltui/components',
+    since: '1.4.1',
+    components: ['theme'],
+    summary:
+      'Declared custom palettes and styles (`voltCustomColor()`, `voltCustomStyle()`) accepted by `provideVoltTheme`, `applyVoltTheme`, `persistVoltTheme`, `voltTheme` and `voltThemeInitScript({ customColors })`.',
+    probe: {
+      kind: 'package-exports',
+      names: [
+        'voltCustomColor',
+        'voltCustomStyle',
+        'VoltCustomColor',
+        'VoltCustomStyle',
+        'VoltAnyThemeOptions',
+        'VoltThemeColorName',
+        'VoltThemeStyleName',
+      ],
+    },
+  },
+  {
+    id: 'components.translatable-labels',
+    label: 'label / toggleLabel',
+    package: '@voltui/components',
+    since: '1.4.1',
+    components: ['pagination', 'combobox'],
+    summary:
+      'Translatable built-in names: `label` on the Pagination First/Previous/Next/Last buttons and `toggleLabel` on Combobox.',
+    probe: {
+      kind: 'package-file',
+      file: 'fesm2022/voltui-components.mjs',
+      includes: 'toggleLabel',
+    },
+  },
+  {
     id: 'components.exported-types',
     label: 'import type',
     package: '@voltui/components',

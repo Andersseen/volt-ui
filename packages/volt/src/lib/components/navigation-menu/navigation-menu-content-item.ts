@@ -31,7 +31,7 @@ export class VoltNavigationMenuContentItem {
 
   protected readonly classes = computed(() =>
     cn(
-      'block select-none rounded-md p-inset-sm leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-(length:--ring-width) focus-visible:ring-ring data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+      'block select-none rounded-md p-inset-sm leading-none no-underline outline-hidden transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-hidden focus-visible:ring-(length:--ring-width) focus-visible:ring-ring data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
       this.class()
     )
   );
