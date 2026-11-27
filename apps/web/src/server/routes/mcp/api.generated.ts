@@ -4050,6 +4050,8 @@ export const COMPONENT_API: Record<string, McpComponentApi> = {
       'persistVoltTheme',
       'provideVoltTheme',
       'VOLT_THEME_STORAGE_KEY',
+      'voltCustomColor',
+      'voltCustomStyle',
       'VoltTheme',
       'VoltThemeInherit',
       'voltThemeInitScript',
@@ -4062,7 +4064,7 @@ export const COMPONENT_API: Record<string, McpComponentApi> = {
         inputs: [
           {
             name: 'voltTheme',
-            type: 'VoltThemeOptions',
+            type: 'VoltAnyThemeOptions',
             default: '{}',
           },
         ],
