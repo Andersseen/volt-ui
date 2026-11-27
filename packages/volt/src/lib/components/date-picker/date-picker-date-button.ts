@@ -45,7 +45,7 @@ export class VoltDatePickerDateButton {
    */
   protected readonly classes = computed(() =>
     cn(
-      'inline-flex size-control-dense cursor-pointer select-none items-center justify-center rounded-sm text-sm transition-colors motion-reduce:transition-none hover:bg-foreground/10 focus-visible:outline-none focus-visible:ring-(length:--ring-width) focus-visible:ring-ring data-[today]:font-semibold data-[selected]:bg-primary data-[selected]:text-primary-foreground data-[outside-month]:text-muted-foreground data-[outside-month]:opacity-50 data-[disabled]:pointer-events-none data-[disabled]:cursor-default data-[disabled]:opacity-40 data-[range-between]:bg-primary/15 data-[range-between]:text-foreground data-[range-between]:hover:bg-primary/25 data-[range-start]:rounded-e-none data-[range-end]:rounded-s-none data-[range-start]:data-[range-end]:rounded-sm',
+      'inline-flex size-control-dense cursor-pointer select-none items-center justify-center rounded-sm text-sm transition-colors motion-reduce:transition-none hover:bg-foreground/10 focus-visible:outline-hidden focus-visible:ring-(length:--ring-width) focus-visible:ring-ring data-[today]:font-semibold data-[selected]:bg-primary data-[selected]:text-primary-foreground data-[outside-month]:text-muted-foreground data-[outside-month]:opacity-50 data-[disabled]:pointer-events-none data-[disabled]:cursor-default data-[disabled]:opacity-40 data-[range-between]:bg-primary/15 data-[range-between]:text-foreground data-[range-between]:hover:bg-primary/25 data-[range-start]:rounded-e-none data-[range-end]:rounded-s-none data-[range-start]:data-[range-end]:rounded-sm',
       this.class()
     )
   );

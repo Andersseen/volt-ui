@@ -278,7 +278,7 @@ export class VoltSelect implements ControlValueAccessor {
 
   protected readonly triggerClasses = computed(() =>
     cn(
-      'flex h-control-md w-full items-center justify-between rounded-md border-(length:--volt-control-border-width) border-input bg-background px-inset-sm py-2 text-sm ring-offset-background cursor-pointer placeholder:text-muted-foreground focus:outline-none focus:ring-(length:--ring-width) focus:ring-ring focus:ring-offset-(length:--ring-offset-width) disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1',
+      'flex h-control-md w-full items-center justify-between rounded-md border-(length:--volt-control-border-width) border-input bg-background px-inset-sm py-2 text-sm ring-offset-background cursor-pointer placeholder:text-muted-foreground focus:outline-hidden focus:ring-(length:--ring-width) focus:ring-ring focus:ring-offset-(length:--ring-offset-width) disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1',
       this.class()
     )
   );
@@ -486,7 +486,7 @@ export class VoltSelectItem {
 
   protected readonly classes = computed(() =>
     cn(
-      'group relative flex w-full cursor-pointer select-none items-center rounded-sm py-item-y pl-8 pr-2 text-sm outline-none focus:bg-muted focus:text-muted-foreground aria-disabled:pointer-events-none aria-disabled:opacity-50 transition-colors',
+      'group relative flex w-full cursor-pointer select-none items-center rounded-sm py-item-y pl-8 pr-2 text-sm outline-hidden focus:bg-muted focus:text-muted-foreground aria-disabled:pointer-events-none aria-disabled:opacity-50 transition-colors',
       this.class()
     )
   );

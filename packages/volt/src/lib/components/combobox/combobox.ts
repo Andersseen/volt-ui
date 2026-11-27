@@ -83,14 +83,14 @@ export type VoltComboboxFilterMode = 'local' | 'manual';
         (focus)="onInputFocus(combobox)"
         (input)="onFilterChange($event, combobox)"
         (blur)="onTouched()"
-        class="h-full flex-1 border-0 bg-transparent px-inset-sm py-1 text-sm text-foreground outline-none placeholder:text-muted-foreground focus:ring-0 disabled:cursor-not-allowed disabled:opacity-50"
+        class="h-full flex-1 border-0 bg-transparent px-inset-sm py-1 text-sm text-foreground outline-hidden placeholder:text-muted-foreground focus:ring-0 disabled:cursor-not-allowed disabled:opacity-50"
       />
 
       <button
         ngpComboboxButton
         type="button"
-        aria-label="Toggle dropdown"
-        class="inline-flex h-full w-control-dense shrink-0 cursor-pointer items-center justify-center rounded-md border-0 bg-transparent text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
+        [attr.aria-label]="toggleLabel()"
+        class="inline-flex h-full w-control-dense shrink-0 cursor-pointer items-center justify-center rounded-md border-0 bg-transparent text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -113,7 +113,7 @@ export type VoltComboboxFilterMode = 'local' | 'manual';
         ngpComboboxDropdown
         voltThemeInherit
         [attr.aria-busy]="loading() ? 'true' : null"
-        class="absolute top-full left-0 z-50 mt-1 max-h-[240px] w-[var(--ngp-combobox-width)] overflow-y-auto rounded-md border-(length:--border-width) border-border bg-popover p-1 text-popover-foreground shadow-md outline-none"
+        class="absolute top-full left-0 z-50 mt-1 max-h-[240px] w-[var(--ngp-combobox-width)] overflow-y-auto rounded-md border-(length:--border-width) border-border bg-popover p-1 text-popover-foreground shadow-md outline-hidden"
       >
         @if (loading()) {
           <div
@@ -210,6 +210,8 @@ export class VoltCombobox implements ControlValueAccessor {
   /** Show a loading row (and announce it). Only meaningful with `filterMode="manual"`, but harmless otherwise. */
   readonly loading = input<boolean, unknown>(false, { transform: booleanAttribute });
   readonly loadingText = input<string>('Loading…');
+  /** Accessible name of the icon-only button that opens the list. Set it in your app's language. */
+  readonly toggleLabel = input<string>('Toggle dropdown');
   /** Shown when there are no options and nothing is loading. Interpolate the query yourself for "No matches for …". */
   readonly emptyText = input<string>('No results found.');
   /** Announced to screen readers when results arrive for a typed query. */

@@ -1,7 +1,7 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 
 export const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap border-(length:--volt-control-border-width) border-transparent font-medium transition-all motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-(length:--ring-width) focus-visible:ring-ring focus-visible:ring-offset-(length:--ring-offset-width) data-[disabled]:pointer-events-none data-[disabled]:opacity-50 aria-disabled:opacity-50 aria-disabled:cursor-not-allowed cursor-pointer select-none',
+  'inline-flex items-center justify-center gap-2 text-center leading-tight border-(length:--volt-control-border-width) border-transparent font-medium transition-all motion-reduce:transition-none focus-visible:outline-hidden focus-visible:ring-(length:--ring-width) focus-visible:ring-ring focus-visible:ring-offset-(length:--ring-offset-width) data-[disabled]:pointer-events-none data-[disabled]:opacity-50 aria-disabled:opacity-50 aria-disabled:cursor-not-allowed cursor-pointer select-none',
   {
     variants: {
       variant: {
@@ -17,9 +17,13 @@ export const buttonVariants = cva(
         link: 'bg-transparent text-primary underline-offset-4 data-[hover]:underline',
       },
       size: {
-        sm: 'h-control-sm rounded-md px-inset-sm text-xs',
-        md: 'h-control-md rounded-md px-inset-md text-sm',
-        lg: 'h-control-lg rounded-md px-inset-lg text-base',
+        // A label longer than the space wraps (translations, narrow containers, zoom) instead of
+        // overflowing the page. Two tight lines fit the control height in every engine; `min-h-fit`
+        // grows the box beyond that where supported (not Firefox). One line is unchanged, and a
+        // consumer `h-*` still replaces the height.
+        sm: 'h-control-sm min-h-fit rounded-md px-inset-sm text-xs',
+        md: 'h-control-md min-h-fit rounded-md px-inset-md text-sm',
+        lg: 'h-control-lg min-h-fit rounded-md px-inset-lg text-base',
         icon: 'h-control-dense w-control-dense rounded-md',
       },
     },

@@ -1,10 +1,10 @@
 {
   "generator": "doq content",
   "files": {
-    "components/checkbox.md": "2d8f32ee8880b1f773b09e80072494d56f81a56bae0741055bf02ce87ceb06bd",
+    "components/checkbox.md": "2efbf6c58f71d520de061c6e694588d69d0588ce066a76f495501b6399ac2a2b",
     "components/form-field.md": "782165112d15e2d6436044529ac3f3fdd5d4ea4a890b66dfaa4cbd7282b59951",
     "components/input.md": "ec5318b97403eca663c03f5935ec33e8fd58e53092a254f01be46e27326959ca",
-    "components/select.md": "aaaa942fdcf67a8ab806e310fb850932962ec81f13bf142a9f714816971e4ad5",
+    "components/select.md": "0672e3a92b554ef07a09f27639a68c6032edcee589b76b98082831e579d40107",
     "customization.md": "b4cdc982a152a7a70b34b781a9d9ba01d460b4c7e634648e6e58ed2725710158",
     "introduction.md": "edd3fc870ebfa5792fb9ad2441cceaded64dba5b155ed6b56f6f56178a973a05",
     "themes.md": "ce4df345a3223acf9833e34b13896b5c7662252f7e321ee1b3c09ae221dbfd99"

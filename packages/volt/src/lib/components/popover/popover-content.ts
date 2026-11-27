@@ -17,7 +17,7 @@ export class VoltPopoverContent {
 
   protected readonly classes = computed(() =>
     cn(
-      'fixed z-50 w-72 rounded-lg border-(length:--border-width) border-border bg-popover p-panel text-popover-foreground shadow-md outline-none',
+      'fixed z-50 w-72 rounded-lg border-(length:--border-width) border-border bg-popover p-panel text-popover-foreground shadow-md outline-hidden',
       this.class()
     )
   );

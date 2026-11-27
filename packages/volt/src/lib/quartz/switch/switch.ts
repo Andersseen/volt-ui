@@ -44,7 +44,7 @@ let nextSwitchId = 0;
       [attr.data-disabled]="isDisabled() ? '' : null"
       (checkedChangeCommitted)="onCommitted($event)"
       (blur)="onTouched()"
-      class="relative inline-flex h-6 w-10 shrink-0 cursor-pointer items-center rounded-pill border-(length:--volt-control-border-width) border-input bg-input p-0 transition-colors duration-150 ease-in-out focus-visible:outline-none focus-visible:ring-(length:--ring-width) focus-visible:ring-ring focus-visible:ring-offset-(length:--ring-offset-width) focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[checked]:border-primary data-[checked]:bg-primary"
+      class="relative inline-flex h-6 w-10 shrink-0 cursor-pointer items-center rounded-pill border-(length:--volt-control-border-width) border-input bg-input p-0 transition-colors duration-150 ease-in-out focus-visible:outline-hidden focus-visible:ring-(length:--ring-width) focus-visible:ring-ring focus-visible:ring-offset-(length:--ring-offset-width) focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[checked]:border-primary data-[checked]:bg-primary"
     >
       <span
         [attr.data-checked]="checked() ? '' : null"

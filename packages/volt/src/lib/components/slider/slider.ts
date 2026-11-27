@@ -68,7 +68,7 @@ import { cn } from '../../utils';
       ngpSliderThumb
       [attr.aria-label]="ariaLabel()"
       [attr.aria-invalid]="formControlState.invalid() ? 'true' : null"
-      class="absolute block size-thumb -translate-x-1/2 -translate-y-1/2 cursor-grab rounded-pill border-2 border-primary bg-background shadow-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-(length:--ring-width) focus-visible:ring-ring focus-visible:ring-offset-(length:--ring-offset-width) aria-invalid:border-error data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[orientation=horizontal]:top-1/2 data-[orientation=vertical]:left-1/2 data-[press]:cursor-grabbing"
+      class="absolute block size-thumb -translate-x-1/2 -translate-y-1/2 cursor-grab rounded-pill border-2 border-primary bg-background shadow-sm ring-offset-background transition-colors focus-visible:outline-hidden focus-visible:ring-(length:--ring-width) focus-visible:ring-ring focus-visible:ring-offset-(length:--ring-offset-width) aria-invalid:border-error data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[orientation=horizontal]:top-1/2 data-[orientation=vertical]:left-1/2 data-[press]:cursor-grabbing"
     ></div>
   `,
 })
