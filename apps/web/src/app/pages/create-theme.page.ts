@@ -1,10 +1,13 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { VoltBadge } from 'volt';
 import { VoltThreads } from '../components/effects/volt-threads';
+import { ThemeStudioContrast } from '../components/theme-studio/theme-studio-contrast';
+import { ThemeStudioLibrary } from '../components/theme-studio/theme-studio-library';
 import { ThemeStudioOutput } from '../components/theme-studio/theme-studio-output';
 import { ThemeStudioPreview } from '../components/theme-studio/theme-studio-preview';
 import { ThemeStudioSetup } from '../components/theme-studio/theme-studio-setup';
 import { ThemeStudioShape } from '../components/theme-studio/theme-studio-shape';
+import { ThemeStudioToolbar } from '../components/theme-studio/theme-studio-toolbar';
 import { ThemeStudioTokens } from '../components/theme-studio/theme-studio-tokens';
 import { ThemeStudioStore } from '../services/theme-studio-store';
 import { injectAppI18n } from '@shared/i18n/i18n';
@@ -21,10 +24,13 @@ import { injectAppI18n } from '@shared/i18n/i18n';
   imports: [
     VoltBadge,
     VoltThreads,
+    ThemeStudioContrast,
+    ThemeStudioLibrary,
     ThemeStudioOutput,
     ThemeStudioPreview,
     ThemeStudioSetup,
     ThemeStudioShape,
+    ThemeStudioToolbar,
     ThemeStudioTokens,
   ],
   template: `
@@ -86,9 +92,12 @@ import { injectAppI18n } from '@shared/i18n/i18n';
             }}</span>
           </div>
 
+          <app-theme-studio-toolbar />
           <app-theme-studio-setup />
           <app-theme-studio-tokens />
+          <app-theme-studio-contrast />
           <app-theme-studio-shape />
+          <app-theme-studio-library />
           <app-theme-studio-output />
         </div>
 

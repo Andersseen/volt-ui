@@ -5,6 +5,7 @@ import {
   VoltCardDescription,
   VoltCardHeader,
   VoltCardTitle,
+  VoltNativeButton,
   VoltTabs,
   VoltTabsContent,
   VoltTabsList,
@@ -24,6 +25,7 @@ import { injectAppI18n } from '@shared/i18n/i18n';
     VoltCardDescription,
     VoltCardHeader,
     VoltCardTitle,
+    VoltNativeButton,
     VoltTabs,
     VoltTabsContent,
     VoltTabsList,
@@ -32,6 +34,7 @@ import { injectAppI18n } from '@shared/i18n/i18n';
   ],
   template: `
     <volt-card
+      id="theme-studio-tokens"
       class="border-border/70 bg-surface/80 shadow-sm backdrop-blur transition-colors duration-200 hover:border-primary/25"
     >
       <volt-card-header>
@@ -47,12 +50,28 @@ import { injectAppI18n } from '@shared/i18n/i18n';
 
           @for (mode of store.modes; track mode) {
             <volt-tabs-content [value]="mode">
-              <div class="mt-4 grid gap-2.5 sm:grid-cols-2">
+              <div class="mt-4 flex flex-wrap items-center justify-between gap-2">
+                <p class="text-xs text-muted-foreground">
+                  {{ t('themeStudio.tokens.startedFrom', { palette: store.theme().palette }) }}
+                </p>
+                <button voltButton size="sm" variant="outline" (click)="store.resetPalette(mode)">
+                  {{
+                    mode === 'light'
+                      ? t('themeStudio.tokens.resetLight')
+                      : t('themeStudio.tokens.resetDark')
+                  }}
+                </button>
+              </div>
+              <div class="mt-3 grid gap-2.5 sm:grid-cols-2">
                 @for (field of store.colorFields; track field.key) {
                   <app-theme-token-field
                     [field]="field"
+                    [idPrefix]="'token-' + mode"
                     [value]="store.theme()[mode][field.key]"
+                    [preset]="store.presetPalette()[mode][field.key]"
+                    [focusRequest]="focusRequestFor(mode, field.key)"
                     (changed)="store.setColor(mode, field.key, $event)"
+                    (resetRequested)="store.resetColor(mode, field.key)"
                   />
                 }
               </div>
@@ -69,4 +88,9 @@ export class ThemeStudioTokens {
   protected readonly t = this.translations.t;
 
   protected readonly store = inject(ThemeStudioStore);
+
+  protected focusRequestFor(mode: string, key: string): number | null {
+    const request = this.store.tokenFocus();
+    return request && request.mode === mode && request.key === key ? request.id : null;
+  }
 }

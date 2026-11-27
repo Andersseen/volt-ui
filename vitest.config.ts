@@ -33,8 +33,9 @@ export default defineConfig({
     // longer exists ("Cannot find module virtual:angular:jit:style:inline") on every run after the first.
     fsModuleCache: false,
     // Vitest blanks every CSS import by default, `?raw` included. The theme presets are read as
-    // text by packages/shared/lib/theme-presets.ts, so those files have to come through as written.
-    css: { include: [/packages\/volt\/src\/themes\/((colors|styles)\/[\w-]+|core)\.css/] },
+    // text by Theme Studio (apps/web/src/app/lib/shipped-palettes.ts), so those files have to come
+    // through as written. `tokens.css` holds the default palette and style.
+    css: { include: [/packages\/volt\/src\/themes\/((colors|styles)\/[\w-]+|core|tokens)\.css/] },
     environment: 'jsdom',
     // Every render loads three Etyma catalogs (~0.6s locally). On a shared CI runner running ~100
     // files in parallel that approaches the 5s default and fails the same few tests at random.

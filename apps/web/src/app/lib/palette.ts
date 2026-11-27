@@ -10,6 +10,8 @@
  * same seed always yields the same palette.
  */
 
+import { contrastRatio as sharedContrastRatio, hexToLinearSrgb } from '@shared/lib/contrast';
+
 export type ColorToken =
   | 'background'
   | 'foreground'
@@ -146,7 +148,7 @@ export function oklchToHex({ l, c, h }: Oklch): string {
  * the round trip back through sRGB. Without this, saturated hues at extreme lightness
  * clip to a flat, visibly different color.
  */
-function inGamut(l: number, c: number, h: number): string {
+export function inGamut(l: number, c: number, h: number): string {
   let chroma = c;
   for (let i = 0; i < 24; i++) {
     const hex = oklchToHex({ l, c: chroma, h });
@@ -161,17 +163,11 @@ function inGamut(l: number, c: number, h: number): string {
  * WCAG contrast
  * ------------------------------------------------------------------ */
 
-function relativeLuminance(hex: string): number {
-  const [r, g, b] = hexToRgb(hex).map(c => srgbToLinear(c / 255));
-  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
-}
-
-/** WCAG 2.1 contrast ratio between two hex colors (1–21). */
+/** WCAG 2.1 contrast ratio between two hex colors (1–21), from the shared implementation. */
 export function contrastRatio(a: string, b: string): number {
-  const la = relativeLuminance(a);
-  const lb = relativeLuminance(b);
-  const [light, dark] = la > lb ? [la, lb] : [lb, la];
-  return (light + 0.05) / (dark + 0.05);
+  // Normalised first, so `#fff` reads like `#ffffff`.
+  const linear = (hex: string) => hexToLinearSrgb(rgbToHex(...hexToRgb(hex)))!;
+  return sharedContrastRatio(linear(a), linear(b));
 }
 
 /** Pick whichever of white/near-black reads better on `background`. */

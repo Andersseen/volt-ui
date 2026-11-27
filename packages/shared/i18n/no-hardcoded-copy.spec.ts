@@ -51,8 +51,10 @@ const EXEMPT = [
   'apps/web/src/app/components/landing/recipes/layout-mini.ts',
   'apps/web/src/app/components/landing/recipes/recipe-mini.ts',
   'apps/web/src/app/components/landing/recipes/recipes-stage.ts',
-  // The theme studio's preview canvas: a sample dashboard drawn in the theme being edited.
+  // The theme studio's preview canvas: sample applications (dashboard, settings form, data and
+  // overlays) drawn in the theme being edited. The controls around them use `t()`.
   'apps/web/src/app/components/theme-studio/theme-studio-preview.ts',
+  'apps/web/src/app/components/theme-studio/preview/',
   // Carries `SidebarDemo`, a full sample application shell, alongside its own docs.
   'apps/recipes/src/app/pages/(gallery)/layouts/sidebar.page.ts',
   'apps/web/src/app/pages/(components-docs)/docs/components/sidebar.page.ts',

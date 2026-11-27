@@ -7,12 +7,17 @@ import {
   VoltCardHeader,
   VoltCardTitle,
   VoltInput,
+  VoltNativeButton,
   VoltSelect,
   VoltSelectContent,
   VoltSelectItem,
   VoltSelectLabel,
   VoltTextarea,
 } from 'volt';
+import type { VoltThemeDensity } from 'volt';
+import { COLOR_PRESETS, STYLE_PRESETS } from '@shared/lib/theme-presets';
+import type { PlainTranslationKey } from '@shared/i18n/i18n';
+import { DENSITIES } from '../../lib/theme-draft';
 import { ThemeStudioStore } from '../../services/theme-studio-store';
 import { Prose } from '@shared/components/prose';
 import { injectAppI18n } from '@shared/i18n/i18n';
@@ -30,6 +35,7 @@ import { injectAppI18n } from '@shared/i18n/i18n';
     VoltCardHeader,
     VoltCardTitle,
     VoltInput,
+    VoltNativeButton,
     VoltSelect,
     VoltSelectContent,
     VoltSelectItem,
@@ -46,7 +52,7 @@ import { injectAppI18n } from '@shared/i18n/i18n';
       </volt-card-header>
       <volt-card-content>
         <div class="grid gap-4 sm:grid-cols-2">
-          <div class="space-y-2">
+          <div class="space-y-2 sm:col-span-2">
             <label for="theme-name" class="text-sm font-medium text-foreground">{{
               t('themeStudio.setup.nameLabel')
             }}</label>
@@ -56,26 +62,80 @@ import { injectAppI18n } from '@shared/i18n/i18n';
               [value]="store.theme().name"
               (valueChange)="store.setName($event)"
               [placeholder]="t('themeStudio.setup.namePlaceholder')"
+              [state]="store.nameIsShipped() ? 'error' : 'default'"
+              aria-describedby="theme-name-hint"
             />
+            <p
+              id="theme-name-hint"
+              class="text-xs"
+              [class.text-error]="store.nameIsShipped()"
+              [class.text-muted-foreground]="!store.nameIsShipped()"
+            >
+              @if (store.nameIsShipped()) {
+                {{ t('themeStudio.setup.nameShipped', { name: store.normalizedName() }) }}
+              } @else {
+                {{ t('themeStudio.setup.nameHint', { name: store.normalizedName() }) }}
+              }
+            </p>
           </div>
 
           <div class="space-y-2">
-            <span class="text-sm font-medium text-foreground">{{
+            <span id="theme-palette-label" class="text-sm font-medium text-foreground">{{
               t('themeStudio.setup.startFrom')
             }}</span>
             <volt-select
               [(value)]="store.presetValue"
               ariaLabel="Starting preset"
+              [displayWith]="titleOf"
               [placeholder]="t('themeStudio.setup.presetPlaceholder')"
             >
               <volt-select-content>
                 <volt-select-label>{{ t('themeStudio.setup.presets') }}</volt-select-label>
-                <volt-select-item value="glacier">Glacier</volt-select-item>
-                <volt-select-item value="sage">Sage</volt-select-item>
-                <volt-select-item value="ember">Ember</volt-select-item>
+                @for (preset of colorPresets; track preset) {
+                  <volt-select-item [value]="preset">{{ title(preset) }}</volt-select-item>
+                }
               </volt-select-content>
             </volt-select>
           </div>
+
+          <div class="space-y-2">
+            <span class="text-sm font-medium text-foreground">{{
+              t('themeStudio.setup.style')
+            }}</span>
+            <volt-select
+              [(value)]="store.styleValue"
+              [ariaLabel]="t('themeStudio.setup.style')"
+              [displayWith]="titleOf"
+            >
+              <volt-select-content>
+                @for (style of stylePresets; track style) {
+                  <volt-select-item [value]="style">{{ title(style) }}</volt-select-item>
+                }
+              </volt-select-content>
+            </volt-select>
+          </div>
+
+          <div class="space-y-2">
+            <span class="text-sm font-medium text-foreground">{{
+              t('themeStudio.setup.density')
+            }}</span>
+            <volt-select
+              [(value)]="store.densityValue"
+              [ariaLabel]="t('themeStudio.setup.density')"
+              [displayWith]="densityLabel"
+            >
+              <volt-select-content>
+                @for (density of densities; track density) {
+                  <volt-select-item [value]="density">{{
+                    t(densityKeys[density])
+                  }}</volt-select-item>
+                }
+              </volt-select-content>
+            </volt-select>
+          </div>
+          <p class="self-end text-xs text-muted-foreground">
+            {{ t('themeStudio.setup.styleNote') }}
+          </p>
         </div>
 
         <!-- Palette generator -->
@@ -111,11 +171,18 @@ import { injectAppI18n } from '@shared/i18n/i18n';
 
           <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs">
             <button
-              type="button"
-              class="text-primary underline-offset-4 hover:underline"
+              voltButton
+              variant="link"
+              size="sm"
+              class="h-auto px-0"
+              [attr.aria-expanded]="store.importOpen()"
               (click)="store.toggleImport()"
             >
-              {{ store.importOpen() ? 'Hide import' : 'Import from Palette Crafter' }}
+              {{
+                store.importOpen()
+                  ? t('themeStudio.setup.hideImport')
+                  : t('themeStudio.setup.importCrafter')
+              }}
             </button>
             <a
               [href]="store.crafterLink()"
@@ -125,8 +192,8 @@ import { injectAppI18n } from '@shared/i18n/i18n';
             >
               {{
                 store.paletteMeta()
-                  ? 'Refine this palette in Palette Crafter ↗'
-                  : 'Craft one in Palette Crafter ↗'
+                  ? t('themeStudio.setup.refineCrafter')
+                  : t('themeStudio.setup.craftCrafter')
               }}
             </a>
             @if (store.paletteMeta(); as meta) {
@@ -173,4 +240,22 @@ export class ThemeStudioSetup {
   protected readonly t = this.translations.t;
 
   protected readonly store = inject(ThemeStudioStore);
+
+  protected readonly colorPresets = COLOR_PRESETS;
+  protected readonly stylePresets = STYLE_PRESETS;
+  protected readonly densities = DENSITIES;
+  protected readonly densityKeys: Record<VoltThemeDensity, PlainTranslationKey> = {
+    compact: 'themeStudio.setup.densityCompact',
+    comfortable: 'themeStudio.setup.densityComfortable',
+    spacious: 'themeStudio.setup.densitySpacious',
+  };
+
+  protected readonly titleOf = (value: unknown) => this.title(String(value));
+  protected readonly densityLabel = (value: unknown) =>
+    this.t(this.densityKeys[value as VoltThemeDensity] ?? 'themeStudio.setup.densityComfortable');
+
+  /** Preset names are proper nouns: the same word in every language. */
+  protected title(name: string): string {
+    return name.charAt(0).toUpperCase() + name.slice(1);
+  }
 }
